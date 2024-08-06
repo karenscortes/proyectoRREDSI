@@ -35,11 +35,11 @@ CREATE TABLE Permisos (
 );
 
 CREATE TABLE Usuario (
-    id_usuario INT PRIMARY KEY AUTO_INCREMENT,
+    id_user INT PRIMARY KEY AUTO_INCREMENT,
     id_rol INT,
-    correo VARCHAR(70) NOT NULL UNIQUE,
-    clave VARCHAR(255) NOT NULL,
-    estado ENUM('activo', 'inactivo') NOT NULL,
+    email VARCHAR(70) NOT NULL UNIQUE,
+    passwords VARCHAR(255) NOT NULL,
+    states ENUM('activo', 'inactivo') NOT NULL,
     FOREIGN KEY (id_rol) REFERENCES Rol(id_rol)
 );
 
