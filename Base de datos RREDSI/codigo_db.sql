@@ -22,16 +22,16 @@ CREATE TABLE Role (
     names VARCHAR(30) NOT NULL
 );
 
-CREATE TABLE Permisos (
-    id_modulo INT AUTO_INCREMENT,
-    id_rol INT,
-    p_insertar TINYINT DEFAULT 0,
-    p_consultar TINYINT DEFAULT 0,
-    p_actualizar TINYINT DEFAULT 0,
-    p_eliminar TINYINT DEFAULT 0,
-    PRIMARY KEY (id_modulo, id_rol),
-    FOREIGN KEY (id_modulo) REFERENCES Modulo(id_modulo),
-    FOREIGN KEY (id_rol) REFERENCES Rol(id_rol)
+CREATE TABLE Permissions (
+    id_module INT,
+    id_role INT,
+    p_insert TINYINT DEFAULT 0,
+    p_select TINYINT DEFAULT 0,
+    p_update TINYINT DEFAULT 0,
+    p_delete TINYINT DEFAULT 0,
+    PRIMARY KEY (id_module, id_role),
+    FOREIGN KEY (id_module) REFERENCES Module(id_module),
+    FOREIGN KEY (id_role) REFERENCES Role(id_role)
 );
 
 CREATE TABLE Users (
@@ -43,16 +43,16 @@ CREATE TABLE Users (
     FOREIGN KEY (id_rol) REFERENCES Rol(id_rol)
 );
 
-CREATE TABLE Etapa (
-    id_etapa INT PRIMARY KEY AUTO_INCREMENT,
-    nombre VARCHAR(20) NOT NULL
+CREATE TABLE Stage (
+    id_stage INT PRIMARY KEY AUTO_INCREMENT,
+    names VARCHAR(20) NOT NULL
 );
 
-CREATE TABLE Fase (
-    id_fase INT PRIMARY KEY AUTO_INCREMENT,
-    id_etapa INT,
-    nombre VARCHAR(30) NOT NULL,
-    FOREIGN KEY (id_etapa) REFERENCES Etapa(id_etapa)
+CREATE TABLE Phase (
+    id_phase INT PRIMARY KEY AUTO_INCREMENT,
+    id_stage INT,
+    names VARCHAR(30) NOT NULL,
+    FOREIGN KEY (id_stage) REFERENCES Stage(id_stage)
 );
 
 CREATE TABLE Convocatoria (
