@@ -2,24 +2,24 @@ DROP DATABASE IF EXISTS db_rredsi;
 CREATE DATABASE db_rredsi;
 USE db_rredsi;
 
-CREATE TABLE Area_conocimiento (
-    id_area_conocimiento INT PRIMARY KEY AUTO_INCREMENT,
-    nombre VARCHAR(35) NOT NULL
+CREATE TABLE Area_of_knowledge (
+    id_area_of_knowledge INT PRIMARY KEY AUTO_INCREMENT,
+    names VARCHAR(35) NOT NULL
 );
 
-CREATE TABLE Institucion (
-    id_institucion INT PRIMARY KEY AUTO_INCREMENT,
-    nombre VARCHAR(50) NOT NULL
+CREATE TABLE Institution (
+    id_institution INT PRIMARY KEY AUTO_INCREMENT,
+    names VARCHAR(50) NOT NULL
 );
 
-CREATE TABLE Modulo (
-    id_modulo INT PRIMARY KEY AUTO_INCREMENT,
-    nombre VARCHAR(50) NOT NULL
+CREATE TABLE Module (
+    id_module INT PRIMARY KEY AUTO_INCREMENT,
+    names VARCHAR(50) NOT NULL
 );
 
-CREATE TABLE Rol (
-    id_rol INT PRIMARY KEY AUTO_INCREMENT,
-    nombre VARCHAR(50) NOT NULL
+CREATE TABLE Role (
+    id_role INT PRIMARY KEY AUTO_INCREMENT,
+    names VARCHAR(30) NOT NULL
 );
 
 CREATE TABLE Permisos (
@@ -34,12 +34,12 @@ CREATE TABLE Permisos (
     FOREIGN KEY (id_rol) REFERENCES Rol(id_rol)
 );
 
-CREATE TABLE Usuario (
-    id_usuario INT PRIMARY KEY AUTO_INCREMENT,
-    id_rol INT,
-    correo VARCHAR(70) NOT NULL UNIQUE,
-    clave VARCHAR(255) NOT NULL,
-    estado ENUM('activo', 'inactivo') NOT NULL,
+CREATE TABLE Users (
+    id_user INT PRIMARY KEY AUTO_INCREMENT,
+    id_role INT,
+    email VARCHAR(70) NOT NULL UNIQUE,
+    passwords VARCHAR(255) NOT NULL,
+    states ENUM('activo', 'inactivo') NOT NULL,
     FOREIGN KEY (id_rol) REFERENCES Rol(id_rol)
 );
 
