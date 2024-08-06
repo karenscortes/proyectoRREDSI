@@ -55,27 +55,27 @@ CREATE TABLE Phase (
     FOREIGN KEY (id_stage) REFERENCES Stage(id_stage)
 );
 
-CREATE TABLE Convocatoria (
-    id_convocatoria INT PRIMARY KEY AUTO_INCREMENT,
-    nombre VARCHAR(25),
-    fecha_inicio DATE,
-    fecha_fin DATE,
-    estado ENUM('en curso', 'concluida', 'por publicar')
+CREATE TABLE Announcement (
+    id_announcement INT PRIMARY KEY AUTO_INCREMENT,
+    names VARCHAR(25),
+    start_dates DATE,
+    end_dates DATE,
+    states ENUM('en curso', 'concluida', 'por publicar')
 );
 
-CREATE TABLE Programacion_fase (
-    id_programacion_fase INT PRIMARY KEY AUTO_INCREMENT,
-    id_fase INT,
-    id_convocatoria INT,
-    fecha_inicio DATE,
-    fecha_fin DATE,
-    FOREIGN KEY (id_fase) REFERENCES Fase(id_fase),
-    FOREIGN KEY (id_convocatoria) REFERENCES Convocatoria(id_convocatoria)
+CREATE TABLE Phase_programming (
+    id_'id_phase_programming' INT PRIMARY KEY AUTO_INCREMENT,
+    id_phase INT,
+    id_announcement INT,
+    start_dates DATE,
+    end_dates DATE,
+    FOREIGN KEY (id_phase) REFERENCES Phase(id_phase),
+    FOREIGN KEY (id_announcement) REFERENCES Announcement(id_announcement)
 );
 
-CREATE TABLE Postulacion_evaluadores (
-    id_convocatoria INT,
-    id_evaluador INT,
+CREATE TABLE Evaluators_application(
+    id_announcement INT,
+    id_evaluator INT,
     etapa_virtual TINYINT DEFAULT 0,
     etapa_presencial TINYINT DEFAULT 0,
     jornada_manana TINYINT DEFAULT 0,
@@ -85,9 +85,9 @@ CREATE TABLE Postulacion_evaluadores (
     FOREIGN KEY (id_evaluador) REFERENCES Usuario(id_usuario)
 );
 
-CREATE TABLE Modalidad (
-    id_modalidad INT PRIMARY KEY AUTO_INCREMENT,
-    nombre VARCHAR(20) NOT NULL
+CREATE TABLE Modality (
+    id_modality INT PRIMARY KEY AUTO_INCREMENT,
+    names VARCHAR(20) NOT NULL
 );
 
 CREATE TABLE Rubrica (
@@ -132,9 +132,9 @@ CREATE TABLE Autor (
     FOREIGN KEY (id_proyecto) REFERENCES Proyecto(id_proyecto)
 );
 
-CREATE TABLE Tipo_documento (
-    id_tipo_documento INT PRIMARY KEY AUTO_INCREMENT,
-    nombre VARCHAR(10) NOT NULL
+CREATE TABLE Document_type (
+    id_document_type INT PRIMARY KEY AUTO_INCREMENT,
+    names VARCHAR(10) NOT NULL
 );
 
 CREATE TABLE Titulos_academicos (
@@ -146,18 +146,18 @@ CREATE TABLE Titulos_academicos (
     FOREIGN KEY (id_usuario) REFERENCES Usuario(id_usuario)
 );
 
-CREATE TABLE Detalle_personal (
-    id_detalles_personales INT PRIMARY KEY AUTO_INCREMENT,
-    id_tipo_documento INT,
-    id_usuario INT,
-    documento VARCHAR(55) UNIQUE NOT NULL,
-    nombres VARCHAR(25),
-    apellidos VARCHAR(25),
-    celular VARCHAR(10) UNIQUE NOT NULL,
-    id_institucion INT,
-    FOREIGN KEY (id_tipo_documento) REFERENCES Tipo_documento(id_tipo_documento),
-    FOREIGN KEY (id_usuario) REFERENCES Usuario(id_usuario),
-    FOREIGN KEY (id_institucion) REFERENCES Institucion(id_institucion)
+CREATE TABLE  id_personal_detail (
+    id_personal_detail INT PRIMARY KEY AUTO_INCREMENT,
+    id_document_type INT,
+    id_user INT,
+    document VARCHAR(55) UNIQUE NOT NULL,
+    names VARCHAR(25),
+    last_names VARCHAR(25),
+    cell_phone VARCHAR(12) UNIQUE NOT NULL,
+    id_institution INT,
+    FOREIGN KEY (id_document_type) REFERENCES Document_type(id_document_type),
+    FOREIGN KEY (id_user) REFERENCES Users(id_user),
+    FOREIGN KEY (id_institution) REFERENCES Institucion(id_institution)
 );
 
 CREATE TABLE Asistentes (
