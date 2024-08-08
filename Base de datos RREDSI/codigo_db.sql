@@ -73,16 +73,16 @@ CREATE TABLE Phase_programming (
     FOREIGN KEY (id_announcement) REFERENCES Announcement(id_announcement)
 );
 
-CREATE TABLE Evaluators_application(
+CREATE TABLE Evaluator_application(
     id_announcement INT,
     id_evaluator INT,
-    etapa_virtual TINYINT DEFAULT 0,
-    etapa_presencial TINYINT DEFAULT 0,
-    jornada_manana TINYINT DEFAULT 0,
-    jornada_tarde TINYINT DEFAULT 0,
-    PRIMARY KEY (id_convocatoria, id_evaluador),
-    FOREIGN KEY (id_convocatoria) REFERENCES Convocatoria(id_convocatoria),
-    FOREIGN KEY (id_evaluador) REFERENCES Usuario(id_usuario)
+    virtual_stage TINYINT DEFAULT 0,
+    in_person_stage TINYINT DEFAULT 0,
+    morning_session TINYINT DEFAULT 0,
+    afternoon_session TINYINT DEFAULT 0,
+    PRIMARY KEY (id_announcement, id_evaluator),
+    FOREIGN KEY (id_announcement) REFERENCES Announcement(id_announcement),
+    FOREIGN KEY (id_evaluator) REFERENCES Users(id_user)
 );
 
 CREATE TABLE Modality (
@@ -90,46 +90,46 @@ CREATE TABLE Modality (
     names VARCHAR(20) NOT NULL
 );
 
-CREATE TABLE Rubrica (
-    id_rubrica INT PRIMARY KEY AUTO_INCREMENT,
-    titulo VARCHAR(40),
-    id_etapa INT,
-    id_modalidad INT,
-    FOREIGN KEY (id_etapa) REFERENCES Etapa(id_etapa),
-    FOREIGN KEY (id_modalidad) REFERENCES Modalidad(id_modalidad)
+CREATE TABLE Rubric (
+    id_rubric INT PRIMARY KEY AUTO_INCREMENT,
+    title VARCHAR(40),
+    id_stage INT,
+    id_modality INT,
+    FOREIGN KEY (id_stage) REFERENCES Stage(id_stage),
+    FOREIGN KEY (id_modality) REFERENCES Modality(id_modality)
 );
 
-CREATE TABLE Item_rubrica (
-    id_item_rubrica INT PRIMARY KEY AUTO_INCREMENT,
-    id_rubrica INT,
-    componente TEXT,
-    valor_max FLOAT(2, 1),
-    FOREIGN KEY (id_rubrica) REFERENCES Rubrica(id_rubrica)
+CREATE TABLE Rubric_item (
+    id_rubric_item INT PRIMARY KEY AUTO_INCREMENT,
+    id_rubric INT,
+    component TEXT,
+    value_max FLOAT(2, 1),
+    FOREIGN KEY (id_rubric) REFERENCES Rubric(id_rubric)
 );
 
-CREATE TABLE Proyecto (
-    id_proyecto INT PRIMARY KEY,
-    id_institucion INT,
-    id_modalidad INT,
-    id_area_conocimiento INT,
-    titulo VARCHAR(200),
-    programa_academico VARCHAR(50),
-    grupo_investigacion VARCHAR(50),
-    linea_investigacion VARCHAR(50),
-    nombre_semillero VARCHAR(50),
-    url_propuesta_escrita VARCHAR(255),
+CREATE TABLE Project (
+    id_project INT PRIMARY KEY,
+    id_institution INT,
+    id_modality INT,
+    id_area_of_knowledge INT,
+    title VARCHAR(200),
+    academic_program VARCHAR(50),
+    research_group VARCHAR(50),
+    line_research VARCHAR(50),
+    research_lab VARCHAR(50),
+    url_proposal_written VARCHAR(255),
     url_poster VARCHAR(255),
     url_aval VARCHAR(255),
-    FOREIGN KEY (id_institucion) REFERENCES Institucion(id_institucion),
-    FOREIGN KEY (id_modalidad) REFERENCES Modalidad(id_modalidad),
-    FOREIGN KEY (id_area_conocimiento) REFERENCES Area_conocimiento(id_area_conocimiento)
+    FOREIGN KEY (id_institution) REFERENCES Institution(id_institution),
+    FOREIGN KEY (id_modality) REFERENCES Modality(id_modality),
+    FOREIGN KEY (id_area_of_knowledge) REFERENCES Area_of_knowledge(id_area_of_knowledge)
 );
 
-CREATE TABLE Autor (
-    id_autor INT PRIMARY KEY AUTO_INCREMENT,
-    nombre VARCHAR(50),
-    id_proyecto INT,
-    FOREIGN KEY (id_proyecto) REFERENCES Proyecto(id_proyecto)
+CREATE TABLE Author (
+    id_author INT PRIMARY KEY AUTO_INCREMENT,
+    names VARCHAR(50),
+    id_project INT,
+    FOREIGN KEY (id_project) REFERENCES Project(id_project)
 );
 
 CREATE TABLE Document_type (
