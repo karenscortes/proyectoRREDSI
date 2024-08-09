@@ -2,27 +2,27 @@ DROP DATABASE IF EXISTS db_rredsi;
 CREATE DATABASE db_rredsi;
 USE db_rredsi;
 
-CREATE TABLE Area_conocimiento (
+CREATE TABLE area_conocimiento (
     id_area_conocimiento INT PRIMARY KEY AUTO_INCREMENT,
     nombre VARCHAR(35) NOT NULL
 );
 
-CREATE TABLE Institucion (
+CREATE TABLE institucion (
     id_institucion INT PRIMARY KEY AUTO_INCREMENT,
     nombre VARCHAR(50) NOT NULL
 );
 
-CREATE TABLE Modulo (
+CREATE TABLE modulo (
     id_modulo INT PRIMARY KEY AUTO_INCREMENT,
     nombre VARCHAR(50) NOT NULL
 );
 
-CREATE TABLE Rol (
+CREATE TABLE rol (
     id_rol INT PRIMARY KEY AUTO_INCREMENT,
     nombre VARCHAR(35) NOT NULL
 );
 
-CREATE TABLE Permisos (
+CREATE TABLE permisos (
     id_modulo INT AUTO_INCREMENT,
     id_rol INT,
     p_insertar TINYINT DEFAULT 0,
@@ -34,7 +34,7 @@ CREATE TABLE Permisos (
     FOREIGN KEY (id_rol) REFERENCES Rol(id_rol)
 );
 
-CREATE TABLE Usuario (
+CREATE TABLE usuario (
     id_usuario INT PRIMARY KEY AUTO_INCREMENT,
     id_rol INT,
     correo VARCHAR(70) NOT NULL UNIQUE,
@@ -43,19 +43,19 @@ CREATE TABLE Usuario (
     FOREIGN KEY (id_rol) REFERENCES Rol(id_rol)
 );
 
-CREATE TABLE Etapa (
+CREATE TABLE etapa (
     id_etapa INT PRIMARY KEY AUTO_INCREMENT,
     nombre VARCHAR(20) NOT NULL
 );
 
-CREATE TABLE Fase (
+CREATE TABLE fase (
     id_fase INT PRIMARY KEY AUTO_INCREMENT,
     id_etapa INT,
     nombre VARCHAR(30) NOT NULL,
     FOREIGN KEY (id_etapa) REFERENCES Etapa(id_etapa)
 );
 
-CREATE TABLE Convocatoria (
+CREATE TABLE convocatoria (
     id_convocatoria INT PRIMARY KEY AUTO_INCREMENT,
     nombre VARCHAR(25),
     fecha_inicio DATE,
@@ -63,7 +63,7 @@ CREATE TABLE Convocatoria (
     estado ENUM('en curso', 'concluida', 'por publicar')
 );
 
-CREATE TABLE Programacion_fase (
+CREATE TABLE programacion_fase (
     id_programacion_fase INT PRIMARY KEY AUTO_INCREMENT,
     id_fase INT,
     id_convocatoria INT,
@@ -73,7 +73,7 @@ CREATE TABLE Programacion_fase (
     FOREIGN KEY (id_convocatoria) REFERENCES Convocatoria(id_convocatoria)
 );
 
-CREATE TABLE Postulacion_evaluadores (
+CREATE TABLE postulacion_evaluadores (
     id_convocatoria INT,
     id_evaluador INT,
     etapa_virtual TINYINT DEFAULT 0,
@@ -85,12 +85,12 @@ CREATE TABLE Postulacion_evaluadores (
     FOREIGN KEY (id_evaluador) REFERENCES Usuario(id_usuario)
 );
 
-CREATE TABLE Modalidad (
+CREATE TABLE mdalidad (
     id_modalidad INT PRIMARY KEY AUTO_INCREMENT,
     nombre VARCHAR(20) NOT NULL
 );
 
-CREATE TABLE Rubrica (
+CREATE TABLE rubrica (
     id_rubrica INT PRIMARY KEY AUTO_INCREMENT,
     titulo VARCHAR(40),
     id_etapa INT,
@@ -99,7 +99,7 @@ CREATE TABLE Rubrica (
     FOREIGN KEY (id_modalidad) REFERENCES Modalidad(id_modalidad)
 );
 
-CREATE TABLE Item_rubrica (
+CREATE TABLE item_rubrica (
     id_item_rubrica INT PRIMARY KEY AUTO_INCREMENT,
     id_rubrica INT,
     componente TEXT,
@@ -107,7 +107,7 @@ CREATE TABLE Item_rubrica (
     FOREIGN KEY (id_rubrica) REFERENCES Rubrica(id_rubrica)
 );
 
-CREATE TABLE Proyecto (
+CREATE TABLE proyecto (
     id_proyecto INT PRIMARY KEY,
     id_institucion INT,
     id_modalidad INT,
@@ -125,19 +125,19 @@ CREATE TABLE Proyecto (
     FOREIGN KEY (id_area_conocimiento) REFERENCES Area_conocimiento(id_area_conocimiento)
 );
 
-CREATE TABLE Autor (
+CREATE TABLE autor (
     id_autor INT PRIMARY KEY AUTO_INCREMENT,
     nombre VARCHAR(50),
     id_proyecto INT,
     FOREIGN KEY (id_proyecto) REFERENCES Proyecto(id_proyecto)
 );
 
-CREATE TABLE Tipo_documento (
+CREATE TABLE tipo_documento (
     id_tipo_documento INT PRIMARY KEY AUTO_INCREMENT,
     nombre VARCHAR(10) NOT NULL
 );
 
-CREATE TABLE Titulos_academicos (
+CREATE TABLE titulos_academicos (
     id_titulos_academicos INT PRIMARY KEY AUTO_INCREMENT,
     nivel ENUM('pregrado', 'maestria', 'especializacion', 'doctorado') NOT NULL,
     nombre_titulo VARCHAR(80) NOT NULL,
@@ -146,7 +146,7 @@ CREATE TABLE Titulos_academicos (
     FOREIGN KEY (id_usuario) REFERENCES Usuario(id_usuario)
 );
 
-CREATE TABLE Detalle_personal (
+CREATE TABLE detalle_personal (
     id_detalles_personales INT PRIMARY KEY AUTO_INCREMENT,
     id_tipo_documento INT,
     id_usuario INT,
@@ -160,7 +160,7 @@ CREATE TABLE Detalle_personal (
     FOREIGN KEY (id_institucion) REFERENCES Institucion(id_institucion)
 );
 
-CREATE TABLE Asistentes (
+CREATE TABLE asistentes (
     id_asistente INTEGER PRIMARY KEY AUTO_INCREMENT,
     id_detalles_personales INT,
     asistencia TINYINT DEFAULT 0,
@@ -170,7 +170,7 @@ CREATE TABLE Asistentes (
     FOREIGN KEY (id_detalles_personales) REFERENCES Detalle_personal(id_detalles_personales)
 );
 
-CREATE TABLE Proyecto_convocatoria (
+CREATE TABLE proyecto_convocatoria (
     id_proyecto_convocatoria INT PRIMARY KEY AUTO_INCREMENT,
     id_proyecto INT,
     id_convocatoria INT,
@@ -178,7 +178,7 @@ CREATE TABLE Proyecto_convocatoria (
     FOREIGN KEY (id_convocatoria) REFERENCES Convocatoria(id_convocatoria)
 );
 
-CREATE TABLE Participante_proyecto (
+CREATE TABLE participante_proyecto (
     id_participante_proyecto INT PRIMARY KEY AUTO_INCREMENT,
     id_datos_personales INT,
     id_proyecto INT,
@@ -191,12 +191,12 @@ CREATE TABLE Participante_proyecto (
     FOREIGN KEY (id_proyecto_convocatoria) REFERENCES Proyecto_convocatoria(id_proyecto_convocatoria)
 );
 
-CREATE TABLE Rubrica_resultado (
+CREATE TABLE rubrica_resultado (
     id_rubrica_resultado INT PRIMARY KEY AUTO_INCREMENT,
     puntaje_aprobacion FLOAT(2, 1)
 );
 
-CREATE TABLE Respuestas_rubrica (
+CREATE TABLE respuestas_rubrica (
     id_respuestas_rubrica INT PRIMARY KEY AUTO_INCREMENT,
     id_item_rubrica INT,
     id_rubrica_resultado INT,
@@ -210,7 +210,7 @@ CREATE TABLE Respuestas_rubrica (
     FOREIGN KEY (id_proyecto_convocatoria) REFERENCES Proyecto_convocatoria(id_proyecto_convocatoria)
 );
 
-CREATE TABLE Sala (
+CREATE TABLE sala (
     id_sala INT PRIMARY KEY AUTO_INCREMENT,
     id_usuario INT,
     area_conocimiento INT,
@@ -220,7 +220,7 @@ CREATE TABLE Sala (
     FOREIGN KEY (area_conocimiento) REFERENCES Area_conocimiento(id_area_conocimiento)
 );
 
-CREATE TABLE Sala_asignada (
+CREATE TABLE sala_asignada (
     id_sala INT,
     id_proyecto_convocatoria INT,
     fecha DATE,
