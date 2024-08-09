@@ -308,7 +308,8 @@ section
 }
 .header_content
 {
-	width: calc(100% - 279px);
+
+	width: calc(100% - 280px);
 	height: 100%;
 }
 .header_content::before
@@ -333,6 +334,12 @@ section
 	display: inline-block;
 	padding-left: 76px;
 }
+.logo img{
+	width: 80px;
+	height: 80px;
+	vertical-align: middle;
+	margin-top: 8px;
+}
 .logo span
 {
 	font-family: 'Open Sans', sans-serif;
@@ -352,17 +359,17 @@ section
 {
 	display: inline-block;
 	margin-left: 50px;
-	padding-right: 30px;
+	padding-right: 10px;
 	
 }
 .main_nav
 {
-	margin-top: 7px;
+	margin-top: 8px;
 }
 .main_nav_item
 {
 	display: inline-block;
-	margin-left: 40px;
+	
 	margin-right: 40px;
 }
 .main_nav_item:last-child
@@ -393,14 +400,14 @@ section
 
 .header_side
 {
-	width: 279px;
+	width: 100px;
 	height: 100%;
 	background: #ffb606;
 }
 .header_side img
 {
-	width: 29px;
-	height: 29px;
+	width: 30px;
+	height: 30px;
 }
 .header_side span
 {
