@@ -10,12 +10,12 @@ class Tipo_de_participante(enum.Enum):
     evaluador = "evaluador"
 
 class Participante_proyecto(Base):
-    __tablename__ = 'participante_proyecto'
+    __tablename__ = 'participantes_proyecto'
     id_participante_proyecto = Column(Integer, primary_key=True, autoincrement=True)
-    id_datos_personales = Column(Integer, ForeignKey("detalle_personal.id_detalles_personales"))
-    id_proyecto = Column(Integer, ForeignKey('proyecto.id_proyecto') )
-    id_etapa = Column(Integer, ForeignKey("etapa.id_etapa"))
-    id_proyecto_convocatoria = Column(Integer, ForeignKey('proyecto_convocatoria.id_proyecto_convocatoria') )
+    id_datos_personales = Column(Integer, ForeignKey("detalles_personales.id_detalles_personales"))
+    id_proyecto = Column(Integer, ForeignKey('proyectos.id_proyecto') )
+    id_etapa = Column(Integer, ForeignKey("etapas.id_etapa"))
+    id_proyecto_convocatoria = Column(Integer, ForeignKey('proyectos_convocatoria.id_proyecto_convocatoria') )
     tipo_participante = Column(enum.Enum(Tipo_de_participante))
     
     
