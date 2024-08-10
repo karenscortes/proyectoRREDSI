@@ -146,15 +146,7 @@ h1, h2, h3, h4, h5, h6
 	-webkit-text-shadow: rgba(0,0,0,.01) 0 0 1px;
 	text-shadow: rgba(0,0,0,.01) 0 0 1px;
 }
-h1::selection, 
-h2::selection, 
-h3::selection, 
-h4::selection, 
-h5::selection, 
-h6::selection
-{
-	
-}
+
 ::-webkit-input-placeholder
 {
 	font-size: 14px !important;
@@ -358,6 +350,8 @@ section
 .main_nav_container
 {
 	display: inline-block;
+	flex-grow: 3;
+	justify-content: space-between;
 	margin-left: 50px;
 	padding-right: 10px;
 	
@@ -860,10 +854,7 @@ section
 	padding-top: 117px;
 	padding-bottom: 117px;
 }
-.section_title
-{
 
-}
 .section_title h1
 {
 	display: block;
@@ -917,10 +908,7 @@ section
 9. Popular
 *********************************/
 
-.popular
-{
 
-}
 .course_boxes
 {
 	margin-top: 68px;
@@ -1351,10 +1339,7 @@ input:last-of-type
 	margin-top: 21px;
 	margin-bottom: 13px;
 }
-.event_image
-{
 
-}
 .event_image img
 {
 	width: 100%;

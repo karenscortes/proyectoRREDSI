@@ -1,0 +1,11 @@
+a {
+    text-decoration: none;
+    color: black;
+    transition: all .3s ease-in-out;
+}
+
+a:hover {
+    text-decoration: none;
+    color: black;
+    transform: scale(1.09);
+}
