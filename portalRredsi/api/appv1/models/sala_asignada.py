@@ -5,9 +5,9 @@ from models.base_class import Base
 
 
 class Sala_asignada(Base):
-    __tablename__ = "sala_asignada"
-    id_sala = Column(Integer, ForeignKey('sala.id_sala'))
-    id_proyecto_convocatoria = Column(Integer, ForeignKey('proyecto_convocatoria.id_proyecto_convocatoria'))
+    __tablename__ = "salas_asignadas"
+    id_sala = Column(Integer, ForeignKey('salas.id_sala'))
+    id_proyecto_convocatoria = Column(Integer, ForeignKey('proyectos_convocatoria.id_proyecto_convocatoria'))
     fecha = Column(Date)
     hora_inicio = Column(Time)
     hora_fin = Column(Time)
