@@ -2,7 +2,7 @@ from sqlalchemy import Column, Float, ForeignKey, Integer, Text
 from sqlalchemy.orm import relationship
 from models.base_class import Base
 
-class Respuestas_rubrica(Base):
+class Respuesta_rubrica(Base):
     __tablename__ = 'respuestas_rubrica'
     id_respuestas_rubrica = Column(Integer, primary_key=True, autoincrement=True)
     id_item_rubrica = Column(Integer, ForeignKey('item_rubrica.id_item_rubrica'))

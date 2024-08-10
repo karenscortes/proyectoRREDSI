@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 05-08-2024 a las 16:42:44
+-- Tiempo de generación: 10-08-2024 a las 19:11:00
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.2.12
 
@@ -26,10 +26,10 @@ USE `db_rredsi`;
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `area_conocimiento`
+-- Estructura de tabla para la tabla `areas_conocimiento`
 --
 
-CREATE TABLE `area_conocimiento` (
+CREATE TABLE `areas_conocimiento` (
   `id_area_conocimiento` int(11) NOT NULL,
   `nombre` varchar(35) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -52,10 +52,10 @@ CREATE TABLE `asistentes` (
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `autor`
+-- Estructura de tabla para la tabla `autores`
 --
 
-CREATE TABLE `autor` (
+CREATE TABLE `autores` (
   `id_autor` int(11) NOT NULL,
   `nombre` varchar(50) DEFAULT NULL,
   `id_proyecto` int(11) DEFAULT NULL
@@ -64,10 +64,10 @@ CREATE TABLE `autor` (
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `convocatoria`
+-- Estructura de tabla para la tabla `convocatorias`
 --
 
-CREATE TABLE `convocatoria` (
+CREATE TABLE `convocatorias` (
   `id_convocatoria` int(11) NOT NULL,
   `nombre` varchar(25) DEFAULT NULL,
   `fecha_inicio` date DEFAULT NULL,
@@ -78,11 +78,11 @@ CREATE TABLE `convocatoria` (
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `detalle_personal`
+-- Estructura de tabla para la tabla `detalles_personales`
 --
 
-CREATE TABLE `detalle_personal` (
-  `id_detalles_personales` int(11) NOT NULL,
+CREATE TABLE `detalles_personales` (
+  `id_detalle_personal` int(11) NOT NULL,
   `id_tipo_documento` int(11) DEFAULT NULL,
   `id_usuario` int(11) DEFAULT NULL,
   `documento` varchar(55) NOT NULL,
@@ -95,10 +95,10 @@ CREATE TABLE `detalle_personal` (
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `etapa`
+-- Estructura de tabla para la tabla `etapas`
 --
 
-CREATE TABLE `etapa` (
+CREATE TABLE `etapas` (
   `id_etapa` int(11) NOT NULL,
   `nombre` varchar(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -106,10 +106,10 @@ CREATE TABLE `etapa` (
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `fase`
+-- Estructura de tabla para la tabla `fases`
 --
 
-CREATE TABLE `fase` (
+CREATE TABLE `fases` (
   `id_fase` int(11) NOT NULL,
   `id_etapa` int(11) DEFAULT NULL,
   `nombre` varchar(30) NOT NULL
@@ -118,10 +118,25 @@ CREATE TABLE `fase` (
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `institucion`
+-- Estructura de tabla para la tabla `historial_actividades_admin`
 --
 
-CREATE TABLE `institucion` (
+CREATE TABLE `historial_actividades_admin` (
+  `id_actividad` int(11) NOT NULL,
+  `accion` enum('Insertar','Actualizar','Eliminar') DEFAULT NULL,
+  `id_modulo` int(11) DEFAULT NULL,
+  `id_registro` int(11) DEFAULT NULL,
+  `id_usuario` int(11) DEFAULT NULL,
+  `fecha` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `instituciones`
+--
+
+CREATE TABLE `instituciones` (
   `id_institucion` int(11) NOT NULL,
   `nombre` varchar(50) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -129,10 +144,10 @@ CREATE TABLE `institucion` (
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `item_rubrica`
+-- Estructura de tabla para la tabla `items_rubrica`
 --
 
-CREATE TABLE `item_rubrica` (
+CREATE TABLE `items_rubrica` (
   `id_item_rubrica` int(11) NOT NULL,
   `id_rubrica` int(11) DEFAULT NULL,
   `componente` text DEFAULT NULL,
@@ -142,10 +157,10 @@ CREATE TABLE `item_rubrica` (
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `modalidad`
+-- Estructura de tabla para la tabla `modalidades`
 --
 
-CREATE TABLE `modalidad` (
+CREATE TABLE `modalidades` (
   `id_modalidad` int(11) NOT NULL,
   `nombre` varchar(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -153,10 +168,10 @@ CREATE TABLE `modalidad` (
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `modulo`
+-- Estructura de tabla para la tabla `modulos`
 --
 
-CREATE TABLE `modulo` (
+CREATE TABLE `modulos` (
   `id_modulo` int(11) NOT NULL,
   `nombre` varchar(50) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -164,10 +179,10 @@ CREATE TABLE `modulo` (
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `participante_proyecto`
+-- Estructura de tabla para la tabla `participantes_proyecto`
 --
 
-CREATE TABLE `participante_proyecto` (
+CREATE TABLE `participantes_proyecto` (
   `id_participante_proyecto` int(11) NOT NULL,
   `id_datos_personales` int(11) DEFAULT NULL,
   `id_proyecto` int(11) DEFAULT NULL,
@@ -194,10 +209,10 @@ CREATE TABLE `permisos` (
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `postulacion_evaluadores`
+-- Estructura de tabla para la tabla `postulaciones_evaluadores`
 --
 
-CREATE TABLE `postulacion_evaluadores` (
+CREATE TABLE `postulaciones_evaluadores` (
   `id_convocatoria` int(11) NOT NULL,
   `id_evaluador` int(11) NOT NULL,
   `etapa_virtual` tinyint(4) DEFAULT 0,
@@ -209,10 +224,22 @@ CREATE TABLE `postulacion_evaluadores` (
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `programacion_fase`
+-- Estructura de tabla para la tabla `presentaciones_proyectos`
 --
 
-CREATE TABLE `programacion_fase` (
+CREATE TABLE `presentaciones_proyectos` (
+  `id_presentacion` int(11) NOT NULL,
+  `id_proyecto` int(11) DEFAULT NULL,
+  `url_presentacion` text DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `programacion_fases`
+--
+
+CREATE TABLE `programacion_fases` (
   `id_programacion_fase` int(11) NOT NULL,
   `id_fase` int(11) DEFAULT NULL,
   `id_convocatoria` int(11) DEFAULT NULL,
@@ -223,10 +250,10 @@ CREATE TABLE `programacion_fase` (
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `proyecto`
+-- Estructura de tabla para la tabla `proyectos`
 --
 
-CREATE TABLE `proyecto` (
+CREATE TABLE `proyectos` (
   `id_proyecto` int(11) NOT NULL,
   `id_institucion` int(11) DEFAULT NULL,
   `id_modalidad` int(11) DEFAULT NULL,
@@ -244,10 +271,10 @@ CREATE TABLE `proyecto` (
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `proyecto_convocatoria`
+-- Estructura de tabla para la tabla `proyectos_convocatoria`
 --
 
-CREATE TABLE `proyecto_convocatoria` (
+CREATE TABLE `proyectos_convocatoria` (
   `id_proyecto_convocatoria` int(11) NOT NULL,
   `id_proyecto` int(11) DEFAULT NULL,
   `id_convocatoria` int(11) DEFAULT NULL
@@ -256,10 +283,10 @@ CREATE TABLE `proyecto_convocatoria` (
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `respuestas_rubrica`
+-- Estructura de tabla para la tabla `respuestas_rubricas`
 --
 
-CREATE TABLE `respuestas_rubrica` (
+CREATE TABLE `respuestas_rubricas` (
   `id_respuestas_rubrica` int(11) NOT NULL,
   `id_item_rubrica` int(11) DEFAULT NULL,
   `id_rubrica_resultado` int(11) DEFAULT NULL,
@@ -272,21 +299,21 @@ CREATE TABLE `respuestas_rubrica` (
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `rol`
+-- Estructura de tabla para la tabla `roles`
 --
 
-CREATE TABLE `rol` (
+CREATE TABLE `roles` (
   `id_rol` int(11) NOT NULL,
-  `nombre` varchar(50) NOT NULL
+  `nombre` varchar(35) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `rubrica`
+-- Estructura de tabla para la tabla `rubricas`
 --
 
-CREATE TABLE `rubrica` (
+CREATE TABLE `rubricas` (
   `id_rubrica` int(11) NOT NULL,
   `titulo` varchar(40) DEFAULT NULL,
   `id_etapa` int(11) DEFAULT NULL,
@@ -296,10 +323,10 @@ CREATE TABLE `rubrica` (
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `rubrica_resultado`
+-- Estructura de tabla para la tabla `rubricas_resultados`
 --
 
-CREATE TABLE `rubrica_resultado` (
+CREATE TABLE `rubricas_resultados` (
   `id_rubrica_resultado` int(11) NOT NULL,
   `puntaje_aprobacion` float(2,1) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -307,10 +334,10 @@ CREATE TABLE `rubrica_resultado` (
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `sala`
+-- Estructura de tabla para la tabla `salas`
 --
 
-CREATE TABLE `sala` (
+CREATE TABLE `salas` (
   `id_sala` int(11) NOT NULL,
   `id_usuario` int(11) DEFAULT NULL,
   `area_conocimiento` int(11) DEFAULT NULL,
@@ -321,10 +348,10 @@ CREATE TABLE `sala` (
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `sala_asignada`
+-- Estructura de tabla para la tabla `salas_asignadas`
 --
 
-CREATE TABLE `sala_asignada` (
+CREATE TABLE `salas_asignadas` (
   `id_sala` int(11) NOT NULL,
   `id_proyecto_convocatoria` int(11) NOT NULL,
   `fecha` date DEFAULT NULL,
@@ -335,10 +362,10 @@ CREATE TABLE `sala_asignada` (
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `tipo_documento`
+-- Estructura de tabla para la tabla `tipos_documento`
 --
 
-CREATE TABLE `tipo_documento` (
+CREATE TABLE `tipos_documento` (
   `id_tipo_documento` int(11) NOT NULL,
   `nombre` varchar(10) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -350,7 +377,7 @@ CREATE TABLE `tipo_documento` (
 --
 
 CREATE TABLE `titulos_academicos` (
-  `id_titulos_academicos` int(11) NOT NULL,
+  `id_titulo_academico` int(11) NOT NULL,
   `nivel` enum('pregrado','maestria','especializacion','doctorado') NOT NULL,
   `nombre_titulo` varchar(80) NOT NULL,
   `url_titulo` varchar(255) NOT NULL,
@@ -360,10 +387,10 @@ CREATE TABLE `titulos_academicos` (
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `usuario`
+-- Estructura de tabla para la tabla `usuarios`
 --
 
-CREATE TABLE `usuario` (
+CREATE TABLE `usuarios` (
   `id_usuario` int(11) NOT NULL,
   `id_rol` int(11) DEFAULT NULL,
   `correo` varchar(70) NOT NULL,
@@ -376,9 +403,9 @@ CREATE TABLE `usuario` (
 --
 
 --
--- Indices de la tabla `area_conocimiento`
+-- Indices de la tabla `areas_conocimiento`
 --
-ALTER TABLE `area_conocimiento`
+ALTER TABLE `areas_conocimiento`
   ADD PRIMARY KEY (`id_area_conocimiento`);
 
 --
@@ -389,23 +416,23 @@ ALTER TABLE `asistentes`
   ADD KEY `id_detalles_personales` (`id_detalles_personales`);
 
 --
--- Indices de la tabla `autor`
+-- Indices de la tabla `autores`
 --
-ALTER TABLE `autor`
+ALTER TABLE `autores`
   ADD PRIMARY KEY (`id_autor`),
   ADD KEY `id_proyecto` (`id_proyecto`);
 
 --
--- Indices de la tabla `convocatoria`
+-- Indices de la tabla `convocatorias`
 --
-ALTER TABLE `convocatoria`
+ALTER TABLE `convocatorias`
   ADD PRIMARY KEY (`id_convocatoria`);
 
 --
--- Indices de la tabla `detalle_personal`
+-- Indices de la tabla `detalles_personales`
 --
-ALTER TABLE `detalle_personal`
-  ADD PRIMARY KEY (`id_detalles_personales`),
+ALTER TABLE `detalles_personales`
+  ADD PRIMARY KEY (`id_detalle_personal`),
   ADD UNIQUE KEY `documento` (`documento`),
   ADD UNIQUE KEY `celular` (`celular`),
   ADD KEY `id_tipo_documento` (`id_tipo_documento`),
@@ -413,47 +440,55 @@ ALTER TABLE `detalle_personal`
   ADD KEY `id_institucion` (`id_institucion`);
 
 --
--- Indices de la tabla `etapa`
+-- Indices de la tabla `etapas`
 --
-ALTER TABLE `etapa`
+ALTER TABLE `etapas`
   ADD PRIMARY KEY (`id_etapa`);
 
 --
--- Indices de la tabla `fase`
+-- Indices de la tabla `fases`
 --
-ALTER TABLE `fase`
+ALTER TABLE `fases`
   ADD PRIMARY KEY (`id_fase`),
   ADD KEY `id_etapa` (`id_etapa`);
 
 --
--- Indices de la tabla `institucion`
+-- Indices de la tabla `historial_actividades_admin`
 --
-ALTER TABLE `institucion`
+ALTER TABLE `historial_actividades_admin`
+  ADD PRIMARY KEY (`id_actividad`),
+  ADD KEY `id_modulo` (`id_modulo`),
+  ADD KEY `id_usuario` (`id_usuario`);
+
+--
+-- Indices de la tabla `instituciones`
+--
+ALTER TABLE `instituciones`
   ADD PRIMARY KEY (`id_institucion`);
 
 --
--- Indices de la tabla `item_rubrica`
+-- Indices de la tabla `items_rubrica`
 --
-ALTER TABLE `item_rubrica`
+ALTER TABLE `items_rubrica`
   ADD PRIMARY KEY (`id_item_rubrica`),
   ADD KEY `id_rubrica` (`id_rubrica`);
 
 --
--- Indices de la tabla `modalidad`
+-- Indices de la tabla `modalidades`
 --
-ALTER TABLE `modalidad`
+ALTER TABLE `modalidades`
   ADD PRIMARY KEY (`id_modalidad`);
 
 --
--- Indices de la tabla `modulo`
+-- Indices de la tabla `modulos`
 --
-ALTER TABLE `modulo`
+ALTER TABLE `modulos`
   ADD PRIMARY KEY (`id_modulo`);
 
 --
--- Indices de la tabla `participante_proyecto`
+-- Indices de la tabla `participantes_proyecto`
 --
-ALTER TABLE `participante_proyecto`
+ALTER TABLE `participantes_proyecto`
   ADD PRIMARY KEY (`id_participante_proyecto`),
   ADD KEY `id_datos_personales` (`id_datos_personales`),
   ADD KEY `id_proyecto` (`id_proyecto`),
@@ -468,41 +503,48 @@ ALTER TABLE `permisos`
   ADD KEY `id_rol` (`id_rol`);
 
 --
--- Indices de la tabla `postulacion_evaluadores`
+-- Indices de la tabla `postulaciones_evaluadores`
 --
-ALTER TABLE `postulacion_evaluadores`
+ALTER TABLE `postulaciones_evaluadores`
   ADD PRIMARY KEY (`id_convocatoria`,`id_evaluador`),
   ADD KEY `id_evaluador` (`id_evaluador`);
 
 --
--- Indices de la tabla `programacion_fase`
+-- Indices de la tabla `presentaciones_proyectos`
 --
-ALTER TABLE `programacion_fase`
+ALTER TABLE `presentaciones_proyectos`
+  ADD PRIMARY KEY (`id_presentacion`),
+  ADD KEY `id_proyecto` (`id_proyecto`);
+
+--
+-- Indices de la tabla `programacion_fases`
+--
+ALTER TABLE `programacion_fases`
   ADD PRIMARY KEY (`id_programacion_fase`),
   ADD KEY `id_fase` (`id_fase`),
   ADD KEY `id_convocatoria` (`id_convocatoria`);
 
 --
--- Indices de la tabla `proyecto`
+-- Indices de la tabla `proyectos`
 --
-ALTER TABLE `proyecto`
+ALTER TABLE `proyectos`
   ADD PRIMARY KEY (`id_proyecto`),
   ADD KEY `id_institucion` (`id_institucion`),
   ADD KEY `id_modalidad` (`id_modalidad`),
   ADD KEY `id_area_conocimiento` (`id_area_conocimiento`);
 
 --
--- Indices de la tabla `proyecto_convocatoria`
+-- Indices de la tabla `proyectos_convocatoria`
 --
-ALTER TABLE `proyecto_convocatoria`
+ALTER TABLE `proyectos_convocatoria`
   ADD PRIMARY KEY (`id_proyecto_convocatoria`),
   ADD KEY `id_proyecto` (`id_proyecto`),
   ADD KEY `id_convocatoria` (`id_convocatoria`);
 
 --
--- Indices de la tabla `respuestas_rubrica`
+-- Indices de la tabla `respuestas_rubricas`
 --
-ALTER TABLE `respuestas_rubrica`
+ALTER TABLE `respuestas_rubricas`
   ADD PRIMARY KEY (`id_respuestas_rubrica`),
   ADD KEY `id_item_rubrica` (`id_item_rubrica`),
   ADD KEY `id_rubrica_resultado` (`id_rubrica_resultado`),
@@ -510,57 +552,57 @@ ALTER TABLE `respuestas_rubrica`
   ADD KEY `id_proyecto_convocatoria` (`id_proyecto_convocatoria`);
 
 --
--- Indices de la tabla `rol`
+-- Indices de la tabla `roles`
 --
-ALTER TABLE `rol`
+ALTER TABLE `roles`
   ADD PRIMARY KEY (`id_rol`);
 
 --
--- Indices de la tabla `rubrica`
+-- Indices de la tabla `rubricas`
 --
-ALTER TABLE `rubrica`
+ALTER TABLE `rubricas`
   ADD PRIMARY KEY (`id_rubrica`),
   ADD KEY `id_etapa` (`id_etapa`),
   ADD KEY `id_modalidad` (`id_modalidad`);
 
 --
--- Indices de la tabla `rubrica_resultado`
+-- Indices de la tabla `rubricas_resultados`
 --
-ALTER TABLE `rubrica_resultado`
+ALTER TABLE `rubricas_resultados`
   ADD PRIMARY KEY (`id_rubrica_resultado`);
 
 --
--- Indices de la tabla `sala`
+-- Indices de la tabla `salas`
 --
-ALTER TABLE `sala`
+ALTER TABLE `salas`
   ADD PRIMARY KEY (`id_sala`),
   ADD KEY `id_usuario` (`id_usuario`),
   ADD KEY `area_conocimiento` (`area_conocimiento`);
 
 --
--- Indices de la tabla `sala_asignada`
+-- Indices de la tabla `salas_asignadas`
 --
-ALTER TABLE `sala_asignada`
+ALTER TABLE `salas_asignadas`
   ADD PRIMARY KEY (`id_sala`,`id_proyecto_convocatoria`),
   ADD KEY `id_proyecto_convocatoria` (`id_proyecto_convocatoria`);
 
 --
--- Indices de la tabla `tipo_documento`
+-- Indices de la tabla `tipos_documento`
 --
-ALTER TABLE `tipo_documento`
+ALTER TABLE `tipos_documento`
   ADD PRIMARY KEY (`id_tipo_documento`);
 
 --
 -- Indices de la tabla `titulos_academicos`
 --
 ALTER TABLE `titulos_academicos`
-  ADD PRIMARY KEY (`id_titulos_academicos`),
+  ADD PRIMARY KEY (`id_titulo_academico`),
   ADD KEY `id_usuario` (`id_usuario`);
 
 --
--- Indices de la tabla `usuario`
+-- Indices de la tabla `usuarios`
 --
-ALTER TABLE `usuario`
+ALTER TABLE `usuarios`
   ADD PRIMARY KEY (`id_usuario`),
   ADD UNIQUE KEY `correo` (`correo`),
   ADD KEY `id_rol` (`id_rol`);
@@ -570,9 +612,9 @@ ALTER TABLE `usuario`
 --
 
 --
--- AUTO_INCREMENT de la tabla `area_conocimiento`
+-- AUTO_INCREMENT de la tabla `areas_conocimiento`
 --
-ALTER TABLE `area_conocimiento`
+ALTER TABLE `areas_conocimiento`
   MODIFY `id_area_conocimiento` int(11) NOT NULL AUTO_INCREMENT;
 
 --
@@ -582,63 +624,69 @@ ALTER TABLE `asistentes`
   MODIFY `id_asistente` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT de la tabla `autor`
+-- AUTO_INCREMENT de la tabla `autores`
 --
-ALTER TABLE `autor`
+ALTER TABLE `autores`
   MODIFY `id_autor` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT de la tabla `convocatoria`
+-- AUTO_INCREMENT de la tabla `convocatorias`
 --
-ALTER TABLE `convocatoria`
+ALTER TABLE `convocatorias`
   MODIFY `id_convocatoria` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT de la tabla `detalle_personal`
+-- AUTO_INCREMENT de la tabla `detalles_personales`
 --
-ALTER TABLE `detalle_personal`
-  MODIFY `id_detalles_personales` int(11) NOT NULL AUTO_INCREMENT;
+ALTER TABLE `detalles_personales`
+  MODIFY `id_detalle_personal` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT de la tabla `etapa`
+-- AUTO_INCREMENT de la tabla `etapas`
 --
-ALTER TABLE `etapa`
+ALTER TABLE `etapas`
   MODIFY `id_etapa` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT de la tabla `fase`
+-- AUTO_INCREMENT de la tabla `fases`
 --
-ALTER TABLE `fase`
+ALTER TABLE `fases`
   MODIFY `id_fase` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT de la tabla `institucion`
+-- AUTO_INCREMENT de la tabla `historial_actividades_admin`
 --
-ALTER TABLE `institucion`
+ALTER TABLE `historial_actividades_admin`
+  MODIFY `id_actividad` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT de la tabla `instituciones`
+--
+ALTER TABLE `instituciones`
   MODIFY `id_institucion` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT de la tabla `item_rubrica`
+-- AUTO_INCREMENT de la tabla `items_rubrica`
 --
-ALTER TABLE `item_rubrica`
+ALTER TABLE `items_rubrica`
   MODIFY `id_item_rubrica` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT de la tabla `modalidad`
+-- AUTO_INCREMENT de la tabla `modalidades`
 --
-ALTER TABLE `modalidad`
+ALTER TABLE `modalidades`
   MODIFY `id_modalidad` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT de la tabla `modulo`
+-- AUTO_INCREMENT de la tabla `modulos`
 --
-ALTER TABLE `modulo`
+ALTER TABLE `modulos`
   MODIFY `id_modulo` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT de la tabla `participante_proyecto`
+-- AUTO_INCREMENT de la tabla `participantes_proyecto`
 --
-ALTER TABLE `participante_proyecto`
+ALTER TABLE `participantes_proyecto`
   MODIFY `id_participante_proyecto` int(11) NOT NULL AUTO_INCREMENT;
 
 --
@@ -648,63 +696,69 @@ ALTER TABLE `permisos`
   MODIFY `id_modulo` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT de la tabla `programacion_fase`
+-- AUTO_INCREMENT de la tabla `presentaciones_proyectos`
 --
-ALTER TABLE `programacion_fase`
+ALTER TABLE `presentaciones_proyectos`
+  MODIFY `id_presentacion` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT de la tabla `programacion_fases`
+--
+ALTER TABLE `programacion_fases`
   MODIFY `id_programacion_fase` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT de la tabla `proyecto_convocatoria`
+-- AUTO_INCREMENT de la tabla `proyectos_convocatoria`
 --
-ALTER TABLE `proyecto_convocatoria`
+ALTER TABLE `proyectos_convocatoria`
   MODIFY `id_proyecto_convocatoria` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT de la tabla `respuestas_rubrica`
+-- AUTO_INCREMENT de la tabla `respuestas_rubricas`
 --
-ALTER TABLE `respuestas_rubrica`
+ALTER TABLE `respuestas_rubricas`
   MODIFY `id_respuestas_rubrica` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT de la tabla `rol`
+-- AUTO_INCREMENT de la tabla `roles`
 --
-ALTER TABLE `rol`
+ALTER TABLE `roles`
   MODIFY `id_rol` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT de la tabla `rubrica`
+-- AUTO_INCREMENT de la tabla `rubricas`
 --
-ALTER TABLE `rubrica`
+ALTER TABLE `rubricas`
   MODIFY `id_rubrica` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT de la tabla `rubrica_resultado`
+-- AUTO_INCREMENT de la tabla `rubricas_resultados`
 --
-ALTER TABLE `rubrica_resultado`
+ALTER TABLE `rubricas_resultados`
   MODIFY `id_rubrica_resultado` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT de la tabla `sala`
+-- AUTO_INCREMENT de la tabla `salas`
 --
-ALTER TABLE `sala`
+ALTER TABLE `salas`
   MODIFY `id_sala` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT de la tabla `tipo_documento`
+-- AUTO_INCREMENT de la tabla `tipos_documento`
 --
-ALTER TABLE `tipo_documento`
+ALTER TABLE `tipos_documento`
   MODIFY `id_tipo_documento` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT de la tabla `titulos_academicos`
 --
 ALTER TABLE `titulos_academicos`
-  MODIFY `id_titulos_academicos` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_titulo_academico` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT de la tabla `usuario`
+-- AUTO_INCREMENT de la tabla `usuarios`
 --
-ALTER TABLE `usuario`
+ALTER TABLE `usuarios`
   MODIFY `id_usuario` int(11) NOT NULL AUTO_INCREMENT;
 
 --
@@ -715,120 +769,133 @@ ALTER TABLE `usuario`
 -- Filtros para la tabla `asistentes`
 --
 ALTER TABLE `asistentes`
-  ADD CONSTRAINT `asistentes_ibfk_1` FOREIGN KEY (`id_detalles_personales`) REFERENCES `detalle_personal` (`id_detalles_personales`);
+  ADD CONSTRAINT `asistentes_ibfk_1` FOREIGN KEY (`id_detalles_personales`) REFERENCES `detalles_personales` (`id_detalle_personal`);
 
 --
--- Filtros para la tabla `autor`
+-- Filtros para la tabla `autores`
 --
-ALTER TABLE `autor`
-  ADD CONSTRAINT `autor_ibfk_1` FOREIGN KEY (`id_proyecto`) REFERENCES `proyecto` (`id_proyecto`);
+ALTER TABLE `autores`
+  ADD CONSTRAINT `autores_ibfk_1` FOREIGN KEY (`id_proyecto`) REFERENCES `proyectos` (`id_proyecto`);
 
 --
--- Filtros para la tabla `detalle_personal`
+-- Filtros para la tabla `detalles_personales`
 --
-ALTER TABLE `detalle_personal`
-  ADD CONSTRAINT `detalle_personal_ibfk_1` FOREIGN KEY (`id_tipo_documento`) REFERENCES `tipo_documento` (`id_tipo_documento`),
-  ADD CONSTRAINT `detalle_personal_ibfk_2` FOREIGN KEY (`id_usuario`) REFERENCES `usuario` (`id_usuario`),
-  ADD CONSTRAINT `detalle_personal_ibfk_3` FOREIGN KEY (`id_institucion`) REFERENCES `institucion` (`id_institucion`);
+ALTER TABLE `detalles_personales`
+  ADD CONSTRAINT `detalles_personales_ibfk_1` FOREIGN KEY (`id_tipo_documento`) REFERENCES `tipos_documento` (`id_tipo_documento`),
+  ADD CONSTRAINT `detalles_personales_ibfk_2` FOREIGN KEY (`id_usuario`) REFERENCES `usuarios` (`id_usuario`),
+  ADD CONSTRAINT `detalles_personales_ibfk_3` FOREIGN KEY (`id_institucion`) REFERENCES `instituciones` (`id_institucion`);
 
 --
--- Filtros para la tabla `fase`
+-- Filtros para la tabla `fases`
 --
-ALTER TABLE `fase`
-  ADD CONSTRAINT `fase_ibfk_1` FOREIGN KEY (`id_etapa`) REFERENCES `etapa` (`id_etapa`);
+ALTER TABLE `fases`
+  ADD CONSTRAINT `fases_ibfk_1` FOREIGN KEY (`id_etapa`) REFERENCES `etapas` (`id_etapa`);
 
 --
--- Filtros para la tabla `item_rubrica`
+-- Filtros para la tabla `historial_actividades_admin`
 --
-ALTER TABLE `item_rubrica`
-  ADD CONSTRAINT `item_rubrica_ibfk_1` FOREIGN KEY (`id_rubrica`) REFERENCES `rubrica` (`id_rubrica`);
+ALTER TABLE `historial_actividades_admin`
+  ADD CONSTRAINT `historial_actividades_admin_ibfk_1` FOREIGN KEY (`id_modulo`) REFERENCES `modulos` (`id_modulo`),
+  ADD CONSTRAINT `historial_actividades_admin_ibfk_2` FOREIGN KEY (`id_usuario`) REFERENCES `usuarios` (`id_usuario`);
 
 --
--- Filtros para la tabla `participante_proyecto`
+-- Filtros para la tabla `items_rubrica`
 --
-ALTER TABLE `participante_proyecto`
-  ADD CONSTRAINT `participante_proyecto_ibfk_1` FOREIGN KEY (`id_datos_personales`) REFERENCES `detalle_personal` (`id_detalles_personales`),
-  ADD CONSTRAINT `participante_proyecto_ibfk_2` FOREIGN KEY (`id_proyecto`) REFERENCES `proyecto` (`id_proyecto`),
-  ADD CONSTRAINT `participante_proyecto_ibfk_3` FOREIGN KEY (`id_etapa`) REFERENCES `etapa` (`id_etapa`),
-  ADD CONSTRAINT `participante_proyecto_ibfk_4` FOREIGN KEY (`id_proyecto_convocatoria`) REFERENCES `proyecto_convocatoria` (`id_proyecto_convocatoria`);
+ALTER TABLE `items_rubrica`
+  ADD CONSTRAINT `items_rubrica_ibfk_1` FOREIGN KEY (`id_rubrica`) REFERENCES `rubricas` (`id_rubrica`);
+
+--
+-- Filtros para la tabla `participantes_proyecto`
+--
+ALTER TABLE `participantes_proyecto`
+  ADD CONSTRAINT `participantes_proyecto_ibfk_1` FOREIGN KEY (`id_datos_personales`) REFERENCES `detalles_personales` (`id_detalle_personal`),
+  ADD CONSTRAINT `participantes_proyecto_ibfk_2` FOREIGN KEY (`id_proyecto`) REFERENCES `proyectos` (`id_proyecto`),
+  ADD CONSTRAINT `participantes_proyecto_ibfk_3` FOREIGN KEY (`id_etapa`) REFERENCES `etapas` (`id_etapa`),
+  ADD CONSTRAINT `participantes_proyecto_ibfk_4` FOREIGN KEY (`id_proyecto_convocatoria`) REFERENCES `proyectos_convocatoria` (`id_proyecto_convocatoria`);
 
 --
 -- Filtros para la tabla `permisos`
 --
 ALTER TABLE `permisos`
-  ADD CONSTRAINT `permisos_ibfk_1` FOREIGN KEY (`id_modulo`) REFERENCES `modulo` (`id_modulo`),
-  ADD CONSTRAINT `permisos_ibfk_2` FOREIGN KEY (`id_rol`) REFERENCES `rol` (`id_rol`);
+  ADD CONSTRAINT `permisos_ibfk_1` FOREIGN KEY (`id_modulo`) REFERENCES `modulos` (`id_modulo`),
+  ADD CONSTRAINT `permisos_ibfk_2` FOREIGN KEY (`id_rol`) REFERENCES `roles` (`id_rol`);
 
 --
--- Filtros para la tabla `postulacion_evaluadores`
+-- Filtros para la tabla `postulaciones_evaluadores`
 --
-ALTER TABLE `postulacion_evaluadores`
-  ADD CONSTRAINT `postulacion_evaluadores_ibfk_1` FOREIGN KEY (`id_convocatoria`) REFERENCES `convocatoria` (`id_convocatoria`),
-  ADD CONSTRAINT `postulacion_evaluadores_ibfk_2` FOREIGN KEY (`id_evaluador`) REFERENCES `usuario` (`id_usuario`);
+ALTER TABLE `postulaciones_evaluadores`
+  ADD CONSTRAINT `postulaciones_evaluadores_ibfk_1` FOREIGN KEY (`id_convocatoria`) REFERENCES `convocatorias` (`id_convocatoria`),
+  ADD CONSTRAINT `postulaciones_evaluadores_ibfk_2` FOREIGN KEY (`id_evaluador`) REFERENCES `usuarios` (`id_usuario`);
 
 --
--- Filtros para la tabla `programacion_fase`
+-- Filtros para la tabla `presentaciones_proyectos`
 --
-ALTER TABLE `programacion_fase`
-  ADD CONSTRAINT `programacion_fase_ibfk_1` FOREIGN KEY (`id_fase`) REFERENCES `fase` (`id_fase`),
-  ADD CONSTRAINT `programacion_fase_ibfk_2` FOREIGN KEY (`id_convocatoria`) REFERENCES `convocatoria` (`id_convocatoria`);
+ALTER TABLE `presentaciones_proyectos`
+  ADD CONSTRAINT `presentaciones_proyectos_ibfk_1` FOREIGN KEY (`id_proyecto`) REFERENCES `proyectos` (`id_proyecto`);
 
 --
--- Filtros para la tabla `proyecto`
+-- Filtros para la tabla `programacion_fases`
 --
-ALTER TABLE `proyecto`
-  ADD CONSTRAINT `proyecto_ibfk_1` FOREIGN KEY (`id_institucion`) REFERENCES `institucion` (`id_institucion`),
-  ADD CONSTRAINT `proyecto_ibfk_2` FOREIGN KEY (`id_modalidad`) REFERENCES `modalidad` (`id_modalidad`),
-  ADD CONSTRAINT `proyecto_ibfk_3` FOREIGN KEY (`id_area_conocimiento`) REFERENCES `area_conocimiento` (`id_area_conocimiento`);
+ALTER TABLE `programacion_fases`
+  ADD CONSTRAINT `programacion_fases_ibfk_1` FOREIGN KEY (`id_fase`) REFERENCES `fases` (`id_fase`),
+  ADD CONSTRAINT `programacion_fases_ibfk_2` FOREIGN KEY (`id_convocatoria`) REFERENCES `convocatorias` (`id_convocatoria`);
 
 --
--- Filtros para la tabla `proyecto_convocatoria`
+-- Filtros para la tabla `proyectos`
 --
-ALTER TABLE `proyecto_convocatoria`
-  ADD CONSTRAINT `proyecto_convocatoria_ibfk_1` FOREIGN KEY (`id_proyecto`) REFERENCES `proyecto` (`id_proyecto`),
-  ADD CONSTRAINT `proyecto_convocatoria_ibfk_2` FOREIGN KEY (`id_convocatoria`) REFERENCES `convocatoria` (`id_convocatoria`);
+ALTER TABLE `proyectos`
+  ADD CONSTRAINT `proyectos_ibfk_1` FOREIGN KEY (`id_institucion`) REFERENCES `instituciones` (`id_institucion`),
+  ADD CONSTRAINT `proyectos_ibfk_2` FOREIGN KEY (`id_modalidad`) REFERENCES `modalidades` (`id_modalidad`),
+  ADD CONSTRAINT `proyectos_ibfk_3` FOREIGN KEY (`id_area_conocimiento`) REFERENCES `areas_conocimiento` (`id_area_conocimiento`);
 
 --
--- Filtros para la tabla `respuestas_rubrica`
+-- Filtros para la tabla `proyectos_convocatoria`
 --
-ALTER TABLE `respuestas_rubrica`
-  ADD CONSTRAINT `respuestas_rubrica_ibfk_1` FOREIGN KEY (`id_item_rubrica`) REFERENCES `item_rubrica` (`id_item_rubrica`),
-  ADD CONSTRAINT `respuestas_rubrica_ibfk_2` FOREIGN KEY (`id_rubrica_resultado`) REFERENCES `rubrica_resultado` (`id_rubrica_resultado`),
-  ADD CONSTRAINT `respuestas_rubrica_ibfk_3` FOREIGN KEY (`id_usuario`) REFERENCES `usuario` (`id_usuario`),
-  ADD CONSTRAINT `respuestas_rubrica_ibfk_4` FOREIGN KEY (`id_proyecto_convocatoria`) REFERENCES `proyecto_convocatoria` (`id_proyecto_convocatoria`);
+ALTER TABLE `proyectos_convocatoria`
+  ADD CONSTRAINT `proyectos_convocatoria_ibfk_1` FOREIGN KEY (`id_proyecto`) REFERENCES `proyectos` (`id_proyecto`),
+  ADD CONSTRAINT `proyectos_convocatoria_ibfk_2` FOREIGN KEY (`id_convocatoria`) REFERENCES `convocatorias` (`id_convocatoria`);
 
 --
--- Filtros para la tabla `rubrica`
+-- Filtros para la tabla `respuestas_rubricas`
 --
-ALTER TABLE `rubrica`
-  ADD CONSTRAINT `rubrica_ibfk_1` FOREIGN KEY (`id_etapa`) REFERENCES `etapa` (`id_etapa`),
-  ADD CONSTRAINT `rubrica_ibfk_2` FOREIGN KEY (`id_modalidad`) REFERENCES `modalidad` (`id_modalidad`);
+ALTER TABLE `respuestas_rubricas`
+  ADD CONSTRAINT `respuestas_rubricas_ibfk_1` FOREIGN KEY (`id_item_rubrica`) REFERENCES `items_rubrica` (`id_item_rubrica`),
+  ADD CONSTRAINT `respuestas_rubricas_ibfk_2` FOREIGN KEY (`id_rubrica_resultado`) REFERENCES `rubricas_resultados` (`id_rubrica_resultado`),
+  ADD CONSTRAINT `respuestas_rubricas_ibfk_3` FOREIGN KEY (`id_usuario`) REFERENCES `usuarios` (`id_usuario`),
+  ADD CONSTRAINT `respuestas_rubricas_ibfk_4` FOREIGN KEY (`id_proyecto_convocatoria`) REFERENCES `proyectos_convocatoria` (`id_proyecto_convocatoria`);
 
 --
--- Filtros para la tabla `sala`
+-- Filtros para la tabla `rubricas`
 --
-ALTER TABLE `sala`
-  ADD CONSTRAINT `sala_ibfk_1` FOREIGN KEY (`id_usuario`) REFERENCES `usuario` (`id_usuario`),
-  ADD CONSTRAINT `sala_ibfk_2` FOREIGN KEY (`area_conocimiento`) REFERENCES `area_conocimiento` (`id_area_conocimiento`);
+ALTER TABLE `rubricas`
+  ADD CONSTRAINT `rubricas_ibfk_1` FOREIGN KEY (`id_etapa`) REFERENCES `etapas` (`id_etapa`),
+  ADD CONSTRAINT `rubricas_ibfk_2` FOREIGN KEY (`id_modalidad`) REFERENCES `modalidades` (`id_modalidad`);
 
 --
--- Filtros para la tabla `sala_asignada`
+-- Filtros para la tabla `salas`
 --
-ALTER TABLE `sala_asignada`
-  ADD CONSTRAINT `sala_asignada_ibfk_1` FOREIGN KEY (`id_sala`) REFERENCES `sala` (`id_sala`),
-  ADD CONSTRAINT `sala_asignada_ibfk_2` FOREIGN KEY (`id_proyecto_convocatoria`) REFERENCES `proyecto_convocatoria` (`id_proyecto_convocatoria`);
+ALTER TABLE `salas`
+  ADD CONSTRAINT `salas_ibfk_1` FOREIGN KEY (`id_usuario`) REFERENCES `usuarios` (`id_usuario`),
+  ADD CONSTRAINT `salas_ibfk_2` FOREIGN KEY (`area_conocimiento`) REFERENCES `areas_conocimiento` (`id_area_conocimiento`);
+
+--
+-- Filtros para la tabla `salas_asignadas`
+--
+ALTER TABLE `salas_asignadas`
+  ADD CONSTRAINT `salas_asignadas_ibfk_1` FOREIGN KEY (`id_sala`) REFERENCES `salas` (`id_sala`),
+  ADD CONSTRAINT `salas_asignadas_ibfk_2` FOREIGN KEY (`id_proyecto_convocatoria`) REFERENCES `proyectos_convocatoria` (`id_proyecto_convocatoria`);
 
 --
 -- Filtros para la tabla `titulos_academicos`
 --
 ALTER TABLE `titulos_academicos`
-  ADD CONSTRAINT `titulos_academicos_ibfk_1` FOREIGN KEY (`id_usuario`) REFERENCES `usuario` (`id_usuario`);
+  ADD CONSTRAINT `titulos_academicos_ibfk_1` FOREIGN KEY (`id_usuario`) REFERENCES `usuarios` (`id_usuario`);
 
 --
--- Filtros para la tabla `usuario`
+-- Filtros para la tabla `usuarios`
 --
-ALTER TABLE `usuario`
-  ADD CONSTRAINT `usuario_ibfk_1` FOREIGN KEY (`id_rol`) REFERENCES `rol` (`id_rol`);
+ALTER TABLE `usuarios`
+  ADD CONSTRAINT `usuarios_ibfk_1` FOREIGN KEY (`id_rol`) REFERENCES `roles` (`id_rol`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
