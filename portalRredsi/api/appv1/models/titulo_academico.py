@@ -11,11 +11,11 @@ class Niveles_academicos(enum.Enum):
 
 class Titulo_academico(Base):
     __tablename__ = 'titulos_academicos'
-    id_titulos_academicos = Column(Integer, primary_key=True, autoincrement=True)
+    id_titulo_academico = Column(Integer, primary_key=True, autoincrement=True)
     nivel = Column(enum.Enum(Niveles_academicos))
     nombre_titulo = Column(String(80))
     url_titulo = Column(String(255))
-    id_usuario = Column(Integer, ForeignKey('usuario.id_usuario'))
+    id_usuario = Column(Integer, ForeignKey('usuarios.id_usuario'))
    
 
     usuario = relationship("Usuario")

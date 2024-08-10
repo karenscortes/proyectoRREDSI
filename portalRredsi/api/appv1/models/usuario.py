@@ -10,9 +10,9 @@ class Estados(enum.Enum):
     pendiente = "Pendiente"
 
 class Usuario(Base):
-    __tablename__ = 'usuario'
+    __tablename__ = 'usuarios'
     id_usuario = Column(Integer, primary_key=True, autoincrement=True)
-    id_rol = Column(Integer, ForeignKey('rol.id_rol'))
+    id_rol = Column(Integer, ForeignKey('roles.id_rol'))
     correo = Column(String(70), unique=True)
     clave = Column(String(255))
     estado = Column(enum.Enum(Estados))
