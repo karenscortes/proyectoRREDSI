@@ -3,11 +3,11 @@ from sqlalchemy.orm import relationship # type: ignore
 from models.base_class import Base
 
 class Proyecto(Base):
-    __tablename__ = 'proyecto'
+    __tablename__ = 'proyectos'
     id_proyecto = Column(Integer, primary_key=True)
-    id_institucion = Column(Integer, ForeignKey("institucion.id_institucion"))
-    id_modalidad = Column(Integer, ForeignKey("modalidad.id_modalidad"))
-    id_area_conocimiento = Column(Integer, ForeignKey("area_conocimiento.id_area_conocimiento"))
+    id_institucion = Column(Integer, ForeignKey("instituciones.id_institucion"))
+    id_modalidad = Column(Integer, ForeignKey("modalidades.id_modalidad"))
+    id_area_conocimiento = Column(Integer, ForeignKey("areas_conocimiento.id_area_conocimiento"))
     titulo = Column(String(200))
     programa_academico = Column(String(50))
     grupo_investigacion = Column(String(50))
