@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>asignar evaluadores</title>
+    <link rel="stylesheet" href="../bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="../plantilla/styles/bootstrap4/bootstrap.min.css">
+    <link href="../plantilla/plugins/fontawesome-free-5.0.1/css/fontawesome-all.css" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" type="text/css" href="../plantilla/plugins/OwlCarousel2-2.2.1/owl.carousel.css">
+    <link rel="stylesheet" type="text/css" href="../plantilla/plugins/OwlCarousel2-2.2.1/owl.theme.default.css">
+    <link rel="stylesheet" type="text/css" href="../plantilla/plugins/OwlCarousel2-2.2.1/animate.css">
+    <link rel="stylesheet" type="text/css" href="../plantilla/styles/main_styles.css">
+    <link rel="stylesheet" type="text/css" href="../plantilla/styles/responsive.css">
+    <link rel="stylesheet" href="../plantilla/styles/global_styles.css">
+</head>
+
+<body>
+    <!-- header -->
+    <header class="header d-flex flex-row position-absolute top-0 w-80">
+        <div class="d-flex flex-row align-items-center w-100 ">
+            <!-- Logo -->
+            <div class="logo_container">
+                <div class="logo">
+                    <img class="img-fluid" src="../plantilla/images/logoRredsi.png" alt="">
+                    <span>RREDSI</span>
+                </div>
+            </div>
+
+            <!-- Main Navigation -->
+            <nav class="main_nav_container flex-grow-1">
+                <div class="main_nav">
+                    <ul class="main_nav_list d-flex justify-content-between">
+                        <li class="main_nav_item"><a href="#">Inicio</a></li>
+                        <li class="main_nav_item"><a href="#">Perfil</a></li>
+                        <li class="main_nav_item">
+                            <div class="dropdown">
+                                <a class=" dropdown-toggle text-dark" type="button" data-toggle="dropdown"
+                                    aria-expanded="false">
+                                    Evaluadores
+                                </a>
+                                <div class="dropdown-menu text-center">
+                                    <a href="#">Postulaciones</a><br>
+                                    <a href="../delegado/lista_evaluadores.html">Lista de Evaluadores</a>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="main_nav_item">
+                            <div class="dropdown">
+                                <a class=" dropdown-toggle text-dark" type="button" data-toggle="dropdown"
+                                    aria-expanded="false">
+                                    Proyectos
+                                </a>
+                                <div class="dropdown-menu text-center">
+                                    <a href="#">Asignación de <br> Proyectos</a><br>
+                                    <a href="#">Lista de Proyectos</a>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="main_nav_item">
+                            <div class="dropdown">
+                                <a class=" dropdown-toggle text-dark" type="button" data-toggle="dropdown"
+                                    aria-expanded="false">
+                                    Evento
+                                </a>
+                                <div class="dropdown-menu text-center">
+                                    <a href="#">Salas</a><br>
+                                    <a href="#">Asistencia</a>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="main_nav_item"><a href="#">Cerrar sesión</a></li>
+                    </ul>
+                </div>
+            </nav>
+        </div>
+
+        <!-- Hamburger -->
+        <div class="hamburger_container">
+            <i class="fas fa-bars trans_200"></i>
+        </div>
+
+    </header>
+    <!-- fondo del header -->
+    <div class="position-relative">
+        <img src="../plantilla/images/event_1.jpg" alt="" height="300px" width="100%">
+    </div>
+    <!-- Menu -->
+    <div class="menu_container menu_mm">
+
+        <!-- Menu Close Button -->
+        <div class="menu_close_container">
+            <div class="menu_close"></div>
+        </div>
+
+        <!-- Menu Items -->
+        <div class="menu_inner menu_mm">
+            <div class="menu menu_mm">
+                <ul class="menu_list menu_mm">
+                    <li class="menu_item menu_mm"><a href="#">Inicio</a></li>
+                    <li class="menu_item menu_mm"><a href="#">Perfil</a></li>
+                    <li class="menu_item menu_mm">
+                        <div class="dropdown">
+                            <a class=" dropdown-toggle text-dark" type="button" data-toggle="dropdown"
+                                aria-expanded="false">
+                                Evaluadores
+                            </a>
+                            <div class="dropdown-menu text-center">
+                                <a href="#">Postulaciones</a><br>
+                                <a href="lista_evaluadores.html">Lista de Evaluadores</a>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="menu_item menu_mm">
+                        <div class="dropdown">
+                            <a class=" dropdown-toggle text-dark" type="button" data-toggle="dropdown"
+                                aria-expanded="false">
+                                Proyectos
+                            </a>
+                            <div class="dropdown-menu text-center">
+                                <a href="#">Asignación de <br> Proyectos</a><br>
+                                <a href="#">Lista de Proyectos</a>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="menu_item menu_mm">
+                        <div class="dropdown">
+                            <a class=" dropdown-toggle text-dark" type="button" data-toggle="dropdown"
+                                aria-expanded="false">
+                                Evento
+                            </a>
+                            <div class="dropdown-menu text-center">
+                                <a href="#">Salas</a><br>
+                                <a href="#">Asistencia</a>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="menu_item menu_mm"><a href="#">Cerrar sesión</a></li>
+                </ul>
+
+                <!-- Menu Social -->
+
+                <div class="menu_social_container menu_mm">
+                    <ul class="menu_social menu_mm">
+                        <li class="menu_social_item menu_mm"><a href="https://www.instagram.com/rredsiquindio/"><i
+                                    class="fab fa-instagram"></i></a></li>
+                        <li class="menu_social_item menu_mm"><a
+                                href="https://www.facebook.com/rredsi?mibextid=ZbWKwL"><i
+                                    class="fab fa-facebook-f"></i></a></li>
+                        <li class="menu_social_item menu_mm"><a href="https://x.com/Rredsi"><i
+                                    class="fab fa-twitter"></i></a></li>
+                    </ul>
+                </div>
+
+                <div class="menu_copyright menu_mm">ADSO 2670586 All rights reserved</div>
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <div class="container pt-4">
+        <div class="row">
+            <div class="col-4">
+                <!-- tabla -->
+                <div class="table">
+                    <table id="basic-datatables" class="display table table-striped table-hover text-dark">
+                        <thead style="background: rgb(255, 182, 6)
+;">
+                            <tr>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <div class="d-flex justify-content-center text-center bg-dark rounded-circle" style="width: 25px; height: 25px;">
+                                        <p class="text-white w-100 mx-auto font-weight-bold">1</p>   
+                                    </div>
+                                </td>
+                                <td>BigData</td>
+                                <td>
+                                    <div class="custom-control custom-switch d-flex justify-content-center">
+                                        <input type="checkbox" >
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="d-flex justify-content-center text-center bg-dark rounded-circle" style="width: 25px; height: 25px;">
+                                        <p class="text-white w-100 mx-auto font-weight-bold">2</p>   
+                                    </div>
+                                </td>
+                                <td>Neurociencia</td>
+                                <td>
+                                    <div class="custom-control custom-switch d-flex justify-content-center">
+                                        <input type="checkbox" >
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="d-flex justify-content-center text-center bg-dark rounded-circle" style="width: 25px; height: 25px;">
+                                        <p class="text-white w-100 mx-auto font-weight-bold">3</p>   
+                                    </div>
+                                </td>
+                                <td>NatuTecno</td>
+                                <td>
+                                    <div class="custom-control custom-switch d-flex justify-content-center">
+                                        <input type="checkbox" >
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="d-flex justify-content-center text-center bg-dark rounded-circle" style="width: 25px; height: 25px;">
+                                        <p class="text-white w-100 mx-auto font-weight-bold">4</p>   
+                                    </div>
+                                </td>
+                                <td>Biotecnología</td>
+                                <td>
+                                    <div class="custom-control custom-switch d-flex justify-content-center">
+                                        <input type="checkbox" >
+                                    </div>
+                                </td>
+                            </tr>
+
+                        </tbody>
+
+                    </table>
+                </div>
+            </div>
+            <div class="col-8 border text-center text-dark">
+                En construcción... <br>
+                <svg xmlns="http://www.w3.org/2000/svg" height="150px" viewBox="0 -960 960 960" width="150px" fill="#00000"><path d="M440-80q-33 0-56.5-23.5T360-160v-160H240q-33 0-56.5-23.5T160-400v-280q0-66 47-113t113-47h480v440q0 33-23.5 56.5T720-320H600v160q0 33-23.5 56.5T520-80h-80ZM240-560h480v-200h-40v160h-80v-160h-40v80h-80v-80H320q-33 0-56.5 23.5T240-680v120Zm0 160h480v-80H240v80Zm0 0v-80 80Z"/></svg>
+            </div>
+        </div>
+
+
+        <div aria-label="Page navigation example mb-5">
+            <ul class="pagination justify-content-center">
+                <li class="page-item disabled m-1">
+                    <a class="page-link" href="#" tabindex="-1" style="border-radius: 20px;">Previous</a>
+                </li>
+                <li class="page-item rounded m-1"><a class="page-link rounded-circle" href="#">1</a></li>
+                <li class="page-item m-1"><a class="page-link rounded-circle" href="#">2</a></li>
+                <li class="page-item m-1"><a class="page-link rounded-circle" href="#">3</a></li>
+                <li class="page-item m-1">
+                    <a class="page-link" href="#" style="border-radius: 20px;">Next</a>
+                </li>
+            </ul>
+        </div>
+
+    </div>
+
+    <footer class="footer mt-3">
+        <div class="container">
+
+            <!-- Footer Content -->
+
+            <div class="footer_content">
+                <div class="row">
+
+                    <!-- Footer Column - About -->
+                    <div class="col-lg-3 footer_col">
+
+                        <!-- Logo -->
+                        <div class="logo_container">
+                            <div class="logo">
+                                <img src="../plantilla/images/RREDSI.jpg" alt="">
+                                <span>RREDSI</span>
+                            </div>
+                        </div>
+
+                        <p class="footer_about_text">In aliquam, augue a gravida rutrum, ante nisl fermentum nulla,
+                            vitae tempor nisl ligula vel nunc. Proin quis mi malesuada, finibus tortor fermentum, tempor
+                            lacus.</p>
+
+                    </div>
+
+                    <!-- Footer Column - Menu -->
+
+                    <div class="col-lg-3 footer_col">
+                        <div class="footer_column_title">Menu</div>
+                        <div class="footer_column_content">
+                            <ul>
+                                <li class="footer_list_item"><a href="#">Home</a></li>
+                                <li class="footer_list_item"><a href="#">About Us</a></li>
+                                <li class="footer_list_item"><a href="courses.html">Courses</a></li>
+                                <li class="footer_list_item"><a href="news.html">News</a></li>
+                                <li class="footer_list_item"><a href="contact.html">Contact</a></li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- Footer Column - Usefull Links -->
+
+                    <div class="col-lg-3 footer_col">
+                        <div class="footer_column_title">Usefull Links</div>
+                        <div class="footer_column_content">
+                            <ul>
+                                <li class="footer_list_item"><a href="#">Testimonials</a></li>
+                                <li class="footer_list_item"><a href="#">FAQ</a></li>
+                                <li class="footer_list_item"><a href="#">Community</a></li>
+                                <li class="footer_list_item"><a href="#">Campus Pictures</a></li>
+                                <li class="footer_list_item"><a href="#">Tuitions</a></li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- Footer Column - Contact -->
+
+                    <div class="col-lg-3 footer_col">
+                        <div class="footer_column_title">Contact</div>
+                        <div class="footer_column_content">
+                            <ul>
+                                <li class="footer_contact_item">
+                                    <div class="footer_contact_icon">
+                                        <img src="../plantilla/images/placeholder.svg"
+                                            alt="https://www.flaticon.com/authors/lucy-g">
+                                    </div>
+                                    Blvd Libertad, 34 m05200 Arévalo
+                                </li>
+                                <li class="footer_contact_item">
+                                    <div class="footer_contact_icon">
+                                        <img src="../plantilla/images/smartphone.svg"
+                                            alt="https://www.flaticon.com/authors/lucy-g">
+                                    </div>
+                                    0034 37483 2445 322
+                                </li>
+                                <li class="footer_contact_item">
+                                    <div class="footer_contact_icon">
+                                        <img src="../plantilla/images/envelope.svg"
+                                            alt="https://www.flaticon.com/authors/lucy-g">
+                                    </div>hello@company.com
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- Footer Copyright -->
+
+            <div class="footer_bar d-flex flex-column flex-sm-row align-items-center">
+                <div class="footer_copyright">
+                    <span><!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+                        Copyright &copy;
+                        <script>document.write(new Date().getFullYear());</script> All rights reserved | This template
+                        is made with by <a href="#" target="_blank">ADSO 2670586</a>
+                        <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+                    </span>
+                </div>
+                <div class="footer_social ml-sm-auto">
+                    <ul class="menu_social">
+
+                        <li class="menu_social_item"><a href="https://www.instagram.com/rredsiquindio/"><i
+                                    class="fab fa-instagram"></i></a></li>
+                        <li class="menu_social_item"><a href="https://www.facebook.com/rredsi?mibextid=ZbWKwL"><i
+                                    class="fab fa-facebook-f"></i></a></li>
+                        <li class="menu_social_item"><a href="https://x.com/Rredsi"><i class="fab fa-twitter"></i></a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+        </div>
+    </footer>
+    <script src="../plantilla/js/jquery-3.2.1.min.js"></script>
+    <script src="../plantilla/styles/bootstrap4/popper.js"></script>
+    <script src="../plantilla/styles/bootstrap4/bootstrap.min.js"></script>
+    <script src="../plantilla/plugins/greensock/TweenMax.min.js"></script>
+    <script src="../plantilla/plugins/greensock/TimelineMax.min.js"></script>
+    <script src="../plantilla/plugins/scrollmagic/ScrollMagic.min.js"></script>
+    <script src="../plantilla/plugins/greensock/animation.gsap.min.js"></script>
+    <script src="../plantilla/plugins/greensock/ScrollToPlugin.min.js"></script>
+    <script src="../plantilla/plugins/OwlCarousel2-2.2.1/owl.carousel.js"></script>
+    <script src="../plantilla/plugins/scrollTo/jquery.scrollTo.min.js"></script>
+    <script src="../plantilla/plugins/easing/easing.js"></script>
+    <script src="../plantilla/js/custom.js"></script>
+</body>
+
+</html>
