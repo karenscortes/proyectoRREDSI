@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>lista evaluadores</title>
+    <title>Principal</title>
     <link rel="stylesheet" href="../bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="../plantilla/styles/bootstrap4/bootstrap.min.css">
     <link href="../plantilla/plugins/fontawesome-free-5.0.1/css/fontawesome-all.css" rel="stylesheet" type="text/css">
@@ -98,6 +98,376 @@
 		</div>
     <div class="container text-center my-4">
         <h2 class="text-dark">CONTENIDO</h2>
+    </div>
+    <div class="container">
+        <!-- buscador -->
+        <div class="row mb-4 justify-content-between">
+            <div class="col-8 col-sm-6">
+                <div class="row">
+                    <div class="col-8">
+                        <input type="text" id="busqueda" class="form-control" placeholder="Buscar...">
+                    </div>
+                    <div class="col-4">
+                        <button class="btn w-100 font-weight-bold" style="background: rgb(255, 182, 6)
+;">Buscar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- tabla -->
+        <div class="table-responsive">
+            <table id="basic-datatables" class="display table table-striped table-hover text-dark">
+                <thead style="background: rgb(255, 182, 6)
+;">
+                    <tr>
+                        <th>Evaluador</th>
+                        <th>Area de conocimiento</th>
+                        <th>Institucion</th>
+                        <th>Estado</th>
+                        <th>Detalle</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Pepe Rodrigo Sanchez</td>
+                        <td>Ciencias naturales</td>
+                        <td>SENA</td>
+                        <td>
+                            <div class="custom-control custom-switch">
+                                <input type="checkbox" class="custom-control-input" id="estado2">
+                                <label class="custom-control-label" for="estado2"></label>
+                            </div>
+                        </td>
+                        <td>
+                            <a href="#" class="btn-sm font-weight-bold" type="button" data-toggle="modal" data-target="#exampleModal">Ver</a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Ana María Gómez</td>
+                        <td>Biología</td>
+                        <td>Universidad de los Andes</td>
+                        <td>
+                            <div class="custom-control custom-switch">
+                                <input type="checkbox" class="custom-control-input estado-switch">
+                                <label class="custom-control-label"></label>
+                            </div>
+                        </td>
+                        <td>
+                            <a href="#" class="btn-sm font-weight-bold" type="button" data-toggle="modal" data-target="#exampleModal">Ver</a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Carlos Ruiz</td>
+                        <td>Química</td>
+                        <td>Instituto Politécnico</td>
+                        <td>
+                            <div class="custom-control custom-switch">
+                                <input type="checkbox" class="custom-control-input estado-switch">
+                                <label class="custom-control-label"></label>
+                            </div>
+                        </td>
+                        <td>
+                            <a href="#" class="btn-sm font-weight-bold" type="button" data-toggle="modal" data-target="#exampleModal">Ver</a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Lucía Fernández</td>
+                        <td>Historia</td>
+                        <td>Universidad Nacional</td>
+                        <td>
+                            <div class="custom-control custom-switch">
+                                <input type="checkbox" class="custom-control-input estado-switch">
+                                <label class="custom-control-label"></label>
+                            </div>
+                        </td>
+                        <td>
+                            <a href="#" class="btn-sm font-weight-bold" type="button" data-toggle="modal" data-target="#exampleModal">Ver</a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Andrés Bustamante</td>
+                        <td>Geografía</td>
+                        <td>Universidad de Antioquia</td>
+                        <td>
+                            <div class="custom-control custom-switch">
+                                <input type="checkbox" class="custom-control-input estado-switch">
+                                <label class="custom-control-label"></label>
+                            </div>
+                        </td>
+                        <td>
+                            <a href="#" class="btn-sm font-weight-bold" type="button" data-toggle="modal" data-target="#exampleModal">Ver</a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Elena Martínez</td>
+                        <td>Educación Física</td>
+                        <td>Escuela Normal Superior</td>
+                        <td>
+                            <div class="custom-control custom-switch">
+                                <input type="checkbox" class="custom-control-input estado-switch">
+                                <label class="custom-control-label"></label>
+                            </div>
+                        </td>
+                        <td>
+                            <a href="#" class="btn-sm font-weight-bold" type="button" data-toggle="modal" data-target="#exampleModal">Ver</a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Jorge Villalba</td>
+                        <td>Filosofía</td>
+                        <td>Universidad de la Sabana</td>
+                        <td>
+                            <div class="custom-control custom-switch">
+                                <input type="checkbox" class="custom-control-input estado-switch">
+                                <label class="custom-control-label"></label>
+                            </div>
+                        </td>
+                        <td>
+                            <a href="#" class="btn-sm font-weight-bold" type="button" data-toggle="modal" data-target="#exampleModal">Ver</a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Paula Suárez</td>
+                        <td>Sociología</td>
+                        <td>Universidad Javeriana</td>
+                        <td>
+                            <div class="custom-control custom-switch">
+                                <input type="checkbox" class="custom-control-input estado-switch">
+                                <label class="custom-control-label"></label>
+                            </div>
+                        </td>
+                        <td>
+                            <a href="#" class="btn-sm font-weight-bold" type="button" data-toggle="modal" data-target="#exampleModal">Ver</a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Fernando Gutiérrez</td>
+                        <td>Derecho</td>
+                        <td>Universidad del Rosario</td>
+                        <td>
+                            <div class="custom-control custom-switch">
+                                <input type="checkbox" class="custom-control-input estado-switch">
+                                <label class="custom-control-label"></label>
+                            </div>
+                        </td>
+                        <td>
+                            <a href="#" class="btn-sm font-weight-bold" type="button" data-toggle="modal" data-target="#exampleModal">Ver</a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Gloria Ortiz</td>
+                        <td>Economía</td>
+                        <td>Universidad Externado</td>
+                        <td>
+                            <div class="custom-control custom-switch">
+                                <input type="checkbox" class="custom-control-input estado-switch">
+                                <label class="custom-control-label"></label>
+                            </div>
+                        </td>
+                        <td>
+                            <a href="#" class="btn-sm font-weight-bold" type="button" data-toggle="modal" data-target="#exampleModal">Ver</a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Ricardo Vargas</td>
+                        <td>Ingeniería Civil</td>
+                        <td>Universidad EAFIT</td>
+                        <td>
+                            <div class="custom-control custom-switch">
+                                <input type="checkbox" class="custom-control-input estado-switch">
+                                <label class="custom-control-label"></label>
+                            </div>
+                        </td>
+                        <td>
+                            <a href="#" class="btn-sm font-weight-bold" type="button" data-toggle="modal" data-target="#exampleModal">Ver</a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Sara Morales</td>
+                        <td>Ingeniería de Sistemas</td>
+                        <td>Universidad del Norte</td>
+                        <td>
+                            <div class="custom-control custom-switch">
+                                <input type="checkbox" class="custom-control-input estado-switch">
+                                <label class="custom-control-label"></label>
+                            </div>
+                        </td>
+                        <td>
+                            <a href="#" class="btn-sm font-weight-bold" type="button" data-toggle="modal" data-target="#exampleModal">Ver</a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>David Paredes</td>
+                        <td>Medicina</td>
+                        <td>Universidad CES</td>
+                        <td>
+                            <div class="custom-control custom-switch">
+                                <input type="checkbox" class="custom-control-input estado-switch">
+                                <label class="custom-control-label"></label>
+                            </div>
+                        </td>
+                        <td>
+                            <a href="#" class="btn-sm font-weight-bold" type="button" data-toggle="modal" data-target="#exampleModal">Ver</a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Camila Rojas</td>
+                        <td>Enfermería</td>
+                        <td>Universidad del Valle</td>
+                        <td>
+                            <div class="custom-control custom-switch">
+                                <input type="checkbox" class="custom-control-input estado-switch">
+                                <label class="custom-control-label"></label>
+                            </div>
+                        </td>
+                        <td>
+                            <a href="#" class="btn-sm font-weight-bold" type="button" data-toggle="modal" data-target="#exampleModal">Ver</a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Tomás Quiñones</td>
+                        <td>Arquitectura</td>
+                        <td>Universidad Piloto</td>
+                        <td>
+                            <div class="custom-control custom-switch">
+                                <input type="checkbox" class="custom-control-input estado-switch">
+                                <label class="custom-control-label"></label>
+                            </div>
+                        </td>
+                        <td>
+                            <a href="#" class="btn-sm font-weight-bold" type="button" data-toggle="modal" data-target="#exampleModal">Ver</a>
+                        </td>
+                    </tr>
+
+
+                </tbody>
+
+            </table>
+        </div>
+        <div aria-label="Page navigation example mb-5">
+            <ul class="pagination justify-content-center">
+                <li class="page-item disabled m-1">
+                    <a class="page-link" href="#" tabindex="-1" style="border-radius: 20px;">Previous</a>
+                </li>
+                <li class="page-item rounded m-1"><a class="page-link rounded-circle" href="#">1</a></li>
+                <li class="page-item m-1"><a class="page-link rounded-circle" href="#">2</a></li>
+                <li class="page-item m-1"><a class="page-link rounded-circle" href="#">3</a></li>
+                <li class="page-item m-1">
+                    <a class="page-link" href="#" style="border-radius: 20px;">Next</a>
+                </li>
+            </ul>
+        </div>
+
+    </div>
+    <!-- Modal del detalle de evaluador -->
+    <!-- Button trigger modal -->
+    <!-- <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+        Launch demo modal
+    </button> -->
+
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="text-center">
+                    <button type="button" class="close mr-2" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h3 class="text-dark font-weight-bold mt-3" id="exampleModalLabel">SANCHO SANCHEZ</h3>
+                </div>
+                <div class="modal-body">
+                    <div class="row mx-auto">
+                        <div class="col-8">
+                            <div class="col-12 mb-2">
+                                <div class="row">
+                                    <div class="col-6 text-white font-weight-bold" style="background: rgb(255, 182, 6)
+    ;">
+                                        Identificación:
+                                    </div>
+                                    <div class="col-6 border">
+                                        <span id="identificacion"></span>12343534
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 mb-2">
+                                <div class="row">
+                                    <div class="col-6 text-white font-weight-bold" style="background: rgb(255, 182, 6)
+    ;">
+                                        Área de conocimiento:
+                                    </div>
+                                    <div class="col-6 border">
+                                        <span id="conocimiento">Sistemas</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 mb-2">
+                                <div class="row">
+                                    <div class="col-6 text-white font-weight-bold" style="background: rgb(255, 182, 6)
+    ;">
+                                        Institución:
+                                    </div>
+                                    <div class="col-6 border">
+                                        <span id="institucion">SENA</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 mb-2">
+                                <div class="row">
+                                    <div class="col-6 text-white font-weight-bold" style="background: rgb(255, 182, 6)
+    ;">
+                                        Teléfono:
+                                    </div>
+                                    <div class="col-6 border">
+                                        <span id="telefono">3145468952</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 mb-2">
+                                <div class="row">
+                                    <div class="col-6 text-white font-weight-bold" style="background: rgb(255, 182, 6)
+    ;">
+                                        Correo electrónico:
+                                    </div>
+                                    <div class="col-6 border">
+                                        <span id="electronico">pepe@gmail.com</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 mb-2">
+                                <div class="row">
+                                    <div class="col-6 text-white font-weight-bold" style="background: rgb(255, 182, 6)
+    ;">
+                                        Otra área de conocimiento:
+                                    </div>
+                                    <div class="col-6 border">
+                                        <span id="otra_area_conocimiento">Sociales</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 mb-2">
+                                <div class="row">
+                                    <div class="col-6 text-white font-weight-bold" style="background: rgb(255, 182, 6)
+    ;">
+                                        Estado:
+                                    </div>
+                                    <div class="col-6 border">
+                                        <span id="estado">pendiente</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-4">
+                            <img class="img-fluid border" src="https://www.geocities.ws/idheme7/expediente/titulopregrado.jpg" alt="Imagen de titulos">
+                            <p class="text-center text-dark">Títulos</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="text-center mb-2">
+                    <button type="button" class="btn btn-dark text-white col-4 font-weight-bold" data-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+        </div>
     </div>
    
     <footer class="footer mt-3">
