@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>lista evaluadores</title>
     <link rel="stylesheet" href="../bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="../plantilla/styles/bootstrap4/bootstrap.min.css">
     <link href="../plantilla/plugins/fontawesome-free-5.0.1/css/fontawesome-all.css" rel="stylesheet" type="text/css">
     <link rel="stylesheet" type="text/css" href="../plantilla/plugins/OwlCarousel2-2.2.1/owl.carousel.css">
@@ -42,7 +43,7 @@
                                 </a>
                                 <div class="dropdown-menu text-center">
                                     <a  href="#">Postulaciones</a><br>
-                                    <a  href="#">Lista de Evaluadores</a>
+                                    <a  href="../delegado/lista_evaluadores.html">Lista de Evaluadores</a>
                                 </div>
                             </div>
                         </li>
@@ -83,53 +84,85 @@
 
     </header>
     <!-- fondo del header -->
-    <div>
-        <img src="../plantilla/images/event_1.jpg" alt="" height="300px" width="100%" >
+    <div class="position-relative">
+        <img src="../plantilla/images/event_1.jpg" alt="" height="300px" width="100%">
     </div>
     <!-- Menu -->
-		<div class="menu_container menu_mm">
+    <div class="menu_container menu_mm">
 
-			<!-- Menu Close Button -->
-			<div class="menu_close_container">
-				<div class="menu_close"></div>
-			</div>
+        <!-- Menu Close Button -->
+        <div class="menu_close_container">
+            <div class="menu_close"></div>
+        </div>
 
-			<!-- Menu Items -->
-			<div class="menu_inner menu_mm">
-				<div class="menu menu_mm">
-					<ul class="menu_list menu_mm">
-						<li class="menu_item menu_mm"><a href="#">Inicio</a></li>
-                        <li class="menu_item menu_mm"><a href="#">Perfil</a></li>
-                        <li class="menu_item menu_mm"><a href="#">Evaluador</a></li>
-                        <li class="menu_item menu_mm"><a href="#">Proyectos</a></li>
-                        <li class="menu_item menu_mm"><a href="#">Evento</a></li>
-                        <li class="menu_item menu_mm"><a href="#">Cerrar sesión</a></li>
-					</ul>
+        <!-- Menu Items -->
+        <div class="menu_inner menu_mm">
+            <div class="menu menu_mm">
+                <ul class="menu_list menu_mm">
+                    <li class="menu_item menu_mm"><a href="#">Inicio</a></li>
+                    <li class="menu_item menu_mm"><a href="#">Perfil</a></li>
+                    <li class="menu_item menu_mm">
+                        <div class="dropdown">
+                            <a class=" dropdown-toggle text-dark" type="button"
+                                data-toggle="dropdown" aria-expanded="false">
+                                Evaluadores
+                            </a>
+                            <div class="dropdown-menu text-center">
+                                <a  href="#">Postulaciones</a><br>
+                                <a  href="lista_evaluadores.html">Lista de Evaluadores</a>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="menu_item menu_mm">
+                        <div class="dropdown">
+                            <a class=" dropdown-toggle text-dark" type="button"
+                                data-toggle="dropdown" aria-expanded="false">
+                                Proyectos
+                            </a>
+                            <div class="dropdown-menu text-center">
+                                <a  href="#">Asignación de  <br> Proyectos</a><br> 
+                                <a  href="#">Lista de Proyectos</a>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="menu_item menu_mm">
+                        <div class="dropdown">
+                            <a class=" dropdown-toggle text-dark" type="button"
+                                data-toggle="dropdown" aria-expanded="false">
+                                Evento
+                            </a>
+                            <div class="dropdown-menu text-center">
+                                <a  href="#">Salas</a><br>
+                                <a  href="#">Asistencia</a>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="menu_item menu_mm"><a href="#">Cerrar sesión</a></li>
+                </ul>
 
-					<!-- Menu Social -->
+                <!-- Menu Social -->
 
-					<div class="menu_social_container menu_mm">
-						<ul class="menu_social menu_mm">
-							<li class="menu_social_item menu_mm"><a href="https://www.instagram.com/rredsiquindio/"><i class="fab fa-instagram"></i></a></li>
-							<li class="menu_social_item menu_mm"><a href="https://www.facebook.com/rredsi?mibextid=ZbWKwL"><i class="fab fa-facebook-f"></i></a></li>
-							<li class="menu_social_item menu_mm"><a href="https://x.com/Rredsi"><i class="fab fa-twitter"></i></a></li>
-						</ul>
-					</div>
+                <div class="menu_social_container menu_mm">
+                    <ul class="menu_social menu_mm">
+                        <li class="menu_social_item menu_mm"><a href="https://www.instagram.com/rredsiquindio/"><i class="fab fa-instagram"></i></a></li>
+                        <li class="menu_social_item menu_mm"><a href="https://www.facebook.com/rredsi?mibextid=ZbWKwL"><i class="fab fa-facebook-f"></i></a></li>
+                        <li class="menu_social_item menu_mm"><a href="https://x.com/Rredsi"><i class="fab fa-twitter"></i></a></li>
+                    </ul>
+                </div>
 
-					<div class="menu_copyright menu_mm">ADSO 2670586 All rights reserved</div>
-				</div>
+                <div class="menu_copyright menu_mm">ADSO 2670586 All rights reserved</div>
+            </div>
 
-			</div>
+        </div>
 
-		</div>
-    <div class="container text-center my-4">
-        <h2 class="text-dark">EVALUADORES REGISTRADOS</h2>
     </div>
-    <div class="container">
+
+    
+    <div class="container pt-4">
         <!-- buscador -->
-        <div class="row mb-4 justify-content-between">
-            <div class="col-8 col-sm-6">
-                <div class="row">
+        <div class="row mb-4 justify-content-end">
+            <div class="col-8 col-sm-6 justify-content-end">
+                <div class="row justify-content-end">
                     <div class="col-8">
                         <input type="text" id="busqueda" class="form-control" placeholder="Buscar...">
                     </div>
@@ -160,9 +193,9 @@
                         <td>Ciencias naturales</td>
                         <td>SENA</td>
                         <td>
-                            <div class="custom-control custom-switch">
-                                <input type="checkbox" class="custom-control-input" id="estado2">
-                                <label class="custom-control-label" for="estado2"></label>
+                            <div class="custom-control custom-switch d-flex justify-content-center">
+                                <input type="checkbox" class="custom-control-input" id="customSwitch1">
+                                <label class="custom-control-label" for="customSwitch1"></label>
                             </div>
                         </td>
                         <td>
@@ -174,9 +207,9 @@
                         <td>Biología</td>
                         <td>Universidad de los Andes</td>
                         <td>
-                            <div class="custom-control custom-switch">
-                                <input type="checkbox" class="custom-control-input estado-switch">
-                                <label class="custom-control-label"></label>
+                            <div class="custom-control custom-switch d-flex justify-content-center">
+                                <input type="checkbox" class="custom-control-input" id="customSwitch2">
+                                <label class="custom-control-label" for="customSwitch2"></label>
                             </div>
                         </td>
                         <td>
@@ -188,9 +221,9 @@
                         <td>Química</td>
                         <td>Instituto Politécnico</td>
                         <td>
-                            <div class="custom-control custom-switch">
-                                <input type="checkbox" class="custom-control-input estado-switch">
-                                <label class="custom-control-label"></label>
+                            <div class="custom-control custom-switch d-flex justify-content-center">
+                                <input type="checkbox" class="custom-control-input" id="customSwitch3">
+                                <label class="custom-control-label" for="customSwitch3"></label>
                             </div>
                         </td>
                         <td>
@@ -202,9 +235,9 @@
                         <td>Historia</td>
                         <td>Universidad Nacional</td>
                         <td>
-                            <div class="custom-control custom-switch">
-                                <input type="checkbox" class="custom-control-input estado-switch">
-                                <label class="custom-control-label"></label>
+                            <div class="custom-control custom-switch d-flex justify-content-center">
+                                <input type="checkbox" class="custom-control-input" id="customSwitch4">
+                                <label class="custom-control-label" for="customSwitch4"></label>
                             </div>
                         </td>
                         <td>
@@ -216,9 +249,9 @@
                         <td>Geografía</td>
                         <td>Universidad de Antioquia</td>
                         <td>
-                            <div class="custom-control custom-switch">
-                                <input type="checkbox" class="custom-control-input estado-switch">
-                                <label class="custom-control-label"></label>
+                            <div class="custom-control custom-switch d-flex justify-content-center">
+                                <input type="checkbox" class="custom-control-input" id="customSwitch5">
+                                <label class="custom-control-label" for="customSwitch5"></label>
                             </div>
                         </td>
                         <td>
@@ -230,9 +263,9 @@
                         <td>Educación Física</td>
                         <td>Escuela Normal Superior</td>
                         <td>
-                            <div class="custom-control custom-switch">
-                                <input type="checkbox" class="custom-control-input estado-switch">
-                                <label class="custom-control-label"></label>
+                            <div class="custom-control custom-switch d-flex justify-content-center">
+                                <input type="checkbox" class="custom-control-input" id="customSwitch6">
+                                <label class="custom-control-label" for="customSwitch6"></label>
                             </div>
                         </td>
                         <td>
@@ -244,9 +277,9 @@
                         <td>Filosofía</td>
                         <td>Universidad de la Sabana</td>
                         <td>
-                            <div class="custom-control custom-switch">
-                                <input type="checkbox" class="custom-control-input estado-switch">
-                                <label class="custom-control-label"></label>
+                            <div class="custom-control custom-switch d-flex justify-content-center">
+                                <input type="checkbox" class="custom-control-input" id="customSwitch7">
+                                <label class="custom-control-label" for="customSwitch7"></label>
                             </div>
                         </td>
                         <td>
@@ -258,9 +291,9 @@
                         <td>Sociología</td>
                         <td>Universidad Javeriana</td>
                         <td>
-                            <div class="custom-control custom-switch">
-                                <input type="checkbox" class="custom-control-input estado-switch">
-                                <label class="custom-control-label"></label>
+                            <div class="custom-control custom-switch d-flex justify-content-center">
+                                <input type="checkbox" class="custom-control-input" id="customSwitch8">
+                                <label class="custom-control-label" for="customSwitch8"></label>
                             </div>
                         </td>
                         <td>
@@ -272,9 +305,9 @@
                         <td>Derecho</td>
                         <td>Universidad del Rosario</td>
                         <td>
-                            <div class="custom-control custom-switch">
-                                <input type="checkbox" class="custom-control-input estado-switch">
-                                <label class="custom-control-label"></label>
+                            <div class="custom-control custom-switch d-flex justify-content-center">
+                                <input type="checkbox" class="custom-control-input" id="customSwitch9">
+                                <label class="custom-control-label" for="customSwitch9"></label>
                             </div>
                         </td>
                         <td>
@@ -286,9 +319,9 @@
                         <td>Economía</td>
                         <td>Universidad Externado</td>
                         <td>
-                            <div class="custom-control custom-switch">
-                                <input type="checkbox" class="custom-control-input estado-switch">
-                                <label class="custom-control-label"></label>
+                            <div class="custom-control custom-switch d-flex justify-content-center">
+                                <input type="checkbox" class="custom-control-input" id="customSwitch10">
+                                <label class="custom-control-label" for="customSwitch10"></label>
                             </div>
                         </td>
                         <td>
@@ -300,9 +333,9 @@
                         <td>Ingeniería Civil</td>
                         <td>Universidad EAFIT</td>
                         <td>
-                            <div class="custom-control custom-switch">
-                                <input type="checkbox" class="custom-control-input estado-switch">
-                                <label class="custom-control-label"></label>
+                            <div class="custom-control custom-switch d-flex justify-content-center">
+                                <input type="checkbox" class="custom-control-input" id="customSwitch11">
+                                <label class="custom-control-label" for="customSwitch11"></label>
                             </div>
                         </td>
                         <td>
@@ -314,9 +347,9 @@
                         <td>Ingeniería de Sistemas</td>
                         <td>Universidad del Norte</td>
                         <td>
-                            <div class="custom-control custom-switch">
-                                <input type="checkbox" class="custom-control-input estado-switch">
-                                <label class="custom-control-label"></label>
+                            <div class="custom-control custom-switch d-flex justify-content-center">
+                                <input type="checkbox" class="custom-control-input" id="customSwitch12">
+                                <label class="custom-control-label" for="customSwitch12"></label>
                             </div>
                         </td>
                         <td>
@@ -328,9 +361,9 @@
                         <td>Medicina</td>
                         <td>Universidad CES</td>
                         <td>
-                            <div class="custom-control custom-switch">
-                                <input type="checkbox" class="custom-control-input estado-switch">
-                                <label class="custom-control-label"></label>
+                            <div class="custom-control custom-switch d-flex justify-content-center">
+                                <input type="checkbox" class="custom-control-input" id="customSwitch13">
+                                <label class="custom-control-label" for="customSwitch13"></label>
                             </div>
                         </td>
                         <td>
@@ -342,9 +375,9 @@
                         <td>Enfermería</td>
                         <td>Universidad del Valle</td>
                         <td>
-                            <div class="custom-control custom-switch">
-                                <input type="checkbox" class="custom-control-input estado-switch">
-                                <label class="custom-control-label"></label>
+                            <div class="custom-control custom-switch d-flex justify-content-center">
+                                <input type="checkbox" class="custom-control-input" id="customSwitch14">
+                                <label class="custom-control-label" for="customSwitch14"></label>
                             </div>
                         </td>
                         <td>
@@ -356,9 +389,9 @@
                         <td>Arquitectura</td>
                         <td>Universidad Piloto</td>
                         <td>
-                            <div class="custom-control custom-switch">
-                                <input type="checkbox" class="custom-control-input estado-switch">
-                                <label class="custom-control-label"></label>
+                            <div class="custom-control custom-switch d-flex justify-content-center">
+                                <input type="checkbox" class="custom-control-input" id="customSwitch15">
+                                <label class="custom-control-label" for="customSwitch15"></label>
                             </div>
                         </td>
                         <td>
@@ -621,7 +654,6 @@
     <script src="../plantilla/plugins/scrollTo/jquery.scrollTo.min.js"></script>
     <script src="../plantilla/plugins/easing/easing.js"></script>
     <script src="../plantilla/js/custom.js"></script>
-
 </body>
 
 </html>
