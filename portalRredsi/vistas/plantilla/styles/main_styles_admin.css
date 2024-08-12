@@ -1510,9 +1510,9 @@ input:last-of-type
 	height: 40px;
 	font-weight: 1000;
 	font-size: 20px;
-	color: white;
+	color: black;
 	border-radius: 5px;
-	background-color: rgb(13, 148, 136);
+	background-color:   rgb(255, 182, 6);
 }
 
 .tr_rubrica{
