@@ -253,7 +253,7 @@ section
 	width: 100%;
 	overflow: hidden;
 }
-.prlx_parent
+rlx_parent
 {
 	overflow: hidden;
 }
@@ -300,8 +300,8 @@ section
 }
 .header_content
 {
-
-	width: calc(100% - 280px);
+	width: 100%;
+	padding: 1.8rem;
 	height: 100%;
 }
 .header_content::before
@@ -915,8 +915,7 @@ section
 .card
 {
 	display: block;
-	background: #f8f9fb;
-	border: none;
+	background: white;
 }
 .card-img-top
 {
@@ -927,12 +926,11 @@ section
 {
 	padding-top: 0px;
 	padding-bottom: 0px;
-	padding-left: 15px;
-	padding-right: 15px;
+
 }
 .card-title
 {
-	margin-top: 55px;
+	margin-top: 10px;
 }
 .card-title a
 {
@@ -947,9 +945,9 @@ section
 }
 .card-text
 {
-	font-size: 14px;
+	font-size: 13px;
 	font-weight: 500;
-	color: #a5a5a5;
+	color: #4e4e4e;
 	margin-top: -12px;
 }
 .price_box
@@ -1502,8 +1500,34 @@ input:last-of-type
 }
 
 .scroll-div {
-    width: 1000px; 
-    height: 400px;
+    height: 590px;
     overflow-y: auto;
     overflow-x: hidden;
+}
+
+.boton{
+	border: none;
+	height: 40px;
+	font-weight: 1000;
+	font-size: 20px;
+	color: black;
+	border-radius: 5px;
+	background-color:   rgb(255, 182, 6);
+}
+
+.tr_rubrica{
+	border-bottom: 1px solid black;
+}
+
+.titulo_rubrica{
+	font-size: 18px; font-weight: bold;
+}
+
+.cabecero{
+	border-right: 1px solid black;
+}
+
+.form-control{
+	height: 35px;
+	border: 1px solid black;
 }
