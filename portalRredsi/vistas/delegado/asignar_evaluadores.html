@@ -4,8 +4,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Principal</title>
-    <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css">
+    <title>asignar evaluadores</title>
+    <link rel="stylesheet" href="../bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="../plantilla/styles/bootstrap4/bootstrap.min.css">
     <link href="../plantilla/plugins/fontawesome-free-5.0.1/css/fontawesome-all.css" rel="stylesheet" type="text/css">
     <link rel="stylesheet" type="text/css" href="../plantilla/plugins/OwlCarousel2-2.2.1/owl.carousel.css">
@@ -42,7 +43,7 @@
                                 </a>
                                 <div class="dropdown-menu text-center">
                                     <a href="#">Postulaciones</a><br>
-                                    <a href="lista_evaluadores.html">Lista de Evaluadores</a>
+                                    <a href="../delegado/lista_evaluadores.html">Lista de Evaluadores</a>
                                 </div>
                             </div>
                         </li>
@@ -54,7 +55,7 @@
                                 </a>
                                 <div class="dropdown-menu text-center">
                                     <a href="#">Asignación de <br> Proyectos</a><br>
-                                    <a href="lista_proyectos.html">Lista de Proyectos</a>
+                                    <a href="#">Lista de Proyectos</a>
                                 </div>
                             </div>
                         </li>
@@ -83,8 +84,8 @@
 
     </header>
     <!-- fondo del header -->
-    <div>
-        <img src="../plantilla/images/contact_background.jpg" alt="" height="300px" width="100%">
+    <div class="position-relative">
+        <img src="../plantilla/images/event_1.jpg" alt="" height="300px" width="100%">
     </div>
     <!-- Menu -->
     <div class="menu_container menu_mm">
@@ -120,7 +121,7 @@
                             </a>
                             <div class="dropdown-menu text-center">
                                 <a href="#">Asignación de <br> Proyectos</a><br>
-                                <a href="lista_proyectos.html">Lista de Proyectos</a>
+                                <a href="#">Lista de Proyectos</a>
                             </div>
                         </div>
                     </li>
@@ -160,7 +161,103 @@
 
     </div>
 
-    <!--Footer-->
+
+    <div class="container pt-4">
+        <div class="row">
+            <div class="col-4">
+                <!-- tabla -->
+                <div class="table">
+                    <table id="basic-datatables" class="display table table-striped table-hover text-dark">
+                        <thead style="background: rgb(255, 182, 6)
+;">
+                            <tr>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <div class="d-flex justify-content-center text-center bg-dark rounded-circle" style="width: 25px; height: 25px;">
+                                        <p class="text-white w-100 mx-auto font-weight-bold">1</p>   
+                                    </div>
+                                </td>
+                                <td>BigData</td>
+                                <td>
+                                    <div class="custom-control custom-switch d-flex justify-content-center">
+                                        <input type="checkbox" >
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="d-flex justify-content-center text-center bg-dark rounded-circle" style="width: 25px; height: 25px;">
+                                        <p class="text-white w-100 mx-auto font-weight-bold">2</p>   
+                                    </div>
+                                </td>
+                                <td>Neurociencia</td>
+                                <td>
+                                    <div class="custom-control custom-switch d-flex justify-content-center">
+                                        <input type="checkbox" >
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="d-flex justify-content-center text-center bg-dark rounded-circle" style="width: 25px; height: 25px;">
+                                        <p class="text-white w-100 mx-auto font-weight-bold">3</p>   
+                                    </div>
+                                </td>
+                                <td>NatuTecno</td>
+                                <td>
+                                    <div class="custom-control custom-switch d-flex justify-content-center">
+                                        <input type="checkbox" >
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="d-flex justify-content-center text-center bg-dark rounded-circle" style="width: 25px; height: 25px;">
+                                        <p class="text-white w-100 mx-auto font-weight-bold">4</p>   
+                                    </div>
+                                </td>
+                                <td>Biotecnología</td>
+                                <td>
+                                    <div class="custom-control custom-switch d-flex justify-content-center">
+                                        <input type="checkbox" >
+                                    </div>
+                                </td>
+                            </tr>
+
+                        </tbody>
+
+                    </table>
+                </div>
+            </div>
+            <div class="col-8 border text-center text-dark">
+                En construcción... <br>
+                <svg xmlns="http://www.w3.org/2000/svg" height="150px" viewBox="0 -960 960 960" width="150px" fill="#00000"><path d="M440-80q-33 0-56.5-23.5T360-160v-160H240q-33 0-56.5-23.5T160-400v-280q0-66 47-113t113-47h480v440q0 33-23.5 56.5T720-320H600v160q0 33-23.5 56.5T520-80h-80ZM240-560h480v-200h-40v160h-80v-160h-40v80h-80v-80H320q-33 0-56.5 23.5T240-680v120Zm0 160h480v-80H240v80Zm0 0v-80 80Z"/></svg>
+            </div>
+        </div>
+
+
+        <div aria-label="Page navigation example mb-5">
+            <ul class="pagination justify-content-center">
+                <li class="page-item disabled m-1">
+                    <a class="page-link" href="#" tabindex="-1" style="border-radius: 20px;">Previous</a>
+                </li>
+                <li class="page-item rounded m-1"><a class="page-link rounded-circle" href="#">1</a></li>
+                <li class="page-item m-1"><a class="page-link rounded-circle" href="#">2</a></li>
+                <li class="page-item m-1"><a class="page-link rounded-circle" href="#">3</a></li>
+                <li class="page-item m-1">
+                    <a class="page-link" href="#" style="border-radius: 20px;">Next</a>
+                </li>
+            </ul>
+        </div>
+
+    </div>
+
     <footer class="footer mt-3">
         <div class="container">
 
@@ -175,7 +272,7 @@
                         <!-- Logo -->
                         <div class="logo_container">
                             <div class="logo">
-                                <img src="../plantilla/images/logoRredsi.png" alt="">
+                                <img src="../plantilla/images/RREDSI.jpg" alt="">
                                 <span>RREDSI</span>
                             </div>
                         </div>
@@ -287,7 +384,6 @@
     <script src="../plantilla/plugins/scrollTo/jquery.scrollTo.min.js"></script>
     <script src="../plantilla/plugins/easing/easing.js"></script>
     <script src="../plantilla/js/custom.js"></script>
-
 </body>
 
 </html>
