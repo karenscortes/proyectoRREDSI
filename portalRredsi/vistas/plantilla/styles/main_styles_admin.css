@@ -915,7 +915,15 @@ rlx_parent
 .card
 {
 	display: block;
-	background: white;
+	background: rgb(163, 150, 150);
+	border-radius: 30px; 
+	height: auto; 
+	cursor: pointer;
+}
+.col_card{
+	padding-left: 30px;
+	padding-right: 30px;
+	padding-top: 10px;
 }
 .card-img-top
 {
@@ -1500,12 +1508,14 @@ input:last-of-type
 }
 
 .scroll-div {
-    height: 590px;
+    height: 60vh;
     overflow-y: auto;
     overflow-x: hidden;
 }
 
 .boton{
+	padding-left: 10px; 
+	padding-right: 10px;
 	border: none;
 	height: 40px;
 	font-weight: 1000;
@@ -1530,4 +1540,18 @@ input:last-of-type
 .form-control{
 	height: 35px;
 	border: 1px solid black;
+}
+
+*::-webkit-scrollbar {
+    width: 10px;
+	height: 10px; 
+}
+
+*::-webkit-scrollbar-thumb {
+    background-color: #f5da9b;
+    border-radius: 10px;
+}
+
+*::-webkit-scrollbar-track {
+    background: #f1f1f1; 
 }

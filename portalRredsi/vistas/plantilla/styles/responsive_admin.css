@@ -328,6 +328,40 @@
 	}
 }
 
+@media only screen and (min-width: 500px) and (max-width: 991px) 
+{
+
+	.scroll-div{
+		background-color: rgb(60, 124, 66);
+		width: 100%;
+	}
+
+	.card{
+		background-color: aquamarine;
+	}
+}
+
+@media only screen and (min-width: 992px) and (max-width: 1366px) 
+{
+
+	.scroll-div{
+		width: 25%;
+	}
+}
+
+@media only screen and (min-width: 1367px) and (max-width: 1632px) 
+{
+
+	.scroll-div{
+		background-color: rgb(33, 17, 104);
+		width: 25%;
+	}
+	.table-responsive{
+		width: 100%;
+	}
+}
+
+
 /************
 7. 959px
 ************/
