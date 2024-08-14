@@ -328,16 +328,27 @@
 	}
 }
 
-@media only screen and (min-width: 500px) and (max-width: 991px) 
+@media only screen and (min-width: 500px) and (max-width: 768px) 
 {
 
 	.scroll-div{
-		background-color: rgb(60, 124, 66);
 		width: 100%;
 	}
 
 	.card{
-		background-color: aquamarine;
+		width: 100%;
+	}
+}
+
+@media only screen and (min-width: 768px) and (max-width: 991px) 
+{
+
+	.scroll-div{
+		width: 100%;
+	}
+
+	.card{
+		width: 75%;
 	}
 }
 
@@ -349,11 +360,18 @@
 	}
 }
 
-@media only screen and (min-width: 1367px) and (max-width: 1632px) 
+@media only screen and (min-width: 992px) and (max-width: 1199px) 
+{
+
+	.tipo_formato{
+		font-size: 15px;
+	}
+}
+
+@media only screen and (min-width: 1367px) and (max-width: 2612px) 
 {
 
 	.scroll-div{
-		background-color: rgb(33, 17, 104);
 		width: 25%;
 	}
 	.table-responsive{

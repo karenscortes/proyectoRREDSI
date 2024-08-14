@@ -915,7 +915,6 @@ rlx_parent
 .card
 {
 	display: block;
-	background: rgb(163, 150, 150);
 	border-radius: 30px; 
 	height: auto; 
 	cursor: pointer;
@@ -1542,16 +1541,9 @@ input:last-of-type
 	border: 1px solid black;
 }
 
-*::-webkit-scrollbar {
-    width: 10px;
-	height: 10px; 
-}
-
-*::-webkit-scrollbar-thumb {
-    background-color: #f5da9b;
-    border-radius: 10px;
-}
-
-*::-webkit-scrollbar-track {
-    background: #f1f1f1; 
+.tipo_formato{
+	color: black; 
+	font-weight: bold; 
+	font-style: italic; 
+	font-size: 19px;
 }
