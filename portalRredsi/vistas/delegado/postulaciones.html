@@ -4,23 +4,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>asignar evaluadores</title>
+    <title>postulaciones</title>
     <link rel="stylesheet" href="../bootstrap/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="../plantilla/styles/bootstrap4/bootstrap.min.css">
     <link href="../plantilla/plugins/fontawesome-free-5.0.1/css/fontawesome-all.css" rel="stylesheet" type="text/css">
     <link rel="stylesheet" type="text/css" href="../plantilla/plugins/OwlCarousel2-2.2.1/owl.carousel.css">
     <link rel="stylesheet" type="text/css" href="../plantilla/plugins/OwlCarousel2-2.2.1/owl.theme.default.css">
     <link rel="stylesheet" type="text/css" href="../plantilla/plugins/OwlCarousel2-2.2.1/animate.css">
-    <link rel="stylesheet" type="text/css" href="../plantilla/styles/main_styles.css">
+    <link rel="stylesheet" type="text/css" href="../plantilla/styles/main_styles_delegado.css">
     <link rel="stylesheet" type="text/css" href="../plantilla/styles/responsive.css">
-    <link rel="stylesheet" href="../plantilla/styles/global_styles.css">
 </head>
 
 <body>
     <!-- header -->
-    <header class="header d-flex flex-row position-absolute top-0 w-80">
-        <div class="d-flex flex-row align-items-center w-100 ">
+    <header class="header d-flex flex-grow position-absolute top-0 w-80">
+        <div class="header_content with_button d-flex flex-row align-items-center justify-content-start">
             <!-- Logo -->
             <div class="logo_container">
                 <div class="logo">
@@ -33,7 +31,7 @@
             <nav class="main_nav_container flex-grow-1">
                 <div class="main_nav">
                     <ul class="main_nav_list d-flex justify-content-between">
-                        <li class="main_nav_item"><a href="#">Inicio</a></li>
+                        <li class="main_nav_item"><a href="principal.html">Inicio</a></li>
                         <li class="main_nav_item"><a href="#">Perfil</a></li>
                         <li class="main_nav_item">
                             <div class="dropdown">
@@ -42,8 +40,8 @@
                                     Evaluadores
                                 </a>
                                 <div class="dropdown-menu text-center">
-                                    <a href="#">Postulaciones</a><br>
-                                    <a href="../delegado/lista_evaluadores.html">Lista de Evaluadores</a>
+                                    <a href="postulaciones.html">Postulaciones</a><br>
+                                    <a href="lista_evaluadores.html">Lista de Evaluadores</a>
                                 </div>
                             </div>
                         </li>
@@ -54,8 +52,8 @@
                                     Proyectos
                                 </a>
                                 <div class="dropdown-menu text-center">
-                                    <a href="#">Asignación de <br> Proyectos</a><br>
-                                    <a href="#">Lista de Proyectos</a>
+                                    <a href="asignar_proyectos.html">Asignación de <br> Proyectos</a><br>
+                                    <a href="lista_proyectos.html">Lista de Proyectos</a>
                                 </div>
                             </div>
                         </li>
@@ -71,11 +69,13 @@
                                 </div>
                             </div>
                         </li>
-                        <li class="main_nav_item"><a href="#">Cerrar sesión</a></li>
                     </ul>
                 </div>
             </nav>
         </div>
+        <a href="#" class="header_side d-flex flex-row justify-content-center align-items-center">
+            <h3 class="main_nav_item text-dark">Cerrar sesión</h3>
+        </a>
 
         <!-- Hamburger -->
         <div class="hamburger_container">
@@ -84,8 +84,11 @@
 
     </header>
     <!-- fondo del header -->
-    <div class="position-relative">
-        <img src="../plantilla/images/event_1.jpg" alt="" height="300px" width="100%">
+    <div class="home">
+        <div class="home_background_container prlx_parent">
+            <div class="home_background prlx" style="background-image:url(../plantilla/images/teachers_background.jpg)">
+            </div>
+        </div>
     </div>
     <!-- Menu -->
     <div class="menu_container menu_mm">
@@ -108,7 +111,7 @@
                                 Evaluadores
                             </a>
                             <div class="dropdown-menu text-center">
-                                <a href="#">Postulaciones</a><br>
+                                <a href="postulaciones.html">Postulaciones</a><br>
                                 <a href="lista_evaluadores.html">Lista de Evaluadores</a>
                             </div>
                         </div>
@@ -120,8 +123,8 @@
                                 Proyectos
                             </a>
                             <div class="dropdown-menu text-center">
-                                <a href="#">Asignación de <br> Proyectos</a><br>
-                                <a href="#">Lista de Proyectos</a>
+                                <a href="asignar_proyectos.html">Asignación de <br> Proyectos</a><br>
+                                <a href="lista_proyectos.html">Lista de Proyectos</a>
                             </div>
                         </div>
                     </li>
@@ -162,98 +165,255 @@
     </div>
 
 
-    <div class="container pt-4">
+    <div class="container pt-5">
         <div class="row">
-            <div class="col-4">
+            <div class="col-3 mr-5">
                 <!-- tabla -->
-                <div class="table">
+                <div class="table" data-spy="scroll"
+                    style="max-height: 400px; overflow-y: auto; scrollbar-color: rgba(0, 0, 0, 0.603) rgba(255, 255, 255, 0); scrollbar-width: thin;">
                     <table id="basic-datatables" class="display table table-striped table-hover text-dark">
-                        <thead style="background: rgb(255, 182, 6)
-;">
+                        <thead style="border-bottom: 3px solid black;">
                             <tr>
                                 <th></th>
-                                <th></th>
+                                <th colspan="1" class="text-center">Evaluadores postulados</th>
                                 <th></th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr>
                                 <td>
-                                    <div class="d-flex justify-content-center text-center bg-dark rounded-circle" style="width: 25px; height: 25px;">
-                                        <p class="text-white w-100 mx-auto font-weight-bold">1</p>   
+                                    <div class="d-flex justify-content-center text-center bg-dark rounded-circle"
+                                        style="width: 25px; height: 25px;">
+                                        <p class="text-white w-100 mx-auto font-weight-bold">1</p>
                                     </div>
                                 </td>
-                                <td>BigData</td>
+                                <td>Juan Pérez</td>
                                 <td>
                                     <div class="custom-control custom-switch d-flex justify-content-center">
-                                        <input type="checkbox" >
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <div class="d-flex justify-content-center text-center bg-dark rounded-circle" style="width: 25px; height: 25px;">
-                                        <p class="text-white w-100 mx-auto font-weight-bold">2</p>   
-                                    </div>
-                                </td>
-                                <td>Neurociencia</td>
-                                <td>
-                                    <div class="custom-control custom-switch d-flex justify-content-center">
-                                        <input type="checkbox" >
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <div class="d-flex justify-content-center text-center bg-dark rounded-circle" style="width: 25px; height: 25px;">
-                                        <p class="text-white w-100 mx-auto font-weight-bold">3</p>   
-                                    </div>
-                                </td>
-                                <td>NatuTecno</td>
-                                <td>
-                                    <div class="custom-control custom-switch d-flex justify-content-center">
-                                        <input type="checkbox" >
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <div class="d-flex justify-content-center text-center bg-dark rounded-circle" style="width: 25px; height: 25px;">
-                                        <p class="text-white w-100 mx-auto font-weight-bold">4</p>   
-                                    </div>
-                                </td>
-                                <td>Biotecnología</td>
-                                <td>
-                                    <div class="custom-control custom-switch d-flex justify-content-center">
-                                        <input type="checkbox" >
+                                        <input type="checkbox" checked>
                                     </div>
                                 </td>
                             </tr>
 
+                            <tr>
+                                <td>
+                                    <div class="d-flex justify-content-center text-center bg-dark rounded-circle"
+                                        style="width: 25px; height: 25px;">
+                                        <p class="text-white w-100 mx-auto font-weight-bold">2</p>
+                                    </div>
+                                </td>
+                                <td>María Gómez</td>
+                                <td>
+                                    <div class="custom-control custom-switch d-flex justify-content-center">
+                                        <input type="checkbox">
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="d-flex justify-content-center text-center bg-dark rounded-circle"
+                                        style="width: 25px; height: 25px;">
+                                        <p class="text-white w-100 mx-auto font-weight-bold">3</p>
+                                    </div>
+                                </td>
+                                <td>Carlos Ruiz</td>
+                                <td>
+                                    <div class="custom-control custom-switch d-flex justify-content-center">
+                                        <input type="checkbox">
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="d-flex justify-content-center text-center bg-dark rounded-circle"
+                                        style="width: 25px; height: 25px;">
+                                        <p class="text-white w-100 mx-auto font-weight-bold">4</p>
+                                    </div>
+                                </td>
+                                <td>Laura Fernández</td>
+                                <td>
+                                    <div class="custom-control custom-switch d-flex justify-content-center">
+                                        <input type="checkbox">
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="d-flex justify-content-center text-center bg-dark rounded-circle"
+                                        style="width: 25px; height: 25px;">
+                                        <p class="text-white w-100 mx-auto font-weight-bold">5</p>
+                                    </div>
+                                </td>
+                                <td>Sofía Martínez</td>
+                                <td>
+                                    <div class="custom-control custom-switch d-flex justify-content-center">
+                                        <input type="checkbox">
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="d-flex justify-content-center text-center bg-dark rounded-circle"
+                                        style="width: 25px; height: 25px;">
+                                        <p class="text-white w-100 mx-auto font-weight-bold">6</p>
+                                    </div>
+                                </td>
+                                <td>Ricardo López</td>
+                                <td>
+                                    <div class="custom-control custom-switch d-flex justify-content-center">
+                                        <input type="checkbox" checked disabled>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="d-flex justify-content-center text-center bg-dark rounded-circle"
+                                        style="width: 25px; height: 25px;">
+                                        <p class="text-white w-100 mx-auto font-weight-bold">7</p>
+                                    </div>
+                                </td>
+                                <td>Elena García</td>
+                                <td>
+                                    <div class="custom-control custom-switch d-flex justify-content-center">
+                                        <input type="checkbox" checked disabled>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="d-flex justify-content-center text-center bg-dark rounded-circle"
+                                        style="width: 25px; height: 25px;">
+                                        <p class="text-white w-100 mx-auto font-weight-bold">8</p>
+                                    </div>
+                                </td>
+                                <td>Andrés Torres</td>
+                                <td>
+                                    <div class="custom-control custom-switch d-flex justify-content-center">
+                                        <input type="checkbox" checked disabled>
+                                    </div>
+                                </td>
+                            </tr>
                         </tbody>
+
 
                     </table>
                 </div>
+                <div aria-label="Page navigation example mb-5">
+                    <ul class="pagination justify-content-center">
+                        <li class="page-item disabled m-1">
+                            <a class="page-link" href="#" tabindex="-1" style="border-radius: 20px;">Previous</a>
+                        </li>
+                        <li class="page-item rounded m-1"><a class="page-link rounded-circle" href="#">1</a></li>
+                        <li class="page-item m-1"><a class="page-link rounded-circle" href="#">2</a></li>
+                        <li class="page-item m-1"><a class="page-link rounded-circle" href="#">3</a></li>
+                        <li class="page-item m-1">
+                            <a class="page-link" href="#" style="border-radius: 20px;">Next</a>
+                        </li>
+                    </ul>
+                </div>
             </div>
-            <div class="col-8 border text-center text-dark">
-                En construcción... <br>
-                <svg xmlns="http://www.w3.org/2000/svg" height="150px" viewBox="0 -960 960 960" width="150px" fill="#00000"><path d="M440-80q-33 0-56.5-23.5T360-160v-160H240q-33 0-56.5-23.5T160-400v-280q0-66 47-113t113-47h480v440q0 33-23.5 56.5T720-320H600v160q0 33-23.5 56.5T520-80h-80ZM240-560h480v-200h-40v160h-80v-160h-40v80h-80v-80H320q-33 0-56.5 23.5T240-680v120Zm0 160h480v-80H240v80Zm0 0v-80 80Z"/></svg>
+            <div class="col-8 pb-5 text-center text-dark">
+                <div class="row justify-content-around">
+                    <div class="col-sm-7 col-12">
+                        <div class="row mx-auto text-wrap">
+                            <div class="col-12 my-2 text-center">
+                                <h2 id="titulo_proyecto">Juan Pérez</h2>
+                            </div>
+                            <div class="col-12 mt-2">
+                                <div class="col-12 mb-2">
+                                    <div class="row">
+                                        <div class="col-6 bg-dark" style="background: rgb(255, 182, 6)
+        ;">
+                                            <strong class="text-white font-weight-bold">Institución: </strong>
+                                        </div>
+                                        <div class="col-6 border">
+                                            <span id="identificacion">12343534</span>
+
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12 mb-2">
+                                    <div class="row">
+                                        <div class="col-6 text-white bg-dark font-weight-bold">
+                                            <strong>Área de conocimiento:</strong>
+                                        </div>
+                                        <div class="col-6 border">
+                                            <span id="conocimiento">Sistemas</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12 mb-2">
+                                    <div class="row">
+                                        <div class="col-6 text-white bg-dark font-weight-bold">
+                                            Institución:
+                                        </div>
+                                        <div class="col-6 border">
+                                            <span id="institucion">SENA</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12 mb-2">
+                                    <div class="row">
+                                        <div class="col-6 text-white bg-dark font-weight-bold">
+                                            Teléfono:
+                                        </div>
+                                        <div class="col-6 border">
+                                            <span id="telefono">3145468952</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12 mb-2">
+                                    <div class="row">
+                                        <div class="col-6 text-white bg-dark font-weight-bold">
+                                            Correo electrónico:
+                                        </div>
+                                        <div class="col-6 border">
+                                            <span id="electronico">pepe@gmail.com</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12 mb-2">
+                                    <div class="row">
+                                        <div class="col-6 text-white bg-dark font-weight-bold">
+                                            Otra área de conocimiento:
+                                        </div>
+                                        <div class="col-6 border">
+                                            <span id="otra_area_conocimiento">Sociales</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12 mb-2">
+                                    <div class="row">
+                                        <div class="col-6 text-white bg-dark font-weight-bold">
+                                            Estado:
+                                        </div>
+                                        <div class="col-6 border">
+                                            <span id="estado">pendiente</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <div class="row">
+                                    <div class="col-6 text-center mt-3">
+                                        <a href="#" class="btn text-white font-weight-bold" style="background: rgb(192, 192, 192)
+    ;">RECHAZAR</a>
+                                    </div>
+                                    <div class="col-6 text-center mt-3">
+                                        <a href="#" class="btn text-white font-weight-bold" style="background: rgb(255, 182, 6)
+    ;">ACEPTAR</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 col-sm-5 mx-auto mt-3">
+                        <embed src="pruebas_documentos/constancia_NotasAprendiz.pdf#toolbar=0" width="250px"
+                            height="100%">
+                        <a href="#" type="button" data-toggle="modal" data-target="#exampleModal">Visualizar</a>
+                    </div>
+                </div>
             </div>
-        </div>
-
-
-        <div aria-label="Page navigation example mb-5">
-            <ul class="pagination justify-content-center">
-                <li class="page-item disabled m-1">
-                    <a class="page-link" href="#" tabindex="-1" style="border-radius: 20px;">Previous</a>
-                </li>
-                <li class="page-item rounded m-1"><a class="page-link rounded-circle" href="#">1</a></li>
-                <li class="page-item m-1"><a class="page-link rounded-circle" href="#">2</a></li>
-                <li class="page-item m-1"><a class="page-link rounded-circle" href="#">3</a></li>
-                <li class="page-item m-1">
-                    <a class="page-link" href="#" style="border-radius: 20px;">Next</a>
-                </li>
-            </ul>
         </div>
 
     </div>
@@ -372,6 +532,25 @@
 
         </div>
     </footer>
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="mr-2">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="mt-3" style="height: 60vh;">
+                    <embed src="pruebas_documentos/constancia_NotasAprendiz.pdf#toolbar=0" type="" width="100%"
+                            height="100%">
+                </div>
+                <div class="modal-footer justify-content-center">
+                    <button type="button" class="btn btn-dark col-4" data-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
     <script src="../plantilla/js/jquery-3.2.1.min.js"></script>
     <script src="../plantilla/styles/bootstrap4/popper.js"></script>
     <script src="../plantilla/styles/bootstrap4/bootstrap.min.js"></script>
