@@ -919,9 +919,32 @@ rlx_parent
 	height: auto; 
 	cursor: pointer;
 }
+
+
+@keyframes dance {
+    0%, 100% {
+        transform: translateX(0);
+    }
+    25% {
+        transform: translateX(-4px);
+    }
+    50% {
+        transform: translateX(4px);
+    }
+    75% {
+        transform: translateX(-4px);
+    }
+}
+
+
+.card:hover{
+	background-color: #fffd78;
+	animation: dance 0.5s ease-in-out; 
+}
+
 .col_card{
-	padding-left: 30px;
-	padding-right: 30px;
+	padding-left: 16px;
+	padding-right: 16px;
 	padding-top: 10px;
 }
 .card-img-top
@@ -1517,6 +1540,7 @@ input:last-of-type
 	padding-right: 10px;
 	border: none;
 	height: 40px;
+	width: 20%;
 	font-weight: 1000;
 	font-size: 20px;
 	color: black;
@@ -1568,10 +1592,31 @@ input:last-of-type
 	border-bottom: 1px solid black;
 }
 
-.tr_item_rubrica > td:not(:last-child) {
+.tr_item_rubrica > td {
 	border-right: 1px solid black;
 }
 
 .td_boton{
 	vertical-align: middle;
+}
+
+.table-bordered-dark {
+	border: 1px solid black;
+}
+
+.btn:hover {
+    color: #494949;
+	background-color: rgb(255, 182, 6);
+}
+
+.modal-header .icon {
+	color:rgb(255, 182, 6);
+	font-size: 2rem;
+	margin-right: 10px;
+}
+
+.modal-header{
+	color: #000000;
+	font-size: 2rem;
+	margin-right: 10px;
 }

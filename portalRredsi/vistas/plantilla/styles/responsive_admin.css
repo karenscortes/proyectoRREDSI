@@ -331,6 +331,9 @@
 @media only screen and (min-width: 500px) and (max-width: 768px) 
 {
 
+	.boton{
+		width: 25%;
+	}
 	.scroll-div{
 		width: 100%;
 	}
@@ -342,7 +345,9 @@
 
 @media only screen and (min-width: 768px) and (max-width: 991px) 
 {
-
+	.cont_boton{
+		width: 100%;
+	}
 	.scroll-div{
 		width: 100%;
 	}
@@ -355,13 +360,34 @@
 @media only screen and (min-width: 992px) and (max-width: 1366px) 
 {
 
+	.cont_boton{
+		width: 74%;
+	}
+
+
 	.scroll-div{
 		width: 25%;
+		position: sticky;
+		top: 1%;
+		bottom: 10%;
+	}
+}
+
+@media only screen and (min-width: 1200px) and (max-width: 2612px) 
+{
+
+	.cont_boton{
+		width: 79%;
 	}
 }
 
 @media only screen and (min-width: 992px) and (max-width: 1199px) 
 {
+	.scroll-div{
+		position: sticky;
+		top: 1%;
+		bottom: 20%;
+	}
 
 	.tipo_formato{
 		font-size: 15px;
@@ -374,9 +400,11 @@
 
 @media only screen and (min-width: 1367px) and (max-width: 2612px) 
 {
-
 	.scroll-div{
 		width: 25%;
+		position: sticky;
+		top: 1%;
+		bottom: 20%;
 	}
 	.table-responsive{
 		width: 100%;
