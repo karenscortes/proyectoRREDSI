@@ -1,0 +1,581 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tipo rúbrica</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link rel="stylesheet" href="/plantilla/styles/bootstrap4/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="../plantilla/styles/bootstrap4/bootstrap.min.css">
+    <link href="../plantilla/plugins/fontawesome-free-5.0.1/css/fontawesome-all.css" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" type="text/css" href="../plantilla/plugins/OwlCarousel2-2.2.1/owl.carousel.css">
+    <link rel="stylesheet" type="text/css" href="../plantilla/plugins/OwlCarousel2-2.2.1/owl.theme.default.css">
+    <link rel="stylesheet" type="text/css" href="../plantilla/plugins/OwlCarousel2-2.2.1/animate.css">
+    <link rel="stylesheet" type="text/css" href="../plantilla/styles/main_styles_admin.css">
+    <link rel="stylesheet" type="text/css" href="../plantilla/styles/responsive_admin.css">
+    <link rel="stylesheet" href="../plantilla/styles/global_styles.css">
+    <link rel="stylesheet" href="../plantilla/styles/perfil_admin_styles.css">
+</head>
+
+<body>
+    <!-- header -->
+    <header class="header d-flex flex-row position-absolute top-20">
+        <div class="header_content d-flex flex-row align-items-center justify-content-start">
+            <!-- Logo -->
+            <div class="logo_container">
+                <div class="logo">
+                    <img class="img-fluid" src="../plantilla/images/logoRredsi.png" alt="">
+                    <span>RREDSI</span>
+                </div>
+            </div>
+
+            <!-- Main Navigation -->
+            <nav class="main_nav_container">
+                <div class="main_nav">
+                    <ul class="main_nav_list d-flex justify-content-between">
+                        <li class="main_nav_item"><a href="#">Inicio</a></li>
+                        <li class="main_nav_item"><a href="#">Perfil</a></li>
+                        <li class="main_nav_item"><a href="#">Cuentas</a></li>
+                        <li class="main_nav_item"><a href="#" style="font-weight: 1000;">Rúbricas</a></li>
+                        <li class="main_nav_item"><a href="#">Eventos</a></li>
+
+                        <li class="main_nav_item"><a href="#">Cerrar sesión</a></li>
+                    </ul>
+                </div>
+            </nav>
+        </div>
+
+        <!-- Hamburger -->
+        <div class="hamburger_container">
+            <i class="fas fa-bars trans_200"></i>
+        </div>
+
+    </header>
+    <!-- fondo del header -->
+    <div>
+        <img src="../plantilla/images/event_1.jpg" alt="" height="300px" width="100%" >
+    </div>
+    <!-- Menu -->
+    <div class="menu_container menu_mm">
+
+        <!-- Menu Close Button -->
+        <div class="menu_close_container">
+            <div class="menu_close"></div>
+        </div>
+
+        <!-- Menu Items -->
+        <div class="menu_inner menu_mm">
+            <div class="menu menu_mm">
+                <ul class="menu_list menu_mm">
+                    <li class="menu_item menu_mm"><a href="#">Inicio</a></li>
+                    <li class="menu_item menu_mm"><a href="#">Perfil</a></li>
+                    <li class="menu_item menu_mm"><a href="#">Cuentas</a></li>
+                    <li class="menu_item menu_mm"><a href="#">Rúbricas</a></li>
+                    <li class="menu_item menu_mm"><a href="#">Eventos</a></li>
+
+                    <li class="menu_item menu_mm"><a href="#">Cerrar sesión</a></li>
+                </ul>
+
+                <!-- Menu Social -->
+
+                <div class="menu_social_container menu_mm">
+                    <ul class="menu_social menu_mm">
+                        <li class="menu_social_item menu_mm"><a href="https://www.instagram.com/rredsiquindio/"><i
+                                    class="fab fa-instagram"></i></a></li>
+                        <li class="menu_social_item menu_mm"><a
+                                href="https://www.facebook.com/rredsi?mibextid=ZbWKwL"><i
+                                    class="fab fa-facebook-f"></i></a></li>
+                        <li class="menu_social_item menu_mm"><a href="https://x.com/Rredsi"><i
+                                    class="fab fa-twitter"></i></a></li>
+                    </ul>
+                </div>
+
+                <div class="menu_copyright menu_mm">ADSO 2670586 All rights reserved</div>
+            </div>
+
+        </div>
+    </div>
+    <!--Main Part-->
+    
+    <div class="container">
+        <div class="row justify-content-center py-5">
+            <div class="col-xl-10 col-lg-10 col-md-12 ">
+                <!-- stepper -->
+                <div class="tab" role="tabpanel">
+                    <!-- Nav tabs -->
+                    <ul class="nav nav-tabs" role="tablist">
+                        <li role="presentation" class="active"><a href="#Section1" aria-controls="home" role="tab" data-toggle="tab"><i class="fas fa-user-secret"></i> Datos Personales</a></li>
+                        <li role="presentation"><a href="#Section2" aria-controls="profile" role="tab" data-toggle="tab"><i class="fas fa-university"></i> Datos Institucionales</a></li>
+                        <li role="presentation"><a href="#Section3" aria-controls="messages" role="tab" data-toggle="tab"><i class="fas fa-graduation-cap"></i> Datos Academicos</a></li>
+                    </ul>
+                    <!-- Tab panes -->
+                    <div class="tab-content tabs">
+                        <div role="tabpanel" class="tab-pane active text-dark" id="Section1">
+                            <h3>Datos Personales</h3>
+                            <form action="#">
+                                <div class="form-row">
+                                    <div class="form-group col-md-6">
+                                      <label for="inputName">Nombres:</label>
+                                      <input type="text" class="form-control" id="inputName">
+                                    </div>
+                                    <div class="form-group col-md-6">
+                                      <label for="inputLastname">Apellidos:</label>
+                                      <input type="text" class="form-control" id="inputLastname">
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group col-md-6">
+                                        <label for="inputState">Tipo de Documento</label>
+                                        <select id="inputState" class="form-control custom-select">
+                                          <option selected>Seleccionar...</option>
+                                          <option>Cedula</option>
+                                        </select>
+                                    </div>
+                                  
+                                    <div class="form-group col-md-6">
+                                        <label for="inputCity">N° de Documento</label>
+                                        <input type="text" class="form-control" id="inputCity">
+                                    </div>
+                                </div>
+                                <div class="form-group mb-5">
+                                    <label for="inputAddress">Correo</label>
+                                    <input type="email" class="form-control" id="inputAddress" placeholder="usuario@gmail.com">
+                                </div>
+                                <div class="text-center">
+                                    <button type="button" class="btn btn-warning font-weight-bold text-dark w-25 mr-5" data-toggle="modal" data-target="#resetPasswordModal">Cambiar Contraseña</button>
+                                    <button type="button" class="btn btn-warning font-weight-bold text-dark w-25">Siguiente</button>
+                                </div>                                                  
+                            </form>
+                        </div>
+                        <div role="tabpanel" class="tab-pane fade text-dark" id="Section2">
+                            <h3>Datos Institucionales</h3>
+                            <form action="#">
+                                <div class="form-row">
+                                    <div class="form-group col-md-6">
+                                      <label for="inputPlaceName">Institución educativa:</label>
+                                      <input type="text" class="form-control" id="inputPlaceName">
+                                    </div>
+                                    <div class="form-group col-md-6">
+                                      <label for="inputResearchGroup">Grupo de Investigación:</label>
+                                      <input type="text" class="form-control" id="inputSearchGroup">
+                                    </div>
+                                </div>
+                                <div class="form-group mb-5">
+                                    <label for="inputResearchLab">Nombre del Semillero</label>
+                                    <input type="text" class="form-control" id="inputResearchLab">
+                                </div>
+                                <div class="text-center">
+                                    <button type="button" class="btn btn-warning font-weight-bold text-dark w-25 mr-5">Regresar</button>
+                                    <button type="button" class="btn btn-warning font-weight-bold text-dark w-25">Siguiente</button>
+                                </div>                                
+                            </form>
+                        </div>
+                        <div role="tabpanel" class="tab-pane fade text-dark" id="Section3">
+                            <h3>Datos Academicos</h3>
+                            <form action="#">
+                                <div class="form-row">
+                                    <div class="form-group col-md-4">
+                                        <label for="inputUndergraduateDegree">Titulo Pregrado:</label>
+                                        <div class="d-inline-flex" >
+                                            <input type="text" class="form-control" id="inputUndergraduateDegree">
+                                            <label class="items-center p-1 bg-white text-black">
+                                                <i class="fas fa-plus-circle h4"></i>
+                                                <input type='file' class="d-none d-print-block" />
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-md-4">
+                                        <label for="inputPostgraduateDiploma">Titulo de Especialización:</label>
+                                        <div class="d-inline-flex" >
+                                            <input type="text" class="form-control" id="inputPostgraduateDiploma">
+                                            <label class="items-center p-1 bg-white text-black">
+                                                <i class="fas fa-plus-circle h4"></i>
+                                                <input type='file' class="d-none d-print-block" />
+                                            </label>
+                                        </div>         
+                                    </div>
+                                    <div class="form-group col-md-4">
+                                        <label for="inputMasterDegree">Titulo de Maestría:</label>
+                                        <div class="d-inline-flex" >
+                                            <input type="text" class="form-control" id="inputMasterDegree">
+                                            <label class="items-center p-1 bg-white text-black">
+                                                <i class="fas fa-plus-circle h4"></i>
+                                                <input type='file' class="d-none d-print-block" />
+                                            </label>
+                                        </div>
+                                        
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group col-md-4">
+                                        <label for="inputPhD">Titulo de Doctorado:</label>
+                                        <div class="d-inline-flex" >
+                                            <input type="text" class="form-control" id="inputPhD">
+                                            <label class="items-center p-1 bg-white text-black">
+                                                <i class="fas fa-plus-circle h4"></i>
+                                                <input type='file' class="d-none d-print-block" />
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-md-4 pr-5">
+                                        <label for="inputState">Area de Conocimiento:</label>
+                                        <select id="inputState" class="form-control custom-select">
+                                          <option selected>Seleccionar...</option>
+                                          <option>Inteligencia Artificial</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group col-md-4 pr-5 mb-5">
+                                        <label for="inputState">Otra Area:</label>
+                                        <select id="inputState" class="form-control custom-select">
+                                          <option selected>Seleccionar...</option>
+                                          <option>Medio Ambiente</option>
+                                        </select>
+                                    </div>                                   
+                                </div>
+                                
+                                <div class="text-center">
+                                    <button type="button" class="btn btn-warning font-weight-bold text-dark w-25 mr-5">Regresar</button>
+                                    <button type="submit" class="btn btn-warning font-weight-bold text-dark w-25 ">Guardar</button>
+                                </div>                                                  
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Accordion -->
+                <div class="accordion" id="accordionExample">
+                    <div class="card">
+                      <div class="card-header" id="headingOne">
+                        <h2 class="mb-0">
+                          <button class="btn btn-block " type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                            <i class="fas fa-user-secret"></i> Datos Personales
+                          </button>
+                        </h2>
+                      </div>
+                  
+                      <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionExample">
+                        <div class="card-body my-3">
+                            <form action="#">
+                                <div class="form-row">
+                                    <div class="form-group col-md-6">
+                                      <label for="inputName">Nombres:</label>
+                                      <input type="text" class="form-control" id="inputName">
+                                    </div>
+                                    <div class="form-group col-md-6">
+                                      <label for="inputLastname">Apellidos:</label>
+                                      <input type="text" class="form-control" id="inputLastname">
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group col-md-6">
+                                        <label for="inputState">Tipo de Documento</label>
+                                        <select id="inputState" class="form-control custom-select">
+                                          <option selected>Seleccionar...</option>
+                                          <option>Cedula</option>
+                                        </select>
+                                    </div>
+                                  
+                                    <div class="form-group col-md-6">
+                                        <label for="inputCity">N° de Documento</label>
+                                        <input type="text" class="form-control" id="inputCity">
+                                    </div>
+                                </div>
+                                <div class="form-group mb-5">
+                                    <label for="inputAddress">Correo</label>
+                                    <input type="email" class="form-control" id="inputAddress" placeholder="usuario@gmail.com">
+                                </div>
+                                <div class="text-center">
+                                    <button type="button" class="btn btn-warning font-weight-bold text-dark w-50 mr-3" data-toggle="modal" data-target="#resetPasswordModal">Cambiar Contraseña</button>
+                                </div>                                                  
+                            </form>                          
+                        </div>
+                      </div>
+                    </div>
+                    <div class="card">
+                      <div class="card-header" id="headingTwo">
+                        <h2 class="mb-0">
+                          <button class="btn btn-block  collapsed" type="button" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                            <i class="fas fa-university"></i> Datos Institucionales
+                          </button>
+                        </h2>
+                      </div>
+                      <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionExample">
+                        <div class="card-body my-3">
+                            <form action="#">
+                                <div class="form-row">
+                                    <div class="form-group col-md-6">
+                                      <label for="inputPlaceName">Institución educativa:</label>
+                                      <input type="text" class="form-control" id="inputPlaceName">
+                                    </div>
+                                    <div class="form-group col-md-6">
+                                      <label for="inputResearchGroup">Grupo de Investigación:</label>
+                                      <input type="text" class="form-control" id="inputSearchGroup">
+                                    </div>
+                                </div>
+                                <div class="form-group mb-5">
+                                    <label for="inputResearchLab">Nombre del Semillero</label>
+                                    <input type="text" class="form-control" id="inputResearchLab">
+                                </div>                                
+                            </form>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="card">
+                      <div class="card-header" id="headingThree">
+                        <h2 class="mb-0">
+                          <button class="btn btn-block collapsed" type="button" data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                            <i class="fas fa-graduation-cap"></i> Datos Academicos
+                          </button>
+                        </h2>
+                      </div>
+                      <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordionExample">
+                        <div class="card-body  my-3">
+                            <form action="#">
+                                
+                                <div class="form-group row justify-content-center">
+                                    <label for="inputUndergraduateDegree" class="col-4">Titulo Pregrado:</label>
+                                    <div class="d-inline-flex col-6" >
+                                        <input type="text" class="form-control" id="inputUndergraduateDegree">
+                                        <label class="items-center p-1 bg-white text-black">
+                                            <i class="fas fa-plus-circle h4"></i>
+                                            <input type='file' class="d-none d-print-block" />
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="form-group row justify-content-center">
+                                    <label for="inputPostgraduateDiploma" class="col-4">Titulo de Especialización:</label>
+                                    <div class="d-inline-flex col-6" >
+                                        <input type="text" class="form-control" id="inputPostgraduateDiploma">
+                                        <label class="items-center p-1 bg-white text-black">
+                                            <i class="fas fa-plus-circle h4"></i>
+                                            <input type='file' class="d-none d-print-block" />
+                                        </label>
+                                    </div>         
+                                </div>
+                                <div class="form-group row justify-content-center">
+                                    <label for="inputMasterDegree" class="col-4">Titulo de Maestría:</label>
+                                    <div class="d-inline-flex col-6" >
+                                        <input type="text" class="form-control" id="inputMasterDegree">
+                                        <label class="items-center p-1 bg-white text-black">
+                                            <i class="fas fa-plus-circle h4"></i>
+                                            <input type='file' class="d-none d-print-block" />
+                                        </label>
+                                    </div>
+                                    
+                                </div>                            
+                                <div class="form-group row justify-content-center">
+                                    <label for="inputPhD" class="col-4">Titulo de Doctorado:</label>
+                                    <div class="d-inline-flex col-6" >
+                                        <input type="text" class="form-control" id="inputPhD">
+                                        <label class="items-center p-1 bg-white text-black">
+                                            <i class="fas fa-plus-circle h4"></i>
+                                            <input type='file' class="d-none d-print-block" />
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="form-group row justify-content-center">
+                                    <label for="inputState " class="col-10 mx-4">Area de Conocimiento:</label>
+                                    <div class="col-10">
+                                        <select id="inputState" class="form-control custom-select">
+                                            <option selected>Seleccionar...</option>
+                                            <option>Inteligencia Artificial</option>
+                                        </select>
+                                    </div> 
+                                </div>
+                                <div class="form-group row justify-content-center">
+                                    <label for="inputState" class="col-10 mx-4">Otra Area:</label>
+                                    <div class="col-10">
+                                        <select id="inputState" class="form-control custom-select">
+                                            <option selected>Seleccionar...</option>
+                                            <option>Medio Ambiente</option>
+                                        </select>
+                                    </div>
+                                </div>                                                                                  
+                            </form>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="text-center">
+                        <button type="submit" class="btn btn-warning font-weight-bold text-dark w-25 ">Guardar Datos</button>
+                    </div>   
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="resetPasswordModal" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content border border-dark border-5 rounded-5 text-dark">
+                <div class="text-center ">
+                    <button type="button" class="close mr-3 mt-3" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h3 class="modal-title mt-5" id="modalLabel">Cambiar Contraseña</h3>
+                    
+                </div>
+                <div class="modal-body mt-3">
+                    <form>
+                        <div class="form-group row justify-content-center">
+                          <label for="colFormLabelSm" class="col-5 col-form-label col-form-label-sm text-center">Contraseña Actual: </label>
+                          <div class="col-5 pr-5">
+                            <input type="password" class="form-control form-control-sm" id="colFormLabelSm">
+                          </div>
+                        </div>
+                        <div class="form-group row justify-content-center">
+                            <label for="colFormLabelSm" class="col-5 col-form-label col-form-label-sm text-center">Nueva Contraseña: </label>
+                            <div class="col-5 pr-5">
+                              <input type="password" class="form-control form-control-sm " id="colFormLabelSm">
+                              <small id="passwordHelpBlock" class="form-text text-muted w-100">
+                                8-20 characters long
+                              </small>
+                            </div>
+                        </div>
+                        <div class="form-group row  mb-5 justify-content-center">
+                            <label for="colFormLabelSm" class="col-5 col-form-label col-form-label-sm text-center ">Confirmar Contraseña: </label>
+                            <div class="col-5 pr-5">
+                              <input type="password" class="form-control form-control-sm " id="colFormLabelSm">
+                            </div>
+                        </div>
+                        <div class="text-center">
+                            <button type="submit" class="btn btn-warning font-weight-bold">Guardar Cambios</button>
+                        </div>                        
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+  
+
+    <!-- Footer -->
+    <footer class="footer mt-3">
+        <div class="container">
+            <!-- Footer Content -->
+
+            <div class="footer_content">
+                <div class="row">
+
+                    <!-- Footer Column - About -->
+                    <div class="col-lg-3 footer_col">
+
+                        <!-- Logo -->
+                        <div class="logo_container">
+                            <div class="logo">
+                                <img src="../plantilla/images/logoRredsi.png" alt="">
+                                <span>RREDSI</span>
+                            </div>
+                        </div>
+
+                        <p class="footer_about_text">In aliquam, augue a gravida rutrum, ante nisl fermentum nulla,
+                            vitae tempor nisl ligula vel nunc. Proin quis mi malesuada, finibus tortor fermentum, tempor
+                            lacus.</p>
+
+                    </div>
+
+                    <!-- Footer Column - Menu -->
+
+                    <div class="col-lg-3 footer_col">
+                        <div class="footer_column_title">Menu</div>
+                        <div class="footer_column_content">
+                            <ul>
+                                <li class="footer_list_item"><a href="#">Home</a></li>
+                                <li class="footer_list_item"><a href="#">About Us</a></li>
+                                <li class="footer_list_item"><a href="courses.html">Courses</a></li>
+                                <li class="footer_list_item"><a href="news.html">News</a></li>
+                                <li class="footer_list_item"><a href="contact.html">Contact</a></li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- Footer Column - Usefull Links -->
+
+                    <div class="col-lg-3 footer_col">
+                        <div class="footer_column_title">Usefull Links</div>
+                        <div class="footer_column_content">
+                            <ul>
+                                <li class="footer_list_item"><a href="#">Testimonials</a></li>
+                                <li class="footer_list_item"><a href="#">FAQ</a></li>
+                                <li class="footer_list_item"><a href="#">Community</a></li>
+                                <li class="footer_list_item"><a href="#">Campus Pictures</a></li>
+                                <li class="footer_list_item"><a href="#">Tuitions</a></li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- Footer Column - Contact -->
+
+                    <div class="col-lg-3 footer_col">
+                        <div class="footer_column_title">Contact</div>
+                        <div class="footer_column_content">
+                            <ul>
+                                <li class="footer_contact_item">
+                                    <div class="footer_contact_icon">
+                                        <img src="../plantilla/images/placeholder.svg"
+                                            alt="https://www.flaticon.com/authors/lucy-g">
+                                    </div>
+                                    Blvd Libertad, 34 m05200 Arévalo
+                                </li>
+                                <li class="footer_contact_item">
+                                    <div class="footer_contact_icon">
+                                        <img src="../plantilla/images/smartphone.svg"
+                                            alt="https://www.flaticon.com/authors/lucy-g">
+                                    </div>
+                                    0034 37483 2445 322
+                                </li>
+                                <li class="footer_contact_item">
+                                    <div class="footer_contact_icon">
+                                        <img src="../plantilla/images/envelope.svg"
+                                            alt="https://www.flaticon.com/authors/lucy-g">
+                                    </div>hello@company.com
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- Footer Copyright -->
+
+            <div class="footer_bar d-flex flex-column flex-sm-row align-items-center">
+                <div class="footer_copyright">
+                    <span><!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+                        Copyright &copy;
+                        <script>document.write(new Date().getFullYear());</script> All rights reserved | This template
+                        is made with by <a href="#" target="_blank">ADSO 2670586</a>
+                        <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+                    </span>
+                </div>
+                <div class="footer_social ml-sm-auto">
+                    <ul class="menu_social">
+
+                        <li class="menu_social_item"><a href="https://www.instagram.com/rredsiquindio/"><i
+                                    class="fab fa-instagram"></i></a></li>
+                        <li class="menu_social_item"><a href="https://www.facebook.com/rredsi?mibextid=ZbWKwL"><i
+                                    class="fab fa-facebook-f"></i></a></li>
+                        <li class="menu_social_item"><a href="https://x.com/Rredsi"><i class="fab fa-twitter"></i></a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+        </div>
+    </footer>
+    <script src="../plantilla/js/jquery-3.2.1.min.js"></script>
+    <script src="../plantilla/styles/bootstrap4/popper.js"></script>
+    <script src="../plantilla/styles/bootstrap4/bootstrap.min.js"></script>
+    <script src="../plantilla/plugins/greensock/TweenMax.min.js"></script>
+    <script src="../plantilla/plugins/greensock/TimelineMax.min.js"></script>
+    <script src="../plantilla/plugins/scrollmagic/ScrollMagic.min.js"></script>
+    <script src="../plantilla/plugins/greensock/animation.gsap.min.js"></script>
+    <script src="../plantilla/plugins/greensock/ScrollToPlugin.min.js"></script>
+    <script src="../plantilla/plugins/OwlCarousel2-2.2.1/owl.carousel.js"></script>
+    <script src="../plantilla/plugins/scrollTo/jquery.scrollTo.min.js"></script>
+    <script src="../plantilla/plugins/easing/easing.js"></script>
+    <script src="../plantilla/js/custom.js"></script>
+
+</body>
+
+</html>
