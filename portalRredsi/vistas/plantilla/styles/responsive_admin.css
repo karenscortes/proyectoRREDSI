@@ -366,6 +366,10 @@
 	.tipo_formato{
 		font-size: 15px;
 	}
+
+	.table-responsive{
+		width: 75%;
+	}
 }
 
 @media only screen and (min-width: 1367px) and (max-width: 2612px) 

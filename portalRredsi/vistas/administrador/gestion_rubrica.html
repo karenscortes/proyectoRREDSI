@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tipo rúbrica</title>
+    <title>Gestión rúbrica</title>
     <link rel="stylesheet" href="../plantilla/styles/bootstrap5/css/bootstrap.min.css">
     <link href="../plantilla/plugins/fontawesome-free-5.0.1/css/fontawesome-all.css" rel="stylesheet" type="text/css">
     <link rel="stylesheet" type="text/css" href="../plantilla/plugins/OwlCarousel2-2.2.1/owl.carousel.css">
@@ -94,13 +94,13 @@
     </div>
     <!--Contenido(body)-->
     <div class="container mt-5">
-
         <div>
             <!--Titulos principal-->
             <div>
-                <h1 class=" titulo d-flex justify-content-start" style="color: black; margin-left: 25%;">Gestionar Rúbricas</h1>
+                <h1 class=" titulo d-flex justify-content-start" style="color: black; margin-left: 25%;">Gestionar
+                    Rúbricas</h1>
             </div>
-            <div class="d-flex justify-content-between flex-column flex-lg-row flex-column-reverse " style="gap: 20px;">
+            <div class="d-flex justify-content-between flex-lg-row flex-column-reverse" style="gap: 20px;">
                 <!-- tabla -->
                 <div class="table-responsive w-sm-100 w-md-100 w-lg-75 " style="border: 1px solid black;">
                     <table id="basic-datatables" class="display table  text-dark">
@@ -108,19 +108,20 @@
                             <tr class="tr_rubrica align-items-center">
                                 <td class="titulo_rubrica text-center">Título:</td>
                                 <td colspan="5" class="text-center">
-                                    <input type="text" class="form-control rounded-5">
+                                    <input type="text" name="titulo" id="titulo" class="form-control rounded-5">
                                 </td>
                             </tr>
                             <tr class="tr_rubrica align-items-center">
                                 <td class="titulo_rubrica text-center">Ponente(es):</td>
                                 <td colspan="5" class="text-center">
-                                    <input type="text" class="form-control rounded-5">
+                                    <input type="text" name="ponente" id="ponente" class="form-control rounded-5">
                                 </td>
                             </tr>
                             <tr class="tr_rubrica align-items-center">
                                 <td class="titulo_rubrica text-center">Universidad:</td>
                                 <td colspan="5" class="text-center">
-                                    <input type="text" class="form-control  rounded-5">
+                                    <input type="text" name="universidad" id="universidad"
+                                        class="form-control  rounded-5">
                                 </td>
                             </tr>
                             <tr class="tr_rubrica">
@@ -128,8 +129,8 @@
                                 <td></td>
                                 <td></td>
                                 <td class="titulo_rubrica">Max valor</td>
-                                <td class="titulo_rubrica">Calificación</td>
-                                <td class="titulo_rubrica text-md-center fs-6 " colspan="3">Observaciones</td>
+                                <td class="titulo_rubrica text-center">Calificación</td>
+                                <td class="titulo_rubrica text-center" colspan="3">Observaciones</td>
                             </tr>
                         </thead>
                         <tbody>
@@ -142,13 +143,13 @@
                                         </span>
                                     </div>
                                 </td>
-                                <td class="text-center" style="width: 5%;">
-                                    <button class="boton_editar">
+                                <td class="td_boton" style="width: 5%;">
+                                    <button class="botones_rubrica">
                                         <i class="fas fa-edit" style="font-size: 24px;"></i>
                                     </button>
                                 </td>
-                                <td style="width: 5%;">
-                                    <button type="button" class="boton_editar">
+                                <td class="td_boton" style="width: 5%;">
+                                    <button class="botones_rubrica">
                                         <i class="fas fa-trash-alt" style="font-size: 24px;"></i>
                                     </button>
                                 </td>
@@ -161,17 +162,18 @@
                                     <div>
                                         <h4 class="d-inline-block mr-1 mb-0" style="font-weight: 1000;">Resumen:</h4>
                                         <span>
-                                            Lorem ipsum dolor sit amet consectetur adipisicing consequuntur, eos sint id excepturi eius?  neque qui.
+                                            Lorem ipsum dolor sit amet consectetur adipisicing consequuntur, eos sint id
+                                            excepturi eius? neque qui.
                                         </span>
                                     </div>
                                 </td>
-                                <td class="text-center" style="width: 5%;">
-                                    <button class="boton_editar">
+                                <td class="td_boton" style="width: 5%;">
+                                    <button class="botones_rubrica">
                                         <i class="fas fa-edit" style="font-size: 24px;"></i>
                                     </button>
                                 </td>
-                                <td style="width: 5%;">
-                                    <button type="button" class="boton_editar">
+                                <td class="td_boton" style="width: 5%;">
+                                    <button class="botones_rubrica">
                                         <i class="fas fa-trash-alt" style="font-size: 24px;"></i>
                                     </button>
                                 </td>
@@ -179,15 +181,120 @@
                                 <td style="width: 25%;"></td>
                                 <td style="width: 25%;"></td>
                             </tr>
+                            <tr class="tr_item_rubrica">
+                                <td style="width: 30%;">
+                                    <div>
+                                        <h4 class="d-inline-block mr-1 mb-0" style="font-weight: 1000;">Resultados
+                                            esperados:</h4>
+                                        <span>
+                                            Lorem ipsum dolor sit amet consectetur, eos neque qui.
+                                        </span>
+                                    </div>
+                                </td>
+                                <td class="td_boton" style="width: 5%;">
+                                    <button class="botones_rubrica">
+                                        <i class="fas fa-edit" style="font-size: 24px;"></i>
+                                    </button>
+                                </td>
+                                <td class="td_boton" style="width: 5%;">
+                                    <button class="botones_rubrica">
+                                        <i class="fas fa-trash-alt" style="font-size: 24px;"></i>
+                                    </button>
+                                </td>
+                                <td style="width: 5%;"></td>
+                                <td style="width: 25%;"></td>
+                                <td style="width: 25%;"></td>
+                            </tr>
+                            <tr class="tr_item_rubrica">
+                                <td style="width: 30%;">
+                                    <div>
+                                        <h4 class="d-inline-block mr-1 mb-0" style="font-weight: 1000;">Bibliografia:
+                                        </h4>
+                                        <span>
+                                            Lorem ipsum dolor sit amet consectetur adipisicing consequuntur, que qui.
+                                        </span>
+                                    </div>
+                                </td>
+                                <td class="td_boton" style="width: 5%;">
+                                    <button class="botones_rubrica">
+                                        <i class="fas fa-edit" style="font-size: 24px;"></i>
+                                    </button>
+                                </td>
+                                <td class="td_boton" style="width: 5%;">
+                                    <button class="botones_rubrica">
+                                        <i class="fas fa-trash-alt" style="font-size: 24px;"></i>
+                                    </button>
+                                </td>
+                                <td style="width: 5%;"></td>
+                                <td style="width: 25%;"></td>
+                                <td style="width: 25%;"></td>
+                            </tr>
+                            <tr class="tr_item_rubrica">
+                                <td class="td_boton text-center" colspan="3">
+                                    <button class="boton_añadir"
+                                        style="font-weight: 1000; font-size: 17px;">Añadir</button>
+                                </td>
+
+                                <td style="width: 5%;"></td>
+                                <td style="width: 25%;"></td>
+                                <td style="width: 25%;"></td>
+                            </tr>
+                            <tr class="tr_item_rubrica">
+                                <td class="td_boton text-center" colspan="3">
+                                    <h2 style="text-transform: uppercase; font-size: 17px; font-weight: bold;">Puntaje
+                                        total</h2>
+                                </td>
+
+                                <td style="width: 5%;"></td>
+                                <td style="width: 25%;"></td>
+                                <td style="width: 25%;"></td>
+                            </tr>
+                            <tr class="tr_item_rubrica">
+                                <td class="td_boton" colspan="3">
+                                    <h2 style="text-transform: uppercase; font-size: 17px; font-weight: bold;">Nombre
+                                        del evaluador</h2>
+                                </td>
+
+                                <td style="width: 5%;"></td>
+                                <td style="width: 25%;"></td>
+                                <td style="width: 25%;">
+                                    <h2 style="text-transform: uppercase; font-size: 17px; font-weight: bold;">Cédula:
+                                    </h2>
+                                </td>
+                            </tr>
+                            <tr class="tr_item_rubrica">
+                                <td class="td_boton" colspan="3">
+                                    <h2 style="text-transform: uppercase; font-size: 17px; font-weight: bold;">
+                                        Universidad</h2>
+                                </td>
+
+                                <td style="width: 5%;"></td>
+                                <td style="width: 25%;"></td>
+                                <td style="width: 25%;"></td>
+                            </tr>
+                            <tr class="tr_item_rubrica">
+                                <td class="td_boton" colspan="3">
+                                    <h2 style="text-transform: uppercase; font-size: 17px; font-weight: bold;">Email
+                                    </h2>
+                                </td>
+
+                                <td style="width: 5%;"></td>
+                                <td style="width: 25%;"></td>
+                                <td style="width: 25%;">
+                                    <h2 style="text-transform: uppercase; font-size: 17px; font-weight: bold;">Celular:
+                                    </h2>
+                                </td>
+                            </tr>
                         </tbody>
                     </table>
                 </div>
                 <!--Card de tipos rúbricas-->
-                <div class="scroll-div border border-3 border-dark rounded-1">
+                <div class="scroll-div border border-3 border-dark rounded-1 d-flex flex-column">
                     <h2 class="tipo_formato d-flex justify-content-center">Elije uno de los formatos:</h2>
                     <!--Primera fila(contiene 2 cards)-->
                     <div class="row text-center">
-                        <div class="col_card col-lg-12 col-md-6 col-6 d-flex justify-content-md-center justify-content-center">
+                        <div
+                            class="col_card col-lg-12 col-md-6 col-6 d-flex justify-content-md-center justify-content-center">
                             <div class="card border-dark border-4">
                                 <h2 class="title">1</h2>
                                 <img src="../plantilla/images/imageRúbrica.jpg" class="img-fluid w-50 pb-2"
@@ -208,7 +315,8 @@
                             </div>
                         </div>
 
-                        <div class="col_card col-lg-12 col-md-6 col-6 d-flex justify-content-md-center justify-content-center">
+                        <div
+                            class="col_card col-lg-12 col-md-6 col-6 d-flex justify-content-md-center justify-content-center">
                             <div class="card border-dark border-4">
                                 <h2 class="title">1</h2>
                                 <img src="../plantilla/images/imageRúbrica.jpg" class="img-fluid w-50 pb-2"
@@ -228,7 +336,8 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col_card col-lg-12 col-md-6 col-6 d-flex justify-content-md-center justify-content-center mb-2">
+                        <div
+                            class="col_card col-lg-12 col-md-6 col-6 d-flex justify-content-md-center justify-content-center mb-2">
                             <div class="card border-dark border-4">
                                 <h2 class="title">1</h2>
                                 <img src="../plantilla/images/imageRúbrica.jpg" class="img-fluid w-50 pb-2"
@@ -248,7 +357,8 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col_card col-lg-12 col-md-6 col-6 d-flex justify-content-md-center justify-content-center mb-2">
+                        <div
+                            class="col_card col-lg-12 col-md-6 col-6 d-flex justify-content-md-center justify-content-center mb-2">
                             <div class="card border-dark border-4">
                                 <h2 class="title">1</h2>
                                 <img src="../plantilla/images/imageRúbrica.jpg" class="img-fluid w-50 pb-2"
@@ -271,11 +381,11 @@
                     </div>
                 </div>
             </div>
-            <!--Btn regresar, Btn editar-->
-            <div class="d-flex justify-content-center mt-3">
-                <button class="boton pl-5 pr-5 mx-auto">Regresar</button>
-                <button class="boton pl-5 pr-5 mx-auto">Editar</button>
-            </div>
+        </div>
+        <!--Btn regresar, Btn editar-->
+        <div class="d-flex justify-content-center mt-3">
+            <button class="boton pl-5 pr-5 mx-auto">Regresar</button>
+            <button class="boton pl-5 pr-5 mx-auto">Editar</button>
         </div>
     </div>
     <footer class="footer mt-3">

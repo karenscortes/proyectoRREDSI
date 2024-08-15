@@ -1523,7 +1523,8 @@ input:last-of-type
 	border-radius: 5px;
 	background-color:   rgb(255, 182, 6);
 }
-.boton_editar{
+
+.botones_rubrica{
 	width: 40px;
 	height: 40px;
 	border: none;
@@ -1531,12 +1532,16 @@ input:last-of-type
 	background-color:   rgb(255, 182, 6);
 }
 
-.tr_rubrica{
-	border-bottom: 1px solid black;
+.boton_añadir{
+	border: none;
+	width: 150px;
+	height: 30px;
+	background-color:   rgb(255, 182, 6);
+	border-radius: 5px;
 }
 
-.td_rubrica{
-	border-right: 1px solid black;
+.tr_rubrica{
+	border-bottom: 1px solid black;
 }
 
 .titulo_rubrica{
@@ -1565,4 +1570,8 @@ input:last-of-type
 
 .tr_item_rubrica > td:not(:last-child) {
 	border-right: 1px solid black;
+}
+
+.td_boton{
+	vertical-align: middle;
 }
