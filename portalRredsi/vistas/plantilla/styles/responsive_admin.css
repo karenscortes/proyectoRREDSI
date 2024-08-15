@@ -237,6 +237,149 @@
 	}
 }
 
+@media only screen and (min-width: 991px) and (max-width: 1161px) 
+{
+	.main_nav_container
+	{
+		display: none;
+	}
+	.logo_container
+	{
+		padding-left: 30px;
+	}
+	.hamburger_container
+	{
+		display: block;
+	}
+	.hero_slide_content h1
+	{
+		font-size: 48px;
+	}
+	.hero_boxes
+	{
+		width: 100%;
+		height: auto;
+		padding-top: 117px;
+	}
+	.hero_boxes_inner
+	{
+		position: relative;
+		top: auto;
+		left: auto;
+	}
+	.hero_box
+	{
+		padding-left: 50px;
+	}
+	.hero_box_col
+	{
+		margin-bottom: 30px;
+	}
+	.hero_box_col:last-child
+	{
+		margin-bottom: 0px;
+	}
+	.course_box
+	{
+		margin-bottom: 80px;
+	}
+	.course_box:last-child
+	{
+		margin-bottom: 0px;
+	}
+	.search_section
+	{
+		padding-top: 156px;
+		padding-bottom: 161px;
+	}
+	.register_content,
+	.search_content
+	{
+		width: 75%;
+	}
+	.testimonials_slider_container
+	{
+		padding-left: 0px;
+		padding-right: 0px;
+	}
+	.event_date
+	{
+		margin-top: 30px;
+	}
+	.event_name
+	{
+		margin-top: 17px;
+	}
+	.event_content p
+	{
+		margin-bottom: 0px;
+	}
+	.newsletter_form_container
+	{
+		width: 90%;
+	}
+	.footer_col
+	{
+		margin-bottom: 30px;
+	}
+	.footer_col:last-child
+	{
+		margin-bottom: 0px;
+	}
+}
+
+@media only screen and (min-width: 500px) and (max-width: 768px) 
+{
+
+	.scroll-div{
+		width: 100%;
+	}
+
+	.card{
+		width: 100%;
+	}
+}
+
+@media only screen and (min-width: 768px) and (max-width: 991px) 
+{
+
+	.scroll-div{
+		width: 100%;
+	}
+
+	.card{
+		width: 75%;
+	}
+}
+
+@media only screen and (min-width: 992px) and (max-width: 1366px) 
+{
+
+	.scroll-div{
+		width: 25%;
+	}
+}
+
+@media only screen and (min-width: 992px) and (max-width: 1199px) 
+{
+
+	.tipo_formato{
+		font-size: 15px;
+	}
+}
+
+@media only screen and (min-width: 1367px) and (max-width: 2612px) 
+{
+
+	.scroll-div{
+		width: 25%;
+	}
+	.table-responsive{
+		width: 100%;
+	}
+}
+
+
 /************
 7. 959px
 ************/
