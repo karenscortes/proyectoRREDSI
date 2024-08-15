@@ -4,16 +4,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Principal</title>
-    
+    <title>Salas</title>
+    <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="../plantilla/styles/bootstrap4/bootstrap.min.css">
     <link href="../plantilla/plugins/fontawesome-free-5.0.1/css/fontawesome-all.css" rel="stylesheet" type="text/css">
     <link rel="stylesheet" type="text/css" href="../plantilla/plugins/OwlCarousel2-2.2.1/owl.carousel.css">
     <link rel="stylesheet" type="text/css" href="../plantilla/plugins/OwlCarousel2-2.2.1/owl.theme.default.css">
     <link rel="stylesheet" type="text/css" href="../plantilla/plugins/OwlCarousel2-2.2.1/animate.css">
+    <link rel="stylesheet" type="text/css" href="../plantilla/styles/main_styles.css">
+    <link rel="stylesheet" href="../plantilla/styles/global_styles.css">
     <link rel="stylesheet" type="text/css" href="../plantilla/styles/main_styles_delegado.css">
     <link rel="stylesheet" type="text/css" href="../plantilla/styles/responsive.css">
-    
 </head>
 
 <body>
@@ -32,7 +33,7 @@
             <nav class="main_nav_container flex-grow-1">
                 <div class="main_nav">
                     <ul class="main_nav_list d-flex justify-content-between">
-                        <li class="main_nav_item"><a href="principal.html">Inicio</a></li>
+                        <li class="main_nav_item"><a href="#">Inicio</a></li>
                         <li class="main_nav_item"><a href="#">Perfil</a></li>
                         <li class="main_nav_item">
                             <div class="dropdown">
@@ -65,7 +66,7 @@
                                     Evento
                                 </a>
                                 <div class="dropdown-menu text-center">
-                                    <a href="salas.html">Salas</a><br>
+                                    <a href="#">Salas</a><br>
                                     <a href="#">Asistencia</a>
                                 </div>
                             </div>
@@ -84,13 +85,14 @@
         </div>
 
     </header>
-<!-- fondo del header -->
-<div class="home">
-    <div class="home_background_container prlx_parent">
-        <div class="home_background prlx" style="background-image:url(../plantilla/images/teachers_background.jpg)"></div>
+    <!-- fondo del header -->
+    <div class="home">
+        <div class="home_background_container prlx_parent">
+            <div class="home_background prlx" style="background-image:url(../plantilla/images/teachers_background.jpg)">
+            </div>
+        </div>
+
     </div>
-    
-</div>
     <!-- Menu -->
     <div class="menu_container menu_mm">
 
@@ -103,8 +105,8 @@
         <div class="menu_inner menu_mm">
             <div class="menu menu_mm">
                 <ul class="menu_list menu_mm">
-                    <li class="menu_item menu_mm"><a href="principal.html">Inicio</a></li>
-                    <li class="menu_item menu_mm"><a href="#">Perfil</a></li>
+                    <li class="menu_item menu_mm"><a href="#">Inicio</a></li>
+                    <li class="menu_item menu_mm"><a href="perfil.html">Perfil</a></li>
                     <li class="menu_item menu_mm">
                         <div class="dropdown">
                             <a class=" dropdown-toggle text-dark" type="button" data-toggle="dropdown"
@@ -124,7 +126,7 @@
                                 Proyectos
                             </a>
                             <div class="dropdown-menu text-center">
-                                <a href="#">Asignación de <br> Proyectos</a><br>
+                                <a href="asignar_proyectos.html">Asignación de <br> Proyectos</a><br>
                                 <a href="lista_proyectos.html">Lista de Proyectos</a>
                             </div>
                         </div>
@@ -136,7 +138,7 @@
                                 Evento
                             </a>
                             <div class="dropdown-menu text-center">
-                                <a href="salas.html">Salas</a><br>
+                                <a href="#">Salas</a><br>
                                 <a href="#">Asistencia</a>
                             </div>
                         </div>
@@ -157,87 +159,89 @@
                                     class="fab fa-twitter"></i></a></li>
                     </ul>
                 </div>
-
                 <div class="menu_copyright menu_mm">ADSO 2670586 All rights reserved</div>
             </div>
-
         </div>
-
     </div>
 
-    <div class="become">
-        <div class="container">
-            <div class="row row-eq-height">
-
-                <div class="col-lg-6 order-2 order-lg-1">
-                    <div class="become_title">
-                        <h1>Bienvenido al portal RREDSI</h1>
+    <!-- Card-->
+    <div class="container mt-5">
+        <div class="row mb-4">
+            <div class="col">
+                <div class="section_title text-center">
+                    <h1>Administrar Salas</h1>
+                </div>
+            </div>
+        </div>
+        <div class="row mb-4">
+            <div class="col-md-4">
+                <h3 class="text-center text-dark font-weight-bold">SALA ASIGNADA</h3>
+                <div class="p-3 text-dark" style="background-color: rgb(226, 226, 226); border-radius: 8px;">
+                    <div class="card shadow-sm py-2">
+                        <div class="card-body text-center align-items-center font-weight-bold" style=" line-height: 1.2;">
+                            <strong class="text-dark font-weight-bold">Area de conocimiento:</strong>
+                            <p id="area_conocimiento">Sistemas</p>
+                            <strong class="text-dark font-weight-bold">N° de sala:</strong>
+                            <p id="numero_sala">201</p>
+                        </div>
                     </div>
-                    <p class="become_text">In aliquam, augue a gravida rutrum, ante nisl fermentum nulla, vitae tempor nisl ligula vel nunc. Proin quis mi malesuada, finibus tortor fermentum. Etiam eu purus nec eros varius luctus. Praesent finibus risus facilisis ultricies venenatis. Suspendisse fermentum sodales lacus, lacinia gravida elit dapibus sed. Cras in lectus elit. Maecenas tempus nunc vitae mi egestas venenatis. Aliquam rhoncus, purus in vehicula porttitor, lacus ante consequat purus, id elementum enim purus nec enim. In sed odio rhoncus, tristique ipsum id, pharetra neque.</p>
-                    <div class="become_button text-center trans_200">
-                        <a href="#">Explorar</a>
+                    <div class="d-flex justify-content-center">
+                        <button id="btn_detalle_sala" class="btn text-white font-weight-bold mt-2" style="background: rgb(255, 182, 6); width: 50%;">Detalle</button>
                     </div>
                 </div>
+            </div>
 
-                <div class="col-lg-6 order-1 order-lg-2">
-                    <div class="become_image">
-                        <img src="../plantilla/images/become.jpg" alt="">
-                    </div>
+            <!-- Tabla -->
+            <div class="col-md-8">
+                <h3 class="text-center text-dark font-weight-bold">OTRAS SALAS</h3>
+                <div class="table text-center text-dark" data-spy="scroll"
+                    style="max-height: 200px; overflow-y: auto; scrollbar-color: rgba(0, 0, 0, 0.603) rgba(255, 255, 255, 0); scrollbar-width: thin;">
+                    <table class="table table-striped table-hover">
+                        <thead class="text-dark" style="background: rgb(255, 182, 6);">
+                            <tr>
+                                <th class="text-center font-weight-bold">N° DE SALA</th>
+                                <th class="text-center font-weight-bold">AREA DE CONOCIMIENTO</th>
+                                <th class="text-center font-weight-bold">DELEGADO ASIGNADO</th>
+                                <th class="text-center font-weight-bold">DETALLE</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="font-weight-bold">205</td>
+                                <td>Sistemas</td>
+                                <td>Rigoberto Uran</td>
+                                <td><a href="#" style="color: #333;">VER</a></td>
+                            </tr>
+                            <tr>
+                                <td>206</td>
+                                <td>Ciencias Sociales</td>
+                                <td>Sebastian Usma</td>
+                                <td><a href="#" style="color: #333;">VER</a></td>
+                            </tr>
+                            <tr>
+                                <td>103</td>
+                                <td>Química</td>
+                                <td>Santiado Pérez</td>
+                                <td><a href="#" style="color: #333;">VER</a></td>
+                            </tr>
+                            <tr>
+                                <td>105</td>
+                                <td>Biología</td>
+                                <td>Miguel Alzate</td>
+                                <td><a href="#" style="color:#333;">VER</a></td>
+                            </tr>
+                            <tr>
+                                <td>105</td>
+                                <td>Biología</td>
+                                <td>Carolina Lee</td>
+                                <td><a href="#" style="color:#333;">VER</a></td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
-                
             </div>
         </div>
     </div>
-
-
-    <!-- Milestones -->
-
-	<div class="milestones">
-		<div class="milestones_background" style="background-image:url(../plantilla/images/milestones_background.jpg)"></div>
-
-		<div class="container">
-			<div class="row">
-				
-				<!-- Milestone -->
-				<div class="col-lg-3 milestone_col">
-					<div class="milestone text-center">
-						<div class="milestone_icon"><img src="../plantilla/images/milestone_1.svg" alt="https://www.flaticon.com/authors/zlatko-najdenovski"></div>
-						<div class="milestone_counter" data-end-value="750">0</div>
-						<div class="milestone_text">Postulaciones</div>
-					</div>
-				</div>
-
-				<!-- Milestone -->
-				<div class="col-lg-3 milestone_col">
-					<div class="milestone text-center">
-						<div class="milestone_icon"><img src="../plantilla/images/milestone_2.svg" alt="https://www.flaticon.com/authors/zlatko-najdenovski"></div>
-						<div class="milestone_counter" data-end-value="120">0</div>
-						<div class="milestone_text">Presentaciones</div>
-					</div>
-				</div>
-
-				<!-- Milestone -->
-				<div class="col-lg-3 milestone_col">
-					<div class="milestone text-center">
-						<div class="milestone_icon"><img src="../plantilla/images/milestone_3.svg" alt="https://www.flaticon.com/authors/zlatko-najdenovski"></div>
-						<div class="milestone_counter" data-end-value="39">0</div>
-						<div class="milestone_text">Proyectos asignados</div>
-					</div>
-				</div>
-
-				<!-- Milestone -->
-				<div class="col-lg-3 milestone_col">
-					<div class="milestone text-center">
-						<div class="milestone_icon"><img src="../plantilla/images/milestone_4.svg" alt="https://www.flaticon.com/authors/zlatko-najdenovski"></div>
-						<div class="milestone_counter" data-end-value="3500" data-sign-before="+">0</div>
-						<div class="milestone_text">Proyectos evaluados</div>
-					</div>
-				</div>
-
-			</div>
-		</div>
-	</div>
-    
 
     <!--Footer-->
     <footer class="footer mt-3">
@@ -254,13 +258,14 @@
                         <!-- Logo -->
                         <div class="logo_container">
                             <div class="logo">
-                                <img src="../plantilla/images/logoRredsi.png" alt="">
+                                <img src="../plantilla/images/RREDSI.jpg" alt="">
                                 <span>RREDSI</span>
                             </div>
                         </div>
 
                         <p class="footer_about_text">In aliquam, augue a gravida rutrum, ante nisl fermentum nulla,
-                            vitae tempor nisl ligula vel nunc. Proin quis mi malesuada, finibus tortor fermentum, tempor
+                            vitae tempor nisl ligula vel nunc. Proin quis mi malesuada, finibus tortor fermentum,
+                            tempor
                             lacus.</p>
 
                     </div>
@@ -334,7 +339,8 @@
                 <div class="footer_copyright">
                     <span><!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
                         Copyright &copy;
-                        <script>document.write(new Date().getFullYear());</script> All rights reserved | This template
+                        <script>document.write(new Date().getFullYear());</script> All rights reserved | This
+                        template
                         is made with by <a href="#" target="_blank">ADSO 2670586</a>
                         <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
                     </span>
