@@ -4,21 +4,25 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Perfil</title>
-    <link rel="stylesheet" href="../bootstrap/css/bootstrap.min.css">
+    <title>Perfíl evaluador</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link rel="stylesheet" href="/plantilla/styles/bootstrap4/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="../plantilla/styles/bootstrap4/bootstrap.min.css">
     <link href="../plantilla/plugins/fontawesome-free-5.0.1/css/fontawesome-all.css" rel="stylesheet" type="text/css">
     <link rel="stylesheet" type="text/css" href="../plantilla/plugins/OwlCarousel2-2.2.1/owl.carousel.css">
     <link rel="stylesheet" type="text/css" href="../plantilla/plugins/OwlCarousel2-2.2.1/owl.theme.default.css">
     <link rel="stylesheet" type="text/css" href="../plantilla/plugins/OwlCarousel2-2.2.1/animate.css">
-    <link rel="stylesheet" type="text/css" href="../plantilla/styles/main_styles_delegado.css">
-    <link rel="stylesheet" type="text/css" href="../plantilla/styles/responsive.css">
+    <link rel="stylesheet" type="text/css" href="../plantilla/styles/main_styles_admin.css">
+    <link rel="stylesheet" type="text/css" href="../plantilla/styles/responsive_admin.css">
+    <link rel="stylesheet" href="../plantilla/styles/global_styles.css">
+    <link rel="stylesheet" href="../plantilla/styles/perfil_admin_styles.css">
 </head>
 
 <body>
     <!-- header -->
-    <header class="header d-flex flex-grow position-absolute top-0 w-80">
-        <div class="header_content with_button d-flex flex-row align-items-center justify-content-start">
+    <header class="header d-flex flex-row position-absolute top-20">
+        <div class="header_content d-flex flex-row align-items-center justify-content-start">
             <!-- Logo -->
             <div class="logo_container">
                 <div class="logo">
@@ -32,28 +36,13 @@
                 <div class="main_nav">
                     <ul class="main_nav_list d-flex justify-content-between">
                         <li class="main_nav_item"><a href="principal.html">Inicio</a></li>
-                        <li class="main_nav_item"><a href="perfil_evaluador.html">Perfil</a></li>
-                        <li class="main_nav_item">
-                            <div class="dropdown">
-                                <a class=" dropdown-toggle text-dark" type="button" data-toggle="dropdown"
-                                    aria-expanded="false">
-                                    Proyectos
-                                </a>
-                                <div class="dropdown-menu text-center">
-                                    <a href="lista_proyectos_evaluador.html">Primera etapa</a><br>
-                                    <a href="#">Segunda etapa</a>
-                                </div>
-                            </div>
-                        </li>
+                        <li class="main_nav_item"><a href="perfil_evaluador.html"style="font-weight: 1000;">Perfil</a></li>
+                        <li class="main_nav_item"> <a href="lista_proyectos_evaluador.html">Proyectos</a></li>
                         <li class="main_nav_item"><a href="convocatoria.html">Convocatoria</a></li>
-
                     </ul>
                 </div>
             </nav>
         </div>
-        <a href="#" class="header_side d-flex flex-row justify-content-center align-items-center">
-            <h3 class="main_nav_item text-dark">Cerrar sesión</h3>
-        </a>
 
         <!-- Hamburger -->
         <div class="hamburger_container">
@@ -62,11 +51,8 @@
 
     </header>
     <!-- fondo del header -->
-    <div class="home">
-        <div class="home_background_container prlx_parent">
-            <div class="home_background prlx" style="background-image:url(../plantilla/images/teachers_background.jpg)">
-            </div>
-        </div>
+    <div>
+        <img src="../plantilla/images/event_1.jpg" alt="" height="300px" width="100%" >
     </div>
     <!-- Menu -->
     <div class="menu_container menu_mm">
@@ -82,23 +68,12 @@
                 <ul class="menu_list menu_mm">
                     <li class="menu_item menu_mm"><a href="principal.html">Inicio</a></li>
                     <li class="menu_item menu_mm"><a href="perfil_evaluador.html">Perfil</a></li>
-                    <li class="menu_item menu_mm">
-                        <div class="dropdown">
-                            <a class=" dropdown-toggle text-dark" type="button" data-toggle="dropdown"
-                                aria-expanded="false">
-                                Proyectos
-                            </a>
-                            <div class="dropdown-menu text-center">
-                                <a href="lista_proyectos_evaluador.html">Primera etapa</a><br>
-                                <a href="#">Segunda etapa</a>
-                            </div>
-                        </div>
-                    </li>
+                    <li class="menu_item menu_mm"><a href="lista_proyectos_evaluador.html">Proyectos</a><br></li>
                     <li class="menu_item menu_mm"><a href="convocatoria.html">Convocatoria</a></li>
                     <li class="menu_item menu_mm"><a href="#">Cerrar sesión</a></li>
                 </ul>
-                <!-- Menu Social -->
 
+                <!-- Menu Social -->
                 <div class="menu_social_container menu_mm">
                     <ul class="menu_social menu_mm">
                         <li class="menu_social_item menu_mm"><a href="https://www.instagram.com/rredsiquindio/"><i
@@ -115,287 +90,368 @@
             </div>
 
         </div>
-
     </div>
 
-
-    <div class="container pt-5">
-        <div class="row">
-            <!-- Opciones para ingresar datos -->
-            <div class="col-12">
-                <div class="row justify-content-around">
-                    <div class="col-5 col-sm-2 m-2">
-                        <button id="btn_datos_personales" class="btn bg-dark text-white"><strong
-                                class="font-weight-bold">1. </strong>Datos Personales</button>
-                    </div>
-                    <div class="col-5 col-sm-2 m-2">
-                        <button id="btn_datos_institucionales" class="btn text-dark"><strong
-                                class=" font-weight-bold">2. </strong>Datos Institucionales</button>
-                    </div>
-                    <div class="col-5 col-sm-2 m-2">
-                        <button id="btn_datos_academicos" class="btn text-dark"><strong class="font-weight-bold">3.
-                            </strong>Datos Academicos</button>
+    <!--Main Part-->
+    <div class="container">
+        <div class="row justify-content-center py-5">
+            <div class="col-xl-10 col-lg-10 col-md-12 ">
+                <!-- stepper -->
+                <div class="tab" role="tabpanel">
+                    <!-- Nav tabs -->
+                    <ul class="nav nav-tabs" role="tablist">
+                        <li role="presentation" class="active"><a href="#Section1" aria-controls="home" role="tab" data-toggle="tab"><i class="fas fa-user-secret"></i> Datos Personales</a></li>
+                        <li role="presentation"><a href="#Section2" aria-controls="profile" role="tab" data-toggle="tab"><i class="fas fa-university"></i> Datos Institucionales</a></li>
+                        <li role="presentation"><a href="#Section3" aria-controls="messages" role="tab" data-toggle="tab"><i class="fas fa-graduation-cap"></i> Datos Academicos</a></li>
+                    </ul>
+                    <!-- Tab panes -->
+                    <div class="tab-content tabs">
+                        <div role="tabpanel" class="tab-pane active text-dark" id="Section1">
+                            <h3>Datos Personales</h3>
+                            <form action="#">
+                                <div class="form-row">
+                                    <div class="form-group col-md-6">
+                                      <label for="nombres_evaluador">Nombres:</label>
+                                      <input type="text" class="form-control" id="nombres_evaluador">
+                                    </div>
+                                    <div class="form-group col-md-6">
+                                      <label for="apellidos_evaluador">Apellidos:</label>
+                                      <input type="text" class="form-control" id="apellidos_evaluador">
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group col-md-6">
+                                        <label for="tipo_documento_evaluador" class="font-weight-bold text-dark">Tipo de
+                                            documento</label>
+                                        <select id="tipo_documento_evaluador" type="select" class="form-control text-dark custom-select"
+                                            required>
+                                            <option value="Seleccionar" selected>Seleccione una opción</option>
+                                            <option value="cedula">Cédula</option>
+                                            <option value="pasaporte">Pasaporte</option>
+                                            <option value="cedula_extranjeria">Cédula de extranjeria</option>
+                                        </select>
+                                    </div>                                  
+                                    <div class="form-group col-md-6">
+                                        <label for="numero_documento_evaluador">N° de Documento</label>
+                                        <input type="text" class="form-control" id="numero_documento_evaluador">
+                                    </div>
+                                </div>
+                                <div class="form-group mb-5">
+                                    <label for="correo_evaluador">Correo</label>
+                                    <input type="email" class="form-control" id="correo_evaluador" placeholder="ejemplo@gmail.com">
+                                </div>
+                                <div class="text-center">
+                                    <button type="button" class="btn btn-warning font-weight-bold text-dark mr-5" data-toggle="modal" data-target="#resetPasswordModal">Cambiar Contraseña</button>
+                                    <button type="button" class="btn btn-warning font-weight-bold text-dark ">Siguiente</button>
+                                </div>                                                  
+                            </form>
+                        </div>
+                        <div role="tabpanel" class="tab-pane fade text-dark" id="Section2">
+                            <h3>Datos Institucionales</h3>
+                            <form action="#" >
+                                <div class="form-row">
+                                    <div class="form-group col-md-6">
+                                      <label for="institucion_evaluador">Institución educativa:</label>
+                                      <input type="text" class="form-control" id="institucion_evaluador">
+                                    </div>
+                                    <div class="form-group col-md-6">
+                                      <label for="grupo_investigacion_evaluador">Grupo de Investigación:</label>
+                                      <input type="text" class="form-control" id="grupo_investigacion_evaluador">
+                                    </div>
+                                </div>
+                                <div class="form-group mb-5">
+                                    <label for="semillero_evaluador">Nombre del Semillero:</label>
+                                    <input type="text" class="form-control" id="semillero_evaluador">
+                                </div>
+                                <div class="text-center">
+                                    <button type="button" class="btn btn-warning font-weight-bold text-dark mr-5">Regresar</button>
+                                    <button type="button" class="btn btn-warning font-weight-bold text-dark">Siguiente</button>
+                                </div>                                
+                            </form>
+                        </div>
+                        <div role="tabpanel" class="tab-pane fade text-dark" id="Section3">
+                            <h3>Datos Academicos</h3>
+                            <form action="#">
+                                <div class="form-row">
+                                    <div class="form-group col-md-4">
+                                        <label for="titulo_pregrado_evaluador">Titulo Pregrado:</label>
+                                        <div class="d-inline-flex" >
+                                            <input type="text" class="form-control" id="titulo_pregrado_evaluador">
+                                            <label class="items-center p-1 bg-white text-black">
+                                                <i class="fas fa-plus-circle h4"></i>
+                                                <input type='file' class="d-none d-print-block" />
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-md-4">
+                                        <label for="titulo_especializacion_evaluador">Titulo de Especialización:</label>
+                                        <div class="d-inline-flex" >
+                                            <input type="text" class="form-control" id="titulo_especializacion_evaluador">
+                                            <label class="items-center p-1 bg-white text-black">
+                                                <i class="fas fa-plus-circle h4"></i>
+                                                <input type='file' class="d-none d-print-block" />
+                                            </label>
+                                        </div>         
+                                    </div>
+                                    <div class="form-group col-md-4">
+                                        <label for="titulo_maestria_evaluador">Titulo de Maestría:</label>
+                                        <div class="d-inline-flex" >
+                                            <input type="text" class="form-control" id="titulo_maestria_evaluador">
+                                            <label class="items-center p-1 bg-white text-black">
+                                                <i class="fas fa-plus-circle h4"></i>
+                                                <input type='file' class="d-none d-print-block" />
+                                            </label>
+                                        </div>
+                                        
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group col-md-4">
+                                        <label for="titulo_doctorado_evaluador">Titulo de Doctorado:</label>
+                                        <div class="d-inline-flex" >
+                                            <input type="text" class="form-control" id="titulo_doctorado_evaluador">
+                                            <label class="items-center p-1 bg-white text-black">
+                                                <i class="fas fa-plus-circle h4"></i>
+                                                <input type='file' class="d-none d-print-block" />
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-md-4 pr-5">
+                                        <label for="area_conocimiento_evaluador" class="font-weight-bold text-dark">Area de Conocimiento</label>
+                                        <select id="area_conocimiento_evaluador" type="select" class="form-control text-dark custom-select"
+                                            required>
+                                            <option value="seleccionar" selected>Seleccione una opción</option>
+                                            <option value="IA">Inteligencia Artificial</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group col-md-4 pr-5 mb-5">
+                                        <label for="otra_area_conocimiento_evaluador" class="font-weight-bold text-dark">Otra Area</label>
+                                        <select id="otra_area_conocimiento_evaluador" type="select" class="form-control text-dark custom-select"
+                                            required>
+                                            <option value="seleccionar" selected>Seleccione una opción</option>
+                                            <option value="Agricultura">Agricultura</option>
+                                        </select>
+                                    </div>                                   
+                                </div>   
+                                <div class="text-center">
+                                    <button type="button" class="btn btn-warning font-weight-bold text-dark w-25 mr-5">Regresar</button>
+                                    <button type="submit" class="btn btn-warning font-weight-bold text-dark w-25 ">Guardar</button>
+                                </div>                                                  
+                            </form>
+                        </div>
                     </div>
                 </div>
-            </div>
 
-            <!-- Datos Personales -->
-            <div id="datos_personales" class="col-12 mt-2">
-                <div class="row justify-content-center">
-                    <div class="col-12 text-center my-3">
-                        <h2 class="font-weight-bold text-dark">Datos Personales</h2>
+                <!-- Accordion -->
+                <div class="accordion" id="accordionExample">
+                    <div class="card">
+                      <div class="card-header" id="headingOne">
+                        <h2 class="mb-0">
+                          <button class="btn btn-block " type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                            <i class="fas fa-user-secret"></i> Datos Personales
+                          </button>
+                        </h2>
+                      </div>
+                  
+                      <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionExample">
+                        <div class="card-body my-3">
+                            <form action="#">
+                                <div class="form-row">
+                                    <div class="form-group col-md-6">
+                                      <label for="inputName">Nombres:</label>
+                                      <input type="text" class="form-control" id="inputName">
+                                    </div>
+                                    <div class="form-group col-md-6">
+                                      <label for="inputLastname">Apellidos:</label>
+                                      <input type="text" class="form-control" id="inputLastname">
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group col-md-6">
+                                        <label for="inputState">Tipo de Documento</label>
+                                        <select id="inputState" class="form-control custom-select">
+                                          <option selected>Seleccionar...</option>
+                                          <option>Cedula</option>
+                                        </select>
+                                    </div>
+                                  
+                                    <div class="form-group col-md-6">
+                                        <label for="inputCity">N° de Documento</label>
+                                        <input type="text" class="form-control" id="inputCity">
+                                    </div>
+                                </div>
+                                <div class="form-group mb-5">
+                                    <label for="inputAddress">Correo</label>
+                                    <input type="email" class="form-control" id="inputAddress" placeholder="usuario@gmail.com">
+                                </div>
+                                <div class="text-center">
+                                    <button type="button" class="btn btn-warning font-weight-bold text-dark w-50 mr-3" data-toggle="modal" data-target="#resetPasswordModal">Cambiar Contraseña</button>
+                                </div>                                                  
+                            </form>                          
+                        </div>
+                      </div>
                     </div>
-                    <div class="col-12 col-sm-8">
-                        <form action="">
-                            <div class="row justify-content-center">
-                                <div class="col-10 col-sm-5 mb-3">
-                                    <label for="campo_tipo_documento" class="font-weight-bold text-dark">Tipo de
-                                        documento</label>
-                                    <select id="campo_tipo_documento" type="select" class="form-control text-dark"
-                                        required>
-                                        <option value="cedula">Seleccione una opción</option>
-                                        <option value="cedula">Cédula</option>
-                                        <option value="pasaporte">Pasaporte</option>
-                                        <option value="cedula_extranjeria">Cédula de extranjeria</option>
-                                    </select>
-                                </div>
-                                <div class="col-10 col-sm-5 mb-3">
-                                    <label for="campo_n_documento" class="font-weight-bold text-dark">N° de
-                                        documento</label>
-                                    <input id="campo_n_documento" type="text" class="form-control text-dark" required>
-                                </div>
-                                <div class="col-10 col-sm-5 mb-3">
-                                    <label for="campo_nombres" class="font-weight-bold text-dark">Nombres</label>
-                                    <input id="campo_nombres" type="text" class="form-control text-dark" required>
-                                </div>
-                                <div class="col-10 col-sm-5 mb-3">
-                                    <label for="campo_apellidos" class="font-weight-bold text-dark">Apellidos</label>
-                                    <input id="campo_apellidos" type="text" class="form-control text-dark" required>
-                                </div>
-                                <div class="col-10 col-sm-10 mb-3">
-                                    <label for="campo_correo" class="font-weight-bold text-dark">Correo</label>
-                                    <input id="campo_correo" type="email" class="form-control text-dark" required>
-                                </div>
-                                <div class="col-12 col-sm-10 mb-3 mt-2">
-                                    <div class="row text-center justify-content-center">
-                                        <div class="col-5">
-                                            <button id="btn_cambiar_contraseña" type="button" data-toggle="modal" data-target="#modal_contraseña"
-                                                class="btn text-white font-weight-bold w-100" style="background: rgb(255, 182, 6)
-    ;">Cambiar contraseña</button>
-                                        </div>
-                                        <div class="col-5">
-                                            <button id="btn_siguiente_datos_personales"
-                                                class="btn text-white font-weight-bold w-100" style="background: rgb(255, 182, 6)
-    ;">Siguiente</button>
-                                        </div>
+                    <div class="card">
+                      <div class="card-header" id="headingTwo">
+                        <h2 class="mb-0">
+                          <button class="btn btn-block  collapsed" type="button" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                            <i class="fas fa-university"></i> Datos Institucionales
+                          </button>
+                        </h2>
+                      </div>
+                      <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionExample">
+                        <div class="card-body my-3">
+                            <form action="#">
+                                <div class="form-row">
+                                    <div class="form-group col-md-6">
+                                      <label for="inputPlaceName">Institución educativa:</label>
+                                      <input type="text" class="form-control" id="inputPlaceName">
+                                    </div>
+                                    <div class="form-group col-md-6">
+                                      <label for="inputResearchGroup">Grupo de Investigación:</label>
+                                      <input type="text" class="form-control" id="inputSearchGroup">
                                     </div>
                                 </div>
-                            </div>
-                        </form>
+                                <div class="form-group mb-5">
+                                    <label for="inputResearchLab">Nombre del Semillero</label>
+                                    <input type="text" class="form-control" id="inputResearchLab">
+                                </div>                                
+                            </form>
+                        </div>
+                      </div>
                     </div>
-                </div>
-            </div>
-
-            <!-- Datos Institucionales -->
-            <div id="datos_institucionales" class="col-12 mt-2" style="display: none;">
-                <div class="row justify-content-center">
-                    <div class="col-12 text-center my-3">
-                        <h2 class="font-weight-bold text-dark">Datos Institucionales</h2>
+                    <div class="card">
+                      <div class="card-header" id="headingThree">
+                        <h2 class="mb-0">
+                          <button class="btn btn-block collapsed" type="button" data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                            <i class="fas fa-graduation-cap"></i> Datos Academicos
+                          </button>
+                        </h2>
+                      </div>
+                      <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordionExample">
+                        <div class="card-body  my-3">
+                            <form action="#">
+                                
+                                <div class="form-group row justify-content-center">
+                                    <label for="inputUndergraduateDegree" class="col-4">Titulo Pregrado:</label>
+                                    <div class="d-inline-flex col-6" >
+                                        <input type="text" class="form-control" id="inputUndergraduateDegree">
+                                        <label class="items-center p-1 bg-white text-black">
+                                            <i class="fas fa-plus-circle h4"></i>
+                                            <input type='file' class="d-none d-print-block" />
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="form-group row justify-content-center">
+                                    <label for="inputPostgraduateDiploma" class="col-4">Titulo de Especialización:</label>
+                                    <div class="d-inline-flex col-6" >
+                                        <input type="text" class="form-control" id="inputPostgraduateDiploma">
+                                        <label class="items-center p-1 bg-white text-black">
+                                            <i class="fas fa-plus-circle h4"></i>
+                                            <input type='file' class="d-none d-print-block" />
+                                        </label>
+                                    </div>         
+                                </div>
+                                <div class="form-group row justify-content-center">
+                                    <label for="inputMasterDegree" class="col-4">Titulo de Maestría:</label>
+                                    <div class="d-inline-flex col-6" >
+                                        <input type="text" class="form-control" id="inputMasterDegree">
+                                        <label class="items-center p-1 bg-white text-black">
+                                            <i class="fas fa-plus-circle h4"></i>
+                                            <input type='file' class="d-none d-print-block" />
+                                        </label>
+                                    </div>
+                                    
+                                </div>                            
+                                <div class="form-group row justify-content-center">
+                                    <label for="inputPhD" class="col-4">Titulo de Doctorado:</label>
+                                    <div class="d-inline-flex col-6" >
+                                        <input type="text" class="form-control" id="inputPhD">
+                                        <label class="items-center p-1 bg-white text-black">
+                                            <i class="fas fa-plus-circle h4"></i>
+                                            <input type='file' class="d-none d-print-block" />
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="form-group row justify-content-center">
+                                    <label for="inputKnowledgeArea" class="col-10 mx-4">Area de Conocimiento:</label>
+                                    <div class="col-10">
+                                        <select id="inputKnowledgeArea" type="select" class="form-control text-dark custom-select"
+                                            required>
+                                            <option value="cedula">Seleccione una opción</option>
+                                            <option value="cedula">Inteligencia Artificial</option>
+                                        </select>
+                                    </div> 
+                                </div>
+                                <div class="form-group row justify-content-center">
+                                    <label for="inputAnotherArea" class="col-10 mx-4">Otra Area:</label>
+                                    <div class="col-10">
+                                        <select id="inputAnotherArea" type="select" class="form-control text-dark custom-select"
+                                            required>
+                                            <option value="cedula" selected>Seleccione una opción</option>
+                                            <option value="cedula">IAgricultura</option>
+                                        </select>
+                                    </div>
+                                </div>                                                                                  
+                            </form>
+                        </div>
+                      </div>
                     </div>
-                    <div class="col-12 col-sm-8">
-                        <form action="">
-                            <div class="row justify-content-center">
-                                <div class="col-10 col-sm-5 mb-3">
-                                    <label for="campo_institucion_educativa"
-                                        class="font-weight-bold text-dark">Institución Educativa</label>
-                                    <input id="campo_institucion_educativa" type="text" class="form-control text-dark"
-                                        required>
-                                </div>
-                                <div class="col-10 col-sm-5 mb-3">
-                                    <label for="campo_grupo_investigacion" class="font-weight-bold text-dark">Grupo de
-                                        Investigación</label>
-                                    <input id="campo_grupo_investigacion" type="text" class="form-control text-dark"
-                                        required>
-                                </div>
-                                <div class="col-10 col-sm-10 mb-3">
-                                    <label for="campo_nombre_semillero" class="font-weight-bold text-dark">Nombre del
-                                        semillero</label>
-                                    <input id="campo_nombre_semillero" type="text" class="form-control text-dark"
-                                        required>
-                                </div>
-                                <div class="col-10 col-sm-10 mb-3 mt-2">
-                                    <div class="row text-center justify-content-center">
-                                        <div class="col-5">
-                                            <button id="btn_regresar_datos_institucionales"
-                                                class="btn text-white font-weight-bold w-100" style="background: rgb(255, 182, 6)
-    ;">Regresar</button>
-                                        </div>
-                                        <div class="col-5">
-                                            <button id="btn_siguiente_datos_institucionales"
-                                                class="btn text-white font-weight-bold w-100" style="background: rgb(255, 182, 6)
-    ;">Siguiente</button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Datos Academicos -->
-            <div id="datos_academicos" class="col-12 mt-2" style="display: none;">
-                <div class="row justify-content-center">
-                    <div class="col-12 text-center my-3">
-                        <h2 class="font-weight-bold text-dark">Datos Personales</h2>
-                    </div>
-                    <div class="col-12 col-sm-8">
-                        <form action="">
-                            <div class="row justify-content-center">
-                                <div class="col-5 col-sm-4 mb-3">
-                                    <div class="row align-items-end">
-                                        <div class="col-10 mb-2">
-                                            <label for="campo_titulo_pregrado" class="font-weight-bold text-dark">Titulo
-                                                Pregrado</label>
-                                            <input id="campo_titulo_pregrado" type="text" class="form-control text-dark"
-                                                required>
-                                        </div>
-                                        <div class="input-group col-2 pt-2">
-                                            <div class="custom-file align-items-center mx-auto text-center">
-                                                <input type="file" class="custom-file-input" id="campo_archivo_pregrado"
-                                                    aria-describedby="inputGroupFileAddon04" style="display: none;">
-                                                <label class="custom-file-label" for="campo_archivo_pregrado">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" height="24px"
-                                                        viewBox="0 -960 960 960" width="24px" fill="#00000">
-                                                        <path
-                                                            d="M520-400h80v-120h120v-80H600v-120h-80v120H400v80h120v120ZM320-240q-33 0-56.5-23.5T240-320v-480q0-33 23.5-56.5T320-880h480q33 0 56.5 23.5T880-800v480q0 33-23.5 56.5T800-240H320Zm0-80h480v-480H320v480ZM160-80q-33 0-56.5-23.5T80-160v-560h80v560h560v80H160Zm160-720v480-480Z" />
-                                                    </svg>
-                                                </label>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-5 col-sm-4 mb-3">
-                                    <div class="row align-items-end">
-                                        <div class="col-10 mb-2">
-                                            <label for="campo_titulo_especializacion"
-                                                class="font-weight-bold text-dark">Titulo Especialización</label>
-                                            <input id="campo_titulo_especializacion" type="text"
-                                                class="form-control text-dark" required>
-                                        </div>
-                                        <div class="input-group col-2 pt-2">
-                                            <div class="custom-file align-items-center mx-auto text-center">
-                                                <input type="file" class="custom-file-input"
-                                                    id="campo_archivo_especializacion"
-                                                    aria-describedby="inputGroupFileAddon04" style="display: none;">
-                                                <label class="custom-file-label" for="campo_archivo_especializacion">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" height="24px"
-                                                        viewBox="0 -960 960 960" width="24px" fill="#00000">
-                                                        <path
-                                                            d="M520-400h80v-120h120v-80H600v-120h-80v120H400v80h120v120ZM320-240q-33 0-56.5-23.5T240-320v-480q0-33 23.5-56.5T320-880h480q33 0 56.5 23.5T880-800v480q0 33-23.5 56.5T800-240H320Zm0-80h480v-480H320v480ZM160-80q-33 0-56.5-23.5T80-160v-560h80v560h560v80H160Zm160-720v480-480Z" />
-                                                    </svg>
-                                                </label>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                </div>
-                                <div class="col-5 col-sm-4 mb-3">
-                                    <div class="row align-items-end">
-                                        <div class="col-10 mb-2">
-                                            <label for="campo_titulo_maestria" class="font-weight-bold text-dark">Titulo
-                                                Maestría</label>
-                                            <input id="campo_titulo_maestria" type="text" class="form-control text-dark"
-                                                required>
-                                        </div>
-                                        <div class="input-group col-2 pt-2">
-                                            <div class="custom-file align-items-center mx-auto text-center">
-                                                <input type="file" class="custom-file-input" id="campo_archivo_maestria"
-                                                    aria-describedby="inputGroupFileAddon04" style="display: none;">
-                                                <label class="custom-file-label" for="campo_archivo_maestria">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" height="24px"
-                                                        viewBox="0 -960 960 960" width="24px" fill="#00000">
-                                                        <path
-                                                            d="M520-400h80v-120h120v-80H600v-120h-80v120H400v80h120v120ZM320-240q-33 0-56.5-23.5T240-320v-480q0-33 23.5-56.5T320-880h480q33 0 56.5 23.5T880-800v480q0 33-23.5 56.5T800-240H320Zm0-80h480v-480H320v480ZM160-80q-33 0-56.5-23.5T80-160v-560h80v560h560v80H160Zm160-720v480-480Z" />
-                                                    </svg>
-                                                </label>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-5 col-sm-4 mb-3">
-                                    <div class="row align-items-end">
-                                        <div class="col-10 mb-2">
-                                            <label for="campo_titulo_doctorado"
-                                                class="font-weight-bold text-dark">Titulo Doctorado</label>
-                                            <input id="campo_titulo_doctorado" type="email"
-                                                class="form-control text-dark" required>
-                                        </div>
-                                        <div class="input-group col-2 pt-2">
-                                            <div class="custom-file align-items-center mx-auto text-center">
-                                                <input type="file" class="custom-file-input"
-                                                    id="campo_archivo_doctorado"
-                                                    aria-describedby="inputGroupFileAddon04" style="display: none;">
-                                                <label class="custom-file-label" for="campo_archivo_doctorado">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" height="24px"
-                                                        viewBox="0 -960 960 960" width="24px" fill="#00000">
-                                                        <path
-                                                            d="M520-400h80v-120h120v-80H600v-120h-80v120H400v80h120v120ZM320-240q-33 0-56.5-23.5T240-320v-480q0-33 23.5-56.5T320-880h480q33 0 56.5 23.5T880-800v480q0 33-23.5 56.5T800-240H320Zm0-80h480v-480H320v480ZM160-80q-33 0-56.5-23.5T80-160v-560h80v560h560v80H160Zm160-720v480-480Z" />
-                                                    </svg>
-                                                </label>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-5 col-sm-4 mb-3">
-                                    <label for="campo_area_conocimiento" class="font-weight-bold text-dark">Área de
-                                        conocimiento</label>
-                                    <select id="campo_area_conocimiento" type="select" class="form-control text-dark"
-                                        required>
-                                        <option value="cedula">Seleccione una opción</option>
-                                        <option value="desarollo de software">Desarrollo de software</option>
-                                        <option value="ciencia de datos">Ciencia de datos</option>
-                                        <option value="seguridad informatica">Seguridad informática</option>
-                                    </select>
-                                </div>
-                                <div class="col-5 col-sm-4 mb-3">
-                                    <label for="campo_otra_area_conocimiento" class="font-weight-bold text-dark">Otra
-                                        Área</label>
-                                    <select id="campo_otra_area_conocimiento" type="select"
-                                        class="form-control text-dark" required>
-                                        <option value="cedula">Seleccione una opción</option>
-                                        <option value="ciencias de la salud">Ciencias de la salud</option>
-                                        <option value="ciencia de datos">Ciencia de datos</option>
-                                        <option value="seguridad informatica">Seguridad informática</option>
-                                    </select>
-                                </div>
-                                <div class="col-10 col-sm-10 mb-3 mt-2">
-                                    <div class="row text-center justify-content-center">
-                                        <div class="col-5">
-                                            <button id="btn_regresar_datos_academicos"
-                                                class="btn text-white font-weight-bold w-100" style="background: rgb(255, 182, 6)
-    ;">Regresar</button>
-                                        </div>
-                                        <div class="col-5">
-                                            <button href="#" id="btn_guardar_datos_academicos"
-                                                class="btn text-white font-weight-bold w-100" style="background: rgb(255, 182, 6)
-    ;">Guardar</button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
+                    <div class="text-center">
+                        <button type="submit" class="btn btn-warning font-weight-bold text-dark w-25 ">Guardar Datos</button>
+                    </div>   
                 </div>
             </div>
         </div>
-
     </div>
 
-    <!--Footer-->
+    <!-- Modal -->
+    <div class="modal fade" id="resetPasswordModal" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content border border-dark border-5 rounded-5 text-dark">
+                <div class="text-center ">
+                    <button type="button" class="close mr-3 mt-3" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h3 class="modal-title mt-5" id="modalLabel">Cambiar Contraseña</h3>
+                    
+                </div>
+                <div class="modal-body mt-3">
+                    <form>
+                        <div class="form-group row justify-content-center">
+                          <label for="contrasena_actual_evaluador" class="col-5 col-form-label col-form-label-sm text-center">Contraseña Actual: </label>
+                          <div class="col-5 pr-5">
+                            <input type="password" class="form-control form-control-sm" id="contrasena_actual_evaluador">
+                          </div>
+                        </div>
+                        <div class="form-group row justify-content-center">
+                            <label for="nueva_contrasena_evaluador" class="col-5 col-form-label col-form-label-sm text-center">Nueva Contraseña: </label>
+                            <div class="col-5 pr-5">
+                              <input type="password" class="form-control form-control-sm " id="nueva_contrasena_evaluador">
+                              <small id="passwordHelpBlock" class="form-text text-muted w-100">
+                                8-20 characters long
+                              </small>
+                            </div>
+                        </div>
+                        <div class="form-group row  mb-5 justify-content-center">
+                            <label for="confirmacion_contrasena_evaluador" class="col-5 col-form-label col-form-label-sm text-center ">Confirmar Contraseña: </label>
+                            <div class="col-5 pr-5">
+                              <input type="password" class="form-control form-control-sm " id="confirmacion_contrasena_evaluador">
+                            </div>
+                        </div>
+                        <div class="text-center">
+                            <button type="submit" class="btn btn-warning font-weight-bold">Guardar Cambios</button>
+                        </div>                        
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+  
+
+    <!-- Footer -->
     <footer class="footer mt-3">
         <div class="container">
-
             <!-- Footer Content -->
 
             <div class="footer_content">
@@ -507,27 +563,6 @@
 
         </div>
     </footer>
-
-    <!-- Modal de recuperar contraseña -->
-    <div class="modal fade" id="modal_contraseña" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="text-center">
-                    <button type="button" class="close mr-2" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                    <h5 class="modal-title text-dark h5 mt-3" id="exampleModalLabel">Cambiar contraseña</h5>
-                </div>
-                <div class="modal-body text-center">
-                    En construcción... <br>
-                    <svg xmlns="http://www.w3.org/2000/svg" height="50px" viewBox="0 -960 960 960" width="50px" fill="#00000"><path d="M600-40H440q-17 0-28.5-11.5T400-80v-240q0-17 11.5-28.5T440-360h40v-120H160q-33 0-56.5-23.5T80-560v-160q0-33 23.5-56.5T160-800h80v-40q0-17 11.5-28.5T280-880h480q17 0 28.5 11.5T800-840v160q0 17-11.5 28.5T760-640H280q-17 0-28.5-11.5T240-680v-40h-80v160h320q33 0 56.5 23.5T560-480v120h40q17 0 28.5 11.5T640-320v240q0 17-11.5 28.5T600-40Zm-120-80h80v-160h-80v160ZM320-720h400v-80H320v80Zm160 600h80-80ZM320-720v-80 80Z"/></svg>
-                </div>
-                <div class="modal-footer justify-content-center">
-                    <button type="button" class="btn btn-dark col-5" data-dismiss="modal">Enviar</button>
-                </div>
-            </div>
-        </div>
-    </div>
     <script src="../plantilla/js/jquery-3.2.1.min.js"></script>
     <script src="../plantilla/styles/bootstrap4/popper.js"></script>
     <script src="../plantilla/styles/bootstrap4/bootstrap.min.js"></script>
@@ -540,7 +575,6 @@
     <script src="../plantilla/plugins/scrollTo/jquery.scrollTo.min.js"></script>
     <script src="../plantilla/plugins/easing/easing.js"></script>
     <script src="../plantilla/js/custom.js"></script>
-    <script src="../plantilla/js/delegado.js"></script>
 
 </body>
 
