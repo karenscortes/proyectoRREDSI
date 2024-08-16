@@ -144,7 +144,8 @@
                                     </div>
                                 </td>
                                 <td class="td_boton" style="width: 5%;">
-                                    <button data-bs-toggle="modal" data-bs-target="#modalEditar" class="botones_rubrica">
+                                    <button data-bs-toggle="modal" data-bs-target="#modalEditar"
+                                        class="botones_rubrica">
                                         <i class="fas fa-edit" style="font-size: 24px;"></i>
                                     </button>
                                 </td>
@@ -168,7 +169,8 @@
                                     </div>
                                 </td>
                                 <td class="td_boton" style="width: 5%;">
-                                    <button data-bs-toggle="modal" data-bs-target="#modalEditar" class="botones_rubrica">
+                                    <button data-bs-toggle="modal" data-bs-target="#modalEditar"
+                                        class="botones_rubrica">
                                         <i class="fas fa-edit" style="font-size: 24px;"></i>
                                     </button>
                                 </td>
@@ -192,7 +194,8 @@
                                     </div>
                                 </td>
                                 <td class="td_boton" style="width: 5%;">
-                                    <button data-bs-toggle="modal" data-bs-target="#modalEditar" class="botones_rubrica">
+                                    <button data-bs-toggle="modal" data-bs-target="#modalEditar"
+                                        class="botones_rubrica">
                                         <i class="fas fa-edit" style="font-size: 24px;"></i>
                                     </button>
                                 </td>
@@ -216,7 +219,8 @@
                                     </div>
                                 </td>
                                 <td class="td_boton" style="width: 5%;">
-                                    <button data-bs-toggle="modal" data-bs-target="#modalEditar" class="botones_rubrica">
+                                    <button data-bs-toggle="modal" data-bs-target="#modalEditar"
+                                        class="botones_rubrica">
                                         <i class="fas fa-edit" style="font-size: 24px;"></i>
                                     </button>
                                 </td>
@@ -295,7 +299,7 @@
                     <div class="row text-center">
                         <div
                             class="col_card col-lg-12 col-md-6 col-6 d-flex justify-content-md-center justify-content-center">
-                            <div class="card border-dark border-4">
+                            <div class="card">
                                 <h2 class="title">1</h2>
                                 <img src="../plantilla/images/imageRúbrica.jpg" class="img-fluid w-50 pb-2"
                                     alt="rubrica">
@@ -317,7 +321,7 @@
 
                         <div
                             class="col_card col-lg-12 col-md-6 col-6 d-flex justify-content-md-center justify-content-center">
-                            <div class="card border-dark border-4">
+                            <div class="card">
                                 <h2 class="title">1</h2>
                                 <img src="../plantilla/images/imageRúbrica.jpg" class="img-fluid w-50 pb-2"
                                     alt="rubrica">
@@ -338,7 +342,7 @@
                         </div>
                         <div
                             class="col_card col-lg-12 col-md-6 col-6 d-flex justify-content-md-center justify-content-center mb-2">
-                            <div class="card border-dark border-4">
+                            <div class="card">
                                 <h2 class="title">1</h2>
                                 <img src="../plantilla/images/imageRúbrica.jpg" class="img-fluid w-50 pb-2"
                                     alt="rubrica">
@@ -359,7 +363,7 @@
                         </div>
                         <div
                             class="col_card col-lg-12 col-md-6 col-6 d-flex justify-content-md-center justify-content-center mb-2">
-                            <div class="card border-dark border-4">
+                            <div class="card">
                                 <h2 class="title">1</h2>
                                 <img src="../plantilla/images/imageRúbrica.jpg" class="img-fluid w-50 pb-2"
                                     alt="rubrica">
@@ -388,19 +392,40 @@
             <button class="btn boton pl-5 pr-5 mx-auto">Editar</button>
         </div>
     </div>
-   
+
     <!-- Modal -->
     <div class="modal fade" id="modalEditar" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
         aria-labelledby="staticBackdropLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <i class="fas fa-edit icon"></i> 
+        <div class="modal-dialog" style="max-width: 50%;">
+            <div class="modal-content rounded-st-1 shadow-lg modal-responsive">
+                <div class="modal-header p-4 shadow w-100" style="border: 1px solid yellow;">
+                    <i class="fas fa-edit icon"></i>
                     <h1 class="modal-title fs-5" id="staticBackdropLabel">Editar rúbrica</h1>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    ...
+                    <form action="">
+                        <div class="row">
+                            <div class="col-md-6 mb-4">
+                                <label for="titulo" class="form-label">Título
+                                    <span class="text-danger fw-bold">*</span>
+                                </label> 
+                                <input type="text" id="titulo" name="titulo" required="required" class="form_modal form-control">
+                            </div>
+                            <div class="col-md-6 mb-4">
+                                <label for="valor_maximo"  class="form-label">Valor máximo
+                                    <span class="text-danger fw-bold">*</span>
+                                </label> 
+                                <input type="text" id="valor_maximo" name="valor_maximo" required="required" class="form_modal form-control">
+                            </div>
+                            <div class="col-md-12 mb-4">
+                                <label for="descripcion"  class="form-label">Descripción
+                                    <span class="text-danger fw-bold">*</span>
+                                </label> 
+                                <textarea id="descripcion" name="descripcion" required="required" class="form_textArea form-control" style="color: black;"></textarea>
+                            </div>
+                        </div>
+                    </form>
                 </div>
                 <div class="modal-footer">
                     <button class="btn boton" data-bs-dismiss="modal">Cerrar</button>

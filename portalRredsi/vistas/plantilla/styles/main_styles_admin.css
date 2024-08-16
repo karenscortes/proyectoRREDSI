@@ -918,6 +918,7 @@ rlx_parent
 	border-radius: 30px; 
 	height: auto; 
 	cursor: pointer;
+	border: 4px solid black;
 }
 
 
@@ -938,7 +939,7 @@ rlx_parent
 
 
 .card:hover{
-	background-color: #fffd78;
+	border: 5px solid rgb(255, 217, 3);
 	animation: dance 0.5s ease-in-out; 
 }
 
@@ -1581,6 +1582,28 @@ input:last-of-type
 	border: 1px solid black;
 }
 
+.form_modal{
+	border: 1px solid rgb(190, 190, 190);
+}
+
+.form_textArea{
+	border: 1px solid rgb(190, 190, 190);
+	width: 100%;
+	height: 100%;
+}
+
+.form_textArea:focus{
+	border:1px solid rgb(150, 149, 149);
+	box-shadow: 0 0 5px 2px rgba(230, 230, 207, 0.8);
+	outline: none;
+}
+
+.form_modal:focus{
+	border:1px solid rgb(150, 149, 149);
+	box-shadow: 0 0 5px 2px rgba(230, 230, 207, 0.8);
+	outline: none;
+}
+
 .tipo_formato{
 	color: black; 
 	font-weight: bold; 
@@ -1619,4 +1642,10 @@ input:last-of-type
 	color: #000000;
 	font-size: 2rem;
 	margin-right: 10px;
+}
+
+label{
+	font-size: 20px;
+	font-weight: bold;
+	color: black;
 }
