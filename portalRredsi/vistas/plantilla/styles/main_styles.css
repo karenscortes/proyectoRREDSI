@@ -1507,3 +1507,22 @@ input:last-of-type
     overflow-y: auto;
     overflow-x: hidden;
 }
+.form-section {
+	background-color: #f8f9fa; /* Color más oscuro que el blanco */
+	border: 1px solid #ced4da; /* Borde del div */
+	padding: 20px;
+	border-radius: 5px;
+}
+.form-section h2 {
+	color: rgb(255, 182, 6); /* Color del encabezado */
+}
+.form-section .title-icon {
+	color: rgb(255, 182, 6); /* Color del ícono */
+	margin-right: 10px;
+	font-size: 1.5rem; /* Tamaño del ícono más grande */
+	margin-bottom: 10px;
+}
+.title-line {
+	border-top: 2px solid rgb(255, 182, 6); /* Color de la línea */
+	margin-top: -10px;
+}
