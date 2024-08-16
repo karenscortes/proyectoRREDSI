@@ -334,7 +334,7 @@ rlx_parent
 .logo span
 {
 	font-family: 'Open Sans', sans-serif;
-	font-size: 20px;
+	font-size: 30px;
 	font-weight: 900;
 	color: #3a3a3a;
 	vertical-align: middle;
@@ -373,7 +373,7 @@ rlx_parent
 .main_nav_item a
 {
 	font-family: 'Open Sans', sans-serif;
-	font-size: 12px;
+	font-size: 15px;
 	text-transform: uppercase;
 	font-weight: 700;
 	color: #3a3a3a;
