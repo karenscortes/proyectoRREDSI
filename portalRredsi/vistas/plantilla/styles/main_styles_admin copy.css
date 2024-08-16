@@ -303,6 +303,7 @@ rlx_parent
 	width: 100%;
 	padding: 1.9rem;
 	height: 100%;
+
 }
 .header_content::before
 {
@@ -338,20 +339,23 @@ rlx_parent
 	color: #3a3a3a;
 	vertical-align: middle;
 	text-transform: uppercase;
-	margin-left: 3px;
+	margin-left: 2px;
 }
 
 /*********************************
 3.2 Main Nav
 *********************************/
-
+#cont_ejemplo{
+	background-color:#ffb606 ;
+	padding: 10px;
+}
 .main_nav_container
 {
 	display: inline-block;
 	flex-grow: 3;
 	justify-content: space-between;
-	margin-left: 50px;
-	padding-right: 10px;
+	margin-left: 55px;
+	padding-right: 55px;
 	
 }
 .main_nav
@@ -361,8 +365,6 @@ rlx_parent
 .main_nav_item
 {
 	display: inline-block;
-	
-	margin-right: 40px;
 }
 .main_nav_item:last-child
 {
