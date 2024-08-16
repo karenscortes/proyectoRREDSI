@@ -253,7 +253,7 @@ section
 	width: 100%;
 	overflow: hidden;
 }
-rlx_parent
+.prlx_parent
 {
 	overflow: hidden;
 }
@@ -289,6 +289,7 @@ rlx_parent
 	-ms-transition: all 200ms ease;
 	-o-transition: all 200ms ease;
 	transition: all 200ms ease;
+	
 }
 .header.scrolled
 {	
@@ -300,8 +301,8 @@ rlx_parent
 }
 .header_content
 {
-	width: 100%;
-	padding: 1.8rem;
+
+	width: calc(100% - 280px);
 	height: 100%;
 }
 .header_content::before
@@ -313,7 +314,7 @@ rlx_parent
 	width: 100%;
 	height: 100%;
 	content: '';
-	box-shadow: 0px 20px 49px rgba(0,0,0,0.67);
+	
 	z-index: -1;
 }
 
@@ -328,8 +329,9 @@ rlx_parent
 }
 .logo img{
 	vertical-align: middle;
-	max-width: 115px;
+	max-width: 80px;
 	margin-top: 8px;
+
 }
 .logo span
 {
@@ -395,7 +397,7 @@ rlx_parent
 {
 	width: 100px;
 	height: 100%;
-	background: #ffb606;
+	background: #ffffff;
 }
 .header_side img
 {
@@ -408,8 +410,8 @@ rlx_parent
 	position: relative;
 	font-size: 18px;
 	font-weight: 500;
-	color: #FFFFFF;
-	padding-left: 12px;
+	color: #ffb606;
+	padding-left: 2px;
 }
 
 /*********************************
@@ -647,7 +649,6 @@ rlx_parent
 .home
 {
 	width: 100%;
-	height: 100vh;
 }
 
 /*********************************
@@ -915,38 +916,8 @@ rlx_parent
 .card
 {
 	display: block;
-	border-radius: 30px; 
-	height: auto; 
-	cursor: pointer;
-	border: 4px solid black;
-}
-
-
-@keyframes dance {
-    0%, 100% {
-        transform: translateX(0);
-    }
-    25% {
-        transform: translateX(-4px);
-    }
-    50% {
-        transform: translateX(4px);
-    }
-    75% {
-        transform: translateX(-4px);
-    }
-}
-
-
-.card:hover{
-	border: 5px solid rgb(255, 217, 3);
-	animation: dance 0.5s ease-in-out; 
-}
-
-.col_card{
-	padding-left: 16px;
-	padding-right: 16px;
-	padding-top: 10px;
+	background: #f8f9fb;
+	border: none;
 }
 .card-img-top
 {
@@ -957,11 +928,12 @@ rlx_parent
 {
 	padding-top: 0px;
 	padding-bottom: 0px;
-
+	padding-left: 15px;
+	padding-right: 15px;
 }
 .card-title
 {
-	margin-top: 10px;
+	margin-top: 55px;
 }
 .card-title a
 {
@@ -976,9 +948,9 @@ rlx_parent
 }
 .card-text
 {
-	font-size: 13px;
+	font-size: 14px;
 	font-weight: 500;
-	color: #4e4e4e;
+	color: #a5a5a5;
 	margin-top: -12px;
 }
 .price_box
@@ -1312,7 +1284,7 @@ input:last-of-type
 
 .event_items
 {
-	margin-top: 68px;
+	margin-top: 50px;
 }
 .event_item
 {
@@ -1394,6 +1366,7 @@ input:last-of-type
 
 .newsletter
 {
+
 	padding-bottom: 85px;
 	border-bottom: solid 2px #4d4e4e;
 }
@@ -1531,121 +1504,8 @@ input:last-of-type
 }
 
 .scroll-div {
-    height: 60vh;
+    width: 1000px; 
+    height: 400px;
     overflow-y: auto;
     overflow-x: hidden;
-}
-
-.boton{
-	padding-left: 10px; 
-	padding-right: 10px;
-	border: none;
-	height: 40px;
-	width: 20%;
-	font-weight: 1000;
-	font-size: 20px;
-	color: black;
-	border-radius: 5px;
-	background-color:   rgb(255, 182, 6);
-}
-
-.botones_rubrica{
-	width: 40px;
-	height: 40px;
-	border: none;
-	border-radius: 5px;
-	background-color:   rgb(255, 182, 6);
-}
-
-.boton_añadir{
-	border: none;
-	width: 150px;
-	height: 30px;
-	background-color:   rgb(255, 182, 6);
-	border-radius: 5px;
-}
-
-.tr_rubrica{
-	border-bottom: 1px solid black;
-}
-
-.titulo_rubrica{
-	font-size: 18px; font-weight: bold;
-}
-
-.cabecero{
-	border-right: 1px solid black;
-}
-
-.form-control{
-	height: 35px;
-	border: 1px solid black;
-}
-
-.form_modal{
-	border: 1px solid rgb(190, 190, 190);
-}
-
-.form_textArea{
-	border: 1px solid rgb(190, 190, 190);
-	width: 100%;
-	height: 100%;
-}
-
-.form_textArea:focus{
-	border:1px solid rgb(150, 149, 149);
-	box-shadow: 0 0 5px 2px rgba(230, 230, 207, 0.8);
-	outline: none;
-}
-
-.form_modal:focus{
-	border:1px solid rgb(150, 149, 149);
-	box-shadow: 0 0 5px 2px rgba(230, 230, 207, 0.8);
-	outline: none;
-}
-
-.tipo_formato{
-	color: black; 
-	font-weight: bold; 
-	font-style: italic; 
-	font-size: 16px;
-}
-
-.tr_item_rubrica{
-	border-bottom: 1px solid black;
-}
-
-.tr_item_rubrica > td {
-	border-right: 1px solid black;
-}
-
-.td_boton{
-	vertical-align: middle;
-}
-
-.table-bordered-dark {
-	border: 1px solid black;
-}
-
-.btn:hover {
-    color: #494949;
-	background-color: rgb(255, 182, 6);
-}
-
-.modal-header .icon {
-	color:rgb(255, 182, 6);
-	font-size: 2rem;
-	margin-right: 10px;
-}
-
-.modal-header{
-	color: #000000;
-	font-size: 2rem;
-	margin-right: 10px;
-}
-
-label{
-	font-size: 20px;
-	font-weight: bold;
-	color: black;
 }

@@ -273,7 +273,7 @@ rlx_parent
 .header
 {
 	position: fixed;
-	top: 45px;
+	top: 0px;
 	left: 50%;
 	-webkit-transform: translateX(-50%);
 	-moz-transform: translateX(-50%);
@@ -283,7 +283,7 @@ rlx_parent
 	width: 1318px;
 	height: 104px;
 	background: #FFFFFF;
-	z-index: 10;
+	z-index: 8;
 	-webkit-transition: all 200ms ease;
 	-moz-transition: all 200ms ease;
 	-ms-transition: all 200ms ease;
@@ -292,7 +292,7 @@ rlx_parent
 }
 .header.scrolled
 {	
-	top: 15px;
+	top: 10px;
 }
 .header.scrolled .header_content::before
 {
@@ -301,8 +301,9 @@ rlx_parent
 .header_content
 {
 	width: 100%;
-	padding: 1.8rem;
+	padding: 1.9rem;
 	height: 100%;
+
 }
 .header_content::before
 {
@@ -313,7 +314,6 @@ rlx_parent
 	width: 100%;
 	height: 100%;
 	content: '';
-	box-shadow: 0px 20px 49px rgba(0,0,0,0.67);
 	z-index: -1;
 }
 
@@ -328,7 +328,7 @@ rlx_parent
 }
 .logo img{
 	vertical-align: middle;
-	max-width: 115px;
+	max-width: 55px;
 	margin-top: 8px;
 }
 .logo span
@@ -339,20 +339,23 @@ rlx_parent
 	color: #3a3a3a;
 	vertical-align: middle;
 	text-transform: uppercase;
-	margin-left: 3px;
+	margin-left: 2px;
 }
 
 /*********************************
 3.2 Main Nav
 *********************************/
-
+#cont_ejemplo{
+	background-color:#ffb606 ;
+	padding: 10px;
+}
 .main_nav_container
 {
 	display: inline-block;
 	flex-grow: 3;
 	justify-content: space-between;
-	margin-left: 50px;
-	padding-right: 10px;
+	margin-left: 55px;
+	padding-right: 55px;
 	
 }
 .main_nav
@@ -362,8 +365,6 @@ rlx_parent
 .main_nav_item
 {
 	display: inline-block;
-	
-	margin-right: 40px;
 }
 .main_nav_item:last-child
 {
@@ -372,7 +373,7 @@ rlx_parent
 .main_nav_item a
 {
 	font-family: 'Open Sans', sans-serif;
-	font-size: 14px;
+	font-size: 15px;
 	text-transform: uppercase;
 	font-weight: 700;
 	color: #3a3a3a;
@@ -918,34 +919,10 @@ rlx_parent
 	border-radius: 30px; 
 	height: auto; 
 	cursor: pointer;
-	border: 4px solid black;
 }
-
-
-@keyframes dance {
-    0%, 100% {
-        transform: translateX(0);
-    }
-    25% {
-        transform: translateX(-4px);
-    }
-    50% {
-        transform: translateX(4px);
-    }
-    75% {
-        transform: translateX(-4px);
-    }
-}
-
-
-.card:hover{
-	border: 5px solid rgb(255, 217, 3);
-	animation: dance 0.5s ease-in-out; 
-}
-
 .col_card{
-	padding-left: 16px;
-	padding-right: 16px;
+	padding-left: 30px;
+	padding-right: 30px;
 	padding-top: 10px;
 }
 .card-img-top
@@ -1541,15 +1518,13 @@ input:last-of-type
 	padding-right: 10px;
 	border: none;
 	height: 40px;
-	width: 20%;
 	font-weight: 1000;
 	font-size: 20px;
 	color: black;
 	border-radius: 5px;
 	background-color:   rgb(255, 182, 6);
 }
-
-.botones_rubrica{
+.boton_editar{
 	width: 40px;
 	height: 40px;
 	border: none;
@@ -1557,16 +1532,12 @@ input:last-of-type
 	background-color:   rgb(255, 182, 6);
 }
 
-.boton_añadir{
-	border: none;
-	width: 150px;
-	height: 30px;
-	background-color:   rgb(255, 182, 6);
-	border-radius: 5px;
-}
-
 .tr_rubrica{
 	border-bottom: 1px solid black;
+}
+
+.td_rubrica{
+	border-right: 1px solid black;
 }
 
 .titulo_rubrica{
@@ -1582,28 +1553,6 @@ input:last-of-type
 	border: 1px solid black;
 }
 
-.form_modal{
-	border: 1px solid rgb(190, 190, 190);
-}
-
-.form_textArea{
-	border: 1px solid rgb(190, 190, 190);
-	width: 100%;
-	height: 100%;
-}
-
-.form_textArea:focus{
-	border:1px solid rgb(150, 149, 149);
-	box-shadow: 0 0 5px 2px rgba(230, 230, 207, 0.8);
-	outline: none;
-}
-
-.form_modal:focus{
-	border:1px solid rgb(150, 149, 149);
-	box-shadow: 0 0 5px 2px rgba(230, 230, 207, 0.8);
-	outline: none;
-}
-
 .tipo_formato{
 	color: black; 
 	font-weight: bold; 
@@ -1615,37 +1564,6 @@ input:last-of-type
 	border-bottom: 1px solid black;
 }
 
-.tr_item_rubrica > td {
+.tr_item_rubrica > td:not(:last-child) {
 	border-right: 1px solid black;
-}
-
-.td_boton{
-	vertical-align: middle;
-}
-
-.table-bordered-dark {
-	border: 1px solid black;
-}
-
-.btn:hover {
-    color: #494949;
-	background-color: rgb(255, 182, 6);
-}
-
-.modal-header .icon {
-	color:rgb(255, 182, 6);
-	font-size: 2rem;
-	margin-right: 10px;
-}
-
-.modal-header{
-	color: #000000;
-	font-size: 2rem;
-	margin-right: 10px;
-}
-
-label{
-	font-size: 20px;
-	font-weight: bold;
-	color: black;
 }
