@@ -3,45 +3,77 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Tabala</title>
     <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="plantilla/styles/bootstrap4/bootstrap.min.css">
 	<link href="plantilla/plugins/fontawesome-free-5.0.1/css/fontawesome-all.css" rel="stylesheet" type="text/css">
 	<link rel="stylesheet" type="text/css" href="plantilla/plugins/OwlCarousel2-2.2.1/owl.carousel.css">
 	<link rel="stylesheet" type="text/css" href="plantilla/plugins/OwlCarousel2-2.2.1/owl.theme.default.css">
 	<link rel="stylesheet" type="text/css" href="plantilla/plugins/OwlCarousel2-2.2.1/animate.css">
-	<link rel="stylesheet" type="text/css" href="plantilla/styles/main_styles.css">
+	<link rel="stylesheet" type="text/css" href="plantilla/styles/main_styles_copy.css">
 	<link rel="stylesheet" type="text/css" href="plantilla/styles/responsive.css">
 	<link rel="stylesheet" href="plantilla/styles/global_styles.css">
 </head>
 <body>
     <!-- header -->
-    <header class="header d-flex flex-row position-absolute top-0">
-        <div class="header_content d-flex flex-row align-items-center justify-content-start">
+    <header class="header d-flex flex-grow position-absolute top-0 w-80">
+        <div class="header_content with_button d-flex flex-row align-items-center justify-content-start">
             <!-- Logo -->
             <div class="logo_container">
                 <div class="logo">
-                    <img class="img-fluid" src="plantilla/images/RREDSI.jpg" alt="">
+                    <img class="img-fluid" src="plantilla/images/logoRredsi.png" alt="">
                     <span>RREDSI</span>
                 </div>
             </div>
 
             <!-- Main Navigation -->
-            <nav class="main_nav_container">
+            <nav class="main_nav_container flex-grow-1">
                 <div class="main_nav">
                     <ul class="main_nav_list d-flex justify-content-between">
-                        <li class="main_nav_item"><a href="#">Inicio</a></li>
+                        <li class="main_nav_item"><a href="principal.html">Inicio</a></li>
                         <li class="main_nav_item"><a href="#">Perfil</a></li>
-                        <li class="main_nav_item"><a href="#">Evaluadores</a></li>
-                        <li class="main_nav_item"><a href="#">Proyectos</a></li>
-                        <li class="main_nav_item"><a href="#">Evento</a></li>
-                        <li class="main_nav_item"><a href="#">Cerrar sesión</a></li>
+                        <li class="main_nav_item">
+                            <div class="dropdown">
+                                <a class=" dropdown-toggle text-dark" type="button" data-toggle="dropdown"
+                                    aria-expanded="false">
+                                    Evaluadores
+                                </a>
+                                <div class="dropdown-menu text-center">
+                                    <a href="#">Postulaciones</a><br>
+                                    <a href="lista_evaluadores.html">Lista de Evaluadores</a>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="main_nav_item">
+                            <div class="dropdown">
+                                <a class=" dropdown-toggle text-dark" type="button" data-toggle="dropdown"
+                                    aria-expanded="false">
+                                    Proyectos
+                                </a>
+                                <div class="dropdown-menu text-center">
+                                    <a href="#">Asignación de <br> Proyectos</a><br>
+                                    <a href="lista_proyectos.html">Lista de Proyectos</a>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="main_nav_item">
+                            <div class="dropdown">
+                                <a class=" dropdown-toggle text-dark" type="button" data-toggle="dropdown"
+                                    aria-expanded="false">
+                                    Evento
+                                </a>
+                                <div class="dropdown-menu text-center">
+                                    <a href="salas.html">Salas</a><br>
+                                    <a href="#">Asistencia</a>
+                                </div>
+                            </div>
+                        </li>
                     </ul>
                 </div>
             </nav>
         </div>
         <a href="#" class="header_side d-flex flex-row justify-content-center align-items-center">
-            <h3 class="main_nav_item">Contactanos</h3>
+            <h3 class="main_nav_item text-dark">Cerrar sesión</h3>
         </a>
 
         <!-- Hamburger -->
@@ -50,10 +82,8 @@
         </div>
 
     </header>
-    <!-- fondo del header -->
-    <div>
-        <img src="plantilla/images/event_1.jpg" alt="" height="300px" width="100%" >
-    </div>
+<!-- fondo del header -->
+
     <!-- Menu -->
 		<div class="menu_container menu_mm">
 
@@ -116,7 +146,7 @@
         </div>
     
         <!-- Filtros -->
-        <div class="row ml-1 mb-2">
+        <div class="row ml-1 mb-2 mt-3">
             <a href="#" class="mx-1 px-2 border text-white bg-secondary" style="border-radius: 20px; " disabled>
                 todos
             </a>
