@@ -253,7 +253,7 @@ section
 	width: 100%;
 	overflow: hidden;
 }
-rlx_parent
+.prlx_parent
 {
 	overflow: hidden;
 }
@@ -289,6 +289,7 @@ rlx_parent
 	-ms-transition: all 200ms ease;
 	-o-transition: all 200ms ease;
 	transition: all 200ms ease;
+	
 }
 .header.scrolled
 {	
@@ -300,8 +301,8 @@ rlx_parent
 }
 .header_content
 {
-	width: 100%;
-	padding: 1.8rem;
+
+	width: calc(100% - 280px);
 	height: 100%;
 }
 .header_content::before
@@ -313,7 +314,7 @@ rlx_parent
 	width: 100%;
 	height: 100%;
 	content: '';
-	box-shadow: 0px 20px 49px rgba(0,0,0,0.67);
+	
 	z-index: -1;
 }
 
@@ -328,8 +329,9 @@ rlx_parent
 }
 .logo img{
 	vertical-align: middle;
-	max-width: 115px;
+	max-width: 80px;
 	margin-top: 8px;
+
 }
 .logo span
 {
@@ -362,7 +364,8 @@ rlx_parent
 .main_nav_item
 {
 	display: inline-block;
-	margin-right: 10px;
+	
+	margin-right: 40px;
 }
 .main_nav_item:last-child
 {
@@ -394,7 +397,7 @@ rlx_parent
 {
 	width: 100px;
 	height: 100%;
-	background: #ffb606;
+	background: #ffffff;
 }
 .header_side img
 {
@@ -407,8 +410,8 @@ rlx_parent
 	position: relative;
 	font-size: 18px;
 	font-weight: 500;
-	color: #FFFFFF;
-	padding-left: 12px;
+	color: #ffb606;
+	padding-left: 2px;
 }
 
 /*********************************
@@ -646,7 +649,6 @@ rlx_parent
 .home
 {
 	width: 100%;
-	height: 100vh;
 }
 
 /*********************************
@@ -914,7 +916,8 @@ rlx_parent
 .card
 {
 	display: block;
-	background: white;
+	background: #f8f9fb;
+	border: none;
 }
 .card-img-top
 {
@@ -925,11 +928,12 @@ rlx_parent
 {
 	padding-top: 0px;
 	padding-bottom: 0px;
-
+	padding-left: 15px;
+	padding-right: 15px;
 }
 .card-title
 {
-	margin-top: 10px;
+	margin-top: 55px;
 }
 .card-title a
 {
@@ -944,9 +948,9 @@ rlx_parent
 }
 .card-text
 {
-	font-size: 13px;
+	font-size: 14px;
 	font-weight: 500;
-	color: #4e4e4e;
+	color: #a5a5a5;
 	margin-top: -12px;
 }
 .price_box
@@ -1280,7 +1284,7 @@ input:last-of-type
 
 .event_items
 {
-	margin-top: 68px;
+	margin-top: 50px;
 }
 .event_item
 {
@@ -1362,6 +1366,7 @@ input:last-of-type
 
 .newsletter
 {
+
 	padding-bottom: 85px;
 	border-bottom: solid 2px #4d4e4e;
 }
@@ -1499,210 +1504,8 @@ input:last-of-type
 }
 
 .scroll-div {
-    height: 590px;
+    width: 1000px; 
+    height: 400px;
     overflow-y: auto;
     overflow-x: hidden;
-}
-
-.boton{
-	border: none;
-	height: 40px;
-	font-weight: 1000;
-	font-size: 20px;
-	color: black;
-	border-radius: 5px;
-	background-color:   rgb(255, 182, 6);
-}
-
-.tr_rubrica{
-	border-bottom: 1px solid black;
-}
-
-.titulo_rubrica{
-	font-size: 18px; font-weight: bold;
-}
-
-.cabecero{
-	border-right: 1px solid black;
-}
-
-.form-control{
-	height: 35px;
-	border: 1px solid black;
-}
-/*********************************
-5. Home
-*********************************/
-
-.home
-{
-	width: 100%;
-	height: 227px;
-	margin-bottom: 0;
-}
-.home_background_container
-{
-	position: absolute;
-	top: 0;
-	left: 0;
-	width: 100%;
-	height: 100%;
-}
-.home_background
-{
-	width: 100%;
-	height: 100%;
-	background-repeat: no-repeat;
-	background-size: cover;
-	background-position: center center;
-}
-.home_content
-{
-	position: absolute;
-	left: 50%;
-	bottom: 109px;
-	-webkit-transform: translateX(-50%);
-	-moz-transform: translateX(-50%);
-	-ms-transform: translateX(-50%);
-	-o-transform: translateX(-50%);
-	transform: translateX(-50%);
-	background: #ffb606;
-	padding-top: 24px;
-	padding-bottom: 18px;
-	padding-left: 39px;
-	padding-right: 42px;
-}
-.home_content h1
-{
-	font-size: 72px;
-	font-weight: 400;
-	color: #FFFFFF;
-	line-height: 0.5;
-}
-
-/*********************************
-10. Milestones
-*********************************/
-
-.milestones
-{
-	width: 100%;
-	padding-top: 118px;
-	padding-bottom: 107px;
-	margin-top: 20px;
-}
-.milestones_background
-{
-	position: absolute;
-	top: 0;
-	left: 0;
-	width: 100%;
-	height: 100%;
-	background-repeat: no-repeat;
-	background-size: cover;
-	background-position: center center;
-	background-attachment: fixed;
-}
-.milestone
-{
-	width: 100%;
-}
-.milestone_icon
-{
-	display: inline-block;
-	width: 70px;
-	height: 70px;
-}
-.milestone_icon img
-{
-	width: 100%;
-}
-.milestone_counter
-{
-	font-size: 36px;
-	font-weight: 500;
-	color: #ffb606;
-	line-height: 1;
-	margin-top: 41px;
-}
-.milestone_text
-{
-	font-size: 22px;
-	font-weight: 500;
-	color: #FFFFFF;
-	margin-top: 3px;
-}
-
-
-.become
-{
-	width: 100%;
-	padding-top: 60px;
-	padding-bottom: 60px;
-}
-.become_title h1
-{
-	display: block;
-	color: #1a1a1a;
-	font-weight: 500;
-	padding-top: 24px;
-}
-.become_title h1::before
-{
-	display: block;
-	position: absolute;
-	top: 0;
-	left: 0;
-	width: 55px;
-	height: 4px;
-	content: '';
-	background: #ffb606;
-}
-.become_text
-{
-	font-weight: 500;
-	color: #a5a5a1;
-	margin-top: 48px;
-	margin-bottom: 0px;
-}
-.become_button
-{
-	width: 188px;
-	height: 53px;
-	background: #ffb606;
-	margin-top: 37px;
-}
-.become_button a
-{
-	display: block;
-	font-size: 16px;
-	font-weight: 700;
-	color: #FFFFFF;
-	line-height: 53px;
-}
-.become_button:hover
-{
-	box-shadow: 0px 10px 20px rgba(0,0,0,0.2);
-}
-.become_image
-{
-	width: 100%;
-	margin-top: 85px;
-}
-.become_image img
-{
-	width: 100%;
-}
-
-.accordion-button:not(.collapsed) {
-	background-color: rgb(255, 182, 6); /* Color amarillo */
-	color: #000; /* Color del texto en la cabecera expandida */
-}
-
-.accordion-button {
-	color: #000; /* Color del texto en la cabecera no expandida */
-}
-
-.accordion-button::after {
-	filter: invert(0); /* Mantiene el color del icono de colapso en negro */
 }

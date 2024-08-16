@@ -7,6 +7,8 @@
     <title>asignar evaluadores</title>
     <link rel="stylesheet" href="../bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="../plantilla/styles/bootstrap4/bootstrap.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <link href="../plantilla/plugins/fontawesome-free-5.0.1/css/fontawesome-all.css" rel="stylesheet" type="text/css">
     <link rel="stylesheet" type="text/css" href="../plantilla/plugins/OwlCarousel2-2.2.1/owl.carousel.css">
     <link rel="stylesheet" type="text/css" href="../plantilla/plugins/OwlCarousel2-2.2.1/owl.theme.default.css">
@@ -64,7 +66,7 @@
                                     Evento
                                 </a>
                                 <div class="dropdown-menu text-center">
-                                    <a href="#">Salas</a><br>
+                                    <a href="salas.html">Salas</a><br>
                                     <a href="#">Asistencia</a>
                                 </div>
                             </div>
@@ -135,7 +137,7 @@
                                 Evento
                             </a>
                             <div class="dropdown-menu text-center">
-                                <a href="#">Salas</a><br>
+                                <a href="salas.html">Salas</a><br>
                                 <a href="#">Asistencia</a>
                             </div>
                         </div>
@@ -166,230 +168,383 @@
 
 
     <div class="container pt-5">
-        <div class="row">
-            <div class="col-3 mr-5">
-                <!-- tabla -->
-                <div class="table" data-spy="scroll" style="max-height: 400px; overflow-y: auto; scrollbar-color: rgba(0, 0, 0, 0.603) rgba(255, 255, 255, 0); scrollbar-width: thin;">
-                    <table id="basic-datatables" class="display table table-striped table-hover text-dark">
-                        <thead style="border-bottom: 3px solid black;">
-                            <tr>
-                                <th></th>
-                                <th colspan="1" class="text-center">Proyectos por asignar</th>
-                                <th></th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>
-                                    <div class="d-flex justify-content-center text-center bg-dark rounded-circle"
-                                        style="width: 25px; height: 25px;">
-                                        <p class="text-white w-100 mx-auto font-weight-bold">1</p>
-                                    </div>
-                                </td>
-                                <td>BigData</td>
-                                <td>
-                                    <div class="custom-control custom-switch d-flex justify-content-center">
-                                        <input type="checkbox" checked>
-                                    </div>
-                                </td>
-                            </tr>
-
-                            <tr>
-                                <td>
-                                    <div class="d-flex justify-content-center text-center bg-dark rounded-circle"
-                                        style="width: 25px; height: 25px;">
-                                        <p class="text-white w-100 mx-auto font-weight-bold">2</p>
-                                    </div>
-                                </td>
-                                <td>Neurociencia</td>
-                                <td>
-                                    <div class="custom-control custom-switch d-flex justify-content-center">
-                                        <input type="checkbox">
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <div class="d-flex justify-content-center text-center bg-dark rounded-circle"
-                                        style="width: 25px; height: 25px;">
-                                        <p class="text-white w-100 mx-auto font-weight-bold">3</p>
-                                    </div>
-                                </td>
-                                <td>NatuTecno</td>
-                                <td>
-                                    <div class="custom-control custom-switch d-flex justify-content-center">
-                                        <input type="checkbox">
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <div class="d-flex justify-content-center text-center bg-dark rounded-circle"
-                                        style="width: 25px; height: 25px;">
-                                        <p class="text-white w-100 mx-auto font-weight-bold">4</p>
-                                    </div>
-                                </td>
-                                <td>Biotecnología</td>
-                                <td>
-                                    <div class="custom-control custom-switch d-flex justify-content-center">
-                                        <input type="checkbox">
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <div class="d-flex justify-content-center text-center bg-dark rounded-circle"
-                                        style="width: 25px; height: 25px;">
-                                        <p class="text-white w-100 mx-auto font-weight-bold">5</p>
-                                    </div>
-                                </td>
-                                <td>Robótica</td>
-                                <td>
-                                    <div class="custom-control custom-switch d-flex justify-content-center">
-                                        <input type="checkbox">
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <div class="d-flex justify-content-center text-center bg-dark rounded-circle"
-                                        style="width: 25px; height: 25px;">
-                                        <p class="text-white w-100 mx-auto font-weight-bold">6</p>
-                                    </div>
-                                </td>
-                                <td>Inteligencia Artificial</td>
-                                <td>
-                                    <div class="custom-control custom-switch d-flex justify-content-center">
-                                        <input type="checkbox">
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <div class="d-flex justify-content-center text-center bg-dark rounded-circle"
-                                        style="width: 25px; height: 25px;">
-                                        <p class="text-white w-100 mx-auto font-weight-bold">7</p>
-                                    </div>
-                                </td>
-                                <td>Ciberseguridad</td>
-                                <td>
-                                    <div class="custom-control custom-switch d-flex justify-content-center">
-                                        <input type="checkbox">
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <div class="d-flex justify-content-center text-center bg-dark rounded-circle"
-                                        style="width: 25px; height: 25px;">
-                                        <p class="text-white w-100 mx-auto font-weight-bold">8</p>
-                                    </div>
-                                </td>
-                                <td>Nanotecnología</td>
-                                <td>
-                                    <div class="custom-control custom-switch d-flex justify-content-center">
-                                        <input type="checkbox">
-                                    </div>
-                                </td>
-                            </tr>
-
-
-                        </tbody>
-
-                    </table>
-                </div>
-                <div aria-label="Page navigation example mb-5">
-                    <ul class="pagination justify-content-center">
-                        <li class="page-item disabled m-1">
-                            <a class="page-link" href="#" tabindex="-1" style="border-radius: 20px;">Previous</a>
-                        </li>
-                        <li class="page-item rounded m-1"><a class="page-link rounded-circle" href="#">1</a></li>
-                        <li class="page-item m-1"><a class="page-link rounded-circle" href="#">2</a></li>
-                        <li class="page-item m-1"><a class="page-link rounded-circle" href="#">3</a></li>
-                        <li class="page-item m-1">
-                            <a class="page-link" href="#" style="border-radius: 20px;">Next</a>
-                        </li>
-                    </ul>
+        <div class="row mb-4 mt-2">
+            <div class="col">
+                <div class="section_title text-center">
+                    <h1>Asignar proyectos</h1>
                 </div>
             </div>
-            <div class="col-8 pb-5 text-center text-dark">
-                <div class="row justify-content-around">
-                    <div class="col-sm-7 col-12">
-                        <div class="row text-justify">
-                            <div class="col-12 my-2 text-center">
-                                <h2 id="titulo_proyecto">BigDataIA</h2>
+        </div>
+        <div class="accordion accordion-flush border-bottom" id="accordionFlushExample">
+            <div class="accordion-item">
+                <h2 class="accordion-header">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#flush-collapseProyecto" aria-expanded="false"
+                        aria-controls="flush-collapseProyecto">
+                        <h4 class="h5">BigDataIA</h4>
+                    </button>
+                </h2>
+                <div id="flush-collapseProyecto" class="accordion-collapse collapse"
+                    data-bs-parent="#accordionFlushExample">
+                    <div class="accordion-body text-dark">
+                        <div class="row">
+                            <div class="col-md-4 col-12">
+                                <p class="mb-2 text-dark"><strong>Modalidad:</strong></p>
+                                <p class="text-dark">Poster</p>
                             </div>
+                            <div class="col-md-4 col-12">
+                                <p class="mb-2 text-dark"><strong>Institución:</strong></p>
+                                <p class="text-dark">SENA</p>
+                            </div>
+                            <div class="col-md-4 col-12">
+                                <p class="mb-2 text-dark"><strong>Autores:</strong></p>
+                                <p class="text-dark">Pedro Sanchez, Nicolas Uribe</p>
+                            </div>
+                        </div>
 
-                            <div class="col-12 mb-1 mt-2 ">
-                                <div class="row">
-                                    <div class="col-5 bg-dark" style="background: rgb(255, 182, 6)
-    ;">
-                                        <strong class="text-white font-weight-bold">Modalidad: </strong>
-                                    </div>
-                                    <div class="col-7 border">
-                                        <span id="modalidad">Poster</span>
-                                    </div>
-                                </div>
+                        <div class="row">
+                            <div class="col-md-4 col-12">
+                                <p class="mb-2 text-dark"><strong>Área de conocimiento:</strong></p>
+                                <p class="text-dark">Tecnología</p>
                             </div>
-                            <div class="col-12 mb-1">
-                                <div class="row">
-                                    <div class="col-5 bg-dark" style="background: rgb(255, 182, 6)
-    ;">
-                                        <strong class="text-white font-weight-bold">Institución: </strong>
-                                    </div>
-                                    <div class="col-7 border">
-                                        <span id="institucion">SENA</span>
-                                    </div>
-                                </div>
+                        </div>
+
+                        <div class="row mt-4 justify-content-center">
+                            <div class="col-md-6 col-12">
+                                <label for="" class="Text-dark fw-bold">Seleccionar evaluador:</label>
+                                <select class="form-select text-dark">
+                                    <option selected>Seleccionar evaluador</option>
+                                    <option value="1">Rigoberto Uran</option>
+                                    <option value="2">Sancho Sanchez</option>
+                                </select>
                             </div>
-                            <div class="col-12 mb-1">
-                                <div class="row">
-                                    <div class="col-5 bg-dark" style="background: rgb(255, 182, 6)
-    ;">
-                                        <strong class="text-white font-weight-bold">Autores:</strong>
+                            <div class="col-md-6 col-12 mb-5">
+                                <label for="" class="text-dark fw-bold">Otro evaluador diferente a los
+                                    sugeridos:</label>
+                                    <div class="d-flex align-items-center position-relative">
+                                        <input type="text" class="form-control text-dark" placeholder="Identificación del evaluador">
+                                        <p class="d-inline-flex gap-1 mb-0">
+                                            <a data-bs-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
+                                                <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#000000" class="ms-2">
+                                                    <path d="M440-280h80v-240h-80v240Zm40-320q17 0 28.5-11.5T520-640q0-17-11.5-28.5T480-680q-17 0-28.5 11.5T440-640q0 17 11.5 28.5T480-600Zm0 520q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Zm0-320Z"/>
+                                                </svg>
+                                            </a>
+                                        </p>
+                                        <div class="collapse position-absolute top-100 start-0 mt-2 w-100" id="collapseExample">
+                                            <div class="card card-body">
+                                                Este campo es opcional.
+                                                Visita la lista de evaluadores si deseas tener más clara tu selección 
+                                                <a href="lista_evaluadores.html" target="_blank">Haz click aquí</a>
+                                            </div>
+                                        </div>
                                     </div>
-                                    <div class="col-7 border text-justify">
-                                        <span id="autores">Pedro Sanchez, Nicolas Uribe</span>
-                                    </div>
-                                </div>
+                                    
                             </div>
-                            <div class="col-12 mb-1">
-                                <div class="row">
-                                    <div class="col-5 bg-dark" style="background: rgb(255, 182, 6)
-    ;">
-                                        <strong class="text-white font-weight-bold">Área de conocimiento:</strong>
-                                    </div>
-                                    <div class="col-7 border text-justify">
-                                        <span id="area_conocimiento">Tecnologia</span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-12 border mt-5" style="border-radius: 20px;">
-                                <div class="row justify-content-center align-items-center py-3">
-                                    <div class="col-7">
-                                        <strong class="h5">Evaluadores disponibles: </strong>
-                                    </div>
-                                    <div class="col-5">
-                                        <select type="select" class="form-control text-dark" name="consulta_sala" id="">
-                                            <option value="">Seleccionar</option>
-                                            <option value="">Rigoberto Uran</option>
-                                            <option value="">Sancho Sanchez</option>
-                                        </select>
-                                    </div>
-                                    <div class="col-12 text-center mt-3">
-                                        <a href="#" class="btn text-white font-weight-bold" style="background: rgb(255, 182, 6)
-;">ASIGNAR</a>
-                                    </div>
-                                </div>
+                            <div class="col-md-6 col-12 text-center">
+                                <a href="#" class="btn  w-100 mt-3 fw-bold"
+                                    style="background: rgb(255, 182, 6);">ASIGNAR</a>
                             </div>
                         </div>
                     </div>
-                    <div class="col-12 col-sm-5 mx-auto mt-3" >
-                        <embed src="pruebas_documentos/constancia_NotasAprendiz.pdf#toolbar=0"  width="250px"
-                            height="100%">
-                            <a href="#" type="button" data-toggle="modal" data-target="#exampleModal">Visualizar</a>
+                </div>
+            </div>
+            <!-- Acordeón 1 -->
+            <div class="accordion-item">
+                <h2 class="accordion-header">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#flush-collapseProyecto1" aria-expanded="false"
+                        aria-controls="flush-collapseProyecto1">
+                        <h4 class="h5">Desarrollo Web</h4>
+                    </button>
+                </h2>
+                <div id="flush-collapseProyecto1" class="accordion-collapse collapse"
+                    data-bs-parent="#accordionFlushExample">
+                    <div class="accordion-body text-dark">
+                        <div class="row">
+                            <div class="col-md-4 col-12">
+                                <p class="mb-2 text-dark"><strong>Modalidad:</strong></p>
+                                <p class="text-dark">Presentación oral</p>
+                            </div>
+                            <div class="col-md-4 col-12">
+                                <p class="mb-2 text-dark"><strong>Institución:</strong></p>
+                                <p class="text-dark">Universidad de Antioquia</p>
+                            </div>
+                            <div class="col-md-4 col-12">
+                                <p class="mb-2 text-dark"><strong>Autores:</strong></p>
+                                <p class="text-dark">Laura Perez, Maria Gonzales</p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4 col-12">
+                                <p class="mb-2 text-dark"><strong>Área de conocimiento:</strong></p>
+                                <p class="text-dark">Informática</p>
+                            </div>
+                        </div>
+                        <div class="row mt-4 justify-content-center">
+                            <div class="col-md-6 col-12">
+                                <label for="" class="Text-dark fw-bold">Seleccionar evaluador:</label>
+                                <select class="form-select text-dark">
+                                    <option selected>Seleccionar evaluador</option>
+                                    <option value="1">Daniel Ceballos</option>
+                                    <option value="2">Andrea Moreno</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6 col-12 mb-5">
+                                <label for="" class="text-dark fw-bold">Otro evaluador diferente a los sugeridos:</label>
+                                <div class="d-flex align-items-center position-relative">
+                                    <input type="text" class="form-control text-dark" placeholder="Identificación del evaluador">
+                                    <p class="d-inline-flex gap-1 mb-0">
+                                        <a data-bs-toggle="collapse" href="#collapseExample1" role="button" aria-expanded="false" aria-controls="collapseExample1">
+                                            <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#000000" class="ms-2">
+                                                <path d="M440-280h80v-240h-80v240Zm40-320q17 0 28.5-11.5T520-640q0-17-11.5-28.5T480-680q-17 0-28.5 11.5T440-640q0 17 11.5 28.5T480-600Zm0 520q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Zm0-320Z"/>
+                                            </svg>
+                                        </a>
+                                    </p>
+                                    <div class="collapse position-absolute top-100 start-0 mt-2 w-100" id="collapseExample1">
+                                        <div class="card card-body">
+                                            Este campo es opcional.
+                                            Visita la lista de evaluadores si deseas tener más clara tu selección 
+                                            <a href="lista_evaluadores.html" target="_blank">Haz click aquí</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6 col-12 text-center">
+                                <a href="#" class="btn w-100 mt-3 fw-bold" style="background: rgb(255, 182, 6);">ASIGNAR</a>
+                            </div>
+                        </div>
                     </div>
                 </div>
+            </div>
+        
+            <!-- Acordeón 2 -->
+            <div class="accordion-item">
+                <h2 class="accordion-header">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#flush-collapseProyecto2" aria-expanded="false"
+                        aria-controls="flush-collapseProyecto2">
+                        <h4 class="h5">Inteligencia Artificial</h4>
+                    </button>
+                </h2>
+                <div id="flush-collapseProyecto2" class="accordion-collapse collapse"
+                    data-bs-parent="#accordionFlushExample">
+                    <div class="accordion-body text-dark">
+                        <div class="row">
+                            <div class="col-md-4 col-12">
+                                <p class="mb-2 text-dark"><strong>Modalidad:</strong></p>
+                                <p class="text-dark">Terminado</p>
+                            </div>
+                            <div class="col-md-4 col-12">
+                                <p class="mb-2 text-dark"><strong>Institución:</strong></p>
+                                <p class="text-dark">UPB</p>
+                            </div>
+                            <div class="col-md-4 col-12">
+                                <p class="mb-2 text-dark"><strong>Autores:</strong></p>
+                                <p class="text-dark">Carlos Ramirez, Diana Quintero</p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4 col-12">
+                                <p class="mb-2 text-dark"><strong>Área de conocimiento:</strong></p>
+                                <p class="text-dark">Inteligencia Artificial</p>
+                            </div>
+                        </div>
+                        <div class="row mt-4 justify-content-center">
+                            <div class="col-md-6 col-12">
+                                <label for="" class="Text-dark fw-bold">Seleccionar evaluador:</label>
+                                <select class="form-select text-dark">
+                                    <option selected>Seleccionar evaluador</option>
+                                    <option value="1">Javier Gomez</option>
+                                    <option value="2">Sofia Martinez</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6 col-12 mb-5">
+                                <label for="" class="text-dark fw-bold">Otro evaluador diferente a los sugeridos:</label>
+                                <div class="d-flex align-items-center position-relative">
+                                    <input type="text" class="form-control text-dark" placeholder="Identificación del evaluador">
+                                    <p class="d-inline-flex gap-1 mb-0">
+                                        <a data-bs-toggle="collapse" href="#collapseExample2" role="button" aria-expanded="false" aria-controls="collapseExample2">
+                                            <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#000000" class="ms-2">
+                                                <path d="M440-280h80v-240h-80v240Zm40-320q17 0 28.5-11.5T520-640q0-17-11.5-28.5T480-680q-17 0-28.5 11.5T440-640q0 17 11.5 28.5T480-600Zm0 520q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Zm0-320Z"/>
+                                            </svg>
+                                        </a>
+                                    </p>
+                                    <div class="collapse position-absolute top-100 start-0 mt-2 w-100" id="collapseExample2">
+                                        <div class="card card-body">
+                                            Este campo es opcional.
+                                            Visita la lista de evaluadores si deseas tener más clara tu selección 
+                                            <a href="lista_evaluadores.html" target="_blank">Haz click aquí</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6 col-12 text-center">
+                                <a href="#" class="btn w-100 mt-3 fw-bold" style="background: rgb(255, 182, 6);">ASIGNAR</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        
+            <!-- Acordeón 3 -->
+            <div class="accordion-item">
+                <h2 class="accordion-header">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#flush-collapseProyecto3" aria-expanded="false"
+                        aria-controls="flush-collapseProyecto3">
+                        <h4 class="h5">Redes Neuronales</h4>
+                    </button>
+                </h2>
+                <div id="flush-collapseProyecto3" class="accordion-collapse collapse"
+                    data-bs-parent="#accordionFlushExample">
+                    <div class="accordion-body text-dark">
+                        <div class="row">
+                            <div class="col-md-4 col-12">
+                                <p class="mb-2 text-dark"><strong>Modalidad:</strong></p>
+                                <p class="text-dark">Poster</p>
+                            </div>
+                            <div class="col-md-4 col-12">
+                                <p class="mb-2 text-dark"><strong>Institución:</strong></p>
+                                <p class="text-dark">EAFIT</p>
+                            </div>
+                            <div class="col-md-4 col-12">
+                                <p class="mb-2 text-dark"><strong>Autores:</strong></p>
+                                <p class="text-dark">Julian Rodriguez, Angela Ruiz</p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4 col-12">
+                                <p class="mb-2 text-dark"><strong>Área de conocimiento:</strong></p>
+                                <p class="text-dark">Ciencia de Datos</p>
+                            </div>
+                        </div>
+                        <div class="row mt-4 justify-content-center">
+                            <div class="col-md-6 col-12">
+                                <label for="" class="Text-dark fw-bold">Seleccionar evaluador:</label>
+                                <select class="form-select text-dark">
+                                    <option selected>Seleccionar evaluador</option>
+                                    <option value="1">Fernando Alvarez</option>
+                                    <option value="2">Marta Salazar</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6 col-12 mb-5">
+                                <label for="" class="text-dark fw-bold">Otro evaluador diferente a los sugeridos:</label>
+                                <div class="d-flex align-items-center position-relative">
+                                    <input type="text" class="form-control text-dark" placeholder="Identificación del evaluador">
+                                    <p class="d-inline-flex gap-1 mb-0">
+                                        <a data-bs-toggle="collapse" href="#collapseExample3" role="button" aria-expanded="false" aria-controls="collapseExample3">
+                                            <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#000000" class="ms-2">
+                                                <path d="M440-280h80v-240h-80v240Zm40-320q17 0 28.5-11.5T520-640q0-17-11.5-28.5T480-680q-17 0-28.5 11.5T440-640q0 17 11.5 28.5T480-600Zm0 520q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Zm0-320Z"/>
+                                            </svg>
+                                        </a>
+                                    </p>
+                                    <div class="collapse position-absolute top-100 start-0 mt-2 w-100" id="collapseExample3">
+                                        <div class="card card-body">
+                                            Este campo es opcional.
+                                            Visita la lista de evaluadores si deseas tener más clara tu selección 
+                                            <a href="lista_evaluadores.html" target="_blank">Haz click aquí</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6 col-12 text-center">
+                                <a href="#" class="btn w-100 mt-3 fw-bold" style="background: rgb(255, 182, 6);">ASIGNAR</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        
+            <!-- Acordeón 4 -->
+            <div class="accordion-item">
+                <h2 class="accordion-header">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#flush-collapseProyecto4" aria-expanded="false"
+                        aria-controls="flush-collapseProyecto4">
+                        <h4 class="h5">Seguridad Informática</h4>
+                    </button>
+                </h2>
+                <div id="flush-collapseProyecto4" class="accordion-collapse collapse"
+                    data-bs-parent="#accordionFlushExample">
+                    <div class="accordion-body text-dark">
+                        <div class="row">
+                            <div class="col-md-4 col-12">
+                                <p class="mb-2 text-dark"><strong>Modalidad:</strong></p>
+                                <p class="text-dark">En curso</p>
+                            </div>
+                            <div class="col-md-4 col-12">
+                                <p class="mb-2 text-dark"><strong>Institución:</strong></p>
+                                <p class="text-dark">Universidad Nacional</p>
+                            </div>
+                            <div class="col-md-4 col-12">
+                                <p class="mb-2 text-dark"><strong>Autores:</strong></p>
+                                <p class="text-dark">Camila Vargas, Andres Morales</p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4 col-12">
+                                <p class="mb-2 text-dark"><strong>Área de conocimiento:</strong></p>
+                                <p class="text-dark">Ciberseguridad</p>
+                            </div>
+                        </div>
+                        <div class="row mt-4 justify-content-center">
+                            <div class="col-md-6 col-12">
+                                <label for="" class="Text-dark fw-bold">Seleccionar evaluador:</label>
+                                <select class="form-select text-dark">
+                                    <option selected>Seleccionar evaluador</option>
+                                    <option value="1">Mauricio Rojas</option>
+                                    <option value="2">Sandra Castro</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6 col-12 mb-5">
+                                <label for="" class="text-dark fw-bold">Otro evaluador diferente a los sugeridos:</label>
+                                <div class="d-flex align-items-center position-relative">
+                                    <input type="text" class="form-control text-dark" placeholder="Identificación del evaluador">
+                                    <p class="d-inline-flex gap-1 mb-0">
+                                        <a data-bs-toggle="collapse" href="#collapseExample4" role="button" aria-expanded="false" aria-controls="collapseExample4">
+                                            <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#000000" class="ms-2">
+                                                <path d="M440-280h80v-240h-80v240Zm40-320q17 0 28.5-11.5T520-640q0-17-11.5-28.5T480-680q-17 0-28.5 11.5T440-640q0 17 11.5 28.5T480-600Zm0 520q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Zm0-320Z"/>
+                                            </svg>
+                                        </a>
+                                    </p>
+                                    <div class="collapse position-absolute top-100 start-0 mt-2 w-100" id="collapseExample4">
+                                        <div class="card card-body">
+                                            Este campo es opcional.
+                                            Visita la lista de evaluadores si deseas tener más clara tu selección 
+                                            <a href="lista_evaluadores.html" target="_blank">Haz click aquí</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6 col-12 text-center">
+                                <a href="#" class="btn w-100 mt-3 fw-bold" style="background: rgb(255, 182, 6);">ASIGNAR</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Paginador -->
+        <div class="mt-5">
+            <div aria-label="Page navigation example mb-5">
+                <ul class="pagination justify-content-center">
+                    <li class="page-item disabled m-1">
+                        <a class="page-link" href="#" tabindex="-1"
+                            style="border-radius: 20px; color: black;">Previous</a>
+                    </li>
+                    <li class="page-item rounded m-1">
+                        <a class="page-link rounded-circle" href="#" style="color: black;">1</a>
+                    </li>
+                    <li class="page-item m-1">
+                        <a class="page-link rounded-circle" href="#" style="color: black;">2</a>
+                    </li>
+                    <li class="page-item m-1">
+                        <a class="page-link rounded-circle" href="#" style="color: black;">3</a>
+                    </li>
+                    <li class="page-item m-1">
+                        <a class="page-link" href="#" style="border-radius: 20px; color: black;">Next</a>
+                    </li>
+                </ul>
             </div>
         </div>
 
@@ -520,7 +675,7 @@
                 </div>
                 <div class="mt-3" style="height: 60vh;">
                     <embed src="pruebas_documentos/constancia_NotasAprendiz.pdf#toolbar=0" type="" width="100%"
-                            height="100%">
+                        height="100%">
                 </div>
                 <div class="modal-footer justify-content-center">
                     <button type="button" class="btn btn-dark col-4" data-dismiss="modal">Cerrar</button>
@@ -528,6 +683,9 @@
             </div>
         </div>
     </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+        crossorigin="anonymous"></script>
     <script src="../plantilla/js/jquery-3.2.1.min.js"></script>
     <script src="../plantilla/styles/bootstrap4/popper.js"></script>
     <script src="../plantilla/styles/bootstrap4/bootstrap.min.js"></script>
