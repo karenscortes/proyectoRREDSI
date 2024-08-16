@@ -25,9 +25,29 @@
 1. 1600px
 ************/
 
+@media only screen and (max-width: 1920px)
+{
+	.header_side
+	{
+		width: 285px;
+	}
+	.main_nav_container
+	{
+		padding-right: 63px;
+	}
+}
+
 @media only screen and (max-width: 1600px)
 {
-	
+	.header_side
+	{
+		width: 285px;
+	}
+	.main_nav_container
+	{
+		padding-right: 63px;
+	}
+
 }
 
 /************
@@ -36,7 +56,15 @@
 
 @media only screen and (max-width: 1440px)
 {
-	
+	.header_side
+	{
+		width: 285px;
+	}
+	.main_nav_container
+	{
+		padding-right: 63px;
+	}
+
 }
 
 /************

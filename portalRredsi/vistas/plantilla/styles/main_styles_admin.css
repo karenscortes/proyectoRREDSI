@@ -915,7 +915,14 @@ rlx_parent
 .card
 {
 	display: block;
-	background: white;
+	border-radius: 30px; 
+	height: auto; 
+	cursor: pointer;
+}
+.col_card{
+	padding-left: 30px;
+	padding-right: 30px;
+	padding-top: 10px;
 }
 .card-img-top
 {
@@ -1500,12 +1507,14 @@ input:last-of-type
 }
 
 .scroll-div {
-    height: 590px;
+    height: 60vh;
     overflow-y: auto;
     overflow-x: hidden;
 }
 
 .boton{
+	padding-left: 10px; 
+	padding-right: 10px;
 	border: none;
 	height: 40px;
 	font-weight: 1000;
@@ -1514,9 +1523,20 @@ input:last-of-type
 	border-radius: 5px;
 	background-color:   rgb(255, 182, 6);
 }
+.boton_editar{
+	width: 40px;
+	height: 40px;
+	border: none;
+	border-radius: 5px;
+	background-color:   rgb(255, 182, 6);
+}
 
 .tr_rubrica{
 	border-bottom: 1px solid black;
+}
+
+.td_rubrica{
+	border-right: 1px solid black;
 }
 
 .titulo_rubrica{
@@ -1530,4 +1550,19 @@ input:last-of-type
 .form-control{
 	height: 35px;
 	border: 1px solid black;
+}
+
+.tipo_formato{
+	color: black; 
+	font-weight: bold; 
+	font-style: italic; 
+	font-size: 16px;
+}
+
+.tr_item_rubrica{
+	border-bottom: 1px solid black;
+}
+
+.tr_item_rubrica > td:not(:last-child) {
+	border-right: 1px solid black;
 }
