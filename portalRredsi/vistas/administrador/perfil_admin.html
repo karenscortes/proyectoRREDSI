@@ -127,13 +127,16 @@
                                 </div>
                                 <div class="form-row">
                                     <div class="form-group col-md-6">
-                                        <label for="inputState">Tipo de Documento</label>
-                                        <select id="inputState" class="form-control custom-select">
-                                          <option selected>Seleccionar...</option>
-                                          <option>Cedula</option>
+                                        <label for="inputDocumentType" class="font-weight-bold text-dark">Tipo de
+                                            documento</label>
+                                        <select id="inputDocumentType" type="select" class="form-control text-dark custom-select"
+                                            required>
+                                            <option value="cedula">Seleccione una opción</option>
+                                            <option value="cedula">Cédula</option>
+                                            <option value="pasaporte">Pasaporte</option>
+                                            <option value="cedula_extranjeria">Cédula de extranjeria</option>
                                         </select>
-                                    </div>
-                                  
+                                    </div>                                  
                                     <div class="form-group col-md-6">
                                         <label for="inputCity">N° de Documento</label>
                                         <input type="text" class="form-control" id="inputCity">
@@ -375,20 +378,22 @@
                                     </div>
                                 </div>
                                 <div class="form-group row justify-content-center">
-                                    <label for="inputState " class="col-10 mx-4">Area de Conocimiento:</label>
+                                    <label for="inputKnowledgeArea" class="col-10 mx-4">Area de Conocimiento:</label>
                                     <div class="col-10">
-                                        <select id="inputState" class="form-control custom-select">
-                                            <option selected>Seleccionar...</option>
-                                            <option>Inteligencia Artificial</option>
+                                        <select id="inputKnowledgeArea" type="select" class="form-control text-dark custom-select"
+                                            required>
+                                            <option value="cedula">Seleccione una opción</option>
+                                            <option value="cedula">Inteligencia Artificial</option>
                                         </select>
                                     </div> 
                                 </div>
                                 <div class="form-group row justify-content-center">
-                                    <label for="inputState" class="col-10 mx-4">Otra Area:</label>
+                                    <label for="inputAnotherArea" class="col-10 mx-4">Otra Area:</label>
                                     <div class="col-10">
-                                        <select id="inputState" class="form-control custom-select">
-                                            <option selected>Seleccionar...</option>
-                                            <option>Medio Ambiente</option>
+                                        <select id="inputAnotherArea" type="select" class="form-control text-dark custom-select"
+                                            required>
+                                            <option value="cedula" selected>Seleccione una opción</option>
+                                            <option value="cedula">IAgricultura</option>
                                         </select>
                                     </div>
                                 </div>                                                                                  
