@@ -5,28 +5,23 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cuentas Delegados</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-    <link rel="stylesheet" href="/plantilla/styles/bootstrap4/bootstrap.min.css">
-    <link rel="stylesheet" type="text/css" href="../plantilla/styles/bootstrap4/bootstrap.min.css">
+    <link rel="stylesheet" href="../plantilla/styles/bootstrap5/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../plantilla/styles/bootstrap4/bootstrap.min.css">
     <link href="../plantilla/plugins/fontawesome-free-5.0.1/css/fontawesome-all.css" rel="stylesheet" type="text/css">
     <link rel="stylesheet" type="text/css" href="../plantilla/plugins/OwlCarousel2-2.2.1/owl.carousel.css">
     <link rel="stylesheet" type="text/css" href="../plantilla/plugins/OwlCarousel2-2.2.1/owl.theme.default.css">
     <link rel="stylesheet" type="text/css" href="../plantilla/plugins/OwlCarousel2-2.2.1/animate.css">
-    <link rel="stylesheet" type="text/css" href="../plantilla/styles/main_styles_admin.css">
+    <link rel="stylesheet" type="text/css" href="../plantilla/styles/main_styles_admin copy.css">
     <link rel="stylesheet" type="text/css" href="../plantilla/styles/responsive_admin.css">
-    <link rel="stylesheet" href="../plantilla/styles/global_styles.css">
-    <link rel="stylesheet" href="plantilla/styles/bootstrap5/css/bootstrap.min.css">
 </head>
 
 <body>
-    <!-- header -->
-    <header class="header d-flex flex-row position-absolute top-20">
+    <header class="header d-flex flex-row position-relative">
         <div class="header_content d-flex flex-row align-items-center justify-content-start">
             <!-- Logo -->
             <div class="logo_container">
                 <div class="logo">
-                    <img class="img-fluid" src="../plantilla/images/logoRredsi.png" alt="">
+                    <img class="img-fluid" src="plantilla/images/logoRredsi.png" alt="">
                     <span>RREDSI</span>
                 </div>
             </div>
@@ -38,7 +33,7 @@
                         <li class="main_nav_item"><a href="#">Inicio</a></li>
                         <li class="main_nav_item"><a href="#">Perfil</a></li>
                         <li class="main_nav_item"><a href="#">Cuentas</a></li>
-                        <li class="main_nav_item"><a href="#" style="font-weight: 1000;">Rúbricas</a></li>
+                        <li class="main_nav_item"><a href="#">Rúbricas</a></li>
                         <li class="main_nav_item"><a href="#">Eventos</a></li>
 
                         <li class="main_nav_item"><a href="#">Cerrar sesión</a></li>
@@ -53,50 +48,12 @@
         </div>
 
     </header>
-    <!-- fondo del header -->
-    <div>
-        <img src="../plantilla/images/event_1.jpg" alt="" height="300px" width="100%" >
+
+    <!-- dividing line -->
+    <div class="container-fluid" id="cont_ejemplo">
+       
     </div>
-    <!-- Menu -->
-    <div class="menu_container menu_mm">
 
-        <!-- Menu Close Button -->
-        <div class="menu_close_container">
-            <div class="menu_close"></div>
-        </div>
-
-        <!-- Menu Items -->
-        <div class="menu_inner menu_mm">
-            <div class="menu menu_mm">
-                <ul class="menu_list menu_mm">
-                    <li class="menu_item menu_mm"><a href="#">Inicio</a></li>
-                    <li class="menu_item menu_mm"><a href="#">Perfil</a></li>
-                    <li class="menu_item menu_mm"><a href="#">Cuentas</a></li>
-                    <li class="menu_item menu_mm"><a href="#">Rúbricas</a></li>
-                    <li class="menu_item menu_mm"><a href="#">Eventos</a></li>
-
-                    <li class="menu_item menu_mm"><a href="#">Cerrar sesión</a></li>
-                </ul>
-
-                <!-- Menu Social -->
-
-                <div class="menu_social_container menu_mm">
-                    <ul class="menu_social menu_mm">
-                        <li class="menu_social_item menu_mm"><a href="https://www.instagram.com/rredsiquindio/"><i
-                                    class="fab fa-instagram"></i></a></li>
-                        <li class="menu_social_item menu_mm"><a
-                                href="https://www.facebook.com/rredsi?mibextid=ZbWKwL"><i
-                                    class="fab fa-facebook-f"></i></a></li>
-                        <li class="menu_social_item menu_mm"><a href="https://x.com/Rredsi"><i
-                                    class="fab fa-twitter"></i></a></li>
-                    </ul>
-                </div>
-
-                <div class="menu_copyright menu_mm">ADSO 2670586 All rights reserved</div>
-            </div>
-
-        </div>
-    </div>
     <!--Main Part-->
     <div class="container pt-5">
         <div class="row mb-5 mt-2">
@@ -106,167 +63,151 @@
                 </div>
             </div>
         </div>
-       
-        <!-- Agregar Cuenta -->
-        <div class="row mb-5 justify-content-center">
-            <div class="col-10 col-sm-6">
-                <div class="row ">
-                    <div class="col-2 pt-1 text-center">
-                        <label for="email" class="font-weight-bold text-dark">Email: </label>
-                    </div>
-                    <div class="col-7 ">
-                        
-                        <input type="email" id="email" class="form-control w-80" placeholder="usuario@gmail.com">
-                    </div>
-                    <div class="col-3">
-                        <button class="btn w-100 font-weight-bold" style="background: rgb(255, 182, 6);">Agregar</button>
-                    </div>
+
+        <div class="row">
+            <!-- tabla -->
+            <div class="table-responsive row  d-flex justify-content-center">
+                <div class="col-10">
+                    <table class="display table table-striped table-hover text-dark">
+                        <thead class="text-center" >
+                            <tr>
+                                <th colspan="3" style="background: rgb(255, 182, 6);">
+                                    <!-- buscador -->
+
+                                    <div class="row justify-content-start">
+                                        <div class="col-5">
+                                            <input type="text" id="busqueda" class="form-control" placeholder="Buscar...">
+                                        </div>
+                                        <div class="col-2">
+                                            <button class="btn btn-dark w-100 font-weight-bold ">Buscar</button>
+                                        </div>
+                                    </div>
+                                        
+                                </th>
+                                <th style="background: rgb(255, 182, 6);">
+                                    <a href="#" class="btn-sm font-weight-bold text-dark" type="button" data-toggle="modal"
+                                        data-target="#createAccount"><i class="fas fa-plus h4"></i></a>
+                                </th>
+                            </tr>
+                            <tr>
+                                <th>Usuario</th>
+                                <th>Institucion</th>
+                                <th>Estado</th>
+                                <th>Perfil</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Emanuel Echeverry</td>
+                                <td>SENA</td>
+                                <td class="text-center">
+                                    <div class="form-check form-switch">
+                                        <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault">
+                                    </div>
+                                </td>
+                                <td class="text-center">
+                                    <a href="#" class="btn-sm font-weight-bold text-dark" type="button" data-toggle="modal"
+                                        data-target="#delegateInformation">
+                                        <i class="far fa-address-card h4"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Emanuel Echeverry</td>
+                                <td>SENA</td>
+                                <td class="text-center">
+                                    <div class="form-check form-switch">
+                                        <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault">
+                                    </div>
+                                </td>
+                                <td class="text-center">
+                                    <a href="#" class="btn-sm font-weight-bold text-dark" type="button" data-toggle="modal"
+                                        data-target="#delegateInformation">
+                                        <i class="far fa-address-card h4"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Emanuel Echeverry</td>
+                                <td>SENA</td>
+                                <td class="text-center">
+                                    <div class="form-check form-switch">
+                                        <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault">
+                                    </div>
+                                </td>
+                                <td class="text-center">
+                                    <a href="#" class="btn-sm font-weight-bold text-dark" type="button" data-toggle="modal"
+                                        data-target="#delegateInformation">
+                                        <i class="far fa-address-card h4"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Emanuel Echeverry</td>
+                                <td>SENA</td>
+                                <td class="text-center">
+                                    <div class="form-check form-switch">
+                                        <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault">
+                                    </div>
+                                </td>
+                                <td class="text-center">
+                                    <a href="#" class="btn-sm font-weight-bold text-dark" type="button" data-toggle="modal"
+                                        data-target="#delegateInformation">
+                                        <i class="far fa-address-card h4"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Emanuel Echeverry</td>
+                                <td>SENA</td>
+                                <td class="text-center">
+                                    <div class="form-check form-switch">
+                                        <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault">
+                                    </div>
+                                </td>
+                                <td class="text-center">
+                                    <a href="#" class="btn-sm font-weight-bold text-dark" type="button" data-toggle="modal"
+                                        data-target="#delegateInformation">
+                                        <i class="far fa-address-card h4"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Emanuel Echeverry</td>
+                                <td>SENA</td>
+                                <td class="text-center">
+                                    <div class="form-check form-switch">
+                                        <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault">
+                                    </div>
+                                </td>
+                                <td class="text-center">
+                                    <a href="#" class="btn-sm font-weight-bold text-dark" type="button" data-toggle="modal"
+                                        data-target="#delegateInformation">
+                                        <i class="far fa-address-card h4"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Emanuel Echeverry</td>
+                                <td>SENA</td>
+                                <td class="text-center">
+                                    <div class="form-check form-switch">
+                                        <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault">
+                                    </div>
+                                </td>
+                                <td class="text-center">
+                                    <a href="#" class="btn-sm font-weight-bold text-dark" type="button" data-toggle="modal"
+                                        data-target="#delegateInformation">
+                                        <i class="far fa-address-card h4"></i>
+                                    </a>
+                                </td>
+                            </tr>
+
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>
-
-        <!-- tabla -->
-        <div class="table-responsive row  d-flex justify-content-center">
-            <div class="col-10">
-                <table class="display table table-striped table-hover text-dark">
-                    <thead class="text-center" >
-                        <tr>
-                            <th colspan="3" style="background: rgb(255, 182, 6);">
-                                <!-- buscador -->
-
-                                <div class="row justify-content-start">
-                                    <div class="col-5">
-                                        <input type="text" id="busqueda" class="form-control" placeholder="Buscar...">
-                                    </div>
-                                    <div class="col-2">
-                                        <button class="btn btn-dark w-100 font-weight-bold ">Buscar</button>
-                                    </div>
-                                </div>
-                                    
-                            </th>
-                            <th style="background: rgb(255, 182, 6);">
-                                <i class="fas fa-plus h4"></i>
-                            </th>
-                        </tr>
-                        <tr>
-                            <th>Usuario</th>
-                            <th>Institucion</th>
-                            <th>Estado</th>
-                            <th>Perfil</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>Pepe Rodrigo Sanchez</td>
-                            <td>SENA</td>
-                            <td class="text-center">
-                                <div class="form-check form-switch">
-                                    <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault">
-                                </div>
-                            </td>
-                            <td class="text-center">
-                                <a href="#" class="btn-sm font-weight-bold text-dark" type="button" data-toggle="modal"
-                                    data-target="#exampleModal">
-                                    <i class="far fa-address-card h4"></i>
-                                </a>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>Pepe Rodrigo Sanchez</td>
-                            <td>SENA</td>
-                            <td class="text-center">
-                                <div class="form-check form-switch">
-                                    <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault">
-                                </div>
-                            </td>
-                            <td class="text-center">
-                                <a href="#" class="btn-sm font-weight-bold text-dark" type="button" data-toggle="modal"
-                                    data-target="#exampleModal">
-                                    <i class="far fa-address-card h4"></i>
-                                </a>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>Pepe Rodrigo Sanchez</td>
-                            <td>SENA</td>
-                            <td class="text-center">
-                                <div class="form-check form-switch">
-                                    <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault">
-                                </div>
-                            </td>
-                            <td class="text-center">
-                                <a href="#" class="btn-sm font-weight-bold text-dark" type="button" data-toggle="modal"
-                                    data-target="#exampleModal">
-                                    <i class="far fa-address-card h4"></i>
-                                </a>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>Pepe Rodrigo Sanchez</td>
-                            <td>SENA</td>
-                            <td class="text-center">
-                                <div class="form-check form-switch">
-                                    <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault">
-                                </div>
-                            </td>
-                            <td class="text-center">
-                                <a href="#" class="btn-sm font-weight-bold text-dark" type="button" data-toggle="modal"
-                                    data-target="#exampleModal">
-                                    <i class="far fa-address-card h4"></i>
-                                </a>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>Pepe Rodrigo Sanchez</td>
-                            <td>SENA</td>
-                            <td class="text-center">
-                                <div class="form-check form-switch">
-                                    <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault">
-                                </div>
-                            </td>
-                            <td class="text-center">
-                                <a href="#" class="btn-sm font-weight-bold text-dark" type="button" data-toggle="modal"
-                                    data-target="#exampleModal">
-                                    <i class="far fa-address-card h4"></i>
-                                </a>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>Pepe Rodrigo Sanchez</td>
-                            <td>SENA</td>
-                            <td class="text-center">
-                                <div class="form-check form-switch">
-                                    <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault">
-                                </div>
-                            </td>
-                            <td class="text-center">
-                                <a href="#" class="btn-sm font-weight-bold text-dark" type="button" data-toggle="modal"
-                                    data-target="#exampleModal">
-                                    <i class="far fa-address-card h4"></i>
-                                </a>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>Pepe Rodrigo Sanchez</td>
-                            <td>SENA</td>
-                            <td class="text-center">
-                                <div class="form-check form-switch">
-                                    <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault">
-                                </div>
-                            </td>
-                            <td class="text-center">
-                                <a href="#" class="btn-sm font-weight-bold text-dark" type="button" data-toggle="modal"
-                                    data-target="#exampleModal">
-                                    <i class="far fa-address-card h4"></i>
-                                </a>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    </div>
-    </div>
         <div aria-label="Page navigation example mb-5">
             <ul class="pagination justify-content-center">
                 <li class="page-item disabled m-1">
@@ -282,212 +223,131 @@
         </div>
     </div>
 
-
-    <!-- Modal -->
-
-    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-                <div class="mr-2">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+    <!-- Modal datos delegados -->
+    <div class="modal fade" id="delegateInformation" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered ">
+            <div class="modal-content border border-dark border-5 rounded-5 text-dark">
+                <div class="text-center ">
+                    <button type="button" class="close mr-3 mt-3" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
+                    <h3 class="modal-title mt-5" id="modalLabel">Emmanuel Echeverry</h3>
+                    
                 </div>
-                <div class="">
-                    <h3 class="text-dark font-weight-bold  text-center" id="exampleModalLabel">SANCHO SANCHEZ</h3>
-                </div>
-                <div class="modal-body">
+                <div class="modal-body mt-3">
+
                     <div class="row mx-auto justify-content-center">
-                        <div class="col-md-10">
-                            <div class="mb-2">
-                                <div class="row">
-                                    <div class="col-4 text-dark font-weight-bold">
-                                        Área de conocimiento:
-                                    </div>
-                                    <div class="col-8 border">
-                                        <span class="text-dark " id="conocimiento">Sistemas</span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="mb-2">
-                                <div class="row">
-                                    <div class="col-4 text-white font-weight-bold text-dark">
-                                        Institución:
-                                    </div>
-                                    <div class="col-8 border">
-                                        <span class="text-dark" id="institucion">SENA</span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="mb-2">
-                                <div class="row">
-                                    <div class="col-4 text-white font-weight-bold text-dark">
-                                        Teléfono:
-                                    </div>
-                                    <div class="col-8 border">
-                                        <span class="text-dark" id="telefono">3145468952</span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="mb-2">
-                                <div class="row">
-                                    <div class="col-4 text-white font-weight-bold text-dark">
-                                        Correo electrónico:
-                                    </div>
-                                    <div class="col-8 border">
-                                        <span class="text-dark" id="electronico">pepe@gmail.com</span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="mb-2">
-                                <div class="row">
-                                    <div class="col-4 text-white font-weight-bold text-dark">
-                                        Otra área de conocimiento:
-                                    </div>
-                                    <div class="col-8 border">
-                                        <span class="text-dark" id="otra_area_conocimiento">Sociales</span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="mb-2">
-                                <div class="row">
-                                    <div class="col-4 text-white font-weight-bold text-dark">
-                                        Estado:
-                                    </div>
-                                    <div class="col-8 border">
-                                        <span class="text-dark" id="estado">pendiente</span>
-                                    </div>
-                                </div>
-                            </div>
+
+                        <div class="col-5 text-dark font-weight-bold">
+                            Tipo de Documento:
+                        </div>
+                        <div class="col-5 border mb-3">
+                            <span class="text-dark " id="conocimiento">Cedula</span>
+                        </div>
+                        <div class="col-5 text-dark font-weight-bold">
+                            Documento:
+                        </div>
+                        <div class="col-5 border mb-3">
+                            <span class="text-dark " id="conocimiento">2102156348</span>
+                        </div>
+                        <div class="col-5 text-dark font-weight-bold">
+                            Nombre Completo:
+                        </div>
+                        <div class="col-5 border mb-3">
+                            <span class="text-dark " id="conocimiento">Maria Luisa</span>
+                        </div>
+                        <div class="col-5 text-dark font-weight-bold">
+                            Area de conocimiento:
+                        </div>
+                        <div class="col-5 border mb-3">
+                            <span class="text-dark " id="conocimiento">Sistemas</span>
+                        </div>
+                        <div class="col-5 text-dark font-weight-bold">
+                            Institución:
+                        </div>
+                        <div class="col-5 border mb-3">
+                            <span class="text-dark " id="conocimiento">SENA</span>
+                        </div>
+                        <div class="col-5 text-dark font-weight-bold">
+                            Teléfono:
+                        </div>
+                        <div class="col-5 border mb-3">
+                            <span class="text-dark " id="conocimiento">3204562023</span>
+                        </div>
+                        <div class="col-5 text-dark font-weight-bold">
+                            Correo:
+                        </div>
+                        <div class="col-5 border mb-3">
+                            <span class="text-dark " id="conocimiento">maria60@gmail.com</span>
+                        </div>
+                        
                             <div class="text-center mt-3">
-                                <a href="pruebas_documentos/constancia_NotasAprendiz.pdf" class="btn btn-outline-primary" target="_blank">
+                                <a href="../delegado/pruebas_documentos/constancia_NotasAprendiz.pdf" class="btn btn-outline-primary" target="_blank">
                                     Ver Títulos
                                 </a>
                             </div>
                         </div>
-                    </div>
-                </div>
-                <div class="modal-footer justify-content-center">
-                    <button type="button" class="btn btn-dark col-4" data-dismiss="modal">Cerrar</button>
+                    </div>   
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Footer -->
-    <footer class="footer mt-3">
-        <div class="container">
-            <!-- Footer Content -->
+    <!-- Modal agregar delegado -->
 
-            <div class="footer_content">
-                <div class="row">
-
-                    <!-- Footer Column - About -->
-                    <div class="col-lg-3 footer_col">
-
-                        <!-- Logo -->
-                        <div class="logo_container">
-                            <div class="logo">
-                                <img src="../plantilla/images/logoRredsi.png" alt="">
-                                <span>RREDSI</span>
-                            </div>
+    <div class="modal fade" id="createAccount" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content border border-dark border-5 rounded-5 text-dark">
+                <div class="text-center ">
+                    <button type="button" class="close mr-3 mt-3" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h3 class="modal-title mt-5" id="modalLabel">Crear Cuenta de Delegado</h3>
+                    
+                </div>
+                <div class="modal-body mt-3">
+                    <form>
+                        <div class="form-group row justify-content-center">
+                          <label for="colFormLabelSm" class="col-1 col-form-label col-form-label-sm">Email: </label>
+                          <div class="col-5">
+                            <input type="email" class="form-control form-control-sm" id="colFormLabelSm" placeholder="usuario@gmail.com">
+                          </div>
                         </div>
-
-                        <p class="footer_about_text">In aliquam, augue a gravida rutrum, ante nisl fermentum nulla,
-                            vitae tempor nisl ligula vel nunc. Proin quis mi malesuada, finibus tortor fermentum, tempor
-                            lacus.</p>
-
-                    </div>
-
-                    <!-- Footer Column - Menu -->
-
-                    <div class="col-lg-3 footer_col">
-                        <div class="footer_column_title">Menu</div>
-                        <div class="footer_column_content">
-                            <ul>
-                                <li class="footer_list_item"><a href="#">Home</a></li>
-                                <li class="footer_list_item"><a href="#">About Us</a></li>
-                                <li class="footer_list_item"><a href="courses.html">Courses</a></li>
-                                <li class="footer_list_item"><a href="news.html">News</a></li>
-                                <li class="footer_list_item"><a href="contact.html">Contact</a></li>
-                            </ul>
-                        </div>
-                    </div>
-
-                    <!-- Footer Column - Usefull Links -->
-
-                    <div class="col-lg-3 footer_col">
-                        <div class="footer_column_title">Usefull Links</div>
-                        <div class="footer_column_content">
-                            <ul>
-                                <li class="footer_list_item"><a href="#">Testimonials</a></li>
-                                <li class="footer_list_item"><a href="#">FAQ</a></li>
-                                <li class="footer_list_item"><a href="#">Community</a></li>
-                                <li class="footer_list_item"><a href="#">Campus Pictures</a></li>
-                                <li class="footer_list_item"><a href="#">Tuitions</a></li>
-                            </ul>
-                        </div>
-                    </div>
-
-                    <!-- Footer Column - Contact -->
-
-                    <div class="col-lg-3 footer_col">
-                        <div class="footer_column_title">Contact</div>
-                        <div class="footer_column_content">
-                            <ul>
-                                <li class="footer_contact_item">
-                                    <div class="footer_contact_icon">
-                                        <img src="../plantilla/images/placeholder.svg"
-                                            alt="https://www.flaticon.com/authors/lucy-g">
-                                    </div>
-                                    Blvd Libertad, 34 m05200 Arévalo
-                                </li>
-                                <li class="footer_contact_item">
-                                    <div class="footer_contact_icon">
-                                        <img src="../plantilla/images/smartphone.svg"
-                                            alt="https://www.flaticon.com/authors/lucy-g">
-                                    </div>
-                                    0034 37483 2445 322
-                                </li>
-                                <li class="footer_contact_item">
-                                    <div class="footer_contact_icon">
-                                        <img src="../plantilla/images/envelope.svg"
-                                            alt="https://www.flaticon.com/authors/lucy-g">
-                                    </div>hello@company.com
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-
+                        <div class="text-center">
+                            <button type="submit" class="btn btn-warning font-weight-bold">Crear</button>
+                        </div>                        
+                    </form>
                 </div>
             </div>
+        </div>
+    </div>
 
+
+    <!-- Footer -->
+    <footer class="footer mt-5">
+        <div class="container">
+        
             <!-- Footer Copyright -->
 
             <div class="footer_bar d-flex flex-column flex-sm-row align-items-center">
                 <div class="footer_copyright">
-                    <span><!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-                        Copyright &copy;
-                        <script>document.write(new Date().getFullYear());</script> All rights reserved | This template
-                        is made with by <a href="#" target="_blank">ADSO 2670586</a>
-                        <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-                    </span>
+                    <span>Colorlib All rights reserved</span>
                 </div>
                 <div class="footer_social ml-sm-auto">
                     <ul class="menu_social">
-
-                        <li class="menu_social_item"><a href="https://www.instagram.com/rredsiquindio/"><i
-                                    class="fab fa-instagram"></i></a></li>
-                        <li class="menu_social_item"><a href="https://www.facebook.com/rredsi?mibextid=ZbWKwL"><i
-                                    class="fab fa-facebook-f"></i></a></li>
-                        <li class="menu_social_item"><a href="https://x.com/Rredsi"><i class="fab fa-twitter"></i></a>
-                        </li>
+                        <li class="menu_social_item"><a href="#"><i class="fab fa-pinterest"></i></a></li>
+                        <li class="menu_social_item"><a href="#"><i class="fab fa-linkedin-in"></i></a></li>
+                        <li class="menu_social_item"><a href="#"><i class="fab fa-instagram"></i></a></li>
+                        <li class="menu_social_item"><a href="#"><i class="fab fa-facebook-f"></i></a></li>
+                        <li class="menu_social_item"><a href="#"><i class="fab fa-twitter"></i></a></li>
                     </ul>
                 </div>
             </div>
 
         </div>
+
     </footer>
+
     <script src="../plantilla/js/jquery-3.2.1.min.js"></script>
     <script src="../plantilla/styles/bootstrap4/popper.js"></script>
     <script src="../plantilla/styles/bootstrap4/bootstrap.min.js"></script>
@@ -500,7 +360,6 @@
     <script src="../plantilla/plugins/scrollTo/jquery.scrollTo.min.js"></script>
     <script src="../plantilla/plugins/easing/easing.js"></script>
     <script src="../plantilla/js/custom.js"></script>
-
+    
 </body>
-
 </html>
