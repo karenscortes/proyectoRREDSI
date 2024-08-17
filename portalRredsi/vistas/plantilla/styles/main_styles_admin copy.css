@@ -253,7 +253,7 @@ section
 	width: 100%;
 	overflow: hidden;
 }
-.prlx_parent
+rlx_parent
 {
 	overflow: hidden;
 }
@@ -273,7 +273,7 @@ section
 .header
 {
 	position: fixed;
-	top: 45px;
+	top: 0px;
 	left: 50%;
 	-webkit-transform: translateX(-50%);
 	-moz-transform: translateX(-50%);
@@ -283,7 +283,7 @@ section
 	width: 1318px;
 	height: 104px;
 	background: #FFFFFF;
-	z-index: 10;
+	z-index: 8;
 	-webkit-transition: all 200ms ease;
 	-moz-transition: all 200ms ease;
 	-ms-transition: all 200ms ease;
@@ -292,7 +292,7 @@ section
 }
 .header.scrolled
 {	
-	top: 15px;
+	top: 10px;
 }
 .header.scrolled .header_content::before
 {
@@ -300,9 +300,10 @@ section
 }
 .header_content
 {
-
-	width: calc(100% - 280px);
+	width: 100%;
+	padding: 1.9rem;
 	height: 100%;
+
 }
 .header_content::before
 {
@@ -313,7 +314,6 @@ section
 	width: 100%;
 	height: 100%;
 	content: '';
-	box-shadow: 0px 20px 49px rgba(0,0,0,0.67);
 	z-index: -1;
 }
 
@@ -328,7 +328,7 @@ section
 }
 .logo img{
 	vertical-align: middle;
-	max-width: 115px;
+	max-width: 55px;
 	margin-top: 8px;
 }
 .logo span
@@ -339,20 +339,23 @@ section
 	color: #3a3a3a;
 	vertical-align: middle;
 	text-transform: uppercase;
-	margin-left: 3px;
+	margin-left: 2px;
 }
 
 /*********************************
 3.2 Main Nav
 *********************************/
-
+#cont_ejemplo{
+	background-color:#ffb606 ;
+	padding: 10px;
+}
 .main_nav_container
 {
 	display: inline-block;
 	flex-grow: 3;
 	justify-content: space-between;
-	margin-left: 50px;
-	padding-right: 10px;
+	margin-left: 55px;
+	padding-right: 55px;
 	
 }
 .main_nav
@@ -362,8 +365,6 @@ section
 .main_nav_item
 {
 	display: inline-block;
-	
-	margin-right: 40px;
 }
 .main_nav_item:last-child
 {
@@ -372,7 +373,7 @@ section
 .main_nav_item a
 {
 	font-family: 'Open Sans', sans-serif;
-	font-size: 14px;
+	font-size: 15px;
 	text-transform: uppercase;
 	font-weight: 700;
 	color: #3a3a3a;
@@ -647,6 +648,7 @@ section
 .home
 {
 	width: 100%;
+	height: 100vh;
 }
 
 /*********************************
@@ -914,8 +916,14 @@ section
 .card
 {
 	display: block;
-	background: #f8f9fb;
-	border: none;
+	border-radius: 30px; 
+	height: auto; 
+	cursor: pointer;
+}
+.col_card{
+	padding-left: 30px;
+	padding-right: 30px;
+	padding-top: 10px;
 }
 .card-img-top
 {
@@ -926,12 +934,11 @@ section
 {
 	padding-top: 0px;
 	padding-bottom: 0px;
-	padding-left: 15px;
-	padding-right: 15px;
+
 }
 .card-title
 {
-	margin-top: 55px;
+	margin-top: 10px;
 }
 .card-title a
 {
@@ -946,9 +953,9 @@ section
 }
 .card-text
 {
-	font-size: 14px;
+	font-size: 13px;
 	font-weight: 500;
-	color: #a5a5a5;
+	color: #4e4e4e;
 	margin-top: -12px;
 }
 .price_box
@@ -1282,7 +1289,7 @@ input:last-of-type
 
 .event_items
 {
-	margin-top: 50px;
+	margin-top: 68px;
 }
 .event_item
 {
@@ -1364,7 +1371,6 @@ input:last-of-type
 
 .newsletter
 {
-
 	padding-bottom: 85px;
 	border-bottom: solid 2px #4d4e4e;
 }
@@ -1502,27 +1508,62 @@ input:last-of-type
 }
 
 .scroll-div {
-    width: 1000px; 
-    height: 400px;
+    height: 60vh;
     overflow-y: auto;
     overflow-x: hidden;
 }
-.form-section {
-	background-color: #f8f9fa; /* Color más oscuro que el blanco */
-	border: 1px solid #ced4da; /* Borde del div */
-	padding: 20px;
+
+.boton{
+	padding-left: 10px; 
+	padding-right: 10px;
+	border: none;
+	height: 40px;
+	font-weight: 1000;
+	font-size: 20px;
+	color: black;
 	border-radius: 5px;
+	background-color:   rgb(255, 182, 6);
 }
-.form-section h2 {
-	color: rgb(255, 182, 6); /* Color del encabezado */
+.boton_editar{
+	width: 40px;
+	height: 40px;
+	border: none;
+	border-radius: 5px;
+	background-color:   rgb(255, 182, 6);
 }
-.form-section .title-icon {
-	color: rgb(255, 182, 6); /* Color del ícono */
-	margin-right: 10px;
-	font-size: 1.5rem; /* Tamaño del ícono más grande */
-	margin-bottom: 10px;
+
+.tr_rubrica{
+	border-bottom: 1px solid black;
 }
-.title-line {
-	border-top: 2px solid rgb(255, 182, 6); /* Color de la línea */
-	margin-top: -10px;
+
+.td_rubrica{
+	border-right: 1px solid black;
+}
+
+.titulo_rubrica{
+	font-size: 18px; font-weight: bold;
+}
+
+.cabecero{
+	border-right: 1px solid black;
+}
+
+.form-control{
+	height: 35px;
+	border: 1px solid black;
+}
+
+.tipo_formato{
+	color: black; 
+	font-weight: bold; 
+	font-style: italic; 
+	font-size: 16px;
+}
+
+.tr_item_rubrica{
+	border-bottom: 1px solid black;
+}
+
+.tr_item_rubrica > td:not(:last-child) {
+	border-right: 1px solid black;
 }
