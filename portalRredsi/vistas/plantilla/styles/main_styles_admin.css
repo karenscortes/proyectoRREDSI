@@ -1549,6 +1549,17 @@ input:last-of-type
 	background-color:   rgb(255, 182, 6);
 }
 
+.boton_modal{
+	border: none;
+	height: 40px;
+	width: 35%;
+	font-weight: 1000;
+	font-size: 20px;
+	color: black;
+	border-radius: 5px;
+	background-color:   rgb(255, 182, 6);
+}
+
 .botones_rubrica{
 	width: 40px;
 	height: 40px;
