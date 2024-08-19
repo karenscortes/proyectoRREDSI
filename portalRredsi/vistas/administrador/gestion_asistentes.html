@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestión Asistentes</title>
+    <link rel="stylesheet" href="../plantilla/styles/bootstrap5/css/bootstrap.min.css">
+    <link href="../plantilla/plugins/fontawesome-free-5.0.1/css/fontawesome-all.css" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" type="text/css" href="../plantilla/plugins/OwlCarousel2-2.2.1/owl.carousel.css">
+    <link rel="stylesheet" type="text/css" href="../plantilla/plugins/OwlCarousel2-2.2.1/owl.theme.default.css">
+    <link rel="stylesheet" type="text/css" href="../plantilla/plugins/OwlCarousel2-2.2.1/animate.css">
+    <link rel="stylesheet" type="text/css" href="../plantilla/styles/main_styles_admin.css">
+    <link rel="stylesheet" type="text/css" href="../plantilla/styles/responsive_admin.css">
+
+</head>
+
+<body>
+    <!-- header -->
+    <header class="header d-flex flex-row position-relative">
+        <div class="header_content d-flex flex-row align-items-center justify-content-start">
+            <!-- Logo -->
+            <div class="logo_container">
+                <div class="logo">
+                    <img class="img-fluid" src="../plantilla/images/logoRredsi.png" alt="">
+                    <span>RREDSI</span>
+                </div>
+            </div>
+
+            <!-- Main Navigation -->
+            <nav class="main_nav_container">
+                <div class="main_nav">
+                    <ul class="main_nav_list d-flex justify-content-between">
+                        <li class="main_nav_item"><a href="#">Inicio</a></li>
+                        <li class="main_nav_item"><a href="perfil_admin.html">Perfil</a></li>
+                        <li class="main_nav_item"><a href="#">Cuentas</a></li>
+                        <li class="main_nav_item"><a href="gestion_rubrica.html">Rúbricas</a></li>
+                        <li class="main_nav_item" style="font-weight: 1000;">
+                            <div class="dropdown">
+                                <a class=" dropdown-toggle text-dark" type="button" data-toggle="dropdown"
+                                    aria-expanded="false">
+                                    Evento
+                                </a>
+                                <div class="dropdown-menu text-center">
+                                    <a href="../delegado/salas.html">Salas</a><br>
+                                    <a href="gestion_asistentes.html">Gestionar Asistentes</a>
+                                    <a href="gestion_convocatoria.html">Gestionar Convocatorias</a>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="main_nav_item"><a href="#">Cerrar sesión</a></li>
+                    </ul>
+                </div>
+            </nav>
+        </div>
+
+        <!-- Hamburger -->
+        <div class="hamburger_container">
+            <i class="fas fa-bars trans_200"></i>
+        </div>
+
+    </header>
+    <div class="container-fluid" id="cont_ejemplo"></div <!-- Menu -->
+    <div class="menu_container menu_mm">
+
+        <!-- Menu Close Button -->
+        <div class="menu_close_container">
+            <div class="menu_close"></div>
+        </div>
+
+        <!-- Menu Items -->
+        <div class="menu_inner menu_mm">
+            <div class="menu menu_mm">
+                <ul class="menu_list menu_mm">
+                    <li class="menu_item menu_mm"><a href="#">Inicio</a></li>
+                    <li class="menu_item menu_mm"><a href="#">Perfil</a></li>
+                    <li class="menu_item menu_mm"><a href="#">Cuentas</a></li>
+                    <li class="menu_item menu_mm"><a href="#">Rúbricas</a></li>
+                    <li class="menu_item menu_mm" style="font-weight: 1000;">
+                        <div class="dropdown">
+                            <a class="dropdown-toggle text-dark" type="button" data-toggle="dropdown"
+                                aria-expanded="false">
+                                Evento
+                            </a>
+                            <div class="dropdown-menu text-center custom-dropdown-menu">
+                                <a href="../delegado/salas.html">Salas</a><br>
+                                <a href="gestion_asistentes.html">Gestionar Asistentes</a>
+                                <a href="gestion_convocatoria.html">Gestionar Convocatorias</a>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="menu_item menu_mm"><a href="#">Cerrar sesión</a></li>
+                </ul>
+
+                <!-- Menu Social -->
+
+                <div class="menu_social_container menu_mm">
+                    <ul class="menu_social menu_mm">
+                        <li class="menu_social_item menu_mm"><a href="https://www.instagram.com/rredsiquindio/"><i
+                                    class="fab fa-instagram"></i></a></li>
+                        <li class="menu_social_item menu_mm"><a
+                                href="https://www.facebook.com/rredsi?mibextid=ZbWKwL"><i
+                                    class="fab fa-facebook-f"></i></a></li>
+                        <li class="menu_social_item menu_mm"><a href="https://x.com/Rredsi"><i
+                                    class="fab fa-twitter"></i></a></li>
+                    </ul>
+                </div>
+
+                <div class="menu_copyright menu_mm">ADSO 2670586 All rights reserved</div>
+            </div>
+
+        </div>
+    </div>
+    <!--Contenido(body)-->
+    <div class="container mt-3">
+        <div>
+            <!--Titulos principal-->
+            <div class="mb-5">
+                <h1 class=" titulo d-flex justify-content-center" style="color: black;">Gestionar Asistentes</h1>
+            </div>
+
+            <!--Formulario agregar asistente-->
+            <form action="" class="mb-5">
+                <div class="row">
+                    <div class="mb-3 col-md-4 col-lg-4 col-12">
+                        <label for="tipo_documento" class="form-label">
+                            Tipo de Documento
+                            <span class="text-danger fw-bold">*</span>
+                        </label>
+                        <select id="tipo_documento" name="tipo_documento" class="form-select">
+                            <option value="" disabled selected>Selecciona un tipo de documento</option>
+                            <option value="CC">Cédula de Ciudadanía (CC)</option>
+                            <option value="TI">Tarjeta de Identidad (TI)</option>
+                            <option value="PAS">Pasaporte (PAS)</option>
+                        </select>
+                    </div>
+                    <div class="col-md-4 col-lg-4 col-12 mb-3">
+                        <label for="documento" class="form-label">
+                            Documento
+                            <span class="text-danger fw-bold">*</span>
+                        </label>
+                        <input type="text" id="documento" name="documento" required="required"
+                            class="form_modal form-control">
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <label for="nombres" class="form-label">
+                            Nombres
+                            <span class="text-danger fw-bold">*</span>
+                        </label>
+                        <input type="text" id="nombres" name="nombres" required="required"
+                            class="form_modal form-control">
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <label for="apellidos" class="form-label">
+                            Apellidos
+                            <span class="text-danger fw-bold">*</span>
+                        </label>
+                        <input type="text" id="apellidos" name="apellidos" required="required"
+                            class="form_modal form-control">
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <label for="institucion" class="form-label">
+                            Institución
+                            <span class="text-danger fw-bold">*</span>
+                        </label>
+                        <input type="text" id="institucion" name="institucion" required="required"
+                            class="form_modal form-control">
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <label for="celular" class="form-label">
+                            Celular
+                            <span class="text-danger fw-bold">*</span>
+                        </label>
+                        <input type="text" id="celular" name="celular" required="required"
+                            class="form_modal form-control">
+                    </div>
+                    <div class="mb-2">
+                        <label for="comprobante_pago" class="form-label d-flex justify-content-center">
+                            Comprobante de pago
+                            <span class="text-danger fw-bold">*</span>
+                        </label>
+                        <div class="custom-file-upload mx-auto">
+                            <input type="file" id="comprobante_pago" name="comprobante_pago" />
+                            <label for="comprobante_pago" class="upload-label">
+                                <i class="fas fa-cloud-upload-alt"></i>
+                                Selecciona un archivo
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="d-flex justify-content-center mt-2">
+                    <button class="btn boton pl-5 pr-5 mx-auto" data-bs-toggle="modal"
+                        data-bs-target="#modalConfirmacion">Agregar</button>
+                </div>
+            </form>
+
+            <!-- Tabla de asistentes -->
+            <div>
+                <table class="table table-striped  table-hover">
+                    <thead>
+                        <tr class="table-dark">
+                            <th colspan="7" class="text-center bordered-header" style="font-size: 20px;">Lista
+                                Asistentes</th>
+                        </tr>
+                        <tr>
+                            <th>Documento</th>
+                            <th>Nombres</th>
+                            <th>Apellidos</th>
+                            <th>Institución</th>
+                            <th>Celular</th>
+                            <th>Pago</th>
+                            <th>Editar</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>12234565</td>
+                            <td>Pablo</td>
+                            <td>Lopez</td>
+                            <td>SENA</td>
+                            <td>4567</td>
+                            <td style="vertical-align: middle;">
+                                <a href="prueba_comprobante_pago/ejemploComprobantePago.pdf" target="_blank" style="color: black;">
+                                    <i class="fas fa-eye fa-2x"></i>
+                                </a>
+                            </td>                            
+                            <td style="vertical-align: middle;">
+                                <i data-bs-toggle="modal" data-bs-target="#modalEditar" class="fas fa-edit fa-2x"></i>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>1234565</td>
+                            <td>Catalina</td>
+                            <td>Lopez Garcia</td>
+                            <td>UTP</td>
+                            <td>12344324</td>
+                            <td style="vertical-align: middle;">
+                                <a href="prueba_comprobante_pago/ejemploComprobantePago.pdf" target="_blank" style="color: black;">
+                                    <i class="fas fa-eye fa-2x"></i>
+                                </a>
+                            </td>    
+                            <td style="vertical-align: middle;">
+                                <i data-bs-toggle="modal" data-bs-target="#modalEditar" class="fas fa-edit fa-2x"></i>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>87654</td>
+                            <td>Lucia</td>
+                            <td>Ortiz</td>
+                            <td>UTP</td>
+                            <td>12344324</td>
+                            <td style="vertical-align: middle;">
+                                <a href="prueba_comprobante_pago/ejemploComprobantePago.pdf" target="_blank" style="color: black;">
+                                    <i class="fas fa-eye fa-2x"></i>
+                                </a>
+                            </td>    
+                            <td style="vertical-align: middle;">
+                                <i data-bs-toggle="modal" data-bs-target="#modalEditar" class="fas fa-edit fa-2x"></i>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>1234565</td>
+                            <td>Juan</td>
+                            <td>Gil</td>
+                            <td>UTP</td>
+                            <td>12344324</td>
+                            <td style="vertical-align: middle;">
+                                <a href="prueba_comprobante_pago/ejemploComprobantePago.pdf" target="_blank" style="color: black;">
+                                    <i class="fas fa-eye fa-2x"></i>
+                                </a>
+                            </td>    
+                            <td style="vertical-align: middle;">
+                                <i data-bs-toggle="modal" data-bs-target="#modalEditar" class="fas fa-edit fa-2x"></i>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!--Paginador tabla asistentes-->
+            <div aria-label="Page navigation example mb-5">
+                <ul class="pagination justify-content-center">
+                    <li class="page-item disabled m-1">
+                        <a class="page-link" href="#" tabindex="-1" style="border-radius: 20px;">Previous</a>
+                    </li>
+                    <li class="page-item rounded m-1"><a class="page-link rounded-circle" href="#">1</a></li>
+                    <li class="page-item m-1"><a class="page-link rounded-circle" href="#">2</a></li>
+                    <li class="page-item m-1"><a class="page-link rounded-circle" href="#">3</a></li>
+                    <li class="page-item m-1">
+                        <a class="page-link" href="#" style="border-radius: 20px;">Next</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    </div>
+
+
+    <!-- sesión de modales -->
+    <div>
+        <!--Modal de editar asistente-->
+        <div class="modal fade" id="modalEditar" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+            aria-labelledby="staticBackdropLabel" aria-hidden="true">
+            <div class="modal-dialog" style="max-width: 50%;">
+                <div class="modal-content rounded-st-1 shadow-lg modal-responsive">
+                    <div class="modal-header p-4 shadow w-100" style="border: 1px solid yellow;">
+                        <i class="fas fa-edit icon"></i>
+                        <h1 class="modal-title fs-5" id="staticBackdropLabel">Editar asistente</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form action="" class="mb-5">
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label for="nombres" class="form-label">
+                                        Nombres
+                                        <span class="text-danger fw-bold">*</span>
+                                    </label>
+                                    <input type="text" id="nombres" name="nombres" required="required"
+                                        class="form_modal form-control">
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label for="apellidos" class="form-label">
+                                        Apellidos
+                                        <span class="text-danger fw-bold">*</span>
+                                    </label>
+                                    <input type="text" id="apellidos" name="apellidos" required="required"
+                                        class="form_modal form-control">
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label for="institucion" class="form-label">
+                                        Institución
+                                        <span class="text-danger fw-bold">*</span>
+                                    </label>
+                                    <input type="text" id="institucion" name="institucion" required="required"
+                                        class="form_modal form-control">
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label for="celular" class="form-label">
+                                        Celular
+                                        <span class="text-danger fw-bold">*</span>
+                                    </label>
+                                    <input type="text" id="celular" name="celular" required="required"
+                                        class="form_modal form-control">
+                                </div>
+                                <div class=" col-md-12  mb-2">
+                                    <label for="comprobante_pago" class="form-label d-flex justify-content-center">
+                                        Comprobante de pago
+                                        <span class="text-danger fw-bold">*</span>
+                                    </label>
+                                    <div class="custom-file-upload mx-auto">
+                                        <input type="file" id="comprobante_pago" name="comprobante_pago" />
+                                        <label for="comprobante_pago" class="upload-label">
+                                            <i class="fas fa-cloud-upload-alt"></i>
+                                            Selecciona un archivo
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn boton" data-bs-dismiss="modal">Cerrar</button>
+                        <button class="btn boton">Guardar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!--Modal confirmación agregar-->
+        <div class="modal fade" id="modalConfirmacion" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+            aria-labelledby="staticBackdropLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" style="max-width: 25%;">
+                <div class="modal-content rounded-st-1 shadow-lg modal-responsiven">
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+                        style="margin-left: auto;"></button>
+                    <div class="modal-body">
+                        <form action="">
+                            <div class="row">
+                                <div class="col-md-12 mb-4">
+                                    <h2 class="text-center" style="font-size: 25px; color: black;">Asistente agregado
+                                        con éxito</h2>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer d-flex justify-content-between" style="border: 1px solid yellow;">
+                        <button class="btn boton_modal" data-bs-dismiss="modal">Cancelar</button>
+                        <button class="btn boton_modal" data-bs-dismiss="modal">Aceptar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <footer class="footer mt-3">
+        <div class="container">
+            <!-- Footer Content -->
+
+            <div class="footer_content">
+                <div class="row">
+
+                    <!-- Footer Column - About -->
+                    <div class="col-lg-3 footer_col">
+
+                        <!-- Logo -->
+                        <div class="logo_container">
+                            <div class="logo">
+                                <img src="../plantilla/images/logoRredsi.png" alt="">
+                                <span>RREDSI</span>
+                            </div>
+                        </div>
+
+                        <p class="footer_about_text">In aliquam, augue a gravida rutrum, ante nisl fermentum nulla.</p>
+
+                    </div>
+
+                    <!-- Footer Column - Menu -->
+
+                    <div class="col-lg-3 footer_col">
+                        <div class="footer_column_title">Menú</div>
+                        <div class="footer_column_content">
+                            <ul>
+                                <li class="footer_list_item"><a href="#">Inicio</a></li>
+                                <li class="footer_list_item"><a href="#">Proyectos</a></li>
+                                <li class="footer_list_item"><a href="courses.html">Evaluadores</a></li>
+                                <li class="footer_list_item"><a href="news.html">Login</a></li>
+                                <li class="footer_list_item"><a href="contact.html">Contáctanos</a></li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- Footer Column - Usefull Links -->
+
+                    <div class="col-lg-3 footer_col">
+                        <div class="footer_column_title">Links útiles</div>
+                        <div class="footer_column_content">
+                            <ul>
+                                <li class="footer_list_item"><a href="#">Proyectos</a></li>
+                                <li class="footer_list_item"><a href="#">RREDSI</a></li>
+                                <li class="footer_list_item"><a href="#">Contáctos</a></li>
+                                <li class="footer_list_item"><a href="#">Encuentros regionales</a></li>
+                                <li class="footer_list_item"><a href="#">Encuentros departamentales</a></li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- Footer Column - Contact -->
+
+                    <div class="col-lg-3 footer_col">
+                        <div class="footer_column_title">Contácto</div>
+                        <div class="footer_column_content">
+                            <ul>
+                                <li class="footer_contact_item">
+                                    <div class="footer_contact_icon">
+                                        <img src="../plantilla/images/placeholder.svg"
+                                            alt="https://www.flaticon.com/authors/lucy-g">
+                                    </div>
+                                    Universidad tecnológica de Pereira
+                                </li>
+                                <li class="footer_contact_item">
+                                    <div class="footer_contact_icon">
+                                        <img src="../plantilla/images/smartphone.svg"
+                                            alt="https://www.flaticon.com/authors/lucy-g">
+                                    </div>
+                                    +57 3104289839
+                                </li>
+                                <li class="footer_contact_item">
+                                    <div class="footer_contact_icon">
+                                        <img src="../plantilla/images/envelope.svg"
+                                            alt="https://www.flaticon.com/authors/lucy-g">
+                                    </div>crredsi@gmail.com
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- Footer Copyright -->
+
+            <div class="footer_bar d-flex flex-column flex-sm-row align-items-center">
+                <div class="footer_copyright">
+                    <span><!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+                        Copyright &copy;
+                        <script>document.write(new Date().getFullYear());</script> All rights reserved | This template
+                        is made with by <a href="#" target="_blank">ADSO 2670586</a>
+                        <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+                    </span>
+                </div>
+                <div class="footer_social ml-sm-auto">
+                    <ul class="menu_social">
+
+                        <li class="menu_social_item"><a href="https://www.instagram.com/rredsiquindio/"><i
+                                    class="fab fa-instagram"></i></a></li>
+                        <li class="menu_social_item"><a href="https://www.facebook.com/rredsi?mibextid=ZbWKwL"><i
+                                    class="fab fa-facebook-f"></i></a></li>
+                        <li class="menu_social_item"><a href="https://x.com/Rredsi"><i class="fab fa-twitter"></i></a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+        </div>
+    </footer>
+    <script src="../plantilla/styles/bootstrap5/js/bootstrap.bundle.js"></script>
+    <script src="../plantilla/js/jquery-3.2.1.min.js"></script>
+    <script src="../plantilla/styles/bootstrap4/popper.js"></script>
+    <script src="../plantilla/styles/bootstrap4/bootstrap.min.js"></script>
+    <script src="../plantilla/plugins/greensock/TweenMax.min.js"></script>
+    <script src="../plantilla/plugins/greensock/TimelineMax.min.js"></script>
+    <script src="../plantilla/plugins/scrollmagic/ScrollMagic.min.js"></script>
+    <script src="../plantilla/plugins/greensock/animation.gsap.min.js"></script>
+    <script src="../plantilla/plugins/greensock/ScrollToPlugin.min.js"></script>
+    <script src="../plantilla/plugins/OwlCarousel2-2.2.1/owl.carousel.js"></script>
+    <script src="../plantilla/plugins/scrollTo/jquery.scrollTo.min.js"></script>
+    <script src="../plantilla/plugins/easing/easing.js"></script>
+    <script src="../plantilla/js/custom.js"></script>
+</body>
+
+</html>
