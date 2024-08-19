@@ -270,10 +270,11 @@ rlx_parent
 3. Header
 *********************************/
 
+
 .header
 {
 	position: fixed;
-	top: 45px;
+	top: 0px;
 	left: 50%;
 	-webkit-transform: translateX(-50%);
 	-moz-transform: translateX(-50%);
@@ -283,7 +284,7 @@ rlx_parent
 	width: 1318px;
 	height: 104px;
 	background: #FFFFFF;
-	z-index: 10;
+	z-index: 8;
 	-webkit-transition: all 200ms ease;
 	-moz-transition: all 200ms ease;
 	-ms-transition: all 200ms ease;
@@ -292,7 +293,7 @@ rlx_parent
 }
 .header.scrolled
 {	
-	top: 15px;
+	top: 10px;
 }
 .header.scrolled .header_content::before
 {
@@ -301,8 +302,9 @@ rlx_parent
 .header_content
 {
 	width: 100%;
-	padding: 1.8rem;
+	padding: 1.9rem;
 	height: 100%;
+
 }
 .header_content::before
 {
@@ -313,8 +315,12 @@ rlx_parent
 	width: 100%;
 	height: 100%;
 	content: '';
-	box-shadow: 0px 20px 49px rgba(0,0,0,0.67);
 	z-index: -1;
+}
+
+#cont_ejemplo{
+	background-color:#ffb606 ;
+	padding: 10px;
 }
 
 /*********************************
@@ -395,7 +401,7 @@ rlx_parent
 {
 	width: 100px;
 	height: 100%;
-	background: #ffb606;
+	background: #ffffff;
 }
 .header_side img
 {
@@ -1659,4 +1665,43 @@ label{
 	font-size: 20px;
 	font-weight: bold;
 	color: black;
+}
+
+.custom-file-upload {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    max-width: 400px;
+    padding: 20px;
+    margin-top: 10px; /* Para separar la caja de carga del label */
+    border: 2px dashed #ccc;
+    border-radius: 10px;
+    background-color: #f8f9fa;
+    text-align: center;
+    cursor: pointer;
+    transition: border-color 0.3s ease, background-color 0.3s ease;
+}
+
+.custom-file-upload:hover {
+    border-color: #ffb606;
+    background-color: #e9ecef;
+}
+
+.custom-file-upload input[type="file"] {
+    display: none;
+}
+
+.upload-label {
+    font-size: 1.1rem;
+    color: #333;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+}
+
+.upload-label i {
+    font-size: 2rem;
+    color: #ffb606;
+    margin-right: 10px;
 }
