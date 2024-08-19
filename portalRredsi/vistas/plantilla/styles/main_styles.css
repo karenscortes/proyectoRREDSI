@@ -932,7 +932,6 @@ section {
 	border: none;
 }
 
-<<<<<<< HEAD
 .card.rubrica
 {
 	text-align: center;
@@ -943,9 +942,6 @@ section {
 
 .card-img-top
 {
-=======
-.card-img-top {
->>>>>>> master
 	border-top-left-radius: 0px;
 	border-top-right-radius: 0px;
 }
@@ -1554,7 +1550,6 @@ body {
 .title-line {
 	border-top: 2px solid rgb(255, 182, 6);
 	margin-top: -10px;
-<<<<<<< HEAD
 }
 
 .btn{
@@ -1635,135 +1630,4 @@ body {
 
 .btn-custom i {
 	margin-right: 0.5rem; 
-=======
-	margin-bottom: 20px;
-}
-
-.form-row {
-	display: flex;
-	justify-content: space-between;
-	margin-bottom: 20px;
-}
-
-.form-row>div {
-	flex: 1;
-	margin-right: 20px;
-}
-
-.form-row>div:last-child {
-	margin-right: 0;
-}
-
-label {
-	display: block;
-	margin-bottom: 8px;
-	font-weight: bold;
-}
-
-input[type="text"],
-select {
-	width: 100%;
-	padding: 10px;
-	border: 1px solid #ccc;
-	border-radius: 5px;
-	font-size: 16px;
-}
-
-.custom-file-upload {
-	border: 2px dashed #ced4da;
-	border-radius: 10px;
-	text-align: center;
-	padding: 20px;
-	cursor: pointer;
-}
-
-.custom-file-upload:hover {
-	border-color: rgb(255, 182, 6);
-}
-
-.custom-file-upload i {
-	font-size: 2rem;
-	color: rgb(0, 123, 255);
-}
-
-.custom-file-upload span {
-	display: block;
-	margin-top: 10px;
-	font-weight: bold;
-}
-
-.custom-file-upload a {
-	color: rgb(0, 0, 0);
-	text-decoration: none;
-}
-
-.add-author-btn {
-	display: inline-block;
-	background-color: rgb(255, 182, 6);
-	color: black;
-	border: none;
-	padding: 10px;
-	border-radius: 5px;
-	font-size: 14px;
-	text-align: center;
-	cursor: pointer;
-	margin-top: 30px;
-}
-
-
-.modal-content {
-	background-color: #fefefe;
-	margin: 15% auto;
-	padding: 10px;
-	border: 1px solid #888;
-	width: 400px;
-	border-radius: 10px;
-	box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-}
-
-.modal-header {
-	display: flex;
-	justify-content: space-between;
-	align-items: center;
-	font-weight: bold;
-	margin-bottom: 15px;
-}
-
-.modal-header span {
-	cursor: pointer;
-	font-size: 1.5rem;
-}
-
-.modal-body {
-	margin-bottom: 15px;
-}
-
-.modal-footer {
-	text-align: center;
-}
-
-.modal-footer button {
-	margin: 0 10px;
-	padding: 10px 20px;
-	border: none;
-	border-radius: 5px;
-	cursor: pointer;
-	font-size: 14px;
-}
-
-.add-btn {
-	color: rgb(0, 0, 0);
-}
-
-.close-btn {
-	background-color: #b7b7b7;
-	color: rgb(0, 0, 0);
-}
-
-#listaAutores div {
-	margin-top: 5px;
-	padding: 5px;
-	background-color: #f1f1f1;
-	border-radius: 5px;
->>>>>>> master
 }
