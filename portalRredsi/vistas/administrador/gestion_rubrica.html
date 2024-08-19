@@ -12,11 +12,12 @@
     <link rel="stylesheet" type="text/css" href="../plantilla/plugins/OwlCarousel2-2.2.1/animate.css">
     <link rel="stylesheet" type="text/css" href="../plantilla/styles/main_styles_admin.css">
     <link rel="stylesheet" type="text/css" href="../plantilla/styles/responsive_admin.css">
+    
 </head>
 
 <body>
     <!-- header -->
-    <header class="header d-flex flex-row position-absolute top-20">
+    <header class="header d-flex flex-row position-relative">
         <div class="header_content d-flex flex-row align-items-center justify-content-start">
             <!-- Logo -->
             <div class="logo_container">
@@ -48,10 +49,7 @@
         </div>
 
     </header>
-    <!-- fondo del header -->
-    <div>
-        <img src="../plantilla/images/event_1.jpg" alt="" height="300px" width="100%">
-    </div>
+    <div class="container-fluid" id="cont_ejemplo"></div
     <!-- Menu -->
     <div class="menu_container menu_mm">
 
@@ -150,7 +148,8 @@
                                     </button>
                                 </td>
                                 <td class="td_boton" style="width: 5%;">
-                                    <button class="botones_rubrica">
+                                    <button data-bs-toggle="modal" data-bs-target="#modalEliminar"
+                                        class="botones_rubrica">
                                         <i class="fas fa-trash-alt" style="font-size: 24px;"></i>
                                     </button>
                                 </td>
@@ -175,7 +174,8 @@
                                     </button>
                                 </td>
                                 <td class="td_boton" style="width: 5%;">
-                                    <button class="botones_rubrica">
+                                    <button data-bs-toggle="modal" data-bs-target="#modalEliminar"
+                                        class="botones_rubrica">
                                         <i class="fas fa-trash-alt" style="font-size: 24px;"></i>
                                     </button>
                                 </td>
@@ -200,7 +200,8 @@
                                     </button>
                                 </td>
                                 <td class="td_boton" style="width: 5%;">
-                                    <button class="botones_rubrica">
+                                    <button data-bs-toggle="modal" data-bs-target="#modalEliminar"
+                                        class="botones_rubrica">
                                         <i class="fas fa-trash-alt" style="font-size: 24px;"></i>
                                     </button>
                                 </td>
@@ -225,7 +226,8 @@
                                     </button>
                                 </td>
                                 <td class="td_boton" style="width: 5%;">
-                                    <button class="botones_rubrica">
+                                    <button data-bs-toggle="modal" data-bs-target="#modalEliminar"
+                                        class="botones_rubrica">
                                         <i class="fas fa-trash-alt" style="font-size: 24px;"></i>
                                     </button>
                                 </td>
@@ -235,8 +237,7 @@
                             </tr>
                             <tr class="tr_item_rubrica">
                                 <td class="td_boton text-center" colspan="3">
-                                    <button class="boton_añadir"
-                                        style="font-weight: 1000; font-size: 17px;">Añadir</button>
+                                    <button data-bs-toggle="modal" data-bs-target="#modalAñadirItem" class="boton_añadir" style="font-weight: 1000; font-size: 17px;">Añadir</button>
                                 </td>
 
                                 <td style="width: 5%;"></td>
@@ -393,43 +394,119 @@
         </div>
     </div>
 
-    <!-- Modal -->
-    <div class="modal fade" id="modalEditar" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
-        aria-labelledby="staticBackdropLabel" aria-hidden="true">
-        <div class="modal-dialog" style="max-width: 50%;">
-            <div class="modal-content rounded-st-1 shadow-lg modal-responsive">
-                <div class="modal-header p-4 shadow w-100" style="border: 1px solid yellow;">
-                    <i class="fas fa-edit icon"></i>
-                    <h1 class="modal-title fs-5" id="staticBackdropLabel">Editar rúbrica</h1>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+    <!-- sesión de modales -->
+    <div>
+        <!--Modal de editar rúbrica-->
+        <div class="modal fade" id="modalEditar" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+            aria-labelledby="staticBackdropLabel" aria-hidden="true">
+            <div class="modal-dialog" style="max-width: 50%;">
+                <div class="modal-content rounded-st-1 shadow-lg modal-responsive">
+                    <div class="modal-header p-4 shadow w-100" style="border: 1px solid yellow;">
+                        <i class="fas fa-edit icon"></i>
+                        <h1 class="modal-title fs-5" id="staticBackdropLabel">Editar rúbrica</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form action="">
+                            <div class="row">
+                                <div class="col-md-6 mb-4">
+                                    <label for="titulo" class="form-label">Título
+                                        <span class="text-danger fw-bold">*</span>
+                                    </label>
+                                    <input type="text" id="titulo" name="titulo" required="required"
+                                        class="form_modal form-control">
+                                </div>
+                                <div class="col-md-6 mb-4">
+                                    <label for="valor_maximo" class="form-label">Valor máximo
+                                        <span class="text-danger fw-bold">*</span>
+                                    </label>
+                                    <input type="text" id="valor_maximo" name="valor_maximo" required="required"
+                                        class="form_modal form-control">
+                                </div>
+                                <div class="col-md-12 mb-4">
+                                    <label for="descripcion" class="form-label">Descripción
+                                        <span class="text-danger fw-bold">*</span>
+                                    </label>
+                                    <textarea id="descripcion" name="descripcion" required="required"
+                                        class="form_textArea form-control" style="color: black;"></textarea>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn boton" data-bs-dismiss="modal">Cerrar</button>
+                        <button class="btn boton">Guardar</button>
+                    </div>
                 </div>
-                <div class="modal-body">
-                    <form action="">
-                        <div class="row">
-                            <div class="col-md-6 mb-4">
-                                <label for="titulo" class="form-label">Título
-                                    <span class="text-danger fw-bold">*</span>
-                                </label> 
-                                <input type="text" id="titulo" name="titulo" required="required" class="form_modal form-control">
+            </div>
+        </div>
+
+        <!--Modal confirmación eliminar rúbrica-->
+        <div class="modal fade" id="modalEliminar" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+            aria-labelledby="staticBackdropLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" style="max-width: 25%;">
+                <div class="modal-content rounded-st-1 shadow-lg modal-responsiven">
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+                        style="margin-left: auto;"></button>
+                    <div class="modal-body">
+                        <form action="">
+                            <div class="row">
+                                <div class="col-md-12 mb-4">
+                                    <h2 class="text-center" style="font-size: 25px; color: black;">¿Seguro que quieres
+                                        eliminar este ítem?</h2>
+                                </div>
                             </div>
-                            <div class="col-md-6 mb-4">
-                                <label for="valor_maximo"  class="form-label">Valor máximo
-                                    <span class="text-danger fw-bold">*</span>
-                                </label> 
-                                <input type="text" id="valor_maximo" name="valor_maximo" required="required" class="form_modal form-control">
-                            </div>
-                            <div class="col-md-12 mb-4">
-                                <label for="descripcion"  class="form-label">Descripción
-                                    <span class="text-danger fw-bold">*</span>
-                                </label> 
-                                <textarea id="descripcion" name="descripcion" required="required" class="form_textArea form-control" style="color: black;"></textarea>
-                            </div>
-                        </div>
-                    </form>
+                        </form>
+                    </div>
+                    <div class="modal-footer d-flex justify-content-between" style="border: 1px solid yellow;">
+                        <button class="btn boton_modal" data-bs-dismiss="modal">Cancelar</button>
+                        <button class="btn boton_modal" data-bs-dismiss="modal">Aceptar</button>
+                    </div>
                 </div>
-                <div class="modal-footer">
-                    <button class="btn boton" data-bs-dismiss="modal">Cerrar</button>
-                    <button class="btn boton">Guardar</button>
+            </div>
+        </div>
+
+        <!--Modal de añadir item-->
+        <div class="modal fade" id="modalAñadirItem" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+            aria-labelledby="staticBackdropLabel" aria-hidden="true">
+            <div class="modal-dialog" style="max-width: 50%;">
+                <div class="modal-content rounded-st-1 shadow-lg modal-responsive">
+                    <div class="modal-header p-4 shadow w-100" style="border: 1px solid yellow;">
+                        <i class="fas fa-plus-circle icon"></i>
+                        <h1 class="modal-title fs-5" id="staticBackdropLabel">Añadir ítem</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form action="">
+                            <div class="row">
+                                <div class="col-md-6 mb-4">
+                                    <label for="titulo" class="form-label">Título
+                                        <span class="text-danger fw-bold">*</span>
+                                    </label>
+                                    <input type="text" id="titulo" name="titulo" required="required"
+                                        class="form_modal form-control">
+                                </div>
+                                <div class="col-md-6 mb-4">
+                                    <label for="valor_maximo" class="form-label">Valor máximo
+                                        <span class="text-danger fw-bold">*</span>
+                                    </label>
+                                    <input type="text" id="valor_maximo" name="valor_maximo" required="required"
+                                        class="form_modal form-control">
+                                </div>
+                                <div class="col-md-12 mb-4">
+                                    <label for="descripcion" class="form-label">Descripción
+                                        <span class="text-danger fw-bold">*</span>
+                                    </label>
+                                    <textarea id="descripcion" name="descripcion" required="required"
+                                        class="form_textArea form-control" style="color: black;"></textarea>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn boton" data-bs-dismiss="modal">Cerrar</button>
+                        <button class="btn boton">Añadir</button>
+                    </div>
                 </div>
             </div>
         </div>
