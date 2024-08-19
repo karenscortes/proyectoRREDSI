@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lista de Proyectos</title>
+    <link rel="stylesheet" href="../plantilla/styles/bootstrap5/css/bootstrap.min.css">
+    <link href="../plantilla/plugins/fontawesome-free-5.0.1/css/fontawesome-all.css" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" type="text/css" href="../plantilla/plugins/OwlCarousel2-2.2.1/owl.carousel.css">
+    <link rel="stylesheet" type="text/css" href="../plantilla/plugins/OwlCarousel2-2.2.1/owl.theme.default.css">
+    <link rel="stylesheet" type="text/css" href="../plantilla/plugins/OwlCarousel2-2.2.1/animate.css">
+    <link rel="stylesheet" type="text/css" href="../plantilla/styles/main_styles_admin copy.css">
+    <link rel="stylesheet" type="text/css" href="../plantilla/styles/responsive_admin.css">
+</head>
+
+<body>
+    <!-- header -->
+    <header class="header d-flex flex-row position-relative">
+        <div class="header_content d-flex flex-row align-items-center justify-content-start">
+            <!-- Logo -->
+            <div class="logo_container">
+                <div class="logo">
+                    <img class="img-fluid" src="../plantilla/images/logoRredsi.png" alt="">
+                    <span>RREDSI</span>
+                </div>
+            </div>
+
+            <!-- Main Navigation -->
+            <nav class="main_nav_container flex-grow-1">
+                <div class="main_nav">
+                    <ul class="main_nav_list d-flex justify-content-between">
+                        <li class="main_nav_item"><a href="principal.html">Inicio</a></li>
+                        <li class="main_nav_item"><a href="perfil_evaluador.html">Perfil </a></li>
+                        <li class="main_nav_item"> <a href="lista_proyectos_etapa1.html" style="font-weight: 1000;">Proyectos</a></li>
+                        <li class="main_nav_item"><a href="convocatoria.html">Convocatoria</a></li>
+                    </ul>
+                </div>
+            </nav>
+        </div>
+
+        <!-- Hamburger -->
+        <div class="hamburger_container">
+            <i class="fas fa-bars trans_200"></i>
+        </div>
+
+    </header>
+    <!-- Menu -->
+    <div class="menu_container menu_mm">
+
+        <!-- Menu Close Button -->
+        <div class="menu_close_container">
+            <div class="menu_close"></div>
+        </div>
+
+        <!-- Menu Items -->
+        <div class="menu_inner menu_mm">
+            <div class="menu menu_mm">
+                <ul class="menu_list menu_mm">
+                    <li class="menu_item menu_mm"><a href="principal.html">Inicio</a></li>
+                    <li class="menu_item menu_mm"><a href="perfil_evaluador.html">Perfil</a></li>
+                    <li class="menu_item menu_mm"><a href="lista_proyectos_etapa1.html">Proyectos</a><br></li>
+                    <li class="menu_item menu_mm"><a href="convocatoria.html">Convocatoria</a></li>
+                    <li class="menu_item menu_mm"><a href="#">Cerrar sesión</a></li>
+                </ul>
+
+                <!-- Menu Social -->
+                <div class="menu_social_container menu_mm">
+                    <ul class="menu_social menu_mm">
+                        <li class="menu_social_item menu_mm"><a href="https://www.instagram.com/rredsiquindio/"><i
+                                    class="fab fa-instagram"></i></a></li>
+                        <li class="menu_social_item menu_mm"><a
+                                href="https://www.facebook.com/rredsi?mibextid=ZbWKwL"><i
+                                    class="fab fa-facebook-f"></i></a></li>
+                        <li class="menu_social_item menu_mm"><a href="https://x.com/Rredsi"><i
+                                    class="fab fa-twitter"></i></a></li>
+                    </ul>
+                </div>
+
+                <div class="menu_copyright menu_mm">ADSO 2670586 All rights reserved</div>
+            </div>
+
+        </div>
+    </div>
+    <div class="col my-4">
+        <div class="section_title text-center ">
+            <h1>Listado de Proyectos</h1>
+        </div>
+    </div>
+    <!-- Select -->
+    <div class="container">
+        <div class="row justify-content-between">
+            <div class="col-7 col-sm-3 mb-3 ">
+                <select class="form-select" aria-label="Default select example">
+                    <option selected>Etapas</option>
+                    <option value="1">Primera Etapa</option>
+                    <option value="2">Segunda Etapa</option>
+                </select>
+            </div>
+            <div class=" col-12 col-sm-7 row justify-content-end align-items-center">
+                <div class="col-8 col-sm-7">
+                    <input type="text" id="busqueda" class="form-control py-2 w-100"
+                        style="height: 100%; padding: 0.5rem;" placeholder="Buscar">
+                </div>
+                <div class="col-4 col-sm-5">
+                    <button class="btn w-100 font-weight-bold"
+                        style="background-color: #000000; color: #ffffff">Buscar</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="row mb-3 mt-4 justify-content-between align-items-center">
+            <div class="col-12">
+                <div class="d-flex justify-content-start">
+                    <!-- Filtros -->
+                    <a href="#" class="mx-1 px-2 border text-white bg-secondary" style="border-radius: 20px;" disabled>
+                        Todos
+                    </a>
+                    <a href="#" class="mx-1 px-2 border text-dark" style="border-radius: 20px;">
+                        Calificados
+                    </a>
+                    <a href="#" class="mx-1 px-2 border text-dark" style="border-radius: 20px;">
+                        Pendientes
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!--Cards-->
+        <div class="row">
+            <div class="col-12 col-md-6 col-lg-4 mb-4">
+                <div class="card shadow-lg border rounded-3" style="width: 100%; height: 215px;">
+                    <div class="card-header d-flex align-items-center justify-content-between text-dark"
+                        style="background: rgb(255, 182, 6); box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);">
+                        <strong class="mb-0 text-white h4">A001</strong>
+                        <div class="mb-3 bg-warning">
+                            <input class="form-check-input mr-1" type="checkbox" value="" id="estado">
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <h3 class="text-lg mt-2">BidDataIA</h3>
+                        <p class="mt-2">SENA</p>
+                    </div>
+                    <div class="card-footer" style="box-shadow: 0px -2px 4px rgba(0, 0, 0, 0.1);">
+                        <div class="d-flex flex-column text-center">
+                            <strong class="text-muted mb-1" style="line-height: 1;">CALIFICADO</strong>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-md-6 col-lg-4 mb-4">
+                <div class="card shadow-lg border rounded-3" style="width: 100%; height: 215px;">
+                    <div class="card-header d-flex align-items-center justify-content-between text-dark"
+                        style="background: rgb(255, 182, 6); box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);">
+                        <strong class="mb-0 text-white h4">A001</strong>
+                        <div class="mb-3 bg-warning">
+                            <input class="form-check-input mr-1" type="checkbox" value="" id="estado">
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <h3 class="text-lg mt-2">BidDataIA</h3>
+                        <p class="mt-2">SENA</p>
+                    </div>
+                    <div class="card-footer" style="box-shadow: 0px -2px 4px rgba(0, 0, 0, 0.1);">
+                        <div class="d-flex flex-column text-center">
+                            <strong class="text-muted mb-1" style="line-height: 1;">CALIFICADO</strong>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-md-6 col-lg-4 mb-4">
+                <div class="card shadow-lg border rounded-3" style="width: 100%; height: 215px;">
+                    <div class="card-header d-flex align-items-center justify-content-between text-dark"
+                        style="background: rgb(255, 182, 6); box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);">
+                        <strong class="mb-0 text-white h4">A001</strong>
+                        <div class="mb-3 bg-warning">
+                            <input class="form-check-input mr-1" type="checkbox" value="" id="estado">
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <h3 class="text-lg mt-2">BidDataIA</h3>
+                        <p class="mt-2">SENA</p>
+                    </div>
+                    <div class="card-footer" style="box-shadow: 0px -2px 4px rgba(0, 0, 0, 0.1);">
+                        <div class="d-flex flex-column text-center">
+                            <strong class="text-muted mb-1" style="line-height: 1;">CALIFICADO</strong>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-md-6 col-lg-4 mb-4">
+                <div class="card shadow-lg border rounded-3" style="width: 100%; height: 215px;">
+                    <div class="card-header d-flex align-items-center justify-content-between text-dark"
+                        style="background: rgb(255, 182, 6); box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);">
+                        <strong class="mb-0 text-white h4">A001</strong>
+                        <div class="mb-3 bg-warning">
+                            <input class="form-check-input mr-1" type="checkbox" value="" id="estado">
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <h3 class="text-lg mt-2">BidDataIA</h3>
+                        <p class="mt-2">SENA</p>
+                    </div>
+                    <div class="card-footer" style="box-shadow: 0px -2px 4px rgba(0, 0, 0, 0.1);">
+                        <div class="d-flex flex-column text-center">
+                            <strong class="text-muted mb-1" style="line-height: 1;">CALIFICADO</strong>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-md-6 col-lg-4 mb-4">
+                <div class="card shadow-lg border rounded-3" style="width: 100%; height: 215px;">
+                    <div class="card-header d-flex align-items-center justify-content-between text-dark"
+                        style="background: rgb(255, 182, 6); box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);">
+                        <strong class="mb-0 text-white h4">A001</strong>
+                        <div class="mb-3 bg-warning">
+                            <input class="form-check-input mr-1" type="checkbox" value="" id="estado">
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <h3 class="text-lg mt-2">BidDataIA</h3>
+                        <p class="mt-2">SENA</p>
+                    </div>
+                    <div class="card-footer" style="box-shadow: 0px -2px 4px rgba(0, 0, 0, 0.1);">
+                        <div class="d-flex flex-column text-center">
+                            <strong class="text-muted mb-1" style="line-height: 1;">CALIFICADO</strong>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-md-6 col-lg-4 mb-4">
+                <div class="card shadow-lg border rounded-3" style="width: 100%; height: 215px;">
+                    <div class="card-header d-flex align-items-center justify-content-between text-dark"
+                        style="background: rgb(255, 182, 6); box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);">
+                        <strong class="mb-0 text-white h4">A001</strong>
+                        <div class="mb-3 bg-warning">
+                            <input class="form-check-input mr-1" type="checkbox" value="" id="estado">
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <h3 class="text-lg mt-2">BidDataIA</h3>
+                        <p class="mt-2">SENA</p>
+                    </div>
+                    <div class="card-footer" style="box-shadow: 0px -2px 4px rgba(0, 0, 0, 0.1);">
+                        <div class="d-flex flex-column text-center">
+                            <strong class="text-muted mb-1" style="line-height: 1;">CALIFICADO</strong>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Paginador -->
+    <div class="mt-2">
+        <div aria-label="Page navigation example mb-5">
+            <ul class="pagination justify-content-center">
+                <li class="page-item  m-1">
+                    <a class="page-link" href="#" tabindex="-1" style="border-radius: 20px; color: black;">Atras</a>
+                </li>
+                <li class="page-item rounded m-1">
+                    <a class="page-link rounded-circle" href="#" style="color: black;">1</a>
+                </li>
+                <li class="page-item m-1">
+                    <a class="page-link rounded-circle" href="#" style="color: black;">2</a>
+                </li>
+                <li class="page-item m-1">
+                    <a class="page-link rounded-circle" href="#" style="color: black;">3</a>
+                </li>
+                <li class="page-item m-1">
+                    <a class="page-link" href="#" style="border-radius: 20px; color: black;">Siguiente</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+
+    <!--Footer-->
+    <footer class="footer mt-5">
+        <div class="container">
+
+            <!-- Footer Copyright -->
+
+            <div class="footer_bar d-flex flex-column flex-sm-row align-items-center">
+                <div class="footer_copyright">
+                    <span>Colorlib All rights reserved</span>
+                </div>
+                <div class="footer_social ml-sm-auto">
+                    <ul class="menu_social">
+                        <li class="menu_social_item"><a href="#"><i class="fab fa-pinterest"></i></a></li>
+                        <li class="menu_social_item"><a href="#"><i class="fab fa-linkedin-in"></i></a></li>
+                        <li class="menu_social_item"><a href="#"><i class="fab fa-instagram"></i></a></li>
+                        <li class="menu_social_item"><a href="#"><i class="fab fa-facebook-f"></i></a></li>
+                        <li class="menu_social_item"><a href="#"><i class="fab fa-twitter"></i></a></li>
+                    </ul>
+                </div>
+            </div>
+
+        </div>
+    </footer>
+
+
+    <script src="../plantilla/js/jquery-3.2.1.min.js"></script>
+    <script src="../plantilla/styles/bootstrap4/popper.js"></script>
+    <script src="../plantilla/styles/bootstrap4/bootstrap.min.js"></script>
+    <script src="../plantilla/plugins/greensock/TweenMax.min.js"></script>
+    <script src="../plantilla/plugins/greensock/TimelineMax.min.js"></script>
+    <script src="../plantilla/plugins/scrollmagic/ScrollMagic.min.js"></script>
+    <script src="../plantilla/plugins/greensock/animation.gsap.min.js"></script>
+    <script src="../plantilla/plugins/greensock/ScrollToPlugin.min.js"></script>
+    <script src="../plantilla/plugins/OwlCarousel2-2.2.1/owl.carousel.js"></script>
+    <script src="../plantilla/plugins/scrollTo/jquery.scrollTo.min.js"></script>
+    <script src="../plantilla/plugins/easing/easing.js"></script>
+    <script src="../plantilla/js/custom.js"></script>
+
+</body>
+
+</html>
