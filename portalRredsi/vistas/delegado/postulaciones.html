@@ -167,7 +167,7 @@
     </div>
 
     <div class="container mt-5">
-        <div class="row mb-4 mt-2">
+        <div class="row mb-3 mt-2">
             <div class="col">
                 <div class="section_title text-center">
                     <h1>Postulaciones</h1>
@@ -175,34 +175,68 @@
             </div>
         </div>
         <div class="container mt-5">
+            <div class="row justify-content-center mb-4">
+                <div class="col-3 col-sm-3">
+                    <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px"
+                        fill="#12d336">
+                        <path
+                            d="M720-120H280v-520l280-280 50 50q7 7 11.5 19t4.5 23v14l-44 174h258q32 0 56 24t24 56v80q0 7-2 15t-4 15L794-168q-9 20-30 34t-44 14Zm-360-80h360l120-280v-80H480l54-220-174 174v406Zm0-406v406-406Zm-80-34v80H160v360h120v80H80v-520h200Z" />
+                    </svg>
+                    <span class="text-dark">Evaluador Aceptado</span>
+                </div>
+                <div class="col-3 col-sm-3">
+                    <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px"
+                        fill="#f50c0c">
+                        <path
+                            d="M720-120H280v-520l280-280 50 50q7 7 11.5 19t4.5 23v14l-44 174h258q32 0 56 24t24 56v80q0 7-2 15t-4 15L794-168q-9 20-30 34t-44 14Zm-360-80h360l120-280v-80H480l54-220-174 174v406Zm0-406v406-406Zm-80-34v80H160v360h120v80H80v-520h200Z" />
+                    </svg>
+                    <span class="text-dark">Evaluador Rechazado</span>
+                </div>
+                <div class="col-3 col-sm-3">
+                    <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px"
+                        fill="#00000">
+                        <path
+                            d="M720-120H280v-520l280-280 50 50q7 7 11.5 19t4.5 23v14l-44 174h258q32 0 56 24t24 56v80q0 7-2 15t-4 15L794-168q-9 20-30 34t-44 14Zm-360-80h360l120-280v-80H480l54-220-174 174v406Zm0-406v406-406Zm-80-34v80H160v360h120v80H80v-520h200Z" />
+                    </svg>
+                    <span class="text-dark">Evaluador Pendiente</span>
+                </div>
+            </div>
             <div class="accordion accordion-flush border-bottom" id="accordionFlushExample">
                 <!-- Primer Acordeón -->
                 <div class="accordion-item">
-                    <h2 class="accordion-header">
-                        <button class="accordion-button collapsed row align-items-center" type="button" data-bs-toggle="collapse"
-                            data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
-                            <div class="col-8">
-                                <h4 class="h5">Juan Pérez</h4>
-                            </div>
-                            <div class="d-flex col-3 justify-content-end">
-                                <div class="mx-3">
-                                    <a href="#">
-                                        <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#00000">
-                                            <path d="M240-840h440v520L400-40l-50-50q-7-7-11.5-19t-4.5-23v-14l44-174H120q-32 0-56-24t-24-56v-80q0-7 2-15t4-15l120-282q9-20 30-34t44-14Zm360 80H240L120-480v80h360l-54 220 174-174v-406Zm0 406v-406 406Zm80 34v-80h120v-360H680v-80h200v520H680Z" />
-                                        </svg>
-                                    </a>
+                    <h2 class="accordion-header row align-items-center">
+                        <div class="col-9 col-sm-11">
+                            <button class="accordion-button collapsed row align-items-center" type="button"
+                                data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" aria-expanded="false"
+                                aria-controls="flush-collapseOne">
+                                <div class="col-8">
+                                    <h4 class="h5 m-0">Juan Pérez</h4>
                                 </div>
-                                <div class="mx-3">
-                                    <a href="#">
-                                        <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#00000">
-                                            <path d="M720-120H280v-520l280-280 50 50q7 7 11.5 19t4.5 23v14l-44 174h258q32 0 56 24t24 56v80q0 7-2 15t-4 15L794-168q-9 20-30 34t-44 14Zm-360-80h360l120-280v-80H480l54-220-174 174v406Zm0-406v406-406Zm-80-34v80H160v360h120v80H80v-520h200Z" />
-                                        </svg>
-                                    </a>
-                                </div>
+                            </button>
+                        </div>
+                        <div class="col-3 col-sm-1 d-flex justify-content-end">
+                            <div class="mx-3">
+                                <a href="#">
+                                    <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960"
+                                        width="24px" fill="#00000">
+                                        <path
+                                            d="M240-840h440v520L400-40l-50-50q-7-7-11.5-19t-4.5-23v-14l44-174H120q-32 0-56-24t-24-56v-80q0-7 2-15t4-15l120-282q9-20 30-34t44-14Zm360 80H240L120-480v80h360l-54 220 174-174v-406Zm0 406v-406 406Zm80 34v-80h120v-360H680v-80h200v520H680Z" />
+                                    </svg>
+                                </a>
                             </div>
-                        </button>
+                            <div class="mx-3">
+                                <a href="#">
+                                    <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960"
+                                        width="24px" fill="#12d336">
+                                        <path
+                                            d="M720-120H280v-520l280-280 50 50q7 7 11.5 19t4.5 23v14l-44 174h258q32 0 56 24t24 56v80q0 7-2 15t-4 15L794-168q-9 20-30 34t-44 14Zm-360-80h360l120-280v-80H480l54-220-174 174v406Zm0-406v406-406Zm-80-34v80H160v360h120v80H80v-520h200Z" />
+                                    </svg>
+                                </a>
+                            </div>
+                        </div>
                     </h2>
-                    <div id="flush-collapseOne" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
+                    <div id="flush-collapseOne" class="accordion-collapse collapse"
+                        data-bs-parent="#accordionFlushExample">
                         <div class="accordion-body text-dark">
                             <div class="row">
                                 <div class="col-md-4 col-12">
@@ -218,7 +252,7 @@
                                     <p class="text-dark">Sociales</p>
                                 </div>
                             </div>
-                
+
                             <div class="row">
                                 <div class="col-md-4 col-12">
                                     <p class="text-dark"><strong>Teléfono:</strong></p>
@@ -233,41 +267,51 @@
                                     <p class="text-dark">Pendiente</p>
                                 </div>
                             </div>
-                
-                            <div class="row mt-4">
-                                <div class="col-md-4 offset-md-8 col-12">
-                                    <a href="pruebas_documentos/constancia_NotasAprendiz.pdf" target="_blank" class="btn btn-outline-primary w-100 mb-3">Visualizar Títulos</a>
+
+                            <div class="row mt-4 justify-content-center">
+                                <div class="col-md-4 col-12">
+                                    <a href="pruebas_documentos/constancia_NotasAprendiz.pdf" target="_blank"
+                                        class="btn btn-outline-primary w-100 mb-3">Visualizar Títulos</a>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
 
+
+
                 <!-- Segundo Acordeón -->
                 <div class="accordion-item">
-                    <h2 class="accordion-header">
-                        <button class="accordion-button collapsed row align-items-center" type="button" data-bs-toggle="collapse"
-                            data-bs-target="#flush-collapseTwo" aria-expanded="false" aria-controls="flush-collapseTwo">
-                            <div class="col-8">
-                                <h4 class="h5">Ana Gómez</h4>
-                            </div>
-                            <div class="d-flex col-3 justify-content-end">
-                                <div class="mx-3">
-                                    <a href="#">
-                                        <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#00000">
-                                            <path d="M240-840h440v520L400-40l-50-50q-7-7-11.5-19t-4.5-23v-14l44-174H120q-32 0-56-24t-24-56v-80q0-7 2-15t4-15l120-282q9-20 30-34t44-14Zm360 80H240L120-480v80h360l-54 220 174-174v-406Zm0 406v-406 406Zm80 34v-80h120v-360H680v-80h200v520H680Z" />
-                                        </svg>
-                                    </a>
+                    <h2 class="accordion-header row align-items-center">
+                        <div class="col-9 col-sm-11">
+                            <button class="accordion-button collapsed row align-items-center" type="button"
+                                data-bs-toggle="collapse" data-bs-target="#flush-collapseTwo" aria-expanded="false"
+                                aria-controls="flush-collapseTwo">
+                                <div class="col-8">
+                                    <h4 class="h5 m-0">Ana Gomez</h4>
                                 </div>
-                                <div class="mx-3">
-                                    <a href="#">
-                                        <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#00000">
-                                            <path d="M720-120H280v-520l280-280 50 50q7 7 11.5 19t4.5 23v14l-44 174h258q32 0 56 24t24 56v80q0 7-2 15t-4 15L794-168q-9 20-30 34t-44 14Zm-360-80h360l120-280v-80H480l54-220-174 174v406Zm0-406v406-406Zm-80-34v80H160v360h120v80H80v-520h200Z" />
-                                        </svg>
-                                    </a>
-                                </div>
+                            </button>
+                        </div>
+                        <div class="col-3 col-sm-1 d-flex justify-content-end">
+                            <div class="mx-3">
+                                <a href="#">
+                                    <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960"
+                                        width="24px" fill="#00000">
+                                        <path
+                                            d="M240-840h440v520L400-40l-50-50q-7-7-11.5-19t-4.5-23v-14l44-174H120q-32 0-56-24t-24-56v-80q0-7 2-15t4-15l120-282q9-20 30-34t44-14Zm360 80H240L120-480v80h360l-54 220 174-174v-406Zm0 406v-406 406Zm80 34v-80h120v-360H680v-80h200v520H680Z" />
+                                    </svg>
+                                </a>
                             </div>
-                        </button>
+                            <div class="mx-3">
+                                <a href="#">
+                                    <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960"
+                                        width="24px" fill="#00000">
+                                        <path
+                                            d="M720-120H280v-520l280-280 50 50q7 7 11.5 19t4.5 23v14l-44 174h258q32 0 56 24t24 56v80q0 7-2 15t-4 15L794-168q-9 20-30 34t-44 14Zm-360-80h360l120-280v-80H480l54-220-174 174v406Zm0-406v406-406Zm-80-34v80H160v360h120v80H80v-520h200Z" />
+                                    </svg>
+                                </a>
+                            </div>
+                        </div>
                     </h2>
                     <div id="flush-collapseTwo" class="accordion-collapse collapse"
                         data-bs-parent="#accordionFlushExample">
@@ -302,9 +346,10 @@
                                 </div>
                             </div>
 
-                            <div class="row mt-4">
-                                <div class="col-md-4 offset-md-8 col-12">
-                                    <a href="pruebas_documentos/constancia_NotasAprendiz.pdf" target="_blank" class="btn btn-outline-primary w-100 mb-3">Visualizar Títulos</a>
+                            <div class="row mt-4 justify-content-center">
+                                <div class="col-md-4 col-12">
+                                    <a href="pruebas_documentos/constancia_NotasAprendiz.pdf" target="_blank"
+                                        class="btn btn-outline-primary w-100 mb-3">Visualizar Títulos</a>
                                 </div>
                             </div>
                         </div>
@@ -313,30 +358,36 @@
 
                 <!-- Tercer Acordeón -->
                 <div class="accordion-item">
-                    <h2 class="accordion-header">
-                        <button class="accordion-button collapsed row align-items-center" type="button" data-bs-toggle="collapse"
-                            data-bs-target="#flush-collapseThree" aria-expanded="false"
-                            aria-controls="flush-collapseThree">
-                            <div class="col-8">
-                                <h4 class="h5">Luis Rodríguez</h4>
-                            </div>
-                            <div class="d-flex col-3 justify-content-end">
-                                <div class="mx-3">
-                                    <a href="#">
-                                        <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#00000">
-                                            <path d="M240-840h440v520L400-40l-50-50q-7-7-11.5-19t-4.5-23v-14l44-174H120q-32 0-56-24t-24-56v-80q0-7 2-15t4-15l120-282q9-20 30-34t44-14Zm360 80H240L120-480v80h360l-54 220 174-174v-406Zm0 406v-406 406Zm80 34v-80h120v-360H680v-80h200v520H680Z" />
-                                        </svg>
-                                    </a>
+                    <h2 class="accordion-header row align-items-center">
+                        <div class="col-9 col-sm-11">
+                            <button class="accordion-button collapsed row align-items-center" type="button"
+                                data-bs-toggle="collapse" data-bs-target="#flush-collapseThree" aria-expanded="false"
+                                aria-controls="flush-collapseThree">
+                                <div class="col-8">
+                                    <h4 class="h5 m-0">Luis Rodríguez</h4>
                                 </div>
-                                <div class="mx-3">
-                                    <a href="#">
-                                        <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#00000">
-                                            <path d="M720-120H280v-520l280-280 50 50q7 7 11.5 19t4.5 23v14l-44 174h258q32 0 56 24t24 56v80q0 7-2 15t-4 15L794-168q-9 20-30 34t-44 14Zm-360-80h360l120-280v-80H480l54-220-174 174v406Zm0-406v406-406Zm-80-34v80H160v360h120v80H80v-520h200Z" />
-                                        </svg>
-                                    </a>
-                                </div>
+                            </button>
+                        </div>
+                        <div class="col-3 col-sm-1 d-flex justify-content-end">
+                            <div class="mx-3">
+                                <a href="#">
+                                    <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960"
+                                        width="24px" fill="#f50c0c">
+                                        <path
+                                            d="M240-840h440v520L400-40l-50-50q-7-7-11.5-19t-4.5-23v-14l44-174H120q-32 0-56-24t-24-56v-80q0-7 2-15t4-15l120-282q9-20 30-34t44-14Zm360 80H240L120-480v80h360l-54 220 174-174v-406Zm0 406v-406 406Zm80 34v-80h120v-360H680v-80h200v520H680Z" />
+                                    </svg>
+                                </a>
                             </div>
-                        </button>
+                            <div class="mx-3">
+                                <a href="#">
+                                    <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960"
+                                        width="24px" fill="#00000">
+                                        <path
+                                            d="M720-120H280v-520l280-280 50 50q7 7 11.5 19t4.5 23v14l-44 174h258q32 0 56 24t24 56v80q0 7-2 15t-4 15L794-168q-9 20-30 34t-44 14Zm-360-80h360l120-280v-80H480l54-220-174 174v406Zm0-406v406-406Zm-80-34v80H160v360h120v80H80v-520h200Z" />
+                                    </svg>
+                                </a>
+                            </div>
+                        </div>
                     </h2>
                     <div id="flush-collapseThree" class="accordion-collapse collapse"
                         data-bs-parent="#accordionFlushExample">
@@ -371,9 +422,10 @@
                                 </div>
                             </div>
 
-                            <div class="row mt-4">
-                                <div class="col-md-4 offset-md-8 col-12">
-                                    <a href="pruebas_documentos/constancia_NotasAprendiz.pdf" target="_blank" class="btn btn-outline-primary w-100 mb-3">Visualizar Títulos</a>
+                            <div class="row mt-4 justify-content-center">
+                                <div class="col-md-4 col-12">
+                                    <a href="pruebas_documentos/constancia_NotasAprendiz.pdf" target="_blank"
+                                        class="btn btn-outline-primary w-100 mb-3">Visualizar Títulos</a>
                                 </div>
                             </div>
                         </div>
@@ -382,30 +434,36 @@
 
                 <!-- Cuarto Acordeón -->
                 <div class="accordion-item">
-                    <h2 class="accordion-header">
-                        <button class="accordion-button collapsed row align-items-center" type="button" data-bs-toggle="collapse"
-                            data-bs-target="#flush-collapseFour" aria-expanded="false"
-                            aria-controls="flush-collapseFour">
-                            <div class="col-8">
-                                <h4 class="h5">Marta Fernández</h4>
-                            </div>
-                            <div class="d-flex col-3 justify-content-end">
-                                <div class="mx-3">
-                                    <a href="#">
-                                        <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#00000">
-                                            <path d="M240-840h440v520L400-40l-50-50q-7-7-11.5-19t-4.5-23v-14l44-174H120q-32 0-56-24t-24-56v-80q0-7 2-15t4-15l120-282q9-20 30-34t44-14Zm360 80H240L120-480v80h360l-54 220 174-174v-406Zm0 406v-406 406Zm80 34v-80h120v-360H680v-80h200v520H680Z" />
-                                        </svg>
-                                    </a>
+                    <h2 class="accordion-header row align-items-center">
+                        <div class="col-9 col-sm-11">
+                            <button class="accordion-button collapsed row align-items-center" type="button"
+                                data-bs-toggle="collapse" data-bs-target="#flush-collapseFour" aria-expanded="false"
+                                aria-controls="flush-collapseFour">
+                                <div class="col-8">
+                                    <h4 class="h5 m-0">Marta Fernández</h4>
                                 </div>
-                                <div class="mx-3">
-                                    <a href="#">
-                                        <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#00000">
-                                            <path d="M720-120H280v-520l280-280 50 50q7 7 11.5 19t4.5 23v14l-44 174h258q32 0 56 24t24 56v80q0 7-2 15t-4 15L794-168q-9 20-30 34t-44 14Zm-360-80h360l120-280v-80H480l54-220-174 174v406Zm0-406v406-406Zm-80-34v80H160v360h120v80H80v-520h200Z" />
-                                        </svg>
-                                    </a>
-                                </div>
+                            </button>
+                        </div>
+                        <div class="col-3 col-sm-1 d-flex justify-content-end">
+                            <div class="mx-3">
+                                <a href="#">
+                                    <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960"
+                                        width="24px" fill="#00000">
+                                        <path
+                                            d="M240-840h440v520L400-40l-50-50q-7-7-11.5-19t-4.5-23v-14l44-174H120q-32 0-56-24t-24-56v-80q0-7 2-15t4-15l120-282q9-20 30-34t44-14Zm360 80H240L120-480v80h360l-54 220 174-174v-406Zm0 406v-406 406Zm80 34v-80h120v-360H680v-80h200v520H680Z" />
+                                    </svg>
+                                </a>
                             </div>
-                        </button>
+                            <div class="mx-3">
+                                <a href="#">
+                                    <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960"
+                                        width="24px" fill="#00000">
+                                        <path
+                                            d="M720-120H280v-520l280-280 50 50q7 7 11.5 19t4.5 23v14l-44 174h258q32 0 56 24t24 56v80q0 7-2 15t-4 15L794-168q-9 20-30 34t-44 14Zm-360-80h360l120-280v-80H480l54-220-174 174v406Zm0-406v406-406Zm-80-34v80H160v360h120v80H80v-520h200Z" />
+                                    </svg>
+                                </a>
+                            </div>
+                        </div>
                     </h2>
                     <div id="flush-collapseFour" class="accordion-collapse collapse"
                         data-bs-parent="#accordionFlushExample">
@@ -440,9 +498,10 @@
                                 </div>
                             </div>
 
-                            <div class="row mt-4">
-                                <div class="col-md-4 offset-md-8 col-12">
-                                    <a href="pruebas_documentos/constancia_NotasAprendiz.pdf" target="_blank" class="btn btn-outline-primary w-100 mb-3">Visualizar Títulos</a>
+                            <div class="row mt-4 justify-content-center">
+                                <div class="col-md-4 col-12">
+                                    <a href="pruebas_documentos/constancia_NotasAprendiz.pdf" target="_blank"
+                                        class="btn btn-outline-primary w-100 mb-3">Visualizar Títulos</a>
                                 </div>
                             </div>
                         </div>
@@ -451,30 +510,36 @@
 
                 <!-- Quinto Acordeón -->
                 <div class="accordion-item">
-                    <h2 class="accordion-header">
-                        <button class="accordion-button collapsed row align-items-center" type="button" data-bs-toggle="collapse"
-                            data-bs-target="#flush-collapseFive" aria-expanded="false"
-                            aria-controls="flush-collapseFive">
-                            <div class="col-8">
-                                <h4 class="h5">Pedro Martínez</h4>
-                            </div>
-                            <div class="d-flex col-3 justify-content-end">
-                                <div class="mx-3">
-                                    <a href="#">
-                                        <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#00000">
-                                            <path d="M240-840h440v520L400-40l-50-50q-7-7-11.5-19t-4.5-23v-14l44-174H120q-32 0-56-24t-24-56v-80q0-7 2-15t4-15l120-282q9-20 30-34t44-14Zm360 80H240L120-480v80h360l-54 220 174-174v-406Zm0 406v-406 406Zm80 34v-80h120v-360H680v-80h200v520H680Z" />
-                                        </svg>
-                                    </a>
+                    <h2 class="accordion-header row align-items-center">
+                        <div class="col-9 col-sm-11">
+                            <button class="accordion-button collapsed row align-items-center" type="button"
+                                data-bs-toggle="collapse" data-bs-target="#flush-collapseFive" aria-expanded="false"
+                                aria-controls="flush-collapseFive">
+                                <div class="col-8">
+                                    <h4 class="h5 m-0">Pedro Martínez</h4>
                                 </div>
-                                <div class="mx-3">
-                                    <a href="#">
-                                        <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#00000">
-                                            <path d="M720-120H280v-520l280-280 50 50q7 7 11.5 19t4.5 23v14l-44 174h258q32 0 56 24t24 56v80q0 7-2 15t-4 15L794-168q-9 20-30 34t-44 14Zm-360-80h360l120-280v-80H480l54-220-174 174v406Zm0-406v406-406Zm-80-34v80H160v360h120v80H80v-520h200Z" />
-                                        </svg>
-                                    </a>
-                                </div>
+                            </button>
+                        </div>
+                        <div class="col-3 col-sm-1 d-flex justify-content-end">
+                            <div class="mx-3">
+                                <a href="#">
+                                    <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960"
+                                        width="24px" fill="#00000">
+                                        <path
+                                            d="M240-840h440v520L400-40l-50-50q-7-7-11.5-19t-4.5-23v-14l44-174H120q-32 0-56-24t-24-56v-80q0-7 2-15t4-15l120-282q9-20 30-34t44-14Zm360 80H240L120-480v80h360l-54 220 174-174v-406Zm0 406v-406 406Zm80 34v-80h120v-360H680v-80h200v520H680Z" />
+                                    </svg>
+                                </a>
                             </div>
-                        </button>
+                            <div class="mx-3">
+                                <a href="#">
+                                    <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960"
+                                        width="24px" fill="#00000">
+                                        <path
+                                            d="M720-120H280v-520l280-280 50 50q7 7 11.5 19t4.5 23v14l-44 174h258q32 0 56 24t24 56v80q0 7-2 15t-4 15L794-168q-9 20-30 34t-44 14Zm-360-80h360l120-280v-80H480l54-220-174 174v406Zm0-406v406-406Zm-80-34v80H160v360h120v80H80v-520h200Z" />
+                                    </svg>
+                                </a>
+                            </div>
+                        </div>
                     </h2>
                     <div id="flush-collapseFive" class="accordion-collapse collapse"
                         data-bs-parent="#accordionFlushExample">
