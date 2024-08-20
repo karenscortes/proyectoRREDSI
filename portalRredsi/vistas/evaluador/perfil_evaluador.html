@@ -4,21 +4,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Perfíl evaluador</title>
-
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-    <link rel="stylesheet" href="/plantilla/styles/bootstrap4/bootstrap.min.css">
-    <link rel="stylesheet" type="text/css" href="../plantilla/styles/bootstrap4/bootstrap.min.css">
+    <title>Perfíl Evaluador</title>
+    <link rel="stylesheet" href="../plantilla/styles/bootstrap5/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../plantilla/styles/bootstrap4/bootstrap.min.css">
     <link href="../plantilla/plugins/fontawesome-free-5.0.1/css/fontawesome-all.css" rel="stylesheet" type="text/css">
     <link rel="stylesheet" type="text/css" href="../plantilla/plugins/OwlCarousel2-2.2.1/owl.carousel.css">
     <link rel="stylesheet" type="text/css" href="../plantilla/plugins/OwlCarousel2-2.2.1/owl.theme.default.css">
     <link rel="stylesheet" type="text/css" href="../plantilla/plugins/OwlCarousel2-2.2.1/animate.css">
-    <link rel="stylesheet" type="text/css" href="../plantilla/styles/main_styles_admin.css">
+    <link rel="stylesheet" type="text/css" href="../plantilla/styles/main_styles_admin copy.css">
     <link rel="stylesheet" type="text/css" href="../plantilla/styles/responsive_admin.css">
-    <link rel="stylesheet" href="../plantilla/styles/global_styles.css">
     <link rel="stylesheet" href="../plantilla/styles/perfil_admin_styles.css">
-    
 </head>
 
 <body>
@@ -38,9 +33,21 @@
                 <div class="main_nav">
                     <ul class="main_nav_list d-flex justify-content-between">
                         <li class="main_nav_item"><a href="principal.html">Inicio</a></li>
-                        <li class="main_nav_item"><a href="perfil_evaluador.html" style="font-weight: 1000;">Perfil </a></li>
-                        <li class="main_nav_item"> <a href="lista_proyectos_etapa1.html">Proyectos</a></li>
+                        <li class="main_nav_item"><a href="perfil_evaluador.html"style="font-weight: 1000;">Perfil </a></li>
+                        <li class="main_nav_item">
+                            <div class="dropdown">
+                                <a class="dropdown-toggle text-dark" type="button" data-toggle="dropdown"
+                                    aria-expanded="false">
+                                    Proyectos
+                                </a>
+                                <div class="dropdown-menu text-center">
+                                    <a href="lista_proyectos_etapa1.html">Primera Etapa</a><br>
+                                    <a href="lista_proyectos_etapa2.html">Segunda Etapa</a>
+                                </div>
+                            </div>
+                        </li>
                         <li class="main_nav_item"><a href="convocatoria.html">Convocatoria</a></li>
+                        <li class="main_nav_item"><a href="#">Cerrar sesión</a></li>
                     </ul>
                 </div>
             </nav>
@@ -52,6 +59,7 @@
         </div>
 
     </header>
+
     <!-- Menu -->
     <div class="menu_container menu_mm">
 
@@ -83,176 +91,205 @@
                                     class="fab fa-twitter"></i></a></li>
                     </ul>
                 </div>
-
                 <div class="menu_copyright menu_mm">ADSO 2670586 All rights reserved</div>
             </div>
 
         </div>
     </div>
 
+    <!-- dividing line -->
+    <div class="container-fluid" id="cont_ejemplo">
+       
+    </div>
     <!--Main Part-->
     <div class="container">
         <div class="row justify-content-center py-5">
-            <div class="col-xl-10 col-lg-10 col-md-12 ">
-                <!-- stepper -->
-                <div class="tab" role="tabpanel">
-                    <!-- Nav tabs -->
-                    <ul class="nav nav-tabs" role="tablist">
-                        <li role="presentation" class="active"><a href="#Section1" aria-controls="home" role="tab" data-toggle="tab"><i class="fas fa-user-secret"></i> Datos Personales</a></li>
-                        <li role="presentation"><a href="#Section2" aria-controls="profile" role="tab" data-toggle="tab"><i class="fas fa-university"></i> Datos Institucionales</a></li>
-                        <li role="presentation"><a href="#Section3" aria-controls="messages" role="tab" data-toggle="tab"><i class="fas fa-graduation-cap"></i> Datos Academicos</a></li>
-                    </ul>
-                    <!-- Tab panes -->
-                    <div class="tab-content tabs">
-                        <div role="tabpanel" class="tab-pane active text-dark" id="Section1">
-                            <h3>Datos Personales</h3>
-                            <form action="#">
-                                <div class="form-row">
-                                    <div class="form-group col-md-6">
-                                      <label for="nombres_evaluador">Nombres:</label>
-                                      <input type="text" class="form-control" id="nombres_evaluador">
-                                    </div>
-                                    <div class="form-group col-md-6">
-                                      <label for="apellidos_evaluador">Apellidos:</label>
-                                      <input type="text" class="form-control" id="apellidos_evaluador">
-                                    </div>
-                                </div>
-                                <div class="form-row">
-                                    <div class="form-group col-md-6">
-                                        <label for="tipo_documento_evaluador" class="font-weight-bold text-dark">Tipo de
-                                            documento</label>
-                                        <select id="tipo_documento_evaluador" type="select" class="form-control text-dark custom-select"
-                                            required>
-                                            <option value="Seleccionar" selected>Seleccione una opción</option>
-                                            <option value="cedula">Cédula</option>
-                                            <option value="pasaporte">Pasaporte</option>
-                                            <option value="cedula_extranjeria">Cédula de extranjeria</option>
-                                        </select>
-                                    </div>                                  
-                                    <div class="form-group col-md-6">
-                                        <label for="numero_documento_evaluador">N° de Documento</label>
-                                        <input type="text" class="form-control" id="numero_documento_evaluador">
-                                    </div>
-                                </div>
-                                <div class="form-group mb-5">
-                                    <label for="correo_evaluador">Correo</label>
-                                    <input type="email" class="form-control" id="correo_evaluador" placeholder="ejemplo@gmail.com">
-                                </div>
-                                <div class="text-center">
-                                    <button type="button" class="btn btn-warning font-weight-bold text-dark mr-5" data-toggle="modal" data-target="#resetPasswordModal">Cambiar Contraseña</button>
-                                    <button type="button" class="btn btn-warning font-weight-bold text-dark ">Siguiente</button>
-                                </div>                                                  
-                            </form>
+            <div class="col-xl-10 col-lg-10 col-md-12">
+
+                <div class="big-screen">
+                    <div class="row text-center">
+                        <div class="col-4 ">
+                            <button id="btn_datos_personales" class="btn btn-outline-dark w-100">
+                                <strong class="font-weight-bold">
+                                    <i class="fas fa-user-secret"></i>
+                                </strong>
+                                Datos Personales
+                            </button>
                         </div>
-                        <div role="tabpanel" class="tab-pane fade text-dark" id="Section2">
-                            <h3>Datos Institucionales</h3>
-                            <form action="#" >
-                                <div class="form-row">
-                                    <div class="form-group col-md-6">
-                                      <label for="institucion_evaluador">Institución educativa:</label>
-                                      <input type="text" class="form-control" id="institucion_evaluador">
-                                    </div>
-                                    <div class="form-group col-md-6">
-                                      <label for="grupo_investigacion_evaluador">Grupo de Investigación:</label>
-                                      <input type="text" class="form-control" id="grupo_investigacion_evaluador">
-                                    </div>
-                                </div>
-                                <div class="form-group mb-5">
-                                    <label for="semillero_evaluador">Nombre del Semillero:</label>
-                                    <input type="text" class="form-control" id="semillero_evaluador">
-                                </div>
-                                <div class="text-center">
-                                    <button type="button" class="btn btn-warning font-weight-bold text-dark mr-5">Regresar</button>
-                                    <button type="button" class="btn btn-warning font-weight-bold text-dark">Siguiente</button>
-                                </div>                                
-                            </form>
+                        <div class="col-4 ">
+        
+                            <button id="btn_datos_institucionales" class="btn btn-outline-dark w-100">
+                                <strong class=" font-weight-bold">
+                                    <i class="fas fa-university"></i>
+                                </strong>
+                                Datos Institucionales
+                            </button>
                         </div>
-                        <div role="tabpanel" class="tab-pane fade text-dark" id="Section3">
-                            <h3>Datos Academicos</h3>
-                            <form action="#">
-                                <div class="form-row">
-                                    <div class="form-group col-md-4">
-                                        <label for="titulo_pregrado_evaluador">Titulo Pregrado:</label>
-                                        <div class="d-inline-flex" >
-                                            <input type="text" class="form-control" id="titulo_pregrado_evaluador">
-                                            <label class="items-center p-1 bg-white text-black">
-                                                <i class="fas fa-plus-circle h4"></i>
-                                                <input type='file' class="d-none d-print-block" />
-                                            </label>
-                                        </div>
-                                    </div>
-                                    <div class="form-group col-md-4">
-                                        <label for="titulo_especializacion_evaluador">Titulo de Especialización:</label>
-                                        <div class="d-inline-flex" >
-                                            <input type="text" class="form-control" id="titulo_especializacion_evaluador">
-                                            <label class="items-center p-1 bg-white text-black">
-                                                <i class="fas fa-plus-circle h4"></i>
-                                                <input type='file' class="d-none d-print-block" />
-                                            </label>
-                                        </div>         
-                                    </div>
-                                    <div class="form-group col-md-4">
-                                        <label for="titulo_maestria_evaluador">Titulo de Maestría:</label>
-                                        <div class="d-inline-flex" >
-                                            <input type="text" class="form-control" id="titulo_maestria_evaluador">
-                                            <label class="items-center p-1 bg-white text-black">
-                                                <i class="fas fa-plus-circle h4"></i>
-                                                <input type='file' class="d-none d-print-block" />
-                                            </label>
-                                        </div>
-                                        
+                        <div class="col-4 ">
+                            <button id="btn_datos_academicos" class="btn btn-outline-dark w-100">
+                                <strong class="font-weight-bold">
+                                    <i class="fas fa-graduation-cap"></i>
+                                </strong>
+                                Datos Academicos
+                            </button>
+                        </div>
+                    </div> 
+            
+                    <div class="form-section mt-5" id="datos_personales">
+                        <div class="d-flex align-items-center justify-content-center mb-3">
+                            <i class="fas fa-user-secret title-icon"></i>
+                            <h2>Datos Personales</h2>
+                        </div>
+                        <div class="title-line"></div>            
+                        <form action="#" class="mt-4 font-weight-bold text-dark">
+                            <div class="form-row">
+                                <div class="form-group col-md-6">
+                                    <label for="inputName">Nombres:</label>
+                                    <input type="text" class="form-control" id="inputName">
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label for="inputLastname">Apellidos:</label>
+                                    <input type="text" class="form-control" id="inputLastname">
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group col-md-6">
+                                    <label for="inputDocumentType">Tipo de documento:</label>
+                                    <select id="inputDocumentType" type="select" class="form-control text-dark custom-select"
+                                        required>
+                                        <option value="Seleccionar" selected>Seleccione una opción</option>
+                                        <option value="cedula">Cédula</option>
+                                        <option value="pasaporte">Pasaporte</option>
+                                        <option value="cedula_extranjeria">Cédula de extranjeria</option>
+                                    </select>
+                                </div>                                  
+                                <div class="form-group col-md-6">
+                                    <label for="inputCity">N° de Documento:</label>
+                                    <input type="text" class="form-control" id="inputCity">
+                                </div>
+                            </div>
+                            <div class="form-group mb-5">
+                                <label for="inputAddress">Correo:</label>
+                                <input type="email" class="form-control" id="inputAddress" placeholder="usuario@gmail.com">
+                            </div>
+                            <div class="text-center">
+                                <button type="button" class="btn btn-warning font-weight-bold text-dark" data-toggle="modal" data-target="#resetPasswordModal">Cambiar Contraseña</button>
+                            </div>                                                  
+                        </form>
+                    </div>
+
+                    <div class="form-section mt-5" id="datos_institucionales">
+                        <div class="d-flex align-items-center justify-content-center mb-3">
+                            <i class="fas fa-university title-icon"></i>
+                            <h2>Datos Institucionales</h2>
+                        </div>
+                        <div class="title-line"></div>            
+                        <form action="#" class="mt-4 font-weight-bold text-dark">
+                            <div class="form-row">
+                                <div class="form-group col-md-6">
+                                <label for="inputPlaceName">Institución educativa:</label>
+                                <input type="text" class="form-control" id="inputPlaceName">
+                                </div>
+                                <div class="form-group col-md-6">
+                                <label for="inputResearchGroup">Grupo de Investigación:</label>
+                                <input type="text" class="form-control" id="inputSearchGroup">
+                                </div>
+                            </div>
+                            <div class="form-group mb-5">
+                                <label for="inputResearchLab">Nombre del Semillero:</label>
+                                <input type="text" class="form-control" id="inputResearchLab">
+                            </div>                              
+                        </form>
+                    </div>
+
+                    <div class="form-section mt-5" id="datos_academicos">
+                        <div class="d-flex align-items-center justify-content-center mb-3">
+                            <i class="fas fa-graduation-cap title-icon"></i>
+                            <h2>Datos Academicos</h2>
+                        </div>
+                        <div class="title-line"></div>            
+                        <form action="#" class="mt-4 font-weight-bold text-dark">
+                            <div class="form-row">
+                                <div class="form-group col-md-4">
+                                    <label for="inputUndergraduateDegree">Titulo Pregrado:</label>
+                                    <div class="d-inline-flex" >
+                                        <input type="text" class="form-control" id="inputUndergraduateDegree">
+                                        <label class="items-center p-1 text-black">
+                                            <i class="fas fa-plus-circle h4"></i>
+                                            <input type='file' class="d-none d-print-block" />
+                                        </label>
                                     </div>
                                 </div>
-                                <div class="form-row">
-                                    <div class="form-group col-md-4">
-                                        <label for="titulo_doctorado_evaluador">Titulo de Doctorado:</label>
-                                        <div class="d-inline-flex" >
-                                            <input type="text" class="form-control" id="titulo_doctorado_evaluador">
-                                            <label class="items-center p-1 bg-white text-black">
-                                                <i class="fas fa-plus-circle h4"></i>
-                                                <input type='file' class="d-none d-print-block" />
-                                            </label>
-                                        </div>
+                                <div class="form-group col-md-4">
+                                    <label for="inputPostgraduateDiploma">Titulo de Especialización:</label>
+                                    <div class="d-inline-flex" >
+                                        <input type="text" class="form-control" id="inputPostgraduateDiploma">
+                                        <label class="items-center p-1 text-black">
+                                            <i class="fas fa-plus-circle h4"></i>
+                                            <input type='file' class="d-none d-print-block" />
+                                        </label>
+                                    </div>         
+                                </div>
+                                <div class="form-group col-md-4">
+                                    <label for="inputMasterDegree">Titulo de Maestría:</label>
+                                    <div class="d-inline-flex" >
+                                        <input type="text" class="form-control" id="inputMasterDegree">
+                                        <label class="items-center p-1 text-black">
+                                            <i class="fas fa-plus-circle h4"></i>
+                                            <input type='file' class="d-none d-print-block" />
+                                        </label>
                                     </div>
-                                    <div class="form-group col-md-4 pr-5">
-                                        <label for="area_conocimiento_evaluador" class="font-weight-bold text-dark">Area de Conocimiento</label>
-                                        <select id="area_conocimiento_evaluador" type="select" class="form-control text-dark custom-select"
-                                            required>
-                                            <option value="seleccionar" selected>Seleccione una opción</option>
-                                            <option value="IA">Inteligencia Artificial</option>
-                                        </select>
+                                    
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group col-md-4">
+                                    <label for="inputPhD">Titulo de Doctorado:</label>
+                                    <div class="d-inline-flex" >
+                                        <input type="text" class="form-control" id="inputPhD">
+                                        <label class="items-center p-1 text-black">
+                                            <i class="fas fa-plus-circle h4"></i>
+                                            <input type='file' class="d-none d-print-block" />
+                                        </label>
                                     </div>
-                                    <div class="form-group col-md-4 pr-5 mb-5">
-                                        <label for="otra_area_conocimiento_evaluador" class="font-weight-bold text-dark">Otra Area</label>
-                                        <select id="otra_area_conocimiento_evaluador" type="select" class="form-control text-dark custom-select"
-                                            required>
-                                            <option value="seleccionar" selected>Seleccione una opción</option>
-                                            <option value="Agricultura">Agricultura</option>
-                                        </select>
-                                    </div>                                   
-                                </div>   
-                                <div class="text-center">
-                                    <button type="button" class="btn btn-warning font-weight-bold text-dark w-25 mr-5">Regresar</button>
-                                    <button type="submit" class="btn btn-warning font-weight-bold text-dark w-25 ">Guardar</button>
-                                </div>                                                  
-                            </form>
-                        </div>
+                                </div>
+                                <div class="form-group col-md-4 pr-5">
+                                    <label for="inputKnowledgeArea">Area de Conocimiento:</label>
+                                    <select id="inputKnowledgeArea" type="select" class="form-control text-dark custom-select"
+                                        required>
+                                        <option value="seleccionar" selected>Seleccione una opción</option>
+                                        <option value="IA">Inteligencia Artificial</option>
+                                    </select>
+                                </div>
+                                <div class="form-group col-md-4 pr-5 mb-5">
+                                    <label for="inputAnotherArea">Otra Area:</label>
+                                    <select id="inputAnotherArea" type="select" class="form-control text-dark custom-select"
+                                        required>
+                                        <option value="seleccionar" selected>Seleccione una opción</option>
+                                        <option value="Agricultura">Agricultura</option>
+                                    </select>
+                                </div>                                   
+                            </div>                                                     
+                        </form>
+                    </div>
+
+                    <div class="text-center m-4">
+                        <button id="insertar_proyecto" class="btn btn-warning fw-bold text-dark w-25 ">Guardar</button>
                     </div>
                 </div>
 
                 <!-- Accordion -->
-                <div class="accordion" id="accordionExample">
-                    <div class="card">
-                      <div class="card-header" id="headingOne">
-                        <h2 class="mb-0">
-                          <button class="btn btn-block " type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                <div class="accordion pt-5" id="accordionExample">
+                    <div class="card p-2">
+                      <div id="headingOne">
+                          <button class="btn btn-block toggle-button collapsed" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
                             <i class="fas fa-user-secret"></i> Datos Personales
                           </button>
-                        </h2>
-                      </div>
-                  
-                      <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionExample">
-                        <div class="card-body my-3">
+                      </div> 
+                      <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordionExample">
+                        
+                        <div class="card-body my-3 font-weight-bold text-dark">
+                            <div class="title-line mb-4"></div> 
                             <form action="#">
                                 <div class="form-row">
                                     <div class="form-group col-md-6">
@@ -266,39 +303,43 @@
                                 </div>
                                 <div class="form-row">
                                     <div class="form-group col-md-6">
-                                        <label for="inputState">Tipo de Documento</label>
-                                        <select id="inputState" class="form-control custom-select">
-                                          <option selected>Seleccionar...</option>
-                                          <option>Cedula</option>
+                                        <label for="inputDocumentType">Tipo de documento:</label>
+                                        <select id="inputDocumentType" type="select" class="form-control text-dark custom-select"
+                                            required>
+                                            <option value="Seleccionar" selected>Seleccione una opción</option>
+                                            <option value="cedula">Cédula</option>
+                                            <option value="pasaporte">Pasaporte</option>
+                                            <option value="cedula_extranjeria">Cédula de extranjeria</option>
                                         </select>
                                     </div>
                                   
                                     <div class="form-group col-md-6">
-                                        <label for="inputCity">N° de Documento</label>
+                                        <label for="inputCity">N° de Documento:</label>
                                         <input type="text" class="form-control" id="inputCity">
                                     </div>
                                 </div>
                                 <div class="form-group mb-5">
-                                    <label for="inputAddress">Correo</label>
+                                    <label for="inputAddress">Correo:</label>
                                     <input type="email" class="form-control" id="inputAddress" placeholder="usuario@gmail.com">
                                 </div>
                                 <div class="text-center">
-                                    <button type="button" class="btn btn-warning font-weight-bold text-dark w-50 mr-3" data-toggle="modal" data-target="#resetPasswordModal">Cambiar Contraseña</button>
+                                    <button type="button" class="btn btn-warning text-dark " data-toggle="modal" data-target="#resetPasswordModal">Cambiar Contraseña</button>
                                 </div>                                                  
                             </form>                          
                         </div>
                       </div>
                     </div>
-                    <div class="card">
-                      <div class="card-header" id="headingTwo">
+                    <div class="card p-2 ">
+                      <div id="headingTwo">
                         <h2 class="mb-0">
-                          <button class="btn btn-block  collapsed" type="button" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                          <button class="btn btn-block toggle-button collapsed" type="button" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
                             <i class="fas fa-university"></i> Datos Institucionales
                           </button>
                         </h2>
                       </div>
                       <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionExample">
-                        <div class="card-body my-3">
+                        <div class="card-body my-3 font-weight-bold text-dark">
+                            <div class="title-line mb-4"></div> 
                             <form action="#">
                                 <div class="form-row">
                                     <div class="form-group col-md-6">
@@ -311,30 +352,30 @@
                                     </div>
                                 </div>
                                 <div class="form-group mb-5">
-                                    <label for="inputResearchLab">Nombre del Semillero</label>
+                                    <label for="inputResearchLab">Nombre del Semillero:</label>
                                     <input type="text" class="form-control" id="inputResearchLab">
                                 </div>                                
                             </form>
                         </div>
                       </div>
                     </div>
-                    <div class="card">
-                      <div class="card-header" id="headingThree">
+                    <div class="card  p-2">
+                      <div id="headingThree">
                         <h2 class="mb-0">
-                          <button class="btn btn-block collapsed" type="button" data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                          <button class="btn btn-block toggle-button collapsed" type="button" data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
                             <i class="fas fa-graduation-cap"></i> Datos Academicos
                           </button>
                         </h2>
                       </div>
                       <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordionExample">
-                        <div class="card-body  my-3">
-                            <form action="#">
-                                
+                        <div class="card-body my-3 font-weight-bold text-dark">
+                            <div class="title-line mb-4"></div> 
+                            <form action="#">           
                                 <div class="form-group row justify-content-center">
                                     <label for="inputUndergraduateDegree" class="col-4">Titulo Pregrado:</label>
                                     <div class="d-inline-flex col-6" >
                                         <input type="text" class="form-control" id="inputUndergraduateDegree">
-                                        <label class="items-center p-1 bg-white text-black">
+                                        <label class="items-center p-1 text-black ml-2">
                                             <i class="fas fa-plus-circle h4"></i>
                                             <input type='file' class="d-none d-print-block" />
                                         </label>
@@ -344,7 +385,7 @@
                                     <label for="inputPostgraduateDiploma" class="col-4">Titulo de Especialización:</label>
                                     <div class="d-inline-flex col-6" >
                                         <input type="text" class="form-control" id="inputPostgraduateDiploma">
-                                        <label class="items-center p-1 bg-white text-black">
+                                        <label class="items-center p-1 text-black ml-2">
                                             <i class="fas fa-plus-circle h4"></i>
                                             <input type='file' class="d-none d-print-block" />
                                         </label>
@@ -354,7 +395,7 @@
                                     <label for="inputMasterDegree" class="col-4">Titulo de Maestría:</label>
                                     <div class="d-inline-flex col-6" >
                                         <input type="text" class="form-control" id="inputMasterDegree">
-                                        <label class="items-center p-1 bg-white text-black">
+                                        <label class="items-center p-1 text-black ml-2">
                                             <i class="fas fa-plus-circle h4"></i>
                                             <input type='file' class="d-none d-print-block" />
                                         </label>
@@ -365,7 +406,7 @@
                                     <label for="inputPhD" class="col-4">Titulo de Doctorado:</label>
                                     <div class="d-inline-flex col-6" >
                                         <input type="text" class="form-control" id="inputPhD">
-                                        <label class="items-center p-1 bg-white text-black">
+                                        <label class="items-center p-1 text-black ml-2">
                                             <i class="fas fa-plus-circle h4"></i>
                                             <input type='file' class="d-none d-print-block" />
                                         </label>
@@ -396,16 +437,16 @@
                       </div>
                     </div>
                     <div class="text-center">
-                        <button type="submit" class="btn btn-warning font-weight-bold text-dark w-25 ">Guardar Datos</button>
+                        <button type="submit" class="btn btn-warning font-weight-bold text-dark">Guardar Datos</button>
                     </div>   
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Modal -->
+    <!-- Modal Cambiar Contra -->
     <div class="modal fade" id="resetPasswordModal" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
-        <div class="modal-dialog">
+        <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content border border-dark border-5 rounded-5 text-dark">
                 <div class="text-center ">
                     <button type="button" class="close mr-3 mt-3" data-dismiss="modal" aria-label="Close">
@@ -417,24 +458,24 @@
                 <div class="modal-body mt-3">
                     <form>
                         <div class="form-group row justify-content-center">
-                          <label for="contrasena_actual_evaluador" class="col-5 col-form-label col-form-label-sm text-center">Contraseña Actual: </label>
+                          <label for="colFormLabelSm" class="col-5 col-form-label col-form-label-sm text-center">Contraseña Actual: </label>
                           <div class="col-5 pr-5">
-                            <input type="password" class="form-control form-control-sm" id="contrasena_actual_evaluador">
+                            <input type="password" class="form-control form-control-sm" id="colFormLabelSm">
                           </div>
                         </div>
                         <div class="form-group row justify-content-center">
-                            <label for="nueva_contrasena_evaluador" class="col-5 col-form-label col-form-label-sm text-center">Nueva Contraseña: </label>
+                            <label for="colFormLabelSm" class="col-5 col-form-label col-form-label-sm text-center">Nueva Contraseña: </label>
                             <div class="col-5 pr-5">
-                              <input type="password" class="form-control form-control-sm " id="nueva_contrasena_evaluador">
+                              <input type="password" class="form-control form-control-sm " id="colFormLabelSm">
                               <small id="passwordHelpBlock" class="form-text text-muted w-100">
                                 8-20 characters long
                               </small>
                             </div>
                         </div>
                         <div class="form-group row  mb-5 justify-content-center">
-                            <label for="confirmacion_contrasena_evaluador" class="col-5 col-form-label col-form-label-sm text-center ">Confirmar Contraseña: </label>
+                            <label for="colFormLabelSm" class="col-5 col-form-label col-form-label-sm text-center ">Confirmar Contraseña: </label>
                             <div class="col-5 pr-5">
-                              <input type="password" class="form-control form-control-sm " id="confirmacion_contrasena_evaluador">
+                              <input type="password" class="form-control form-control-sm " id="colFormLabelSm">
                             </div>
                         </div>
                         <div class="text-center">
@@ -446,13 +487,10 @@
         </div>
     </div>
   
-
     <!--Footer-->
     <footer class="footer mt-5">
         <div class="container">
-
             <!-- Footer Copyright -->
-
             <div class="footer_bar d-flex flex-column flex-sm-row align-items-center">
                 <div class="footer_copyright">
                     <span>Colorlib All rights reserved</span>
@@ -467,7 +505,6 @@
                     </ul>
                 </div>
             </div>
-
         </div>
     </footer>
 
@@ -483,7 +520,6 @@
     <script src="../plantilla/plugins/scrollTo/jquery.scrollTo.min.js"></script>
     <script src="../plantilla/plugins/easing/easing.js"></script>
     <script src="../plantilla/js/custom.js"></script>
-
+    <script src="../plantilla/js/perfil_admin.js"></script>
 </body>
-
 </html>
