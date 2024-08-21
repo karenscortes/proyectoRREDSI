@@ -1811,7 +1811,7 @@ select {
 }
 
 @media only screen  and (max-width:767px){
-	.con{
+	.contenedor_principal{
         display: none;
     }
     .accordion{
