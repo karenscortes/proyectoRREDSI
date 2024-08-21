@@ -1,118 +1,190 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gestionar Fases</title>
-    <!-- Bootstrap CSS -->
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <title>Gestion Delegado</title>
+    <link rel="stylesheet" href="../plantilla/styles/perfil_superadmin_styles.css">
+    <link rel="stylesheet" href="../plantilla/styles/bootstrap5/css/bootstrap.min.css">
+    <link href="../plantilla/plugins/fontawesome-free-5.0.1/css/fontawesome-all.css" rel="stylesheet" type="text/css">  
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" type="text/css" href="../plantilla/plugins/OwlCarousel2-2.2.1/owl.carousel.css">
+    <link rel="stylesheet" type="text/css" href="../plantilla/plugins/OwlCarousel2-2.2.1/animate.css">
+    <link rel="stylesheet" type="text/css" href="../plantilla/styles/main_styles_admin copy.css">
+    <link rel="stylesheet" type="text/css" href="../plantilla/styles/responsive_admin.css">
 </head>
 <body>
-    <div class="container">
-        <div class="row mb-4">
-            <div class="col-12 d-flex align-items-center">
-                <img src="../plantilla/images/logoRredsi.png" alt="Logo" class="mr-3" style="width: 150px;"> 
-                <h2 class="text-primary">Gestionar Fases</h2>
-            </div>
-        </div>
-
-        <!-- Formulario de agregar -->
-        <div class="row justify-content-center mb-4">
-            <div class="col-10">
-                <form class="form-inline justify-content-center">
-                    <label for="nombre" class="mr-2">Nombre:</label>
-                    <select class="form-control mr-3" id="nombre">
-                        <option>SELECCIONAR</option>
-                    </select>
-
-                    <label for="fecha-inicio" class="mr-2">Fecha Inicio:</label>
-                    <select class="form-control mr-3" id="fecha-inicio">
-                        <option>JUN/10/2025</option>
-                    </select>
-
-                    <label for="fecha-fin" class="mr-2">Fecha Fin:</label>
-                    <select class="form-control mr-3" id="fecha-fin">
-                        <option>JUN/10/2025</option>
-                    </select>
-
-                    <button type="submit" class="btn btn-primary">Agregar</button>
-                </form>
-            </div>
-        </div>
-
-        <!-- Barra de búsqueda -->
-        <div class="row justify-content-center mb-4">
-            <div class="col-md-8">
-                <form class="form-inline justify-content-center">
-                    <input type="text" class="form-control mr-2 w-75" placeholder="Buscar...">
-                    <button type="submit" class="btn btn-primary">Buscar</button>
-                </form>
-            </div>
-        </div>
-
-        <!-- Tabla de fases -->
-        <div class="row justify-content-center">
-            <div class="col-md-8">
-                <div class="table-responsive">
-                    <table class="table table-striped table-hover">
-                        <thead class="bg-warning text-dark">
-                            <tr>
-                                <th>Fases</th>
-                                <th>Fecha Inicio</th>
-                                <th>Fecha Fin</th>
-                                <th>Editar</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>Inscripción Evaluadores</td>
-                                <td>May/20/2025</td>
-                                <td>Jun/20/2025</td>
-                                <td class="text-center">
-                                    <a href="#">
-                                        <img src="../plantilla/images/logo_editar.png" alt="Editar" style="width: 75px;"> 
-                                    </a>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>Inscripción Proyectos</td>
-                                <td>May/30/2025</td>
-                                <td>Jun/20/2025</td>
-                                <td class="text-center">
-                                    <a href="#">
-                                        <img src="../plantilla/images/logo_editar.png" alt="Editar" style="width: 75px;"> 
-                                    </a>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>Cierre Evaluaciones</td>
-                                <td>Jun/10/2025</td>
-                                <td>Jun/20/2025</td>
-                                <td class="text-center">
-                                    <a href="#">
-                                        <img src="../plantilla/images/logo_editar.png" alt="Editar" style="width: 75px;"> 
-                                    </a>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
+    <!-- header -->
+    <header class="header d-flex flex-row position-relative">
+        <div class="header_content d-flex flex-row align-items-center justify-content-start">
+            <!-- Logo -->
+            <div class="logo_container">
+                <div class="logo">
+                    <img class="img-fluid" src="../plantilla/images/logoRredsi.png" alt="">
+                    <span>RREDSI</span>
                 </div>
             </div>
+
+            <!-- Main Navigation -->
+            <nav class="main_nav_container">
+                <div class="main_nav">
+                    <ul class="main_nav_list d-flex justify-content-between">
+                        <li class="main_nav_item"><a href="pagina_principal.html">Inicio</a></li>
+                        <li class="main_nav_item"><a href="gestion_delegado.html">Información delegados</a></li>
+                        <li class="main_nav_item"><a href="#">Cerrar sesión</a></li>
+                    </ul>
+                </div>
+            </nav>
         </div>
 
-        <div class="row justify-content-center mt-4">
-            <div class="col-md-4">
-                <button class="btn btn-secondary btn-block">Regresar</button>
-            </div>
-            <div class="col-md-4">
-                <button class="btn btn-success btn-block">Finalizar</button>
+        <!-- Hamburger -->
+        <div class="hamburger_container">
+            <i class="fas fa-bars trans_200"></i>
+        </div>
+
+    </header>
+
+    <div class="container-fluid" id="cont_ejemplo">
+       
+   </div>
+   
+   <div class="container">
+    <div class="row mb-4">
+        <div class="col-12 d-flex align-items-center">
+            <img src="../plantilla/images/logoRredsi.png" alt="Logo" class="mr-3" style="width: 150px;"> 
+            <h2 class="text-primary">Gestionar Fases</h2>
+        </div>
+    </div>
+
+    <!-- Formulario de agregar -->
+    <div class="row justify-content-center mb-4">
+        <div class="col-10">
+            <form class="form-inline justify-content-center">
+                <label for="nombre" class="mr-2">Nombre:</label>
+                <select class="form-control mr-3" id="nombre">
+                    <option>SELECCIONAR</option>
+                </select>
+
+                <label for="fecha-inicio" class="mr-2">Fecha Inicio:</label>
+                <select class="form-control mr-3" id="fecha-inicio">
+                    <option>JUN/10/2025</option>
+                </select>
+
+                <label for="fecha-fin" class="mr-2">Fecha Fin:</label>
+                <select class="form-control mr-3" id="fecha-fin">
+                    <option>JUN/10/2025</option>
+                </select>
+
+                <button type="submit" class="btn btn-primary">Agregar</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Barra de búsqueda -->
+    <div class="row justify-content-center mb-4">
+        <div class="col-md-8">
+            <form class="form-inline justify-content-center">
+                <input type="text" class="form-control mr-2 w-75" placeholder="Buscar...">
+                <button type="submit" class="btn btn-primary">Buscar</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Tabla de fases -->
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="table-responsive">
+                <table class="table table-striped table-hover">
+                    <thead class="bg-warning text-dark">
+                        <tr>
+                            <th class="bg-warning text-dark">Fases</th>
+                            <th class="bg-warning text-dark">Fecha Inicio</th>
+                            <th class="bg-warning text-dark">Fecha Fin</th>
+                            <th class="bg-warning text-dark">Editar</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Inscripción Evaluadores</td>
+                            <td>May/20/2025</td>
+                            <td>Jun/20/2025</td>
+                            <td class="text-center">
+                                <a href="#">
+                                    <img src="../plantilla/images/logo_editar.png" alt="Editar" style="width: 75px;"> 
+                                </a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Inscripción Proyectos</td>
+                            <td>May/30/2025</td>
+                            <td>Jun/20/2025</td>
+                            <td class="text-center">
+                                <a href="#">
+                                    <img src="../plantilla/images/logo_editar.png" alt="Editar" style="width: 75px;"> 
+                                </a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Cierre Evaluaciones</td>
+                            <td>Jun/10/2025</td>
+                            <td>Jun/20/2025</td>
+                            <td class="text-center">
+                                <a href="#">
+                                    <img src="../plantilla/images/logo_editar.png" alt="Editar" style="width: 75px;"> 
+                                </a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>
 
-    <!-- Bootstrap JS -->
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <div class="row justify-content-center mt-4">
+        <div class="col-md-4">
+            <button class="btn btn-secondary btn-block">Regresar</button>
+        </div>
+        <div class="col-md-4">
+            <button class="btn btn-success btn-block">Finalizar</button>
+        </div>
+    </div>
+</div> 
+
+   <footer class="footer mt-5">
+        <div class="container">
+            <div class="footer_bar d-flex flex-column flex-sm-row align-items-center">
+                <div class="footer_copyright">
+                    <span>Colorlib All rights reserved</span>
+                </div>
+                <div class="footer_social ml-sm-auto">
+                    <ul class="menu_social">
+                        <li class="menu_social_item"><a href="#"><i class="fab fa-pinterest"></i></a></li>
+                        <li class="menu_social_item"><a href="#"><i class="fab fa-linkedin-in"></i></a></li>
+                        <li class="menu_social_item"><a href="#"><i class="fab fa-instagram"></i></a></li>
+                        <li class="menu_social_item"><a href="#"><i class="fab fa-facebook-f"></i></a></li>
+                        <li class="menu_social_item"><a href="#"><i class="fab fa-twitter"></i></a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    
+
+
+
+    <script src="../plantilla/js/jquery-3.2.1.min.js"></script>
+    <script src="../plantilla/styles/bootstrap4/popper.js"></script>
+    <script src="../plantilla/styles/bootstrap4/bootstrap.min.js"></script>
+    <script src="../plantilla/plugins/greensock/TweenMax.min.js"></script>
+    <script src="../plantilla/plugins/greensock/TimelineMax.min.js"></script>
+    <script src="../plantilla/plugins/scrollmagic/ScrollMagic.min.js"></script>
+    <script src="../plantilla/plugins/greensock/animation.gsap.min.js"></script>
+    <script src="../plantilla/plugins/greensock/ScrollToPlugin.min.js"></script>
+    <script src="../plantilla/plugins/OwlCarousel2-2.2.1/owl.carousel.js"></script>
+    <script src="../plantilla/plugins/scrollTo/jquery.scrollTo.min.js"></script>
+    <script src="../plantilla/plugins/easing/easing.js"></script>
+    <script src="../plantilla/js/custom.js"></script>
+    
 </body>
 </html>

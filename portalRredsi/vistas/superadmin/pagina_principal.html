@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,17 +8,14 @@
     <link rel="stylesheet" type="text/css" href="../plantilla/styles/bootstrap4/bootstrap.min.css">
     <link href="../plantilla/plugins/fontawesome-free-5.0.1/css/fontawesome-all.css" rel="stylesheet" type="text/css">
     <link rel="stylesheet" type="text/css" href="../plantilla/plugins/OwlCarousel2-2.2.1/owl.carousel.css">
-    <link rel="stylesheet" type="text/css" href="../plantilla/plugins/OwlCarousel2-2.2.1/owl.theme.default.css">
     <link rel="stylesheet" type="text/css" href="../plantilla/plugins/OwlCarousel2-2.2.1/animate.css">
-    <link rel="stylesheet" type="text/css" href="../plantilla/styles/main_styles_delegado.css">
-    <link rel="stylesheet" type="text/css" href="../plantilla/styles/responsive.css">
-    
+    <link rel="stylesheet" type="text/css" href="../plantilla/styles/main_styles_admin copy.css">
+    <link rel="stylesheet" type="text/css" href="../plantilla/styles/responsive_admin.css">
 </head>
-
 <body>
     <!-- header -->
-    <header class="header d-flex flex-grow position-absolute top-0 w-80">
-        <div class="header_content with_button d-flex flex-row align-items-center justify-content-start">
+    <header class="header d-flex flex-row position-relative">
+        <div class="header_content d-flex flex-row align-items-center justify-content-start">
             <!-- Logo -->
             <div class="logo_container">
                 <div class="logo">
@@ -29,20 +25,16 @@
             </div>
 
             <!-- Main Navigation -->
-            <nav class="main_nav_container flex-grow-1">
+            <nav class="main_nav_container">
                 <div class="main_nav">
                     <ul class="main_nav_list d-flex justify-content-between">
                         <li class="main_nav_item"><a href="pagina_principal.html">Inicio</a></li>
-							<li class="main_nav_item"><a href="gestion_delegado.html">Informacion delegados</a></li>
-							<li class="main_nav_item"><a href="#">Convocatorias</a></li>
-
+                        <li class="main_nav_item"><a href="gestion_delegado.html">Información delegados</a></li>
+                        <li class="main_nav_item"><a href="#">Cerrar sesión</a></li>
                     </ul>
                 </div>
             </nav>
         </div>
-        <a href="#" class="header_side d-flex flex-row justify-content-center align-items-center text-center">
-            <h3 class="main_nav_item text-dark">Cerrar sesión</h3>
-        </a>
 
         <!-- Hamburger -->
         <div class="hamburger_container">
@@ -50,204 +42,58 @@
         </div>
 
     </header>
-    <!-- fondo del header -->
-    <div class="home">
-        <div class="home_background_container prlx_parent">
-            <div class="home_background prlx" style="background-image:url(../plantilla/images/teachers_background.jpg)"></div>
-        </div>
-        
-    </div>
-    <!-- Menu -->
-    <div class="menu_container menu_mm">
 
-        <!-- Menu Close Button -->
-        <div class="menu_close_container">
-            <div class="menu_close"></div>
-        </div>
+    <div class="container-fluid" id="cont_ejemplo">
+       
+   </div>
 
-        <!-- Menu Items -->
-        <div class="menu_inner menu_mm">
-            <div class="menu menu_mm">
-                <ul class="menu_list menu_mm">
-                    <li class="menu_item menu_mm"><a href="principal.html">Inicio</a></li>
-                    <li class="menu_item menu_mm"><a href="perfil_evaluador.html">Perfil</a></li>
-                    <li class="menu_item menu_mm">
-                        <div class="dropdown">
-                            <a class=" dropdown-toggle text-dark" type="button" data-toggle="dropdown"
-                                aria-expanded="false">
-                                Proyectos
-                            </a>
-                            <div class="dropdown-menu text-center">
-                                <a href="lista_proyectos_evaluador.html">Primera etapa</a><br>
-                                <a href="#">Segunda etapa</a>
-                            </div>
-                        </div>
-                    </li>
-                    <li class="menu_item menu_mm"><a href="convocatoria.html">Convocatoria</a></li>
-                    <li class="menu_item menu_mm"><a href="#">Cerrar sesión</a></li>
-                </ul>
-
-                <!-- Menu Social -->
-
-                <div class="menu_social_container menu_mm">
-                    <ul class="menu_social menu_mm">
-                        <li class="menu_social_item menu_mm"><a href="https://www.instagram.com/rredsiquindio/"><i
-                                    class="fab fa-instagram"></i></a></li>
-                        <li class="menu_social_item menu_mm"><a
-                                href="https://www.facebook.com/rredsi?mibextid=ZbWKwL"><i
-                                    class="fab fa-facebook-f"></i></a></li>
-                        <li class="menu_social_item menu_mm"><a href="https://x.com/Rredsi"><i
-                                    class="fab fa-twitter"></i></a></li>
-                    </ul>
-                </div>
-
-                <div class="menu_copyright menu_mm">ADSO 2670586 All rights reserved</div>
-            </div>
-
-        </div>
-
-    </div>
-
-    <div class="become">
+   <div class="become py-5">
         <div class="container">
-            <div class="row row-eq-height">
-
+            <div class="row align-items-center">
+                <!-- Texto de bienvenida -->
                 <div class="col-lg-6 order-2 order-lg-1">
                     <div class="become_title">
                         <h1>Bienvenido al portal RREDSI</h1>
                     </div>
                     <p class="become_text">In aliquam, augue a gravida rutrum, ante nisl fermentum nulla, vitae tempor nisl ligula vel nunc. Proin quis mi malesuada, finibus tortor fermentum. Etiam eu purus nec eros varius luctus. Praesent finibus risus facilisis ultricies venenatis. Suspendisse fermentum sodales lacus, lacinia gravida elit dapibus sed. Cras in lectus elit. Maecenas tempus nunc vitae mi egestas venenatis. Aliquam rhoncus, purus in vehicula porttitor, lacus ante consequat purus, id elementum enim purus nec enim. In sed odio rhoncus, tristique ipsum id, pharetra neque.</p>
-                    <div class="become_button text-center trans_200">
-                        <a href="#">Explorar</a>
+                    <div class="become_button text-center mt-4">
+                        <a href="#" class="btn btn-warning text-dark">Explorar</a>
                     </div>
                 </div>
 
+                <!-- Imagen -->
                 <div class="col-lg-6 order-1 order-lg-2">
-                    <div class="become_image">
-                        <img src="../plantilla/images/become.jpg" alt="">
+                    <div class="become_image text-center">
+                        <img src="../plantilla/images/become.jpg" alt="Imagen de bienvenida" class="img-fluid rounded">
                     </div>
                 </div>
-                
             </div>
         </div>
     </div>
 
-
-    <!--Footer-->
-    <footer class="footer mt-3">
+    
+   <footer class="footer mt-5">
         <div class="container">
-
-            <!-- Footer Content -->
-
-            <div class="footer_content">
-                <div class="row">
-
-                    <!-- Footer Column - About -->
-                    <div class="col-lg-3 footer_col">
-
-                        <!-- Logo -->
-                        <div class="logo_container">
-                            <div class="logo">
-                                <img src="../plantilla/images/logoRredsi.png" alt="">
-                                <span>RREDSI</span>
-                            </div>
-                        </div>
-
-                        <p class="footer_about_text">In aliquam, augue a gravida rutrum, ante nisl fermentum nulla,
-                            vitae tempor nisl ligula vel nunc. Proin quis mi malesuada, finibus tortor fermentum, tempor
-                            lacus.</p>
-
-                    </div>
-
-                    <!-- Footer Column - Menu -->
-
-                    <div class="col-lg-3 footer_col">
-                        <div class="footer_column_title">Menu</div>
-                        <div class="footer_column_content">
-                            <ul>
-                                <li class="footer_list_item"><a href="#">Home</a></li>
-                                <li class="footer_list_item"><a href="#">About Us</a></li>
-                                <li class="footer_list_item"><a href="courses.html">Courses</a></li>
-                                <li class="footer_list_item"><a href="news.html">News</a></li>
-                                <li class="footer_list_item"><a href="contact.html">Contact</a></li>
-                            </ul>
-                        </div>
-                    </div>
-
-                    <!-- Footer Column - Usefull Links -->
-
-                    <div class="col-lg-3 footer_col">
-                        <div class="footer_column_title">Usefull Links</div>
-                        <div class="footer_column_content">
-                            <ul>
-                                <li class="footer_list_item"><a href="#">Testimonials</a></li>
-                                <li class="footer_list_item"><a href="#">FAQ</a></li>
-                                <li class="footer_list_item"><a href="#">Community</a></li>
-                                <li class="footer_list_item"><a href="#">Campus Pictures</a></li>
-                                <li class="footer_list_item"><a href="#">Tuitions</a></li>
-                            </ul>
-                        </div>
-                    </div>
-
-                    <!-- Footer Column - Contact -->
-
-                    <div class="col-lg-3 footer_col">
-                        <div class="footer_column_title">Contact</div>
-                        <div class="footer_column_content">
-                            <ul>
-                                <li class="footer_contact_item">
-                                    <div class="footer_contact_icon">
-                                        <img src="../plantilla/images/placeholder.svg"
-                                            alt="https://www.flaticon.com/authors/lucy-g">
-                                    </div>
-                                    Blvd Libertad, 34 m05200 Arévalo
-                                </li>
-                                <li class="footer_contact_item">
-                                    <div class="footer_contact_icon">
-                                        <img src="../plantilla/images/smartphone.svg"
-                                            alt="https://www.flaticon.com/authors/lucy-g">
-                                    </div>
-                                    0034 37483 2445 322
-                                </li>
-                                <li class="footer_contact_item">
-                                    <div class="footer_contact_icon">
-                                        <img src="../plantilla/images/envelope.svg"
-                                            alt="https://www.flaticon.com/authors/lucy-g">
-                                    </div>hello@company.com
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-
-                </div>
-            </div>
-
-            <!-- Footer Copyright -->
-
             <div class="footer_bar d-flex flex-column flex-sm-row align-items-center">
                 <div class="footer_copyright">
-                    <span><!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-                        Copyright &copy;
-                        <script>document.write(new Date().getFullYear());</script> All rights reserved | This template
-                        is made with by <a href="#" target="_blank">ADSO 2670586</a>
-                        <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-                    </span>
+                    <span>Colorlib All rights reserved</span>
                 </div>
                 <div class="footer_social ml-sm-auto">
                     <ul class="menu_social">
-
-                        <li class="menu_social_item"><a href="https://www.instagram.com/rredsiquindio/"><i
-                                    class="fab fa-instagram"></i></a></li>
-                        <li class="menu_social_item"><a href="https://www.facebook.com/rredsi?mibextid=ZbWKwL"><i
-                                    class="fab fa-facebook-f"></i></a></li>
-                        <li class="menu_social_item"><a href="https://x.com/Rredsi"><i class="fab fa-twitter"></i></a>
-                        </li>
+                        <li class="menu_social_item"><a href="#"><i class="fab fa-pinterest"></i></a></li>
+                        <li class="menu_social_item"><a href="#"><i class="fab fa-linkedin-in"></i></a></li>
+                        <li class="menu_social_item"><a href="#"><i class="fab fa-instagram"></i></a></li>
+                        <li class="menu_social_item"><a href="#"><i class="fab fa-facebook-f"></i></a></li>
+                        <li class="menu_social_item"><a href="#"><i class="fab fa-twitter"></i></a></li>
                     </ul>
                 </div>
             </div>
-
         </div>
     </footer>
+
+    
+
+
     <script src="../plantilla/js/jquery-3.2.1.min.js"></script>
     <script src="../plantilla/styles/bootstrap4/popper.js"></script>
     <script src="../plantilla/styles/bootstrap4/bootstrap.min.js"></script>
@@ -260,7 +106,6 @@
     <script src="../plantilla/plugins/scrollTo/jquery.scrollTo.min.js"></script>
     <script src="../plantilla/plugins/easing/easing.js"></script>
     <script src="../plantilla/js/custom.js"></script>
-
+    
 </body>
-
 </html>
