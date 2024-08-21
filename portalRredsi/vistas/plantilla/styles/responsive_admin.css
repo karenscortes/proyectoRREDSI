@@ -343,6 +343,10 @@
 	.card{
 		width: 100%;
 	}
+
+	.tablaloca{
+		width: 100%;
+	}
 }
 
 @media only screen and (min-width: 768px) and (max-width: 991px) 
@@ -356,6 +360,10 @@
 
 	.card{
 		width: 75%;
+	}
+
+	.tablaloca{
+		width: 100%;
 	}
 }
 
@@ -400,6 +408,12 @@
 	.table-responsive{
 		width: 75%;
 	}
+
+	.tablaloca{
+		width: 100%;
+	}
+
+
 }
 
 @media only screen and (min-width: 1367px) and (max-width: 2612px) 
@@ -413,7 +427,23 @@
 	.table-responsive{
 		width: 100%;
 	}
+	.btnloco
+	{
+		padding-left: 50px;
+		padding-right: 50px;
+	}
 }
+
+@media only screen and (min-width: 600px) and (max-width: 2612px) 
+{
+	
+	.btnloco
+	{
+		padding-left: 50px;
+		padding-right: 50px;
+	}
+}
+
 
 
 /************
@@ -422,7 +452,11 @@
 
 @media only screen and (max-width: 959px)
 {
-	
+	.btnloco
+	{
+		padding-left: 50px;
+		padding-right: 50px;
+	}
 }
 
 /************
@@ -431,7 +465,11 @@
 
 @media only screen and (max-width: 880px)
 {
-	
+	.btnloco
+	{
+		padding-left: 50px;
+		padding-right: 50px;
+	}
 }
 
 /************
@@ -440,7 +478,11 @@
 
 @media only screen and (max-width: 768px)
 {
-	
+	.btnloco
+	{
+		padding-left: 50px;
+		padding-right: 50px;
+	}
 }
 
 /************
@@ -463,6 +505,7 @@
 	{
 		margin-top: 15px;
 	}
+	
 }
 
 /************
@@ -611,7 +654,9 @@
 
 @media only screen and (max-width: 539px)
 {
-	
+	.tablaloca{
+		width: 100%;
+	}
 }
 
 /************
@@ -620,7 +665,9 @@
 
 @media only screen and (max-width: 480px)
 {
-	
+	.tablaloca{
+		width: 100%;
+	}
 }
 
 /************
@@ -671,6 +718,10 @@
 	{
 		font-size: 10px;
 	}
+
+	.tablaloca{
+		width: 100%;
+	}
 }
 
 /************
@@ -679,5 +730,7 @@
 
 @media only screen and (max-width: 400px)
 {
-	
+	.tablaloca{
+		width: 100%;
+	}
 }
