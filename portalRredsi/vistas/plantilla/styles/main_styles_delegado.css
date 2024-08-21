@@ -1706,3 +1706,4 @@ input:last-of-type
 .accordion-button::after {
 	filter: invert(0); /* Mantiene el color del icono de colapso en negro */
 }
+

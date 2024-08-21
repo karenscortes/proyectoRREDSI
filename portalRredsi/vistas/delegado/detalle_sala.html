@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestionar Sala</title>
+    <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="../plantilla/styles/bootstrap4/bootstrap.min.css">
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="../plantilla/styles/main_styles.css">
+    <link rel="stylesheet" href="../plantilla/styles/global_styles.css">
+    <link rel="stylesheet" type="text/css" href="../plantilla/styles/main_styles_delegado.css">
+    <link rel="stylesheet" type="text/css" href="../plantilla/styles/responsive.css">
+    <link rel="stylesheet" type="text/css" href="../plantilla/styles/main_styles_admin copy.css">
+    <link rel="stylesheet" type="text/css" href="../plantilla/styles/responsive_admin.css">
+
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .movible {
+            background-color: rgb(255, 182, 6);
+            cursor: move;
+        }
+    </style>
+
+</head>
+
+<body>
+    <!-- header -->
+    <header class=" position-relative justify-content-center py-3" style="border-bottom: 20px solid rgb(255, 182, 6); ">
+        <div class="row align-items-center" style="margin-inline: 55px;">
+            <!-- Logo -->
+            <div class="logo_container ml-5">
+                <div class="logo">
+                    <img class="img-fluid" src="../plantilla/images/logoRredsi.png" alt="">
+                    <span>RREDSI</span>
+                </div>
+            </div>
+
+            <!-- Main Navigation -->
+            <nav class="main_nav_container">
+                <div class="main_nav">
+                    <ul class="main_nav_list d-flex justify-content-around">
+                        <li class="main_nav_item"><a href="principal.html">Inicio</a></li>
+                        <li class="main_nav_item"><a href="perfil.html">Perfil</a></li>
+                        <li class="main_nav_item">
+                            <div class="dropdown">
+                                <a class=" dropdown-toggle text-dark" type="button" data-toggle="dropdown"
+                                    aria-expanded="false">
+                                    Evaluadores
+                                </a>
+                                <div class="dropdown-menu text-center">
+                                    <a href="postulaciones.html">Postulaciones</a><br>
+                                    <a href="lista_evaluadores.html">Lista de Evaluadores</a>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="main_nav_item">
+                            <div class="dropdown">
+                                <a class=" dropdown-toggle text-dark" type="button" data-toggle="dropdown"
+                                    aria-expanded="false">
+                                    Proyectos
+                                </a>
+                                <div class="dropdown-menu text-center">
+                                    <a href="asignar_proyectos.html">Asignación de <br> Proyectos</a><br>
+                                    <a href="lista_proyectos.html">Lista de Proyectos</a>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="main_nav_item">
+                            <div class="dropdown">
+                                <a class=" dropdown-toggle text-dark" type="button" data-toggle="dropdown"
+                                    aria-expanded="false">
+                                    Evento
+                                </a>
+                                <div class="dropdown-menu text-center">
+                                    <a href="salas.html">Salas</a><br>
+                                    <a href="#">Asistencia</a>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="main_nav_item"><a href="#">Cerrar sesión</a></li>
+                    </ul>
+                </div>
+            </nav>
+        </div>
+
+        <!-- Hamburger -->
+        <div class="hamburger_container">
+            <i class="fas fa-bars trans_200"></i>
+        </div>
+
+    </header>
+    <!-- Menu -->
+    <div class="menu_container menu_mm">
+
+        <!-- Menu Close Button -->
+        <div class="menu_close_container">
+            <div class="menu_close"></div>
+        </div>
+
+        <!-- Menu Items -->
+        <div class="menu_inner menu_mm">
+            <div class="menu menu_mm">
+                <ul class="menu_list menu_mm">
+                    <li class="menu_item menu_mm"><a href="principal.html">Inicio</a></li>
+                    <li class="menu_item menu_mm"><a href="perfil.html">Perfil</a></li>
+                    <li class="menu_item menu_mm">
+                        <div class="dropdown">
+                            <a class=" dropdown-toggle text-dark" type="button" data-toggle="dropdown"
+                                aria-expanded="false">
+                                Evaluadores
+                            </a>
+                            <div class="dropdown-menu text-center">
+                                <a href="postulaciones.html">Postulaciones</a><br>
+                                <a href="lista_evaluadores.html">Lista de Evaluadores</a>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="menu_item menu_mm">
+                        <div class="dropdown">
+                            <a class=" dropdown-toggle text-dark" type="button" data-toggle="dropdown"
+                                aria-expanded="false">
+                                Proyectos
+                            </a>
+                            <div class="dropdown-menu text-center">
+                                <a href="asignar_proyectos.html">Asignación de <br> Proyectos</a><br>
+                                <a href="lista_proyectos.html">Lista de Proyectos</a>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="menu_item menu_mm">
+                        <div class="dropdown">
+                            <a class=" dropdown-toggle text-dark" type="button" data-toggle="dropdown"
+                                aria-expanded="false">
+                                Evento
+                            </a>
+                            <div class="dropdown-menu text-center">
+                                <a href="salas.html">Salas</a><br>
+                                <a href="#">Asistencia</a>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="menu_item menu_mm"><a href="#">Cerrar sesión</a></li>
+                </ul>
+
+                <!-- Menu Social -->
+
+                <div class="menu_social_container menu_mm">
+                    <ul class="menu_social menu_mm">
+                        <li class="menu_social_item menu_mm"><a href="https://www.instagram.com/rredsiquindio/"><i
+                                    class="fab fa-instagram"></i></a></li>
+                        <li class="menu_social_item menu_mm"><a
+                                href="https://www.facebook.com/rredsi?mibextid=ZbWKwL"><i
+                                    class="fab fa-facebook-f"></i></a></li>
+                        <li class="menu_social_item menu_mm"><a href="https://x.com/Rredsi"><i
+                                    class="fab fa-twitter"></i></a></li>
+                    </ul>
+                </div>
+
+                <div class="menu_copyright menu_mm">ADSO 2670586 All rights reserved</div>
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="container mt-5">
+        <div class="row mb-3">
+            <div class="col">
+                <div class="section_title text-center">
+                    <h1>Gestión de Sala</h1>
+                </div>
+            </div>
+        </div>
+
+        <div class=" container mt-5">
+            <div class="container">
+                <!-- Proyecto -->
+                <div class="row mb-4 justify-content-center">
+                    <div class="col-12 col-md-6 text-center">
+                        <label for="proyecto_codigo" class="fw-bold text-dark">Proyecto:</label>
+                        <select id="id_proyecto" class="form-select text-dark" required>
+                            <option value="Seleccionar" selected>Seleccione una opción</option>
+                            <option value="1">A001</option>
+                            <option value="2">A002</option>
+                            <option value="3">A003</option>
+                        </select>
+                    </div>
+                </div>
+                <form class="mt-4">
+                    <div class="row mb-3">
+                        <div class="col-12 col-md-6">
+                            <label for="ponente_1" class="form-label text-black">Ponente 1:</label>
+                            <input type="text" class="form-control" id="ponente_1" placeholder>
+                        </div>
+                        <div class="col-12 col-md-6">
+                            <label for="ponente_2" class="form-label text-black">Ponente 2 (Opcional):</label>
+                            <input type="text" class="form-control" id="ponente_2" placeholder>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-12 col-md-6">
+                            <label for="evaluador_1" class="fw-bold text-dark">Evaluador 1:</label>
+                            <select id="id_evaluador_1" class="form-select text-dark" required>
+                                <option value="Seleccionar" selected>Seleccione una opción</option>
+                                <option value="1">Christian Arce</option>
+                                <option value="2">Maribel Obando</option>
+                                <option value="3">Diego Legarda</option>
+                            </select>
+                        </div>
+                        <div class="col-12 col-md-6">
+                            <label for="evaluador_2" class="fw-bold text-dark">Evaluador 2:</label>
+                            <select id="id_evaluador_2" class="form-select text-dark" required>
+                                <option value="Seleccionar" selected>Seleccione una opción</option>
+                                <option value="1">Christian Arce</option>
+                                <option value="2">Maribel Obando</option>
+                                <option value="3">Diego Legarda</option>
+                            </select>
+                        </div>
+                    </div>
+        
+                    <div class="row mb-3 align-items-center">
+                        <div class="col-12 col-md-4">
+                            <label class="form-label">Fecha:</label>
+                            <input type="date" class="form-control text-dark" v-model="selectedDate" @change="addDateSchedule">
+                        </div>
+                        <div class="col-12 col-md-4">
+                            <label>Hora de Inicio:</label>
+                            <input type="time" class="form-control text-dark" v-model="newStartTime" @change="updateTime(schedule.date)">
+                        </div>
+                        <div class="col-12 col-md-4">
+                            <label>Hora de Fin:</label>
+                            <input type="time" class="form-control text-dark" v-model="newEndTime" >
+                        </div>
+                    </div>
+                    <!-- Botón para agregar horario -->
+                    <div class="text-center mt-4">
+                        <button class="btn btn-dark text-light">Asignar Horario</button>
+                    </div>
+                </form>
+                <div class="title-line mt-3"></div>
+                <!-- Línea debajo del título -->
+                <div class="container mt-4">
+                    <!-- Encabezado con fecha y botones -->
+                    <div class="">
+                        <h3 class="text-center m-0">Sep 6 de 2024</h3>
+                    </div>
+                    <div class="mb-3">
+                        <label for="timeSlotSelect" class="form-label">Seleccionar horario:</label>
+                        <select id="timeSlotSelect" class="form-select" onchange="filterTimeSlots()">
+                            <option value="morning" selected>Mañana (6 AM - 12 PM)</option>
+                            <option value="afternoon">Tarde (12 PM - 6 PM)</option>
+                        </select>
+                    </div>
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr id="headerRow">
+                                <th class="text-center">Evaluadores</th>
+                                <th class="text-center time-slot" data-time="6am">6:00am</th>
+                                <th class="text-center time-slot" data-time="6am">6:30am</th>
+                                <th class="text-center time-slot" data-time="7am">7:00am</th>
+                                <th class="text-center time-slot" data-time="7am">7:30am</th>
+                                <th class="text-center time-slot" data-time="8am">8:00am</th>
+                                <th class="text-center time-slot" data-time="8am">8:30am</th>
+                                <th class="text-center time-slot" data-time="9am">9:00am</th>
+                                <th class="text-center time-slot" data-time="9am">9:30am</th>
+                                <th class="text-center time-slot" data-time="10am">10:00am</th>
+                                <th class="text-center time-slot" data-time="10am">10:30am</th>
+                                <th class="text-center time-slot" data-time="11am">11:00am</th>
+                                <th class="text-center time-slot" data-time="11am">11:30am</th>
+                                <th class="text-center time-slot" data-time="12pm">12:00pm</th>
+                                <th class="text-center time-slot" data-time="1pm">1:00pm</th>
+                                <th class="text-center time-slot" data-time="1pm">1:30pm</th>
+                                <th class="text-center time-slot" data-time="2pm">2:00pm</th>
+                                <th class="text-center time-slot" data-time="2pm">2:30pm</th>
+                                <th class="text-center time-slot" data-time="3pm">3:00pm</th>
+                                <th class="text-center time-slot" data-time="3pm">3:30pm</th>
+                                <th class="text-center time-slot" data-time="4pm">4:00pm</th>
+                                <th class="text-center time-slot" data-time="4pm">4:30pm</th>
+                                <th class="text-center time-slot" data-time="5pm">5:00pm</th>
+                                <th class="text-center time-slot" data-time="5pm">5:30pm</th>
+                                <th class="text-center time-slot" data-time="6pm">6:00pm</th>
+                            </tr>
+                        </thead>
+                        <tbody id="scheduleBody">
+                            <tr>
+                                <td class="text-center">Evaluador 1</td>
+                                <td colspan="2" rowspan="2" class="text-center movible" draggable="true" id="movibleTd"
+                                    style="background-color: rgb(255, 182, 6); vertical-align: middle;">BigDataIA</td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td class="text-center">Evaluador 2</td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td class="text-center">Evaluador 3</td>
+                                <td colspan="2" rowspan="2" class="text-center movible" draggable="true" id="movible2"
+                                    style="background-color: rgb(255, 182, 6); vertical-align: middle;">AguaLimpia</td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td class="text-center">Evaluador 4</td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td class="text-center">Evaluador 5</td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td class="text-center">Evaluador 6</td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        
+        
+
+    </div>
+
+
+    <!--Footer-->
+    <footer class="footer mt-5">
+        <div class="container">
+
+            <!-- Footer Copyright -->
+
+            <div class="footer_bar d-flex flex-column flex-sm-row align-items-center">
+                <div class="footer_copyright">
+                    <span>Colorlib All rights reserved</span>
+                </div>
+                <div class="footer_social ml-sm-auto">
+                    <ul class="menu_social">
+                        <li class="menu_social_item"><a href="#"><i class="fab fa-pinterest"></i></a></li>
+                        <li class="menu_social_item"><a href="#"><i class="fab fa-linkedin-in"></i></a></li>
+                        <li class="menu_social_item"><a href="#"><i class="fab fa-instagram"></i></a></li>
+                        <li class="menu_social_item"><a href="#"><i class="fab fa-facebook-f"></i></a></li>
+                        <li class="menu_social_item"><a href="#"><i class="fab fa-twitter"></i></a></li>
+                    </ul>
+                </div>
+            </div>
+
+        </div>
+    </footer>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14"></script>
+    <script src="logica.js"></script>
+    <script src="../plantilla/js/jquery-3.2.1.min.js"></script>
+    <script src="../plantilla/styles/bootstrap4/popper.js"></script>
+    <script src="../plantilla/styles/bootstrap4/bootstrap.min.js"></script>
+    <script src="../plantilla/plugins/greensock/TweenMax.min.js"></script>
+    <script src="../plantilla/plugins/greensock/TimelineMax.min.js"></script>
+    <script src="../plantilla/plugins/scrollmagic/ScrollMagic.min.js"></script>
+    <script src="../plantilla/plugins/greensock/animation.gsap.min.js"></script>
+    <script src="../plantilla/plugins/greensock/ScrollToPlugin.min.js"></script>
+    <script src="../plantilla/plugins/OwlCarousel2-2.2.1/owl.carousel.js"></script>
+    <script src="../plantilla/plugins/scrollTo/jquery.scrollTo.min.js"></script>
+    <script src="../plantilla/plugins/easing/easing.js"></script>
+    <script src="../plantilla/js/custom.js"></script>
+
+    <script>
+        function filterTimeSlots() {
+            const selectedSlot = document.getElementById('timeSlotSelect').value;
+            const timeSlots = document.querySelectorAll('.time-slot');
+
+            timeSlots.forEach(slot => {
+                const time = slot.dataset.time;
+                if (selectedSlot === 'morning' && (time === '6am' || time === '7am' || time === '8am' || time === '9am' || time === '10am' || time === '11am' ||time === '12pm'))  {
+                    slot.style.display = 'table-cell';
+                } else if (selectedSlot === 'afternoon' && (time === '1pm' || time === '2pm' || time === '3pm' || time === '4pm' || time === '5pm'|| time === '6pm'))  {
+                    slot.style.display = 'table-cell';
+                } else {
+                    slot.style.display = 'none';
+                }
+            });
+        }
+
+        window.onload = filterTimeSlots; // Filtrar cuando la página cargue
+        const movibleTd = document.getElementById('movibleTd');
+
+        movibleTd.addEventListener('dragstart', (e) => {
+            e.dataTransfer.setData('text/plain', e.target.id);
+        });
+
+        const tds = document.querySelectorAll('td:not(.movible)');
+        tds.forEach(td => {
+            td.addEventListener('dragover', (e) => {
+                e.preventDefault();
+            });
+
+            td.addEventListener('drop', (e) => {
+                e.preventDefault();
+                const id = e.dataTransfer.getData('text/plain');
+                const draggableElement = document.getElementById(id);
+                td.parentNode.insertBefore(draggableElement, td);
+            });
+        });
+    </script>
+
+
+</body>
+
+</html>
