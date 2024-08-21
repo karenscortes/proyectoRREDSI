@@ -6,7 +6,8 @@
     <title>Gestion Delegado</title>
     <link rel="stylesheet" href="../plantilla/styles/perfil_superadmin_styles.css">
     <link rel="stylesheet" href="../plantilla/styles/bootstrap5/css/bootstrap.min.css">
-    <link href="../plantilla/plugins/fontawesome-free-5.0.1/css/fontawesome-all.css" rel="stylesheet" type="text/css">
+    <link href="../plantilla/plugins/fontawesome-free-5.0.1/css/fontawesome-all.css" rel="stylesheet" type="text/css">  
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <link rel="stylesheet" type="text/css" href="../plantilla/plugins/OwlCarousel2-2.2.1/owl.carousel.css">
     <link rel="stylesheet" type="text/css" href="../plantilla/plugins/OwlCarousel2-2.2.1/animate.css">
     <link rel="stylesheet" type="text/css" href="../plantilla/styles/main_styles_admin copy.css">
@@ -46,66 +47,252 @@
     <div class="container-fluid" id="cont_ejemplo">
        
    </div>
-    <div >
-        <h1 class="text-center m-5 text-dark">Informacion delegados</h1>
-        <div class="row mb-4 justify-content-center">
-            <div class="col-8 col-sm-6 justify-content-end">
-                <div class="row justify-content-end">
-                    <div class="col-8">
-                        <input type="text" id="busqueda" class="form-control" placeholder="Buscar...">
-                    </div>
-                    <div class="col-4">
-                        <button class="btn w-100 font-weight-bold" style="background: rgb(255, 182, 6);">Buscar</button>
-                    </div>
+   <div class="container pt-5">
+    <div class="row mb-5 mt-2">
+        <div class="col">
+            <div class="section_title text-center">
+                <h1>Información delegados</h1>
+            </div>
+        </div>
+    </div>
+    <!-- Buscador -->
+    <div class="row mb-4 justify-content-end">
+        <div class="col-8 col-sm-6 justify-content-end">
+            <div class="row justify-content-end">
+                <div class="col-8">
+                    <input type="text" id="busqueda" class="form-control" placeholder="Buscar...">
+                </div>
+                <div class="col-4">
+                    <button class="btn w-100 font-weight-bold" style="background: rgb(255, 182, 6);">Buscar</button>
                 </div>
             </div>
         </div>
     </div>
-   <div class="container">
-        <table class="table table-striped">
-            <thead id="color">
-                <tr>
-                    <th>Identificación</th>
-                    <th>Delegado</th>
-                    <th>Area de conocimiento</th>
-                    <th>Institucion</th>
-                    <th>Estado</th>
-                    <th>Detalle</th>
-                    <th>Historial</th>
-                </tr>
-            </thead>
-            <tbody>
-            <tr class="table-active">
-                
-            </tr>
-            <tr>
-                
-            </tr>
-            <tr>
-                
-            </tr>
-            </tbody>
-      </table>
-      <nav aria-label="Page navigation example">
-        <ul class="pagination justify-content-center">
-            <li class="page-item">
-                <a class="page-link" href="#" aria-label="Previous">
-                    <span aria-hidden="true">&laquo;</span>
-                </a>
-            </li>
-            <li class="page-item"><a class="page-link" href="#">1</a></li>
-            <li class="page-item"><a class="page-link" href="#">2</a></li>
-            <li class="page-item"><a class="page-link" href="#">3</a></li>
-            <li class="page-item">
-                <a class="page-link" href="#" aria-label="Next">
-                    <span aria-hidden="true">&raquo;</span>
-                </a>
-            </li>
-        </ul>
-    </nav>
-    
-   </div>
 
+    <!-- Tabla -->
+    <div class="table-responsive">
+            <table id="basic-datatables" class="display table table-striped table-hover text-dark">
+                <thead class="bg-warning">
+                    <tr>
+                        <th class="bg-warning">Identificación</th>
+                        <th class="bg-warning">Delegado</th>
+                        <th class="bg-warning">Área de conocimiento</th>
+                        <th class="bg-warning">Institución</th>
+                        <th class="bg-warning">Estado</th>
+                        <th class="bg-warning">Detalle</th>
+                        <th class="bg-warning">Historial</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td style="font-size: 16px;">1012356</td>
+                        <td style="font-size: 16px;">Juan Pérez</td>
+                        <td style="font-size: 16px;">Ciencias Naturales</td>
+                        <td style="font-size: 16px;">Universidad Nacional</td>
+                        <td>
+                            <div class="form-check form-switch">
+                                <input class="form-check-input bg-warning border-warning" type="checkbox" role="switch" id="flexSwitchCheckDefault1">
+                                <label class="form-check-label" for="flexSwitchCheckDefault1"></label>
+                            </div>
+                        </td>
+                        <td>
+                            <a type="button" data-toggle="modal" data-target="#detalleModal"><i class="far fa-eye" aria-hidden="true" style="font-size: 25px;"></i></a>
+                        </td>
+                        <td>
+                            <a type="button" data-toggle="modal" data-target="#historialModal"><i class="far fa-list-alt" style="font-size: 25px;"></i></a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="font-size: 16px;">1012357</td>
+                        <td style="font-size: 16px;">Ana Gómez</td>
+                        <td style="font-size: 16px;">Biología</td>
+                        <td style="font-size: 16px;">Universidad de Antioquia</td>
+                        <td>
+                            <div class="form-check form-switch">
+                                <input class="form-check-input bg-warning border-warning" type="checkbox" role="switch" id="flexSwitchCheckDefault2">
+                                <label class="form-check-label" for="flexSwitchCheckDefault2"></label>
+                            </div>
+                        </td>
+                        <td>
+                            <a type="button" data-toggle="modal" data-target="#detalleModal"><i class="far fa-eye" style="font-size: 25px;"></i></a>
+                        </td>
+                        <td>
+                            <a type="button" data-toggle="modal" data-target="#historialModal"><i class="far fa-list-alt" style="font-size: 25px;"></i></a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="font-size: 16px;">1012358</td>
+                        <td style="font-size: 16px;">Carlos Ruiz</td>
+                        <td style="font-size: 16px;">Química</td>
+                        <td style="font-size: 16px;">Universidad del Valle</td>
+                        <td>
+                            <div class="form-check form-switch">
+                                <input class="form-check-input bg-warning border-warning" type="checkbox" role="switch" id="flexSwitchCheckDefault3">
+                                <label class="form-check-label" for="flexSwitchCheckDefault3"></label>
+                            </div>
+                        </td>
+                        <td>
+                            <a type="button" data-toggle="modal" data-target="#detalleModal"><i class="far fa-eye" style="font-size: 25px;"></i></a>
+                        </td>
+                        <td>
+                            <a type="button" data-toggle="modal" data-target="#historialModal"><i class="far fa-list-alt" style="font-size: 25px;"></i></a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="font-size: 16px;">1012359</td>
+                        <td style="font-size: 16px;">Lucía Fernández</td>
+                        <td style="font-size: 16px;">Historia</td>
+                        <td style="font-size: 16px;">Universidad de los Andes</td>
+                        <td>
+                            <div class="form-check form-switch">
+                                <input class="form-check-input bg-warning border-warning" type="checkbox" role="switch" id="flexSwitchCheckDefault4">
+                                <label class="form-check-label" for="flexSwitchCheckDefault4"></label>
+                            </div>
+                        </td>
+                        <td>
+                            <a type="button" data-toggle="modal" data-target="#detalleModal"><i class="far fa-eye" style="font-size: 25px;"></i></a>
+                        </td>
+                        <td>
+                            <a type="button" data-toggle="modal" data-target="#historialModal"><i class="far fa-list-alt" style="font-size: 25px;"></i></a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="font-size: 16px;">1012360</td>
+                        <td style="font-size: 16px;">Andrés Bustamante</td>
+                        <td style="font-size: 16px;">Geografía</td>
+                        <td style="font-size: 16px;">Pontificia Universidad Javeriana</td>
+                        <td>
+                            <div class="form-check form-switch">
+                                <input class="form-check-input bg-warning border-warning" type="checkbox" role="switch" id="flexSwitchCheckDefault5">
+                                <label class="form-check-label" for="flexSwitchCheckDefault5"></label>
+                            </div>
+                        </td>
+                        <td>
+                            <a type="button" data-toggle="modal" data-target="#detalleModal"><i class="far fa-eye" style="font-size: 25px;"></i></a>
+                        </td>
+                        <td>
+                            <a type="button" data-toggle="modal" data-target="#historialModal"><i class="far fa-list-alt" style="font-size: 25px;"></i></a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="font-size: 16px;">1012360</td>
+                        <td style="font-size: 16px;">Andrés Bustamante</td>
+                        <td style="font-size: 16px;">Geografía</td>
+                        <td style="font-size: 16px;">Pontificia Universidad Javeriana</td>
+                        <td>
+                            <div class="form-check form-switch">
+                                <input class="form-check-input bg-warning border-warning" type="checkbox" role="switch" id="flexSwitchCheckDefault5">
+                                <label class="form-check-label" for="flexSwitchCheckDefault5"></label>
+                            </div>
+                        </td>
+                        <td>
+                            <a type="button" data-toggle="modal" data-target="#detalleModal"><i class="far fa-eye" style="font-size: 25px;"></i></a>
+                        </td>
+                        <td>
+                            <a type="button" data-toggle="modal" data-target="#historialModal"><i class="far fa-list-alt" style="font-size: 25px;"></i></a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="font-size: 16px;">1012360</td>
+                        <td style="font-size: 16px;">Andrés Bustamante</td>
+                        <td style="font-size: 16px;">Geografía</td>
+                        <td style="font-size: 16px;">Pontificia Universidad Javeriana</td>
+                        <td>
+                            <div class="form-check form-switch">
+                                <input class="form-check-input bg-warning border-warning" type="checkbox" role="switch" id="flexSwitchCheckDefault5">
+                                <label class="form-check-label" for="flexSwitchCheckDefault5"></label>
+                            </div>
+                        </td>
+                        <td>
+                            <a type="button" data-toggle="modal" data-target="#detalleModal"><i class="far fa-eye" style="font-size: 25px;"></i></a>
+                        </td>
+                        <td>
+                            <a type="button" data-toggle="modal" data-target="#historialModal"><i class="far fa-list-alt" style="font-size: 25px;"></i></a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="font-size: 16px;">1012360</td>
+                        <td style="font-size: 16px;">Andrés Bustamante</td>
+                        <td style="font-size: 16px;">Geografía</td>
+                        <td style="font-size: 16px;">Pontificia Universidad Javeriana</td>
+                        <td>
+                            <div class="form-check form-switch">
+                                <input class="form-check-input bg-warning border-warning" type="checkbox" role="switch" id="flexSwitchCheckDefault5">
+                                <label class="form-check-label" for="flexSwitchCheckDefault5"></label>
+                            </div>
+                        </td>
+                        <td>
+                            <a type="button" data-toggle="modal" data-target="#detalleModal"><i class="far fa-eye" style="font-size: 25px;"></i></a>
+                        </td>
+                        <td>
+                            <a type="button" data-toggle="modal" data-target="#historialModal"><i class="far fa-list-alt" style="font-size: 25px;"></i></a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="font-size: 16px;">1012360</td>
+                        <td style="font-size: 16px;">Andrés Bustamante</td>
+                        <td style="font-size: 16px;">Geografía</td>
+                        <td style="font-size: 16px;">Pontificia Universidad Javeriana</td>
+                        <td>
+                            <div class="form-check form-switch">
+                                <input class="form-check-input bg-warning border-warning" type="checkbox" role="switch" id="flexSwitchCheckDefault5">
+                                <label class="form-check-label" for="flexSwitchCheckDefault5"></label>
+                            </div>
+                        </td>
+                        <td>
+                            <a type="button" data-toggle="modal" data-target="#detalleModal"><i class="far fa-eye" style="font-size: 25px;"></i></a>
+                        </td>
+                        <td>
+                            <a type="button" data-toggle="modal" data-target="#historialModal"><i class="far fa-list-alt" style="font-size: 25px;"></i></a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="font-size: 16px;">10145360</td>
+                        <td style="font-size: 16px;">Diego Parra</td>
+                        <td style="font-size: 16px;">Geografía</td>
+                        <td style="font-size: 16px;">Pontificia Universidad Javeriana</td>
+                        <td>
+                            <div class="form-check form-switch">
+                                <input class="form-check-input bg-warning border-warning" type="checkbox" role="switch" id="flexSwitchCheckDefault5">
+                                <label class="form-check-label" for="flexSwitchCheckDefault5"></label>
+                            </div>
+                        </td>
+                        <td>
+                            <a type="button" data-toggle="modal" data-target="#detalleModal"><i class="far fa-eye" style="font-size: 25px;"></i></a>
+                        </td>
+                        <td>
+                            <a type="button" data-toggle="modal" data-target="#historialModal"><i class="far fa-list-alt" style="font-size: 25px;"></i></a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Paginador -->
+    <div class="mt-2">
+        <div aria-label="Page navigation example mb-5">
+            <ul class="pagination justify-content-center">
+                <li class="page-item disabled m-1">
+                    <a class="page-link" href="#" tabindex="-1"
+                        style="border-radius: 20px; color: black;">Atras</a>
+                </li>
+                <li class="page-item rounded m-1">
+                    <a class="page-link rounded-circle" href="#" style="color: black;">1</a>
+                </li>
+                <li class="page-item m-1">
+                    <a class="page-link rounded-circle" href="#" style="color: black;">2</a>
+                </li>
+                <li class="page-item m-1">
+                    <a class="page-link rounded-circle" href="#" style="color: black;">3</a>
+                </li>
+                <li class="page-item m-1">
+                    <a class="page-link" href="#" style="border-radius: 20px; color: black;">Siguiente</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+    
    <footer class="footer mt-5">
         <div class="container">
             <div class="footer_bar d-flex flex-column flex-sm-row align-items-center">
@@ -124,6 +311,130 @@
             </div>
         </div>
     </footer>
+
+    <!-- Modal datos delegados -->
+    <div class="modal fade" id="detalleModal" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content border border-dark border-5 rounded-5 text-dark">
+                <div class="modal-header">
+                    <h3 class="modal-title" id="modalLabel">Emmanuel Echeverry</h3>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+
+                    <div class="row mx-auto justify-content-center">
+
+                        <div class="col-5 text-dark fw-bold">
+                            Tipo de Documento:
+                        </div>
+                        <div class="col-5 border mb-3">
+                            <span class="text-dark">Cedula</span>
+                        </div>
+                        <div class="col-5 text-dark fw-bold">
+                            Documento:
+                        </div>
+                        <div class="col-5 border mb-3">
+                            <span class="text-dark">2102156348</span>
+                        </div>
+                        <div class="col-5 text-dark fw-bold">
+                            Nombre Completo:
+                        </div>
+                        <div class="col-5 border mb-3">
+                            <span class="text-dark">Maria Luisa</span>
+                        </div>
+                        <div class="col-5 text-dark fw-bold">
+                            Área de conocimiento:
+                        </div>
+                        <div class="col-5 border mb-3">
+                            <span class="text-dark">Sistemas</span>
+                        </div>
+                        <div class="col-5 text-dark fw-bold">
+                            Institución:
+                        </div>
+                        <div class="col-5 border mb-3">
+                            <span class="text-dark">SENA</span>
+                        </div>
+                        <div class="col-5 text-dark fw-bold">
+                            Teléfono:
+                        </div>
+                        <div class="col-5 border mb-3">
+                            <span class="text-dark">3204562023</span>
+                        </div>
+                        <div class="col-5 text-dark fw-bold">
+                            Correo:
+                        </div>
+                        <div class="col-5 border mb-3">
+                            <span class="text-dark">maria60@gmail.com</span>
+                        </div>
+                    </div>
+
+                    <div class="text-center mt-3">
+                        <a href="../delegado/pruebas_documentos/constancia_NotasAprendiz.pdf" class="btn btn-outline-warning" target="_blank">
+                            Ver Títulos
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal historial de acciones -->
+    <div class="modal fade" id="historialModal" tabindex="-1" aria-labelledby="historialLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content border border-dark border-5 rounded-5 text-dark">
+                <div class="modal-header bg-warning">
+                    <h3 class="modal-title mx-auto" id="historialLabel">HISTORIAL ACCIONES DELEGADO PEDRO SANCHEZ</h3>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body p-4">
+                    <div class="table-responsive">
+                        <table class="table table-bordered">
+                            <thead class="bg-warning">
+                                <tr>
+                                    <th>Tipo de Acción</th>
+                                    <th>Módulo</th>
+                                    <th>Descripción</th>
+                                    <th>Fecha</th>
+                                    <th>Hora</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Actualizar</td>
+                                    <td>Editar perfil</td>
+                                    <td>Perfil actualizado</td>
+                                    <td>8/08/2024</td>
+                                    <td>12:45 PM</td>
+                                </tr>
+                                <tr>
+                                    <td>Actualizar</td>
+                                    <td>Rubricas</td>
+                                    <td>Rúbrica</td>
+                                    <td>8/09/2024</td>
+                                    <td>1:45 PM</td>
+                                </tr>
+                                <tr>
+                                    <td>Creación</td>
+                                    <td>Salas</td>
+                                    <td>Nueva sala</td>
+                                    <td>9/15/2024</td>
+                                    <td>2:00 PM</td>
+                                </tr>
+                                <tr>
+                                    <td>Acceso</td>
+                                    <td>Login</td>
+                                    <td>Inicio de sesión</td>
+                                    <td>11/20/2024</td>
+                                    <td>10:00 AM</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
 
 
     <script src="../plantilla/js/jquery-3.2.1.min.js"></script>
