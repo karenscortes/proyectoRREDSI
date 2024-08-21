@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestionar Salas</title>
+    <link rel="stylesheet" href="../bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="../plantilla/styles/bootstrap4/bootstrap.min.css">
+    <link href="../plantilla/plugins/fontawesome-free-5.0.1/css/fontawesome-all.css" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" type="text/css" href="../plantilla/plugins/OwlCarousel2-2.2.1/owl.carousel.css">
+    <link rel="stylesheet" type="text/css" href="../plantilla/plugins/OwlCarousel2-2.2.1/owl.theme.default.css">
+    <link rel="stylesheet" type="text/css" href="../plantilla/plugins/OwlCarousel2-2.2.1/animate.css">
+    <link rel="stylesheet" type="text/css" href="../plantilla/styles/responsive.css">
+    <link rel="stylesheet" type="text/css" href="../plantilla/styles/main_styles_admin copy.css">
+    <link rel="stylesheet" type="text/css" href="../plantilla/styles/responsive_admin.css">
+    <link rel="stylesheet" href="../plantilla/styles/perfil_admin_styles.css">
+
+</head>
+
+<body>
+    <!-- header -->
+    <header class="header d-flex flex-row position-relative">
+        <div class="header_content d-flex flex-row align-items-center justify-content-start">
+            <!-- Logo -->
+            <div class="logo_container">
+                <div class="logo">
+                    <img class="img-fluid" src="../plantilla/images/logoRredsi.png" alt="">
+                    <span>RREDSI</span>
+                </div>
+            </div>
+
+            <!-- Main Navigation -->
+            <nav class="main_nav_container">
+                <div class="main_nav">
+                    <ul class="main_nav_list d-flex justify-content-between">
+                        <li class="main_nav_item"><a href="principal.htm">Inicio</a></li>
+                        <li class="main_nav_item"><a href="perfil_admin.html">Perfil</a></li>
+                        <li class="main_nav_item"><a href="gestion_cuentas_delegados.html">Cuentas</a></li>
+                        <li class="main_nav_item"><a href="gestion_rubrica.html">Rúbricas</a></li>
+                        <li class="main_nav_item">
+                            <div class="dropdown">
+                                <a class=" dropdown-toggle text-dark" style="font-weight: 1000;" type="button" data-toggle="dropdown"
+                                    aria-expanded="false">
+                                    eventos
+                                </a>
+                                <div class="dropdown-menu text-center">
+                                    <a href="gestion_salas.html">salas
+                                    </a><br>
+                                    <a href="gestion_asistentes.html">asistencia</a>
+                                    <br>
+                                    <a href="gestion_convocatoria.html">convocatoria</a>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="main_nav_item"><a href="#">Cerrar sesión</a></li>
+                    </ul>
+                </div>
+            </nav>
+        </div>
+
+        <!-- Hamburger -->
+        <div class="hamburger_container">
+            <i class="fas fa-bars trans_200"></i>
+        </div>
+
+    </header>
+
+    <!-- dividing line -->
+    <div class="container-fluid" id="cont_ejemplo">
+       
+    </div>
+
+    <!-- Menu -->
+    <div class="menu_container menu_mm">
+
+        <!-- Menu Close Button -->
+        <div class="menu_close_container">
+            <div class="menu_close"></div>
+        </div>
+
+        <!-- Menu Items -->
+        <div class="menu_inner menu_mm">
+            <div class="menu menu_mm">
+                <ul class="menu_list menu_mm">
+                    <li class="menu_item menu_mm"><a href="principal.html">Inicio</a></li>
+                    <li class="menu_item menu_mm"><a href="perfil.html">Perfil</a></li>
+                    <li class="menu_item menu_mm">
+                        <div class="dropdown">
+                            <a class=" dropdown-toggle text-dark" type="button" data-toggle="dropdown"
+                                aria-expanded="false">
+                                Evaluadores
+                            </a>
+                            <div class="dropdown-menu text-center">
+                                <a href="postulaciones.html">Postulaciones</a><br>
+                                <a href="lista_evaluadores.html">Lista de Evaluadores</a>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="menu_item menu_mm">
+                        <div class="dropdown">
+                            <a class=" dropdown-toggle text-dark" type="button" data-toggle="dropdown"
+                                aria-expanded="false">
+                                Proyectos
+                            </a>
+                            <div class="dropdown-menu text-center">
+                                <a href="asignar_proyectos.html">Asignación de <br> Proyectos</a><br>
+                                <a href="lista_proyectos.html">Lista de Proyectos</a>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="menu_item menu_mm">
+                        <div class="dropdown">
+                            <a class=" dropdown-toggle text-dark" type="button" data-toggle="dropdown"
+                                aria-expanded="false">
+                                Evento
+                            </a>
+                            <div class="dropdown-menu text-center">
+                                <a href="salas.html">Salas</a><br>
+                                <a href="#">Asistencia</a>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="menu_item menu_mm"><a href="#">Cerrar sesión</a></li>
+                </ul>
+
+                <!-- Menu Social -->
+
+                <div class="menu_social_container menu_mm">
+                    <ul class="menu_social menu_mm">
+                        <li class="menu_social_item menu_mm"><a href="https://www.instagram.com/rredsiquindio/"><i
+                                    class="fab fa-instagram"></i></a></li>
+                        <li class="menu_social_item menu_mm"><a
+                                href="https://www.facebook.com/rredsi?mibextid=ZbWKwL"><i
+                                    class="fab fa-facebook-f"></i></a></li>
+                        <li class="menu_social_item menu_mm"><a href="https://x.com/Rredsi"><i
+                                    class="fab fa-twitter"></i></a></li>
+                    </ul>
+                </div>
+
+                <div class="menu_copyright menu_mm">ADSO 2670586 All rights reserved</div>
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <div class="container pt-5">
+        <div class="row mb-5 mt-2">
+            <div class="col">
+                <div class="section_title text-center">
+                    <h1>Gestionar Salas</h1>
+                </div>
+            </div>
+        </div>
+        <!-- Buscador y añadir sala -->
+        <div class="row mb-4">
+            <div class="col-12 divloco col-md-6 d-flex justify-content-start mb-3 mb-md-0">
+                <button class="btn btn-warning w-sm-100 w-75  font-weight-bold" data-toggle="modal" data-target="#addSalaModal">Crear sala</button>
+            </div>
+            <div class="col-12 col-md-6 d-flex justify-content-end">
+                <div class="d-flex w-100">
+                    <input type="text" id="busqueda" class="form-control mr-2" placeholder="Buscar...">
+                    <button class="btn btn-warning font-weight-bold">Buscar</button>
+                </div>
+            </div>
+        </div>
+
+
+        <!-- Tabla -->
+        <div class="table-responsive tablaloca">
+            <table id="basic-datatables" class="display table table-striped table-hover text-dark">
+                <thead style="background: rgb(255, 182, 6)
+;">
+                    <tr>
+                        <th>Número de sala</th>
+                        <th>Area de conocimiento</th>
+                        <th>Delegado asignado</th>
+                        <th>Editar</th>
+                    </tr>
+                </thead>    
+                <tbody>
+                    <tr>
+                        <td style="font-size: 16px;">ABC2351</td>
+                        <td style="font-size: 16px;">Ciencias naturales</td>
+                        <td style="font-size: 16px;">Pepe Rodrigo Sanchez</td>
+                        <td>
+                            <a type="button" data-toggle="modal" data-target="#updateSalaModal"><i class="far fa-edit" style="font-size: 25px;"></i></a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="font-size: 16px;">ABC2352</td>
+                        <td style="font-size: 16px;">Biología</td>
+                        <td style="font-size: 16px;">Ana María Gómez</td>
+                        <td>
+                            <a type="button" data-toggle="modal" data-target="#updateSalaModal"><i class="far fa-edit" style="font-size: 25px;"></i></a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="font-size: 16px;">ABC2353</td>
+                        <td style="font-size: 16px;">Química</td>
+                        <td style="font-size: 16px;">Carlos Ruiz</td>
+                        <td>
+                            <a type="button" data-toggle="modal" data-target="#updateSalaModal"><i class="far fa-edit" style="font-size: 25px;"></i></a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="font-size: 16px;">ABC2354</td>
+                        <td style="font-size: 16px;">Historia</td>
+                        <td style="font-size: 16px;">Lucía Fernández</td>
+                        <td>
+                            <a type="button" data-toggle="modal" data-target="#updateSalaModal"><i class="far fa-edit" style="font-size: 25px;"></i></a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="font-size: 16px;">ABC2355</td>
+                        <td style="font-size: 16px;">Geografía</td>
+                        <td style="font-size: 16px;">Andrés Bustamante</td>
+                        <td>
+                            <a type="button" data-toggle="modal" data-target="#updateSalaModal"><i class="far fa-edit" style="font-size: 25px;"></i></a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="font-size: 16px;">ABC2356</td>
+                        <td style="font-size: 16px;">Educación Física</td>
+                        <td style="font-size: 16px;">Elena Martínez</td>
+                        <td>
+                            <a type="button" data-toggle="modal" data-target="#updateSalaModal"><i class="far fa-edit" style="font-size: 25px;"></i></a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="font-size: 16px;">ABC2357</td>
+                        <td style="font-size: 16px;">Filosofía</td>
+                        <td style="font-size: 16px;">Jorge Villalba</td>
+                        <td>
+                            <a type="button" data-toggle="modal" data-target="#updateSalaModal"><i class="far fa-edit" style="font-size: 25px;"></i></a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="font-size: 16px;">ABC2358</td>
+                        <td style="font-size: 16px;">Sociología</td>
+                        <td style="font-size: 16px;">Paula Suárez</td>
+                        <td>
+                            <a type="button" data-toggle="modal" data-target="#updateSalaModal"><i class="far fa-edit" style="font-size: 25px;"></i></a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="font-size: 16px;">ABC2359</td>
+                        <td style="font-size: 16px;">Derecho</td>
+                        <td style="font-size: 16px;">Fernando Gutiérrez</td>
+                        <td>
+                            <a type="button" data-toggle="modal" data-target="#updateSalaModal"><i class="far fa-edit" style="font-size: 25px;"></i></a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="font-size: 16px;">EFG10235</td>
+                        <td style="font-size: 16px;">Economía</td>
+                        <td style="font-size: 16px;">Gloria Ortiz</td>
+                        <td>
+                            <a type="button" data-toggle="modal" data-target="#updateSalaModal"><i class="far fa-edit" style="font-size: 25px;"></i></a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="font-size: 16px;">EFG11235</td>
+                        <td style="font-size: 16px;">Ingeniería Civil</td>
+                        <td style="font-size: 16px;">Ricardo Vargas</td>
+                        <td>
+                            <a type="button" data-toggle="modal" data-target="#updateSalaModal"><i class="far fa-edit" style="font-size: 25px;"></i></a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="font-size: 16px;">EFG12235</td>
+                        <td style="font-size: 16px;">Ingeniería de Sistemas</td>
+                        <td style="font-size: 16px;">Sara Morales</td>
+                        <td>
+                            <a type="button" data-toggle="modal" data-target="#updateSalaModal"><i class="far fa-edit" style="font-size: 25px;"></i></a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Paginador -->
+    <div class="mt-2">
+        <div aria-label="Page navigation example mb-5">
+            <ul class="pagination justify-content-center">
+                <li class="page-item disabled m-1">
+                    <a class="page-link" href="#" tabindex="-1"
+                        style="border-radius: 20px; color: black;">Atras</a>
+                </li>
+                <li class="page-item rounded m-1">
+                    <a class="page-link rounded-circle" href="#" style="color: black;">1</a>
+                </li>
+                <li class="page-item m-1">
+                    <a class="page-link rounded-circle" href="#" style="color: black;">2</a>
+                </li>
+                <li class="page-item m-1">
+                    <a class="page-link rounded-circle" href="#" style="color: black;">3</a>
+                </li>
+                <li class="page-item m-1">
+                    <a class="page-link" href="#" style="border-radius: 20px; color: black;">Siguiente</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+
+    <!-- Modal actualizar sala -->
+    <div class="modal fade" id="updateSalaModal" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content border border-dark border-5 rounded-5 text-dark">
+                <div class="text-center">
+                    <button type="button" class="close mr-3 mt-3" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h3 class="modal-title mt-5 font-weight-bold" id="modalLabel" style="font-size: 1.5rem; color: #333;">Editar sala</h3>
+                </div>
+                <div class="modal-body mt-3">
+                    <form>
+                        <div class="form-group row justify-content-center">
+                            <label for="areaSelect" class="col-6 col-form-label text-right font-weight-bold" style="font-size: 1.2rem; color: #444; white-space: nowrap;">Asignar nueva área:</label>
+                            <div class="col-6 pr-5">                       
+                                <select class="form-select text-dark p-1" id="areaSelect" style="font-size: 1rem;">
+                                    <option selected>Seleccionar área</option>
+                                    <option value="1">Ciencias matemáticas</option>
+                                    <option value="2">Industria y comercio</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group row justify-content-center mb-5">
+                            <label for="evaluadorSelect" class="col-6 col-form-label text-right font-weight-bold" style="font-size: 1.2rem; color: #444; white-space: nowrap;">Asignar nuevo delegado:</label>
+                            <div class="col-6 pr-5">
+                                <select class="form-select text-dark p-1" id="evaluadorSelect" style="font-size: 1rem;">
+                                    <option selected>Seleccionar evaluador</option>
+                                    <option value="1">Rigoberto Urán</option>
+                                    <option value="2">Sancho Sánchez</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="text-center">
+                            <button type="submit" class="btn btn-warning font-weight-bold" style="font-size: 1rem; padding: 0.3rem 1.5rem;">Guardar Cambios</button>
+                        </div>                                          
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal actualizar sala -->
+    <div class="modal fade" id="addSalaModal" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content border border-dark border-5 rounded-5 text-dark">
+                <div class="text-center">
+                    <button type="button" class="close mr-3 mt-3" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h3 class="modal-title mt-5 font-weight-bold" id="modalLabel" style="font-size: 1.5rem; color: #333;">Añadir sala</h3>
+                </div>
+                <div class="modal-body mt-3">
+                    <form>
+                        <div class="form-group row justify-content-center">
+                            <label for="areaSelect" class="col-6 col-form-label text-right font-weight-bold" style="font-size: 1.2rem; color: #444; white-space: nowrap;">Área de conocimiento:</label>
+                            <div class="col-6 pr-5">                       
+                                <select class="form-select text-dark p-1" id="areaSelect" style="font-size: 1rem;">
+                                    <option selected>Seleccionar Área</option>
+                                    <option value="1">Ciencias matemáticas</option>
+                                    <option value="2">Industria y comercio</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group row justify-content-center">
+                            <label for="evaluadorSelect" class="col-6 col-form-label text-right font-weight-bold" style="font-size: 1.2rem; color: #444; white-space: nowrap;">Asignar nuevo delegado:</label>
+                            <div class="col-6 pr-5">
+                                <select class="form-select text-dark p-1" id="evaluadorSelect" style="font-size: 1rem;">
+                                    <option selected>Seleccionar evaluador</option>
+                                    <option value="1">Rigoberto Urán</option>
+                                    <option value="2">Sancho Sánchez</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group row justify-content-center mb-5">
+                            <label for="colFormLabelSm" class="col-6 col-form-label text-right font-weight-bold" style="font-size: 1.2rem; color: #444; white-space: nowrap;">Asignar Nº de sala:</label>
+                            <div class="col-6 pr-5">
+                                <input type="text" class="form-control form-control-sm" id="colFormLabelSm" style="font-size: 1rem;">
+                            </div>
+                        </div>
+                        <div class="text-center">
+                            <button type="submit" class="btn btn-warning font-weight-bold" style="font-size: 1rem; padding: 0.3rem 1.5rem;">Añadir sala</button>
+                        </div>                                          
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Footer -->
+    <footer class="footer mt-5">
+        <div class="container">
+            <!-- Footer Copyright -->
+            <div class="footer_bar d-flex flex-column flex-sm-row align-items-center">
+                <div class="footer_copyright">
+                    <span>Colorlib All rights reserved</span>
+                </div>
+                <div class="footer_social ml-sm-auto">
+                    <ul class="menu_social">
+                        <li class="menu_social_item"><a href="#"><i class="fab fa-pinterest"></i></a></li>
+                        <li class="menu_social_item"><a href="#"><i class="fab fa-linkedin-in"></i></a></li>
+                        <li class="menu_social_item"><a href="#"><i class="fab fa-instagram"></i></a></li>
+                        <li class="menu_social_item"><a href="#"><i class="fab fa-facebook-f"></i></a></li>
+                        <li class="menu_social_item"><a href="#"><i class="fab fa-twitter"></i></a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="../plantilla/js/jquery-3.2.1.min.js"></script>
+    <script src="../plantilla/styles/bootstrap4/popper.js"></script>
+    <script src="../plantilla/styles/bootstrap4/bootstrap.min.js"></script>
+    <script src="../plantilla/plugins/greensock/TweenMax.min.js"></script>
+    <script src="../plantilla/plugins/greensock/TimelineMax.min.js"></script>
+    <script src="../plantilla/plugins/scrollmagic/ScrollMagic.min.js"></script>
+    <script src="../plantilla/plugins/greensock/animation.gsap.min.js"></script>
+    <script src="../plantilla/plugins/greensock/ScrollToPlugin.min.js"></script>
+    <script src="../plantilla/plugins/OwlCarousel2-2.2.1/owl.carousel.js"></script>
+    <script src="../plantilla/plugins/scrollTo/jquery.scrollTo.min.js"></script>
+    <script src="../plantilla/plugins/easing/easing.js"></script>
+    <script src="../plantilla/js/custom.js"></script>
+
+</body>
+</html>

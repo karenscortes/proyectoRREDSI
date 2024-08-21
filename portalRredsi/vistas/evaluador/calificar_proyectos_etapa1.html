@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calificar Proyecto - Etapa 1</title>
+    <link rel="stylesheet" href="../plantilla/styles/bootstrap5/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../plantilla/styles/bootstrap4/bootstrap.min.css">
+    <link href="../plantilla/plugins/fontawesome-free-5.0.1/css/fontawesome-all.css" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" type="text/css" href="../plantilla/plugins/OwlCarousel2-2.2.1/owl.carousel.css">
+    <link rel="stylesheet" type="text/css" href="../plantilla/plugins/OwlCarousel2-2.2.1/owl.theme.default.css">
+    <link rel="stylesheet" type="text/css" href="../plantilla/plugins/OwlCarousel2-2.2.1/animate.css">
+    <link rel="stylesheet" type="text/css" href="../plantilla/styles/main_styles_admin copy.css">
+    <link rel="stylesheet" type="text/css" href="../plantilla/styles/responsive_admin.css">
+</head>
+
+<body>
+    <header class="header d-flex flex-row position-relative">
+        <div class="header_content d-flex flex-row align-items-center justify-content-start">
+            <!-- Logo -->
+            <div class="logo_container">
+                <div class="logo">
+                    <img class="img-fluid" src="../plantilla/images/logoRredsi.png" alt="">
+                    <span>RREDSI</span>
+                </div>
+            </div>
+
+            <!-- Main Navigation -->
+            <nav class="main_nav_container flex-grow-1">
+                <div class="main_nav">
+                    <ul class="main_nav_list d-flex justify-content-between">
+                        <li class="main_nav_item"><a href="principal.html">Inicio</a></li>
+                        <li class="main_nav_item"><a href="perfil_evaluador.html">Perfil </a></li>
+                        <li class="main_nav_item">
+                            <div class="dropdown">
+                                <a class="dropdown-toggle text-dark" style="font-weight: 1000;" type="button" data-toggle="dropdown"
+                                    aria-expanded="false">
+                                    Proyectos
+                                </a>
+                                <div class="dropdown-menu text-center">
+                                    <a href="lista_proyectos_etapa1.html">Primera Etapa</a><br>
+                                    <a href="lista_proyectos_etapa2.html">Segunda Etapa</a>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="main_nav_item"><a href="convocatoria.html">Convocatoria</a></li>
+                        <li class="main_nav_item"><a href="#">Cerrar sesión</a></li>
+                    </ul>
+                </div>
+            </nav>
+        </div>
+
+        <!-- Hamburger -->
+        <div class="hamburger_container">
+            <i class="fas fa-bars trans_200"></i>
+        </div>
+
+    </header>
+
+    <!-- Menu -->
+    <div class="menu_container menu_mm">
+
+        <!-- Menu Close Button -->
+        <div class="menu_close_container">
+            <div class="menu_close"></div>
+        </div>
+
+        <!-- Menu Items -->
+        <div class="menu_inner menu_mm">
+            <div class="menu menu_mm">
+                <ul class="menu_list menu_mm">
+                    <li class="menu_item menu_mm"><a href="principal.html">Inicio</a></li>
+                    <li class="menu_item menu_mm"><a href="perfil_evaluador.html">Perfil</a></li>
+                    <li class="menu_item menu_mm"><a href="lista_proyectos_etapa1.html">Proyectos</a><br></li>
+                    <li class="menu_item menu_mm"><a href="convocatoria.html">Convocatoria</a></li>
+                    <li class="menu_item menu_mm"><a href="#">Cerrar sesión</a></li>
+                </ul>
+
+                <!-- Menu Social -->
+                <div class="menu_social_container menu_mm">
+                    <ul class="menu_social menu_mm">
+                        <li class="menu_social_item menu_mm"><a href="https://www.instagram.com/rredsiquindio/"><i
+                                    class="fab fa-instagram"></i></a></li>
+                        <li class="menu_social_item menu_mm"><a
+                                href="https://www.facebook.com/rredsi?mibextid=ZbWKwL"><i
+                                    class="fab fa-facebook-f"></i></a></li>
+                        <li class="menu_social_item menu_mm"><a href="https://x.com/Rredsi"><i
+                                    class="fab fa-twitter"></i></a></li>
+                    </ul>
+                </div>
+                <div class="menu_copyright menu_mm">ADSO 2670586 All rights reserved</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- dividing line -->
+    <div class="container-fluid" id="cont_ejemplo">
+       
+    </div>
+
+    <!-- Main part -->
+    <div class="row justify-content-center py-5">
+        <div class="col-lg-8 col-md-7 text-center section_title text-dark">
+            <h1>Calificar Proyecto</h1>
+            <h2 class="text-muted">Primera Etapa</h2>
+        </div>        
+    </div>
+   
+    <form action="#" class="row justify-content-center">
+        <div class="col-lg-8 col-md-11 col-sm-12 mb-3 table-responsive">
+            <table class="table display text-dark border border-dark">
+                <thead class="text-center">
+                    <tr class="titulo_rubrica" >
+                        <td class="col-4" style="border-top: 1px solid #000;">Titulo:</td>
+                        <td colspan="4" style="border-top: 1px solid #000;">
+                            <input type="text" class=" form-control form-control-sm rounded-5" id="inpuytTitle">
+                        </td>
+                    </tr>
+                    <tr class="titulo_rubrica" >
+                        <td class="col-4">Ponente(es): </td>
+                        <td colspan="4">
+                            <input type="text" class=" form-control form-control-sm rounded-5" id="inputSpeaker">
+                        </td>
+                    </tr>
+                    <tr class="titulo_rubrica" >
+                        <td class="col-4">Universidad:</td>
+                        <td colspan="4">
+                            <input type="text" class=" form-control form-control-sm rounded-5" id="inputUniversity">
+                        </td>
+                    </tr>
+                    <tr class="titulo_rubrica" >
+                        <td scope="col-4">Componentes</th>
+                        <td scope="col-2">Max Valor</th>
+                        <td scope="col-2">Calificacón</th>
+                        <td scope="col-4">Observaciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="border border-dark"><span class="text-dark font-weight-bold">Titulo:</span> Lorem ipsum, dolor sit amet consectetur adipisicing elit. Consequuntur, beatae!</td>
+                        <td class="text-center border border-dark">10</td>
+                        <td class="border border-dark"><input type="text" id="inputScore" class="w-100 "></td>
+                        <td class="border border-dark"><textarea id="inputObservations" class="w-100 " rows="1"></textarea></td>
+                    </tr>
+                    <tr>
+                        <td class="border border-dark"><span class="text-dark font-weight-bold">Titulo:</span> Lorem ipsum, dolor sit amet consectetur adipisicing elit. Consequuntur, beatae!</td>
+                        <td class="text-center border border-dark">10</td>
+                        <td class="border border-dark"><input type="text" id="inputScore" class="w-100 "></td>
+                        <td class="border border-dark"><textarea id="inputObservations" class="w-100 " rows="1"></textarea></td>
+                    </tr>
+                    <tr>
+                        <td class="border border-dark"><span class="text-dark font-weight-bold">Titulo:</span> Lorem ipsum, dolor sit amet consectetur adipisicing elit. Consequuntur, beatae!</td>
+                        <td class="text-center border border-dark">10</td>
+                        <td class="border border-dark"><input type="text" id="inputScore" class="w-100 "></td>
+                        <td class="border border-dark"><textarea id="inputObservations" class="w-100 " rows="1"></textarea></td>
+                    </tr>
+                    <tr>
+                        <td class="border border-dark"><span class="text-dark font-weight-bold">Titulo:</span> Lorem ipsum, dolor sit amet consectetur adipisicing elit. Consequuntur, beatae!</td>
+                        <td class="text-center border border-dark">10</td>
+                        <td class="border border-dark"><input type="text" id="inputScore" class="w-100 "></td>
+                        <td class="border border-dark"><textarea id="inputObservations" class="w-100 " rows="1"></textarea></td>
+                    </tr>
+                    <tr>
+                        <td class="border border-dark"><span class="text-dark font-weight-bold">Titulo:</span> Lorem ipsum, dolor sit amet consectetur adipisicing elit. Consequuntur, beatae!</td>
+                        <td class="text-center border border-dark">10</td>
+                        <td class="border border-dark"><input type="text" id="inputScore" class="w-100 "></td>
+                        <td class="border border-dark"><textarea id="inputObservations" class="w-100 " rows="1"></textarea></td>
+                    </tr>
+                </tbody>
+                <tfoot>
+                    <tr class="titulo_rubrica text-center" >
+                        <th class="border border-dark" scope="row">Puntaje total:</th>
+                        <td class="border border-dark"><input type="number" class="form-control form-control-sm rounded-5 w-100" id="inputEvaluator"></td>
+                    </tr>
+                    <tr class="titulo_rubrica text-center" >
+                        <th class="border border-dark" scope="row">Nombre del Evaluador:</th>
+                        <td class="border border-dark"><input type="text" class="form-control form-control-sm rounded-5 w-100" id="inputEvaluator"></td>
+                        <th class="border border-dark" scope="row">Cedula</th>
+                        <td class="border border-dark"><input type="text" class=" form-control  form-control-sm rounded-5" id="inputId"></td>
+                    </tr>
+                    <tr class="titulo_rubrica text-center" >
+                        <th scope="row" class="border border-dark">Universidad:</th>
+                        <td class="border border-dark"><input type="text" class=" form-control form-control-sm rounded-5" id="inputUniversity"></td>
+                    </tr>
+                    <tr class="titulo_rubrica text-center" >
+                        <th scope="row" class="border border-dark">Email:</th>
+                        <td class="border border-dark"><input type="text" class="form-control  form-control-sm rounded-5" id="inputEmail"></td>
+                        <th scope="row" class="border border-dark">Celular:</th>
+                        <td class="border border-dark"><input type="text" class="form-control form-control-sm rounded-5" id="inputPhone"></td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+        <div class="col-8 text-center py-5">
+            <button class="btn btn-warning w-25 font-weight-bold text-dark"> Calificar </button>
+        </div>
+    </form>
+   
+    <!-- Footer -->
+    <footer class="footer mt-5">
+        <div class="container">
+            <!-- Footer Copyright -->
+            <div class="footer_bar d-flex flex-column flex-sm-row align-items-center">
+                <div class="footer_copyright">
+                    <span>Colorlib All rights reserved</span>
+                </div>
+                <div class="footer_social ml-sm-auto">
+                    <ul class="menu_social">
+                        <li class="menu_social_item"><a href="#"><i class="fab fa-pinterest"></i></a></li>
+                        <li class="menu_social_item"><a href="#"><i class="fab fa-linkedin-in"></i></a></li>
+                        <li class="menu_social_item"><a href="#"><i class="fab fa-instagram"></i></a></li>
+                        <li class="menu_social_item"><a href="#"><i class="fab fa-facebook-f"></i></a></li>
+                        <li class="menu_social_item"><a href="#"><i class="fab fa-twitter"></i></a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="../plantilla/js/jquery-3.2.1.min.js"></script>
+    <script src="../plantilla/styles/bootstrap4/popper.js"></script>
+    <script src="../plantilla/styles/bootstrap4/bootstrap.min.js"></script>
+    <script src="../plantilla/plugins/greensock/TweenMax.min.js"></script>
+    <script src="../plantilla/plugins/greensock/TimelineMax.min.js"></script>
+    <script src="../plantilla/plugins/scrollmagic/ScrollMagic.min.js"></script>
+    <script src="../plantilla/plugins/greensock/animation.gsap.min.js"></script>
+    <script src="../plantilla/plugins/greensock/ScrollToPlugin.min.js"></script>
+    <script src="../plantilla/plugins/OwlCarousel2-2.2.1/owl.carousel.js"></script>
+    <script src="../plantilla/plugins/scrollTo/jquery.scrollTo.min.js"></script>
+    <script src="../plantilla/plugins/easing/easing.js"></script>
+    <script src="../plantilla/js/custom.js"></script>
+    
+</body>
+</html>
