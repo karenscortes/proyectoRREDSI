@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Principal</title>
+    <title>Principal_evaluador</title>
     
     <link rel="stylesheet" type="text/css" href="../plantilla/styles/bootstrap4/bootstrap.min.css">
     <link href="../plantilla/plugins/fontawesome-free-5.0.1/css/fontawesome-all.css" rel="stylesheet" type="text/css">
@@ -32,10 +32,22 @@
             <nav class="main_nav_container flex-grow-1">
                 <div class="main_nav">
                     <ul class="main_nav_list d-flex justify-content-between">
-                        <li class="main_nav_item"><a href="principal.html" style="font-weight: 1000;">Inicio</a></li>
-                        <li class="main_nav_item"><a href="perfil_evaluador.html">Perfil</a></li>
-                        <li class="main_nav_item"> <a href="lista_proyectos_etapa1.html">Proyectos</a></li>
+                        <li class="main_nav_item"><a href="principal.html">Inicio</a></li>
+                        <li class="main_nav_item"><a href="perfil_evaluador.html">Perfil </a></li>
+                        <li class="main_nav_item">
+                            <div class="dropdown">
+                                <a class="dropdown-toggle text-dark"  type="button" data-toggle="dropdown"
+                                    aria-expanded="false">
+                                    Proyectos
+                                </a>
+                                <div class="dropdown-menu text-center">
+                                    <a href="lista_proyectos_etapa1.html">Primera Etapa</a><br>
+                                    <a href="lista_proyectos_etapa2.html">Segunda Etapa</a>
+                                </div>
+                            </div>
+                        </li>
                         <li class="main_nav_item"><a href="convocatoria.html">Convocatoria</a></li>
+                       
                     </ul>
                 </div>
             </nav>
