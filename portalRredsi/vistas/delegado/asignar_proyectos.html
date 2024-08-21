@@ -18,11 +18,11 @@
 </head>
 
 <body>
-    <!-- header -->
-    <header class="header d-flex flex-grow position-absolute top-0 w-80">
-        <div class="header_content with_button d-flex flex-row align-items-center justify-content-start">
+    <header style=" border-bottom: 20px solid rgb(255, 182, 6);">
+        <div class="position-relative d-flex justify-content-between align-items-center py-1"
+            style="margin-inline: 55px;">
             <!-- Logo -->
-            <div class="logo_container">
+            <div class="logo_container d-flex align-items-center">
                 <div class="logo">
                     <img class="img-fluid" src="../plantilla/images/logoRredsi.png" alt="">
                     <span>RREDSI</span>
@@ -30,14 +30,14 @@
             </div>
 
             <!-- Main Navigation -->
-            <nav class="main_nav_container flex-grow-1">
+            <nav class="main_nav_container">
                 <div class="main_nav">
-                    <ul class="main_nav_list d-flex justify-content-between">
+                    <ul class="main_nav_list d-flex justify-content-around align-items-center">
                         <li class="main_nav_item"><a href="principal.html">Inicio</a></li>
                         <li class="main_nav_item"><a href="perfil.html">Perfil</a></li>
                         <li class="main_nav_item">
                             <div class="dropdown">
-                                <a class=" dropdown-toggle text-dark" type="button" data-toggle="dropdown"
+                                <a class="dropdown-toggle text-dark" type="button" data-toggle="dropdown"
                                     aria-expanded="false">
                                     Evaluadores
                                 </a>
@@ -49,7 +49,7 @@
                         </li>
                         <li class="main_nav_item">
                             <div class="dropdown">
-                                <a class=" dropdown-toggle text-dark" type="button" data-toggle="dropdown"
+                                <a class="dropdown-toggle text-dark" type="button" data-toggle="dropdown"
                                     aria-expanded="false">
                                     Proyectos
                                 </a>
@@ -61,7 +61,7 @@
                         </li>
                         <li class="main_nav_item">
                             <div class="dropdown">
-                                <a class=" dropdown-toggle text-dark" type="button" data-toggle="dropdown"
+                                <a class="dropdown-toggle text-dark" type="button" data-toggle="dropdown"
                                     aria-expanded="false">
                                     Evento
                                 </a>
@@ -71,27 +71,19 @@
                                 </div>
                             </div>
                         </li>
+                        <li class="main_nav_item"><a href="#">Cerrar sesión</a></li>
                     </ul>
                 </div>
             </nav>
-        </div>
-        <a href="#" class="header_side d-flex flex-row justify-content-center align-items-center">
-            <h3 class="main_nav_item text-dark">Cerrar sesión</h3>
-        </a>
 
-        <!-- Hamburger -->
-        <div class="hamburger_container">
-            <i class="fas fa-bars trans_200"></i>
+            <!-- Hamburger -->
+            <div class="hamburger_container">
+                <i class="fas fa-bars trans_200"></i>
+            </div>
         </div>
 
     </header>
-    <!-- fondo del header -->
-    <div class="home">
-        <div class="home_background_container prlx_parent">
-            <div class="home_background prlx" style="background-image:url(../plantilla/images/teachers_background.jpg)">
-            </div>
-        </div>
-    </div>
+
     <!-- Menu -->
     <div class="menu_container menu_mm">
 
@@ -166,7 +158,6 @@
 
     </div>
 
-
     <div class="container pt-5">
         <div class="row mb-4 mt-2">
             <div class="col">
@@ -221,24 +212,29 @@
                             <div class="col-md-6 col-12 mb-5">
                                 <label for="" class="text-dark fw-bold">Otro evaluador diferente a los
                                     sugeridos:</label>
-                                    <div class="d-flex align-items-center position-relative">
-                                        <input type="text" class="form-control text-dark" placeholder="Identificación del evaluador">
-                                        <p class="d-inline-flex gap-1 mb-0">
-                                            <a data-bs-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
-                                                <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#000000" class="ms-2">
-                                                    <path d="M440-280h80v-240h-80v240Zm40-320q17 0 28.5-11.5T520-640q0-17-11.5-28.5T480-680q-17 0-28.5 11.5T440-640q0 17 11.5 28.5T480-600Zm0 520q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Zm0-320Z"/>
-                                                </svg>
-                                            </a>
-                                        </p>
-                                        <div class="collapse position-absolute top-100 start-0 mt-2 w-100" id="collapseExample">
-                                            <div class="card card-body">
-                                                Este campo es opcional.
-                                                Visita la lista de evaluadores si deseas tener más clara tu selección 
-                                                <a href="lista_evaluadores.html" target="_blank">Haz click aquí</a>
-                                            </div>
+                                <div class="d-flex align-items-center position-relative">
+                                    <input type="text" class="form-control text-dark"
+                                        placeholder="Identificación del evaluador">
+                                    <p class="d-inline-flex gap-1 mb-0">
+                                        <a data-bs-toggle="collapse" href="#collapseExample" role="button"
+                                            aria-expanded="false" aria-controls="collapseExample" style="background: white; border: none;">
+                                            <svg xmlns="http://www.w3.org/2000/svg" height="24px"
+                                                viewBox="0 -960 960 960" width="24px" fill="#000000" class="ms-2">
+                                                <path
+                                                    d="M440-280h80v-240h-80v240Zm40-320q17 0 28.5-11.5T520-640q0-17-11.5-28.5T480-680q-17 0-28.5 11.5T440-640q0 17 11.5 28.5T480-600Zm0 520q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Zm0-320Z" />
+                                            </svg>
+                                        </a>
+                                    </p>
+                                    <div class="collapse position-absolute top-100 start-0 mt-2 w-100"
+                                        id="collapseExample">
+                                        <div class="card card-body">
+                                            Este campo es opcional.
+                                            Visita la lista de evaluadores si deseas tener más clara tu selección
+                                            <a href="lista_evaluadores.html" target="_blank">Haz click aquí</a>
                                         </div>
                                     </div>
-                                    
+                                </div>
+
                             </div>
                             <div class="col-md-6 col-12 text-center">
                                 <a href="#" class="btn  w-100 mt-3 fw-bold"
@@ -290,33 +286,40 @@
                                 </select>
                             </div>
                             <div class="col-md-6 col-12 mb-5">
-                                <label for="" class="text-dark fw-bold">Otro evaluador diferente a los sugeridos:</label>
+                                <label for="" class="text-dark fw-bold">Otro evaluador diferente a los
+                                    sugeridos:</label>
                                 <div class="d-flex align-items-center position-relative">
-                                    <input type="text" class="form-control text-dark" placeholder="Identificación del evaluador">
+                                    <input type="text" class="form-control text-dark"
+                                        placeholder="Identificación del evaluador">
                                     <p class="d-inline-flex gap-1 mb-0">
-                                        <a data-bs-toggle="collapse" href="#collapseExample1" role="button" aria-expanded="false" aria-controls="collapseExample1">
-                                            <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#000000" class="ms-2">
-                                                <path d="M440-280h80v-240h-80v240Zm40-320q17 0 28.5-11.5T520-640q0-17-11.5-28.5T480-680q-17 0-28.5 11.5T440-640q0 17 11.5 28.5T480-600Zm0 520q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Zm0-320Z"/>
+                                        <a data-bs-toggle="collapse" href="#collapseExample1" role="button"
+                                            aria-expanded="false" aria-controls="collapseExample1" style="background: white; border: none;">
+                                            <svg xmlns="http://www.w3.org/2000/svg" height="24px"
+                                                viewBox="0 -960 960 960" width="24px" fill="#000000" class="ms-2">
+                                                <path
+                                                    d="M440-280h80v-240h-80v240Zm40-320q17 0 28.5-11.5T520-640q0-17-11.5-28.5T480-680q-17 0-28.5 11.5T440-640q0 17 11.5 28.5T480-600Zm0 520q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Zm0-320Z" />
                                             </svg>
                                         </a>
                                     </p>
-                                    <div class="collapse position-absolute top-100 start-0 mt-2 w-100" id="collapseExample1">
+                                    <div class="collapse position-absolute top-100 start-0 mt-2 w-100"
+                                        id="collapseExample1">
                                         <div class="card card-body">
                                             Este campo es opcional.
-                                            Visita la lista de evaluadores si deseas tener más clara tu selección 
+                                            Visita la lista de evaluadores si deseas tener más clara tu selección
                                             <a href="lista_evaluadores.html" target="_blank">Haz click aquí</a>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                             <div class="col-md-6 col-12 text-center">
-                                <a href="#" class="btn w-100 mt-3 fw-bold" style="background: rgb(255, 182, 6);">ASIGNAR</a>
+                                <a href="#" class="btn w-100 mt-3 fw-bold"
+                                    style="background: rgb(255, 182, 6);">ASIGNAR</a>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-        
+
             <!-- Acordeón 2 -->
             <div class="accordion-item">
                 <h2 class="accordion-header">
@@ -359,33 +362,40 @@
                                 </select>
                             </div>
                             <div class="col-md-6 col-12 mb-5">
-                                <label for="" class="text-dark fw-bold">Otro evaluador diferente a los sugeridos:</label>
+                                <label for="" class="text-dark fw-bold">Otro evaluador diferente a los
+                                    sugeridos:</label>
                                 <div class="d-flex align-items-center position-relative">
-                                    <input type="text" class="form-control text-dark" placeholder="Identificación del evaluador">
+                                    <input type="text" class="form-control text-dark"
+                                        placeholder="Identificación del evaluador">
                                     <p class="d-inline-flex gap-1 mb-0">
-                                        <a data-bs-toggle="collapse" href="#collapseExample2" role="button" aria-expanded="false" aria-controls="collapseExample2">
-                                            <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#000000" class="ms-2">
-                                                <path d="M440-280h80v-240h-80v240Zm40-320q17 0 28.5-11.5T520-640q0-17-11.5-28.5T480-680q-17 0-28.5 11.5T440-640q0 17 11.5 28.5T480-600Zm0 520q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Zm0-320Z"/>
+                                        <a data-bs-toggle="collapse" href="#collapseExample2" role="button"
+                                            aria-expanded="false" aria-controls="collapseExample2" style="background: white; border: none;">
+                                            <svg xmlns="http://www.w3.org/2000/svg" height="24px"
+                                                viewBox="0 -960 960 960" width="24px" fill="#000000" class="ms-2">
+                                                <path
+                                                    d="M440-280h80v-240h-80v240Zm40-320q17 0 28.5-11.5T520-640q0-17-11.5-28.5T480-680q-17 0-28.5 11.5T440-640q0 17 11.5 28.5T480-600Zm0 520q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Zm0-320Z" />
                                             </svg>
                                         </a>
                                     </p>
-                                    <div class="collapse position-absolute top-100 start-0 mt-2 w-100" id="collapseExample2">
+                                    <div class="collapse position-absolute top-100 start-0 mt-2 w-100"
+                                        id="collapseExample2">
                                         <div class="card card-body">
                                             Este campo es opcional.
-                                            Visita la lista de evaluadores si deseas tener más clara tu selección 
+                                            Visita la lista de evaluadores si deseas tener más clara tu selección
                                             <a href="lista_evaluadores.html" target="_blank">Haz click aquí</a>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                             <div class="col-md-6 col-12 text-center">
-                                <a href="#" class="btn w-100 mt-3 fw-bold" style="background: rgb(255, 182, 6);">ASIGNAR</a>
+                                <a href="#" class="btn w-100 mt-3 fw-bold"
+                                    style="background: rgb(255, 182, 6);">ASIGNAR</a>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-        
+
             <!-- Acordeón 3 -->
             <div class="accordion-item">
                 <h2 class="accordion-header">
@@ -428,33 +438,40 @@
                                 </select>
                             </div>
                             <div class="col-md-6 col-12 mb-5">
-                                <label for="" class="text-dark fw-bold">Otro evaluador diferente a los sugeridos:</label>
+                                <label for="" class="text-dark fw-bold">Otro evaluador diferente a los
+                                    sugeridos:</label>
                                 <div class="d-flex align-items-center position-relative">
-                                    <input type="text" class="form-control text-dark" placeholder="Identificación del evaluador">
+                                    <input type="text" class="form-control text-dark"
+                                        placeholder="Identificación del evaluador">
                                     <p class="d-inline-flex gap-1 mb-0">
-                                        <a data-bs-toggle="collapse" href="#collapseExample3" role="button" aria-expanded="false" aria-controls="collapseExample3">
-                                            <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#000000" class="ms-2">
-                                                <path d="M440-280h80v-240h-80v240Zm40-320q17 0 28.5-11.5T520-640q0-17-11.5-28.5T480-680q-17 0-28.5 11.5T440-640q0 17 11.5 28.5T480-600Zm0 520q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Zm0-320Z"/>
+                                        <a data-bs-toggle="collapse" href="#collapseExample3" role="button"
+                                            aria-expanded="false" aria-controls="collapseExample3" style="background: white; border: none;">
+                                            <svg xmlns="http://www.w3.org/2000/svg" height="24px"
+                                                viewBox="0 -960 960 960" width="24px" fill="#000000" class="ms-2">
+                                                <path
+                                                    d="M440-280h80v-240h-80v240Zm40-320q17 0 28.5-11.5T520-640q0-17-11.5-28.5T480-680q-17 0-28.5 11.5T440-640q0 17 11.5 28.5T480-600Zm0 520q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Zm0-320Z" />
                                             </svg>
                                         </a>
                                     </p>
-                                    <div class="collapse position-absolute top-100 start-0 mt-2 w-100" id="collapseExample3">
+                                    <div class="collapse position-absolute top-100 start-0 mt-2 w-100"
+                                        id="collapseExample3">
                                         <div class="card card-body">
                                             Este campo es opcional.
-                                            Visita la lista de evaluadores si deseas tener más clara tu selección 
+                                            Visita la lista de evaluadores si deseas tener más clara tu selección
                                             <a href="lista_evaluadores.html" target="_blank">Haz click aquí</a>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                             <div class="col-md-6 col-12 text-center">
-                                <a href="#" class="btn w-100 mt-3 fw-bold" style="background: rgb(255, 182, 6);">ASIGNAR</a>
+                                <a href="#" class="btn w-100 mt-3 fw-bold"
+                                    style="background: rgb(255, 182, 6);">ASIGNAR</a>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-        
+
             <!-- Acordeón 4 -->
             <div class="accordion-item">
                 <h2 class="accordion-header">
@@ -497,27 +514,34 @@
                                 </select>
                             </div>
                             <div class="col-md-6 col-12 mb-5">
-                                <label for="" class="text-dark fw-bold">Otro evaluador diferente a los sugeridos:</label>
+                                <label for="" class="text-dark fw-bold">Otro evaluador diferente a los
+                                    sugeridos:</label>
                                 <div class="d-flex align-items-center position-relative">
-                                    <input type="text" class="form-control text-dark" placeholder="Identificación del evaluador">
+                                    <input type="text" class="form-control text-dark"
+                                        placeholder="Identificación del evaluador">
                                     <p class="d-inline-flex gap-1 mb-0">
-                                        <a data-bs-toggle="collapse" href="#collapseExample4" role="button" aria-expanded="false" aria-controls="collapseExample4">
-                                            <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#000000" class="ms-2">
-                                                <path d="M440-280h80v-240h-80v240Zm40-320q17 0 28.5-11.5T520-640q0-17-11.5-28.5T480-680q-17 0-28.5 11.5T440-640q0 17 11.5 28.5T480-600Zm0 520q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Zm0-320Z"/>
+                                        <a data-bs-toggle="collapse" href="#collapseExample4" role="button"
+                                            aria-expanded="false" aria-controls="collapseExample4" style="background: white; border: none;">
+                                            <svg xmlns="http://www.w3.org/2000/svg" height="24px"
+                                                viewBox="0 -960 960 960" width="24px" fill="#000000" class="ms-2">
+                                                <path
+                                                    d="M440-280h80v-240h-80v240Zm40-320q17 0 28.5-11.5T520-640q0-17-11.5-28.5T480-680q-17 0-28.5 11.5T440-640q0 17 11.5 28.5T480-600Zm0 520q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Zm0-320Z" />
                                             </svg>
                                         </a>
                                     </p>
-                                    <div class="collapse position-absolute top-100 start-0 mt-2 w-100" id="collapseExample4">
+                                    <div class="collapse position-absolute top-100 start-0 mt-2 w-100"
+                                        id="collapseExample4">
                                         <div class="card card-body">
                                             Este campo es opcional.
-                                            Visita la lista de evaluadores si deseas tener más clara tu selección 
+                                            Visita la lista de evaluadores si deseas tener más clara tu selección
                                             <a href="lista_evaluadores.html" target="_blank">Haz click aquí</a>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                             <div class="col-md-6 col-12 text-center">
-                                <a href="#" class="btn w-100 mt-3 fw-bold" style="background: rgb(255, 182, 6);">ASIGNAR</a>
+                                <a href="#" class="btn w-100 mt-3 fw-bold"
+                                    style="background: rgb(255, 182, 6);">ASIGNAR</a>
                             </div>
                         </div>
                     </div>
@@ -550,119 +574,28 @@
 
     </div>
 
-    <footer class="footer mt-3">
+    <footer class="footer mt-5">
         <div class="container">
-
-            <!-- Footer Content -->
-
-            <div class="footer_content">
-                <div class="row">
-
-                    <!-- Footer Column - About -->
-                    <div class="col-lg-3 footer_col">
-
-                        <!-- Logo -->
-                        <div class="logo_container">
-                            <div class="logo">
-                                <img src="../plantilla/images/RREDSI.jpg" alt="">
-                                <span>RREDSI</span>
-                            </div>
-                        </div>
-
-                        <p class="footer_about_text">In aliquam, augue a gravida rutrum, ante nisl fermentum nulla,
-                            vitae tempor nisl ligula vel nunc. Proin quis mi malesuada, finibus tortor fermentum, tempor
-                            lacus.</p>
-
-                    </div>
-
-                    <!-- Footer Column - Menu -->
-
-                    <div class="col-lg-3 footer_col">
-                        <div class="footer_column_title">Menu</div>
-                        <div class="footer_column_content">
-                            <ul>
-                                <li class="footer_list_item"><a href="#">Home</a></li>
-                                <li class="footer_list_item"><a href="#">About Us</a></li>
-                                <li class="footer_list_item"><a href="courses.html">Courses</a></li>
-                                <li class="footer_list_item"><a href="news.html">News</a></li>
-                                <li class="footer_list_item"><a href="contact.html">Contact</a></li>
-                            </ul>
-                        </div>
-                    </div>
-
-                    <!-- Footer Column - Usefull Links -->
-
-                    <div class="col-lg-3 footer_col">
-                        <div class="footer_column_title">Usefull Links</div>
-                        <div class="footer_column_content">
-                            <ul>
-                                <li class="footer_list_item"><a href="#">Testimonials</a></li>
-                                <li class="footer_list_item"><a href="#">FAQ</a></li>
-                                <li class="footer_list_item"><a href="#">Community</a></li>
-                                <li class="footer_list_item"><a href="#">Campus Pictures</a></li>
-                                <li class="footer_list_item"><a href="#">Tuitions</a></li>
-                            </ul>
-                        </div>
-                    </div>
-
-                    <!-- Footer Column - Contact -->
-
-                    <div class="col-lg-3 footer_col">
-                        <div class="footer_column_title">Contact</div>
-                        <div class="footer_column_content">
-                            <ul>
-                                <li class="footer_contact_item">
-                                    <div class="footer_contact_icon">
-                                        <img src="../plantilla/images/placeholder.svg"
-                                            alt="https://www.flaticon.com/authors/lucy-g">
-                                    </div>
-                                    Blvd Libertad, 34 m05200 Arévalo
-                                </li>
-                                <li class="footer_contact_item">
-                                    <div class="footer_contact_icon">
-                                        <img src="../plantilla/images/smartphone.svg"
-                                            alt="https://www.flaticon.com/authors/lucy-g">
-                                    </div>
-                                    0034 37483 2445 322
-                                </li>
-                                <li class="footer_contact_item">
-                                    <div class="footer_contact_icon">
-                                        <img src="../plantilla/images/envelope.svg"
-                                            alt="https://www.flaticon.com/authors/lucy-g">
-                                    </div>hello@company.com
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-
-                </div>
-            </div>
 
             <!-- Footer Copyright -->
 
             <div class="footer_bar d-flex flex-column flex-sm-row align-items-center">
                 <div class="footer_copyright">
-                    <span><!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-                        Copyright &copy;
-                        <script>document.write(new Date().getFullYear());</script> All rights reserved | This template
-                        is made with by <a href="#" target="_blank">ADSO 2670586</a>
-                        <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-                    </span>
+                    <span>Colorlib All rights reserved</span>
                 </div>
                 <div class="footer_social ml-sm-auto">
                     <ul class="menu_social">
-
-                        <li class="menu_social_item"><a href="https://www.instagram.com/rredsiquindio/"><i
-                                    class="fab fa-instagram"></i></a></li>
-                        <li class="menu_social_item"><a href="https://www.facebook.com/rredsi?mibextid=ZbWKwL"><i
-                                    class="fab fa-facebook-f"></i></a></li>
-                        <li class="menu_social_item"><a href="https://x.com/Rredsi"><i class="fab fa-twitter"></i></a>
-                        </li>
+                        <li class="menu_social_item"><a href="#"><i class="fab fa-pinterest"></i></a></li>
+                        <li class="menu_social_item"><a href="#"><i class="fab fa-linkedin-in"></i></a></li>
+                        <li class="menu_social_item"><a href="#"><i class="fab fa-instagram"></i></a></li>
+                        <li class="menu_social_item"><a href="#"><i class="fab fa-facebook-f"></i></a></li>
+                        <li class="menu_social_item"><a href="#"><i class="fab fa-twitter"></i></a></li>
                     </ul>
                 </div>
             </div>
 
         </div>
+
     </footer>
     <!-- Modal -->
     <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">

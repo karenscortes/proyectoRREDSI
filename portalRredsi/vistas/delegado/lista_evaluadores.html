@@ -17,11 +17,11 @@
 </head>
 
 <body>
-    <!-- header -->
-    <header class="header d-flex flex-grow position-absolute top-0 w-80">
-        <div class="header_content with_button d-flex flex-row align-items-center justify-content-start">
+    <header style=" border-bottom: 20px solid rgb(255, 182, 6);">
+        <div class="position-relative d-flex justify-content-between align-items-center py-1"
+            style="margin-inline: 55px;">
             <!-- Logo -->
-            <div class="logo_container">
+            <div class="logo_container d-flex align-items-center">
                 <div class="logo">
                     <img class="img-fluid" src="../plantilla/images/logoRredsi.png" alt="">
                     <span>RREDSI</span>
@@ -29,14 +29,14 @@
             </div>
 
             <!-- Main Navigation -->
-            <nav class="main_nav_container flex-grow-1">
+            <nav class="main_nav_container">
                 <div class="main_nav">
-                    <ul class="main_nav_list d-flex justify-content-between">
+                    <ul class="main_nav_list d-flex justify-content-around align-items-center">
                         <li class="main_nav_item"><a href="principal.html">Inicio</a></li>
                         <li class="main_nav_item"><a href="perfil.html">Perfil</a></li>
                         <li class="main_nav_item">
                             <div class="dropdown">
-                                <a class=" dropdown-toggle text-dark" type="button" data-toggle="dropdown"
+                                <a class="dropdown-toggle text-dark" type="button" data-toggle="dropdown"
                                     aria-expanded="false">
                                     Evaluadores
                                 </a>
@@ -48,7 +48,7 @@
                         </li>
                         <li class="main_nav_item">
                             <div class="dropdown">
-                                <a class=" dropdown-toggle text-dark" type="button" data-toggle="dropdown"
+                                <a class="dropdown-toggle text-dark" type="button" data-toggle="dropdown"
                                     aria-expanded="false">
                                     Proyectos
                                 </a>
@@ -60,7 +60,7 @@
                         </li>
                         <li class="main_nav_item">
                             <div class="dropdown">
-                                <a class=" dropdown-toggle text-dark" type="button" data-toggle="dropdown"
+                                <a class="dropdown-toggle text-dark" type="button" data-toggle="dropdown"
                                     aria-expanded="false">
                                     Evento
                                 </a>
@@ -70,27 +70,19 @@
                                 </div>
                             </div>
                         </li>
+                        <li class="main_nav_item"><a href="#">Cerrar sesión</a></li>
                     </ul>
                 </div>
             </nav>
-        </div>
-        <a href="#" class="header_side d-flex flex-row justify-content-center align-items-center">
-            <h3 class="main_nav_item text-dark">Cerrar sesión</h3>
-        </a>
 
-        <!-- Hamburger -->
-        <div class="hamburger_container">
-            <i class="fas fa-bars trans_200"></i>
+            <!-- Hamburger -->
+            <div class="hamburger_container">
+                <i class="fas fa-bars trans_200"></i>
+            </div>
         </div>
 
     </header>
-    <!-- fondo del header -->
-    <div class="home">
-        <div class="home_background_container prlx_parent">
-            <div class="home_background prlx" style="background-image:url(../plantilla/images/teachers_background.jpg)">
-            </div>
-        </div>
-    </div>
+
     <!-- Menu -->
     <div class="menu_container menu_mm">
 
@@ -125,7 +117,7 @@
                             </a>
                             <div class="dropdown-menu text-center">
                                 <a href="asignar_proyectos.html">Asignación de <br> Proyectos</a><br>
-                                <a href="#">Lista de Proyectos</a>
+                                <a href="lista_proyectos.html">Lista de Proyectos</a>
                             </div>
                         </div>
                     </li>
@@ -218,7 +210,11 @@
                         <td>
                             <a href="#" class="btn-sm font-weight-bold text-dark" type="button" data-toggle="modal"
                                 data-target="#exampleModal">
-                                <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#00000"><path d="M560-440h200v-80H560v80Zm0-120h200v-80H560v80ZM200-320h320v-22q0-45-44-71.5T360-440q-72 0-116 26.5T200-342v22Zm160-160q33 0 56.5-23.5T440-560q0-33-23.5-56.5T360-640q-33 0-56.5 23.5T280-560q0 33 23.5 56.5T360-480ZM160-160q-33 0-56.5-23.5T80-240v-480q0-33 23.5-56.5T160-800h640q33 0 56.5 23.5T880-720v480q0 33-23.5 56.5T800-160H160Zm0-80h640v-480H160v480Zm0 0v-480 480Z"/></svg>
+                                <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960"
+                                    width="24px" fill="#00000">
+                                    <path
+                                        d="M560-440h200v-80H560v80Zm0-120h200v-80H560v80ZM200-320h320v-22q0-45-44-71.5T360-440q-72 0-116 26.5T200-342v22Zm160-160q33 0 56.5-23.5T440-560q0-33-23.5-56.5T360-640q-33 0-56.5 23.5T280-560q0 33 23.5 56.5T360-480ZM160-160q-33 0-56.5-23.5T80-240v-480q0-33 23.5-56.5T160-800h640q33 0 56.5 23.5T880-720v480q0 33-23.5 56.5T800-160H160Zm0-80h640v-480H160v480Zm0 0v-480 480Z" />
+                                </svg>
                             </a>
                         </td>
                     </tr>
@@ -236,7 +232,11 @@
                         <td>
                             <a href="#" class="btn-sm font-weight-bold text-dark" type="button" data-toggle="modal"
                                 data-target="#exampleModal">
-                                <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#00000"><path d="M560-440h200v-80H560v80Zm0-120h200v-80H560v80ZM200-320h320v-22q0-45-44-71.5T360-440q-72 0-116 26.5T200-342v22Zm160-160q33 0 56.5-23.5T440-560q0-33-23.5-56.5T360-640q-33 0-56.5 23.5T280-560q0 33 23.5 56.5T360-480ZM160-160q-33 0-56.5-23.5T80-240v-480q0-33 23.5-56.5T160-800h640q33 0 56.5 23.5T880-720v480q0 33-23.5 56.5T800-160H160Zm0-80h640v-480H160v480Zm0 0v-480 480Z"/></svg>
+                                <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960"
+                                    width="24px" fill="#00000">
+                                    <path
+                                        d="M560-440h200v-80H560v80Zm0-120h200v-80H560v80ZM200-320h320v-22q0-45-44-71.5T360-440q-72 0-116 26.5T200-342v22Zm160-160q33 0 56.5-23.5T440-560q0-33-23.5-56.5T360-640q-33 0-56.5 23.5T280-560q0 33 23.5 56.5T360-480ZM160-160q-33 0-56.5-23.5T80-240v-480q0-33 23.5-56.5T160-800h640q33 0 56.5 23.5T880-720v480q0 33-23.5 56.5T800-160H160Zm0-80h640v-480H160v480Zm0 0v-480 480Z" />
+                                </svg>
                             </a>
                         </td>
                     </tr>
@@ -254,7 +254,11 @@
                         <td>
                             <a href="#" class="btn-sm font-weight-bold text-dark" type="button" data-toggle="modal"
                                 data-target="#exampleModal">
-                                <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#00000"><path d="M560-440h200v-80H560v80Zm0-120h200v-80H560v80ZM200-320h320v-22q0-45-44-71.5T360-440q-72 0-116 26.5T200-342v22Zm160-160q33 0 56.5-23.5T440-560q0-33-23.5-56.5T360-640q-33 0-56.5 23.5T280-560q0 33 23.5 56.5T360-480ZM160-160q-33 0-56.5-23.5T80-240v-480q0-33 23.5-56.5T160-800h640q33 0 56.5 23.5T880-720v480q0 33-23.5 56.5T800-160H160Zm0-80h640v-480H160v480Zm0 0v-480 480Z"/></svg>
+                                <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960"
+                                    width="24px" fill="#00000">
+                                    <path
+                                        d="M560-440h200v-80H560v80Zm0-120h200v-80H560v80ZM200-320h320v-22q0-45-44-71.5T360-440q-72 0-116 26.5T200-342v22Zm160-160q33 0 56.5-23.5T440-560q0-33-23.5-56.5T360-640q-33 0-56.5 23.5T280-560q0 33 23.5 56.5T360-480ZM160-160q-33 0-56.5-23.5T80-240v-480q0-33 23.5-56.5T160-800h640q33 0 56.5 23.5T880-720v480q0 33-23.5 56.5T800-160H160Zm0-80h640v-480H160v480Zm0 0v-480 480Z" />
+                                </svg>
                             </a>
                         </td>
                     </tr>
@@ -272,7 +276,11 @@
                         <td>
                             <a href="#" class="btn-sm font-weight-bold text-dark" type="button" data-toggle="modal"
                                 data-target="#exampleModal">
-                                <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#00000"><path d="M560-440h200v-80H560v80Zm0-120h200v-80H560v80ZM200-320h320v-22q0-45-44-71.5T360-440q-72 0-116 26.5T200-342v22Zm160-160q33 0 56.5-23.5T440-560q0-33-23.5-56.5T360-640q-33 0-56.5 23.5T280-560q0 33 23.5 56.5T360-480ZM160-160q-33 0-56.5-23.5T80-240v-480q0-33 23.5-56.5T160-800h640q33 0 56.5 23.5T880-720v480q0 33-23.5 56.5T800-160H160Zm0-80h640v-480H160v480Zm0 0v-480 480Z"/></svg>
+                                <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960"
+                                    width="24px" fill="#00000">
+                                    <path
+                                        d="M560-440h200v-80H560v80Zm0-120h200v-80H560v80ZM200-320h320v-22q0-45-44-71.5T360-440q-72 0-116 26.5T200-342v22Zm160-160q33 0 56.5-23.5T440-560q0-33-23.5-56.5T360-640q-33 0-56.5 23.5T280-560q0 33 23.5 56.5T360-480ZM160-160q-33 0-56.5-23.5T80-240v-480q0-33 23.5-56.5T160-800h640q33 0 56.5 23.5T880-720v480q0 33-23.5 56.5T800-160H160Zm0-80h640v-480H160v480Zm0 0v-480 480Z" />
+                                </svg>
                             </a>
                         </td>
                     </tr>
@@ -290,7 +298,11 @@
                         <td>
                             <a href="#" class="btn-sm font-weight-bold text-dark" type="button" data-toggle="modal"
                                 data-target="#exampleModal">
-                                <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#00000"><path d="M560-440h200v-80H560v80Zm0-120h200v-80H560v80ZM200-320h320v-22q0-45-44-71.5T360-440q-72 0-116 26.5T200-342v22Zm160-160q33 0 56.5-23.5T440-560q0-33-23.5-56.5T360-640q-33 0-56.5 23.5T280-560q0 33 23.5 56.5T360-480ZM160-160q-33 0-56.5-23.5T80-240v-480q0-33 23.5-56.5T160-800h640q33 0 56.5 23.5T880-720v480q0 33-23.5 56.5T800-160H160Zm0-80h640v-480H160v480Zm0 0v-480 480Z"/></svg>
+                                <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960"
+                                    width="24px" fill="#00000">
+                                    <path
+                                        d="M560-440h200v-80H560v80Zm0-120h200v-80H560v80ZM200-320h320v-22q0-45-44-71.5T360-440q-72 0-116 26.5T200-342v22Zm160-160q33 0 56.5-23.5T440-560q0-33-23.5-56.5T360-640q-33 0-56.5 23.5T280-560q0 33 23.5 56.5T360-480ZM160-160q-33 0-56.5-23.5T80-240v-480q0-33 23.5-56.5T160-800h640q33 0 56.5 23.5T880-720v480q0 33-23.5 56.5T800-160H160Zm0-80h640v-480H160v480Zm0 0v-480 480Z" />
+                                </svg>
                             </a>
                         </td>
                     </tr>
@@ -308,7 +320,11 @@
                         <td>
                             <a href="#" class="btn-sm font-weight-bold text-dark" type="button" data-toggle="modal"
                                 data-target="#exampleModal">
-                                <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#00000"><path d="M560-440h200v-80H560v80Zm0-120h200v-80H560v80ZM200-320h320v-22q0-45-44-71.5T360-440q-72 0-116 26.5T200-342v22Zm160-160q33 0 56.5-23.5T440-560q0-33-23.5-56.5T360-640q-33 0-56.5 23.5T280-560q0 33 23.5 56.5T360-480ZM160-160q-33 0-56.5-23.5T80-240v-480q0-33 23.5-56.5T160-800h640q33 0 56.5 23.5T880-720v480q0 33-23.5 56.5T800-160H160Zm0-80h640v-480H160v480Zm0 0v-480 480Z"/></svg>
+                                <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960"
+                                    width="24px" fill="#00000">
+                                    <path
+                                        d="M560-440h200v-80H560v80Zm0-120h200v-80H560v80ZM200-320h320v-22q0-45-44-71.5T360-440q-72 0-116 26.5T200-342v22Zm160-160q33 0 56.5-23.5T440-560q0-33-23.5-56.5T360-640q-33 0-56.5 23.5T280-560q0 33 23.5 56.5T360-480ZM160-160q-33 0-56.5-23.5T80-240v-480q0-33 23.5-56.5T160-800h640q33 0 56.5 23.5T880-720v480q0 33-23.5 56.5T800-160H160Zm0-80h640v-480H160v480Zm0 0v-480 480Z" />
+                                </svg>
                             </a>
                         </td>
                     </tr>
@@ -326,7 +342,11 @@
                         <td>
                             <a href="#" class="btn-sm font-weight-bold text-dark" type="button" data-toggle="modal"
                                 data-target="#exampleModal">
-                                <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#00000"><path d="M560-440h200v-80H560v80Zm0-120h200v-80H560v80ZM200-320h320v-22q0-45-44-71.5T360-440q-72 0-116 26.5T200-342v22Zm160-160q33 0 56.5-23.5T440-560q0-33-23.5-56.5T360-640q-33 0-56.5 23.5T280-560q0 33 23.5 56.5T360-480ZM160-160q-33 0-56.5-23.5T80-240v-480q0-33 23.5-56.5T160-800h640q33 0 56.5 23.5T880-720v480q0 33-23.5 56.5T800-160H160Zm0-80h640v-480H160v480Zm0 0v-480 480Z"/></svg>
+                                <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960"
+                                    width="24px" fill="#00000">
+                                    <path
+                                        d="M560-440h200v-80H560v80Zm0-120h200v-80H560v80ZM200-320h320v-22q0-45-44-71.5T360-440q-72 0-116 26.5T200-342v22Zm160-160q33 0 56.5-23.5T440-560q0-33-23.5-56.5T360-640q-33 0-56.5 23.5T280-560q0 33 23.5 56.5T360-480ZM160-160q-33 0-56.5-23.5T80-240v-480q0-33 23.5-56.5T160-800h640q33 0 56.5 23.5T880-720v480q0 33-23.5 56.5T800-160H160Zm0-80h640v-480H160v480Zm0 0v-480 480Z" />
+                                </svg>
                             </a>
                         </td>
                     </tr>
@@ -344,7 +364,11 @@
                         <td>
                             <a href="#" class="btn-sm font-weight-bold text-dark" type="button" data-toggle="modal"
                                 data-target="#exampleModal">
-                                <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#00000"><path d="M560-440h200v-80H560v80Zm0-120h200v-80H560v80ZM200-320h320v-22q0-45-44-71.5T360-440q-72 0-116 26.5T200-342v22Zm160-160q33 0 56.5-23.5T440-560q0-33-23.5-56.5T360-640q-33 0-56.5 23.5T280-560q0 33 23.5 56.5T360-480ZM160-160q-33 0-56.5-23.5T80-240v-480q0-33 23.5-56.5T160-800h640q33 0 56.5 23.5T880-720v480q0 33-23.5 56.5T800-160H160Zm0-80h640v-480H160v480Zm0 0v-480 480Z"/></svg>
+                                <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960"
+                                    width="24px" fill="#00000">
+                                    <path
+                                        d="M560-440h200v-80H560v80Zm0-120h200v-80H560v80ZM200-320h320v-22q0-45-44-71.5T360-440q-72 0-116 26.5T200-342v22Zm160-160q33 0 56.5-23.5T440-560q0-33-23.5-56.5T360-640q-33 0-56.5 23.5T280-560q0 33 23.5 56.5T360-480ZM160-160q-33 0-56.5-23.5T80-240v-480q0-33 23.5-56.5T160-800h640q33 0 56.5 23.5T880-720v480q0 33-23.5 56.5T800-160H160Zm0-80h640v-480H160v480Zm0 0v-480 480Z" />
+                                </svg>
                             </a>
                         </td>
                     </tr>
@@ -362,7 +386,11 @@
                         <td>
                             <a href="#" class="btn-sm font-weight-bold text-dark" type="button" data-toggle="modal"
                                 data-target="#exampleModal">
-                                <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#00000"><path d="M560-440h200v-80H560v80Zm0-120h200v-80H560v80ZM200-320h320v-22q0-45-44-71.5T360-440q-72 0-116 26.5T200-342v22Zm160-160q33 0 56.5-23.5T440-560q0-33-23.5-56.5T360-640q-33 0-56.5 23.5T280-560q0 33 23.5 56.5T360-480ZM160-160q-33 0-56.5-23.5T80-240v-480q0-33 23.5-56.5T160-800h640q33 0 56.5 23.5T880-720v480q0 33-23.5 56.5T800-160H160Zm0-80h640v-480H160v480Zm0 0v-480 480Z"/></svg>
+                                <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960"
+                                    width="24px" fill="#00000">
+                                    <path
+                                        d="M560-440h200v-80H560v80Zm0-120h200v-80H560v80ZM200-320h320v-22q0-45-44-71.5T360-440q-72 0-116 26.5T200-342v22Zm160-160q33 0 56.5-23.5T440-560q0-33-23.5-56.5T360-640q-33 0-56.5 23.5T280-560q0 33 23.5 56.5T360-480ZM160-160q-33 0-56.5-23.5T80-240v-480q0-33 23.5-56.5T160-800h640q33 0 56.5 23.5T880-720v480q0 33-23.5 56.5T800-160H160Zm0-80h640v-480H160v480Zm0 0v-480 480Z" />
+                                </svg>
                             </a>
                         </td>
                     </tr>
@@ -380,7 +408,11 @@
                         <td>
                             <a href="#" class="btn-sm font-weight-bold text-dark" type="button" data-toggle="modal"
                                 data-target="#exampleModal">
-                                <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#00000"><path d="M560-440h200v-80H560v80Zm0-120h200v-80H560v80ZM200-320h320v-22q0-45-44-71.5T360-440q-72 0-116 26.5T200-342v22Zm160-160q33 0 56.5-23.5T440-560q0-33-23.5-56.5T360-640q-33 0-56.5 23.5T280-560q0 33 23.5 56.5T360-480ZM160-160q-33 0-56.5-23.5T80-240v-480q0-33 23.5-56.5T160-800h640q33 0 56.5 23.5T880-720v480q0 33-23.5 56.5T800-160H160Zm0-80h640v-480H160v480Zm0 0v-480 480Z"/></svg>
+                                <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960"
+                                    width="24px" fill="#00000">
+                                    <path
+                                        d="M560-440h200v-80H560v80Zm0-120h200v-80H560v80ZM200-320h320v-22q0-45-44-71.5T360-440q-72 0-116 26.5T200-342v22Zm160-160q33 0 56.5-23.5T440-560q0-33-23.5-56.5T360-640q-33 0-56.5 23.5T280-560q0 33 23.5 56.5T360-480ZM160-160q-33 0-56.5-23.5T80-240v-480q0-33 23.5-56.5T160-800h640q33 0 56.5 23.5T880-720v480q0 33-23.5 56.5T800-160H160Zm0-80h640v-480H160v480Zm0 0v-480 480Z" />
+                                </svg>
                             </a>
                         </td>
                     </tr>
@@ -398,7 +430,11 @@
                         <td>
                             <a href="#" class="btn-sm font-weight-bold text-dark" type="button" data-toggle="modal"
                                 data-target="#exampleModal">
-                                <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#00000"><path d="M560-440h200v-80H560v80Zm0-120h200v-80H560v80ZM200-320h320v-22q0-45-44-71.5T360-440q-72 0-116 26.5T200-342v22Zm160-160q33 0 56.5-23.5T440-560q0-33-23.5-56.5T360-640q-33 0-56.5 23.5T280-560q0 33 23.5 56.5T360-480ZM160-160q-33 0-56.5-23.5T80-240v-480q0-33 23.5-56.5T160-800h640q33 0 56.5 23.5T880-720v480q0 33-23.5 56.5T800-160H160Zm0-80h640v-480H160v480Zm0 0v-480 480Z"/></svg>
+                                <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960"
+                                    width="24px" fill="#00000">
+                                    <path
+                                        d="M560-440h200v-80H560v80Zm0-120h200v-80H560v80ZM200-320h320v-22q0-45-44-71.5T360-440q-72 0-116 26.5T200-342v22Zm160-160q33 0 56.5-23.5T440-560q0-33-23.5-56.5T360-640q-33 0-56.5 23.5T280-560q0 33 23.5 56.5T360-480ZM160-160q-33 0-56.5-23.5T80-240v-480q0-33 23.5-56.5T160-800h640q33 0 56.5 23.5T880-720v480q0 33-23.5 56.5T800-160H160Zm0-80h640v-480H160v480Zm0 0v-480 480Z" />
+                                </svg>
                             </a>
                         </td>
                     </tr>
@@ -416,7 +452,11 @@
                         <td>
                             <a href="#" class="btn-sm font-weight-bold text-dark" type="button" data-toggle="modal"
                                 data-target="#exampleModal">
-                                <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#00000"><path d="M560-440h200v-80H560v80Zm0-120h200v-80H560v80ZM200-320h320v-22q0-45-44-71.5T360-440q-72 0-116 26.5T200-342v22Zm160-160q33 0 56.5-23.5T440-560q0-33-23.5-56.5T360-640q-33 0-56.5 23.5T280-560q0 33 23.5 56.5T360-480ZM160-160q-33 0-56.5-23.5T80-240v-480q0-33 23.5-56.5T160-800h640q33 0 56.5 23.5T880-720v480q0 33-23.5 56.5T800-160H160Zm0-80h640v-480H160v480Zm0 0v-480 480Z"/></svg>
+                                <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960"
+                                    width="24px" fill="#00000">
+                                    <path
+                                        d="M560-440h200v-80H560v80Zm0-120h200v-80H560v80ZM200-320h320v-22q0-45-44-71.5T360-440q-72 0-116 26.5T200-342v22Zm160-160q33 0 56.5-23.5T440-560q0-33-23.5-56.5T360-640q-33 0-56.5 23.5T280-560q0 33 23.5 56.5T360-480ZM160-160q-33 0-56.5-23.5T80-240v-480q0-33 23.5-56.5T160-800h640q33 0 56.5 23.5T880-720v480q0 33-23.5 56.5T800-160H160Zm0-80h640v-480H160v480Zm0 0v-480 480Z" />
+                                </svg>
                             </a>
                         </td>
                     </tr>
@@ -424,21 +464,27 @@
             </table>
         </div>
     </div>
-
-    </table>
-    </div>
-    <div aria-label="Page navigation example mb-5">
-        <ul class="pagination justify-content-center">
-            <li class="page-item disabled m-1">
-                <a class="page-link" href="#" tabindex="-1" style="border-radius: 20px;">Previous</a>
-            </li>
-            <li class="page-item rounded m-1"><a class="page-link rounded-circle" href="#">1</a></li>
-            <li class="page-item m-1"><a class="page-link rounded-circle" href="#">2</a></li>
-            <li class="page-item m-1"><a class="page-link rounded-circle" href="#">3</a></li>
-            <li class="page-item m-1">
-                <a class="page-link" href="#" style="border-radius: 20px;">Next</a>
-            </li>
-        </ul>
+    <div class="mt-2">
+        <div aria-label="Page navigation example mb-5">
+            <ul class="pagination justify-content-center">
+                <li class="page-item disabled m-1">
+                    <a class="page-link" href="#" tabindex="-1"
+                        style="border-radius: 20px; color: black;">Previous</a>
+                </li>
+                <li class="page-item rounded m-1">
+                    <a class="page-link rounded-circle" href="#" style="color: black;">1</a>
+                </li>
+                <li class="page-item m-1">
+                    <a class="page-link rounded-circle" href="#" style="color: black;">2</a>
+                </li>
+                <li class="page-item m-1">
+                    <a class="page-link rounded-circle" href="#" style="color: black;">3</a>
+                </li>
+                <li class="page-item m-1">
+                    <a class="page-link" href="#" style="border-radius: 20px; color: black;">Next</a>
+                </li>
+            </ul>
+        </div>
     </div>
 
     </div>
@@ -451,209 +497,120 @@
     <!-- Modal -->
 
     <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="mr-2">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="">
-                <h3 class="text-dark font-weight-bold  text-center" id="exampleModalLabel">SANCHO SANCHEZ</h3>
-            </div>
-            <div class="modal-body">
-                <div class="row mx-auto justify-content-center">
-                    <div class="col-md-10">
-                        <div class="mb-2">
-                            <div class="row">
-                                <div class="col-4 text-dark font-weight-bold">
-                                    Área de conocimiento:
-                                </div>
-                                <div class="col-8 border">
-                                    <span class="text-dark " id="conocimiento">Sistemas</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="mb-2">
-                            <div class="row">
-                                <div class="col-4 text-white font-weight-bold text-dark">
-                                    Institución:
-                                </div>
-                                <div class="col-8 border">
-                                    <span class="text-dark" id="institucion">SENA</span>
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="mr-2">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="">
+                    <h3 class="text-dark font-weight-bold  text-center" id="exampleModalLabel">SANCHO SANCHEZ</h3>
+                </div>
+                <div class="modal-body">
+                    <div class="row mx-auto justify-content-center">
+                        <div class="col-md-10">
+                            <div class="mb-2">
+                                <div class="row">
+                                    <div class="col-4 text-dark font-weight-bold">
+                                        Área de conocimiento:
+                                    </div>
+                                    <div class="col-8 border">
+                                        <span class="text-dark " id="conocimiento">Sistemas</span>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="mb-2">
-                            <div class="row">
-                                <div class="col-4 text-white font-weight-bold text-dark">
-                                    Teléfono:
-                                </div>
-                                <div class="col-8 border">
-                                    <span class="text-dark" id="telefono">3145468952</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="mb-2">
-                            <div class="row">
-                                <div class="col-4 text-white font-weight-bold text-dark">
-                                    Correo electrónico:
-                                </div>
-                                <div class="col-8 border">
-                                    <span class="text-dark" id="electronico">pepe@gmail.com</span>
+                            <div class="mb-2">
+                                <div class="row">
+                                    <div class="col-4 text-white font-weight-bold text-dark">
+                                        Institución:
+                                    </div>
+                                    <div class="col-8 border">
+                                        <span class="text-dark" id="institucion">SENA</span>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="mb-2">
-                            <div class="row">
-                                <div class="col-4 text-white font-weight-bold text-dark">
-                                    Otra área de conocimiento:
-                                </div>
-                                <div class="col-8 border">
-                                    <span class="text-dark" id="otra_area_conocimiento">Sociales</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="mb-2">
-                            <div class="row">
-                                <div class="col-4 text-white font-weight-bold text-dark">
-                                    Estado:
-                                </div>
-                                <div class="col-8 border">
-                                    <span class="text-dark" id="estado">pendiente</span>
+                            <div class="mb-2">
+                                <div class="row">
+                                    <div class="col-4 text-white font-weight-bold text-dark">
+                                        Teléfono:
+                                    </div>
+                                    <div class="col-8 border">
+                                        <span class="text-dark" id="telefono">3145468952</span>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="text-center mt-3">
-                            <a href="pruebas_documentos/constancia_NotasAprendiz.pdf" class="btn btn-outline-primary" target="_blank">
-                                Ver Títulos
-                            </a>
+                            <div class="mb-2">
+                                <div class="row">
+                                    <div class="col-4 text-white font-weight-bold text-dark">
+                                        Correo electrónico:
+                                    </div>
+                                    <div class="col-8 border">
+                                        <span class="text-dark" id="electronico">pepe@gmail.com</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="mb-2">
+                                <div class="row">
+                                    <div class="col-4 text-white font-weight-bold text-dark">
+                                        Otra área de conocimiento:
+                                    </div>
+                                    <div class="col-8 border">
+                                        <span class="text-dark" id="otra_area_conocimiento">Sociales</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="mb-2">
+                                <div class="row">
+                                    <div class="col-4 text-white font-weight-bold text-dark">
+                                        Estado:
+                                    </div>
+                                    <div class="col-8 border">
+                                        <span class="text-dark" id="estado">pendiente</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="text-center mt-3">
+                                <a href="pruebas_documentos/constancia_NotasAprendiz.pdf"
+                                    class="btn btn-outline-primary" target="_blank">
+                                    Ver Títulos
+                                </a>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="modal-footer justify-content-center">
-                <button type="button" class="btn btn-dark col-4" data-dismiss="modal">Cerrar</button>
+                <div class="modal-footer justify-content-center">
+                    <button type="button" class="btn btn-dark col-4" data-dismiss="modal">Cerrar</button>
+                </div>
             </div>
         </div>
     </div>
-</div>
 
-    
-    <footer class="footer mt-3">
+
+    <footer class="footer mt-5">
         <div class="container">
-
-            <!-- Footer Content -->
-
-            <div class="footer_content">
-                <div class="row">
-
-                    <!-- Footer Column - About -->
-                    <div class="col-lg-3 footer_col">
-
-                        <!-- Logo -->
-                        <div class="logo_container">
-                            <div class="logo">
-                                <img src="../plantilla/images/logoRredsi.png" alt="">
-                                <span>RREDSI</span>
-                            </div>
-                        </div>
-
-                        <p class="footer_about_text">In aliquam, augue a gravida rutrum, ante nisl fermentum nulla,
-                            vitae tempor nisl ligula vel nunc. Proin quis mi malesuada, finibus tortor fermentum, tempor
-                            lacus.</p>
-
-                    </div>
-
-                    <!-- Footer Column - Menu -->
-
-                    <div class="col-lg-3 footer_col">
-                        <div class="footer_column_title">Menu</div>
-                        <div class="footer_column_content">
-                            <ul>
-                                <li class="footer_list_item"><a href="#">Home</a></li>
-                                <li class="footer_list_item"><a href="#">About Us</a></li>
-                                <li class="footer_list_item"><a href="courses.html">Courses</a></li>
-                                <li class="footer_list_item"><a href="news.html">News</a></li>
-                                <li class="footer_list_item"><a href="contact.html">Contact</a></li>
-                            </ul>
-                        </div>
-                    </div>
-
-                    <!-- Footer Column - Usefull Links -->
-
-                    <div class="col-lg-3 footer_col">
-                        <div class="footer_column_title">Usefull Links</div>
-                        <div class="footer_column_content">
-                            <ul>
-                                <li class="footer_list_item"><a href="#">Testimonials</a></li>
-                                <li class="footer_list_item"><a href="#">FAQ</a></li>
-                                <li class="footer_list_item"><a href="#">Community</a></li>
-                                <li class="footer_list_item"><a href="#">Campus Pictures</a></li>
-                                <li class="footer_list_item"><a href="#">Tuitions</a></li>
-                            </ul>
-                        </div>
-                    </div>
-
-                    <!-- Footer Column - Contact -->
-
-                    <div class="col-lg-3 footer_col">
-                        <div class="footer_column_title">Contact</div>
-                        <div class="footer_column_content">
-                            <ul>
-                                <li class="footer_contact_item">
-                                    <div class="footer_contact_icon">
-                                        <img src="../plantilla/images/placeholder.svg"
-                                            alt="https://www.flaticon.com/authors/lucy-g">
-                                    </div>
-                                    Blvd Libertad, 34 m05200 Arévalo
-                                </li>
-                                <li class="footer_contact_item">
-                                    <div class="footer_contact_icon">
-                                        <img src="../plantilla/images/smartphone.svg"
-                                            alt="https://www.flaticon.com/authors/lucy-g">
-                                    </div>
-                                    0034 37483 2445 322
-                                </li>
-                                <li class="footer_contact_item">
-                                    <div class="footer_contact_icon">
-                                        <img src="../plantilla/images/envelope.svg"
-                                            alt="https://www.flaticon.com/authors/lucy-g">
-                                    </div>hello@company.com
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-
-                </div>
-            </div>
 
             <!-- Footer Copyright -->
 
             <div class="footer_bar d-flex flex-column flex-sm-row align-items-center">
                 <div class="footer_copyright">
-                    <span><!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-                        Copyright &copy;
-                        <script>document.write(new Date().getFullYear());</script> All rights reserved | This template
-                        is made with by <a href="#" target="_blank">ADSO 2670586</a>
-                        <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-                    </span>
+                    <span>Colorlib All rights reserved</span>
                 </div>
                 <div class="footer_social ml-sm-auto">
                     <ul class="menu_social">
-
-                        <li class="menu_social_item"><a href="https://www.instagram.com/rredsiquindio/"><i
-                                    class="fab fa-instagram"></i></a></li>
-                        <li class="menu_social_item"><a href="https://www.facebook.com/rredsi?mibextid=ZbWKwL"><i
-                                    class="fab fa-facebook-f"></i></a></li>
-                        <li class="menu_social_item"><a href="https://x.com/Rredsi"><i class="fab fa-twitter"></i></a>
-                        </li>
+                        <li class="menu_social_item"><a href="#"><i class="fab fa-pinterest"></i></a></li>
+                        <li class="menu_social_item"><a href="#"><i class="fab fa-linkedin-in"></i></a></li>
+                        <li class="menu_social_item"><a href="#"><i class="fab fa-instagram"></i></a></li>
+                        <li class="menu_social_item"><a href="#"><i class="fab fa-facebook-f"></i></a></li>
+                        <li class="menu_social_item"><a href="#"><i class="fab fa-twitter"></i></a></li>
                     </ul>
                 </div>
             </div>
 
         </div>
+
     </footer>
+
     <script src="../plantilla/js/jquery-3.2.1.min.js"></script>
     <script src="../plantilla/styles/bootstrap4/popper.js"></script>
     <script src="../plantilla/styles/bootstrap4/bootstrap.min.js"></script>
