@@ -1628,13 +1628,6 @@ body {
 	margin-right: 0.5rem; 
 }
 
-
-
-
-
-
-
-
 .scroll-div {
     width: 1000px; 
     height: 400px;
@@ -1818,7 +1811,7 @@ select {
 }
 
 @media only screen  and (max-width:767px){
-	.contenedor_principal{
+	.con{
         display: none;
     }
     .accordion{
