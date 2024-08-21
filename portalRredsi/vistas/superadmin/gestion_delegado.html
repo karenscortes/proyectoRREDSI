@@ -323,7 +323,16 @@
                 <div class="modal-body">
 
                     <div class="row mx-auto justify-content-center">
-
+                        <div class="col-4 text-dark fw-bold">
+                            Rol:
+                        </div>
+                        <div class="col-6 mb-3">
+                            <select class="form-select" name="role" id="roleSelect">
+                                <option value="" disabled selected>Selecciona un rol</option>
+                                <option value="administrador">Administrador</option>
+                                <option value="delegado">Delegado</option>
+                            </select>
+                        </div>                        
                         <div class="col-5 text-dark fw-bold">
                             Tipo de Documento:
                         </div>
@@ -368,11 +377,26 @@
                         </div>
                     </div>
 
-                    <div class="text-center mt-3">
-                        <a href="../delegado/pruebas_documentos/constancia_NotasAprendiz.pdf" class="btn btn-outline-warning" target="_blank">
-                            Ver Títulos
-                        </a>
+
+                    <div class="d-grid gap-2 col-6 mx-auto">
+                        <button type="button" class="btn btn-outline-warning" onclick="window.open('../delegado/pruebas_documentos/constancia_NotasAprendiz.pdf', '_blank')">
+                            Ver títulos
+                        </button>
                     </div>
+                    
+                    <div class="row text-center mt-3">
+                        <div class="col-6 mb-2"> <!-- Añadido mb-2 para margen inferior -->
+                            <a href="#" class="btn btn-secondary w-100" data-bs-dismiss="modal" aria-label="Close">
+                                Cerrar
+                            </a>
+                        </div>
+                        <div class="col-6">
+                            <a href="" class="btn btn-warning w-100">
+                                Guardar cambios
+                            </a>
+                        </div>
+                    </div>
+                    
                 </div>
             </div>
         </div>
@@ -381,7 +405,7 @@
     <!-- Modal historial de acciones -->
     <div class="modal fade" id="historialModal" tabindex="-1" aria-labelledby="historialLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-lg">
-            <div class="modal-content border border-dark border-5 rounded-5 text-dark">
+            <div class="modal-content border border-dark border-5 rounded-4 text-dark">
                 <div class="modal-header bg-warning">
                     <h3 class="modal-title mx-auto" id="historialLabel">HISTORIAL ACCIONES DELEGADO PEDRO SANCHEZ</h3>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
