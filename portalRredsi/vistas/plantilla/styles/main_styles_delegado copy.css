@@ -362,7 +362,8 @@ rlx_parent
 .main_nav_item
 {
 	display: inline-block;
-	margin-right: 10px;
+	
+	margin-right: 40px;
 }
 .main_nav_item:last-child
 {
@@ -1707,37 +1708,84 @@ input:last-of-type
 	filter: invert(0); /* Mantiene el color del icono de colapso en negro */
 }
 
+/*********************************
+8.3 Accordions
+*********************************/
 
-
-.pbars_accordions
+.accordion_container
 {
-	margin-top: 94px;
+	margin-bottom: 15px;
 }
-.pbars_accordions_container
+.accordion
 {
-	padding-top: 104px;
-}
-.pbar_container
-{
+	height: 60px;
+	width: 100%;
 	background: #f8f4f4;
-	padding-left: 99px;
-	padding-right: 97px;
-	padding-top: 46px;
-	padding-bottom: 45px;
+	padding-left: 30px;
+	cursor: pointer;
+	-webkit-transition: all 200ms ease;
+	-moz-transition: all 200ms ease;
+	-ms-transition: all 200ms ease;
+	-o-transition: all 200ms ease;
+	transition: all 200ms ease;
 }
-.pb_item
+.accordion.active
 {
-	margin-bottom: 18px;
+	background: #ffb606;
+	color: #FFFFFF;
 }
-.pb_item h4
+.accordion:active
 {
-	color: #1a1a1a;
-	font-weight: 400 !important;
-	padding-left: 2px;
-	margin-bottom: 13px;
+	background: #ffb606 !important;
+	color: #FFFFFF;
 }
-.skill_bars
+.accordion::after
 {
-	height: 5px;
+	display: -webkit-box;
+	display: -moz-box;
+	display: -ms-flexbox;
+	display: -webkit-flex;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	position: absolute;
+	top: 0;
+	right: 0;
+	width: 62px;
+	height: 100%;
+	content: '+';
+	background: #ffb606;
+	font-size: 14px;
+	color: #FFFFFF;
+	font-weight: 500;
+	-webkit-transition: all 200ms ease;
+	-moz-transition: all 200ms ease;
+	-ms-transition: all 200ms ease;
+	-o-transition: all 200ms ease;
+	transition: all 200ms ease;
 }
-
+.accordion.active::after
+{
+	content: '-';
+}
+.accordion:hover
+{
+	background: #e4e4e4;
+}
+.accordion_panel
+{
+	padding-left: 30px;
+	padding-right: 30px;
+	max-height: 0;
+	overflow: hidden;
+	-webkit-transition: all 500ms ease;
+	-moz-transition: all 500ms ease;
+	-ms-transition: all 500ms ease;
+	-o-transition: all 500ms ease;
+	transition: all 500ms ease;
+}
+.accordion_panel p
+{
+	padding-top: 15px;
+}
