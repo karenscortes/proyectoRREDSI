@@ -1707,3 +1707,37 @@ input:last-of-type
 	filter: invert(0); /* Mantiene el color del icono de colapso en negro */
 }
 
+
+
+
+.pbars_accordions
+{
+	margin-top: 94px;
+}
+.pbars_accordions_container
+{
+	padding-top: 104px;
+}
+.pbar_container
+{
+	background: #f8f4f4;
+	padding-left: 99px;
+	padding-right: 97px;
+	padding-top: 46px;
+	padding-bottom: 45px;
+}
+.pb_item
+{
+	margin-bottom: 18px;
+}
+.pb_item h4
+{
+	color: #1a1a1a;
+	font-weight: 400 !important;
+	padding-left: 2px;
+	margin-bottom: 13px;
+}
+.skill_bars
+{
+	height: 5px;
+}

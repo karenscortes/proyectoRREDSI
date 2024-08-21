@@ -12,11 +12,12 @@
     <link rel="stylesheet" type="text/css" href="../plantilla/plugins/OwlCarousel2-2.2.1/animate.css">
     <link rel="stylesheet" type="text/css" href="../plantilla/styles/main_styles_admin.css">
     <link rel="stylesheet" type="text/css" href="../plantilla/styles/responsive_admin.css">
+    
 </head>
 
 <body>
     <!-- header -->
-    <header class="header d-flex flex-row position-absolute top-20">
+    <header class="header d-flex flex-row position-relative">
         <div class="header_content d-flex flex-row align-items-center justify-content-start">
             <!-- Logo -->
             <div class="logo_container">
@@ -30,12 +31,25 @@
             <nav class="main_nav_container">
                 <div class="main_nav">
                     <ul class="main_nav_list d-flex justify-content-between">
-                        <li class="main_nav_item"><a href="#">Inicio</a></li>
-                        <li class="main_nav_item"><a href="#">Perfil</a></li>
-                        <li class="main_nav_item"><a href="#">Cuentas</a></li>
-                        <li class="main_nav_item"><a href="#" style="font-weight: 1000;">Rúbricas</a></li>
-                        <li class="main_nav_item"><a href="#">Eventos</a></li>
-
+                        <li class="main_nav_item"><a href="principal.htm">Inicio</a></li>
+                        <li class="main_nav_item"><a href="perfil_admin.html">Perfil</a></li>
+                        <li class="main_nav_item"><a href="gestion_cuentas_delegados.html">Cuentas</a></li>
+                        <li class="main_nav_item"><a href="gestion_rubrica.html">Rúbricas</a></li>
+                        <li class="main_nav_item">
+                            <div class="dropdown">
+                                <a class=" dropdown-toggle text-dark" type="button" data-toggle="dropdown"
+                                    aria-expanded="false">
+                                    eventos
+                                </a>
+                                <div class="dropdown-menu text-center">
+                                    <a href="">salas
+                                    </a><br>
+                                    <a href="gestion_asistentes.html">asistencia</a>
+                                    <br>
+                                    <a href="gestion_convocatoria.html">convocatoria</a>
+                                </div>
+                            </div>
+                        </li>
                         <li class="main_nav_item"><a href="#">Cerrar sesión</a></li>
                     </ul>
                 </div>
@@ -48,10 +62,7 @@
         </div>
 
     </header>
-    <!-- fondo del header -->
-    <div>
-        <img src="../plantilla/images/event_1.jpg" alt="" height="300px" width="100%">
-    </div>
+    <div class="container-fluid" id="cont_ejemplo"></div
     <!-- Menu -->
     <div class="menu_container menu_mm">
 
