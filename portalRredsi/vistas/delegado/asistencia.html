@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>asistencia</title>
+    <link rel="stylesheet" href="../bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="../plantilla/styles/bootstrap4/bootstrap.min.css">
+    <!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" -->
+        <!-- integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous"> -->
+    <link href="../plantilla/plugins/fontawesome-free-5.0.1/css/fontawesome-all.css" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" type="text/css" href="../plantilla/plugins/OwlCarousel2-2.2.1/owl.carousel.css">
+    <link rel="stylesheet" type="text/css" href="../plantilla/plugins/OwlCarousel2-2.2.1/owl.theme.default.css">
+    <link rel="stylesheet" type="text/css" href="../plantilla/plugins/OwlCarousel2-2.2.1/animate.css">
+    <link rel="stylesheet" type="text/css" href="../plantilla/styles/main_styles_delegado.css">
+    <link rel="stylesheet" type="text/css" href="../plantilla/styles/responsive.css">
+</head>
+
+<body>
+    <header style=" border-bottom: 20px solid rgb(255, 182, 6);">
+        <div class="position-relative d-flex justify-content-between align-items-center py-1"
+            style="margin-inline: 55px;">
+            <!-- Logo -->
+            <div class="logo_container d-flex align-items-center">
+                <div class="logo">
+                    <img class="img-fluid" src="../plantilla/images/logoRredsi.png" alt="">
+                    <span>RREDSI</span>
+                </div>
+            </div>
+
+            <!-- Main Navigation -->
+            <nav class="main_nav_container">
+                <div class="main_nav">
+                    <ul class="main_nav_list d-flex justify-content-around align-items-center">
+                        <li class="main_nav_item"><a href="principal.html">Inicio</a></li>
+                        <li class="main_nav_item"><a href="perfil.html">Perfil</a></li>
+                        <li class="main_nav_item">
+                            <div class="dropdown">
+                                <a class="dropdown-toggle text-dark" type="button" data-toggle="dropdown"
+                                    aria-expanded="false">
+                                    Evaluadores
+                                </a>
+                                <div class="dropdown-menu text-center">
+                                    <a href="postulaciones.html">Postulaciones</a><br>
+                                    <a href="lista_evaluadores.html">Lista de Evaluadores</a>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="main_nav_item">
+                            <div class="dropdown">
+                                <a class="dropdown-toggle text-dark" type="button" data-toggle="dropdown"
+                                    aria-expanded="false">
+                                    Proyectos
+                                </a>
+                                <div class="dropdown-menu text-center">
+                                    <a href="asignar_proyectos.html">Asignación de <br> Proyectos</a><br>
+                                    <a href="lista_proyectos.html">Lista de Proyectos</a>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="main_nav_item">
+                            <div class="dropdown">
+                                <a class="dropdown-toggle text-dark" type="button" data-toggle="dropdown"
+                                    aria-expanded="false">
+                                    Evento
+                                </a>
+                                <div class="dropdown-menu text-center">
+                                    <a href="salas.html">Salas</a><br>
+                                    <a href="asistencia.html">Asistencia</a>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="main_nav_item"><a href="#">Cerrar sesión</a></li>
+                    </ul>
+                </div>
+            </nav>
+
+            <!-- Hamburger -->
+            <div class="hamburger_container">
+                <i class="fas fa-bars trans_200"></i>
+            </div>
+        </div>
+
+    </header>
+
+    <!-- Menu -->
+    <div class="menu_container menu_mm">
+
+        <!-- Menu Close Button -->
+        <div class="menu_close_container">
+            <div class="menu_close"></div>
+        </div>
+
+        <!-- Menu Items -->
+        <div class="menu_inner menu_mm">
+            <div class="menu menu_mm">
+                <ul class="menu_list menu_mm">
+                    <li class="menu_item menu_mm"><a href="principal.html">Inicio</a></li>
+                    <li class="menu_item menu_mm"><a href="perfil.html">Perfil</a></li>
+                    <li class="menu_item menu_mm">
+                        <div class="dropdown">
+                            <a class=" dropdown-toggle text-dark" type="button" data-toggle="dropdown"
+                                aria-expanded="false">
+                                Evaluadores
+                            </a>
+                            <div class="dropdown-menu text-center">
+                                <a href="postulaciones.html">Postulaciones</a><br>
+                                <a href="lista_evaluadores.html">Lista de Evaluadores</a>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="menu_item menu_mm">
+                        <div class="dropdown">
+                            <a class=" dropdown-toggle text-dark" type="button" data-toggle="dropdown"
+                                aria-expanded="false">
+                                Proyectos
+                            </a>
+                            <div class="dropdown-menu text-center">
+                                <a href="asignar_proyectos.html">Asignación de <br> Proyectos</a><br>
+                                <a href="lista_proyectos.html">Lista de Proyectos</a>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="menu_item menu_mm">
+                        <div class="dropdown">
+                            <a class=" dropdown-toggle text-dark" type="button" data-toggle="dropdown"
+                                aria-expanded="false">
+                                Evento
+                            </a>
+                            <div class="dropdown-menu text-center">
+                                <a href="salas.html">Salas</a><br>
+                                <a href="asistencia.html">Asistencia</a>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="menu_item menu_mm"><a href="#">Cerrar sesión</a></li>
+                </ul>
+
+                <!-- Menu Social -->
+
+                <div class="menu_social_container menu_mm">
+                    <ul class="menu_social menu_mm">
+                        <li class="menu_social_item menu_mm"><a href="https://www.instagram.com/rredsiquindio/"><i
+                                    class="fab fa-instagram"></i></a></li>
+                        <li class="menu_social_item menu_mm"><a
+                                href="https://www.facebook.com/rredsi?mibextid=ZbWKwL"><i
+                                    class="fab fa-facebook-f"></i></a></li>
+                        <li class="menu_social_item menu_mm"><a href="https://x.com/Rredsi"><i
+                                    class="fab fa-twitter"></i></a></li>
+                    </ul>
+                </div>
+
+                <div class="menu_copyright menu_mm">ADSO 2670586 All rights reserved</div>
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="container pt-5">
+        <div class="row mb-5">
+            <div class="col">
+                <div class="section_title text-center">
+                    <h1>Asistencia</h1>
+                </div>
+            </div>
+        </div>
+        <!-- buscador -->
+        <div class="row mb-5 justify-content-between">
+            <div class="col-8 col-sm-6">
+                <div class="row">
+                    <div class="col-8">
+                        <input type="text" id="busqueda" class="form-control" placeholder="Buscar...">
+                    </div>
+                    <div class="col-4">
+                        <button class="btn w-100 font-weight-bold" style="background: rgb(255, 182, 6)
+;">Buscar</button>
+                    </div>
+                </div>
+            </div>
+            <div class="col-4 col-sm-2">
+                <select type="select" class="form-control text-dark" name="consulta_sala" id="">
+                    <option value="">Sala</option>
+                    <option value="">201</option>
+                    <option value="">A01</option>
+                    <option value="">205</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- Filtros -->
+        <div class="row ml-1 mb-2 mt-3">
+            <a href="#" class="mx-1 px-2 border text-white bg-secondary" style="border-radius: 20px; " disabled>
+                todos
+            </a>
+            <a href="#" class="mx-1 px-2 border text-dark" style="border-radius: 20px; ">
+                participantes
+            </a>
+            <a href="#" class="mx-1 px-2 border text-dark" style="border-radius: 20px; ">
+                evaluadores
+            </a>
+        </div>
+        <!-- tabla -->
+        <div class="table-responsive">
+            <table id="basic-datatables" class="display table table-striped table-hover text-dark">
+                <thead style="background: rgb(255, 182, 6);">
+                    <tr>
+                        <th>N° de documento</th>
+                        <th>Nombres</th>
+                        <th>Institucion</th>
+                        <th>CHECK</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>1089564222</td>
+                        <td>Pepe Rodrigo Sanchez</td>
+                        <td>SENA</td>
+                        <td colspan="1">
+                            <input type="checkbox" class="ml-3 check_asistencia">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>1089564223</td>
+                        <td>Maria Lopez Gomez</td>
+                        <td>Universidad Nacional</td>
+                        <td>
+                            <input type="checkbox" class="ml-3 check_asistencia">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>1089564224</td>
+                        <td>Juan Carlos Perez</td>
+                        <td>Universidad de Antioquia</td>
+                        <td>
+                            <input type="checkbox" class="ml-3 check_asistencia">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>1089564225</td>
+                        <td>Laura Fernandez</td>
+                        <td>Universidad Javeriana</td>
+                        <td>
+                            <input type="checkbox" class="ml-3 check_asistencia">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>1089564226</td>
+                        <td>Pedro Martinez</td>
+                        <td>Universidad de los Andes</td>
+                        <td>
+                            <input type="checkbox" class="ml-3 check_asistencia">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>1089564227</td>
+                        <td>Angela Ramirez</td>
+                        <td>Politécnico Gran Colombiano</td>
+                        <td>
+                            <input type="checkbox" class="ml-3 check_asistencia">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>1089564228</td>
+                        <td>Ricardo Castillo</td>
+                        <td>Universidad del Rosario</td>
+                        <td>
+                            <input type="checkbox" class="ml-3 check_asistencia">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>1089564229</td>
+                        <td>Sofia Rodriguez</td>
+                        <td>Universidad del Norte</td>
+                        <td>
+                            <input type="checkbox" class="ml-3 check_asistencia">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>1089564230</td>
+                        <td>Felipe Moreno</td>
+                        <td>Universidad Industrial de Santander</td>
+                        <td>
+                            <input type="checkbox" class="ml-3 check_asistencia">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>1089564231</td>
+                        <td>Catalina Gutierrez</td>
+                        <td>Universidad Pontificia Bolivariana</td>
+                        <td>
+                            <input type="checkbox" class="ml-3 check_asistencia">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>1089564232</td>
+                        <td>Daniela Ortiz</td>
+                        <td>Universidad de la Sabana</td>
+                        <td>
+                            <input type="checkbox" class="ml-3 check_asistencia">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>1089564233</td>
+                        <td>Andres Herrera</td>
+                        <td>Universidad del Valle</td>
+                        <td>
+                            <input type="checkbox" class="ml-3 check_asistencia">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>1089564234</td>
+                        <td>Paula Castro</td>
+                        <td>Universidad EAFIT</td>
+                        <td>
+                            <input type="checkbox" class="ml-3 check_asistencia">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>1089564235</td>
+                        <td>Diego Torres</td>
+                        <td>Universidad Externado</td>
+                        <td>
+                            <input type="checkbox" class="ml-3 check_asistencia">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>1089564236</td>
+                        <td>Valentina Suarez</td>
+                        <td>Universidad Sergio Arboleda</td>
+                        <td>
+                            <input type="checkbox" class="ml-3 check_asistencia">
+                        </td>
+                    </tr>
+
+                </tbody>
+
+            </table>
+        </div>
+        <div class="mt-5">
+            <div aria-label="Page navigation example mb-5">
+                <ul class="pagination justify-content-center">
+                    <li class="page-item disabled m-1">
+                        <a class="page-link" href="#" tabindex="-1"
+                            style="border-radius: 20px; color: black;">Previous</a>
+                    </li>
+                    <li class="page-item rounded m-1">
+                        <a class="page-link rounded-circle" href="#" style="color: black;">1</a>
+                    </li>
+                    <li class="page-item m-1">
+                        <a class="page-link rounded-circle" href="#" style="color: black;">2</a>
+                    </li>
+                    <li class="page-item m-1">
+                        <a class="page-link rounded-circle" href="#" style="color: black;">3</a>
+                    </li>
+                    <li class="page-item m-1">
+                        <a class="page-link" href="#" style="border-radius: 20px; color: black;">Next</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer mt-5">
+        <div class="container">
+
+            <!-- Footer Copyright -->
+
+            <div class="footer_bar d-flex flex-column flex-sm-row align-items-center">
+                <div class="footer_copyright">
+                    <span>Colorlib All rights reserved</span>
+                </div>
+                <div class="footer_social ml-sm-auto">
+                    <ul class="menu_social">
+                        <li class="menu_social_item"><a href="#"><i class="fab fa-pinterest"></i></a></li>
+                        <li class="menu_social_item"><a href="#"><i class="fab fa-linkedin-in"></i></a></li>
+                        <li class="menu_social_item"><a href="#"><i class="fab fa-instagram"></i></a></li>
+                        <li class="menu_social_item"><a href="#"><i class="fab fa-facebook-f"></i></a></li>
+                        <li class="menu_social_item"><a href="#"><i class="fab fa-twitter"></i></a></li>
+                    </ul>
+                </div>
+            </div>
+
+        </div>
+
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+        crossorigin="anonymous"></script>
+    <script src="../plantilla/js/jquery-3.2.1.min.js"></script>
+    <script src="../plantilla/styles/bootstrap4/popper.js"></script>
+    <script src="../plantilla/styles/bootstrap4/bootstrap.min.js"></script>
+    <script src="../plantilla/plugins/greensock/TweenMax.min.js"></script>
+    <script src="../plantilla/plugins/greensock/TimelineMax.min.js"></script>
+    <script src="../plantilla/plugins/scrollmagic/ScrollMagic.min.js"></script>
+    <script src="../plantilla/plugins/greensock/animation.gsap.min.js"></script>
+    <script src="../plantilla/plugins/greensock/ScrollToPlugin.min.js"></script>
+    <script src="../plantilla/plugins/OwlCarousel2-2.2.1/owl.carousel.js"></script>
+    <script src="../plantilla/plugins/scrollTo/jquery.scrollTo.min.js"></script>
+    <script src="../plantilla/plugins/easing/easing.js"></script>
+    <script src="../plantilla/js/custom.js"></script>
+</body>
+
+</html>
