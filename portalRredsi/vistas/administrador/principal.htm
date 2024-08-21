@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Principal</title>
+    <title>Principal_admin</title>
     
     <link rel="stylesheet" type="text/css" href="../plantilla/styles/bootstrap4/bootstrap.min.css">
     <link href="../plantilla/plugins/fontawesome-free-5.0.1/css/fontawesome-all.css" rel="stylesheet" type="text/css">
@@ -32,15 +32,31 @@
             <nav class="main_nav_container flex-grow-1">
                 <div class="main_nav">
                     <ul class="main_nav_list d-flex justify-content-between">
-                        <li class="main_nav_item"><a href="pagina_principal.html">Inicio</a></li>
-							<li class="main_nav_item"><a href="gestion_delegado.html">Informacion delegados</a></li>
-							<li class="main_nav_item"><a href="#">Convocatorias</a></li>
-
+                        <li class="main_nav_item"><a href="principal.htm">Inicio</a></li>
+                        <li class="main_nav_item"><a href="perfil_admin.html">Perfil</a></li>
+                        <li class="main_nav_item"><a href="gestion_cuentas_delegados.html">Cuentas</a></li>
+                        <li class="main_nav_item"><a href="gestion_rubrica.html">Rúbricas</a></li>
+                        <li class="main_nav_item">
+                            <div class="dropdown">
+                                <a class=" dropdown-toggle text-dark" type="button" data-toggle="dropdown"
+                                    aria-expanded="false">
+                                    eventos
+                                </a>
+                                <div class="dropdown-menu text-center">
+                                    <a href="">salas
+                                    </a><br>
+                                    <a href="gestion_asistentes.html">asistencia</a>
+                                    <br>
+                                    <a href="gestion_convocatoria.html">convocatoria</a>
+                                </div>
+                            </div>
+                        </li>
+                        
                     </ul>
                 </div>
             </nav>
         </div>
-        <a href="#" class="header_side d-flex flex-row justify-content-center align-items-center text-center">
+        <a href="#" class="header_side d-flex flex-row justify-content-center align-items-center">
             <h3 class="main_nav_item text-dark">Cerrar sesión</h3>
         </a>
 
@@ -50,13 +66,13 @@
         </div>
 
     </header>
-    <!-- fondo del header -->
-    <div class="home">
-        <div class="home_background_container prlx_parent">
-            <div class="home_background prlx" style="background-image:url(../plantilla/images/teachers_background.jpg)"></div>
-        </div>
-        
+<!-- fondo del header -->
+        <div class="home">
+    <div class="home_background_container prlx_parent">
+        <div class="home_background prlx" style="background-image:url(../plantilla/images/teachers_background.jpg)"></div>
     </div>
+    
+</div>
     <!-- Menu -->
     <div class="menu_container menu_mm">
 
@@ -70,7 +86,19 @@
             <div class="menu menu_mm">
                 <ul class="menu_list menu_mm">
                     <li class="menu_item menu_mm"><a href="principal.html">Inicio</a></li>
-                    <li class="menu_item menu_mm"><a href="perfil_evaluador.html">Perfil</a></li>
+                    <li class="menu_item menu_mm"><a href="#">Perfil</a></li>
+                    <li class="menu_item menu_mm">
+                        <div class="dropdown">
+                            <a class=" dropdown-toggle text-dark" type="button" data-toggle="dropdown"
+                                aria-expanded="false">
+                                Evaluadores
+                            </a>
+                            <div class="dropdown-menu text-center">
+                                <a href="#">Postulaciones</a><br>
+                                <a href="lista_evaluadores.html">Lista de Evaluadores</a>
+                            </div>
+                        </div>
+                    </li>
                     <li class="menu_item menu_mm">
                         <div class="dropdown">
                             <a class=" dropdown-toggle text-dark" type="button" data-toggle="dropdown"
@@ -78,12 +106,23 @@
                                 Proyectos
                             </a>
                             <div class="dropdown-menu text-center">
-                                <a href="lista_proyectos_evaluador.html">Primera etapa</a><br>
-                                <a href="#">Segunda etapa</a>
+                                <a href="#">Asignación de <br> Proyectos</a><br>
+                                <a href="lista_proyectos.html">Lista de Proyectos</a>
                             </div>
                         </div>
                     </li>
-                    <li class="menu_item menu_mm"><a href="convocatoria.html">Convocatoria</a></li>
+                    <li class="menu_item menu_mm">
+                        <div class="dropdown">
+                            <a class=" dropdown-toggle text-dark" type="button" data-toggle="dropdown"
+                                aria-expanded="false">
+                                Evento
+                            </a>
+                            <div class="dropdown-menu text-center">
+                                <a href="salas.html">Salas</a><br>
+                                <a href="#">Asistencia</a>
+                            </div>
+                        </div>
+                    </li>
                     <li class="menu_item menu_mm"><a href="#">Cerrar sesión</a></li>
                 </ul>
 
@@ -108,6 +147,7 @@
 
     </div>
 
+    
     <div class="become">
         <div class="container">
             <div class="row row-eq-height">
@@ -132,6 +172,55 @@
         </div>
     </div>
 
+
+    <!-- Milestones -->
+
+	<div class="milestones">
+		<div class="milestones_background" style="background-image:url(../plantilla/images/milestones_background.jpg)"></div>
+
+		<div class="container">
+			<div class="row">
+				
+				<!-- Milestone -->
+				<div class="col-lg-3 milestone_col">
+					<div class="milestone text-center">
+						<div class="milestone_icon"><img src="../plantilla/images/milestone_1.svg" alt="https://www.flaticon.com/authors/zlatko-najdenovski"></div>
+						<div class="milestone_counter" data-end-value="750">0</div>
+						<div class="milestone_text">Postulaciones</div>
+					</div>
+				</div>
+
+				<!-- Milestone -->
+				<div class="col-lg-3 milestone_col">
+					<div class="milestone text-center">
+						<div class="milestone_icon"><img src="../plantilla/images/milestone_2.svg" alt="https://www.flaticon.com/authors/zlatko-najdenovski"></div>
+						<div class="milestone_counter" data-end-value="120">0</div>
+						<div class="milestone_text">Presentaciones</div>
+					</div>
+				</div>
+
+				<!-- Milestone -->
+				<div class="col-lg-3 milestone_col">
+					<div class="milestone text-center">
+						<div class="milestone_icon"><img src="../plantilla/images/milestone_3.svg" alt="https://www.flaticon.com/authors/zlatko-najdenovski"></div>
+						<div class="milestone_counter" data-end-value="39">0</div>
+						<div class="milestone_text">Proyectos asignados</div>
+					</div>
+				</div>
+
+				<!-- Milestone -->
+				<div class="col-lg-3 milestone_col">
+					<div class="milestone text-center">
+						<div class="milestone_icon"><img src="../plantilla/images/milestone_4.svg" alt="https://www.flaticon.com/authors/zlatko-najdenovski"></div>
+						<div class="milestone_counter" data-end-value="3500" data-sign-before="+">0</div>
+						<div class="milestone_text">Proyectos evaluados</div>
+					</div>
+				</div>
+
+			</div>
+		</div>
+	</div>
+    
 
     <!--Footer-->
     <footer class="footer mt-3">
