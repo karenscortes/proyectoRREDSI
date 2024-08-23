@@ -8,23 +8,18 @@
     <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="../plantilla/styles/bootstrap4/bootstrap.min.css">
     <link href="../plantilla/plugins/fontawesome-free-5.0.1/css/fontawesome-all.css" rel="stylesheet" type="text/css">
-    <link rel="stylesheet" type="text/css" href="../plantilla/styles/main_styles.css">
-    <link rel="stylesheet" href="../plantilla/styles/global_styles.css">
-    <link rel="stylesheet" type="text/css" href="../plantilla/styles/main_styles_delegado.css">
     <link rel="stylesheet" type="text/css" href="../plantilla/styles/salas_styles.css">
     <link rel="stylesheet" type="text/css" href="../plantilla/styles/main_styles_delegado.css">
     <link rel="stylesheet" type="text/css" href="../plantilla/styles/responsive.css">
-    <link rel="stylesheet" type="text/css" href="../plantilla/styles/main_styles_admin copy.css">
-    <link rel="stylesheet" type="text/css" href="../plantilla/styles/responsive_admin.css">
 
 </head>
 
 <body>
-    <!-- header -->
-    <header class=" position-relative justify-content-center py-3" style="border-bottom: 20px solid rgb(255, 182, 6); ">
-        <div class="row align-items-center" style="margin-inline: 55px;">
+    <header style=" border-bottom: 20px solid rgb(255, 182, 6);">
+        <div class="position-relative d-flex justify-content-between align-items-center py-1"
+            style="margin-inline: 55px;">
             <!-- Logo -->
-            <div class="logo_container ml-5">
+            <div class="logo_container d-flex align-items-center">
                 <div class="logo">
                     <img class="img-fluid" src="../plantilla/images/logoRredsi.png" alt="">
                     <span>RREDSI</span>
@@ -34,12 +29,12 @@
             <!-- Main Navigation -->
             <nav class="main_nav_container">
                 <div class="main_nav">
-                    <ul class="main_nav_list d-flex justify-content-around">
+                    <ul class="main_nav_list d-flex justify-content-around align-items-center">
                         <li class="main_nav_item"><a href="principal.html">Inicio</a></li>
                         <li class="main_nav_item"><a href="perfil.html">Perfil</a></li>
                         <li class="main_nav_item">
                             <div class="dropdown">
-                                <a class=" dropdown-toggle text-dark" type="button" data-toggle="dropdown"
+                                <a class="dropdown-toggle text-dark" type="button" data-toggle="dropdown"
                                     aria-expanded="false">
                                     Evaluadores
                                 </a>
@@ -51,7 +46,7 @@
                         </li>
                         <li class="main_nav_item">
                             <div class="dropdown">
-                                <a class=" dropdown-toggle text-dark" type="button" data-toggle="dropdown"
+                                <a class="dropdown-toggle text-dark" type="button" data-toggle="dropdown"
                                     aria-expanded="false">
                                     Proyectos
                                 </a>
@@ -63,13 +58,13 @@
                         </li>
                         <li class="main_nav_item">
                             <div class="dropdown">
-                                <a class=" dropdown-toggle text-dark" type="button" data-toggle="dropdown"
+                                <a class="dropdown-toggle text-dark" type="button" data-toggle="dropdown"
                                     aria-expanded="false">
                                     Evento
                                 </a>
                                 <div class="dropdown-menu text-center">
                                     <a href="salas.html">Salas</a><br>
-                                    <a href="#">Asistencia</a>
+                                    <a href="asistencia.html">Asistencia</a>
                                 </div>
                             </div>
                         </li>
@@ -77,14 +72,15 @@
                     </ul>
                 </div>
             </nav>
-        </div>
 
-        <!-- Hamburger -->
-        <div class="hamburger_container">
-            <i class="fas fa-bars trans_200"></i>
+            <!-- Hamburger -->
+            <div class="hamburger_container">
+                <i class="fas fa-bars trans_200"></i>
+            </div>
         </div>
 
     </header>
+
     <!-- Menu -->
     <div class="menu_container menu_mm">
 
@@ -131,7 +127,7 @@
                             </a>
                             <div class="dropdown-menu text-center">
                                 <a href="salas.html">Salas</a><br>
-                                <a href="#">Asistencia</a>
+                                <a href="asistencia.html">Asistencia</a>
                             </div>
                         </div>
                     </li>
