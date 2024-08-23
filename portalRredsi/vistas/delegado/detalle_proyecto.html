@@ -4,12 +4,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gestionar Salas</title>
+    <title>Detalle Proyecto</title>
     <link rel="stylesheet" href="../bootstrap/css/bootstrap.min.css">
-    
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="../plantilla/styles/bootstrap4/bootstrap.min.css">
-    <link href="../plantilla/plugins/fontawesome-free-5.0.1/css/fontawesome-all.css" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" type="text/css" href="../plantilla/plugins/OwlCarousel2-2.2.1/owl.carousel.css">
     <link rel="stylesheet" type="text/css" href="../plantilla/plugins/OwlCarousel2-2.2.1/owl.theme.default.css">
     <link rel="stylesheet" type="text/css" href="../plantilla/plugins/OwlCarousel2-2.2.1/animate.css">
@@ -21,11 +20,11 @@
 </head>
 
 <body>
-    <!-- header -->
-    <header class="header d-flex flex-row position-relative">
-        <div class="header_content d-flex flex-row align-items-center justify-content-start">
+    <header style=" border-bottom: 20px solid rgb(255, 182, 6);">
+        <div class="position-relative d-flex justify-content-between align-items-center py-1"
+            style="margin-inline: 55px;">
             <!-- Logo -->
-            <div class="logo_container">
+            <div class="logo_container d-flex align-items-center">
                 <div class="logo">
                     <img class="img-fluid" src="../plantilla/images/logoRredsi.png" alt="">
                     <span>RREDSI</span>
@@ -35,23 +34,42 @@
             <!-- Main Navigation -->
             <nav class="main_nav_container">
                 <div class="main_nav">
-                    <ul class="main_nav_list d-flex justify-content-between">
-                        <li class="main_nav_item"><a href="principal.htm">Inicio</a></li>
-                        <li class="main_nav_item"><a href="perfil_admin.html">Perfil</a></li>
-                        <li class="main_nav_item"><a href="gestion_cuentas_delegados.html">Cuentas</a></li>
-                        <li class="main_nav_item"><a href="gestion_rubrica.html">Rúbricas</a></li>
+                    <ul class="main_nav_list d-flex justify-content-around align-items-center">
+                        <li class="main_nav_item"><a href="principal.html">Inicio</a></li>
+                        <li class="main_nav_item"><a href="perfil.html">Perfil</a></li>
                         <li class="main_nav_item">
                             <div class="dropdown">
-                                <a class=" dropdown-toggle text-dark" style="font-weight: 1000;" type="button" data-toggle="dropdown"
+                                <a class="dropdown-toggle text-dark" type="button" data-toggle="dropdown"
                                     aria-expanded="false">
-                                    eventos
+                                    Evaluadores
                                 </a>
                                 <div class="dropdown-menu text-center">
-                                    <a href="gestion_salas.html">salas
-                                    </a><br>
-                                    <a href="gestion_asistentes.html">asistencia</a>
-                                    <br>
-                                    <a href="gestion_convocatoria.html">convocatoria</a>
+                                    <a href="postulaciones.html">Postulaciones</a><br>
+                                    <a href="lista_evaluadores.html">Lista de Evaluadores</a>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="main_nav_item">
+                            <div class="dropdown">
+                                <a class="dropdown-toggle text-dark" type="button" data-toggle="dropdown"
+                                    aria-expanded="false">
+                                    Proyectos
+                                </a>
+                                <div class="dropdown-menu text-center">
+                                    <a href="asignar_proyectos.html">Asignación de <br> Proyectos</a><br>
+                                    <a href="lista_proyectos.html">Lista de Proyectos</a>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="main_nav_item">
+                            <div class="dropdown">
+                                <a class="dropdown-toggle text-dark" type="button" data-toggle="dropdown"
+                                    aria-expanded="false">
+                                    Evento
+                                </a>
+                                <div class="dropdown-menu text-center">
+                                    <a href="salas.html">Salas</a><br>
+                                    <a href="asistencia.html">Asistencia</a>
                                 </div>
                             </div>
                         </li>
@@ -59,11 +77,11 @@
                     </ul>
                 </div>
             </nav>
-        </div>
 
-        <!-- Hamburger -->
-        <div class="hamburger_container">
-            <i class="fas fa-bars trans_200"></i>
+            <!-- Hamburger -->
+            <div class="hamburger_container">
+                <i class="fas fa-bars trans_200"></i>
+            </div>
         </div>
 
     </header>
@@ -72,15 +90,15 @@
         <div class="row mb-4 mt-2">
             <div class="col">
                 <div class="section_title text-center">
-                    <h1>Detalle Proyecto</h1>
+                    <h1>Detalle del Proyecto</h1>
                 </div>
             </div>
         </div>
 
-        <!-- Tabla -->
+        <!-- Tabla Info del Proyecto en Sala-->
         <div class="table-responsive tablaloca mb-5">
             <table id="basic-datatables" class="display table table-striped table-hover text-dark">
-                <thead style="background: rgb(255, 182, 6);">
+                <thead class="text-center" style="background: rgb(255, 182, 6);">
                     <h2 class="text-center">Información de la sala</h2>
                     <tr>
                         <th>Número de sala</th>
@@ -92,7 +110,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
+                    <tr class="text-center">
                         <td style="font-size: 16px;">ABC2351</td>
                         <td style="font-size: 16px;">10:00 - 10:30 AM</td>
                         <td style="font-size: 16px;">Pepe Rodrigo Sanchez</td>
@@ -105,27 +123,34 @@
         </div>
 
         <!-- Contenido extra debajo de la tabla -->
-        <div class="row mt-5 mb-5">
+        <div class="row mt-5">
 
             <!-- Proyecto y Presentación -->
-            <div class="col-md-6 b text-center mb-5">
+            <div class="col-md-6 b text-center">
                 <div class="presentation">
                     <h2>Proyecto</h2>
                     <embed src="../evaluador/material_visual/Guia_manualTecnico.pdf#toolbar=0" width="350px" height="350px" type="">
+                    <div class="row mt-5 text-center">   
+                        <div class="col-12 text-center">    
+                            <form action="../delegado/pruebas_documentos/constancia_NotasAprendiz.pdf" class="d-inline-flex" target="_blank">
+                                <button type="submit" class="btn btn-warning font-weight-bold text-dark">Visualizar</i></button>
+                            </form>
+                        </div>
+                    </div>
+                        
                 </div>
             </div>
 
             <div class="col-md-6 text-center">
                 <div class="presentation">
                     <h2>Presentación</h2>
-                    <img src="https://www.canva.com/design/DAF-TXpZv2c/EN6lRUzFRzWJkUQVkMSzBg/edit?utm_content=DAF-TXpZv2c&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton" alt="">
-
-                    <div class="row">   
-                        <div class="col-6"> 
-                            <button class="btn border"> Icono añadir </button>
+                    <embed src="../evaluador/material_visual/Guia_manualTecnico.pdf#toolbar=0" width="350px" height="350px" type="">
+                    <div class="row mt-5">   
+                        <div class="col-6 text-right">    
+                            <button type="submit" class="btn btn-warning font-weight-bold text-dark" data-toggle="modal" data-target="#agregarPresentacion">Añadir</i></button>
                         </div>
-                        <div class="col-6"> 
-                            <button class="btn border"> Icono eliminar</button>
+                        <div class="col-6 text-left">    
+                            <button type="submit" class="btn btn-warning font-weight-bold text-dark">Eliminar</i></button>
                         </div>
                     </div>
                 </div>
@@ -143,7 +168,59 @@
             </div>  
 
             <div class="col-12 collapse text-center" id="collapseExample">
-                Some placeholder content for the collapse component. This panel is hidden by default but revealed when the user activates the relevant trigger.
+                <div class="section_title text-center">
+                    <h1>Gestionar Suplentes</h1>
+                </div>
+                <div class="row mt-5">   
+                    <div class="col-6">
+                        <!-- Tabla -->
+                        <div class="table-responsive tablaloca mb-5">
+                            <table id="basic-datatables" class="display table table-striped table-hover text-dark">
+                                <thead class="text-center" style="background: rgb(255, 182, 6);">
+                                    <h2 class="text-center">Ponentes</h2>
+                                    <tr>
+                                        <th>Nombre</th>
+                                        <th>Suplente</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr class="text-center">
+                                        <td style="font-size: 16px;">Fernando Alonso</td>
+                                        <td style="font-size: 16px;"><i class="fa-regular fa-square-plus fa-xl" type="button" data-toggle="modal" data-target="#agregarSuplentePonente"></i></td>
+                                    </tr>
+                                    <tr class="text-center">
+                                        <td style="font-size: 16px;">Alberto Acosta</td>
+                                        <td style="font-size: 16px;"><i class="fa-regular fa-square-plus fa-xl" type="button" data-toggle="modal" data-target="#agregarSuplentePonente"></i></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <!-- Tabla -->
+                        <div class="table-responsive tablaloca mb-5">
+                            <table id="basic-datatables" class="display table table-striped table-hover text-dark">
+                                <thead class="text-center" style="background: rgb(255, 182, 6);">
+                                    <h2 class="text-center">Evaluadores</h2>
+                                    <tr>
+                                        <th>Nombre</th>
+                                        <th>Suplente</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr class="text-center">
+                                        <td style="font-size: 16px;">Luis Cohello</td>
+                                        <td style="font-size: 16px;"><i class="fa-regular fa-square-plus fa-xl" type="button" data-toggle="modal" data-target="#agregarSuplenteEvaluador"></i></td>
+                                    </tr>
+                                    <tr class="text-center">
+                                        <td style="font-size: 16px;">Alejandro Machado</td>
+                                        <td style="font-size: 16px;"><i class="fa-regular fa-square-plus fa-xl" type="button" data-toggle="modal" data-target="#agregarSuplenteEvaluador"></i></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
             </div>
            
         </div>
@@ -151,33 +228,142 @@
 
 
 
+    <!-- Modal suplentes Ponentes-->
+    <div class="modal fade" id="agregarSuplentePonente" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content border border-dark border-5 rounded-5 text-dark">
+                <div class="text-center">
+                    <button type="button" class="close mr-3 mt-3" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h3 class="modal-title mt-5 font-weight-bold" id="modalLabel" style="font-size: 1.5rem; color: #333;">Agregar suplente</h3>
+                </div>
+                <div class="modal-body mt-3">
+                    <form>
+                        <div class="form-group row justify-content-center mb-5">
+                            <div class="col-12">    
+                                <div class="row mt-2">
+                                    <div class="col-5 mt-2"> 
+                                        <label for="colFormLabelSm" class=" col-form-label text-left font-weight-bold" style="font-size: 1.2rem; color: #444; white-space: nowrap;">Tipo de documento:</label>
+                                    </div>
+                                    <div class="col-7 mt-2"> 
+                                        <input type="text" id="tipoDocumentoPonente" class="form-control" placeholder="Selecciona uno">
+                                    </div>
+
+                                    <div class="col-5 mt-2"> 
+                                        <label for="colFormLabelSm" class=" col-form-label text-left font-weight-bold" style="font-size: 1.2rem; color: #444; white-space: nowrap;">N° de documento:</label>
+                                    </div>
+                                    <div class="col-7 mt-2"> 
+                                        <input type="text" id="numeroDocumentoPonente" class="form-control" placeholder="Ingresa el número de documento">
+                                    </div>
+
+                                    <div class="col-5 mt-2"> 
+                                        <label for="colFormLabelSm" class=" col-form-label text-left font-weight-bold" style="font-size: 1.2rem; color: #444; white-space: nowrap;">Nombres:</label>
+                                    </div>
+                                    <div class="col-7 mt-2"> 
+                                        <input type="text" id="nombrePonente" class="form-control" placeholder="Ingresa el nombre">
+                                    </div>
+
+                                    <div class="col-5 mt-2"> 
+                                        <label for="colFormLabelSm" class=" col-form-label text-left font-weight-bold" style="font-size: 1.2rem; color: #444; white-space: nowrap;">Apellidos:</label>
+                                    </div>
+                                    <div class="col-7 mt-2"> 
+                                        <input type="text" id="apellidoPonente" class="form-control" placeholder="Ingresa el apellido">
+                                    </div>
+
+                                    <div class="col-5 mt-2"> 
+                                        <label for="colFormLabelSm" class=" col-form-label text-left font-weight-bold" style="font-size: 1.2rem; color: #444; white-space: nowrap;">Programa académico:</label>
+                                    </div>
+                                    <div class="col-7 mt-2"> 
+                                        <input type="text" id="programaAcademicoPonente" class="form-control" placeholder="Selecciona uno">
+                                    </div>
+
+                                    <div class="col-5 mt-2"> 
+                                        <label for="colFormLabelSm" class=" col-form-label text-left font-weight-bold" style="font-size: 1.2rem; color: #444; white-space: nowrap;">Celular:</label>
+                                    </div>
+                                    <div class="col-7 mt-2"> 
+                                        <input type="text" id="celularPonente" class="form-control" placeholder="Ingresa el celular">
+                                    </div>
+
+                                    <div class="col-5 mt-2"> 
+                                        <label for="colFormLabelSm" class=" col-form-label text-left font-weight-bold" style="font-size: 1.2rem; color: #444; white-space: nowrap;">Correo:</label>
+                                    </div>
+                                    <div class="col-7 mt-2"> 
+                                        <input type="text" id="correoPonente" class="form-control" placeholder="ejemplo@gmail.com">
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="text-center">
+                            <button type="submit" class="btn btn-warning font-weight-bold" data-dismiss="modal" style="font-size: 1rem; padding: 0.3rem 1.5rem;">Añadir</button>
+                        </div>                                          
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
 
 
+    <!-- Modal suplentes Evaluador-->
+    <div class="modal fade" id="agregarSuplenteEvaluador" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content border border-dark border-5 rounded-5 text-dark">
+                <div class="text-center">
+                    <button type="button" class="close mr-3 mt-3" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h3 class="modal-title mt-5 font-weight-bold" id="modalLabel" style="font-size: 1.5rem; color: #333;">Agregar suplente</h3>
+                </div>
+                <div class="modal-body mt-3">
+                    <form>
+                        <div class="form-group row justify-content-center mb-5">
+                            <label for="colFormLabelSm" class=" col-form-label text-left font-weight-bold" style="font-size: 1.2rem; margin-right: 15px; color: #444; white-space: nowrap;">Cédula:</label>
+                            <div class="d-flex w-75">
+                                <input type="text" id="cedulaEvaluador" class="form-control mr-2" placeholder="Buscar...">
+                                <button class="btn btn-warning font-weight-bold" data-dismiss="modal">Buscar</button>
+                            </div>
+                            
+                            <label for="colFormLabelSm" class=" col-form-label text-left font-weight-bold" style="font-size: 1.2rem; margin-right: 10px; margin-top: 30px;color: #444; white-space: nowrap;">Nombre:</label>
+                            <div class="d-flex w-75" style="margin-top: 30px;">
+                                <input type="text" id="nombreEvaluador" class="form-control mr-2" placeholder="Ejemplo...">
+                            </div>
+                        </div>
+                        <div class="text-center">
+                            <button type="submit" class="btn btn-warning font-weight-bold" data-dismiss="modal" style="font-size: 1rem; padding: 0.3rem 1.5rem;">Añadir</button>
+                        </div>                                          
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    <!-- Modal añadir presentacion -->
+    <div class="modal fade" id="agregarPresentacion" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content border border-dark border-5 rounded-5 text-dark">
+                <div class="text-center">
+                    <button type="button" class="close mr-3 mt-3" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h3 class="modal-title mt-5 font-weight-bold" id="modalLabel" style="font-size: 1.5rem; color: #333;">Agregar presentación</h3>
+                </div>
+                <div class="modal-body mt-3">
+                    <form>
+                        <div class="form-group row justify-content-center mb-5">
+                            <label for="linkPresentacion" class="col-6 col-form-label text-right font-weight-bold" style="font-size: 1.2rem; color: #444; white-space: nowrap;">Link de la presentación:</label>
+                            <div class="col-6 pr-5">
+                                <input type="text" class="form-control form-control-sm" id="linkPresentacion" style="font-size: 1rem;">
+                            </div>
+                        </div>
+                        <div class="text-center">
+                            <button type="submit" class="btn btn-warning font-weight-bold" data-dismiss="modal" style="font-size: 1rem; padding: 0.3rem 1.5rem;">Añadir</button>
+                        </div>                                          
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <!-- Footer -->
     <footer class="footer mt-5">
@@ -214,5 +400,4 @@
     <script src="../plantilla/plugins/parallax-js-master/parallax.min.js"></script>
     <script src="../plantilla/js/custom.js"></script>
 </body>
-
 </html>
