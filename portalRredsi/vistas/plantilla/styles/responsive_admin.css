@@ -734,3 +734,48 @@
 		width: 100%;
 	}
 }
+
+label{
+	font-size: 20px;
+	font-weight: bold;
+	color: black;
+}
+
+.custom-file-upload {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    max-width: 400px;
+    padding: 20px;
+    margin-top: 10px; /* Para separar la caja de carga del label */
+    border: 2px dashed #ccc;
+    border-radius: 10px;
+    background-color: #f8f9fa;
+    text-align: center;
+    cursor: pointer;
+    transition: border-color 0.3s ease, background-color 0.3s ease;
+}
+
+.custom-file-upload:hover {
+    border-color: #ffb606;
+    background-color: #e9ecef;
+}
+
+.custom-file-upload input[type="file"] {
+    display: none;
+}
+
+.upload-label {
+    font-size: 1.1rem;
+    color: #333;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+}
+
+.upload-label i {
+    font-size: 2rem;
+    color: #ffb606;
+    margin-right: 10px;
+}
