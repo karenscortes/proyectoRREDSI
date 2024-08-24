@@ -25,9 +25,29 @@
 1. 1600px
 ************/
 
+@media only screen and (max-width: 1920px)
+{
+	.header_side
+	{
+		width: 285px;
+	}
+	.main_nav_container
+	{
+		padding-right: 63px;
+	}
+}
+
 @media only screen and (max-width: 1600px)
 {
-	
+	.header_side
+	{
+		width: 285px;
+	}
+	.main_nav_container
+	{
+		padding-right: 63px;
+	}
+
 }
 
 /************
@@ -36,7 +56,15 @@
 
 @media only screen and (max-width: 1440px)
 {
-	
+	.header_side
+	{
+		width: 285px;
+	}
+	.main_nav_container
+	{
+		padding-right: 63px;
+	}
+
 }
 
 /************
@@ -51,7 +79,7 @@
 	}
 	.header_content
 	{
-		width: 100%;
+		width: calc(100% - 219px);
 	}
 	.main_nav_container
 	{
@@ -237,226 +265,13 @@
 	}
 }
 
-@media only screen and (min-width: 991px) and (max-width: 1161px) 
-{
-	.main_nav_container
-	{
-		display: none;
-	}
-	.logo_container
-	{
-		padding-left: 30px;
-	}
-	.hamburger_container
-	{
-		display: block;
-	}
-	.hero_slide_content h1
-	{
-		font-size: 48px;
-	}
-	.hero_boxes
-	{
-		width: 100%;
-		height: auto;
-		padding-top: 117px;
-	}
-	.hero_boxes_inner
-	{
-		position: relative;
-		top: auto;
-		left: auto;
-	}
-	.hero_box
-	{
-		padding-left: 50px;
-	}
-	.hero_box_col
-	{
-		margin-bottom: 30px;
-	}
-	.hero_box_col:last-child
-	{
-		margin-bottom: 0px;
-	}
-	.course_box
-	{
-		margin-bottom: 80px;
-	}
-	.course_box:last-child
-	{
-		margin-bottom: 0px;
-	}
-	.search_section
-	{
-		padding-top: 156px;
-		padding-bottom: 161px;
-	}
-	.register_content,
-	.search_content
-	{
-		width: 75%;
-	}
-	.testimonials_slider_container
-	{
-		padding-left: 0px;
-		padding-right: 0px;
-	}
-	.event_date
-	{
-		margin-top: 30px;
-	}
-	.event_name
-	{
-		margin-top: 17px;
-	}
-	.event_content p
-	{
-		margin-bottom: 0px;
-	}
-	.newsletter_form_container
-	{
-		width: 90%;
-	}
-	.footer_col
-	{
-		margin-bottom: 30px;
-	}
-	.footer_col:last-child
-	{
-		margin-bottom: 0px;
-	}
-}
-
-@media only screen and (min-width: 500px) and (max-width: 768px) 
-{
-	.modal-dialog{
-		min-width: 97%
-	}
-	.boton{
-		width: 25%;
-	}
-	.scroll-div{
-		width: 100%;
-	}
-
-	.card{
-		width: 100%;
-	}
-
-	.tablaloca{
-		width: 100%;
-	}
-}
-
-@media only screen and (min-width: 768px) and (max-width: 991px) 
-{
-	.cont_boton{
-		width: 100%;
-	}
-	.scroll-div{
-		width: 100%;
-	}
-
-	.card{
-		width: 75%;
-	}
-
-	.tablaloca{
-		width: 100%;
-	}
-}
-
-
-
-@media only screen and (min-width: 992px) and (max-width: 1366px) 
-{
-
-	.cont_boton{
-		width: 74%;
-	}
-
-
-	.scroll-div{
-		width: 25%;
-		position: sticky;
-		top: 1%;
-		bottom: 10%;
-	}
-}
-
-@media only screen and (min-width: 1200px) and (max-width: 2612px) 
-{
-
-	.cont_boton{
-		width: 79%;
-	}
-}
-
-@media only screen and (min-width: 992px) and (max-width: 1199px) 
-{
-	.scroll-div{
-		position: sticky;
-		top: 1%;
-		bottom: 20%;
-	}
-
-	.tipo_formato{
-		font-size: 15px;
-	}
-
-	.table-responsive{
-		width: 75%;
-	}
-
-	.tablaloca{
-		width: 100%;
-	}
-
-
-}
-
-@media only screen and (min-width: 1367px) and (max-width: 2612px) 
-{
-	.scroll-div{
-		width: 25%;
-		position: sticky;
-		top: 1%;
-		bottom: 20%;
-	}
-	.table-responsive{
-		width: 100%;
-	}
-	.btnloco
-	{
-		padding-left: 50px;
-		padding-right: 50px;
-	}
-}
-
-@media only screen and (min-width: 600px) and (max-width: 2612px) 
-{
-	
-	.btnloco
-	{
-		padding-left: 50px;
-		padding-right: 50px;
-	}
-}
-
-
-
 /************
 7. 959px
 ************/
 
 @media only screen and (max-width: 959px)
 {
-	.btnloco
-	{
-		padding-left: 50px;
-		padding-right: 50px;
-	}
+	
 }
 
 /************
@@ -465,11 +280,7 @@
 
 @media only screen and (max-width: 880px)
 {
-	.btnloco
-	{
-		padding-left: 50px;
-		padding-right: 50px;
-	}
+	
 }
 
 /************
@@ -478,11 +289,7 @@
 
 @media only screen and (max-width: 768px)
 {
-	.btnloco
-	{
-		padding-left: 50px;
-		padding-right: 50px;
-	}
+	
 }
 
 /************
@@ -505,7 +312,6 @@
 	{
 		margin-top: 15px;
 	}
-	
 }
 
 /************
@@ -654,9 +460,7 @@
 
 @media only screen and (max-width: 539px)
 {
-	.tablaloca{
-		width: 100%;
-	}
+	
 }
 
 /************
@@ -665,9 +469,7 @@
 
 @media only screen and (max-width: 480px)
 {
-	.tablaloca{
-		width: 100%;
-	}
+	
 }
 
 /************
@@ -718,10 +520,6 @@
 	{
 		font-size: 10px;
 	}
-
-	.tablaloca{
-		width: 100%;
-	}
 }
 
 /************
@@ -730,52 +528,5 @@
 
 @media only screen and (max-width: 400px)
 {
-	.tablaloca{
-		width: 100%;
-	}
-}
-
-label{
-	font-size: 20px;
-	font-weight: bold;
-	color: black;
-}
-
-.custom-file-upload {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 100%;
-    max-width: 400px;
-    padding: 20px;
-    margin-top: 10px; /* Para separar la caja de carga del label */
-    border: 2px dashed #ccc;
-    border-radius: 10px;
-    background-color: #f8f9fa;
-    text-align: center;
-    cursor: pointer;
-    transition: border-color 0.3s ease, background-color 0.3s ease;
-}
-
-.custom-file-upload:hover {
-    border-color: #ffb606;
-    background-color: #e9ecef;
-}
-
-.custom-file-upload input[type="file"] {
-    display: none;
-}
-
-.upload-label {
-    font-size: 1.1rem;
-    color: #333;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-}
-
-.upload-label i {
-    font-size: 2rem;
-    color: #ffb606;
-    margin-right: 10px;
+	
 }

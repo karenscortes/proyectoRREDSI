@@ -1,0 +1,62 @@
+.accordion{
+    display: none;
+}
+
+.title-line {
+	border-top: 2px solid rgb(255, 182, 6);
+	margin-top: -10px;
+}
+
+.form-section {
+	background-color: #f8f9fa;
+	border: 1px solid #ced4da;
+	padding: 20px;
+	border-radius: 5px;
+	max-width: 800px;
+	margin: auto;
+}
+
+.form-section h2 {
+	color: rgb(255, 182, 6);
+	text-align: center;
+}
+
+.form-section .title-icon {
+	color: rgb(255, 182, 6);
+	margin-right: 10px;
+	font-size: 1.5rem;
+	margin-bottom: 10px;
+}
+
+.title-line {
+	border-top: 2px solid rgb(255, 182, 6);
+	margin-top: -10px;
+}
+
+@media only screen  and (max-width:767px){
+	.big-screen{
+        display: none;
+    }
+    .accordion{
+        display: block;
+    }
+
+    .card{
+        width: 100%;
+        text-align: left;
+        text-decoration: none;
+        background-color: #f7f7f7;
+        border: 1px solid black;
+        margin-bottom: 2rem;
+    }
+
+    .card button{
+        font-weight: 700;
+        text-align: center;
+    }
+
+    .toggle-button:not(.collapsed) {
+        color: rgb(255, 182, 6);
+    }
+
+} 
