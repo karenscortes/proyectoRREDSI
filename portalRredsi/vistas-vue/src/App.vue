@@ -1,15 +1,15 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png">
-  <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <HeaderDelegado/>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import HeaderDelegado from './components/delegado/PostulacionesEvualuador.vue';
+
 
 export default {
   name: 'App',
   components: {
-    HelloWorld
+    HeaderDelegado
   }
 }
 </script>
