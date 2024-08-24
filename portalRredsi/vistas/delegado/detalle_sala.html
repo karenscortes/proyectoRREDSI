@@ -7,13 +7,12 @@
     <title>Gestionar Sala</title>
     <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="../plantilla/styles/bootstrap4/bootstrap.min.css">
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" type="text/css" href="../plantilla/styles/main_styles.css">
-    <link rel="stylesheet" href="../plantilla/styles/global_styles.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link href="../plantilla/plugins/fontawesome-free-5.0.1/css/fontawesome-all.css" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" type="text/css" href="../plantilla/styles/salas_styles.css">
     <link rel="stylesheet" type="text/css" href="../plantilla/styles/main_styles_delegado.css">
     <link rel="stylesheet" type="text/css" href="../plantilla/styles/responsive.css">
-    <link rel="stylesheet" type="text/css" href="../plantilla/styles/main_styles_admin copy.css">
-    <link rel="stylesheet" type="text/css" href="../plantilla/styles/responsive_admin.css">
 
     <style>
         table {
@@ -30,11 +29,11 @@
 </head>
 
 <body>
-    <!-- header -->
-    <header class=" position-relative justify-content-center py-3" style="border-bottom: 20px solid rgb(255, 182, 6); ">
-        <div class="row align-items-center" style="margin-inline: 55px;">
+    <header style=" border-bottom: 20px solid rgb(255, 182, 6);">
+        <div class="position-relative d-flex justify-content-between align-items-center py-1"
+            style="margin-inline: 55px;">
             <!-- Logo -->
-            <div class="logo_container ml-5">
+            <div class="logo_container d-flex align-items-center">
                 <div class="logo">
                     <img class="img-fluid" src="../plantilla/images/logoRredsi.png" alt="">
                     <span>RREDSI</span>
@@ -44,12 +43,12 @@
             <!-- Main Navigation -->
             <nav class="main_nav_container">
                 <div class="main_nav">
-                    <ul class="main_nav_list d-flex justify-content-around">
+                    <ul class="main_nav_list d-flex justify-content-around align-items-center">
                         <li class="main_nav_item"><a href="principal.html">Inicio</a></li>
                         <li class="main_nav_item"><a href="perfil.html">Perfil</a></li>
                         <li class="main_nav_item">
                             <div class="dropdown">
-                                <a class=" dropdown-toggle text-dark" type="button" data-toggle="dropdown"
+                                <a class="dropdown-toggle text-dark" type="button" data-toggle="dropdown"
                                     aria-expanded="false">
                                     Evaluadores
                                 </a>
@@ -61,7 +60,7 @@
                         </li>
                         <li class="main_nav_item">
                             <div class="dropdown">
-                                <a class=" dropdown-toggle text-dark" type="button" data-toggle="dropdown"
+                                <a class="dropdown-toggle text-dark" type="button" data-toggle="dropdown"
                                     aria-expanded="false">
                                     Proyectos
                                 </a>
@@ -73,7 +72,7 @@
                         </li>
                         <li class="main_nav_item">
                             <div class="dropdown">
-                                <a class=" dropdown-toggle text-dark" type="button" data-toggle="dropdown"
+                                <a class="dropdown-toggle text-dark" type="button" data-toggle="dropdown"
                                     aria-expanded="false">
                                     Evento
                                 </a>
@@ -87,14 +86,15 @@
                     </ul>
                 </div>
             </nav>
-        </div>
 
-        <!-- Hamburger -->
-        <div class="hamburger_container">
-            <i class="fas fa-bars trans_200"></i>
+            <!-- Hamburger -->
+            <div class="hamburger_container">
+                <i class="fas fa-bars trans_200"></i>
+            </div>
         </div>
 
     </header>
+
     <!-- Menu -->
     <div class="menu_container menu_mm">
 
@@ -141,7 +141,7 @@
                             </a>
                             <div class="dropdown-menu text-center">
                                 <a href="salas.html">Salas</a><br>
-                                <a href="#">Asistencia</a>
+                                <a href="asistencia.html">Asistencia</a>
                             </div>
                         </div>
                     </li>
@@ -186,13 +186,13 @@
                         <label for="proyecto_codigo" class="fw-bold text-dark">Proyecto:</label>
                         <select id="id_proyecto" class="form-select text-dark" required>
                             <option value="Seleccionar" selected>Seleccione una opción</option>
-                            <option value="1">A001</option>
-                            <option value="2">A002</option>
-                            <option value="3">A003</option>
+                            <option value="A001">A001</option>
+                            <option value="A002">A002</option>
+                            <option value="A003">A003</option>
                         </select>
                     </div>
                 </div>
-                <form class="mt-4">
+                <form class="mt-4" id="formulario">
                     <div class="row mb-3">
                         <div class="col-12 col-md-6">
                             <label for="ponente_1" class="form-label text-black">Ponente 1:</label>
@@ -208,18 +208,18 @@
                             <label for="evaluador_1" class="fw-bold text-dark">Evaluador 1:</label>
                             <select id="id_evaluador_1" class="form-select text-dark" required>
                                 <option value="Seleccionar" selected>Seleccione una opción</option>
-                                <option value="1">Christian Arce</option>
-                                <option value="2">Maribel Obando</option>
-                                <option value="3">Diego Legarda</option>
+                                <option value="Christian Arce">Christian Arce</option>
+                                <option value="Maribel Obando">Maribel Obando</option>
+                                <option value="Diego Legarda">Diego Legarda</option>
                             </select>
                         </div>
                         <div class="col-12 col-md-6">
                             <label for="evaluador_2" class="fw-bold text-dark">Evaluador 2:</label>
                             <select id="id_evaluador_2" class="form-select text-dark" required>
                                 <option value="Seleccionar" selected>Seleccione una opción</option>
-                                <option value="1">Christian Arce</option>
-                                <option value="2">Maribel Obando</option>
-                                <option value="3">Diego Legarda</option>
+                                <option value="Christian Arce">Christian Arce</option>
+                                <option value="Maribel Obando">Maribel Obando</option>
+                                <option value="Diego Legarda">Diego Legarda</option>
                             </select>
                         </div>
                     </div>
@@ -227,20 +227,20 @@
                     <div class="row mb-3 align-items-center">
                         <div class="col-12 col-md-4">
                             <label class="form-label">Fecha:</label>
-                            <input type="date" class="form-control text-dark" v-model="selectedDate" @change="addDateSchedule">
+                            <input type="date" id="fecha" class="form-control text-dark" >
                         </div>
                         <div class="col-12 col-md-4">
                             <label>Hora de Inicio:</label>
-                            <input type="time" class="form-control text-dark" v-model="newStartTime" @change="updateTime(schedule.date)">
+                            <input type="time" class="form-control text-dark" id="horario_inicio">
                         </div>
                         <div class="col-12 col-md-4">
                             <label>Hora de Fin:</label>
-                            <input type="time" class="form-control text-dark" v-model="newEndTime" >
+                            <input type="time" class="form-control text-dark" id="horario_fin" >
                         </div>
                     </div>
                     <!-- Botón para agregar horario -->
                     <div class="text-center mt-4">
-                        <button class="btn btn-dark text-light">Asignar Horario</button>
+                        <button class="btn text-dark " type="submit" id="asignar_horario" style="background:rgb(255, 182, 6);">Asignar Horario</button>
                     </div>
                 </form>
                 <div class="title-line mt-3"></div>
@@ -250,14 +250,7 @@
                     <div class="">
                         <h3 class="text-center m-0">Sep 6 de 2024</h3>
                     </div>
-                    <div class="mb-3">
-                        <label for="timeSlotSelect" class="form-label">Seleccionar horario:</label>
-                        <select id="timeSlotSelect" class="form-select" onchange="filterTimeSlots()">
-                            <option value="morning" selected>Mañana (6 AM - 12 PM)</option>
-                            <option value="afternoon">Tarde (12 PM - 6 PM)</option>
-                        </select>
-                    </div>
-                    <table class="table table-bordered">
+                    <table class="table table-hover border table-responsive">
                         <thead>
                             <tr id="headerRow">
                                 <th class="text-center">Evaluadores</th>
@@ -274,6 +267,7 @@
                                 <th class="text-center time-slot" data-time="11am">11:00am</th>
                                 <th class="text-center time-slot" data-time="11am">11:30am</th>
                                 <th class="text-center time-slot" data-time="12pm">12:00pm</th>
+                                <th class="text-center time-slot" data-time="12pm">12:30pm</th>
                                 <th class="text-center time-slot" data-time="1pm">1:00pm</th>
                                 <th class="text-center time-slot" data-time="1pm">1:30pm</th>
                                 <th class="text-center time-slot" data-time="2pm">2:00pm</th>
@@ -285,13 +279,12 @@
                                 <th class="text-center time-slot" data-time="5pm">5:00pm</th>
                                 <th class="text-center time-slot" data-time="5pm">5:30pm</th>
                                 <th class="text-center time-slot" data-time="6pm">6:00pm</th>
+                                <th class="text-center time-slot" data-time="6pm">6:30pm</th>
                             </tr>
                         </thead>
                         <tbody id="scheduleBody">
                             <tr>
                                 <td class="text-center">Evaluador 1</td>
-                                <td colspan="2" rowspan="2" class="text-center movible" draggable="true" id="movibleTd"
-                                    style="background-color: rgb(255, 182, 6); vertical-align: middle;">BigDataIA</td>
                                 <td></td>
                                 <td></td>
                                 <td></td>
@@ -324,8 +317,6 @@
                             </tr>
                             <tr>
                                 <td class="text-center">Evaluador 3</td>
-                                <td colspan="2" rowspan="2" class="text-center movible" draggable="true" id="movible2"
-                                    style="background-color: rgb(255, 182, 6); vertical-align: middle;">AguaLimpia</td>
                                 <td></td>
                                 <td></td>
                                 <td></td>
@@ -423,61 +414,17 @@
         </div>
     </footer>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14"></script>
-    <script src="logica.js"></script>
+    <script src="../plantilla/js/delegado.js"></script>
     <script src="../plantilla/js/jquery-3.2.1.min.js"></script>
     <script src="../plantilla/styles/bootstrap4/popper.js"></script>
     <script src="../plantilla/styles/bootstrap4/bootstrap.min.js"></script>
     <script src="../plantilla/plugins/greensock/TweenMax.min.js"></script>
     <script src="../plantilla/plugins/greensock/TimelineMax.min.js"></script>
-    <script src="../plantilla/plugins/scrollmagic/ScrollMagic.min.js"></script>
     <script src="../plantilla/plugins/greensock/animation.gsap.min.js"></script>
     <script src="../plantilla/plugins/greensock/ScrollToPlugin.min.js"></script>
-    <script src="../plantilla/plugins/OwlCarousel2-2.2.1/owl.carousel.js"></script>
     <script src="../plantilla/plugins/scrollTo/jquery.scrollTo.min.js"></script>
     <script src="../plantilla/plugins/easing/easing.js"></script>
     <script src="../plantilla/js/custom.js"></script>
 
-    <script>
-        function filterTimeSlots() {
-            const selectedSlot = document.getElementById('timeSlotSelect').value;
-            const timeSlots = document.querySelectorAll('.time-slot');
-
-            timeSlots.forEach(slot => {
-                const time = slot.dataset.time;
-                if (selectedSlot === 'morning' && (time === '6am' || time === '7am' || time === '8am' || time === '9am' || time === '10am' || time === '11am' ||time === '12pm'))  {
-                    slot.style.display = 'table-cell';
-                } else if (selectedSlot === 'afternoon' && (time === '1pm' || time === '2pm' || time === '3pm' || time === '4pm' || time === '5pm'|| time === '6pm'))  {
-                    slot.style.display = 'table-cell';
-                } else {
-                    slot.style.display = 'none';
-                }
-            });
-        }
-
-        window.onload = filterTimeSlots; // Filtrar cuando la página cargue
-        const movibleTd = document.getElementById('movibleTd');
-
-        movibleTd.addEventListener('dragstart', (e) => {
-            e.dataTransfer.setData('text/plain', e.target.id);
-        });
-
-        const tds = document.querySelectorAll('td:not(.movible)');
-        tds.forEach(td => {
-            td.addEventListener('dragover', (e) => {
-                e.preventDefault();
-            });
-
-            td.addEventListener('drop', (e) => {
-                e.preventDefault();
-                const id = e.dataTransfer.getData('text/plain');
-                const draggableElement = document.getElementById(id);
-                td.parentNode.insertBefore(draggableElement, td);
-            });
-        });
-    </script>
-
-
 </body>
-
 </html>
