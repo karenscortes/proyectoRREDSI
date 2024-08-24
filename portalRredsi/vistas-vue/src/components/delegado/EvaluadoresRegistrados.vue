@@ -38,28 +38,6 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>1000000001</td>
-                            <td>Pepe Rodrigo Sanchez</td>
-                            <td>Ciencias naturales</td>
-                            <td>SENA</td>
-                            <td>
-                                <div class="custom-control custom-switch d-flex justify-content-center">
-                                    <input type="checkbox" class="custom-control-input" id="customSwitch1">
-                                    <label class="custom-control-label" for="customSwitch1"></label>
-                                </div>
-                            </td>
-                            <td>
-                                <a href="#" class="btn-sm font-weight-bold text-dark" type="button"
-                                    data-bs-toggle="modal" data-bs-target="#delegateInformation">
-                                    <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960"
-                                        width="24px" fill="#00000">
-                                        <path
-                                            d="M560-440h200v-80H560v80Zm0-120h200v-80H560v80ZM200-320h320v-22q0-45-44-71.5T360-440q-72 0-116 26.5T200-342v22Zm160-160q33 0 56.5-23.5T440-560q0-33-23.5-56.5T360-640q-33 0-56.5 23.5T280-560q0 33 23.5 56.5T360-480ZM160-160q-33 0-56.5-23.5T80-240v-480q0-33 23.5-56.5T160-800h640q33 0 56.5 23.5T880-720v480q0 33-23.5 56.5T800-160H160Zm0-80h640v-480H160v480Zm0 0v-480 480Z" />
-                                    </svg>
-                                </a>
-                            </td>
-                        </tr>
                         <tr v-for="(evaluador, index) in evaluadores" :key="index">
                             <td>{{ evaluador.identificacion }}</td>
                             <td>{{ evaluador.nombre }}</td>
@@ -92,25 +70,25 @@
                 <ul class="pagination justify-content-center">
                     <li class="page-item disabled m-1">
                         <a class="page-link" href="#" tabindex="-1"
-                            style="border-radius: 20px; color: black;">Previous</a>
+                            style="border-radius: 20px;">Previous</a>
                     </li>
                     <li class="page-item rounded m-1">
-                        <a class="page-link rounded-circle" href="#" style="color: black;">1</a>
+                        <a class="page-link rounded-circle" href="#">1</a>
                     </li>
                     <li class="page-item m-1">
-                        <a class="page-link rounded-circle" href="#" style="color: black;">2</a>
+                        <a class="page-link rounded-circle" href="#">2</a>
                     </li>
                     <li class="page-item m-1">
-                        <a class="page-link rounded-circle" href="#" style="color: black;">3</a>
+                        <a class="page-link rounded-circle" href="#">3</a>
                     </li>
                     <li class="page-item m-1">
-                        <a class="page-link" href="#" style="border-radius: 20px; color: black;">Next</a>
+                        <a class="page-link" href="#" style="border-radius: 20px;">Next</a>
                     </li>
                 </ul>
             </div>
         </div>
 
-        <!-- Modal datos delegados -->
+        <!-- Modal datos -->
         <div class="modal fade" id="delegateInformation" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content border border-dark border-5 rounded-5 text-dark">
@@ -161,8 +139,6 @@
             </div>
         </div>
 
-
-
     </div>
 
 </template>
@@ -177,7 +153,7 @@ export default {
                     nombre: "Sebastian usma",
                     areaConocimiento: "Tecnologia",
                     institucion: "SENA",
-                    estado: false
+                    estado: true
                 },
                 {
                     identificacion: "246415441",
@@ -205,3 +181,32 @@ export default {
     }
 }
 </script>
+
+<style>
+.section_title h1 {
+	display: block;
+	color: #1a1a1a;
+	font-weight: 500;
+	padding-top: 24px;
+}
+
+.section_title h1::before {
+	display: block;
+	position: absolute;
+	top: 0;
+	left: 50%;
+	-webkit-transform: translateX(-50%);
+	-moz-transform: translateX(-50%);
+	-ms-transform: translateX(-50%);
+	-o-transform: translateX(-50%);
+	transform: translateX(-50%);
+	width: 55px;
+	height: 4px;
+	content: '';
+	background: #ffb606;
+}
+
+.page-link{
+    color: black;
+}
+</style>
