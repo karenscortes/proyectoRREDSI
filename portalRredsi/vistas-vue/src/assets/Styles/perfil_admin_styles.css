@@ -28,7 +28,10 @@
 	margin-bottom: 10px;
 }
 
-
+.title-line {
+	border-top: 2px solid rgb(255, 182, 6);
+	margin-top: -10px;
+}
 
 @media only screen  and (max-width:767px){
 	.big-screen{

@@ -1,0 +1,657 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detalle Proyecto</title>
+    <link rel="stylesheet" href="../bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="../plantilla/styles/bootstrap4/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" type="text/css" href="../plantilla/plugins/OwlCarousel2-2.2.1/owl.carousel.css">
+    <link rel="stylesheet" type="text/css" href="../plantilla/plugins/OwlCarousel2-2.2.1/owl.theme.default.css">
+    <link rel="stylesheet" type="text/css" href="../plantilla/plugins/OwlCarousel2-2.2.1/animate.css">
+    <link rel="stylesheet" type="text/css" href="../plantilla/styles/responsive.css">
+    <link rel="stylesheet" type="text/css" href="../plantilla/styles/main_styles_admin copy.css">
+    <link rel="stylesheet" type="text/css" href="../plantilla/styles/responsive_admin.css">
+    
+</head>
+
+<body>
+    <header class="py-4" style=" border-bottom: 20px solid rgb(255, 182, 6);">
+        <div class="position-relative d-flex justify-content-between align-items-center py-1" style="margin-inline: 55px;">
+            <!-- Logo -->
+            <div class="logo_container d-flex align-items-center">
+                <div class="logo">
+                    <img class="img-fluid" src="../plantilla/images/logoRredsi.png" alt="">
+                    <span>RREDSI</span>
+                </div>
+            </div>
+
+            <!-- Main Navigation -->
+            <nav class="main_nav_container">
+                <div class="main_nav">
+                    <ul class="main_nav_list d-flex justify-content-around align-items-center">
+                        <li class="main_nav_item"><a href="principal.html">Inicio</a></li>
+                        <li class="main_nav_item"><a href="perfil.html">Perfil</a></li>
+                        <li class="main_nav_item">
+                            <div class="dropdown">
+                                <a class="dropdown-toggle text-dark" type="button" data-toggle="dropdown"
+                                    aria-expanded="false">
+                                    Evaluadores
+                                </a>
+                                <div class="dropdown-menu text-center">
+                                    <a href="postulaciones.html">Postulaciones</a><br>
+                                    <a href="lista_evaluadores.html">Lista de Evaluadores</a>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="main_nav_item">
+                            <div class="dropdown">
+                                <a class="dropdown-toggle text-dark" type="button" data-toggle="dropdown"
+                                    aria-expanded="false">
+                                    Proyectos
+                                </a>
+                                <div class="dropdown-menu text-center">
+                                    <a href="asignar_proyectos.html">Asignación de <br> Proyectos</a><br>
+                                    <a href="lista_proyectos.html">Lista de Proyectos</a>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="main_nav_item">
+                            <div class="dropdown">
+                                <a class="dropdown-toggle text-dark" type="button" data-toggle="dropdown"
+                                    aria-expanded="false">
+                                    Evento
+                                </a>
+                                <div class="dropdown-menu text-center">
+                                    <a href="salas.html">Salas</a><br>
+                                    <a href="asistencia.html">Asistencia</a>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="main_nav_item"><a href="#">Cerrar sesión</a></li>
+                    </ul>
+                </div>
+            </nav>
+
+            <!-- Hamburger -->
+            <div class="hamburger_container">
+                <i class="fas fa-bars trans_200"></i>
+            </div>
+        </div>
+
+    </header>
+
+    <!-- Menu -->
+    <div class="menu_container menu_mm">
+
+        <!-- Menu Close Button -->
+        <div class="menu_close_container">
+            <div class="menu_close"></div>
+        </div>
+
+        <!-- Menu Items -->
+        <div class="menu_inner menu_mm">
+            <div class="menu menu_mm">
+                <ul class="menu_list menu_mm">
+                    <li class="menu_item menu_mm"><a href="principal.html">Inicio</a></li>
+                    <li class="menu_item menu_mm"><a href="perfil.html">Perfil</a></li>
+                    <li class="menu_item menu_mm">
+                        <div class="dropdown">
+                            <a class=" dropdown-toggle text-dark" type="button" data-toggle="dropdown"
+                                aria-expanded="false">
+                                Evaluadores
+                            </a>
+                            <div class="dropdown-menu text-center">
+                                <a href="postulaciones.html">Postulaciones</a><br>
+                                <a href="lista_evaluadores.html">Lista de Evaluadores</a>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="menu_item menu_mm">
+                        <div class="dropdown">
+                            <a class=" dropdown-toggle text-dark" type="button" data-toggle="dropdown"
+                                aria-expanded="false">
+                                Proyectos
+                            </a>
+                            <div class="dropdown-menu text-center">
+                                <a href="asignar_proyectos.html">Asignación de <br> Proyectos</a><br>
+                                <a href="lista_proyectos.html">Lista de Proyectos</a>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="menu_item menu_mm">
+                        <div class="dropdown">
+                            <a class=" dropdown-toggle text-dark" type="button" data-toggle="dropdown"
+                                aria-expanded="false">
+                                Evento
+                            </a>
+                            <div class="dropdown-menu text-center">
+                                <a href="salas.html">Salas</a><br>
+                                <a href="asistencia.html">Asistencia</a>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="menu_item menu_mm"><a href="#">Cerrar sesión</a></li>
+                </ul>
+
+                <!-- Menu Social -->
+
+                <div class="menu_social_container menu_mm">
+                    <ul class="menu_social menu_mm">
+                        <li class="menu_social_item menu_mm"><a href="https://www.instagram.com/rredsiquindio/"><i
+                                    class="fab fa-instagram"></i></a></li>
+                        <li class="menu_social_item menu_mm"><a
+                                href="https://www.facebook.com/rredsi?mibextid=ZbWKwL"><i
+                                    class="fab fa-facebook-f"></i></a></li>
+                        <li class="menu_social_item menu_mm"><a href="https://x.com/Rredsi"><i
+                                    class="fab fa-twitter"></i></a></li>
+                    </ul>
+                </div>
+
+                <div class="menu_copyright menu_mm">ADSO 2670586 All rights reserved</div>
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="container pt-5">
+        <div class="row mb-4 mt-2">
+            <div class="col">
+                <div class="section_title text-center">
+                    <h1>Detalle del Proyecto</h1>
+                </div>
+            </div>
+        </div>
+
+        <div class="why-choose-section">
+            <div class="container">
+                <div class="row justify-content-between">
+                    <div class="col-lg-6 order-2 order-lg-1">
+                        <h2 class="section-title mt-4">Información del proyecto</h2>
+                        <div class="row my-5">
+                            <div class="col-6 col-md-6">
+                                <div class="feature">
+                                    <div class="icon">
+                                        <i class="fa-solid fa-users fa-2xl text-dark mb-3"></i>
+                                    </div>
+                                    <h3 class="text-dark">Ponentes</h3>
+                                    <p id="nombrePonentes" class="text-dark">Diego Fernando Legarda <br> Felipe Londoño</p>
+                                </div>
+                            </div>
+        
+                            <div class="col-6 col-md-6">
+                                <div class="feature">
+                                    <div class="icon">
+                                        <i class="fa-solid fa-user-graduate fa-2xl text-dark mb-3"></i>
+                                    </div>
+                                    <h3 class="text-dark">Evaluadores</h3>
+                                    <p id="nombreEvaluadores" class="text-dark">Manuel Trujillo Velazques<br> Juan Castillo Montes</p>
+                                </div>
+                            </div>
+        
+                            <div class="col-6 col-md-6">
+                                <div class="feature">
+                                    <div class="icon">
+                                        <i class="fa-solid fa-person-chalkboard fa-2xl text-dark mb-3"></i>
+                                    </div>
+                                    <h3 class="text-dark">Evento</h3>
+                                    <p id="horarioAsignado" class="text-dark">Horario: 10:30 - 11:00 A.M</p>
+                                    <p id="salaAsignada" class="text-dark">Sala: 123ASV</p>
+                                </div>
+                            </div>
+        
+                            <div class="col-6 col-md-6">
+                                <div class="feature">
+                                    <div class="icon">
+                                        <i class="fa-solid fa-user-group fa-2xl text-dark mb-3"></i>
+                                    </div>
+                                    <h3 class="text-dark">Suplentes <i type="button" data-toggle="modal" data-target="#agregarSuplente" class="fa-regular fa-square-plus fa-lg text-dark"></i></h3>
+                                    <p id="suplente1" class="text-dark">Tipo: Evaluador - Miguel Angel</p>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Botones -->
+                        <div class="col-12 d-flex justify-content-between">
+                            
+                            <button type="submit" class="btn btn-sm btn-warning font-weight-bold" data-toggle="modal" data-target="#agregarPresentacion" style="width: 36%;">Añadir presentación</button>
+
+                            <form action="../delegado/pruebas_documentos/constancia_NotasAprendiz.pdf" style="width: 31%;" target="_blank">
+                                <button type="submit" class="btn btn-sm btn-warning font-weight-bold" style="width: 100%;">Ver presentación</button>
+                            </form>
+
+                            <form action="../delegado/pruebas_documentos/constancia_NotasAprendiz.pdf" style="width: 31%;" target="_blank">
+                                <button type="submit" class="btn btn-sm btn-warning font-weight-bold" style="width: 100%;">Ver proyecto</button>
+                            </form>
+                        </div>
+                    </div>
+        
+                    <div class="col-lg-6 order-1 order-lg-2">
+                        <div class="img-wrap mt-4">
+                            <img src="../plantilla/images/course_5.jpg" style=" border-radius: 25px;" alt="Image" class="img-fluid shadow-lg">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+
+        <!-- Accordion -->
+        <div class="accordion pt-5 mt-3 " id="accordionExample">
+            <div class="card p-2">
+                <div id="headingOne">
+                    <button class="btn btn-block toggle-button collapsed " type="button" data-toggle="collapse"
+                        data-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+                        <i style="margin-right: 10px;" class="fa-solid fa-check fa-xl"></i>Respuesta rúbrica 1
+                    </button>
+                </div>
+                <div id="collapseOne" class="collapse" aria-labelledby="headingOne"
+                    data-parent="#accordionExample">
+
+                    <form action="#" class="row justify-content-center mt-5">
+                        <div class="col-lg-10 col-md-12 col-sm-12 mb-3 table-responsive">
+                            <table class="table display text-dark border border-dark">
+                                <thead class="text-center">
+                                    <tr class="titulo_rubrica">
+                                        <td class="col-4" style="border-top: 1px solid #000;">Titulo:</td>
+                                        <td colspan="4" style="border-top: 1px solid #000;">
+                                            <input type="text" class="form-control form-control-sm text-dark rounded-5" id="inputTitle" value="Evaluación del Proyecto ABC" readonly>
+                                        </td>
+                                    </tr>
+                                    <tr class="titulo_rubrica">
+                                        <td class="col-4">Ponente(es):</td>
+                                        <td colspan="4">
+                                            <input type="text" class="form-control form-control-sm text-dark rounded-5" id="inputSpeaker" value="Juan Pérez, Ana López" readonly>
+                                        </td>
+                                    </tr>
+                                    <tr class="titulo_rubrica">
+                                        <td class="col-4">Universidad:</td>
+                                        <td colspan="4">
+                                            <input type="text" class="form-control form-control-sm text-dark rounded-5" id="inputUniversity" value="Universidad Nacional" readonly>
+                                        </td>
+                                    </tr>
+                                    <tr class="titulo_rubrica">
+                                        <td scope="col-4">Componentes</td>
+                                        <td scope="col-2">Max Valor</td>
+                                        <td scope="col-2">Calificación</td>
+                                        <td scope="col-4">Observaciones</td>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td class="border border-dark"><span class="text-dark font-weight-bold">Originalidad del Proyecto:</span></td>
+                                        <td class="text-center border border-dark">30</td>
+                                        <td class="border border-dark text-center"><input type="text" id="inputScore1" class="form-control form-control-plaintext text-dark text-center" value="28" readonly></td>
+                                        <td class="border border-dark"><textarea id="inputObservations1" class="w-100" style="height: 50px;" rows="1" readonly>Muy original y con un enfoque innovador.</textarea></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="border border-dark"><span class="text-dark font-weight-bold">Calidad de la Presentación:</span></td>
+                                        <td class="text-center border border-dark">25</td>
+                                        <td class="border border-dark text-center"><input type="text" id="inputScore2" class="form-control form-control-plaintext text-dark text-center" value="22" readonly></td>
+                                        <td class="border border-dark"><textarea id="inputObservations2" class="w-100" style="height: 50px;" rows="1" readonly>Presentación clara, pero con algunos detalles a mejorar.</textarea></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="border border-dark"><span class="text-dark font-weight-bold">Relevancia del Contenido:</span></td>
+                                        <td class="text-center border border-dark">20</td>
+                                        <td class="border border-dark text-center"><input type="text" id="inputScore3" class="form-control form-control-plaintext text-dark text-center" value="18" readonly></td>
+                                        <td class="border border-dark"><textarea id="inputObservations3" class="w-100" style="height: 50px;" rows="1" readonly>Contenido muy relevante para el área de estudio.</textarea></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="border border-dark"><span class="text-dark font-weight-bold">Capacidad de Respuesta:</span></td>
+                                        <td class="text-center border border-dark">15</td>
+                                        <td class="border border-dark text-center"><input type="text" id="inputScore4" class="form-control form-control-plaintext text-dark text-center" value="14" readonly></td>
+                                        <td class="border border-dark"><textarea id="inputObservations4" class="w-100" style="height: 50px;" rows="1" readonly>Responde adecuadamente a las preguntas.</textarea></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="border border-dark"><span class="text-dark font-weight-bold">Impacto Potencial:</span></td>
+                                        <td class="text-center border border-dark">10</td>
+                                        <td class="border border-dark text-center"><input type="text" id="inputScore5" class="form-control form-control-plaintext text-dark text-center" value="9" readonly></td>
+                                        <td class="border border-dark"><textarea id="inputObservations5" class="w-100" style="height: 50px;" rows="1" readonly>El proyecto tiene un alto potencial de impacto.</textarea></td>
+                                    </tr>
+                                </tbody>
+                                <tfoot>
+                                    <tr class="titulo_rubrica text-center">
+                                        <th class="border border-dark" scope="row">Puntaje total:</th>
+                                        <td class="border border-dark"><input type="number" class="form-control form-control-sm text-center text-dark rounded-5 w-100" id="inputTotalScore" value="91" readonly></td>
+                                    </tr>
+                                    <tr class="titulo_rubrica text-center">
+                                        <th class="border border-dark" scope="row">Nombre del Evaluador:</th>
+                                        <td class="border border-dark"><input type="text" class="form-control form-control-sm text-dark rounded-5 w-100" id="inputEvaluator" value="María González" readonly></td>
+                                        <th class="border border-dark" scope="row">Cédula:</th>
+                                        <td class="border border-dark"><input type="text" class="form-control form-control-sm text-dark rounded-5" id="inputId" value="1234567890" readonly></td>
+                                    </tr>
+                                    <tr class="titulo_rubrica text-center">
+                                        <th scope="row" class="border border-dark">Universidad:</th>
+                                        <td class="border border-dark"><input type="text" class="form-control form-control-sm text-dark rounded-5" id="inputUniversityEval" value="Universidad Nacional" readonly></td>
+                                    </tr>
+                                    <tr class="titulo_rubrica text-center">
+                                        <th scope="row" class="border border-dark">Email:</th>
+                                        <td class="border border-dark"><input type="text" class="form-control form-control-sm text-dark rounded-5" id="inputEmail" value="maria.gonzalez@example.com" readonly></td>
+                                        <th scope="row" class="border border-dark">Celular:</th>
+                                        <td class="border border-dark"><input type="text" class="form-control form-control-sm text-dark rounded-5" id="inputPhone" value="0987654321" readonly></td>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="card p-2 ">
+                <div id="headingTwo">
+                    <h2 class="mb-0">
+                        <button class="btn btn-block toggle-button collapsed" type="button"
+                            data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false"
+                            aria-controls="collapseTwo">
+                            <i style="margin-right: 10px;" class="fa-solid fa-check fa-xl"></i>Respuesta rúbrica 2
+                        </button>
+                    </h2>
+                </div>
+                <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo"
+                    data-parent="#accordionExample">
+                    <form action="#" class="row justify-content-center mt-5">
+                        <div class="col-lg-10 col-md-12 col-sm-12 mb-3 table-responsive">
+                            <table class="table display text-dark border border-dark">
+                                <thead class="text-center">
+                                    <tr class="titulo_rubrica">
+                                        <td class="col-4" style="border-top: 1px solid #000;">Titulo:</td>
+                                        <td colspan="4" style="border-top: 1px solid #000;">
+                                            <input type="text" class="form-control form-control-sm text-dark rounded-5" id="inputTitle" value="Evaluación del Proyecto ABC" readonly>
+                                        </td>
+                                    </tr>
+                                    <tr class="titulo_rubrica">
+                                        <td class="col-4">Ponente(es):</td>
+                                        <td colspan="4">
+                                            <input type="text" class="form-control form-control-sm text-dark rounded-5" id="inputSpeaker" value="Juan Pérez, Ana López" readonly>
+                                        </td>
+                                    </tr>
+                                    <tr class="titulo_rubrica">
+                                        <td class="col-4">Universidad:</td>
+                                        <td colspan="4">
+                                            <input type="text" class="form-control form-control-sm text-dark rounded-5" id="inputUniversity" value="Universidad Nacional" readonly>
+                                        </td>
+                                    </tr>
+                                    <tr class="titulo_rubrica">
+                                        <td scope="col-4">Componentes</td>
+                                        <td scope="col-2">Max Valor</td>
+                                        <td scope="col-2">Calificación</td>
+                                        <td scope="col-4">Observaciones</td>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td class="border border-dark"><span class="text-dark font-weight-bold">Originalidad del Proyecto:</span></td>
+                                        <td class="text-center border border-dark">30</td>
+                                        <td class="border border-dark text-center"><input type="text" id="inputScore1" class="form-control form-control-plaintext text-dark text-center" value="28" readonly></td>
+                                        <td class="border border-dark"><textarea id="inputObservations1" class="w-100" style="height: 50px;" rows="1" readonly>Muy original y con un enfoque innovador.</textarea></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="border border-dark"><span class="text-dark font-weight-bold">Calidad de la Presentación:</span></td>
+                                        <td class="text-center border border-dark">25</td>
+                                        <td class="border border-dark text-center"><input type="text" id="inputScore2" class="form-control form-control-plaintext text-dark text-center" value="22" readonly></td>
+                                        <td class="border border-dark"><textarea id="inputObservations2" class="w-100" style="height: 50px;" rows="1" readonly>Presentación clara, pero con algunos detalles a mejorar.</textarea></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="border border-dark"><span class="text-dark font-weight-bold">Relevancia del Contenido:</span></td>
+                                        <td class="text-center border border-dark">20</td>
+                                        <td class="border border-dark text-center"><input type="text" id="inputScore3" class="form-control form-control-plaintext text-dark text-center" value="18" readonly></td>
+                                        <td class="border border-dark"><textarea id="inputObservations3" class="w-100" style="height: 50px;" rows="1" readonly>Contenido muy relevante para el área de estudio.</textarea></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="border border-dark"><span class="text-dark font-weight-bold">Capacidad de Respuesta:</span></td>
+                                        <td class="text-center border border-dark">15</td>
+                                        <td class="border border-dark text-center"><input type="text" id="inputScore4" class="form-control form-control-plaintext text-dark text-center" value="14" readonly></td>
+                                        <td class="border border-dark"><textarea id="inputObservations4" class="w-100" style="height: 50px;" rows="1" readonly>Responde adecuadamente a las preguntas.</textarea></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="border border-dark"><span class="text-dark font-weight-bold">Impacto Potencial:</span></td>
+                                        <td class="text-center border border-dark">10</td>
+                                        <td class="border border-dark text-center"><input type="text" id="inputScore5" class="form-control form-control-plaintext text-dark text-center" value="9" readonly></td>
+                                        <td class="border border-dark"><textarea id="inputObservations5" class="w-100" style="height: 50px;" rows="1" readonly>El proyecto tiene un alto potencial de impacto.</textarea></td>
+                                    </tr>
+                                </tbody>
+                                <tfoot>
+                                    <tr class="titulo_rubrica text-center">
+                                        <th class="border border-dark" scope="row">Puntaje total:</th>
+                                        <td class="border border-dark"><input type="number" class="form-control form-control-sm text-center text-dark rounded-5 w-100" id="inputTotalScore" value="91" readonly></td>
+                                    </tr>
+                                    <tr class="titulo_rubrica text-center">
+                                        <th class="border border-dark" scope="row">Nombre del Evaluador:</th>
+                                        <td class="border border-dark"><input type="text" class="form-control form-control-sm text-dark rounded-5 w-100" id="inputEvaluator" value="María González" readonly></td>
+                                        <th class="border border-dark" scope="row">Cédula:</th>
+                                        <td class="border border-dark"><input type="text" class="form-control form-control-sm text-dark rounded-5" id="inputId" value="1234567890" readonly></td>
+                                    </tr>
+                                    <tr class="titulo_rubrica text-center">
+                                        <th scope="row" class="border border-dark">Universidad:</th>
+                                        <td class="border border-dark"><input type="text" class="form-control form-control-sm text-dark rounded-5" id="inputUniversityEval" value="Universidad Nacional" readonly></td>
+                                    </tr>
+                                    <tr class="titulo_rubrica text-center">
+                                        <th scope="row" class="border border-dark">Email:</th>
+                                        <td class="border border-dark"><input type="text" class="form-control form-control-sm text-dark rounded-5" id="inputEmail" value="maria.gonzalez@example.com" readonly></td>
+                                        <th scope="row" class="border border-dark">Celular:</th>
+                                        <td class="border border-dark"><input type="text" class="form-control form-control-sm text-dark rounded-5" id="inputPhone" value="0987654321" readonly></td>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="card  p-2">
+                <div id="headingThree">
+                    <h2 class="mb-0">
+                        <button class="btn btn-block toggle-button collapsed" type="button"
+                            data-toggle="collapse" data-target="#collapseThree" aria-expanded="false"
+                            aria-controls="collapseThree">
+                            <i style="margin-right: 10px;" class="fa-solid fa-x fa-lg"></i> Respuesta rúbrica 3
+                        </button>
+                    </h2>
+                </div>
+                <div id="collapseThree" class="collapse" aria-labelledby="headingThree"
+                    data-parent="#accordionExample">
+                   
+                    <form action="#" class="row justify-content-center mt-5">
+                        <div class="col-lg-10 col-md-12 col-sm-12 mb-3 table-responsive">
+                            <table class="table display text-dark border border-dark">
+                                <thead class="text-center">
+                                    <tr class="titulo_rubrica">
+                                        <td class="col-4" style="border-top: 1px solid #000;">Titulo:</td>
+                                        <td colspan="4" style="border-top: 1px solid #000;">
+                                            <input type="text" class="form-control form-control-sm text-dark rounded-5" id="inputTitle" value="Evaluación del Proyecto ABC">
+                                        </td>
+                                    </tr>
+                                    <tr class="titulo_rubrica">
+                                        <td class="col-4">Ponente(es):</td>
+                                        <td colspan="4">
+                                            <input type="text" class="form-control form-control-sm text-dark rounded-5" id="inputSpeaker" value="Juan Pérez, Ana López">
+                                        </td>
+                                    </tr>
+                                    <tr class="titulo_rubrica">
+                                        <td class="col-4">Universidad:</td>
+                                        <td colspan="4">
+                                            <input type="text" class="form-control form-control-sm text-dark rounded-5" id="inputUniversity" value="Universidad Nacional">
+                                        </td>
+                                    </tr>
+                                    <tr class="titulo_rubrica">
+                                        <td scope="col-4">Componentes</td>
+                                        <td scope="col-2">Max Valor</td>
+                                        <td scope="col-2">Calificación</td>
+                                        <td scope="col-4">Observaciones</td>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td class="border border-dark"><span class="text-dark font-weight-bold">Originalidad del Proyecto:</span></td>
+                                        <td class="text-center border border-dark">30</td>
+                                        <td class="border border-dark text-center"><input type="text" id="inputScore1" class="form-control  text-dark text-center" value="28"></td>
+                                        <td class="border border-dark"><textarea id="inputObservations1" class="w-100" style="height: 50px;" rows="1">Muy original y con un enfoque innovador.</textarea></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="border border-dark"><span class="text-dark font-weight-bold">Calidad de la Presentación:</span></td>
+                                        <td class="text-center border border-dark">25</td>
+                                        <td class="border border-dark text-center"><input type="text" id="inputScore2" class="form-control  text-dark text-center" value="22"></td>
+                                        <td class="border border-dark"><textarea id="inputObservations2" class="w-100" style="height: 50px;" rows="1">Presentación clara, pero con algunos detalles a mejorar.</textarea></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="border border-dark"><span class="text-dark font-weight-bold">Relevancia del Contenido:</span></td>
+                                        <td class="text-center border border-dark">20</td>
+                                        <td class="border border-dark text-center"><input type="text" id="inputScore3" class="form-control  text-dark text-center" value="18"></td>
+                                        <td class="border border-dark"><textarea id="inputObservations3" class="w-100" style="height: 50px;" rows="1">Contenido muy relevante para el área de estudio.</textarea></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="border border-dark"><span class="text-dark font-weight-bold">Capacidad de Respuesta:</span></td>
+                                        <td class="text-center border border-dark">15</td>
+                                        <td class="border border-dark text-center"><input type="text" id="inputScore4" class="form-control  text-dark text-center" value="14"></td>
+                                        <td class="border border-dark"><textarea id="inputObservations4" class="w-100" style="height: 50px;" rows="1">Responde adecuadamente a las preguntas.</textarea></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="border border-dark"><span class="text-dark font-weight-bold">Impacto Potencial:</span></td>
+                                        <td class="text-center border border-dark">10</td>
+                                        <td class="border border-dark text-center"><input type="text" id="inputScore5" class="form-control  text-dark text-center" value="9"></td>
+                                        <td class="border border-dark"><textarea id="inputObservations5" class="w-100" style="height: 50px;" rows="1">El proyecto tiene un alto potencial de impacto.</textarea></td>
+                                    </tr>
+                                </tbody>
+                                <tfoot>
+                                    <tr class="titulo_rubrica text-center">
+                                        <th class="border border-dark" scope="row">Puntaje total:</th>
+                                        <td class="border border-dark"><input type="number" class="form-control form-control-sm text-center text-dark rounded-5 w-100" id="inputTotalScore" value="91"></td>
+                                    </tr>
+                                    <tr class="titulo_rubrica text-center">
+                                        <th class="border border-dark" scope="row">Nombre del Evaluador:</th>
+                                        <td class="border border-dark"><input type="text" class="form-control form-control-sm text-dark rounded-5 w-100" id="inputEvaluator" value="María González"></td>
+                                        <th class="border border-dark" scope="row">Cédula:</th>
+                                        <td class="border border-dark"><input type="text" class="form-control form-control-sm text-dark rounded-5" id="inputId" value="1234567890"></td>
+                                    </tr>
+                                    <tr class="titulo_rubrica text-center">
+                                        <th scope="row" class="border border-dark">Universidad:</th>
+                                        <td class="border border-dark"><input type="text" class="form-control form-control-sm text-dark rounded-5" id="inputUniversityEval" value="Universidad Nacional"></td>
+                                    </tr>
+                                    <tr class="titulo_rubrica text-center">
+                                        <th scope="row" class="border border-dark">Email:</th>
+                                        <td class="border border-dark"><input type="text" class="form-control form-control-sm text-dark rounded-5" id="inputEmail" value="maria.gonzalez@example.com"></td>
+                                        <th scope="row" class="border border-dark">Celular:</th>
+                                        <td class="border border-dark"><input type="text" class="form-control form-control-sm text-dark rounded-5" id="inputPhone" value="0987654321"></td>
+                                    </tr>
+                                </tfoot>
+                            </table>
+
+                            <h2 class="text-center text-dark mt-4 mb-4">Respaldo</h2>
+                            <div class="custom-file-upload mx-auto">
+                               
+                                <input type="file" id="comprobante_pago" name="comprobante_pago" />
+                                <label for="comprobante_pago" class="upload-label">
+                                    <i class="fas fa-cloud-upload-alt"></i>
+                                    Selecciona un archivo
+                                </label>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <!-- Modal suplentes-->
+    <div class="modal fade" id="agregarSuplente" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content border border-dark border-5 rounded-5 text-dark">
+                <div class="text-center">
+                    <button type="button" class="close mr-3 mt-3" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h3 class="modal-title mt-5 font-weight-bold" id="modalLabel" style="font-size: 1.5rem; color: #333;">Agregar suplente</h3>
+                </div>
+                <div class="modal-body mt-3">
+                    <form>
+                        <div class="form-group row justify-content-center mb-5">
+
+                            <label for="colFormLabelSm" class="col-form-label text-left font-weight-bold" style="font-size: 1.2rem; margin-right: 38px; margin-top: 30px; color: #444; white-space: nowrap;">Tipo:</label>
+                            <div class="d-flex w-75" style="margin-top: 30px;">
+                                <select id="tipoSuplente" class=" text-dark form-control mr-2">
+                                    <option value="" disabled selected>Selecciona uno</option>
+                                    <option value="evaluador">Evaluador</option>
+                                    <option value="ponente">Ponente</option>
+                                </select>
+                            </div>
+                            
+                            <label for="colFormLabelSm" class=" col-form-label text-left font-weight-bold" style="font-size: 1.2rem; margin-right: 10px; margin-top: 30px;color: #444; white-space: nowrap;">Nombre:</label>
+                            <div class="d-flex w-75" style="margin-top: 30px;">
+                                <input type="text" id="nombreSuplente" class="form-control mr-2" placeholder="Ejemplo...">
+                            </div>
+                        </div>
+                        <div class="text-center">
+                            <button type="submit" class="btn btn-warning font-weight-bold" data-dismiss="modal" style="font-size: 1rem; padding: 0.3rem 1.5rem;">Añadir</button>
+                        </div>                                          
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal añadir presentacion -->
+    <div class="modal fade" id="agregarPresentacion" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content border border-dark border-5 rounded-5 text-dark">
+                <div class="text-center">
+                    <button type="button" class="close mr-3 mt-3" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h3 class="modal-title mt-5 font-weight-bold" id="modalLabel" style="font-size: 1.5rem; color: #333;">Agregar presentación</h3>
+                </div>
+                <div class="modal-body mt-3">
+                    <form>
+                        <div class="form-group row justify-content-center mb-5">
+                            <label for="linkPresentacion" class="col-6 col-form-label text-right font-weight-bold" style="font-size: 1.2rem; color: #444; white-space: nowrap;">Link de la presentación:</label>
+                            <div class="col-6 pr-5">
+                                <input type="text" class="form-control form-control-sm" id="linkPresentacion" style="font-size: 1rem;">
+                            </div>
+                        </div>
+                        <div class="text-center">
+                            <button type="submit" class="btn btn-warning font-weight-bold" data-dismiss="modal" style="font-size: 1rem; padding: 0.3rem 1.5rem;">Añadir</button>
+                        </div>                                          
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer mt-5">
+        <div class="container">
+            <!-- Footer Copyright -->
+            <div class="footer_bar d-flex flex-column flex-sm-row align-items-center">
+                <div class="footer_copyright">
+                    <span>Colorlib All rights reserved</span>
+                </div>
+                <div class="footer_social ml-sm-auto">
+                    <ul class="menu_social">
+                        <li class="menu_social_item"><a href="#"><i class="fab fa-pinterest"></i></a></li>
+                        <li class="menu_social_item"><a href="#"><i class="fab fa-linkedin-in"></i></a></li>
+                        <li class="menu_social_item"><a href="#"><i class="fab fa-instagram"></i></a></li>
+                        <li class="menu_social_item"><a href="#"><i class="fab fa-facebook-f"></i></a></li>
+                        <li class="menu_social_item"><a href="#"><i class="fab fa-twitter"></i></a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="../plantilla/js/jquery-3.2.1.min.js"></script>
+    <script src="../plantilla/styles/bootstrap4/popper.js"></script>
+    <script src="../plantilla/styles/bootstrap4/bootstrap.min.js"></script>
+    <script src="../plantilla/plugins/greensock/TweenMax.min.js"></script>
+    <script src="../plantilla/plugins/greensock/TimelineMax.min.js"></script>
+    <script src="../plantilla/plugins/scrollmagic/ScrollMagic.min.js"></script>
+    <script src="../plantilla/plugins/greensock/animation.gsap.min.js"></script>
+    <script src="../plantilla/plugins/greensock/ScrollToPlugin.min.js"></script>
+    <script src="../plantilla/plugins/OwlCarousel2-2.2.1/owl.carousel.js"></script>
+    <script src="../plantilla/plugins/easing/easing.js"></script>
+    <script src="../plantilla/plugins/progressbar/progressbar.min.js"></script>
+    <script src="../plantilla/plugins/parallax-js-master/parallax.min.js"></script>
+    <script src="../plantilla/js/custom.js"></script>
+</body>
+</html>
