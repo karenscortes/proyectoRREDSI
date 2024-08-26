@@ -85,7 +85,7 @@ export default {
         correo: String,
         estado: String,
         urlArchivo: String,
-        index: Number // Nueva prop para el índice del acordeón
+        index: Number 
     }
 };
 </script>
@@ -93,16 +93,16 @@ export default {
 
 <style>
 .accordion-button:not(.collapsed) {
-	background-color: rgb(255, 182, 6); /* Color amarillo */
-	color: #000; /* Color del texto en la cabecera expandida */
+	background-color: rgb(255, 182, 6);
+	color: #000;
 }
 
 .accordion-button {
-	color: #000; /* Color del texto en la cabecera no expandida */
+	color: #000; 
 }
 
 .accordion-button::after {
-	filter: invert(0); /* Mantiene el color del icono de colapso en negro */
+	filter: invert(0); 
 }
 
 </style>
