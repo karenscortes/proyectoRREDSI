@@ -2,16 +2,19 @@
   <img alt="Vue logo" src="./assets/logo.png">
   <HelloWorld msg="Welcome to Your Vue.js App"/>
   <HistorialActividades></HistorialActividades>
+  <ProyectosAsignados/>
 </template>
 
 <script>
+import ProyectosAsignados from './components/evaluador/ProyectosAsignados.vue';
 import HelloWorld from './components/HelloWorld.vue';
 import HistorialActividades from './components/superadmin/HistorialActividades.vue';
 export default {
   name: 'App',
   components: {
     HelloWorld,
-    HistorialActividades
+    HistorialActividades,
+    ProyectosAsignados
   }
 }
 </script>
