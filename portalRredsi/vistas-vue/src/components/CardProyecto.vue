@@ -11,7 +11,7 @@
 
             </div>
             <div class="card-body">
-                <h4 class="text-lg mt-2">{{ titulo }}</h4>
+                <h3 class="text-lg mt-2">{{ titulo }}</h3>
                 <p class="mt-2">{{ institucion }}</p>
             </div>
             <div class="card-footer">
@@ -26,7 +26,7 @@
 <script>
 export default {
     props: {
-        cod_proyecto:String,
+        cod_proyecto: String,
         titulo: String,
         institucion: String,
         estado: String,
@@ -36,16 +36,24 @@ export default {
 
 <style>
 .card {
-    width: 300px;
-    height: 200px;
+    width: 100%;
+    height: 250px;
+    max-width: 300px;
 }
 
 .card-header {
     background: rgb(255, 182, 6);
     box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+    padding: 8px; 
 }
 
-.card-footer{
+.card-header .h4 {
+    font-size: .5rem; 
+    margin: 0; 
+}
+
+.card-footer {
     box-shadow: 0px -2px 4px rgba(0, 0, 0, 0.1);
 }
 </style>
+
