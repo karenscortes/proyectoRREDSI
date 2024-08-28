@@ -1,18 +1,22 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gestion Delegado</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <title>Gestion convocatorias</title>
     <link rel="stylesheet" href="../plantilla/styles/bootstrap5/css/bootstrap.min.css">
-    <link href="../plantilla/plugins/fontawesome-free-5.0.1/css/fontawesome-all.css" rel="stylesheet" type="text/css">  
+    <link rel="stylesheet" href="../plantilla/styles/bootstrap4/bootstrap.min.css">
+    <link href="../plantilla/plugins/fontawesome-free-5.0.1/css/fontawesome-all.css" rel="stylesheet" type="text/css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <link rel="stylesheet" type="text/css" href="../plantilla/plugins/OwlCarousel2-2.2.1/owl.carousel.css">
+    <link rel="stylesheet" type="text/css" href="../plantilla/plugins/OwlCarousel2-2.2.1/owl.theme.default.css">
     <link rel="stylesheet" type="text/css" href="../plantilla/plugins/OwlCarousel2-2.2.1/animate.css">
     <link rel="stylesheet" type="text/css" href="../plantilla/styles/main_styles_admin copy.css">
     <link rel="stylesheet" type="text/css" href="../plantilla/styles/responsive_admin.css">
+    <link rel="stylesheet" href="../plantilla/styles/perfil_admin_styles.css">
 </head>
+
 <body>
     <!-- header -->
     <header class="header d-flex flex-row position-relative">
@@ -29,8 +33,25 @@
             <nav class="main_nav_container">
                 <div class="main_nav">
                     <ul class="main_nav_list d-flex justify-content-between">
-                        <li class="main_nav_item"><a href="pagina_principal.html">Inicio</a></li>
-                        <li class="main_nav_item"><a href="gestion_delegado.html">Información delegados</a></li>
+                        <li class="main_nav_item"><a href="principal.htm">Inicio</a></li>
+                        <li class="main_nav_item"><a href="perfil_admin.html">Perfil</a></li>
+                        <li class="main_nav_item"><a href="gestion_cuentas_delegados.html">Cuentas</a></li>
+                        <li class="main_nav_item"><a href="gestion_rubrica.html">Rúbricas</a></li>
+                        <li class="main_nav_item">
+                            <div class="dropdown">
+                                <a class=" dropdown-toggle text-dark" type="button" data-toggle="dropdown"
+                                    aria-expanded="false">
+                                    eventos
+                                </a>
+                                <div class="dropdown-menu text-center">
+                                    <a href="gestion_salas.html">salas
+                                    </a><br>
+                                    <a href="gestion_asistentes.html">asistencia</a>
+                                    <br>
+                                    <a href="gestion_convocatoria.html">convocatoria</a>
+                                </div>
+                            </div>
+                        </li>
                         <li class="main_nav_item"><a href="#">Cerrar sesión</a></li>
                     </ul>
                 </div>
@@ -44,117 +65,486 @@
 
     </header>
 
+    <!-- dividing line -->
     <div class="container-fluid" id="cont_ejemplo">
        
-   </div>
-   
-   <div class="container">
-    <h1 class="text-center text-dark m-5">Gestionar Fases</h1>
-
-    <div class="row mb-4">
-        <div class="col-sm-4">
-            <label for="nombre"><strong>Nombre:</strong></label>
-            <select class="form-select border border-dark" id="nombre">
-                <option value="" disabled selected>Seleccionar</option>
-                <option value="inscripcion_evaluadores">Inscripción evaluadores</option>
-                <option value="inscripcion_proyectos">Inscripción proyectos</option>
-                <option value="cierre_de_evaluaciones">Cierre de evaluaciones</option>
-                <option value="primera_publicacion_de_evaluaciones">Primera publicación de evaluaciones</option>
-                <option value="segunda_publicacion_de_evaluaciones">Segunda publicación de evaluaciones</option>
-            </select>
-        </div>
-        <div class="col-sm-4">
-            <label for="fechaInicio"><strong>Fecha Inicio:</strong></label>
-            <input type="date" class="form-control text-dark" id="fechaInicio">
-        </div>
-        <div class="col-sm-4">
-            <label for="fechaFin"><strong>Fecha Fin:</strong></label>
-            <input type="date" class="form-control text-dark" id="fechaFin">
-        </div>
     </div>
+    <!--Main Part-->
+    
+    <div class="container">
+        <div class="row justify-content-center py-5">
+            <div class="col-xl-10 col-lg-10 col-md-12">
+                <div class="big-screen">
+                    <div class="row text-center">
+                        <div class="col-4 ">
+                            <a href="#convocatorias" class="btn btn-outline-dark w-100">
+                                <strong class="font-weight-bold">
+                                    <i class="fa fa-window-maximize"></i>
+                                </strong>
+                                1. Convocatorias
+                            </a>
+                            
+                        </div>
+                        <div class="col-4 ">
+                            <a href="#etapas" class="btn btn-outline-dark w-100">
+                                <strong class="font-weight-bold">
+                                    <i class="fa fa-window-restore" aria-hidden="true"></i>
+                                </strong>
+                                2. Etapas
+                            </a>
+                        </div>
+                        <div class="col-4 ">
+                            <a href="#gestionar_fases" class="btn btn-outline-dark w-100">
+                                <strong class="font-weight-bold">
+                                    <i class="fa fa-retweet" aria-hidden="true"></i>
+                                </strong>
+                                3. Fases
+                            </a>
+                        </div>
+                    </div> 
+            
+                    <div class="form-section mt-5 w-100" id="convocatorias">
+                        <div class="d-flex align-items-start justify-content-center mb-3">
+                            <i class="fa fa-window-maximize title-icon"></i>
+                            <h2>Convocatorias</h2>
+                        </div>
+                        <div class="title-line"></div>
+                        <div class="text-left mt-3 ">
+                            <button type="button" class="btn btn-warning fw-bold text-dark w-25" data-toggle="modal" data-target="#crearConvocatoria">Crear convocatoria</button>
+                        </div>           
+                        <table class="table table-striped mt-5 text-center text-dark">
+                            <thead>
+                                <tr>
+                                    <th class="bg-warning fs-6">Año</th>
+                                    <th class="bg-warning fs-6">Fecha Inicio</th>
+                                    <th class="bg-warning fs-6">Fecha fin</th>
+                                    <th class="bg-warning fs-6">Detalle</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td style="font-size: 16px;">2020</td>
+                                    <td style="font-size: 16px;">JUN/10/2020</td>
+                                    <td style="font-size: 16px;">JUN/30/2020</td>
+                                    <td>
+                                        <a type="button" data-toggle="modal" data-target="#detalleModal"><i class="far fa-eye" aria-hidden="true" style="font-size: 25px;"></i></a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="font-size: 16px;">2021</td>
+                                    <td style="font-size: 16px;">JUN/10/2020</td>
+                                    <td style="font-size: 16px;">JUN/30/2020</td>
+                                    <td>
+                                        <a type="button" data-toggle="modal" data-target="#detalleModal"><i class="far fa-eye" aria-hidden="true" style="font-size: 25px;"></i></a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="font-size: 16px;">2022</td>
+                                    <td style="font-size: 16px;">JUN/10/2020</td>
+                                    <td style="font-size: 16px;">JUN/30/2020</td>
+                                    <td>
+                                        <a type="button" data-toggle="modal" data-target="#detalleModal"><i class="far fa-eye" aria-hidden="true" style="font-size: 25px;"></i></a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="font-size: 16px;">2023</td>
+                                    <td style="font-size: 16px;">JUN/10/2020</td>
+                                    <td style="font-size: 16px;">JUN/30/2020</td>
+                                    <td>
+                                        <a type="button" data-toggle="modal" data-target="#detalleModal"><i class="far fa-eye" aria-hidden="true" style="font-size: 25px;"></i></a>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
 
-    <div class="row mb-4">
-        <div class="col-sm-5">
-            <input type="text" class="form-control" placeholder="Buscar...">
-        </div>
-        <div class="col-sm-3">
-            <button class="btn btn-warning w-100">Buscar</button>
-        </div>
-        <div class="col-sm-4">
-            <button class="btn btn-outline-warning w-100"><i class="fas fa-plus"></i> Agregar</button>
-        </div>
-    </div>
+                    <div class="form-section mt-5" id="etapas">
+                        <div class="d-flex align-items-center justify-content-center mb-3">
+                            <i class="fa fa-window-restore title-icon"></i>
+                            <h2>Etapas</h2>
+                        </div>
+                        <div class="title-line mb-4"></div>            
+                        <div class="container">
+                            <div class="row">
+                                <!-- Contenedor para Etapa Virtual -->
+                                <div class="col-md-6"> 
+                                    <div class="modal-content text-center">
+                                        <div class="modal-header justify-content-center">
+                                            <h2 class="modal-title text-dark" id="editModalLabel">Etapa virtual</h2>
+                                        </div>
+                                        <div class="modal-body">
+                                            <div class="row justify-content-center">
+                                                <div class="col-sm-8 m-4">
+                                                    <label for="fechaInicio" class="text-dark"><strong>Fecha Inicio:</strong></label>
+                                                    <input type="date" class="form-control text-dark" id="fechaInicio">
+                                                </div>
+                                                <div class="col-sm-8 m-4">
+                                                    <label for="fechaFin" class="text-dark"><strong>Fecha Fin:</strong></label>
+                                                    <input type="date" class="form-control text-dark" id="fechaFin">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer justify-content-center">
+                                            <a href="#gestionar_fases" class="btn btn-warning">
+                                                Detalle
+                                            </a>
+                                        </div>  
+                                    </div>
+                                </div>
+                                
+                                <!-- Contenedor para Etapa Presencial -->
+                                <div class="col-md-6"> 
+                                    <div class="modal-content text-center">
+                                        <div class="modal-header justify-content-center">
+                                            <h2 class="modal-title text-dark" id="editModalLabel">Etapa presencial</h2>
+                                        </div>
+                                        <div class="modal-body">
+                                            <div class="row justify-content-center">
+                                                <div class="col-sm-8 m-4">
+                                                    <label for="fechaInicio" class="text-dark"><strong>Fecha Inicio:</strong></label>
+                                                    <input type="date" class="form-control text-dark" id="fechaInicio">
+                                                </div>
+                                                <div class="col-sm-8 m-4">
+                                                    <label for="fechaFin" class="text-dark"><strong>Fecha Fin:</strong></label>
+                                                    <input type="date" class="form-control text-dark" id="fechaFin">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer justify-content-center">
+                                            <a href="#gestionar_fases" class="btn btn-warning">
+                                                Detalle
+                                            </a>
+                                        </div>                                        
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
 
-    <table class="table table-bordered border border-dark text-center">
-        <thead>
-            <tr>
-                <th class="bg-warning" style="font-size: 16px;">Fases</th>
-                <th class="bg-warning" style="font-size: 16px;">Fecha Inicio</th>
-                <th class="bg-warning" style="font-size: 16px;">Fecha Fin</th>
-                <th class="bg-warning" style="font-size: 16px;">Editar</th>
-            </tr>
-        </thead>
-        <tbody style="font-size: 16px;">
-            <tr>
-                <td>Inscripción Evaluadores</td>
-                <td>May/20/2025</td>
-                <td>Jun/20/2025</td>
-                <td class="text-center">
-                    <button type="button" class="btn" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                        <i class="fas fa-edit"></i>
-                    </button>
-                </td>
-            </tr>
-            <tr>
-                <td>Inscripción Proyectos</td>
-                <td>May/30/2025</td>
-                <td>Jun/20/2025</td>
-                <td class="text-center">
-                    <button type="button" class="btn" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                        <i class="fas fa-edit"></i>
-                    </button>
-                </td>
-            </tr>
-            <tr>
-                <td>Cierre Evaluaciones</td>
-                <td>Jun/10/2025</td>
-                <td>Jun/20/2025</td>
-                <td class="text-center">
-                    <button type="button" class="btn" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                        <i class="fas fa-edit"></i>
-                    </button>
-                </td>
-            </tr>
-        </tbody>
-    </table>
+                    <div class="form-section mt-5" id="gestionar_fases">
+                        <div class="d-flex align-items-center justify-content-center mb-3">
+                            <i class="fa fa-retweet title-icon"></i>
+                            <h2>Gestionar fases</h2>
+                        </div>
+                        <div class="title-line mb-4"></div>            
+                        <div class="container">
+                            <div class="row mb-4">
+                                <div class="col-sm-4">
+                                    <label for="nombre"><strong>Nombre:</strong></label>
+                                    <select class="form-select border border-dark" id="nombre">
+                                        <option value="" disabled selected>Seleccionar</option>
+                                        <option value="inscripcion_evaluadores">Inscripción evaluadores</option>
+                                        <option value="inscripcion_proyectos">Inscripción proyectos</option>
+                                        <option value="cierre_de_evaluaciones">Cierre de evaluaciones</option>
+                                        <option value="primera_publicacion_de_evaluaciones">Primera publicación de evaluaciones</option>
+                                        <option value="segunda_publicacion_de_evaluaciones">Segunda publicación de evaluaciones</option>
+                                    </select>
+                                </div>
+                                <div class="col-sm-4">
+                                    <label for="fechaInicio"><strong>Fecha Inicio:</strong></label>
+                                    <input type="date" class="form-control text-dark" id="fechaInicio">
+                                </div>
+                                <div class="col-sm-4">
+                                    <label for="fechaFin"><strong>Fecha Fin:</strong></label>
+                                    <input type="date" class="form-control text-dark" id="fechaFin">
+                                </div>
+                            </div>
+                        
+                            <div class="row mb-4">
+                                <div class="col-sm-5">
+                                    <input type="text" class="form-control" placeholder="Buscar...">
+                                </div>
+                                <div class="col-sm-3">
+                                    <button class="btn btn-warning w-100">Buscar</button>
+                                </div>
+                                <div class="col-sm-4">
+                                    <button class="btn btn-outline-warning w-100"><i class="fas fa-plus"></i> Agregar</button>
+                                </div>
+                            </div>
+                        
+                            <table class="table table-bordered border border-dark text-center">
+                                <thead>
+                                    <tr>
+                                        <th class="bg-warning" style="font-size: 16px;">Fases</th>
+                                        <th class="bg-warning" style="font-size: 16px;">Fecha Inicio</th>
+                                        <th class="bg-warning" style="font-size: 16px;">Fecha Fin</th>
+                                        <th class="bg-warning" style="font-size: 16px;">Editar</th>
+                                    </tr>
+                                </thead>
+                                <tbody style="font-size: 16px;">
+                                    <tr>
+                                        <td>Inscripción Evaluadores</td>
+                                        <td>May/20/2025</td>
+                                        <td>Jun/20/2025</td>
+                                        <td class="text-center">
+                                            <button type="button" class="btn" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                                                <i class="fas fa-edit"></i>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Inscripción Proyectos</td>
+                                        <td>May/30/2025</td>
+                                        <td>Jun/20/2025</td>
+                                        <td class="text-center">
+                                            <button type="button" class="btn" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                                                <i class="fas fa-edit"></i>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Cierre Evaluaciones</td>
+                                        <td>Jun/10/2025</td>
+                                        <td>Jun/20/2025</td>
+                                        <td class="text-center">
+                                            <button type="button" class="btn" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                                                <i class="fas fa-edit"></i>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                    </div>
 
-    <div class="row">
-            <div class="col text-center mt-3">
-                <button class="btn btn-secondary mr-2">Regresar</button>
-                <button class="btn btn-warning">Finalizar</button>
+                    <div class="text-center m-4">
+                        <button id="insertar_proyecto" class="btn btn-warning fw-bold text-dark w-25 ">Guardar</button>
+                    </div>
+                </div>
+
+                <!-- Accordion -->
+                <div class="accordion pt-5" id="accordionExample">
+                    <div class="card p-2">
+                      <div id="headingOne">
+                          <button class="btn btn-block toggle-button collapsed" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+                            <i class="fas fa-user-secret"></i> Datos Personales
+                          </button>
+                      </div> 
+                      <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordionExample">
+                        
+                        <div class="card-body my-3 font-weight-bold text-dark">
+                            <div class="title-line mb-4"></div> 
+                            <form action="#">
+                                <div class="form-row">
+                                    <div class="form-group col-md-6">
+                                      <label for="inputName">Nombres:</label>
+                                      <input type="text" class="form-control" id="inputName">
+                                    </div>
+                                    <div class="form-group col-md-6">
+                                      <label for="inputLastname">Apellidos:</label>
+                                      <input type="text" class="form-control" id="inputLastname">
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group col-md-6">
+                                        <label for="inputDocumentType">Tipo de documento:</label>
+                                        <select id="inputDocumentType" type="select" class="form-control text-dark custom-select"
+                                            required>
+                                            <option value="Seleccionar" selected>Seleccione una opción</option>
+                                            <option value="cedula">Cédula</option>
+                                            <option value="pasaporte">Pasaporte</option>
+                                            <option value="cedula_extranjeria">Cédula de extranjeria</option>
+                                        </select>
+                                    </div>
+                                  
+                                    <div class="form-group col-md-6">
+                                        <label for="inputCity">N° de Documento:</label>
+                                        <input type="text" class="form-control" id="inputCity">
+                                    </div>
+                                </div>
+                                <div class="form-group mb-5">
+                                    <label for="inputAddress">Correo:</label>
+                                    <input type="email" class="form-control" id="inputAddress" placeholder="usuario@gmail.com">
+                                </div>
+                                <div class="text-center">
+                                    <button type="button" class="btn btn-warning text-dark " data-toggle="modal" data-target="#resetPasswordModal">Cambiar Contraseña</button>
+                                </div>                                                  
+                            </form>                          
+                        </div>
+                      </div>
+                    </div>
+                    <div class="card p-2 ">
+                      <div id="headingTwo">
+                        <h2 class="mb-0">
+                          <button class="btn btn-block toggle-button collapsed" type="button" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                            <i class="fas fa-university"></i> Datos Institucionales
+                          </button>
+                        </h2>
+                      </div>
+                      <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionExample">
+                        <div class="card-body my-3 font-weight-bold text-dark">
+                            <div class="title-line mb-4"></div> 
+                            <form action="#">
+                                <div class="form-row">
+                                    <div class="form-group col-md-6">
+                                      <label for="inputPlaceName">Institución educativa:</label>
+                                      <input type="text" class="form-control" id="inputPlaceName">
+                                    </div>
+                                    <div class="form-group col-md-6">
+                                      <label for="inputResearchGroup">Grupo de Investigación:</label>
+                                      <input type="text" class="form-control" id="inputSearchGroup">
+                                    </div>
+                                </div>
+                                <div class="form-group mb-5">
+                                    <label for="inputResearchLab">Nombre del Semillero:</label>
+                                    <input type="text" class="form-control" id="inputResearchLab">
+                                </div>                                
+                            </form>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="card  p-2">
+                      <div id="headingThree">
+                        <h2 class="mb-0">
+                          <button class="btn btn-block toggle-button collapsed" type="button" data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                            <i class="fas fa-graduation-cap"></i> Datos Academicos
+                          </button>
+                        </h2>
+                      </div>
+                      <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordionExample">
+                        <div class="card-body my-3 font-weight-bold text-dark">
+                            <div class="title-line mb-4"></div> 
+                            <form action="#">           
+                                <div class="form-group row justify-content-center">
+                                    <label for="inputUndergraduateDegree" class="col-4">Titulo Pregrado:</label>
+                                    <div class="d-inline-flex col-6" >
+                                        <input type="text" class="form-control" id="inputUndergraduateDegree">
+                                        <label class="items-center p-1 text-black ml-2">
+                                            <i class="fas fa-plus-circle h4"></i>
+                                            <input type='file' class="d-none d-print-block" />
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="form-group row justify-content-center">
+                                    <label for="inputPostgraduateDiploma" class="col-4">Titulo de Especialización:</label>
+                                    <div class="d-inline-flex col-6" >
+                                        <input type="text" class="form-control" id="inputPostgraduateDiploma">
+                                        <label class="items-center p-1 text-black ml-2">
+                                            <i class="fas fa-plus-circle h4"></i>
+                                            <input type='file' class="d-none d-print-block" />
+                                        </label>
+                                    </div>         
+                                </div>
+                                <div class="form-group row justify-content-center">
+                                    <label for="inputMasterDegree" class="col-4">Titulo de Maestría:</label>
+                                    <div class="d-inline-flex col-6" >
+                                        <input type="text" class="form-control" id="inputMasterDegree">
+                                        <label class="items-center p-1 text-black ml-2">
+                                            <i class="fas fa-plus-circle h4"></i>
+                                            <input type='file' class="d-none d-print-block" />
+                                        </label>
+                                    </div>
+                                    
+                                </div>                            
+                                <div class="form-group row justify-content-center">
+                                    <label for="inputPhD" class="col-4">Titulo de Doctorado:</label>
+                                    <div class="d-inline-flex col-6" >
+                                        <input type="text" class="form-control" id="inputPhD">
+                                        <label class="items-center p-1 text-black ml-2">
+                                            <i class="fas fa-plus-circle h4"></i>
+                                            <input type='file' class="d-none d-print-block" />
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="form-group row justify-content-center">
+                                    <label for="inputKnowledgeArea" class="col-10 mx-4">Area de Conocimiento:</label>
+                                    <div class="col-10">
+                                        <select id="inputKnowledgeArea" type="select" class="form-control text-dark custom-select"
+                                            required>
+                                            <option value="cedula">Seleccione una opción</option>
+                                            <option value="cedula">Inteligencia Artificial</option>
+                                        </select>
+                                    </div> 
+                                </div>
+                                <div class="form-group row justify-content-center">
+                                    <label for="inputAnotherArea" class="col-10 mx-4">Otra Area:</label>
+                                    <div class="col-10">
+                                        <select id="inputAnotherArea" type="select" class="form-control text-dark custom-select"
+                                            required>
+                                            <option value="cedula" selected>Seleccione una opción</option>
+                                            <option value="cedula">IAgricultura</option>
+                                        </select>
+                                    </div>
+                                </div>                                                                                  
+                            </form>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="text-center">
+                        <button type="submit" class="btn btn-warning font-weight-bold text-dark w-25 ">Guardar Datos</button>
+                    </div>   
+                </div>
             </div>
         </div>
     </div>
 
-   <footer class="footer mt-5">
-        <div class="container">
-            <div class="footer_bar d-flex flex-column flex-sm-row align-items-center">
-                <div class="footer_copyright">
-                    <span>Colorlib All rights reserved</span>
+    <!-- Modal crear convocatoria -->
+    <div class="modal fade" id="crearConvocatoria" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered w-50" style="max-width: 90%;"> <!-- w-100 para ocupar todo el ancho y max-width para limitarlo -->
+            <div class="modal-content border border-dark border-5 rounded-5 text-dark">
+                <div class="modal-header">
+                    <h3 class="modal-title" id="modalLabel">Administrar convocatoria</h3>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <div class="footer_social ml-sm-auto">
-                    <ul class="menu_social">
-                        <li class="menu_social_item"><a href="#"><i class="fab fa-pinterest"></i></a></li>
-                        <li class="menu_social_item"><a href="#"><i class="fab fa-linkedin-in"></i></a></li>
-                        <li class="menu_social_item"><a href="#"><i class="fab fa-instagram"></i></a></li>
-                        <li class="menu_social_item"><a href="#"><i class="fab fa-facebook-f"></i></a></li>
-                        <li class="menu_social_item"><a href="#"><i class="fab fa-twitter"></i></a></li>
-                    </ul>
+                <div class="modal-body">
+                    <div class="row mx-auto justify-content-center">
+                        <div class="row mb-5">
+                            <div class="col-sm-5">
+                                <label for="fechaInicio"><strong>Fecha Inicio:</strong></label>
+                                <input type="date" class="form-control text-dark" id="fechaInicio">
+                            </div>
+                            <div class="col-sm-5">
+                                <label for="fechaFin"><strong>Fecha Fin:</strong></label>
+                                <input type="date" class="form-control text-dark" id="fechaFin">
+                            </div>
+                            <div class="col-sm-2">
+                                <button class="btn btn-outline-warning w-100"><i class="fas fa-plus"></i> Crear</button>
+                            </div>
+                        </div>
+                    </div>
+                
                 </div>
             </div>
         </div>
-    </footer>
+    </div>
+    
 
+
+    <!-- Modal detalle convocatoria -->
+    <div class="modal fade" id="detalleModal" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content border border-dark border-5 rounded-5 text-dark">
+                <div class="modal-header">
+                    <h3 class="modal-title" id="modalLabel">Detalle convocatoria 2020</h3>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+
+                    <div class="row mx-auto justify-content-center">
+                        
+                        
+                    </div>
+
+                    
+
+                    <div class="row text-center mt-3">
+                        <div class="col-6 mb-2">
+                            <button type="button" class="btn btn-secondary w-100" data-bs-dismiss="modal" aria-label="Close">
+                                Cerrar
+                            </button>
+                        </div>
+                        <div class="col-6">
+                            <button type="button" class="btn btn-warning w-100">
+                                Guardar cambios
+                            </button>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    
     <!-- Modal -->
     <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered"> <!-- Añade 'modal-dialog-centered' aquí -->
@@ -183,9 +573,28 @@
         </div>
     </div>
 
+    <footer class="footer mt-5 w-100">
+        <div class="container-fluid"> 
+            <!-- Footer Copyright -->
+            <div class="footer_bar d-flex flex-column flex-sm-row align-items-center">
+                <div class="footer_copyright">
+                    <span>Colorlib All rights reserved</span>
+                </div>
+                <div class="footer_social ml-sm-auto">
+                    <ul class="menu_social">
+                        <li class="menu_social_item"><a href="#"><i class="fab fa-pinterest"></i></a></li>
+                        <li class="menu_social_item"><a href="#"><i class="fab fa-linkedin-in"></i></a></li>
+                        <li class="menu_social_item"><a href="#"><i class="fab fa-instagram"></i></a></li>
+                        <li class="menu_social_item"><a href="#"><i class="fab fa-facebook-f"></i></a></li>
+                        <li class="menu_social_item"><a href="#"><i class="fab fa-twitter"></i></a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </footer>
     
-
-
+    
+    
 
     <script src="../plantilla/js/jquery-3.2.1.min.js"></script>
     <script src="../plantilla/styles/bootstrap4/popper.js"></script>
@@ -199,7 +608,7 @@
     <script src="../plantilla/plugins/scrollTo/jquery.scrollTo.min.js"></script>
     <script src="../plantilla/plugins/easing/easing.js"></script>
     <script src="../plantilla/js/custom.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js" integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy" crossorigin="anonymous"></script>
+    <script src="../plantilla/js/perfil_admin.js"></script>
 </body>
+
 </html>
