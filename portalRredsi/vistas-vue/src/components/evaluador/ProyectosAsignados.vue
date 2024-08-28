@@ -4,26 +4,26 @@
             <!-- Card de proyecto asignado -->
             <ul class="cards justify-content-center">
                 <li>
-                    <a href="" class="card">
+                    <a class="card">
                         <div class="text-center pt-5 card__image">
                             <form :action="pdfProyecto" class="d-inline-flex" target="_blank">
                                 <button type="submit" class="btn btn-warning rounded-circle border border-dark mx-2"><i class="far fa-file-alt h3"></i></button>
                             </form>
                             <form action="calificar_proyectos_etapa1.html" class="d-inline-flex">
-                                <button type="submit" class="btn btn-warning rounded-circle border border-dark mx-2"><i class="fas fa-tasks h3"></i></button> 
+                                <button type="submit" class="btn btn-warning rounded-circle border border-dark mx-2"><i class="fa-solid fa-list-check fa-xl"></i></button> 
                             </form>    
                         </div>
                         <div class="card__overlay">
                             <div class="card__header">
                                 <svg class="card__arc" xmlns="http://www.w3.org/2000/svg"><path d="M 40 80 c 22 0 40 -22 40 -40 v 40 Z"/></svg>                     
                                 <div class="border border-white text-white card__thumb text-center pt-3">
-                                    <h2>1</h2>
+                                    <h2>{{numeroProyecto}}</h2>
                                 </div>   
-                                <div class="card__header-text">
-                                    <h3 class="text-dark text-left">Big Data  </h3> 
-                                    <h4 class="text-left">CalTech</h4>                                                                   
+                                <div class="card__header-text text-justify">
+                                    <h3 class=" text-left ">Estudios lorem2  Lorem, ipsum. Lorem, ipsum.</h3> 
+                                    <h4 class="text-left">Estudios lorem2  Lorem, ipsum. Lorem, ipsum. </h4>                                                                   
                                 </div> 
-                                <i class="fas fa-angle-double-down h4 align-self-end text-dark"></i>                       
+                       
                             </div>
                             <div class="card__footer text-center">
                                 <div>
@@ -98,13 +98,7 @@ p a
 	-o-transition: all 200ms ease;
 	transition: all 200ms ease;
 }
-a, a:hover, a:visited, a:active, a:link
-{
-	text-decoration: none;
-	-webkit-font-smoothing: antialiased;
-	-webkit-text-shadow: rgba(0,0,0,.01) 0 0 1px;
-	text-shadow: rgba(0,0,0,.01) 0 0 1px;
-}
+
 p a:active
 {
 	position: relative;
@@ -148,7 +142,7 @@ h1, h2, h3, h4, h5, h6
 	display: block;
 	border-radius: 30px; 
 	height: auto; 
-	cursor: pointer;
+	cursor: default;
 }
 .col_card{
 	padding-left: 30px;
@@ -177,9 +171,8 @@ h1, h2, h3, h4, h5, h6
 	color: #1a1a1a;
 	line-height: 1.2;
 }
-.card-title a:hover
-{
-	color: #a5a5a5;
+.card:hover	{
+	color: black !important;
 }
 .card-text
 {

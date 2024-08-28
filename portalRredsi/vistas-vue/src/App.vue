@@ -2,7 +2,7 @@
   <img alt="Vue logo" src="./assets/logo.png">
   <HelloWorld msg="Welcome to Your Vue.js App"/>
   <HistorialActividades></HistorialActividades>
-  <ProyectosAsignados/>
+  <ProyectosAsignados numeroProyecto="2"/>
 </template>
 
 <script>
