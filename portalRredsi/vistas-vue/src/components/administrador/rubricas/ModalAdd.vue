@@ -34,7 +34,7 @@
                   id="titulo"
                   name="titulo"
                   required="required"
-                  class="form_modal form-control"
+                  class="form_modal form-control" :value="id_rubrica ? titulo : ''"
                 />
               </div>
               <div class="col-md-6 mb-4">
@@ -47,7 +47,7 @@
                   id="valor_maximo"
                   name="valor_maximo"
                   required="required"
-                  class="form_modal form-control"
+                  class="form_modal form-control"  :value="id_rubrica ? valorMax : ''"
                 />
               </div>
               <div class="col-md-12 mb-4">
@@ -60,7 +60,7 @@
                   name="descripcion"
                   required="required"
                   class="form_textArea form-control"
-                  style="color: black"
+                   :value="id_rubrica ? descripcion : ''"
                 ></textarea>
               </div>
             </div>
@@ -77,13 +77,27 @@
 
 <script>
 export default{
-  setup(){
-    
+  props:{
+    id_rubrica:{
+      type:Number
+    },
+    titulo:{
+      type:String
+    },
+    valorMax:{
+      type:Number
+    },
+    descripcion:{
+      type:String
+    }
   }
 }
 </script>
 
 <style scoped>
+textarea{
+  color: black
+}
 .modal-dialog {
   max-width: 50%;
 }
