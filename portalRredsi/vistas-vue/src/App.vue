@@ -1,17 +1,17 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png">
-  <HelloWorld msg="Welcome to Your Vue.js App"/>
-  <HistorialActividades></HistorialActividades>
+  
+  <PaginaPrincipalView/>
+
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue';
-import HistorialActividades from './components/superadmin/HistorialActividades.vue';
+
+import PaginaPrincipalView from './views/PaginaPrincipalView.vue';
+
 export default {
   name: 'App',
   components: {
-    HelloWorld,
-    HistorialActividades
+    PaginaPrincipalView
   }
 }
 </script>
