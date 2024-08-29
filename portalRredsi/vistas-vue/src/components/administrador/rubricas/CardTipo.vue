@@ -1,9 +1,8 @@
 <template>
   <div class="card">
-    <h2 class="title">{{ tituloCard }}</h2>
     <img
       :src="require(`@/assets/${nombreImagen}`)"
-      class="img-fluid w-25 pb-2"
+      class="img-fluid w-25 pb-2 pt-3"
       :alt="altImagen"
     />
 
@@ -23,22 +22,24 @@
 
 <script>
 export default {
-  setup() {
-    //Propiedades
-    const tituloCard = "1";
-    const nombreImagen = "logo.png";
-    const altImagen = "imagen_ejemplo";
-    const etqModalidadProyecto = "En curso";
-    const etqFaseProyecto = "Presencial";
-
-    return {
-      tituloCard,
-      nombreImagen,
-      etqModalidadProyecto,
-      etqFaseProyecto,
-      altImagen,
-    };
-  },
+  props:{
+    nombreImagen:{
+      type: String, 
+      require,
+    }, 
+    altImagen:{
+      type: String,
+      require
+    },
+    etqModalidadProyecto:{
+      type: String,
+      require
+    },
+    etqFaseProyecto:{
+      type: String,
+      require
+    }
+  }
 };
 </script>
 
@@ -52,6 +53,7 @@ export default {
   height: auto;
   cursor: pointer;
   border: 2px solid black;
+  margin-top: 10px;
 }
 
 @keyframes dance {
