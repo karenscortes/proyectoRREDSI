@@ -9,7 +9,7 @@ class opciones_asistente(enum.Enum):
     ponente = "ponente"
     externos = "externos"
 
-class Asistentes(Base):
+class Asistente(Base):
     __tablename__ = 'asistentes'
     id_asistente = Column(Integer, primary_key=True, autoincrement=True)
     id_detalles_personales = Column(Integer, ForeignKey('Detalle_personal.id_detalles_personales'))
