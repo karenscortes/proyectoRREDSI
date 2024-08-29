@@ -10,14 +10,19 @@
       <div
         class="contenedor_principal d-flex justify-content-between flex-lg-row flex-column-reverse"
       >
-        <!-- tabla -->
+        <!-- Tabla -->
         <div class="table-responsive w-sm-100 w-md-100 w-lg-75">
           <table class="display table text-dark table-bordered-dark">
             <thead class="thead_table">
               <!--Imput thead-->
-              <ItemThead></ItemThead>
-              <ItemThead></ItemThead>
-              <ItemThead></ItemThead>
+              <ItemThead
+                v-for="(item, index) in items.slice(0, items.length - 1)"
+                :key="index"
+                :name_imput="name_imput"
+                :id="id"
+                :titulo="titulo"
+              >
+              </ItemThead>
               <!--Cabecero titulos-->
               <tr class="tr_rubrica">
                 <td class="titulo_rubrica text-center">Componentes</td>
@@ -32,11 +37,14 @@
             </thead>
             <tbody>
               <!--item rubrica-->
-              <ItemTBody></ItemTBody>
-              <ItemTBody></ItemTBody>
-              <ItemTBody></ItemTBody>
-              <ItemTBody></ItemTBody>
-              <!--Btn añadir item-->
+              <ItemTBody
+                v-for="(item, index) in items"
+                :key="index"
+                :encabezado="encabezadoTr"
+                :texto="contenidoTr"
+              >
+              </ItemTBody>
+              <!-- row btn añadir item-->
               <tr class="tr_item_rubrica">
                 <td class="td_boton text-center" colspan="3">
                   <button
@@ -58,7 +66,7 @@
           </table>
         </div>
         <!--Contenedor card (tipos rúbricas)-->
-        <div class="scroll-div border border-1 border-dark rounded-1">
+        <div class="scroll-div border border-1 border-dark rounded-1 pb-2">
           <h2 class="tipo_formato d-flex justify-content-center">
             Elije uno de los formatos
           </h2>
@@ -66,24 +74,16 @@
           <div class="row text-center">
             <div
               class="col_card col-lg-12 col-md-6 col-6 d-flex justify-content-md-center justify-content-center"
-            >
-              <CardTipo></CardTipo>
-            </div>
-
-            <div
-              class="col_card col-lg-12 col-md-6 col-6 d-flex justify-content-md-center justify-content-center"
-            >
-              <CardTipo></CardTipo>
-            </div>
-            <div
-              class="col_card col-lg-12 col-md-6 col-6 d-flex justify-content-md-center justify-content-center mb-2"
-            >
-              <CardTipo></CardTipo>
-            </div>
-            <div
-              class="col_card col-lg-12 col-md-6 col-6 d-flex justify-content-md-center justify-content-center mb-2"
-            >
-              <CardTipo></CardTipo>
+               v-for="(item, index) in items" :key="index"
+              >
+              <CardTipo
+                :tituloCard="tituloCard"
+                :nombreImagen="nombreImagen"
+                :altImagen="altImage"
+                :etqFaseProyecto="etqFaseProyecto"
+                :etqModalidadProyecto="etqModalidadProyecto"
+              >
+              </CardTipo>
             </div>
           </div>
         </div>
@@ -94,23 +94,78 @@
       <button class="btn boton pl-5 pr-5 mx-auto">Regresar</button>
       <button class="btn boton pl-5 pr-5 mx-auto">Editar</button>
     </div>
-    <ModalAdd></ModalAdd>
+    <!--Sesion de modales-->
+    <ModalAdd
+      :id_rubrica="id_rubrica"
+      :titulo="tituloItem"
+      :valorMax="valorMax"
+      :descripcion="descripcion"
+    ></ModalAdd>
     <ModalDelete></ModalDelete>
   </div>
 </template>
 
 <script>
+import { ref } from "vue";
 import CardTipo from "./CardTipo.vue";
 import ItemTBody from "./ItemTBody.vue";
 import ItemThead from "./ItemThead.vue";
-import FootTable from "./FootTable.vue"
+import FootTable from "./FootTable.vue";
 import ModalAdd from "./ModalAdd.vue";
 import ModalDelete from "./ModalDelete.vue";
 
 export default {
   setup() {
+    //Titulo contenedor principal
     const tituloPrincipal = "Gestionar rúbricas";
-    return { tituloPrincipal };
+
+    //info para enviar al modal(Editar)
+    const id_rubrica = ref(1);
+    const tituloItem = ref("Presentación oral");
+    const valorMax = ref(10);
+    const descripcion = ref(
+      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quae?"
+    );
+
+    //info imputs del Thead
+    const name_imput = ref("titulo");
+    const id = ref(2);
+    const titulo = ref("Titulo");
+
+    //info row del tbody
+    const encabezadoTr = ref("Resumen");
+    const contenidoTr = ref(
+      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Obcaecati!"
+    );
+
+    //info para la card
+    const tituloCard = ref("Esta es una prueba");
+    const nombreImagen = ref("logo.png");
+    const altImage = ref("Imagen de ejemplo");
+    const etqModalidadProyecto = ref("Poster");
+    const etqFaseProyecto = ref("Presencial");
+
+    //Arreglo de prueba para iterar los componentes
+    const items = [1, 2, 3, 4];
+
+    return {
+      tituloPrincipal,
+      items,
+      encabezadoTr,
+      contenidoTr,
+      name_imput,
+      id,
+      titulo,
+      id_rubrica,
+      tituloItem,
+      valorMax,
+      descripcion,
+      tituloCard,
+      nombreImagen,
+      altImage,
+      etqModalidadProyecto,
+      etqFaseProyecto,
+    };
   },
   components: {
     CardTipo,
@@ -124,6 +179,7 @@ export default {
 </script>
 
 <style scoped>
+
 .boton_añadir {
   border: none;
   width: 150px;
@@ -191,8 +247,9 @@ export default {
   font-style: italic;
   font-size: 16px;
 }
-.titulo_rubrica{
-	font-size: 18px; font-weight: bold;
+.titulo_rubrica {
+  font-size: 18px;
+  font-weight: bold;
 }
 @media only screen and (min-width: 500px) and (max-width: 768px) {
   .modal-dialog {

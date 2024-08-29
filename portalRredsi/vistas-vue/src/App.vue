@@ -1,17 +1,16 @@
-<template>
-  
-  <PaginaPrincipalView/>
+<template> 
 
+  <img alt="Vue logo" src="./assets/logo.png">
+  <HelloWorld msg="Welcome to Your Vue.js App"/>
 </template>
 
 <script>
-
-import PaginaPrincipalView from './views/PaginaPrincipalView.vue';
-
+import HelloWorld from './components/HelloWorld.vue';
 export default {
   name: 'App',
   components: {
-    PaginaPrincipalView
+    HelloWorld,
+    
   }
 }
 </script>

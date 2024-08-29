@@ -2,7 +2,7 @@
   <tr class="tr_item_rubrica">
     <td class="td_item">
       <div>
-        <h4 class="d-inline-block mb-0">{{ encabezado }}</h4>
+        <h4 class="d-inline-block mb-0 me-1">{{ encabezado }}</h4>
         <span>
           {{ texto }}
         </span>
@@ -35,15 +35,17 @@
 </template>
 
 <script>
-import { ref } from 'vue';
 export default {
-  setup() {
-    const encabezado = ref("Resumen:");
-    const texto = ref("Lorem ipsum dolor sit amet consectetur adipisicing consequuntur, eos sint id excepturi eius? neque qui.");
-    return {encabezado,texto};
+  props:{
+    encabezado:{
+      type: String,
+      require
+    },
+    texto:{
+      type: String, 
+      require
+    }
   },
-  components:{
-  }
 };
 </script>
 
