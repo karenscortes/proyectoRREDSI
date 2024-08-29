@@ -5,11 +5,19 @@
 
 <script>
 import HelloWorld from './components/HelloWorld.vue';
+<<<<<<< HEAD
 export default {
   name: 'App',
   components: {
     HelloWorld,
 
+=======
+
+export default {
+  name: 'App',
+  components: {
+    HelloWorld
+>>>>>>> 58026201ba57d7c02c46a526873c884e5a4d8f2c
   }
 }
 </script>
