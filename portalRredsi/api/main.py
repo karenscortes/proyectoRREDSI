@@ -1,7 +1,7 @@
 from fastapi import FastAPI
-from fastapi.middleware.cors import CORSMiddleware
-from appv1.crud import usuarios
+from appv1.routers import usuarios
 from db.database import test_db_connection
+from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI()
 
