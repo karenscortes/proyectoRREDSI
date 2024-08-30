@@ -1,5 +1,6 @@
 <template>
   <div class="container pt-5">
+    <!--Titulo principal-->
     <div class="row mb-5 mt-2">
       <div class="col">
         <div class="section_title text-center">
@@ -7,15 +8,16 @@
         </div>
       </div>
     </div>
-    <!-- Buscador y añadir sala -->
+    <!-- Opción añadir sala y buscador -->
     <div class="row mb-4">
       <div
         class="col-12 divloco col-md-6 d-flex justify-content-start mb-3 mb-md-0"
       >
         <button
           class="btn btn-warning w-sm-100 w-75 font-weight-bold"
-          data-toggle="modal"
-          data-target="#addSalaModal"
+          type="button"
+          data-bs-toggle="modal"
+          data-bs-target="#addSala"
         >
           Crear sala
         </button>
@@ -48,8 +50,12 @@
           </tr>
         </thead>
         <tbody>
-         <!--RowTableSala(componente)-->
-         <RowTableSala v-for="(item, index) in salas" :key="index"></RowTableSala>
+          <!--RowTableSala(componente)-->
+          <RowTableSala
+            v-for="(sala, index) in infoSalas"
+            :key="index"
+            :infoSala="sala"
+          ></RowTableSala>
         </tbody>
       </table>
     </div>
@@ -59,23 +65,45 @@
 </template>
 
 <script>
-import RowTableSala from './RowTableSala.vue';
-import ModalAddSala from './ModalAddSala.vue';
-import ModalEditSala from './ModalEditSala.vue';
-export default{
-    setup(){
-        const salas = [1, 2, 3, 4];
-        return{salas,}
-    },
-    components:{
-        RowTableSala,
-        ModalAddSala, 
-        ModalEditSala,
-    }
+import RowTableSala from "./RowTableSala.vue";
+import ModalAddSala from "./ModalAddSala.vue";
+import ModalEditSala from "./ModalEditSala.vue";
+import { reactive } from "vue";
+export default {
+  setup() {
+    const infoSalas = reactive([
+      {
+        delegado: "Olga",
+        numSala: "13234es",
+        areaConocimiento: "Sistemas",
+      },
+      {
+        delegado: "Olga",
+        numSala: "13234es",
+        areaConocimiento: "Sistemas",
+      },
+      {
+        delegado: "Olga",
+        numSala: "13234es",
+        areaConocimiento: "Sistemas",
+      },
+      {
+        delegado: "Olga",
+        numSala: "13234es",
+        areaConocimiento: "Sistemas",
+      },
+    ])
+    return {infoSalas};
+  },
+  components: {
+    RowTableSala,
+    ModalAddSala,
+    ModalEditSala,
+  },
 };
 </script>
 <style scoped>
-    thead{
-        background: rgb(255, 182, 6);
-    }
+thead {
+  background: rgb(255, 182, 6);
+}
 </style>

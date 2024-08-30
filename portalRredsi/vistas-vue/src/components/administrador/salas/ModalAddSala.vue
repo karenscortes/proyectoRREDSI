@@ -1,8 +1,8 @@
 <template>
-  <!-- Modal actualizar sala -->
+  <!-- Modal añadir sala -->
   <div
     class="modal fade"
-    id="addSalaModal"
+    id="addSala"
     tabindex="-1"
     aria-labelledby="modalLabel"
     aria-hidden="true"
@@ -15,7 +15,7 @@
           <button
             type="button"
             class="close mr-3 mt-3"
-            data-dismiss="modal"
+            data-bs-dismiss="modal"
             aria-label="Close"
           >
             <span aria-hidden="true">&times;</span>

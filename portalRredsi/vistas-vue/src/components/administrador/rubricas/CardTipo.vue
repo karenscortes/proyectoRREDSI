@@ -1,20 +1,20 @@
 <template>
   <div class="card">
-    <img
-      :src="require(`@/assets/${nombreImagen}`)"
+    <img v-if="infoCard.image"
+      :src="require(`@/assets/${infoCard.image}`)"
       class="img-fluid w-25 pb-2 pt-3"
-      :alt="altImagen"
+      :alt="infoCard.altImage"
     />
 
     <div class="card-body">
       <!--info rubrica-->
       <div class="pb-1 mb-2">
         <h6 class="card-subtitle mb-2">Fase de proyecto:</h6>
-        <p class="card-text">{{ etqFaseProyecto }}</p>
+        <p class="card-text">{{ infoCard.faseProyecto }}</p>
       </div>
       <div>
         <h6 class="card-subtitle mb-2">Modalidad proyecto:</h6>
-        <p class="card-text">{{ etqModalidadProyecto }}</p>
+        <p class="card-text">{{ infoCard.modalidadProyecto }}</p>
       </div>
     </div>
   </div>
@@ -23,22 +23,18 @@
 <script>
 export default {
   props:{
-    nombreImagen:{
-      type: String, 
-      require,
-    }, 
-    altImagen:{
-      type: String,
-      require
+    infoCard: {
+      type: Object,  
+      required: true,
+      validator(value){
+        return(
+          typeof value.image === 'string' &&
+          typeof value.altImage === 'string' &&
+          typeof value.modalidadProyecto === 'string' &&
+          typeof value.faseProyecto === 'string'
+        );
+      }
     },
-    etqModalidadProyecto:{
-      type: String,
-      require
-    },
-    etqFaseProyecto:{
-      type: String,
-      require
-    }
   }
 };
 </script>
@@ -52,7 +48,7 @@ export default {
   border-radius: 30px;
   height: auto;
   cursor: pointer;
-  border: 2px solid black;
+  border: 4px solid black;
   margin-top: 10px;
 }
 
@@ -73,7 +69,7 @@ export default {
 }
 
 .card:hover {
-  border: 2px solid rgb(255, 217, 3);
+  border: 4px solid rgb(255, 217, 3);
   animation: dance 0.5s ease-in-out;
 }
 
