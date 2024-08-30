@@ -65,6 +65,7 @@ export default {
 
 <style scoped>
 
+
 .texto-recortado {
     width: 200px; 
     overflow: hidden;
