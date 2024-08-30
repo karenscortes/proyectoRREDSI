@@ -6,13 +6,16 @@
                 <li>
                     <a class="card">
                         <div class="text-center pt-5 card__image">
-                            <form :action="pdfProyecto" class="d-inline-flex" target="_blank">
+                            <a :href="pdfProyecto" class="d-inline-flex" target="_blank">
                                 <button type="submit" class="btn btn-warning rounded-circle border border-dark mx-2"><i class="far fa-file-alt h3"></i></button>
-                            </form>
+                            </a>
+							
+							<!-- Este form debe cambiar a router-link
+							No lo cambio porque da error ;D -->
                             <form action="calificar_proyectos_etapa1.html" class="d-inline-flex">
                                 <button type="submit" class="btn btn-warning rounded-circle border border-dark mx-2"><i class="fa-solid fa-list-check fa-xl"></i></button> 
                             </form>    
-                        </div>
+                        </div> 
                         <div class="card__overlay">
                             <div class="card__header">
                                 <svg class="card__arc" xmlns="http://www.w3.org/2000/svg"><path d="M 40 80 c 22 0 40 -22 40 -40 v 40 Z"/></svg>                     
@@ -20,15 +23,15 @@
                                     <h2>{{numeroProyecto}}</h2>
                                 </div>   
                                 <div class="card__header-text text-justify">
-                                    <h3 class=" text-left ">Estudios lorem2  Lorem, ipsum. Lorem, ipsum.</h3> 
-                                    <h4 class="text-left">Estudios lorem2  Lorem, ipsum. Lorem, ipsum. </h4>                                                                   
+                                    <h3 class="text-left texto-recortado">{{ tituloProyecto }}</h3> 
+                                    <h4 class="text-left texto-recortado">{{ institucionProyecto }}</h4>                                                                   
                                 </div> 
                        
                             </div>
                             <div class="card__footer text-center">
                                 <div>
-                                    <p class="card__description"><strong>Modalidad:</strong> Poster</p>
-                                    <p class="card__description"><strong>Estado:</strong> Pendiente</p>
+                                    <p class="card__description"><strong>Modalidad:</strong> {{ modalidadProyecto }}</p>
+                                    <p class="card__description"><strong>Estado:</strong> {{ estadoProyecto }}</p>
                                 </div>
                             </div>           
                         </div>
@@ -61,6 +64,16 @@ export default {
 </style>
 
 <style scoped>
+
+.texto-recortado {
+    width: 200px; 
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2; 
+    line-clamp: 2;
+    text-overflow: ellipsis;
+}
 
 div
 {
