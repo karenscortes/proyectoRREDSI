@@ -6,9 +6,9 @@
     </td>
   </tr>
 </template>
-<script>
-export default {
-  props:{
+<script setup>
+defineProps(
+  {
     infoImputs: {
       type: Object,  
       required: true,
@@ -21,7 +21,7 @@ export default {
       }
     },
   }
-};
+)
 </script>
 <style scoped>
 .form-control {

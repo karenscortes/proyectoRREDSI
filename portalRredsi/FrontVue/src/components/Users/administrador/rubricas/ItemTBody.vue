@@ -34,21 +34,19 @@
   </tr>
 </template>
 
-<script>
-export default {
-  props:{
-    infoItem: {
-      type: Object,  
-      required: true,
-      validator(value){
-        return(
-          typeof value.p_encabezadoTr === 'string' &&
-          typeof value.p_contenidoTr === 'string'
-        );
-      }
-    }
+<script setup>
+defineProps({
+  infoItem: {
+    type: Object,
+    required: true,
+    validator(value) {
+      return (
+        typeof value.p_encabezadoTr === "string" &&
+        typeof value.p_contenidoTr === "string"
+      );
+    },
   },
-};
+});
 </script>
 
 <style scoped>
@@ -59,9 +57,9 @@ td {
 i {
   font-size: 24px;
 }
-.td_boton{
+.td_boton {
   vertical-align: middle !important;
-  width: 5%
+  width: 5%;
 }
 .botones_rubrica {
   width: 40px;
@@ -90,16 +88,16 @@ h4 {
 span {
   font-size: 15px;
 }
-.td_item{
-  width: 30%
+.td_item {
+  width: 30%;
 }
-.td_valor_max{
-  width: 5%
+.td_valor_max {
+  width: 5%;
 }
-.td_calificacion{
-  width: 25%
+.td_calificacion {
+  width: 25%;
 }
-.td_resultado{
-  width: 25%
+.td_resultado {
+  width: 25%;
 }
 </style>

@@ -13,7 +13,9 @@
       <div class="modal-content rounded-st-1 shadow-lg modal-responsive">
         <div class="modal-header p-4 shadow w-100">
           <i class="fas fa-list icon"></i>
-          <h1 class="modal-title fs-5" id="staticBackdropLabel">Item Rúbrica</h1>
+          <h1 class="modal-title fs-5" id="staticBackdropLabel">
+            Item Rúbrica
+          </h1>
           <button
             type="button"
             class="btn-close"
@@ -34,7 +36,8 @@
                   id="titulo"
                   name="titulo"
                   required="required"
-                  class="form_modal form-control" v-model="tituloItem"
+                  class="form_modal form-control"
+                  v-model="tituloItem"
                 />
               </div>
               <div class="col-md-6 mb-4">
@@ -47,11 +50,12 @@
                   id="valor_maximo"
                   name="valor_maximo"
                   required="required"
-                  class="form_modal form-control" v-model="valorMax"
+                  class="form_modal form-control"
+                  v-model="valorMax"
                 />
               </div>
               <div class="col-md-12 mb-4">
-                <label for="descripcion" class="form-label "
+                <label for="descripcion" class="form-label"
                   >Descripción
                   <span class="text-danger fw-bold">*</span>
                 </label>
@@ -59,7 +63,8 @@
                   id="descripcion"
                   name="descripcion"
                   required="required"
-                  class="form_textArea form-control" v-model="descripcion"
+                  class="form_textArea form-control"
+                  v-model="descripcion"
                 ></textarea>
               </div>
             </div>
@@ -74,35 +79,32 @@
   </div>
 </template>
 
-<script>
-import { ref } from 'vue';
-export default{
-  props:{
-    infoModalEditar: {
-      type: Object,  
-      default: null,
-      validator(value){
-        return(
-          typeof value.p_idRubrica === 'number' &&
-          typeof value.p_tituloItem === 'string' &&
-          typeof value.p_valorMax === 'number' &&
-          typeof value.p_descripcion == 'string'
-        );
-      }
+<script setup>
+import { ref} from 'vue';
+const props = defineProps({
+  infoModalEditar: {
+    type: Object,
+    default: null,
+    validator(value){
+      return(
+        typeof value.p_idRubrica === 'number' &&
+        typeof value.p_tituloItem === 'string' &&
+        typeof value.p_valorMax === 'number' &&
+        typeof value.p_descripcion == 'string'
+      );
     }
-  },
-  setup(props){
-    const tituloItem = ref (props.infoModalEditar?.p_tituloItem || ''); 
-    const valorMax = ref(props.infoModalEditar?.p_valorMax || '');
-    const descripcion = ref(props.infoModalEditar?.p_descripcion || '');
-    return{tituloItem,valorMax,descripcion}
   }
-}
+})
+const {infoModalEditar} = props;
+
+const tituloItem = ref (infoModalEditar.p_tituloItem);
+const valorMax = ref(infoModalEditar.p_valorMax);
+const descripcion = ref(infoModalEditar.p_descripcion);
 </script>
 
 <style scoped>
-textarea{
-  color: black
+textarea {
+  color: black;
 }
 .modal-dialog {
   max-width: 50%;
@@ -134,10 +136,10 @@ textarea{
   outline: none;
   border-radius: 3px;
 }
-label{
-	font-size: 20px;
-	font-weight: bold;
-	color: black;
+label {
+  font-size: 20px;
+  font-weight: bold;
+  color: black;
   width: 100%;
   text-align: start;
 }
@@ -146,11 +148,11 @@ i {
   margin-right: 8px;
   color: rgb(255, 182, 6);
 }
-.btn{
+.btn {
   background-color: rgb(255, 182, 6);
   font-weight: 700;
 }
-.btn:focus{
+.btn:focus {
   border: none;
   box-shadow: none;
   color: #494949;

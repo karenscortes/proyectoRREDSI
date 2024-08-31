@@ -1,7 +1,8 @@
 <template>
   <div class="card">
-    <img v-if="infoCard.image"
-      :src="require(`@/assets/${infoCard.image}`)"
+    <img
+      v-if="infoCard.image"
+      :src="`/src/assets/${infoCard.image}`"
       class="img-fluid w-25 pb-2 pt-3"
       :alt="infoCard.altImage"
     />
@@ -20,23 +21,21 @@
   </div>
 </template>
 
-<script>
-export default {
-  props:{
-    infoCard: {
-      type: Object,  
-      required: true,
-      validator(value){
-        return(
-          typeof value.image === 'string' &&
-          typeof value.altImage === 'string' &&
-          typeof value.modalidadProyecto === 'string' &&
-          typeof value.faseProyecto === 'string'
-        );
-      }
+<script setup>
+defineProps({
+  infoCard: {
+    type: Object,
+    required: true,
+    validator(value) {
+      return (
+        typeof value.image === "string" &&
+        typeof value.altImage === "string" &&
+        typeof value.modalidadProyecto === "string" &&
+        typeof value.faseProyecto === "string"
+      );
     },
-  }
-};
+  },
+});
 </script>
 
 <style scoped>

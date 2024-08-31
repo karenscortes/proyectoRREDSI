@@ -94,111 +94,91 @@
   </div>
 </template>
 
-<script>
+<script setup>
 import { reactive } from "vue";
-import CardTipo from "./CardTipo.vue";
-import ItemTBody from "./ItemTBody.vue";
-import ItemThead from "./ItemThead.vue";
-import FootTable from "./FootTable.vue";
-import ModalAdd from "./ModalAdd.vue";
-import ModalDelete from "./ModalDelete.vue";
+import CardTipo from "../components/administrador/rubricas/CardTipo.vue";
+import ItemTBody from "../components/administrador/rubricas/ItemTBody.vue";
+import ItemThead from "../components/administrador/rubricas/ItemThead.vue";
+import FootTable from "../components/administrador/rubricas/FootTable.vue";
+import ModalAdd from "../components/administrador/rubricas/ModalAdd.vue";
+import ModalDelete from "../components/administrador/rubricas/ModalDelete.vue";
 
-export default {
-  setup() {
-    //Titulo contenedor principal
-    const tituloPrincipal = "Gestionar rúbricas";
+//Titulo contenedor principal
+const tituloPrincipal = "Gestionar rúbricas";
 
-    //info para enviar al modal(Editar)
-    const infoModalEditar = reactive({
-      p_idRubrica: 1,
-      p_tituloItem: "Presentación oral",
-      p_valorMax: 10,
-      p_descripcion:
-        "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quae?",
-    });
+//info para enviar al modal(Editar)
+const infoModalEditar = reactive({
+  p_idRubrica: 1,
+  p_tituloItem: "Presentación oral",
+  p_valorMax: 10,
+  p_descripcion:
+    "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quae?",
+});
 
-    //info imputs del Thead
-    const infoImputs = reactive([
-      {
-        p_name_imput: "titulo",
-        p_id: "titulo",
-        p_titulo: "Titulo",
-      },
-      {
-        p_name_imput: "titulo",
-        p_id: "titulo",
-        p_titulo: "Titulo",
-      },
-      {
-        p_name_imput: "titulo",
-        p_id: "titulo",
-        p_titulo: "Titulo",
-      },
-    ]);
-
-    //info row del tbody
-    const infoItems = reactive([
-      {
-        p_encabezadoTr: "Presentación oral",
-        p_contenidoTr:
-          "Lorem ipsum dolor sit amet consectetur adipisicing elit. Obcaecati!",
-      },
-      {
-        p_encabezadoTr: "Presentación oral",
-        p_contenidoTr:
-          "Lorem ipsum dolor sit amet consectetur adipisicing elit. Obcaecati!",
-      },
-      {
-        p_encabezadoTr: "Presentación oral",
-        p_contenidoTr:
-          "Lorem ipsum dolor sit amet consectetur adipisicing elit. Obcaecati!",
-      },
-      {
-        p_encabezadoTr: "Presentación oral",
-        p_contenidoTr:
-          "Lorem ipsum dolor sit amet consectetur adipisicing elit. Obcaecati!",
-      },
-    ]);
-
-    //info para la card
-    const infoCards = reactive([
-      {
-        image: "logo.png",
-        altImage: "Esto es un ejemplo",
-        modalidadProyecto: "Poster",
-        faseProyecto: "Presencial",
-      },
-      {
-        image: "logo.png",
-        altImage: "Esto es un ejemplo",
-        modalidadProyecto: "Poster",
-        faseProyecto: "Presencial",
-      },
-      {
-        image: "logo.png",
-        altImage: "Esto es un ejemplo",
-        modalidadProyecto: "Poster",
-        faseProyecto: "Presencial",
-      },
-    ]);
-
-    return {
-      tituloPrincipal,
-      infoImputs,
-      infoModalEditar,
-      infoCards,
-      infoItems,
-    };
+//info imputs del Thead
+const infoImputs = reactive([
+  {
+    p_name_imput: "titulo",
+    p_id: "titulo",
+    p_titulo: "Titulo",
   },
-  components: {
-    CardTipo,
-    ItemTBody,
-    ItemThead,
-    FootTable,
-    ModalAdd,
-    ModalDelete,
+  {
+    p_name_imput: "titulo",
+    p_id: "titulo",
+    p_titulo: "Titulo",
   },
-};
+  {
+    p_name_imput: "titulo",
+    p_id: "titulo",
+    p_titulo: "Titulo",
+  },
+]);
+
+//info row del tbody
+const infoItems = reactive([
+  {
+    p_encabezadoTr: "Presentación oral",
+    p_contenidoTr:
+      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Obcaecati!",
+  },
+  {
+    p_encabezadoTr: "Presentación oral",
+    p_contenidoTr:
+      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Obcaecati!",
+  },
+  {
+    p_encabezadoTr: "Presentación oral",
+    p_contenidoTr:
+      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Obcaecati!",
+  },
+  {
+    p_encabezadoTr: "Presentación oral",
+    p_contenidoTr:
+      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Obcaecati!",
+  },
+]);
+
+//info para la card
+const infoCards = reactive([
+  {
+    image: "vue.svg",
+    altImage: "Esto es un ejemplo",
+    modalidadProyecto: "Poster",
+    faseProyecto: "Presencial",
+  },
+  {
+    image: "vue.svg",
+    altImage: "Esto es un ejemplo",
+    modalidadProyecto: "Poster",
+    faseProyecto: "Presencial",
+  },
+  {
+    image: "vue.svg",
+    altImage: "Esto es un ejemplo",
+    modalidadProyecto: "Poster",
+    faseProyecto: "Presencial",
+  },
+]);
 </script>
 
 <style scoped>

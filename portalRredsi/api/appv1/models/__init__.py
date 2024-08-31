@@ -24,4 +24,4 @@ from models.rubrica_resultado import Rubrica_resultado
 from models.sala import Sala 
 from models.sala_asignada import Sala_asignada
 from models.presentacion_proyecto import Presentacion_proyecto
-from models.historial_actividades_admin import historial_actividades_admin
+from models.historial_actividades_admin import Historial_admin

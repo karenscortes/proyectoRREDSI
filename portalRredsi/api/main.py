@@ -1,11 +1,12 @@
 from fastapi import FastAPI
-from appv1.routers import usuarios
+from appv1.routers import usuarios, rol
 from db.database import test_db_connection
 from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI()
 
 app.include_router(usuarios.router_user, prefix="/users", tags=["Usuarios"])
+app.include_router(rol.router_rol, prefix="/roles", tags=["Roles"])
 
 def on_startup():
     test_db_connection()
