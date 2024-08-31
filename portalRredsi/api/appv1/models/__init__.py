@@ -7,7 +7,7 @@ from models.usuario import Usuario
 from models.etapa import Etapa
 from models.fase import Fase
 from models.convocatoria import Convocatoria
-from models.Programacion_fase import Programacion_fase
+from models.programacion_fase import Programacion_fase
 from models.postulacion_evaluador import Postulacion_evaluador
 from models.modalidad import Modalidad
 from models.rubrica import Rubrica
@@ -20,8 +20,8 @@ from models.detalle_personal import Detalle_personal
 from models.asistente import Asistente
 from models.proyecto_convocatoria import Proyecto_convocatoria
 from models.participante_proyecto import Participante_proyecto
-from models.rubrica_resultados import Rubrica_resultado
+from models.rubrica_resultado import Rubrica_resultado
 from models.sala import Sala 
 from models.sala_asignada import Sala_asignada
 from models.presentacion_proyecto import Presentacion_proyecto
-from models.historial_actividades_admin import historial_actividades_admin
+from models.historial_actividades_admin import Historial_admin

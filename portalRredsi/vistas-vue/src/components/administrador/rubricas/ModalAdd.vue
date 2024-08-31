@@ -34,7 +34,7 @@
                   id="titulo"
                   name="titulo"
                   required="required"
-                  class="form_modal form-control" :value="id_rubrica ? titulo : ''"
+                  class="form_modal form-control" v-model="tituloItem"
                 />
               </div>
               <div class="col-md-6 mb-4">
@@ -47,7 +47,7 @@
                   id="valor_maximo"
                   name="valor_maximo"
                   required="required"
-                  class="form_modal form-control"  :value="id_rubrica ? valorMax : ''"
+                  class="form_modal form-control" v-model="valorMax"
                 />
               </div>
               <div class="col-md-12 mb-4">
@@ -59,8 +59,7 @@
                   id="descripcion"
                   name="descripcion"
                   required="required"
-                  class="form_textArea form-control"
-                   :value="id_rubrica ? descripcion : ''"
+                  class="form_textArea form-control" v-model="descripcion"
                 ></textarea>
               </div>
             </div>
@@ -76,20 +75,27 @@
 </template>
 
 <script>
+import { ref } from 'vue';
 export default{
   props:{
-    id_rubrica:{
-      type:Number
-    },
-    titulo:{
-      type:String
-    },
-    valorMax:{
-      type:Number
-    },
-    descripcion:{
-      type:String
+    infoModalEditar: {
+      type: Object,  
+      default: null,
+      validator(value){
+        return(
+          typeof value.p_idRubrica === 'number' &&
+          typeof value.p_tituloItem === 'string' &&
+          typeof value.p_valorMax === 'number' &&
+          typeof value.p_descripcion == 'string'
+        );
+      }
     }
+  },
+  setup(props){
+    const tituloItem = ref (props.infoModalEditar?.p_tituloItem || ''); 
+    const valorMax = ref(props.infoModalEditar?.p_valorMax || '');
+    const descripcion = ref(props.infoModalEditar?.p_descripcion || '');
+    return{tituloItem,valorMax,descripcion}
   }
 }
 </script>

@@ -1,26 +1,25 @@
 <template>
   <tr class="tr_rubrica align-items-center">
-    <td class="titulo_rubrica">{{ titulo }}</td>
+    <td class="titulo_rubrica">{{ infoImputs.p_titulo }}</td>
     <td colspan="5" class="text-center">
-      <input type="text" :name="name_imput" :id="id" class="form-control rounded-5" />
+      <input type="text" :name="infoImputs.p_name_imput" :id="infoImputs.p_id" class="form-control rounded-5" />
     </td>
   </tr>
 </template>
 <script>
 export default {
   props:{
-    titulo:{
-      type: String,
-      require
+    infoImputs: {
+      type: Object,  
+      required: true,
+      validator(value){
+        return(
+          typeof value.p_titulo === 'string' &&
+          typeof value.p_name_imput === 'string' &&
+          typeof value.p_titulo == 'string'
+        );
+      }
     },
-    name_imput: {
-      type: String,
-      require
-    },
-    id: {
-      type: Number,
-      require
-    }
   }
 };
 </script>
