@@ -1693,11 +1693,7 @@ body {
 	margin-right: 0;
 }
 
-label {
-	display: block;
-	margin-bottom: 8px;
-	font-weight: bold;
-}
+
 
 input[type="text"],
 select {
@@ -1737,18 +1733,15 @@ select {
 }
 
 .add-author-btn {
-	display: inline-block;
 	background-color: rgb(255, 182, 6);
 	color: black;
 	border: none;
-	padding: 10px;
-	border-radius: 5px;
-	font-size: 14px;
+	padding: 5px;
+	border-radius: 3px;
+	font-size: 18px;
 	text-align: center;
 	cursor: pointer;
-	margin-top: 30px;
 }
-
 
 .modal-content {
 	background-color: #fefefe;
