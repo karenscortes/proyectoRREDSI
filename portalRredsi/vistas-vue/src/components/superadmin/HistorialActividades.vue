@@ -3,7 +3,7 @@
     <div class="modal-dialog modal-dialog-centered modal-lg">
         <div class="modal-content border border-dark border-5 rounded-4 text-dark">
             <div class="modal-header bg-warning">
-                <h3 class="modal-title mx-auto" id="historialLabel">HISTORIAL ACCIONES DELEGADO {{ nombre_delegado }} </h3>
+                <h3 class="modal-title mx-auto" id="historialLabel">HISTORIAL ACCIONES DELEGADO {{ delegado }} </h3>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body p-4">
@@ -40,7 +40,7 @@
 import { ref } from "vue";
 export default {
     setup() {
-        const nombre_delegado = ref("nombre_delegado");
+        const delegado = ref(delegado);
         const tipo_accion = ref(tipo_accion);
         const modulo = ref(modulo);
         const descripcion = ref(descripcion);
@@ -48,7 +48,7 @@ export default {
         const hora = ref(hora);
 
         
-        return { nombre_delegado, tipo_accion, modulo, descripcion, fecha, hora };
+        return { delegado, tipo_accion, modulo, descripcion, fecha, hora };
     },
 };
 </script>
