@@ -31,14 +31,17 @@
                 <tbody>
                     <tr v-for="(componente, index) in componentes" :key="index">
                         <td class="border border-dark">
-                            <span class="text-dark font-weight-bold">Titulo:</span> {{ componente.titulo }}
+                            <span class="text-dark font-weight-bold">{{ componente.titulo }}:</span> {{ componente.descripcion }}
                         </td>
-                        <td class="text-center border border-dark">{{ componente.valorMaximo }}</td>
-                        <td class="border border-dark">
-                            <input type="number" v-model.number="componente.calificacion" class="w-100">
+                        <td class="text-center-vertical border border-dark">{{ componente.valorMaximo }}</td>
+                        <td class="border border-dark text-center">
+                            <input type="number" v-model.number="componente.calificacion" class="w-100 text-center" step="0.1" min="0" :max="componente.valorMaximo"  @input="actualizarPuntajeTotal">
                         </td>
                         <td class="border border-dark">
-                            <textarea v-model="componente.observaciones" class="w-100" rows="1"></textarea>
+                            <textarea v-model="componente.observaciones" class="text-area-full-width" rows="1" @input="actualizarCaracteres"></textarea>
+                            <div class="text-right">
+                                <span class="pt-3">Minimo 150/{{ caracteresActuales }} </span>
+                            </div>
                         </td>
                     </tr>
                 </tbody>
@@ -46,7 +49,7 @@
                     <tr class="titulo_rubrica text-center">
                         <th class="border border-dark" scope="row">Puntaje total:</th>
                         <td class="border border-dark">
-                            <input type="number" class="form-control fs-6 form-control-sm rounded-5 w-100" readonly>
+                            <input type="number" class="form-control fs-6 form-control-sm rounded-5 w-100" :value="formateadoPuntajeTotal" readonly>
                         </td>
                     </tr>
                     <tr class="titulo_rubrica text-center">
@@ -79,22 +82,54 @@
             </table>
         </div>
         <div class="col-8 text-center py-5">
-            <button class="btn btn-warning w-25 font-weight-bold text-dark"> Calificar </button>
+            <button class="btn btn-warning  font-weight-bold text-dark"> Calificar </button>
         </div>
     </form>
 </template>
 
-<script>    
+<script>
+import { ref, computed, watch } from 'vue';
+
 export default {
+    setup(props) {
+        const puntajeTotal = ref(0);
+
+        const actualizarPuntajeTotal = () => {
+            puntajeTotal.value = props.componentes.reduce((total, componente) => {
+                return total + (componente.calificacion || 0);
+            }, 0);
+        };
+
+        const caracteresActuales = ref(0);
+
+        const actualizarCaracteres = (event) => {
+            caracteresActuales.value = event.target.value.length;
+            const textarea = event.target;
+            textarea.style.height = 'auto'; 
+            textarea.style.height = textarea.scrollHeight + 'px'; 
+        };
+
+        const formateadoPuntajeTotal = computed(() => {
+            return puntajeTotal.value.toFixed(1); 
+        });
+
+        watch(() => props.componentes, actualizarPuntajeTotal, { deep: true });
+
+        return { caracteresActuales, actualizarCaracteres, puntajeTotal, formateadoPuntajeTotal, actualizarPuntajeTotal };
+    },
     props: {
         tituloProyecto: String,
         ponentesProyecto: String,
         universidadProyecto: String,
         nombreEvaluador: String,
-        cedulaEvaluador: Number,
+        cedulaEvaluador: String,
         universidadEvaluador: String,
         emailEvaluador: String,
-        celularEvaluador: Number
+        celularEvaluador: String,
+        componentes: Array 
+    },
+    methods: {
+        
     },
 }
 </script>
@@ -116,6 +151,24 @@ export default {
 .form-control{
 	height: 35px;
 	border: 1px solid black;
+}
+
+.text-area-full-width {
+    width: 100%;
+    box-sizing: border-box;
+    overflow-y: auto;
+    resize: none;
+    max-height: 70px;   
+}
+
+.text-center-vertical {
+    text-align: center;
+    vertical-align: middle; 
+    height: 100%; 
+}
+
+.btn-warning {
+    width: 300px;
 }
 
 </style>
