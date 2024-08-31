@@ -16,8 +16,7 @@
                             <input type="text" id="busqueda" class="form-control" placeholder="Buscar...">
                         </div>
                         <div class="col-4">
-                            <button class="btn w-100 font-weight-bold" style="background: rgb(255, 182, 6)
-;">Buscar</button>
+                            <button class="btn btn-buscar w-100 font-weight-bold">Buscar</button>
                         </div>
                     </div>
                 </div>
@@ -121,15 +120,14 @@
                             </div>
                             <div class="col-5 text-dark font-weight-bold px-3">Teléfono:</div>
                             <div class="col-5 border mb-3 px-3">
-                                <span class="text-dark">{{evaluadorActual.telefono}}</span>
+                                <span class="text-dark">{{ evaluadorActual.telefono }}</span>
                             </div>
                             <div class="col-5 text-dark font-weight-bold px-3">Correo:</div>
                             <div class="col-5 border mb-3 px-3">
                                 <span class="text-dark">{{ evaluadorActual.correo }}</span>
                             </div>
                             <div class="text-center mt-3">
-                                <a :href="evaluadorActual.urlArchivo"
-                                    class="btn btn-outline-primary" target="_blank">
+                                <a :href="evaluadorActual.urlArchivo" class="btn btn-outline-primary" target="_blank">
                                     Ver Títulos
                                 </a>
                             </div>
@@ -150,7 +148,7 @@ export default {
     data() {
         return {
             evaluadores: [
-                {   
+                {
                     tipo_documento: "Cédula",
                     identificacion: "24644221",
                     nombre: "Sebastian usma",
@@ -181,6 +179,39 @@ export default {
                     estado: false,
                     telefono: "666454545",
                     correo: "cruelo@mail.com",
+                    urlArchivo: "ruta/al/archivo.pdf"
+                },
+                {
+                    tipo_documento: "Cédula",
+                    identificacion: "458974123",
+                    nombre: "Valeria Mendoza",
+                    areaConocimiento: "Ingeniería",
+                    institucion: "Universidad de los Andes",
+                    estado: true,
+                    telefono: "3102589631",
+                    correo: "valeria.mendoza@mail.com",
+                    urlArchivo: "ruta/al/archivo.pdf"
+                },
+                {
+                    tipo_documento: "Cédula",
+                    identificacion: "874512369",
+                    nombre: "Jorge Ramírez",
+                    areaConocimiento: "Matemáticas",
+                    institucion: "Universidad del Norte",
+                    estado: false,
+                    telefono: "3007418529",
+                    correo: "jorge.ramirez@mail.com",
+                    urlArchivo: "ruta/al/archivo.pdf"
+                },
+                {
+                    tipo_documento: "Cédula",
+                    identificacion: "159753486",
+                    nombre: "Mariana Torres",
+                    areaConocimiento: "Física",
+                    institucion: "Universidad de Antioquia",
+                    estado: true,
+                    telefono: "3126458793",
+                    correo: "mariana.torres@mail.com",
                     urlArchivo: "ruta/al/archivo.pdf"
                 }
             ],
@@ -247,5 +278,14 @@ export default {
 
 .page-link {
     color: black;
+}
+
+#basic-datatables {
+    text-align: start;
+}
+
+th,
+.btn-buscar {
+    background: rgb(255, 182, 6) !important;
 }
 </style>

@@ -16,11 +16,11 @@
                         <input type="text" id="busqueda" class="form-control" placeholder="Buscar...">
                     </div>
                     <div class="col-4">
-                        <button class="btn w-100 font-weight-bold" style="background: rgb(255, 182, 6)
-;">Buscar</button>
+                        <button class="btn w-100 font-weight-bold">Buscar</button>
                     </div>
                 </div>
             </div>
+            <!-- Select de salas disponibles -->
             <div class="col-4 col-sm-2">
                 <select type="select" class="form-select text-dark">
                     <option :value="Sala" selected>Sala</option>
@@ -33,26 +33,27 @@
 
         <!-- Filtros -->
         <div class="row ml-1 mb-2 justify-content-start mt-3">
-            <div class="col-1">
-                <a href="#" class="mx-1 px-2 border text-white bg-secondary" style="border-radius: 20px; " disabled>
-                todos
+            <div class="col-auto">
+                <a href="#" class="mx-1 px-2 border text-white bg-secondary" style="border-radius: 20px;" disabled>
+                    todos
                 </a>
             </div>
-            <div class="col-1">
-                <a href="#" class="mx-1 px-2 border text-dark" style="border-radius: 20px; ">
-                participantes
+            <div class="col-auto">
+                <a href="#" class="mx-1 px-2 border text-dark" style="border-radius: 20px;">
+                    participantes
                 </a>
             </div>
-            <div class="col-1">
-                <a href="#" class="mx-1 px-2 border text-dark" style="border-radius: 20px; ">
-                evaluadores
+            <div class="col-auto">
+                <a href="#" class="mx-1 px-2 border text-dark" style="border-radius: 20px;">
+                    evaluadores
                 </a>
             </div>
         </div>
+
         <!-- tabla -->
         <div class="table-responsive">
             <table id="basic-datatables" class="display table table-striped table-hover text-dark">
-                <thead style="background: rgb(255, 182, 6);">
+                <thead>
                     <tr>
                         <th>N° de documento</th>
                         <th>Nombres</th>
@@ -61,131 +62,20 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td>1089564222</td>
-                        <td>Pepe Rodrigo Sanchez</td>
-                        <td>SENA</td>
+                    <tr v-for="(asistente, index) in asistentes" :key="index">
+                        <td>{{ asistente.documento }}</td>
+                        <td>{{ asistente.nombre }}</td>
+                        <td>{{ asistente.institucion }}</td>
                         <td colspan="1">
-                            <input type="checkbox" class="ml-3 check_asistencia">
+                            <input type="checkbox" class="form-check-input ml-4" :checked="asistente.asistio">
                         </td>
-                    </tr>
-                    <tr>
-                        <td>1089564223</td>
-                        <td>Maria Lopez Gomez</td>
-                        <td>Universidad Nacional</td>
-                        <td>
-                            <input type="checkbox" class="ml-3 check_asistencia">
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>1089564224</td>
-                        <td>Juan Carlos Perez</td>
-                        <td>Universidad de Antioquia</td>
-                        <td>
-                            <input type="checkbox" class="ml-3 check_asistencia">
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>1089564225</td>
-                        <td>Laura Fernandez</td>
-                        <td>Universidad Javeriana</td>
-                        <td>
-                            <input type="checkbox" class="ml-3 check_asistencia">
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>1089564226</td>
-                        <td>Pedro Martinez</td>
-                        <td>Universidad de los Andes</td>
-                        <td>
-                            <input type="checkbox" class="ml-3 check_asistencia">
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>1089564227</td>
-                        <td>Angela Ramirez</td>
-                        <td>Politécnico Gran Colombiano</td>
-                        <td>
-                            <input type="checkbox" class="ml-3 check_asistencia">
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>1089564228</td>
-                        <td>Ricardo Castillo</td>
-                        <td>Universidad del Rosario</td>
-                        <td>
-                            <input type="checkbox" class="ml-3 check_asistencia">
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>1089564229</td>
-                        <td>Sofia Rodriguez</td>
-                        <td>Universidad del Norte</td>
-                        <td>
-                            <input type="checkbox" class="ml-3 check_asistencia">
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>1089564230</td>
-                        <td>Felipe Moreno</td>
-                        <td>Universidad Industrial de Santander</td>
-                        <td>
-                            <input type="checkbox" class="ml-3 check_asistencia">
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>1089564231</td>
-                        <td>Catalina Gutierrez</td>
-                        <td>Universidad Pontificia Bolivariana</td>
-                        <td>
-                            <input type="checkbox" class="ml-3 check_asistencia">
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>1089564232</td>
-                        <td>Daniela Ortiz</td>
-                        <td>Universidad de la Sabana</td>
-                        <td>
-                            <input type="checkbox" class="ml-3 check_asistencia">
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>1089564233</td>
-                        <td>Andres Herrera</td>
-                        <td>Universidad del Valle</td>
-                        <td>
-                            <input type="checkbox" class="ml-3 check_asistencia">
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>1089564234</td>
-                        <td>Paula Castro</td>
-                        <td>Universidad EAFIT</td>
-                        <td>
-                            <input type="checkbox" class="ml-3 check_asistencia">
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>1089564235</td>
-                        <td>Diego Torres</td>
-                        <td>Universidad Externado</td>
-                        <td>
-                            <input type="checkbox" class="ml-3 check_asistencia">
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>1089564236</td>
-                        <td>Valentina Suarez</td>
-                        <td>Universidad Sergio Arboleda</td>
-                        <td>
-                            <input type="checkbox" class="ml-3 check_asistencia">
-                        </td>
-                    </tr>
 
+                    </tr>
                 </tbody>
-
             </table>
         </div>
+
+        <!-- paginador  -->
         <div class="mt-5">
             <div aria-label="Page navigation example mb-5">
                 <ul class="pagination justify-content-center">
@@ -216,6 +106,44 @@ export default {
     data() {
         return {
             opciones_select: ["Sala 1", "Sala 2", "Sala 3", "Sala 4"],
+            asistentes: [
+                {
+                    documento: "24644221",
+                    nombre: "Sebastian Usma",
+                    institucion: "SENA",
+                    asistio: false
+                },
+                {
+                    documento: "246415441",
+                    nombre: "Luisa Lopez Agudelo",
+                    institucion: "Universidad Sergio Arboleda",
+                    asistio: true
+                },
+                {
+                    documento: "104644221",
+                    nombre: "Miguel Alzate",
+                    institucion: "SENA",
+                    asistio: false
+                },
+                {
+                    documento: "345987651",
+                    nombre: "Andrea Perez",
+                    institucion: "Universidad Nacional",
+                    asistio: true
+                },
+                {
+                    documento: "894561234",
+                    nombre: "Carlos Martínez",
+                    institucion: "Universidad de Antioquia",
+                    asistio: false
+                },
+                {
+                    documento: "783951462",
+                    nombre: "Diana Ramírez",
+                    institucion: "Universidad del Valle",
+                    asistio: true
+                }
+            ]
         }
     }
 }
@@ -248,5 +176,13 @@ export default {
 
 .page-link {
     color: black;
+}
+
+#basic-datatables{
+    text-align: start;
+}
+
+th, button{
+    background: rgb(255, 182, 6) !important;
 }
 </style>
