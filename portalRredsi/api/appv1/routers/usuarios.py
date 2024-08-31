@@ -7,7 +7,6 @@ from db.database import get_db
 
 
 router_user = APIRouter()
-MODULE = 'usuarios'
 
 @router_user.post("/create")
 async def insert_user(
