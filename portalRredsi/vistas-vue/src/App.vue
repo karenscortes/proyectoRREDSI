@@ -1,19 +1,32 @@
-<template>
+<template> 
   <img alt="Vue logo" src="./assets/logo.png">
   <HelloWorld msg="Welcome to Your Vue.js App"/>
+<<<<<<< HEAD
   <ListaDelegados></ListaDelegados>
+=======
+>>>>>>> origin
   
 </template>
 
 <script>
 import HelloWorld from './components/HelloWorld.vue';
+<<<<<<< HEAD
 import ListaDelegados from './components/superadmin/ListaDelegados.vue';
+=======
+>>>>>>> origin
 
 export default {
   name: 'App',
   components: {
+<<<<<<< HEAD
     HelloWorld,
     ListaDelegados
+=======
+    HelloWorld
+
+    
+
+>>>>>>> origin
 
   }
 }
