@@ -2,9 +2,9 @@
   <tr class="tr_item_rubrica">
     <td class="td_item">
       <div>
-        <h4 class="d-inline-block mb-0 me-1">{{ encabezado }}</h4>
+        <h4 class="d-inline-block mb-0 me-1">{{ infoItem.p_encabezadoTr }}</h4>
         <span>
-          {{ texto }}
+          {{ infoItem.p_contenidoTr }}
         </span>
       </div>
     </td>
@@ -37,13 +37,15 @@
 <script>
 export default {
   props:{
-    encabezado:{
-      type: String,
-      require
-    },
-    texto:{
-      type: String, 
-      require
+    infoItem: {
+      type: Object,  
+      required: true,
+      validator(value){
+        return(
+          typeof value.p_encabezadoTr === 'string' &&
+          typeof value.p_contenidoTr === 'string'
+        );
+      }
     }
   },
 };

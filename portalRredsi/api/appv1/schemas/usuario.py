@@ -10,7 +10,7 @@ class EstadosEnum(str, enum.Enum):
 
 class UserBase(BaseModel):
     correo: EmailStr
-    id_rol: Annotated[str, "Identificador del rol"]
+    id_rol: int
 
 class UserCreate(UserBase):
     clave: Annotated[str, "Clave del usuario"]

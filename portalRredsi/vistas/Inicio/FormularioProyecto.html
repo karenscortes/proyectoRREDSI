@@ -52,8 +52,8 @@
                                 </div>
                             </li>
                             <li class="main_nav_item"><a href="FormularioEvaluador.html">Evaluadores</a></li>
-                            <li class="main_nav_item"><a href="principal.html/#cont_consultarProyecto" type="button" data-toggle="modal"
-                                    data-target="#LoginModal">Login</a></li>
+                            <li class="main_nav_item"><a href="principal.html/#cont_consultarProyecto" type="button"
+                                    data-toggle="modal" data-target="#LoginModal">Login</a></li>
                         </ul>
                     </div>
                 </nav>
@@ -324,8 +324,11 @@
                         <i class="fas fa-solid fa-users  title-icon"></i>
                         <h2 class="text-center">Otro ponente</h2>
                     </div>
+                    <div class="title-line"></div>
                     <form>
-                        <div class="row mb-3">
+                        <div clas
+                        .
+                        s="row mb-3">
                             <div class="col-md-6">
                                 <label for="tipoDocumento2" class="form-label text-dark">Tipo de Documento:</label>
                                 <select class="form-select" id="tipoDocumento">
@@ -380,11 +383,13 @@
 
                     <!-- Fila 1: Autores y Modalidad -->
                     <div class="form-row">
-                        <label for="autores" class="text-dark">Autores:</label>
-                        <div class="col-6">
+                        <div>
+                            <label for="autores" class="text-dark ">Autores:</label>
+                            <div>
+                                <input type="text" id="autores_proyecto" placeholder="Nombre del autor" class="col-10">
+                                <a type="button" class="add-author-btn col-1 text-dark" onclick="openModal()">+</a>
+                            </div>
 
-                            <input type="text" id="autores_proyecto" placeholder="Nombre del autor" class="col-10">
-                            <button type="button" class="add-author-btn col-1" onclick="openModal()">+</button>
                         </div>
                         <div class="mr-2 col-6">
                             <label for="modalidad" class="text-dark">Modalidad:</label>
@@ -639,7 +644,7 @@
                 </div>
             </div>
         </div>
-        
+
         <div class="card  p-2">
             <div id="headingFour">
                 <h2 class="mb-0">
@@ -654,15 +659,15 @@
                     <div class="title-line mb-4"></div>
                     <form action="#">
                         <!-- Fila 1: Autores y Modalidad -->
-                        <div class="form-row col-md-12">
-                            <label for="autores" class="text-dark">Autores:</label>
-                            <div class="col-6 col-md-12">
-
+                        <div>
+                            
+                            <div class="col-12">
+                                <label for="autores" class="text-dark">Autores:</label>
                                 <input type="text" id="autores_proyecto" placeholder="Nombre del autor" class="col-10">
                                 <button type="button" class="add-author-btn col-1" onclick="openModal()">+</button>
                             </div>
-                            <div class="mr-2 col-6 col-md-12">
-                                <label for="modalidad" class="text-dark">Modalidad:</label>
+                            <div class="col-12">
+                                <label for="modalidad" class="text-dark mt-2">Modalidad:</label>
                                 <select id="modalidad_proyecto">
                                     <option value="">Seleccione una opción</option>
                                     <option value="Poster">Poster</option>
@@ -673,13 +678,13 @@
                         </div>
 
                         <!-- Fila 2: Título y Propuesta Escrita -->
-                        <div class="form-row">
-                            <div class="col-md-6">
-                                <label for="titulo" class="text-dark col-md-6">Título:</label>
+                        <div>
+                            <div class="col-12">
+                                <label for="titulo" class="text-dark mt-2">Título:</label>
                                 <input type="text" id="titulo_proyecto" placeholder="Título del proyecto">
                             </div>
-                            <div class="ml-2 col-md-6">
-                                <label for="propuesta" class="text-dark">Propuesta Escrita:</label>
+                            <div class="col-12">
+                                <label for="propuesta" class="text-dark mt-2">Propuesta Escrita:</label>
                                 <div form-row>
                                     <input type="text" id="propuesta_escrita" placeholder="" class="col-11">
                                     <div class="custom-file align-items-center mx-auto text-center">
@@ -700,9 +705,9 @@
                         </div>
 
                         <!-- Fila 3: Área de Conocimiento y Poster -->
-                        <div class="form-row">
-                            <div class="col-md-6">
-                                <label for="area-conocimiento" class="text-dark">Área de conocimiento:</label>
+                        <div>
+                            <div class="col-12">
+                                <label for="area-conocimiento" class="text-dark mt-2">Área de conocimiento:</label>
                                 <select id="area-conocimiento_proyecto">
                                     <option value="">Seleccione una opción</option>
                                     <option value="Desarrollo de Software">Desarrollo de Software</option>
@@ -710,8 +715,8 @@
                                     <option value="Seguridad Informática">Seguridad Informática</option>
                                 </select>
                             </div>
-                            <div class="col-md-6">
-                                <label for="poster" class="text-dark">Poster:</label>
+                            <div class="col-12">
+                                <label for="poster" class="text-dark mt-2">Poster:</label>
                                 <div form-row>
                                     <input type="text" id="poster" placeholder="" class="col-11">
                                     <div class="custom-file align-items-center mx-auto text-center">

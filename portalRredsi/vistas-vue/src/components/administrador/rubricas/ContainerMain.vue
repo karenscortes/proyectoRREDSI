@@ -12,15 +12,16 @@
       >
         <!-- Tabla -->
         <div class="table-responsive w-sm-100 w-md-100 w-lg-75">
-          <table class="display table text-dark table-bordered-dark">
+          <table
+            class="display table text-dark table-bordered-dark"
+            id="basic-datatables"
+          >
             <thead class="thead_table">
               <!--Imput thead-->
               <ItemThead
-                v-for="(item, index) in items.slice(0, items.length - 1)"
+                v-for="(imput, index) in infoImputs"
                 :key="index"
-                :name_imput="name_imput"
-                :id="id"
-                :titulo="titulo"
+                :infoImputs="imput"
               >
               </ItemThead>
               <!--Cabecero titulos-->
@@ -38,10 +39,9 @@
             <tbody>
               <!--item rubrica-->
               <ItemTBody
-                v-for="(item, index) in items"
+                v-for="(item, index) in infoItems"
                 :key="index"
-                :encabezado="encabezadoTr"
-                :texto="contenidoTr"
+                :infoItem="item"
               >
               </ItemTBody>
               <!-- row btn añadir item-->
@@ -74,16 +74,10 @@
           <div class="row text-center">
             <div
               class="col_card col-lg-12 col-md-6 col-6 d-flex justify-content-md-center justify-content-center"
-               v-for="(item, index) in items" :key="index"
-              >
-              <CardTipo
-                :tituloCard="tituloCard"
-                :nombreImagen="nombreImagen"
-                :altImagen="altImage"
-                :etqFaseProyecto="etqFaseProyecto"
-                :etqModalidadProyecto="etqModalidadProyecto"
-              >
-              </CardTipo>
+              v-for="(card, index) in infoCards"
+              :key="index"
+            >
+              <CardTipo :infoCard="card"> </CardTipo>
             </div>
           </div>
         </div>
@@ -95,18 +89,13 @@
       <button class="btn boton pl-5 pr-5 mx-auto">Editar</button>
     </div>
     <!--Sesion de modales-->
-    <ModalAdd
-      :id_rubrica="id_rubrica"
-      :titulo="tituloItem"
-      :valorMax="valorMax"
-      :descripcion="descripcion"
-    ></ModalAdd>
+    <ModalAdd :infoModalEditar="infoModalEditar"></ModalAdd>
     <ModalDelete></ModalDelete>
   </div>
 </template>
 
 <script>
-import { ref } from "vue";
+import { reactive } from "vue";
 import CardTipo from "./CardTipo.vue";
 import ItemTBody from "./ItemTBody.vue";
 import ItemThead from "./ItemThead.vue";
@@ -120,51 +109,85 @@ export default {
     const tituloPrincipal = "Gestionar rúbricas";
 
     //info para enviar al modal(Editar)
-    const id_rubrica = ref(1);
-    const tituloItem = ref("Presentación oral");
-    const valorMax = ref(10);
-    const descripcion = ref(
-      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quae?"
-    );
+    const infoModalEditar = reactive({
+      p_idRubrica: 1,
+      p_tituloItem: "Presentación oral",
+      p_valorMax: 10,
+      p_descripcion:
+        "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quae?",
+    });
 
     //info imputs del Thead
-    const name_imput = ref("titulo");
-    const id = ref(2);
-    const titulo = ref("Titulo");
+    const infoImputs = reactive([
+      {
+        p_name_imput: "titulo",
+        p_id: "titulo",
+        p_titulo: "Titulo",
+      },
+      {
+        p_name_imput: "titulo",
+        p_id: "titulo",
+        p_titulo: "Titulo",
+      },
+      {
+        p_name_imput: "titulo",
+        p_id: "titulo",
+        p_titulo: "Titulo",
+      },
+    ]);
 
     //info row del tbody
-    const encabezadoTr = ref("Resumen");
-    const contenidoTr = ref(
-      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Obcaecati!"
-    );
+    const infoItems = reactive([
+      {
+        p_encabezadoTr: "Presentación oral",
+        p_contenidoTr:
+          "Lorem ipsum dolor sit amet consectetur adipisicing elit. Obcaecati!",
+      },
+      {
+        p_encabezadoTr: "Presentación oral",
+        p_contenidoTr:
+          "Lorem ipsum dolor sit amet consectetur adipisicing elit. Obcaecati!",
+      },
+      {
+        p_encabezadoTr: "Presentación oral",
+        p_contenidoTr:
+          "Lorem ipsum dolor sit amet consectetur adipisicing elit. Obcaecati!",
+      },
+      {
+        p_encabezadoTr: "Presentación oral",
+        p_contenidoTr:
+          "Lorem ipsum dolor sit amet consectetur adipisicing elit. Obcaecati!",
+      },
+    ]);
 
     //info para la card
-    const tituloCard = ref("Esta es una prueba");
-    const nombreImagen = ref("logo.png");
-    const altImage = ref("Imagen de ejemplo");
-    const etqModalidadProyecto = ref("Poster");
-    const etqFaseProyecto = ref("Presencial");
-
-    //Arreglo de prueba para iterar los componentes
-    const items = [1, 2, 3, 4];
+    const infoCards = reactive([
+      {
+        image: "logo.png",
+        altImage: "Esto es un ejemplo",
+        modalidadProyecto: "Poster",
+        faseProyecto: "Presencial",
+      },
+      {
+        image: "logo.png",
+        altImage: "Esto es un ejemplo",
+        modalidadProyecto: "Poster",
+        faseProyecto: "Presencial",
+      },
+      {
+        image: "logo.png",
+        altImage: "Esto es un ejemplo",
+        modalidadProyecto: "Poster",
+        faseProyecto: "Presencial",
+      },
+    ]);
 
     return {
       tituloPrincipal,
-      items,
-      encabezadoTr,
-      contenidoTr,
-      name_imput,
-      id,
-      titulo,
-      id_rubrica,
-      tituloItem,
-      valorMax,
-      descripcion,
-      tituloCard,
-      nombreImagen,
-      altImage,
-      etqModalidadProyecto,
-      etqFaseProyecto,
+      infoImputs,
+      infoModalEditar,
+      infoCards,
+      infoItems,
     };
   },
   components: {
@@ -179,7 +202,6 @@ export default {
 </script>
 
 <style scoped>
-
 .boton_añadir {
   border: none;
   width: 150px;
