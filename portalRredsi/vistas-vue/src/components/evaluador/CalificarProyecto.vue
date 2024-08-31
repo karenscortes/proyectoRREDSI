@@ -39,9 +39,6 @@
                         </td>
                         <td class="border border-dark">
                             <textarea v-model="componente.observaciones" class="text-area-full-width" rows="1" @input="actualizarCaracteres"></textarea>
-                            <div class="text-right">
-                                <span class="pt-3">Minimo 150/{{ caracteresActuales }} </span>
-                            </div>
                         </td>
                     </tr>
                 </tbody>
@@ -103,7 +100,6 @@ export default {
         const caracteresActuales = ref(0);
 
         const actualizarCaracteres = (event) => {
-            caracteresActuales.value = event.target.value.length;
             const textarea = event.target;
             textarea.style.height = 'auto'; 
             textarea.style.height = textarea.scrollHeight + 'px'; 
