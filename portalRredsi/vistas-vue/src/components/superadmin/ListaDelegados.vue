@@ -186,12 +186,12 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <td>{{  }}</td>
-                                    <td>{{ historialActual.modulo }}</td>
-                                    <td>Perfil actualizado</td>
-                                    <td>8/08/2024</td>
-                                    <td>12:45 PM</td>
+                                <tr v-for="(actividad, index) in historialActual.actividades" :key="index">
+                                    <td>{{ actividad.tipoAccion }}</td>
+                                    <td>{{ actividad.modulo }}</td>
+                                    <td>{{ actividad.detalle }}</td>
+                                    <td>{{ actividad.fecha }}</td>
+                                    <td>{{ actividad.hora }}</td>
                                 </tr>
                             </tbody>
                         </table>
@@ -200,15 +200,16 @@
             </div>
         </div>
     </div>
+
+
 </template>
 
 <script>
 import { reactive } from 'vue';
 
 export default {
-    data() {
-        return {
-            delegados: [
+    setup() {
+        const delegados = [
             {
                 identificacion: "1012356",
                 delegado: "Juan Pérez",
@@ -218,7 +219,6 @@ export default {
                 telefono: "8432848",
                 correo: "Juan.perez@gmail.com",
                 urlArchivo: "ruta/al/archivo.pdf"
-                
             },
             {
                 identificacion: "1012357",
@@ -229,7 +229,6 @@ export default {
                 telefono: "66435",
                 correo: "ana.gomez@gmail.com",
                 urlArchivo: "ruta/al/archivo.pdf"
-               
             },
             {
                 identificacion: "1012358",
@@ -240,7 +239,6 @@ export default {
                 telefono: "567423424",
                 correo: "carlos.ruiz@gmail.com",
                 urlArchivo: "ruta/al/archivo.pdf"
-                
             },
             {
                 identificacion: "1012359",
@@ -251,7 +249,6 @@ export default {
                 telefono: "67577",
                 correo: "lucia.fernandez@gmail.com",
                 urlArchivo: "ruta/al/archivo.pdf"
-               
             },
             {
                 identificacion: "1012360",
@@ -262,7 +259,6 @@ export default {
                 telefono: "676576",
                 correo: "andres.bustamante@gmail.com",
                 urlArchivo: "ruta/al/archivo.pdf"
-                
             },
             {
                 identificacion: "10145360",
@@ -273,63 +269,54 @@ export default {
                 telefono: "3205856846",
                 correo: "diego.parra@gmail.com",
                 urlArchivo: "ruta/al/archivo.pdf"
-               
             }
+        ];
 
-        ],
-        historialActividades: [
-                {
-                    tipoAccion: "Actualizar",
-                    modulo: "Editar perfil",
-                    detalle: "Actualizacion de documentos de Ciencias Naturales",
-                    fecha: "2024-08-30",
-                    hora: "12:45 PM"
-                },
-                {
-                    tipoAccion: "Evaluar",
-                    modulo: "Proyecto Biología",
-                    detalle: "Evaluación de proyecto de Biología",
-                    fecha: "2024-08-29",
-                    hora: "09:30 AM",
-                    
-                },
-                {
-                    tipoAccion: "Revisar",
-                    modulo: "Revisión Química",
-                    detalle: "Revisión de documentos de Química",
-                    fecha: "2024-08-28",
-                    hora: "11:15 AM",
-                    
-                },
-                {
-                    tipoAccion: "Actualizar",
-                    modulo: "Historia Antigua",
-                    detalle: "Actualización de datos en Historia",
-                    fecha: "2024-08-27",
-                    hora: "02:00 PM",
-                    
-                },
-                {
-                    tipoAccion: "Evaluar",
-                    modulo: "Geografía",
-                    detalle: "Evaluación de documentos de Geografía",
-                    fecha: "2024-08-26",
-                    hora: "03:45 PM",
-                    
-                },
-                {
-                    tipoAccion: "Revisar",
-                    modulo: "Geografía",
-                    detalle: "Revisión de mapas en Geografía",
-                    fecha: "2024-08-25",
-                    hora: "10:30 AM",
-                    
-                }
-            ]
-    }
-},
+        const historialActividades = [
+            {
+                tipoAccion: "Actualizar",
+                modulo: "Editar perfil",
+                detalle: "Actualizacion de documentos de Ciencias Naturales",
+                fecha: "2024-08-30",
+                hora: "12:45 PM"
+            },
+            {
+                tipoAccion: "Evaluar",
+                modulo: "Proyecto Biología",
+                detalle: "Evaluación de proyecto de Biología",
+                fecha: "2024-08-29",
+                hora: "09:30 AM"
+            },
+            {
+                tipoAccion: "Revisar",
+                modulo: "Revisión Química",
+                detalle: "Revisión de documentos de Química",
+                fecha: "2024-08-28",
+                hora: "11:15 AM"
+            },
+            {
+                tipoAccion: "Actualizar",
+                modulo: "Historia Antigua",
+                detalle: "Actualización de datos en Historia",
+                fecha: "2024-08-27",
+                hora: "02:00 PM"
+            },
+            {
+                tipoAccion: "Evaluar",
+                modulo: "Geografía",
+                detalle: "Evaluación de documentos de Geografía",
+                fecha: "2024-08-26",
+                hora: "03:45 PM"
+            },
+            {
+                tipoAccion: "Revisar",
+                modulo: "Geografía",
+                detalle: "Revisión de mapas en Geografía",
+                fecha: "2024-08-25",
+                hora: "10:30 AM"
+            }
+        ];
 
-    setup() {
         const delegadoActual = reactive({
             identificacion: "",
             delegado: "",
@@ -339,6 +326,10 @@ export default {
             telefono: "",
             correo: "",
             urlArchivo: ""
+        });
+
+        const historialActual = reactive({
+            actividades: [] 
         });
 
         const obtenerDelegadoActual = (delegado) => {
@@ -352,30 +343,19 @@ export default {
             delegadoActual.urlArchivo = delegado.urlArchivo;
 
             console.log(delegadoActual);
-        };
 
-        const historialActual = reactive({
-            tipoAccion: "",
-            modulo: "",
-            detalle: "",
-            fecha: "",
-            hora: ""
-        });
-
-        const obtenerActividadActual = (historial) => {
-            historialActual.tipoAccion = historial.tipoAccion;
-            historialActual.modulo = historial.modulo;
-            historialActual.detalle = historial.detalle;
-            historialActual.fecha = historial.fecha;
-            historialActual.hora = historial.hora;
-
+            // Filtrar historial para el delegado seleccionado
+            historialActual.actividades = historialActividades.filter(actividad => 
+                actividad.modulo.includes(delegado.areaConocimiento)
+            );
         };
 
         return {
             delegadoActual,
             obtenerDelegadoActual,
             historialActual,
-            obtenerActividadActual
+            delegados, // Para usar en el template si es necesario
+            historialActividades // Para usar en el template si es necesario
         }
     }
 }
@@ -408,6 +388,6 @@ export default {
 .page-link {
     color: black;
 }
-
 </style>
+
 
