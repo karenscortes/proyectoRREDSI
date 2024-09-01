@@ -42,15 +42,15 @@
                 v-for="(item, index) in infoItems"
                 :key="index"
                 :infoItem="item"
+                @editarItem="onEditModal($event)"
               >
               </ItemTBody>
               <!-- row btn añadir item-->
               <tr class="tr_item_rubrica">
                 <td class="td_boton text-center" colspan="3">
                   <button
-                    data-bs-toggle="modal"
-                    data-bs-target="#modalAñadirItem"
                     class="boton_añadir"
+                    @click="showModal()"
                   >
                     Añadir
                   </button>
@@ -89,13 +89,18 @@
       <button class="btn boton pl-5 pr-5 mx-auto">Editar</button>
     </div>
     <!--Sesion de modales-->
-    <ModalAdd :infoModalEditar="infoModalEditar"></ModalAdd>
+    <ModalAdd
+      v-if="isModalOpen"
+      @close="closeModal()"
+      :infoModalEditar="infoModalEditar"
+    ></ModalAdd>
     <ModalDelete></ModalDelete>
   </div>
 </template>
 
 <script>
 import { reactive } from "vue";
+import { ref } from "vue";
 import CardTipo from "./CardTipo.vue";
 import ItemTBody from "./ItemTBody.vue";
 import ItemThead from "./ItemThead.vue";
@@ -105,16 +110,17 @@ import ModalDelete from "./ModalDelete.vue";
 
 export default {
   setup() {
+    const isModalOpen = ref(false);
+    
     //Titulo contenedor principal
     const tituloPrincipal = "Gestionar rúbricas";
 
     //info para enviar al modal(Editar)
     const infoModalEditar = reactive({
-      p_idRubrica: 1,
-      p_tituloItem: "Presentación oral",
-      p_valorMax: 10,
-      p_descripcion:
-        "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quae?",
+      p_idItem: null,
+      p_tituloItem: "",
+      p_valorMax: null,
+      p_descripcion: "",
     });
 
     //info imputs del Thead
@@ -136,30 +142,39 @@ export default {
       },
     ]);
 
-    //info row del tbody
+    //info items rubrica
     const infoItems = reactive([
       {
-        p_encabezadoTr: "Presentación oral",
-        p_contenidoTr:
+        p_idItem: 1,
+        p_tituloItem: "Presentación oral",
+        p_descripcion:
           "Lorem ipsum dolor sit amet consectetur adipisicing elit. Obcaecati!",
+        p_valorMax: Math.round(Math.random()*100),
       },
       {
-        p_encabezadoTr: "Presentación oral",
-        p_contenidoTr:
+        p_idItem: 2,
+        p_tituloItem: "Presentación oral",
+        p_descripcion:
           "Lorem ipsum dolor sit amet consectetur adipisicing elit. Obcaecati!",
+        p_valorMax:  Math.round(Math.random() * 100),
       },
       {
-        p_encabezadoTr: "Presentación oral",
-        p_contenidoTr:
+        p_idItem: 3,
+        p_tituloItem: "Presentación oral",
+        p_descripcion:
           "Lorem ipsum dolor sit amet consectetur adipisicing elit. Obcaecati!",
+        p_valorMax: Math.round(Math.random()*100),
       },
       {
-        p_encabezadoTr: "Presentación oral",
-        p_contenidoTr:
+        p_idItem: 4,
+        p_tituloItem: "Presentación oral",
+        p_descripcion:
           "Lorem ipsum dolor sit amet consectetur adipisicing elit. Obcaecati!",
+        p_valorMax: Math.round(Math.random()*100),
       },
     ]);
 
+    //SESIÓN PARA METODOS
     //info para la card
     const infoCards = reactive([
       {
@@ -182,12 +197,39 @@ export default {
       },
     ]);
 
+    //evento editar modal
+    const onEditModal = (informacionTr) => {
+      infoModalEditar.p_idItem = informacionTr.p_idItem;
+      infoModalEditar.p_tituloItem = informacionTr.p_tituloItem;
+      infoModalEditar.p_valorMax = informacionTr.p_valorMax;
+      infoModalEditar.p_descripcion = informacionTr.p_descripcion;
+      showModal();
+    };
+
+    //evento para cerrar el modal
+    const closeModal = () => {
+      infoModalEditar.p_idItem = null;
+      infoModalEditar.p_valorMax = null;
+      infoModalEditar.p_tituloItem = "";
+      infoModalEditar.p_descripcion = "";
+      isModalOpen.value = false;
+    };
+
+    //evento para abrir el modal
+    const showModal = () => {
+      isModalOpen.value = true;
+    };
+
     return {
       tituloPrincipal,
       infoImputs,
       infoModalEditar,
       infoCards,
       infoItems,
+      isModalOpen,
+      onEditModal,
+      showModal,
+      closeModal,
     };
   },
   components: {

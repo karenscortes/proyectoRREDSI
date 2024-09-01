@@ -7,6 +7,7 @@
 <script>
 import HelloWorld from './components/HelloWorld.vue';
 import ListaSalasView from './components/administrador/salas/ListaSalasView.vue';
+
 export default {
   name: 'App',
   components: {

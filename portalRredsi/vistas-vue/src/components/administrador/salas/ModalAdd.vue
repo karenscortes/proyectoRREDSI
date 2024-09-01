@@ -1,8 +1,8 @@
 <template>
-  <!-- Modal añadir sala -->
+  <!--Modal editar sala-->
   <div
     class="modal fade"
-    id="addSala"
+    id="modalSala"
     tabindex="-1"
     aria-labelledby="modalLabel"
     aria-hidden="true"
@@ -20,11 +20,8 @@
           >
             <span aria-hidden="true">&times;</span>
           </button>
-          <h3
-            class="modal-title mt-5 font-weight-bold"
-            id="modalLabel"
-          >
-            Añadir sala
+          <h3 class="modal-title mt-5 font-weight-bold" id="modalLabel">
+            Gestionar Sala
           </h3>
         </div>
         <div class="modal-body mt-3">
@@ -33,16 +30,18 @@
               <label
                 for="areaSelect"
                 class="col-6 col-form-label text-right font-weight-bold"
-                >Área de conocimiento:</label
+                >Asignar nueva área:</label
               >
               <div class="col-6">
-                <select
-                  class="form-select text-dark p-1 w-100"
-                  id="areaSelect"
-                  style="font-size: 1rem"
-                >
-                  <option selected>Seleccionar Área</option>
-                  <option v-for="(area, index) in areasConocimiento" :key="index" :value="area.id">{{ area.nombre }}</option>
+                <select class="form-select text-dark p-1 w-100" id="areaSelect">
+                  <option selected>Seleccionar área</option>
+                  <option
+                    v-for="(area, index) in arrayAreasConocimiento"
+                    :key="index"
+                    :value="area.id"
+                  >
+                    {{ area.nombre }}
+                  </option>
                 </select>
               </div>
             </div>
@@ -57,8 +56,15 @@
                   class="form-select text-dark p-1 w-100"
                   id="evaluadorSelect"
                 >
-                  <option selected>Seleccionar evaluador</option>
-                  <option v-for="(evaluador, index) in evaluadores" :key="index" :value="evaluador.id">{{evaluador.nombre }}</option>
+                  <option selected>Seleccionar delegado</option>
+                  <option
+                    class="option"
+                    v-for="(delegado, index) in arrayDelegados"
+                    :key="index"
+                    :value="delegado.id"
+                  >
+                    {{ delegado.nombre }}
+                  </option>
                 </select>
               </div>
             </div>
@@ -78,11 +84,8 @@
               </div>
             </div>
             <div class="text-center">
-              <button
-                type="submit"
-                class="btn btn-warning font-weight-bold"
-              >
-                Añadir sala
+              <button type="submit" class="btn btn-warning font-weight-bold">
+                Guardar Cambios
               </button>
             </div>
           </form>
@@ -92,56 +95,63 @@
   </div>
 </template>
 <script>
-import { reactive } from 'vue';
+import { reactive } from "vue";
+import { ref } from "vue";
 export default {
-  setup (){
-    const areasConocimiento = reactive([
-      {
-        id: "1",
-        nombre: "Sistemas",
-      },
-      {
-        id: "2",
-        nombre: "Sistemas",
-      },
-      {
-        id: "3",
-        nombre: "Sistemas",
-      },
-    ])
-
-    const evaluadores = reactive([
-      {
-        id: "1",
-        nombre: "Lucia Pelaez",
-      },
-      {
-        id: "2",
-        nombre: "Lucia Pelaez",
-      },
-      {
-        id: "3",
-        nombre: "Lucia Pelaez",
-      },
-    ])
-
-    return{areasConocimiento, evaluadores}
-  },
-
-  props:{
-    infoSala: {
-      type: Object,  
-      required: true,
-      validator(value){
-        return(
-          typeof value.delegado === 'string' &&
-          typeof value.numSala === 'string' &&
-          typeof value.areaConocimiento == 'string'
+  props: {
+    infoEditar: {
+      type: Object,
+      default: null,
+      validator(value) {
+        return (
+          typeof value.p_idDelegado === "number" &&
+          typeof value.p_delegado === "string" &&
+          typeof value.p_idSala === "number" &&
+          typeof value.p_numSala === "string" &&
+          typeof value.p_idAreaConocimiento === "number" &&
+          typeof value.p_areaConocimiento === "string"
         );
-      }
-    }
+      },
+    },
+  },
+  setup(props) {
+    const arrayAreasConocimiento = reactive([
+      {
+        id: "1",
+        nombre: "Sistemas",
+      },
+      {
+        id: "2",
+        nombre: "Sistemas",
+      },
+      {
+        id: "3",
+        nombre: "Sistemas",
+      },
+    ]);
+
+    const arrayDelegados = reactive([
+      {
+        id: "1",
+        nombre: "Lucia Pelaez",
+      },
+      {
+        id: "2",
+        nombre: "Lucia Pelaez",
+      },
+      {
+        id: "3",
+        nombre: "Lucia Pelaez",
+      },
+    ]);
+    
+    const areaConocimiento = ref(props.infoEditar.p_areaConocimiento);
+    const delegado = ref(props.infoEditar.p_delegado);
+    const numSala = ref(props.infoEditar.p_descripcion);
+
+    return { arrayAreasConocimiento,arrayDelegados,areaConocimiento,delegado,numSala};
   }
-}
+};
 </script>
 <style scoped>
 .modal-title {
@@ -165,8 +175,8 @@ label {
   font-size: 1rem;
   padding: 0.3rem 1.5rem;
 }
-.button{
-font-size: 1rem; 
-padding: 0.3rem 1.5rem;
+.button {
+  font-size: 1rem;
+  padding: 0.3rem 1.5rem;
 }
 </style>

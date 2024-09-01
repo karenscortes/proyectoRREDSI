@@ -1,8 +1,7 @@
 <template>
   <!--Modal de añadir item-->
   <div
-    class="modal fade"
-    id="modalAñadirItem"
+    class="modalCabecero modal fade show"
     data-bs-backdrop="static"
     data-bs-keyboard="false"
     tabindex="-1"
@@ -17,8 +16,7 @@
           <button
             type="button"
             class="btn-close"
-            data-bs-dismiss="modal"
-            aria-label="Close"
+            @click="closeModal()"
           ></button>
         </div>
         <div class="modal-body">
@@ -66,7 +64,7 @@
           </form>
         </div>
         <div class="modal-footer">
-          <button class="btn" data-bs-dismiss="modal">Cerrar</button>
+          <button class="btn" data-bs-dismiss="modal" @click="closeModal()">Cerrar</button>
           <button class="btn" data-bs-dismiss="modal">Guardar</button>
         </div>
       </div>
@@ -83,24 +81,31 @@ export default{
       default: null,
       validator(value){
         return(
-          typeof value.p_idRubrica === 'number' &&
+          typeof value.p_idItem === 'number' &&
           typeof value.p_tituloItem === 'string' &&
           typeof value.p_valorMax === 'number' &&
-          typeof value.p_descripcion == 'string'
+          typeof value.p_descripcion === 'string'
         );
       }
     }
   },
-  setup(props){
-    const tituloItem = ref (props.infoModalEditar?.p_tituloItem || ''); 
-    const valorMax = ref(props.infoModalEditar?.p_valorMax || '');
-    const descripcion = ref(props.infoModalEditar?.p_descripcion || '');
-    return{tituloItem,valorMax,descripcion}
+  emit: ['close'],
+  setup(props, {emit}){
+    const closeModal = ()=>{
+      emit('close');
+    }
+    const tituloItem = ref (props.infoModalEditar.p_tituloItem);
+    const valorMax = ref(props.infoModalEditar.p_valorMax);
+    const descripcion = ref(props.infoModalEditar.p_descripcion);
+    return{tituloItem,valorMax,descripcion,closeModal};
   }
 }
 </script>
 
 <style scoped>
+.modalCabecero{
+  display: block;
+}
 textarea{
   color: black
 }
@@ -114,14 +119,12 @@ textarea{
   border: 1px solid rgb(190, 190, 190);
   border-radius: 5px;
 }
-
 .form_textArea {
   border: 1px solid rgb(190, 190, 190);
   width: 100%;
   height: 100%;
   border-radius: 5px;
 }
-
 .form_textArea:focus {
   border: 1px solid rgb(150, 149, 149);
   box-shadow: 0 0 5px 2px rgba(230, 230, 207, 0.8);

@@ -17,7 +17,7 @@
           class="btn btn-warning w-sm-100 w-75 font-weight-bold"
           type="button"
           data-bs-toggle="modal"
-          data-bs-target="#addSala"
+          data-bs-target="#modalSala"
         >
           Crear sala
         </button>
@@ -55,50 +55,78 @@
             v-for="(sala, index) in infoSalas"
             :key="index"
             :infoSala="sala"
+            @editarRow="onModal($event)"
           ></RowTableSala>
         </tbody>
       </table>
     </div>
-    <ModalAddSala></ModalAddSala>
-    <ModalEditSala></ModalEditSala>
+    <ModalAdd :infoEditar="infoModal"></ModalAdd>
   </div>
 </template>
 
 <script>
 import RowTableSala from "./RowTableSala.vue";
-import ModalAddSala from "./ModalAddSala.vue";
-import ModalEditSala from "./ModalEditSala.vue";
+import ModalAdd from "./ModalAdd.vue";
 import { reactive } from "vue";
 export default {
   setup() {
-    const infoSalas = reactive([
+    const infoSalas = reactive([  
       {
-        delegado: "Olga",
-        numSala: "13234es",
-        areaConocimiento: "Sistemas",
+        p_idDelegado: 1,
+        p_delegado: "Olga",
+        p_idSala: 1,
+        p_numSala: "13234es",
+        p_idAreaConocimiento: 1,
+        p_areaConocimiento: "Sistemas",
       },
       {
-        delegado: "Olga",
-        numSala: "13234es",
-        areaConocimiento: "Sistemas",
+        p_idDelegado: 2,
+        p_delegado: "Olga",
+        p_idSala: 2,
+        p_numSala: "13234es",
+        p_idAreaConocimiento: 2,
+        p_areaConocimiento: "Sistemas",
       },
       {
-        delegado: "Olga",
-        numSala: "13234es",
-        areaConocimiento: "Sistemas",
+        p_idDelegado: 3,
+        p_delegado: "Olga",
+        p_idSala: 3,
+        p_numSala: "13234es",
+        p_idAreaConocimiento: 3,
+        p_areaConocimiento: "Sistemas",
       },
       {
-        delegado: "Olga",
-        numSala: "13234es",
-        areaConocimiento: "Sistemas",
+        p_idDelegado: 4,
+        p_delegado: "Olga",
+        p_idSala: 4,
+        p_numSala: "13234es",
+        p_idAreaConocimiento: 4,
+        p_areaConocimiento: "Sistemas",
       },
     ])
-    return {infoSalas};
+
+    const infoModal = reactive({
+      p_idDelegado: 1,
+      p_delegado: "Olga",
+      p_idSala: 1,
+      p_numSala: "13234es",
+      p_idAreaConocimiento: 1,
+      p_areaConocimiento: "Sistemas",
+    });
+
+    const onModal = infoSala => { 
+      infoModal.p_idDelegado = infoSala.p_idDelegado;
+      infoModal.p_delegado = infoSala.p_delegado; 
+      infoModal.p_idSala = infoSala.p_idSala;
+      infoModal.p_numSala = infoSala.p_numSala;
+      infoModal.p_idAreaConocimiento = infoSala.p_idAreaConocimiento; 
+      infoModal.p_areaConocimiento = infoSala.p_areaConocimiento; 
+    }
+    return {infoSalas,infoModal,onModal};
   },
   components: {
     RowTableSala,
-    ModalAddSala,
-    ModalEditSala,
+    ModalAdd,
   },
 };
 </script>
