@@ -35,14 +35,13 @@
                 class="col-6 col-form-label text-right font-weight-bold"
                 >Asignar nueva área:</label
               >
-              <div class="col-6 pr-5">
+              <div class="col-6">
                 <select
-                  class="form-select text-dark p-1"
+                  class="form-select text-dark p-1 w-100"
                   id="areaSelect"
                 >
                   <option selected>Seleccionar área</option>
-                  <option value="1">Ciencias matemáticas</option>
-                  <option value="2">Industria y comercio</option>
+                  <option v-for="(area, index) in areasConocimiento" :key="index" :value="area.id">{{ area.nombre }}</option>
                 </select>
               </div>
             </div>
@@ -52,14 +51,13 @@
                 class="col-6 col-form-label text-right font-weight-bold"
                 >Asignar nuevo delegado:</label
               >
-              <div class="col-6 pr-5">
+              <div class="col-6">
                 <select
-                  class="form-select text-dark p-1"
+                  class="form-select text-dark p-1 w-100"
                   id="evaluadorSelect"
                 >
                   <option selected>Seleccionar evaluador</option>
-                  <option value="1">Rigoberto Urán</option>
-                  <option value="2">Sancho Sánchez</option>
+                  <option class="option" v-for="(evaluador, index) in evaluadores" :key="index" :value="evaluador.id">{{evaluador.nombre }}</option>
                 </select>
               </div>
             </div>
@@ -85,16 +83,31 @@ export default {
         nombre: "Sistemas",
       },
       {
-        id: "1",
+        id: "2",
         nombre: "Sistemas",
       },
       {
-        id: "1",
+        id: "3",
         nombre: "Sistemas",
       },
     ])
 
-    return{areasConocimiento}
+    const evaluadores = reactive([
+      {
+        id: "1",
+        nombre: "Lucia Pelaez",
+      },
+      {
+        id: "2",
+        nombre: "Lucia Pelaez",
+      },
+      {
+        id: "3",
+        nombre: "Lucia Pelaez",
+      },
+    ])
+
+    return{areasConocimiento, evaluadores}
   }
 }
 </script>
@@ -111,7 +124,10 @@ label {
 }
 .form-select {
   font-size: 1rem;
-  width: 100%;
+}
+.form-select:focus {
+  box-shadow: 0 0 5px yellow;
+  border: 1px solid yellow;
 }
 .btn-guardar {
   font-size: 1rem;
