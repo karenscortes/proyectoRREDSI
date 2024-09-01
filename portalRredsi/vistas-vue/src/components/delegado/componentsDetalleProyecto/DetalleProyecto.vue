@@ -7,7 +7,7 @@
                 </div>
             </div>
         </div>
-        <div class="why-choose-section">
+        <div class="why-choose-section ">
             <div class="container">
                 <div class="row justify-content-between">
                     <div class="col-lg-6 order-2 order-lg-1">
@@ -76,17 +76,62 @@
                         Respuesta rúbrica 1
                     </button>
                 </div>
-                <div id="collapseOne" class="collapse mt-5" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
-                    <!-- Componente hijo RubricaCom se monta aquí -->
+                <div id="collapseOne" class="collapse mt-5" aria-labelledby="headingOne"
+                    data-bs-parent="#accordionExample">
+                    <!-- Componente RubricaCom -->
                     <RubricaCom :tituloProyecto="tituloProyecto" :ponentesProyecto="ponentesProyecto"
-                        :universidadProyecto="universidadProyecto" :nombreEvaluador="nombreEvaluador"
-                        :cedulaEvaluador="cedulaEvaluador" :universidadEvaluador="universidadEvaluador"
-                        :emailEvaluador="emailEvaluador" :celularEvaluador="celularEvaluador"
-                        :componentes="componentes"/>
+                        :universidadProyecto="universidadProyecto" :puntajeTotal="puntajeTotal"
+                        :nombreEvaluador="nombreEvaluador" :cedulaEvaluador="cedulaEvaluador"
+                        :universidadEvaluador="universidadEvaluador" :emailEvaluador="emailEvaluador"
+                        :celularEvaluador="celularEvaluador" />
                 </div>
             </div>
-            
+            <div class="card p-2">
+                <div id="headingTwo">
+                    <button class="btn btn-block toggle-button collapsed" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                        <i style="margin-right: 10px;" class="fa-solid fa-check fa-lg"></i>
+                        Respuesta rúbrica 2
+                    </button>
+                </div>
+                <div id="collapseTwo" class="collapse mt-5" aria-labelledby="headingTwo"
+                    data-bs-parent="#accordionExample">
+                    <RubricaCom :tituloProyecto="tituloProyecto" :ponentesProyecto="ponentesProyecto"
+                        :universidadProyecto="universidadProyecto" :puntajeTotal="puntajeTotal"
+                        :nombreEvaluador="nombreEvaluador" :cedulaEvaluador="cedulaEvaluador"
+                        :universidadEvaluador="universidadEvaluador" :emailEvaluador="emailEvaluador"
+                        :celularEvaluador="celularEvaluador" />
+                </div>
+            </div>
+            <div class="card p-2">
+                <div id="headingThree">
+                    <button class="btn btn-block toggle-button collapsed" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                        <i style="margin-right: 10px;" class="fa-solid fa-x fa-lg"></i>
+                        Respuesta rúbrica 3
+                    </button>
+                </div>
+                <div id="collapseThree" class="collapse mt-5" aria-labelledby="headingThree"
+                    data-bs-parent="#accordionExample">
+                    <RubricaCom :tituloProyecto="tituloProyecto" :ponentesProyecto="ponentesProyecto"
+                        :universidadProyecto="universidadProyecto" :puntajeTotal="puntajeTotal"
+                        :nombreEvaluador="nombreEvaluador" :cedulaEvaluador="cedulaEvaluador"
+                        :universidadEvaluador="universidadEvaluador" :emailEvaluador="emailEvaluador"
+                        :celularEvaluador="celularEvaluador" />
+                    <!--Respaldo-->
+                    <h4 class="text-center text-dark mt-4 mb-4">Respaldo</h4>
+                    <div class="custom-file-upload mx-auto">
+                        <input type="file" id="comprobante_pago" name="comprobante_pago" />
+                        <label for="comprobante_pago" class="upload-label">
+                            <i class="fas fa-cloud-upload-alt"></i>
+                            Selecciona un archivo
+                        </label>
+                    </div>
+                </div>
+
+            </div>
         </div>
+
     </div>
 </template>
 
@@ -110,25 +155,21 @@ export default {
     setup() {
         // Define variables reactivas con ref o reactive
         const ponentes = ['Diego Fernando Legarda', 'Felipe Londoño'];
-        const evaluadores = ['Manuel Trujillo Velazques', 'Juan Castillo Montes'];
+        const evaluadores = ['Sebastian Usma', 'Miguel Alzate'];
         const horario = '10:30 - 11:00 A.M.';
         const sala = '123ASV';
         const tipo = 'Evaluador';
 
         // Datos para RubricaCom
         const tituloProyecto = ref('BigData');
-        const ponentesProyecto = ref('Sebastian Usma');
+        const ponentesProyecto = ref('Diego Legarda, Felipe Londoño');
         const universidadProyecto = ref('UTP');
+        const puntajeTotal = ref('50');
         const nombreEvaluador = ref('Miguel Alzate');
         const cedulaEvaluador = ref(123456789);
         const universidadEvaluador = ref('Catolica');
         const emailEvaluador = ref('cruelo@mail.com');
         const celularEvaluador = ref(987654321);
-        const componentes = ref([
-            { titulo: 'Componente 1', valorMaximo: 10, calificacion: 0, observaciones: '' },
-            { titulo: 'Componente 2', valorMaximo: 15, calificacion: 0, observaciones: '' },
-            { titulo: 'Componente 3', valorMaximo: 20, calificacion: 0, observaciones: '' },
-        ]);
 
         return {
             ponentes,
@@ -139,12 +180,12 @@ export default {
             tituloProyecto,
             ponentesProyecto,
             universidadProyecto,
+            puntajeTotal,
             nombreEvaluador,
             cedulaEvaluador,
             universidadEvaluador,
             emailEvaluador,
             celularEvaluador,
-            componentes,
         };
     },
 };
@@ -182,8 +223,8 @@ export default {
 }
 
 .toggle-button {
-    text-align: left;
-    padding: 10px 20px;
+    text-align: center;
+    padding: 5px 20px;
     width: 100%;
 }
 
@@ -191,9 +232,9 @@ export default {
     margin-bottom: 10px;
 }
 
-/* .accordion {
-    display: none;
-} */
+.accordion {
+    display: block;
+}
 
 .title-line {
     border-top: 2px solid rgb(255, 182, 6);
@@ -224,12 +265,9 @@ export default {
 
 
 @media only screen and (max-width:767px) {
-    .big-screen {
-        display: none;
-    }
 
     .accordion {
-        display: block;
+        display: none;
     }
 
     .card {
@@ -250,5 +288,11 @@ export default {
         color: rgb(255, 182, 6);
     }
 
+}
+
+@media only screen and (max-width: 767px) {
+    .accordion {
+        display: block;
+    }
 }
 </style>
