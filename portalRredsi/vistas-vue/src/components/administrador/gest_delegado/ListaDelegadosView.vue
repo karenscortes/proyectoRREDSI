@@ -53,8 +53,9 @@
             <RowTableDelegado
               v-for="(delegado, index) in ArrayDelegados"
               :key="index"
+              :index="index"
             :infoDelegado="delegado"
-            @open="showModalEdit()">
+            @open="showModalEdit()" @check="cambiarEstadoCheckboxDelegado($event)">
             </RowTableDelegado>
           </tbody>
         </table>
@@ -78,13 +79,18 @@ export default {
 
     const busqueda = ref("");
 
+
+    const cambiarEstadoCheckboxDelegado = index => {
+      ArrayDelegados[index].p_estado = ArrayDelegados[index].p_estado == 'activo' ? 'inactivo' : 'activo';
+    }
+
     const ArrayDelegados = reactive([
       {
         p_idDelegado: 1,
         p_nombres: "Emanuel",
         p_apellidos: "Echeverri",
         p_institucion: "SENA",
-        p_estado: "activo",
+        p_estado: "inactivo",
         p_tipoDocumento: "Cédula",
         p_documento: "123456",
         p_areaConocimiento: "Sistemas",
@@ -143,6 +149,7 @@ export default {
     closeModalAdd,
     showModalAdd,
     isModalOpenEdit, 
+    cambiarEstadoCheckboxDelegado,
     isModalOpenAdd};
   },
   components: {

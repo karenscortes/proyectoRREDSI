@@ -6,6 +6,8 @@
       <div class="form-check form-switch">
         <input
           class="form-check-input td_check"
+          :checked="infoDelegado.p_estado == 'activo'"
+          @change="handleCheckboxChange()"
           type="checkbox"
           id="estado"
         />
@@ -43,14 +45,19 @@ export default {
           typeof value.p_correo === "string" 
         );
       },
+    },
+    index: {
+      type: Number,
+      required: true
     }
   },
-  emits: ["open"],
+  emits: ["open", "check"],
   setup(props, { emit }){
     const openModal = () => {
       emit("open");
     };
-    return {openModal};
+    const handleCheckboxChange = () => emit("check", props.index);
+    return {openModal, handleCheckboxChange};
   },
 };
 </script>
@@ -58,5 +65,11 @@ export default {
 <style>
 .form-check{
   padding-left: 2.5rem;
+}
+.form-check-input{
+  border: 1px solid rgb(187, 187, 187);
+}
+.form-check-input:focus{
+  border: 1px solid rgb(187, 187, 187);
 }
 </style>
