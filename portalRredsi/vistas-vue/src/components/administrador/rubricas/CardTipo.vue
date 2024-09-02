@@ -1,5 +1,5 @@
 <template>
-  <div class="card">
+  <div class="card" @click="oprimir()">
     <img v-if="infoCard.image"
       :src="require(`@/assets/${infoCard.image}`)"
       class="img-fluid w-25 pb-2 pt-3"
@@ -30,11 +30,21 @@ export default {
         return(
           typeof value.image === 'string' &&
           typeof value.altImage === 'string' &&
+          typeof value.idModalidad === 'number' &&
           typeof value.modalidadProyecto === 'string' &&
+          typeof value.idFase === 'number' &&
           typeof value.faseProyecto === 'string'
         );
       }
     },
+  },
+  emits:['cardSeleccionada'],
+  setup(props, {emit}){
+    const oprimir = () => {
+      emit('cardSeleccionada',props.infoCard); 
+      console.log(props.infoCard);
+    }
+    return{oprimir}
   }
 };
 </script>
