@@ -62,7 +62,7 @@ INSERT INTO roles (nombre) VALUES
 ('Evaluador'),
 ('Delegado'),
 ('Admin'),
-('SuperAdmin')
+('SuperAdmin');
 
 CREATE TABLE permisos (
     id_modulo INT AUTO_INCREMENT,
@@ -135,7 +135,7 @@ CREATE TABLE modalidades (
 INSERT INTO modalidades (nombre) VALUES 
 ('Poster'),
 ('Finalizado'),
-('En curso')
+('En curso');
 
 CREATE TABLE rubricas (
     id_rubrica INT PRIMARY KEY AUTO_INCREMENT,
@@ -188,7 +188,7 @@ CREATE TABLE tipos_documento (
 INSERT INTO tipos_documento (nombre) VALUES 
 ('Cédula'),
 ('Pasaporte'),
-('TI')
+('TI');
 
 
 CREATE TABLE titulos_academicos (
@@ -278,7 +278,8 @@ CREATE TABLE salas (
     FOREIGN KEY (area_conocimiento) REFERENCES areas_conocimiento(id_area_conocimiento)
 );
 
-CREATE TABLE salas_asignadas (
+
+CREATE TABLE detalle_sala (
     id_sala INT,
     id_proyecto_convocatoria INT,
     fecha DATE,
