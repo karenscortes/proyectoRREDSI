@@ -62,7 +62,7 @@ INSERT INTO roles (nombre) VALUES
 ('Evaluador'),
 ('Delegado'),
 ('Admin'),
-('SuperAdmin')
+('SuperAdmin');
 
 CREATE TABLE permisos (
     id_modulo INT AUTO_INCREMENT,
@@ -135,7 +135,7 @@ CREATE TABLE modalidades (
 INSERT INTO modalidades (nombre) VALUES 
 ('Poster'),
 ('Finalizado'),
-('En curso')
+('En curso');
 
 CREATE TABLE rubricas (
     id_rubrica INT PRIMARY KEY AUTO_INCREMENT,
@@ -188,7 +188,7 @@ CREATE TABLE tipos_documento (
 INSERT INTO tipos_documento (nombre) VALUES 
 ('Cédula'),
 ('Pasaporte'),
-('TI')
+('TI');
 
 
 CREATE TABLE titulos_academicos (
