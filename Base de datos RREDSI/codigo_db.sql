@@ -7,10 +7,46 @@ CREATE TABLE areas_conocimiento (
     nombre VARCHAR(35) NOT NULL
 );
 
+INSERT INTO areas_conocimiento (nombre) VALUES 
+('Matemáticas'),
+('Física'),
+('Química'),
+('Biología'),
+('Informática'),
+('Economía'),
+('Psicología'),
+('Derecho'),
+('Medicina'),
+('Ingeniería Civil'),
+('Filosofía'),
+('Historia'),
+('Literatura'),
+('Sociología'),
+('Pedagogía'),
+('Administración'),
+('Arquitectura'),
+('Ciencias Políticas'),
+('Antropología'),
+('Geografía');
+
+
 CREATE TABLE instituciones (
     id_institucion INT PRIMARY KEY AUTO_INCREMENT,
     nombre VARCHAR(50) NOT NULL
 );
+
+INSERT INTO instituciones (nombre) VALUES 
+('Universidad de los Andes'),
+('Universidad Nacional de Colombia'),
+('Pontificia Universidad Javeriana'),
+('Universidad de Antioquia'),
+('Universidad del Valle'),
+('Universidad Industrial de Santander'),
+('Universidad del Norte'),
+('Universidad del Rosario'),
+('Universidad EAFIT'),
+('Universidad de La Sabana');
+
 
 CREATE TABLE modulos (
     id_modulo INT PRIMARY KEY AUTO_INCREMENT,
@@ -21,6 +57,12 @@ CREATE TABLE roles (
     id_rol INT PRIMARY KEY AUTO_INCREMENT,
     nombre VARCHAR(35) NOT NULL
 );
+
+INSERT INTO roles (nombre) VALUES 
+('Evaluador'),
+('Delegado'),
+('Admin'),
+('SuperAdmin');
 
 CREATE TABLE permisos (
     id_modulo INT AUTO_INCREMENT,
@@ -90,6 +132,11 @@ CREATE TABLE modalidades (
     nombre VARCHAR(20) NOT NULL
 );
 
+INSERT INTO modalidades (nombre) VALUES 
+('Poster'),
+('Finalizado'),
+('En curso');
+
 CREATE TABLE rubricas (
     id_rubrica INT PRIMARY KEY AUTO_INCREMENT,
     titulo VARCHAR(40),
@@ -113,6 +160,7 @@ CREATE TABLE proyectos (
     id_modalidad INT,
     id_area_conocimiento INT,
     titulo VARCHAR(200),
+    estado ENUM('pendiente', 'asignado') NOT NULL,
     programa_academico VARCHAR(50),
     grupo_investigacion VARCHAR(50),
     linea_investigacion VARCHAR(50),
@@ -137,6 +185,12 @@ CREATE TABLE tipos_documento (
     nombre VARCHAR(10) NOT NULL
 );
 
+INSERT INTO tipos_documento (nombre) VALUES 
+('Cédula'),
+('Pasaporte'),
+('TI');
+
+
 CREATE TABLE titulos_academicos (
     id_titulo_academico INT PRIMARY KEY AUTO_INCREMENT,
     nivel ENUM('pregrado', 'maestria', 'especializacion', 'doctorado') NOT NULL,
@@ -155,10 +209,13 @@ CREATE TABLE detalles_personales (
     apellidos VARCHAR(25),
     celular VARCHAR(10) UNIQUE NOT NULL,
     id_institucion INT,
+    semillero VARCHAR(25),
+    grupo_investigacion VARCHAR(25),
     FOREIGN KEY (id_tipo_documento) REFERENCES tipos_documento(id_tipo_documento),
     FOREIGN KEY (id_usuario) REFERENCES usuarios(id_usuario),
     FOREIGN KEY (id_institucion) REFERENCES instituciones(id_institucion)
 );
+
 
 CREATE TABLE asistentes (
     id_asistente INTEGER PRIMARY KEY AUTO_INCREMENT,
@@ -193,6 +250,7 @@ CREATE TABLE participantes_proyecto (
 
 CREATE TABLE rubricas_resultados (
     id_rubrica_resultado INT PRIMARY KEY AUTO_INCREMENT,
+    estado_proyecto ENUM('pendiente', 'calificado'),
     puntaje_aprobacion FLOAT(2, 1)
 );
 
