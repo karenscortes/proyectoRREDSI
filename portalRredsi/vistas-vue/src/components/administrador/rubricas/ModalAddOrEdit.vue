@@ -81,7 +81,7 @@ export default{
       default: null,
       validator(value){
         return(
-          typeof value.p_idItem === 'number' &&
+          (typeof value.p_idItem === 'number' || value.p_idItem == null) &&
           typeof value.p_tituloItem === 'string' &&
           typeof value.p_valorMax === 'number' &&
           typeof value.p_descripcion === 'string'

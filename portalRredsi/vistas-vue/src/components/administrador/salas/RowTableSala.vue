@@ -14,6 +14,7 @@
 <script>
 export default{
   props: {
+    //Objeto con la informacion de la sala asignada
     infoSala: {
       type: Object,  
       required: true,
@@ -29,11 +30,11 @@ export default{
       }
     }
   },
+  //Evento para avisarle a la vista rúbrica principal
   emits: ['editarRow'],
   setup(props, { emit }) { 
     const accionEditar = () => {
-      console.log("Le dieron")
-      console.log(props.infoSala);
+
       emit('editarRow', props.infoSala); 
     };
     return { accionEditar };

@@ -25,6 +25,7 @@
         </div>
         <div class="modal-body mt-3">
           <form>
+            <!--Select Área-->
             <div class="form-group row justify-content-center">
               <label
                 for="areaSelect"
@@ -33,7 +34,7 @@
               >
               <div class="col-6">
                 <select v-model="idAreaConocimiento" class="form-select text-dark p-1 w-100" id="areaSelect">
-                  <option selected disabled>Seleccionar el área</option>
+                  <option :value="null" disabled>Seleccionar el área</option>
                   <option
                     v-for="(area, index) in arrayAreasConocimiento"
                     :key="index"
@@ -44,9 +45,10 @@
                 </select>
               </div>
             </div>
+            <!--Select delegado-->
             <div class="form-group row justify-content-center">
               <label
-                for="evaluadorSelect"
+                for="delegadoSelect"
                 class="col-6 col-form-label text-right font-weight-bold"
                 >Asignar nuevo delegado:</label
               >
@@ -54,9 +56,9 @@
                 <select
                   v-model="idDelegado"
                   class="form-select text-dark p-1 w-100"
-                  id="evaluadorSelect"
+                  id="delegadoSelect"
                 >
-                  <option selected>Seleccionar delegado</option>
+                  <option :value="null" selected>Seleccionar delegado</option>
                   <option
                     class="option"
                     v-for="(delegado, index) in arrayDelegados"
@@ -68,10 +70,10 @@
                 </select>
               </div>
             </div>
-            {{idSala}}
+            <!--input asignar num sala(cuando es crear)-->
             <div class="form-group row justify-content-center mb-5" v-if="!idSala">
               <label
-                for="colFormLabelSm"
+                for="asignarNumSala"
                 class="col-6 col-form-label text-right font-weight-bold"
                 >Asignar Nº de sala:</label
               >
@@ -79,8 +81,7 @@
                 <input
                   type="text"
                   class="form-control form-control-sm w-100"
-                  id="colFormLabelSm"
-                  style="font-size: 1rem"
+                  id="asignarNumSala"
                 />
               </div>
             </div>
@@ -100,27 +101,27 @@ import { reactive } from "vue";
 import { ref } from "vue";
 export default {
   props: {
+    //Objeto que se recibe para cuando se va a editar
     infoEditar: {
       type: Object,
       default: null,
       validator(value) {
         return(
           (typeof value.p_idDelegado === "number" || value.p_idDelegado === null) &&
-          (typeof value.p_delegado === "string" || value.p_delegado === null) &&
           (typeof value.p_idSala === "number" || value.p_idSala === null) &&
-          (typeof value.p_numSala === "string" || value.p_numSala === null) &&
-          (typeof value.p_idAreaConocimiento === "number" || value.p_idAreaConocimiento === null) &&
-          (typeof value.p_areaConocimiento === "string" || value.p_areaConocimiento === null)
+          (typeof value.p_idAreaConocimiento === "number" || value.p_idAreaConocimiento === null)
         )
       },
     },
   },
+  //Evento para cerrar modal
   emits: ['close'],
   setup(props,{emit}) {
     const closeModal = ()=>{
       emit('close');
     }
 
+    //Lista de areas de conocimiento
     const arrayAreasConocimiento = reactive([
       {
         id: "1",
@@ -136,6 +137,7 @@ export default {
       },
     ]);
 
+    //Lista delegados
     const arrayDelegados = reactive([
       {
         id: "1",
@@ -151,11 +153,11 @@ export default {
       },
     ]);
     
+    //Propiedades en las que se guardara la info(v-model)
     const idAreaConocimiento = ref(props.infoEditar.p_idAreaConocimiento);
     const idDelegado = ref(props.infoEditar.p_idDelegado);
     const idSala = ref(props.infoEditar.p_idSala);
-    console.log("id sala");
-    console.log(idSala); 
+
     return { 
       arrayAreasConocimiento,
       arrayDelegados,
@@ -195,5 +197,8 @@ label {
 .button {
   font-size: 1rem;
   padding: 0.3rem 1.5rem;
+}
+input{
+  font-size: 1rem; 
 }
 </style>

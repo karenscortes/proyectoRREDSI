@@ -103,9 +103,9 @@ import { reactive } from "vue";
 import { ref } from "vue";
 import CardTipo from "./CardTipo.vue";
 import ItemTBody from "./ItemTBody.vue";
-import ItemThead from "./ItemThead.vue";
+import ItemThead from "./InputThead.vue";
 import FootTable from "./FootTable.vue";
-import ModalAdd from "./ModalAdd.vue";
+import ModalAdd from "./ModalAddOrEdit.vue";
 import ModalDelete from "./ModalDelete.vue";
 
 export default {
@@ -180,19 +180,25 @@ export default {
       {
         image: "logo.png",
         altImage: "Esto es un ejemplo",
+        idModalidad: 1,
         modalidadProyecto: "Poster",
+        idFase: 1,
         faseProyecto: "Presencial",
       },
       {
         image: "logo.png",
         altImage: "Esto es un ejemplo",
+        idModalidad: 1,
         modalidadProyecto: "Poster",
+        idFase: 1,
         faseProyecto: "Presencial",
       },
       {
         image: "logo.png",
         altImage: "Esto es un ejemplo",
+        idModalidad: 1,
         modalidadProyecto: "Poster",
+        idFase: 1,
         faseProyecto: "Presencial",
       },
     ]);
@@ -255,8 +261,6 @@ export default {
 }
 .titulo_principal {
   color: black;
-  margin-left: 25%;
-  font-weight: 600;
 }
 .contenedor_principal {
   gap: 20px;
@@ -378,7 +382,7 @@ export default {
     width: 79%;
   }
   .titulo_principal {
-    margin-left: 22%;
+    margin-left: 25%;
   }
 }
 

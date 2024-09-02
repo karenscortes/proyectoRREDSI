@@ -26,6 +26,7 @@
           <input
             type="text"
             id="busqueda"
+            v-model="busqueda"
             class="form-control mr-2"
             placeholder="Buscar..."
           />
@@ -65,12 +66,18 @@
 
 <script>
 import RowTableSala from "./RowTableSala.vue";
-import ModalAdd from "./ModalAdd.vue";
+import ModalAdd from "./ModalAddOrEdit.vue";
 import { reactive } from "vue";
 import { ref } from "vue";
 export default {
   setup() {
+    //Variable para gestionar la apertura del modal
     const isModalOpen = ref(false); 
+
+    //Propiedad para guardar la busqueda
+    const busqueda = ref(""); 
+
+    //Lista con la Info de cada sala que se enviara a cada tr
     const infoSalas = reactive([  
       {
         p_idDelegado: 1,
@@ -98,39 +105,34 @@ export default {
       },
     ])
 
+    //Objeto que se enviara al modal
     const infoModal = reactive({
       p_idDelegado: null,
-      p_delegado: "",
       p_idSala: null,
-      p_numSala: "",
       p_idAreaConocimiento: null,
-      p_areaConocimiento: "",
     });
 
+    //Evento para limpiar los campos y cerrrar el modal
     const closeModal = () => {
       infoModal.p_idDelegado = null;
-      infoModal.p_delegado = ""; 
       infoModal.p_idSala = null;
-      infoModal.p_numSala = "";
       infoModal.p_idAreaConocimiento = null; 
-      infoModal.p_areaConocimiento = ""; 
       isModalOpen.value = false;
     }
 
+    //Evento para abrir el modal
     const showModal = () => {
       isModalOpen.value = true;
     }
 
+    //Evento que se dispara al escuchar el evento del tr
     const onModal = infoSala => { 
-      infoModal.p_idDelegado = infoSala.p_idDelegado;
-      infoModal.p_delegado = infoSala.p_delegado; 
+      infoModal.p_idDelegado = infoSala.p_idDelegado; 
       infoModal.p_idSala = infoSala.p_idSala;
-      infoModal.p_numSala = infoSala.p_numSala;
       infoModal.p_idAreaConocimiento = infoSala.p_idAreaConocimiento; 
-      infoModal.p_areaConocimiento = infoSala.p_areaConocimiento; 
-      isModalOpen.value = true; 
+      showModal();  
     }
-    return {infoSalas,infoModal,onModal,isModalOpen, closeModal,showModal};
+    return {infoSalas,infoModal,busqueda,isModalOpen, closeModal,showModal,onModal};
   },
   components: {
     RowTableSala,
