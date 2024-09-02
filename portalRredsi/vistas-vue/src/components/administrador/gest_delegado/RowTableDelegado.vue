@@ -7,7 +7,7 @@
         <input
           class="form-check-input td_check"
           :checked="infoDelegado.p_estado == 'activo'"
-          @change="handleCheckboxChange()"
+          @change="cambiarEstado()"
           type="checkbox"
           id="estado"
         />
@@ -56,8 +56,8 @@ export default {
     const openModal = () => {
       emit("open");
     };
-    const handleCheckboxChange = () => emit("check", props.index);
-    return {openModal, handleCheckboxChange};
+    const cambiarEstado = () => emit("check", props.index);
+    return {openModal, cambiarEstado};
   },
 };
 </script>

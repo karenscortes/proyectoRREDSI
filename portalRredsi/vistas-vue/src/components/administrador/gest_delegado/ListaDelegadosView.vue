@@ -78,10 +78,11 @@ export default {
     const isModalOpenAdd = ref(false); 
 
     const busqueda = ref("");
-
+    const estadoActualDelegado = ref("");
 
     const cambiarEstadoCheckboxDelegado = index => {
-      ArrayDelegados[index].p_estado = ArrayDelegados[index].p_estado == 'activo' ? 'inactivo' : 'activo';
+      estadoActualDelegado.value = ArrayDelegados[index].p_estado == 'activo' ? 'inactivo' : 'activo';
+      ArrayDelegados[index].p_estado = estadoActualDelegado.value;
     }
 
     const ArrayDelegados = reactive([
@@ -144,13 +145,14 @@ export default {
     busqueda, 
     ArrayDelegados,
     infoModalEdit,
+    isModalOpenEdit,
+    isModalOpenAdd,
     closeModalEdit, 
     showModalEdit, 
     closeModalAdd,
-    showModalAdd,
-    isModalOpenEdit, 
+    showModalAdd, 
     cambiarEstadoCheckboxDelegado,
-    isModalOpenAdd};
+    };
   },
   components: {
     RowTableDelegado,
