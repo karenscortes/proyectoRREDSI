@@ -1,13 +1,13 @@
 <template>
   <tr class="text-center">
-    <td>Emanuel Echeverry</td>
-    <td>SENA</td>
-    <td class="text-center">
+    <td>{{ infoDelegado.p_nombres}} {{ infoDelegado.p_apellidos }}</td>
+    <td>{{ infoDelegado.p_institucion }}</td>
+    <td>
       <div class="form-check form-switch">
         <input
-          class="form-check-input"
+          class="form-check-input td_check"
           type="checkbox"
-          id="flexSwitchCheckDefault"
+          id="estado"
         />
       </div>
     </td>
@@ -16,11 +16,47 @@
         href="#"
         class="btn-sm font-weight-bold text-dark"
         type="button"
-        data-toggle="modal"
-        data-target="#delegateInformation"
+        @click="openModal()"
       >
         <i class="far fa-address-card h4"></i>
       </a>
     </td>
   </tr>
 </template>
+<script>
+export default {
+  props: {
+    infoDelegado: {
+      type: Object,
+      required: true,
+      validator(value) {
+        return (
+          typeof value.p_idDelegado === "number",
+          typeof value.p_nombres === "string" &&
+          typeof value.p_apellidos === "string" &&
+          typeof value.p_institucion === "string" &&
+          typeof value.p_estado === "string" &&
+          typeof value.p_tipoDocumento === "string" &&
+          typeof value.p_documento === "string" &&
+          typeof value.p_areaConocimiento === "string" &&
+          typeof value.p_telefono == "string" &&
+          typeof value.p_correo === "string" 
+        );
+      },
+    }
+  },
+  emits: ["open"],
+  setup(props, { emit }){
+    const openModal = () => {
+      emit("open");
+    };
+    return {openModal};
+  },
+};
+</script>
+
+<style>
+.form-check{
+  padding-left: 2.5rem;
+}
+</style>
