@@ -1,7 +1,7 @@
 <template>
   <!--Modal editar sala-->
   <div
-    class="modal fade"
+    class="modalCabecero modal fade show"
     id="modalSala"
     tabindex="-1"
     aria-labelledby="modalLabel"
@@ -15,8 +15,7 @@
           <button
             type="button"
             class="close mr-3 mt-3"
-            data-bs-dismiss="modal"
-            aria-label="Close"
+            @click="closeModal()"
           >
             <span aria-hidden="true">&times;</span>
           </button>
@@ -33,8 +32,8 @@
                 >Asignar nueva área:</label
               >
               <div class="col-6">
-                <select class="form-select text-dark p-1 w-100" id="areaSelect">
-                  <option selected>Seleccionar área</option>
+                <select v-model="idAreaConocimiento" class="form-select text-dark p-1 w-100" id="areaSelect">
+                  <option selected disabled>Seleccionar el área</option>
                   <option
                     v-for="(area, index) in arrayAreasConocimiento"
                     :key="index"
@@ -53,6 +52,7 @@
               >
               <div class="col-6">
                 <select
+                  v-model="idDelegado"
                   class="form-select text-dark p-1 w-100"
                   id="evaluadorSelect"
                 >
@@ -68,7 +68,8 @@
                 </select>
               </div>
             </div>
-            <div class="form-group row justify-content-center mb-5">
+            {{idSala}}
+            <div class="form-group row justify-content-center mb-5" v-if="!idSala">
               <label
                 for="colFormLabelSm"
                 class="col-6 col-form-label text-right font-weight-bold"
@@ -103,18 +104,23 @@ export default {
       type: Object,
       default: null,
       validator(value) {
-        return (
-          typeof value.p_idDelegado === "number" &&
-          typeof value.p_delegado === "string" &&
-          typeof value.p_idSala === "number" &&
-          typeof value.p_numSala === "string" &&
-          typeof value.p_idAreaConocimiento === "number" &&
-          typeof value.p_areaConocimiento === "string"
-        );
+        return(
+          (typeof value.p_idDelegado === "number" || value.p_idDelegado === null) &&
+          (typeof value.p_delegado === "string" || value.p_delegado === null) &&
+          (typeof value.p_idSala === "number" || value.p_idSala === null) &&
+          (typeof value.p_numSala === "string" || value.p_numSala === null) &&
+          (typeof value.p_idAreaConocimiento === "number" || value.p_idAreaConocimiento === null) &&
+          (typeof value.p_areaConocimiento === "string" || value.p_areaConocimiento === null)
+        )
       },
     },
   },
-  setup(props) {
+  emits: ['close'],
+  setup(props,{emit}) {
+    const closeModal = ()=>{
+      emit('close');
+    }
+
     const arrayAreasConocimiento = reactive([
       {
         id: "1",
@@ -122,11 +128,11 @@ export default {
       },
       {
         id: "2",
-        nombre: "Sistemas",
+        nombre: "Medicina",
       },
       {
         id: "3",
-        nombre: "Sistemas",
+        nombre: "Ciencias Humanas",
       },
     ]);
 
@@ -137,23 +143,34 @@ export default {
       },
       {
         id: "2",
-        nombre: "Lucia Pelaez",
+        nombre: "Juan Pablo",
       },
       {
         id: "3",
-        nombre: "Lucia Pelaez",
+        nombre: "Milena",
       },
     ]);
     
-    const areaConocimiento = ref(props.infoEditar.p_areaConocimiento);
-    const delegado = ref(props.infoEditar.p_delegado);
-    const numSala = ref(props.infoEditar.p_descripcion);
-
-    return { arrayAreasConocimiento,arrayDelegados,areaConocimiento,delegado,numSala};
+    const idAreaConocimiento = ref(props.infoEditar.p_idAreaConocimiento);
+    const idDelegado = ref(props.infoEditar.p_idDelegado);
+    const idSala = ref(props.infoEditar.p_idSala);
+    console.log("id sala");
+    console.log(idSala); 
+    return { 
+      arrayAreasConocimiento,
+      arrayDelegados,
+      idAreaConocimiento,
+      idDelegado,
+      idSala,
+      closeModal,
+    };
   }
 };
 </script>
 <style scoped>
+.modalCabecero{
+  display: block;
+}
 .modal-title {
   font-size: 1.5rem;
   color: #333;

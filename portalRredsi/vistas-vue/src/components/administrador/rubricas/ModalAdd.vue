@@ -89,7 +89,7 @@ export default{
       }
     }
   },
-  emit: ['close'],
+  emits: ['close'],
   setup(props, {emit}){
     const closeModal = ()=>{
       emit('close');

@@ -16,8 +16,7 @@
         <button
           class="btn btn-warning w-sm-100 w-75 font-weight-bold"
           type="button"
-          data-bs-toggle="modal"
-          data-bs-target="#modalSala"
+          @click="showModal()"
         >
           Crear sala
         </button>
@@ -60,7 +59,7 @@
         </tbody>
       </table>
     </div>
-    <ModalAdd :infoEditar="infoModal"></ModalAdd>
+    <ModalAdd v-if="isModalOpen" :infoEditar="infoModal" @close="closeModal()"></ModalAdd>
   </div>
 </template>
 
@@ -68,51 +67,59 @@
 import RowTableSala from "./RowTableSala.vue";
 import ModalAdd from "./ModalAdd.vue";
 import { reactive } from "vue";
+import { ref } from "vue";
 export default {
   setup() {
+    const isModalOpen = ref(false); 
     const infoSalas = reactive([  
       {
         p_idDelegado: 1,
-        p_delegado: "Olga",
+        p_delegado: "Lucia Perez",
         p_idSala: 1,
-        p_numSala: "13234es",
+        p_numSala: "132435s",
         p_idAreaConocimiento: 1,
         p_areaConocimiento: "Sistemas",
       },
       {
         p_idDelegado: 2,
-        p_delegado: "Olga",
+        p_delegado: "Juan Pablo",
         p_idSala: 2,
-        p_numSala: "13234es",
+        p_numSala: "132756s",
         p_idAreaConocimiento: 2,
-        p_areaConocimiento: "Sistemas",
+        p_areaConocimiento: "Medicina",
       },
       {
         p_idDelegado: 3,
-        p_delegado: "Olga",
+        p_delegado: "Milena",
         p_idSala: 3,
-        p_numSala: "13234es",
+        p_numSala: "132345",
         p_idAreaConocimiento: 3,
-        p_areaConocimiento: "Sistemas",
-      },
-      {
-        p_idDelegado: 4,
-        p_delegado: "Olga",
-        p_idSala: 4,
-        p_numSala: "13234es",
-        p_idAreaConocimiento: 4,
-        p_areaConocimiento: "Sistemas",
+        p_areaConocimiento: "Ciencias Humanas",
       },
     ])
 
     const infoModal = reactive({
-      p_idDelegado: 1,
-      p_delegado: "Olga",
-      p_idSala: 1,
-      p_numSala: "13234es",
-      p_idAreaConocimiento: 1,
-      p_areaConocimiento: "Sistemas",
+      p_idDelegado: null,
+      p_delegado: "",
+      p_idSala: null,
+      p_numSala: "",
+      p_idAreaConocimiento: null,
+      p_areaConocimiento: "",
     });
+
+    const closeModal = () => {
+      infoModal.p_idDelegado = null;
+      infoModal.p_delegado = ""; 
+      infoModal.p_idSala = null;
+      infoModal.p_numSala = "";
+      infoModal.p_idAreaConocimiento = null; 
+      infoModal.p_areaConocimiento = ""; 
+      isModalOpen.value = false;
+    }
+
+    const showModal = () => {
+      isModalOpen.value = true;
+    }
 
     const onModal = infoSala => { 
       infoModal.p_idDelegado = infoSala.p_idDelegado;
@@ -121,8 +128,9 @@ export default {
       infoModal.p_numSala = infoSala.p_numSala;
       infoModal.p_idAreaConocimiento = infoSala.p_idAreaConocimiento; 
       infoModal.p_areaConocimiento = infoSala.p_areaConocimiento; 
+      isModalOpen.value = true; 
     }
-    return {infoSalas,infoModal,onModal};
+    return {infoSalas,infoModal,onModal,isModalOpen, closeModal,showModal};
   },
   components: {
     RowTableSala,
@@ -133,5 +141,8 @@ export default {
 <style scoped>
 thead {
   background: rgb(255, 182, 6);
+}
+h1{
+  color: black;
 }
 </style>

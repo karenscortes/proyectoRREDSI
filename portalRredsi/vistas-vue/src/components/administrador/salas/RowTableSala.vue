@@ -5,8 +5,6 @@
     <td>{{ infoSala.p_delegado }}</td>
     <td>
       <a type="button"
-          data-bs-toggle="modal"
-          data-bs-target="#modalSala"
           @click="accionEditar(infoSala)"
         ><i class="far fa-edit"></i
       ></a>
@@ -34,6 +32,8 @@ export default{
   emits: ['editarRow'],
   setup(props, { emit }) { 
     const accionEditar = () => {
+      console.log("Le dieron")
+      console.log(props.infoSala);
       emit('editarRow', props.infoSala); 
     };
     return { accionEditar };
