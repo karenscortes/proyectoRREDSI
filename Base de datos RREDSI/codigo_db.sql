@@ -251,6 +251,7 @@ CREATE TABLE participantes_proyecto (
 CREATE TABLE rubricas_resultados (
     id_rubrica_resultado INT PRIMARY KEY AUTO_INCREMENT,
     estado_proyecto ENUM('pendiente', 'calificado'),
+
     puntaje_aprobacion FLOAT(2, 1)
 );
 
