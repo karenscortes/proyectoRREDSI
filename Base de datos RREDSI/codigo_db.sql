@@ -279,7 +279,8 @@ CREATE TABLE salas (
     FOREIGN KEY (area_conocimiento) REFERENCES areas_conocimiento(id_area_conocimiento)
 );
 
-CREATE TABLE salas_asignadas (
+
+CREATE TABLE detalle_sala (
     id_sala INT,
     id_proyecto_convocatoria INT,
     fecha DATE,
