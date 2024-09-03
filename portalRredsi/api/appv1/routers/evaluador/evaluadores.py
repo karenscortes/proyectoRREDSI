@@ -1,8 +1,8 @@
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
-from appv1.schemas.evaluador.evaluador import EtapaBase
+from appv1.schemas.etapa import EtapaBase
 from db.database import get_db
-from appv1.crud.evaluador.proyectos import get_proyectos_por_etapa
+from appv1.crud.proyectos import get_proyectos_por_etapa
 
 router_evaluador = APIRouter()
 

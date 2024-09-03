@@ -1,9 +1,9 @@
 from typing import List
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
-from appv1.schemas.delegado.salas import AsignarProyectoSala, DetalleSala, SalaResponse
+from appv1.schemas.sala import AsignarProyectoSala, DetalleSala, SalaResponse
 from db.database import get_db
-from appv1.crud.delegado.salas import asignar_proyecto_a_sala, get_detalle_sala, get_salas, get_salas_por_convocatoria
+from appv1.crud.salas import asignar_proyecto_a_sala, get_detalle_sala, get_salas, get_salas_por_convocatoria
 
 router_delegado = APIRouter()
 
