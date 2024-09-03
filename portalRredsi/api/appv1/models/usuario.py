@@ -2,7 +2,6 @@ import enum
 from sqlalchemy import Column, String, ForeignKey, Integer
 from sqlalchemy.orm import relationship
 from models.base_class import Base
-from datetime import datetime
 
 class Estados(enum.Enum):
     activo = "Activo"
