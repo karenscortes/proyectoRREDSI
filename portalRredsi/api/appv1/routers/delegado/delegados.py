@@ -7,6 +7,9 @@ from appv1.crud.delegado.salas import asignar_proyecto_a_sala, get_detalle_sala,
 
 router_delegado = APIRouter()
 
+
+# < RUTAS SALAS
+
 @router_delegado.post("/asignar-proyecto")
 async def asignar_proyecto(asignacion: AsignarProyectoSala, db: Session = Depends(get_db)):
     respuesta = asignar_proyecto_a_sala(db, asignacion)
@@ -47,3 +50,5 @@ async def read_detalle_sala(
         raise HTTPException(status_code=404, detail="Sala no encontrada")
     
     return sala_detalle
+
+# RUTAS SALAS />
