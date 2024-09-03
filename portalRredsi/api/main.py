@@ -8,7 +8,8 @@ app = FastAPI()
 
 app.include_router(usuarios.router_user, prefix="/users", tags=["Usuarios"])
 app.include_router(rol.router_rol, prefix="/roles", tags=["Roles"])
-app.include_router(superadmin.router_superadmin, prefix="/superadmins", tags=["SuperAdmin"])
+app.include_router(superadmin.router_superadmin, prefix="/superadmin", tags=["SuperAdmin"])
+
 
 def on_startup():
     test_db_connection()
