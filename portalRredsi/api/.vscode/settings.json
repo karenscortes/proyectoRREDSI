@@ -1,0 +1,5 @@
+{
+    "python.analysis.extraPaths": [
+        "./appv1/crud"
+    ]
+}
