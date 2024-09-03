@@ -5,24 +5,24 @@ INSERT INTO rol(nombre) VALUES ('Delegado');
 INSERT INTO rol(nombre) VALUES ('Evaluador');
 
 --Modulos de los usuarios del sistema
-INSERT INTO modulo(nombre) VALUES ('areas_conocimiento'); -- id: 1
-INSERT INTO modulo(nombre) VALUES ('instituciones'); -- id: 2
-INSERT INTO modulo(nombre) VALUES ('usuarios'); -- id: 3
-INSERT INTO modulo(nombre) VALUES ('etapas'); -- id: 4
-INSERT INTO modulo(nombre) VALUES ('fases'); -- id: 5
-INSERT INTO modulo(nombre) VALUES ('convocatorias'); -- id: 6
-INSERT INTO modulo(nombre) VALUES ('programacion_fases'); -- id: 7
-INSERT INTO modulo(nombre) VALUES ('postulaciones_evaluadores'); -- id: 8
-INSERT INTO modulo(nombre) VALUES ('rubricas'); -- id: 9
-INSERT INTO modulo(nombre) VALUES ('items_rubrica'); -- id: 10
-INSERT INTO modulo(nombre) VALUES ('proyectos'); -- id: 11
-INSERT INTO modulo(nombre) VALUES ('asistentes'); -- id: 12
-INSERT INTO modulo(nombre) VALUES ('participantes_proyecto'); -- id: 13
-INSERT INTO modulo(nombre) VALUES ('respuestas_rubricas'); -- id: 14
-INSERT INTO modulo(nombre) VALUES ('salas'); -- id: 15
-INSERT INTO modulo(nombre) VALUES ('salas_asignadas'); -- id: 16
-INSERT INTO modulo(nombre) VALUES ('presentaciones_proyectos'); -- id: 17
-INSERT INTO modulo(nombre) VALUES ('historial_actividades_admin'); -- id: 18
+INSERT INTO modulos(nombre) VALUES ('areas_conocimiento'); -- id: 1
+INSERT INTO modulos(nombre) VALUES ('instituciones'); -- id: 2
+INSERT INTO modulos(nombre) VALUES ('usuarios'); -- id: 3
+INSERT INTO modulos(nombre) VALUES ('etapas'); -- id: 4
+INSERT INTO modulos(nombre) VALUES ('fases'); -- id: 5
+INSERT INTO modulos(nombre) VALUES ('convocatorias'); -- id: 6
+INSERT INTO modulos(nombre) VALUES ('programacion_fases'); -- id: 7
+INSERT INTO modulos(nombre) VALUES ('postulaciones_evaluadores'); -- id: 8
+INSERT INTO modulos(nombre) VALUES ('rubricas'); -- id: 9
+INSERT INTO modulos(nombre) VALUES ('items_rubrica'); -- id: 10
+INSERT INTO modulos(nombre) VALUES ('proyectos'); -- id: 11
+INSERT INTO modulos(nombre) VALUES ('asistentes'); -- id: 12
+INSERT INTO modulos(nombre) VALUES ('participantes_proyecto'); -- id: 13
+INSERT INTO modulos(nombre) VALUES ('respuestas_rubricas'); -- id: 14
+INSERT INTO modulos(nombre) VALUES ('salas'); -- id: 15
+INSERT INTO modulos(nombre) VALUES ('salas_asignadas'); -- id: 16
+INSERT INTO modulos(nombre) VALUES ('presentaciones_proyectos'); -- id: 17
+INSERT INTO modulos(nombre) VALUES ('historial_actividades_admin'); -- id: 18
 
 -- Permisos para el módulo "areas_conocimiento"
 INSERT INTO permisos(id_modulo, id_rol, p_insertar, p_consultar, p_actualizar, p_eliminar) VALUES (1, 1, 0, 1, 0, 0); -- SuperAdmin
