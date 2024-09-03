@@ -11,7 +11,7 @@
                             style="font-size: 1rem;" />
                     </div>
                     <div class="text-center">
-                        <button type="submit" class="btn btn-warning font-weight-bold w-100"
+                        <button type="submit" class="btn btn-dark font-weight-bold w-100"
                             style="font-size: 1rem; padding: 0.5rem;">
                             Añadir
                         </button>
