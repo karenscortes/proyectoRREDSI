@@ -33,19 +33,21 @@
                             </div>
                         </div>
                         <!-- Botones -->
-                        <div class="col-12 d-flex justify-content-between">
-                            <button type="submit" class="btn btn-sm btn-warning font-weight-bold" data-toggle="modal"
-                                data-target="#agregarPresentacion" style="width: 36%;">
+                        <div class="col-10 d-flex justify-content-between">
+                            <button type="button" class="btn btn-sm btn-warning font-weight-bold" style="width: 36%;"
+                                @click="openModal">
                                 Añadir presentación
                             </button>
-                            <form action="../delegado/pruebas_documentos/constancia_NotasAprendiz.pdf"
+                            <ModalAgregarLink :isVisible="showModal" @close="closeModal" />
+
+                            <form action="../../../assets/img/constancia_NotasAprendiz.pdf"
                                 style="width: 31%;" target="_blank">
                                 <button type="submit" class="btn btn-sm btn-warning font-weight-bold"
                                     style="width: 100%;">
                                     Ver presentación
                                 </button>
                             </form>
-                            <form action="../delegado/pruebas_documentos/constancia_NotasAprendiz.pdf"
+                            <form action="../../../assets/img/constancia_NotasAprendiz.pdf"
                                 style="width: 31%;" target="_blank">
                                 <button type="submit" class="btn btn-sm btn-warning font-weight-bold"
                                     style="width: 100%;">
@@ -128,10 +130,8 @@
                         </label>
                     </div>
                 </div>
-
             </div>
         </div>
-
     </div>
 </template>
 
@@ -141,6 +141,7 @@ import EventoCom from './EventoCom.vue';
 import PonentesCom from './PonentesCom.vue';
 import SuplentesCom from './SuplentesCom.vue';
 import RubricaCom from './RubricaCom.vue';
+import ModalAgregarLink from '../ModalAgregarLink.vue';
 
 import { ref } from 'vue';
 
@@ -151,14 +152,16 @@ export default {
         PonentesCom,
         SuplentesCom,
         RubricaCom,
+        ModalAgregarLink,
     },
     setup() {
-        // Define variables reactivas con ref o reactive
+        //Datos evaluadores, ponentes, horario
         const ponentes = ['Diego Fernando Legarda', 'Felipe Londoño'];
         const evaluadores = ['Sebastian Usma', 'Miguel Alzate'];
         const horario = '10:30 - 11:00 A.M.';
         const sala = '123ASV';
         const tipo = 'Evaluador';
+        const suplente = 'Juana de Arco';
 
         // Datos para RubricaCom
         const tituloProyecto = ref('BigData');
@@ -171,12 +174,22 @@ export default {
         const emailEvaluador = ref('cruelo@mail.com');
         const celularEvaluador = ref(987654321);
 
+        // Modal Agregar Presentación
+        const showModal = ref(false);
+        const openModal = () => {
+            showModal.value = true;
+        };
+        const closeModal = () => {
+            showModal.value = false;
+        };
+
         return {
             ponentes,
             evaluadores,
             horario,
             sala,
             tipo,
+            suplente,
             tituloProyecto,
             ponentesProyecto,
             universidadProyecto,
@@ -186,6 +199,9 @@ export default {
             universidadEvaluador,
             emailEvaluador,
             celularEvaluador,
+            showModal,
+            openModal,
+            closeModal,
         };
     },
 };
