@@ -55,7 +55,7 @@
               :key="index"
               :index="index"
             :infoDelegado="delegado"
-            @open="showModalEdit()" @check="cambiarEstadoCheckboxDelegado($event)">
+            @open="showModalEdit($event)" @check="cambiarEstadoCheckboxDelegado($event)">
             </RowTableDelegado>
           </tbody>
         </table>
@@ -135,7 +135,8 @@ export default {
       isModalOpenAdd.value = false; 
     }
 
-    const showModalEdit = () =>{
+    const showModalEdit = infoDelegado =>{
+      console.log("esta es la informacion del delagado");
       isModalOpenEdit.value = true;
     }
     const closeModalEdit = () =>{

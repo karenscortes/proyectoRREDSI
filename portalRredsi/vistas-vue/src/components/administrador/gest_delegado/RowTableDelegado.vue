@@ -53,9 +53,7 @@ export default {
   },
   emits: ["open", "check"],
   setup(props, { emit }){
-    const openModal = () => {
-      emit("open");
-    };
+    const openModal = () => emit("open", props.infoDelegado);
     const cambiarEstado = () => emit("check", props.index);
     return {openModal, cambiarEstado};
   },
