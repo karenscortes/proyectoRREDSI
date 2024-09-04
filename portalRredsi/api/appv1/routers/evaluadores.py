@@ -1,9 +1,9 @@
 from typing import List
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
-from appv1.schemas.evaluador.evaluador import ProyectoSchema
+from appv1.schemas.evaluador import ProyectoSchema
 from db.database import get_db
-from appv1.crud.evaluador.proyectos import get_proyectos_por_etapa
+from proyectos import get_proyectos_por_etapa
 
 router_evaluador = APIRouter()
 
