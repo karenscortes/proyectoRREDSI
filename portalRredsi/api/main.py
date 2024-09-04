@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from appv1.routers import usuarios, rol
-from appv1.routers import delegados
-from appv1.routers import evaluadores
+from appv1.routers.delegado import delegados
+from appv1.routers.evaluador import evaluadores
 from appv1.routers.superadmin import superadmin
 from db.database import test_db_connection
 from fastapi.middleware.cors import CORSMiddleware
