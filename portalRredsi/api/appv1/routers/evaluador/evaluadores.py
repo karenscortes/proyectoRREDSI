@@ -1,18 +1,16 @@
+from typing import List
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
-from appv1.schemas.evaluador.evaluador import EtapaBase
+from appv1.schemas.evaluador.evaluador import ProyectoSchema
 from db.database import get_db
 from appv1.crud.evaluador.proyectos import get_proyectos_por_etapa
 
 router_evaluador = APIRouter()
 
-@router_evaluador.get("/get-proyectos-por-etapa/", response_model=dict)
+@router_evaluador.get("/get-proyectos-por-etapa/", response_model=List[ProyectoSchema])
 async def read_proyectos_por_etapa(
-    nombre_etapa: EtapaBase,
     db: Session = Depends(get_db)
 ):
-    proyectos = get_proyectos_por_etapa(db, nombre_etapa)
-    if proyectos:
-        return {"mensaje":"Proyectos obtenidos exitosamente"}
-
-
+    proyectos = get_proyectos_por_etapa(db)
+    
+    return proyectos
