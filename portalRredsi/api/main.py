@@ -1,5 +1,5 @@
 from fastapi import FastAPI
-from appv1.routers import salas, usuarios, rol
+from appv1.routers import usuarios, rol
 from appv1.routers import delegados
 from appv1.routers import evaluadores
 from appv1.routers.superadmin import superadmin
@@ -11,7 +11,7 @@ app = FastAPI()
 app.include_router(usuarios.router_user, prefix="/users", tags=["Usuarios"])
 app.include_router(rol.router_rol, prefix="/roles", tags=["Roles"])
 app.include_router(evaluadores.router_evaluador, prefix="/proyectos", tags=["Evaluadores"])
-app.include_router(salas.router_delegado, prefix="/salas", tags=["Delegado"])
+app.include_router(delegados.router_delegado, prefix="/salas", tags=["Delegado"])
 
 
 
