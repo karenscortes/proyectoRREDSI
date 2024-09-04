@@ -4,6 +4,7 @@ from sqlalchemy import text
 from sqlalchemy.orm import Session
 from sqlalchemy.exc import SQLAlchemyError, IntegrityError
 from appv1.schemas.salas import AsignarProyectoSala
+from appv1.schemas.sala import AsignarProyectoSala
 
 
 
