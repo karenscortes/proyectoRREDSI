@@ -30,4 +30,4 @@ async def buscar_convocatoria_por_proyecto(
             "proyecto_convocatoria": proyecto_convocatoria._asdict()
         }
     else:
-        return {"mensaje":"El proyecto no se ha podido encontrar en una convocatoria vigente"}
+        return {"mensaje":"El proyecto no se ha podido encontrar en una convocatoria vigente."}
