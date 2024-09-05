@@ -5,9 +5,9 @@ from appv1.schemas.evaluador.evaluador import ProyectoSchema
 from db.database import get_db
 from appv1.crud.evaluador.proyectos import get_proyectos_por_etapa
 
-router_evaluador = APIRouter()
+routerCalificarProyectos = APIRouter()
 
-@router_evaluador.get("/get-proyectos-por-etapa/", response_model=List[ProyectoSchema])
+@routerCalificarProyectos.get("/get-proyectos-por-etapa/", response_model=List[ProyectoSchema])
 async def read_proyectos_por_etapa(
     db: Session = Depends(get_db)
 ):

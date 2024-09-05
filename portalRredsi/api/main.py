@@ -10,8 +10,10 @@ app = FastAPI()
 
 app.include_router(usuarios.router_user, prefix="/users", tags=["Usuarios"])
 app.include_router(rol.router_rol, prefix="/roles", tags=["Roles"])
-app.include_router(evaluadores.router_evaluador, prefix="/proyectos", tags=["Evaluadores"])
-app.include_router(postulaciones.router_postulaciones, prefix="/postulaciones", tags=["Postulaciones"])
+app.include_router(evaluadores.routerCalificarProyectos, prefix="/proyectos", tags=["Evaluadores"])
+app.include_router(salas.router_sala, prefix="/salas", tags=["Delegado"])
+
+
 
 # RUTAS DE DELEGADO
 app.include_router(salas.router_sala, prefix="/salas", tags=["Delegado"])
