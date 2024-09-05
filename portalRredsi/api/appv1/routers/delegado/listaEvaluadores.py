@@ -3,7 +3,7 @@ from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 from appv1.schemas.usuario import UserResponse
 from db.database import get_db
-from delegado.listaEvaluadores import get_all_evaluators, get_id_rol, update_evaluator_status
+from appv1.crud.delegado.listaEvaluadores import get_all_evaluators, get_id_rol, update_evaluator_status
 
 router_evaluadores = APIRouter()
 MODULE = 'usuarios'
