@@ -1,6 +1,4 @@
-from typing import Annotated
-from pydantic import BaseModel, StringConstraints
-
+from pydantic import BaseModel
 class ProyectoSchema(BaseModel):
     id_proyecto: int
     id_institucion: int 
