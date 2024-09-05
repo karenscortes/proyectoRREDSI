@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 from appv1.routers import usuarios, rol
-from appv1.routers.delegado import delegados
+from appv1.routers.delegado import asignarProyectoEtapaVirtual, salas
 from appv1.routers.evaluador import evaluadores
 from appv1.routers.superadmin import superadmin
 from db.database import test_db_connection
@@ -11,11 +11,15 @@ app = FastAPI()
 app.include_router(usuarios.router_user, prefix="/users", tags=["Usuarios"])
 app.include_router(rol.router_rol, prefix="/roles", tags=["Roles"])
 app.include_router(evaluadores.routerCalificarProyectos, prefix="/proyectos", tags=["Evaluadores"])
-app.include_router(delegados.router_delegado, prefix="/salas", tags=["Delegado"])
+app.include_router(salas.router_sala, prefix="/salas", tags=["Delegado"])
 
 
 
+# RUTAS DE DELEGADO
+app.include_router(salas.router_sala, prefix="/salas", tags=["Delegado"])
+app.include_router(asignarProyectoEtapaVirtual.router_proyecto_etapa_uno, prefix="/asignacionProyectoEtapaUno", tags=["Delegado"])
 
+# RUTAS DE SUPERADMIN
 app.include_router(superadmin.router_superadmin, prefix="/superadmin", tags=["SuperAdmin"])
 
 
