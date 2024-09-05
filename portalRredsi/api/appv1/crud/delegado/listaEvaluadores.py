@@ -21,3 +21,9 @@ def update_evaluator_status(db: Session, id_usuario:int, estado: str):
     db.commit()
     return True
 
+def get_evaluator_by_document(db: Session, documento: str):
+    sql = text("SELECT usuarios.correo, usuarios.estado, detalles_personales.nombres,detalles_personales.apellidos, detalles_personales.celular,instituciones.nombre AS nombre_institucion, area1.nombre AS area_conocimiento, area2.nombre AS otra_area FROM usuarios INNER JOIN detalles_personales ON(usuarios.id_usuario = detalles_personales.id_usuario) INNER JOIN instituciones ON (detalles_personales.id_institucion = instituciones.id_institucion) LEFT JOIN areas_conocimiento area1 ON (detalles_personales.area_conocimiento = area1.id_area_conocimiento) LEFT JOIN areas_conocimiento area2 ON (detalles_personales.otra_area = area2.id_area_conocimiento) WHERE detalles_personales.documento = :documento")
+    result = db.execute(sql, {"documento": documento}).fetchone()
+    return result
+
+
