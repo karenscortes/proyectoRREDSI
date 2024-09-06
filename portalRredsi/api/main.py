@@ -1,8 +1,10 @@
 from sys import prefix
 from fastapi import FastAPI
-from appv1.routers import usuarios, rol,login
-from appv1.routers.delegado import asignarProyectoEtapaVirtual, listaEvaluadores, proyectosSinAsignar, salas , postulaciones,asistencia
+from appv1.routers import usuarios, rol
+from appv1.routers.admin import admin
+from appv1.routers.delegado import delegados
 from appv1.routers.evaluador import evaluadores
+
 from appv1.routers.superadmin import superadmin
 from db.database import test_db_connection
 from fastapi.middleware.cors import CORSMiddleware
@@ -20,12 +22,7 @@ app.include_router(listaEvaluadores.router_evaluadores, prefix="/listaEvaluadore
 app.include_router(proyectosSinAsignar.router_proyectosSinAsignar, prefix="/proyectosSinAsignar", tags=["Delegado - Lista Proyectos sin Asignar"])
 
 
-# RUTAS DE DELEGADO
-app.include_router(salas.router_sala, prefix="/salas", tags=["Delegado"])
-app.include_router(asignarProyectoEtapaVirtual.router_proyecto_etapa_uno, prefix="/asignacionProyectoEtapaUno", tags=["Delegado"])
-app.include_router(asistencia.router_asistencia, prefix="/asistencia", tags=["Delegado"])
-
-# RUTAS DE SUPERADMIN
+app.include_router(admin.router_admin, prefix="/admin", tags=["Administrador"])
 app.include_router(superadmin.router_superadmin, prefix="/superadmin", tags=["SuperAdmin"])
 
 
