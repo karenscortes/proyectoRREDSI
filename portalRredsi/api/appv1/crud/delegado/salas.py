@@ -47,12 +47,26 @@ def get_salas(db: Session):
         raise HTTPException(status_code=500, detail="Error al buscar salas")
     
     
-def get_salas_por_convocatoria(db: Session):
+def get_salas_por_convocatoria(db: Session, page: int = 1, page_size: int = 10):
     try:
-        sql = text("SELECT * FROM salas JOIN detalle_sala ON salas.id_sala = detalle_sala.id_sala JOIN proyectos_convocatoria ON proyectos_convocatoria.id_proyecto_convocatoria = detalle_sala.id_proyecto_convocatoria JOIN convocatorias ON proyectos_convocatoria.id_convocatoria = convocatorias.id_convocatoria WHERE convocatorias.estado = 'en curso'")
+        offset = (page - 1) * page_size
         
-        result = db.execute(sql).fetchall()
-        return result
+        sql = text("SELECT * FROM salas JOIN detalle_sala ON salas.id_sala = detalle_sala.id_sala JOIN proyectos_convocatoria ON proyectos_convocatoria.id_proyecto_convocatoria = detalle_sala.id_proyecto_convocatoria JOIN convocatorias ON proyectos_convocatoria.id_convocatoria = convocatorias.id_convocatoria WHERE convocatorias.estado = 'en curso' LIMIT :page_size OFFSET :offset ")
+        
+        params ={
+            "page_size": page_size,
+            "offset": offset
+        }
+        result = db.execute(sql,params).mappings().all()
+        
+        # Obtener el número total de usuarios
+        count_sql = text("SELECT COUNT(*) FROM salas JOIN detalle_sala ON salas.id_sala = detalle_sala.id_sala JOIN proyectos_convocatoria ON proyectos_convocatoria.id_proyecto_convocatoria = detalle_sala.id_proyecto_convocatoria JOIN convocatorias ON proyectos_convocatoria.id_convocatoria = convocatorias.id_convocatoria WHERE convocatorias.estado = 'en curso'")
+        total_salas = db.execute(count_sql).scalar()
+
+        # Calcular el número total de páginas
+        total_pages = (total_salas + page_size - 1) // page_size
+
+        return result, total_pages
     except SQLAlchemyError as e:
         print(f"Error al buscar salas: {e}")
         raise HTTPException(status_code=500, detail="Error al buscar salas")
