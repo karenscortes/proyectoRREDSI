@@ -1,6 +1,6 @@
 from sqlalchemy import Integer, String, Column,ForeignKey, Text
 from sqlalchemy.orm import relationship
-from models.base_class import Base
+from .base_class import Base
 
 
 class Presentacion_proyecto(Base):
@@ -9,4 +9,4 @@ class Presentacion_proyecto(Base):
     id_proyecto = Column(Integer, ForeignKey('proyectos.id_proyecto'))
     url_presentacion = Column(Text) 
     
-    proyecto = relationship("Proyecto")
+    proyecto = relationship("Proyecto", back_populates="presentaciones_proyectos")

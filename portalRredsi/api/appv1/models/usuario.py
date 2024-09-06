@@ -1,9 +1,9 @@
-import enum
-from sqlalchemy import Column, String, ForeignKey, Integer
+from enum import Enum as PyEnum #Enum de python
+from sqlalchemy import Column, String, ForeignKey, Integer, Enum 
 from sqlalchemy.orm import relationship
-from models.base_class import Base
+from .base_class import Base
 
-class Estados(enum.Enum):
+class Estados(PyEnum):
     activo = "Activo"
     inactivo = "Inactivo"
     pendiente = "Pendiente"
@@ -14,7 +14,9 @@ class Usuario(Base):
     id_rol = Column(Integer, ForeignKey('roles.id_rol'))
     correo = Column(String(70), unique=True)
     clave = Column(String(255))
-    estado = Column(enum.Enum(Estados))
+    estado = Column(Enum(Estados), default=Estados.activo)
    
-
-    rol = relationship("Rol")
+    rol = relationship("Rol", back_populates="usuarios")
+    detalle_personal = relationship("Detalle_personal",back_populates="usuario")
+    postulaciones_evaluadores = relationship("Postulacion_evaluador", back_populates="evaluador")
+    salas = relationship("Sala", back_populates="usuario")
