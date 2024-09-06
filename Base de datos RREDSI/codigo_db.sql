@@ -91,6 +91,8 @@ INSERT INTO roles (nombre) VALUES
 ('Evaluador'),
 ('Delegado'),
 ('Admin'),
+('Tutor'),
+('Ponente'),
 ('SuperAdmin');
 
 CREATE TABLE permisos (
@@ -262,17 +264,16 @@ CREATE TABLE proyectos (
     linea_investigacion VARCHAR(50),
     nombre_semillero VARCHAR(50),
     url_propuesta_escrita VARCHAR(255),
-    url_poster VARCHAR(255),
     url_aval VARCHAR(255),
     FOREIGN KEY (id_institucion) REFERENCES instituciones(id_institucion),
     FOREIGN KEY (id_modalidad) REFERENCES modalidades(id_modalidad),
     FOREIGN KEY (id_area_conocimiento) REFERENCES areas_conocimiento(id_area_conocimiento)
 );
 
-INSERT INTO proyectos (id_proyecto, id_institucion, id_modalidad, id_area_conocimiento, titulo, estado, programa_academico, grupo_investigacion, linea_investigacion, nombre_semillero, url_propuesta_escrita, url_poster, url_aval)
+INSERT INTO proyectos (id_proyecto, id_institucion, id_modalidad, id_area_conocimiento, titulo, estado, programa_academico, grupo_investigacion, linea_investigacion, nombre_semillero, url_propuesta_escrita, url_aval)
 VALUES
-(1, 1, 1, 1, 'Innovación en Energías Renovables', 'pendiente', 'Ingeniería Eléctrica', 'Grupo de Energías Renovables', 'Energía Solar', 'Semillero de Energía', 'https://propuestas.com/energia_renovable', 'https://posters.com/energia_renovable', 'https://avales.com/energia_renovable'),
-(2, 2, 2, 2, 'Desarrollo de Software Educativo', 'asignado', 'Ingeniería de Sistemas', 'Grupo de Tecnologías Educativas', 'Software Educativo', 'Semillero de Tecnología', 'https://propuestas.com/software_educativo', 'https://posters.com/software_educativo', 'https://avales.com/software_educativo');
+(1, 1, 1, 1, 'Innovación en Energías Renovables', 'pendiente', 'Ingeniería Eléctrica', 'Grupo de Energías Renovables', 'Energía Solar', 'Semillero de Energía', 'https://propuestas.com/energia_renovable','https://avales.com/energia_renovable'),
+(2, 2, 2, 2, 'Desarrollo de Software Educativo', 'asignado', 'Ingeniería de Sistemas', 'Grupo de Tecnologías Educativas', 'Software Educativo', 'Semillero de Tecnología', 'https://propuestas.com/software_educativo', 'https://avales.com/software_educativo');
 
 CREATE TABLE autores (
     id_autor INT PRIMARY KEY AUTO_INCREMENT,
@@ -295,12 +296,13 @@ CREATE TABLE titulos_academicos (
     id_usuario INT,
     FOREIGN KEY (id_usuario) REFERENCES usuarios(id_usuario)
 );
+
 INSERT INTO titulos_academicos (nivel, nombre_titulo, url_titulo, id_usuario)
 VALUES
-('pregrado', 'Ingeniería en Sistemas', 'https://titulos.com/ingenieria_sistemas', 1),
-('maestria', 'Máster en Inteligencia Artificial', 'https://titulos.com/master_ia', 2),
-('especializacion', 'Especialización en Gestión de Proyectos', 'https://titulos.com/especializacion_gestion', 3),
-('doctorado', 'Doctorado en Ciencias Ambientales', 'https://titulos.com/doctorado_ambientales', 4);
+('pregrado', 'Ingeniería Eléctrica', 'https://titulos.com/ingenieria_electrica', 1),
+('maestria', 'Maestría en Educación', 'https://titulos.com/maestria_educacion', 2),
+('especializacion', 'Especialización en Gestión de Proyectos', 'https://titulos.com/especializacion_proyectos', 3),
+('doctorado', 'Doctorado en Física', 'https://titulos.com/doctorado_fisica', 4);
 
 CREATE TABLE detalles_institucionales (
     id_detalle_institucional INT AUTO_INCREMENT,
@@ -324,38 +326,16 @@ VALUES
 (3, 3, 'Semillero de Gestión', 'Grupo de Gestión de Proyectos', 5, 6),
 (4, 4, 'Semillero de Sostenibilidad', 'Grupo de Ciencias Ambientales', 7, 8);
 
-CREATE TABLE datos_basicos (
-    id_datos_basicos INT AUTO_INCREMENT PRIMARY KEY,
-    id_tipo_documento INT,
-    documento VARCHAR(55) UNIQUE NOT NULL,
-    nombres VARCHAR(25),
-    apellidos VARCHAR(25),
-    celular VARCHAR(10) UNIQUE NOT NULL,
-    correo VARCHAR(70) NOT NULL UNIQUE,
-    FOREIGN KEY (id_tipo_documento) REFERENCES tipos_documento(id_tipo_documento)
-);
-
-INSERT INTO datos_basicos (id_tipo_documento, documento, nombres, apellidos, celular, correo)
-VALUES
-(1, '1234567890', 'Juan', 'Pérez', '3001234567', 'juan.perez@example.com'),
-(2, '0987654321', 'Ana', 'Gómez', '3009876543', 'ana.gomez@example.com'),
-(3, '1122334455', 'Carlos', 'López', '3001122334', 'carlos.lopez@example.com'),
-(4, '5566778899', 'María', 'Rodríguez', '3005566778', 'maria.rodriguez@example.com'),
-(5, '6677889900', 'Luis', 'Fernández', '3006677889', 'luis.fernandez@example.com'),
-(6, '3344556677', 'Laura', 'Martínez', '3003344556', 'laura.martinez@example.com'),
-(7, '9988776655', 'Miguel', 'Castro', '3009988776', 'miguel.castro@example.com');
-
 CREATE TABLE asistentes (
     id_asistente INTEGER PRIMARY KEY AUTO_INCREMENT,
-    id_datos_basicos INT,
+    id_usuario INT,
     asistencia TINYINT DEFAULT 0,
-    tipo_asistente ENUM('evaluador', 'delegado', 'ponente', 'externos'),
     fecha TIMESTAMP,
     url_comprobante_pago VARCHAR(255),
-    FOREIGN KEY (id_datos_basicos) REFERENCES datos_basicos(id_datos_basicos)
+    FOREIGN KEY (id_usuario) REFERENCES usuarios(id_usuario)
 );
 
-INSERT INTO asistentes (id_datos_basicos, asistencia, tipo_asistente, fecha, url_comprobante_pago)
+INSERT INTO asistentes (id_usuario, asistencia, tipo_asistente, fecha, url_comprobante_pago)
 VALUES
 (1, 1, 'evaluador', '2024-09-10 09:00:00', 'https://comprobantes.com/pago_juan'),
 (2, 0, 'delegado', '2024-09-11 10:00:00', 'https://comprobantes.com/pago_ana'),
@@ -379,40 +359,22 @@ VALUES
 
 CREATE TABLE participantes_proyecto (
     id_participante_proyecto INT PRIMARY KEY AUTO_INCREMENT,
-    id_datos_basicos INT,
-    id_detalle_institucional INT,
+    id_usuario INT,
     id_proyecto INT,
     id_etapa INT,
     id_proyecto_convocatoria INT,
-    tipo_participante ENUM('ponente', 'tutor', 'suplente evaluador', 'suplente ponente'),
-    FOREIGN KEY (id_datos_basicos) REFERENCES datos_basicos(id_datos_basicos),
-    FOREIGN KEY (id_detalle_institucional) REFERENCES detalles_institucionales(id_detalle_institucional),
+    FOREIGN KEY (id_usuario) REFERENCES usuarios(id_usuario),
     FOREIGN KEY (id_proyecto) REFERENCES proyectos(id_proyecto),
     FOREIGN KEY (id_etapa) REFERENCES etapas(id_etapa),
     FOREIGN KEY (id_proyecto_convocatoria) REFERENCES proyectos_convocatoria(id_proyecto_convocatoria)
 );
 
-INSERT INTO participantes_proyecto (id_datos_basicos, id_proyecto, id_etapa, id_proyecto_convocatoria, tipo_participante)
+INSERT INTO participantes_proyecto (id_usuario, id_proyecto, id_etapa, id_proyecto_convocatoria, tipo_participante)
 VALUES
 (1, 1, 1, 1, 'ponente'),           
 (2, 2, 2, 2, 'tutor'),             
 (3, 3, 1, 3, 'ponente'),         
 (4, 4, 2, 4, 'suplente evaluador'); 
-
-CREATE TABLE evaluador_proyecto (
-    id_evaluador_proyecto INT PRIMARY KEY AUTO_INCREMENT,
-    id_usuario INT,
-    id_detalle_institucional INT,
-    id_proyecto INT,
-    id_etapa INT,
-    id_proyecto_convocatoria INT,
-    FOREIGN KEY (id_usuario) REFERENCES usuarios(id_usuario),
-    FOREIGN KEY (id_detalle_institucional) REFERENCES detalles_institucionales(id_detalle_institucional),
-    FOREIGN KEY (id_proyecto) REFERENCES proyectos(id_proyecto),
-    FOREIGN KEY (id_etapa) REFERENCES etapas(id_etapa),
-    FOREIGN KEY (id_proyecto_convocatoria) REFERENCES proyectos_convocatoria(id_proyecto_convocatoria)
-);
-
 
 CREATE TABLE rubricas_resultados (
     id_rubrica_resultado INT PRIMARY KEY AUTO_INCREMENT,
