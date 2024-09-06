@@ -7,9 +7,9 @@ from db.database import get_db
 router_admin = APIRouter()
 
 # Crear convocatoria
-@router_admin.post("/crear-convocatoria/")
-async def create_new_convocatoria(convocatoria: ConvocatoriaCreate, db: Session = Depends(get_db)):
-    return create_convocatoria(db, convocatoria)
+@router_admin.post("/crear-convocatoria")
+def create_new_convocatoria(convocatoria: ConvocatoriaCreate, db: Session = Depends(get_db)):
+    return create_convocatoria(db, convocatoria.nombre, convocatoria.fecha_inicio, convocatoria.fecha_fin, convocatoria.estado)
 
 # Crear etapa dentro de convocatoria
 @router_admin.post("/crear-etapa/")

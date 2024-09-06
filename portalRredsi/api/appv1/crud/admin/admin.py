@@ -4,24 +4,37 @@ from sqlalchemy.orm import Session
 from appv1.models.convocatoria import Convocatoria
 from appv1.models.etapa import Etapa
 from appv1.models.fase import Fase
-from appv1.models.convocatoria import Tipo_de_convocatoria
+from appv1.models.programacion_fase import Programacion_fase
+from appv1.schemas.admin.admin import EstadoDeConvocatoria
 
 # Crear una nueva convocatoria
-def create_convocatoria(db: Session, nombre: str, fecha_inicio: date, fecha_fin: date, tipo_de_convocatoria: Tipo_de_convocatoria):
-    convocatoria = Convocatoria(nombre=nombre, fecha_inicio=fecha_inicio, fecha_fin=fecha_fin, tipo_de_convocatoria=tipo_de_convocatoria)
+def create_convocatoria(db: Session, nombre: str, fecha_inicio: date, fecha_fin: date, estado: EstadoDeConvocatoria):
+    convocatoria = Convocatoria(nombre=nombre, fecha_inicio=fecha_inicio, fecha_fin=fecha_fin, estado=estado)
     db.add(convocatoria)
     db.commit()
     return {"message": "Convocatoria creada exitosamente"}
 
 # Crear una nueva etapa dentro de una convocatoria
 def create_etapa(db: Session, nombre: str, id_convocatoria: int):
-    etapa = Etapa(nombre=nombre)
+    
+    convocatoria = db.query(Convocatoria).get(id_convocatoria)
+    if not convocatoria:
+        raise HTTPException(status_code=404, detail="Convocatoria no encontrada")
+    
+    etapa = Etapa(nombre=nombre, id_convocatoria=id_convocatoria)
+    
     db.add(etapa)
     db.commit()
-    return {"message": "Etapa creada exitosamente"}
+    db.refresh(etapa)
+    return {"message": "Etapa creada exitosamente", "etapa_id": etapa.id_etapa}
+
 
 # Crear una nueva fase dentro de una etapa
 def create_fase(db: Session, nombre: str, id_etapa: int):
+    etapa = db.query(Etapa).get(id_etapa)
+    if not etapa:
+        raise HTTPException(status_code=404, detail="Etapa no encontrada")
+
     fase = Fase(nombre=nombre, id_etapa=id_etapa)
     db.add(fase)
     db.commit()
@@ -56,7 +69,7 @@ def update_fase(db: Session, id_fase: int, nombre: str = None):
 
 # Crear una nueva programación de fase
 def create_programacion_fase(db: Session, id_fase: int, id_convocatoria: int, fecha_inicio: date, fecha_fin: date):
-    programacion_fase = programacion_fase(id_fase=id_fase, id_convocatoria=id_convocatoria, fecha_inicio=fecha_inicio, fecha_fin=fecha_fin)
+    programacion_fase = Programacion_fase(id_fase=id_fase, id_convocatoria=id_convocatoria, fecha_inicio=fecha_inicio, fecha_fin=fecha_fin)
     db.add(programacion_fase)
     db.commit()
     return {"message": "Programación de fase creada exitosamente"}
