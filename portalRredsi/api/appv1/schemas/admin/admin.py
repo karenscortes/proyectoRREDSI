@@ -3,7 +3,7 @@ from pydantic import BaseModel
 from typing import Optional
 from enum import Enum
 
-class Tipo_de_convocatoria(str, Enum):
+class EstadoDeConvocatoria(str, Enum):
     en_curso = "en curso"
     concluida = "concluida"
     por_publicar = "por publicar"
@@ -12,8 +12,7 @@ class ConvocatoriaCreate(BaseModel):
     nombre: str
     fecha_inicio: date
     fecha_fin: date
-    tipo_de_convocatoria: Tipo_de_convocatoria
-    descripcion: Optional[str] = None
+    estado: EstadoDeConvocatoria  
 
 class EtapaCreate(BaseModel):
     nombre: str
