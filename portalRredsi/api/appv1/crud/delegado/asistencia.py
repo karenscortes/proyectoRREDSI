@@ -34,7 +34,15 @@ def get_asistentes_por_convocatoria(db: Session, page: int = 1, page_size: int =
         result = db.execute(sql, params).mappings().all()
 
         # Consulta SQL para contar el número total de asistentes
-        count_sql = text("SELECT COUNT(*) FROM asistentes")
+        count_sql = text("""SELECT COUNT(*) FROM asistentes
+            JOIN detalles_personales ON asistentes.id_detalles_personales = detalles_personales.id_detalle_personal
+            JOIN participantes_proyecto ON detalles_personales.id_detalle_personal = participantes_proyecto.id_datos_personales
+            JOIN proyectos_convocatoria ON participantes_proyecto.id_proyecto_convocatoria = proyectos_convocatoria.id_proyecto_convocatoria
+            JOIN convocatorias ON proyectos_convocatoria.id_convocatoria = convocatorias.id_convocatoria
+            JOIN detalle_sala ON proyectos_convocatoria.id_proyecto_convocatoria = detalle_sala.id_proyecto_convocatoria
+            JOIN salas ON detalle_sala.id_sala = salas.id_sala
+            JOIN instituciones ON detalles_personales.id_institucion = instituciones.id_institucion
+            WHERE convocatorias.estado = 'en curso' """)
         total_asistentes = db.execute(count_sql).scalar()
 
         # Calcular el número total de páginas
@@ -79,7 +87,16 @@ def get_asistentes_por_sala(db: Session, numero_sala: str, page: int = 1, page_s
         result = db.execute(sql, params).mappings().all()
 
         # Consulta SQL para contar el número total de asistentes por sala
-        count_sql = text("SELECT COUNT(*)FROM asistentes")
+        count_sql = text("""SELECT COUNT(*)FROM FROM asistentes
+            JOIN detalles_personales ON asistentes.id_detalles_personales = detalles_personales.id_detalle_personal
+            JOIN participantes_proyecto ON detalles_personales.id_detalle_personal = participantes_proyecto.id_datos_personales
+            JOIN proyectos_convocatoria ON participantes_proyecto.id_proyecto_convocatoria = proyectos_convocatoria.id_proyecto_convocatoria
+            JOIN convocatorias ON proyectos_convocatoria.id_convocatoria = convocatorias.id_convocatoria
+            JOIN detalle_sala ON proyectos_convocatoria.id_proyecto_convocatoria = detalle_sala.id_proyecto_convocatoria
+            JOIN salas ON detalle_sala.id_sala = salas.id_sala
+            JOIN instituciones ON detalles_personales.id_institucion = instituciones.id_institucion
+            WHERE convocatorias.estado = 'en curso'
+            AND salas.numero_sala = :numero_sala""")
 
         total_asistentes = db.execute(count_sql, {"numero_sala": numero_sala}).scalar()
         total_pages = (total_asistentes + page_size - 1) // page_size
@@ -88,6 +105,7 @@ def get_asistentes_por_sala(db: Session, numero_sala: str, page: int = 1, page_s
     except SQLAlchemyError as e:
         print(f"Error al buscar asistentes por sala: {e}")
         raise HTTPException(status_code=500, detail="Error al buscar asistentes por sala")
+
     
 # Asistentes por tipo (ponente, evaluador)
 
