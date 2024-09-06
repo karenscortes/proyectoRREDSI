@@ -8,9 +8,9 @@ dotenv_path = os.path.join(os.path.dirname(__file__), '..', '.env')
 load_dotenv(dotenv_path)
 
 class Settings:
-    PROJECT_NAME: str = "GASTOS-INGRESOS"
+    PROJECT_NAME: str = "PORTAL RREDSI"
     PROJECT_VERSION: str = "0.0.1"
-    PROJECT_DESCRIPTION: str = "Aplicación para administrar los gastos e ingresos de varios usuarios"
+    PROJECT_DESCRIPTION: str = "Aplicación para gestionar proyectos de investigación"
 
     DB_HOST: str = os.getenv("DB_HOST") 
     DB_USER: str = os.getenv("DB_USER")

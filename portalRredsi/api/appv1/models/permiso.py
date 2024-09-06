@@ -1,5 +1,5 @@
 from sqlalchemy import Column, Integer, Boolean, ForeignKey,PrimaryKeyConstraint
-from models.base_class import Base
+from .base_class import Base
 from sqlalchemy.orm import relationship
 
 class Permiso(Base):

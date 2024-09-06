@@ -1,6 +1,6 @@
 <template>
   <div
-    class="modal fade"
+    class="modalCabecero modal fade show"
     id="delegateInformation"
     tabindex="-1"
     aria-labelledby="modalLabel"
@@ -14,8 +14,7 @@
           <button
             type="button"
             class="close mr-3 mt-3"
-            data-dismiss="modal"
-            aria-label="Close"
+            @click="closeModal()"
           >
             <span aria-hidden="true">&times;</span>
           </button>
@@ -58,7 +57,7 @@
 
             <div class="text-center mt-3">
               <a
-                href="../delegado/pruebas_documentos/constancia_NotasAprendiz.pdf"
+                href="/constancia_NotasAprendiz.pdf"
                 class="btn btn-outline-primary"
                 target="_blank"
               >
@@ -71,3 +70,20 @@
     </div>
   </div>
 </template>
+<script>
+
+export default {
+  emits: ["closeModalDetail"],
+  setup(props, { emit }) {
+    const closeModal = () => {
+      emit("closeModalDetail");
+    };
+    return { closeModal};
+  },
+};
+</script>
+<style>
+.modalCabecero {
+  display: block;
+}
+</style>

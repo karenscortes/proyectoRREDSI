@@ -7,6 +7,7 @@ from core.config import settings
 engine = create_engine(settings.DATABASE_URL, echo=True, pool_pre_ping=True)
 # Crear la fábrica de sesiones
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
+
 # Declarar la base para los modelos
 Base = declarative_base()
 

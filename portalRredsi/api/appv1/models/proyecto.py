@@ -1,6 +1,6 @@
 from sqlalchemy import Integer,Column,ForeignKey, String # type: ignore
 from sqlalchemy.orm import relationship # type: ignore
-from models.base_class import Base
+from .base_class import Base
 
 class Proyecto(Base):
     __tablename__ = 'proyectos'
@@ -20,5 +20,6 @@ class Proyecto(Base):
     institucion = relationship("Institucion")
     modalidad = relationship("Modalidad")
     area_conocimiento = relationship("Area_conocimiento")
-    
+    proyectos_convocatorias = relationship("Proyecto_convocatoria", back_populates="proyecto")
+    presentaciones_proyectos = relationship("Presentacion_proyecto", back_populates="proyecto")
     
