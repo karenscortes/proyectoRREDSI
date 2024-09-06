@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 from appv1.routers import usuarios, rol
-from appv1.routers.delegado import asignarProyectoEtapaVirtual, listaEvaluadores, salas , postulaciones
+from appv1.routers.delegado import asignarProyectoEtapaVirtual, listaEvaluadores, proyectosSinAsignar, salas , postulaciones
 from appv1.routers.evaluador import evaluadores
 from appv1.routers.superadmin import superadmin
 from db.database import test_db_connection
@@ -14,7 +14,7 @@ app.include_router(evaluadores.routerCalificarProyectos, prefix="/proyectos", ta
 app.include_router(salas.router_sala, prefix="/salas", tags=["Delegado"])
 app.include_router(postulaciones.router_postulaciones, prefix="/postulaciones", tags=["Delegado - Lista Postulaciones"])
 app.include_router(listaEvaluadores.router_evaluadores, prefix="/listaEvaluadores", tags=["Delegado - Lista Evaluadores"])
-
+app.include_router(proyectosSinAsignar.router_proyectosSinAsignar, prefix="/proyectosSinAsignar", tags=["Delegado - Lista Proyectos sin Asignar"])
 
 
 # RUTAS DE DELEGADO
