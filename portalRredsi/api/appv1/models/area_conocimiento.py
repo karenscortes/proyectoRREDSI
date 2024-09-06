@@ -1,5 +1,5 @@
-
-from models.base_class import Base
+from .base_class import Base
+from sqlalchemy.orm import relationship
 from sqlalchemy import Column,Integer, String # type: ignore
 
 class Area_conocimiento(Base):
@@ -7,3 +7,4 @@ class Area_conocimiento(Base):
     id_area_conocimiento = Column(Integer, primary_key=True, autoincrement=True)
     nombre = Column(String(35))
     
+    salas = relationship("Sala", back_populates="area_conocimiento")
