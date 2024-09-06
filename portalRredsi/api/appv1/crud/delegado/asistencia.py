@@ -16,13 +16,11 @@ def get_asistentes_por_convocatoria(db: Session, page: int = 1, page_size: int =
                 detalles_personales.documento, 
                 instituciones.nombre
             FROM asistentes
-            JOIN detalles_personales ON asistentes.id_detalles_personales = detalles_personales.id_detalle_personal
-            JOIN participantes_proyecto ON detalles_personales.id_detalle_personal = participantes_proyecto.id_datos_personales
+            JOIN usuarios ON asistentes.id_usuario = usuarios.id_usuario
+            JOIN participantes_proyecto ON usuarios.id_usuario = participantes_proyecto.id_usuario
             JOIN proyectos_convocatoria ON participantes_proyecto.id_proyecto_convocatoria = proyectos_convocatoria.id_proyecto_convocatoria
             JOIN convocatorias ON proyectos_convocatoria.id_convocatoria = convocatorias.id_convocatoria
-            JOIN detalle_sala ON proyectos_convocatoria.id_proyecto_convocatoria = detalle_sala.id_proyecto_convocatoria
-            JOIN salas ON detalle_sala.id_sala = salas.id_sala
-            JOIN instituciones ON detalles_personales.id_institucion = instituciones.id_institucion
+            JOIN instituciones ON usuarios.id_usuario = detalles_institucionales.id_usuario
             WHERE convocatorias.estado = 'en curso'
             LIMIT :page_size OFFSET :offset;
         """)
@@ -35,13 +33,11 @@ def get_asistentes_por_convocatoria(db: Session, page: int = 1, page_size: int =
 
         # Consulta SQL para contar el número total de asistentes
         count_sql = text("""SELECT COUNT(*) FROM asistentes
-            JOIN detalles_personales ON asistentes.id_detalles_personales = detalles_personales.id_detalle_personal
-            JOIN participantes_proyecto ON detalles_personales.id_detalle_personal = participantes_proyecto.id_datos_personales
+            JOIN usuarios ON asistentes.id_usuario = usuarios.id_usuario
+            JOIN participantes_proyecto ON usuarios.id_usuario = participantes_proyecto.id_usuario
             JOIN proyectos_convocatoria ON participantes_proyecto.id_proyecto_convocatoria = proyectos_convocatoria.id_proyecto_convocatoria
             JOIN convocatorias ON proyectos_convocatoria.id_convocatoria = convocatorias.id_convocatoria
-            JOIN detalle_sala ON proyectos_convocatoria.id_proyecto_convocatoria = detalle_sala.id_proyecto_convocatoria
-            JOIN salas ON detalle_sala.id_sala = salas.id_sala
-            JOIN instituciones ON detalles_personales.id_institucion = instituciones.id_institucion
+            JOIN instituciones ON usuarios.id_usuario = detalles_institucionales.id_usuario
             WHERE convocatorias.estado = 'en curso' """)
         total_asistentes = db.execute(count_sql).scalar()
 
@@ -53,6 +49,7 @@ def get_asistentes_por_convocatoria(db: Session, page: int = 1, page_size: int =
         print(f"Error al buscar asistentes: {e}")
         raise HTTPException(status_code=500, detail="Error al buscar asistentes")
 
+
 # Asistentes por sala 
 def get_asistentes_por_sala(db: Session, numero_sala: str, page: int = 1, page_size: int = 10):
     try:
@@ -61,13 +58,13 @@ def get_asistentes_por_sala(db: Session, numero_sala: str, page: int = 1, page_s
             SELECT 
                 asistentes.id_asistente, 
                 asistentes.asistencia,
-                detalles_personales.nombres, 
-                detalles_personales.apellidos, 
-                detalles_personales.documento, 
+                usuarios.documento, 
+                usuarios.nombres, 
+                usuarios.apellidos, 
                 instituciones.nombre
             FROM asistentes
-            JOIN detalles_personales ON asistentes.id_detalles_personales = detalles_personales.id_detalle_personal
-            JOIN participantes_proyecto ON detalles_personales.id_detalle_personal = participantes_proyecto.id_datos_personales
+            JOIN usuarios ON asistentes.id_usuario = usuario.id_usuario
+            JOIN participantes_proyecto ON usuarios.id_usuario = participantes_proyecto.id_usuario
             JOIN proyectos_convocatoria ON participantes_proyecto.id_proyecto_convocatoria = proyectos_convocatoria.id_proyecto_convocatoria
             JOIN convocatorias ON proyectos_convocatoria.id_convocatoria = convocatorias.id_convocatoria
             JOIN detalle_sala ON proyectos_convocatoria.id_proyecto_convocatoria = detalle_sala.id_proyecto_convocatoria

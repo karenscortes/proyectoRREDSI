@@ -7,6 +7,7 @@ from appv1.routers.superadmin import superadmin
 from db.database import test_db_connection
 from fastapi.middleware.cors import CORSMiddleware
 
+
 app = FastAPI()
 
 app.include_router(usuarios.router_user, prefix="/users", tags=["Usuarios"])
