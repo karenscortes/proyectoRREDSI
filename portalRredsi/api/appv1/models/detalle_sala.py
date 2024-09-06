@@ -1,10 +1,10 @@
 from sqlalchemy import Integer, Column,ForeignKey,Date, Time
 from sqlalchemy.schema import PrimaryKeyConstraint
 from sqlalchemy.orm import relationship
-from models.base_class import Base
+from .base_class import Base
 
 
-class Sala_asignada(Base):
+class Detalle_sala(Base):
     __tablename__ = "salas_asignadas"
     id_sala = Column(Integer, ForeignKey('salas.id_sala'))
     id_proyecto_convocatoria = Column(Integer, ForeignKey('proyectos_convocatoria.id_proyecto_convocatoria'))
@@ -12,10 +12,10 @@ class Sala_asignada(Base):
     hora_inicio = Column(Time)
     hora_fin = Column(Time)
     
-    _table_args_ = (
+    __table_args__ = (
         PrimaryKeyConstraint('id_sala', 'id_proyecto_convocatoria'),
     )
     
-    sala = relationship("Sala")
-    proyecto_convocatoria = relationship("Proyecto_convocatoria")
+    sala = relationship("Sala", back_populates="detalles_salas")
+    proyecto_convocatoria = relationship("Proyecto_convocatoria", back_populates="detalles_salas")
     

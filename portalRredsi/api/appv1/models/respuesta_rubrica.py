@@ -1,6 +1,6 @@
 from sqlalchemy import Column, Float, ForeignKey, Integer, Text
 from sqlalchemy.orm import relationship
-from models.base_class import Base
+from .base_class import Base
 
 class Respuesta_rubricas(Base):
     __tablename__ = 'respuestas_rubricas'
