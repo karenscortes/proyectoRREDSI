@@ -14,3 +14,4 @@ class ProyectoSchema(BaseModel):
     url_poster: str
     url_aval: str
 
+

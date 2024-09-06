@@ -9,8 +9,10 @@ routerCalificarProyectos = APIRouter()
 
 @routerCalificarProyectos.get("/get-proyectos-por-etapa/", response_model=List[ProyectoSchema])
 async def read_proyectos_por_etapa(
-    db: Session = Depends(get_db)
+    nombre_etapa: str,
+    id_detalle_personal: int,
+    db: Session = Depends(get_db),
 ):
-    proyectos = get_proyectos_por_etapa(db)
-    
+    proyectos = get_proyectos_por_etapa(db, nombre_etapa, id_detalle_personal)
     return proyectos
+
