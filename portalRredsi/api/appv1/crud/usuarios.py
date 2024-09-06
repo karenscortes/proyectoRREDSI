@@ -38,3 +38,38 @@ def create_user_sql(db: Session, usuario: UserCreate):
         print(f"Error al crear usuario: {e}")
         print("Error ", e)
         raise HTTPException(status_code=500, detail="Error. No hay Integridad de datos")
+    
+    
+# Consultar un usuario por su email
+def get_user_by_email(db: Session, p_mail: str):
+    try:
+        sql = text("SELECT * FROM usuarios WHERE mail = :mail")
+        result = db.execute(sql, {"mail": p_mail}).fetchone()
+        return result
+    except SQLAlchemyError as e:
+        print(f"Error al buscar usuario por email: {e}")
+        raise HTTPException(status_code=500, detail="Error al buscar usuario por email")
+
+# Consultar un usuario por su ID
+def get_user_by_id(db: Session, user_id: str):
+    sql = text("SELECT * FROM users WHERE user_id = :user_id")
+    result = db.execute(sql, {"user_id": user_id}).fetchone()
+    return result
+
+def update_password(db: Session, email: str, new_password: str):
+    try:
+        # Hash el nuevo password
+        hashed_password = get_hashed_password(new_password)
+        # Actualizar el nuevo password en base de datos
+        sql_query = text("UPDATE users SET passhash = :passhash WHERE mail = :mail")
+        params = { "passhash": hashed_password, "mail": email }
+        # Ejecutar la consulta de actualización
+        db.execute(sql_query, params)
+        # Confirmar los cambios
+        db.commit()
+        return True
+
+    except SQLAlchemyError as e:
+        db.rollback()  # Deshacer los cambios si ocurre un error
+        print(f"Error al actualizar password: {e}")
+        raise HTTPException(status_code=500, detail="Error al actualizar password")

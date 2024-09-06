@@ -1,6 +1,6 @@
 from sqlalchemy import Column, Integer, Enum, ForeignKey, TIMESTAMP, func
 from sqlalchemy.orm import relationship
-from models.base_class import Base
+from .base_class import Base
 import enum
 
 class Accion(enum.Enum):

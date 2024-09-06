@@ -1,5 +1,5 @@
 from sqlalchemy import Column, Float, Integer
-from models.base_class import Base
+from .base_class import Base
 
 class Rubrica_resultado(Base):
     __tablename__ = 'rubricas_resultados'

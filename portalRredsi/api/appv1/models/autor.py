@@ -1,4 +1,4 @@
-from models.base_class import Base
+from .base_class import Base
 from sqlalchemy import Column, Integer, ForeignKey, String # type: ignore
 from sqlalchemy.orm import relationship # type: ignore
 
