@@ -2,7 +2,7 @@ from sys import prefix
 from fastapi import FastAPI
 from appv1.routers import login, usuarios, rol
 from appv1.routers.admin import admin
-from appv1.routers.delegado import delegados, listaEvaluadores, postulaciones, proyectosSinAsignar, salas
+from appv1.routers.delegado import listaEvaluadores, postulaciones, proyectosSinAsignar, salas
 from appv1.routers.evaluador import evaluadores
 
 from appv1.routers.superadmin import superadmin
