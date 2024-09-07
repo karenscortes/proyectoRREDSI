@@ -13,13 +13,13 @@ class AsignarProyectoEtapaUno(BaseModel):
     tipo_participante : Annotated[str, StringConstraints(max_length=25)]
     
 class PosibleEvaluadorEtapaVirtual():
-    id_usuario = int
-    id_rol =int
-    id_tipo_documento = int
-    documento = Annotated[str, StringConstraints(max_length=55)]
-    nombres = Annotated[str, StringConstraints(max_length=25)]
-    apellidos = Annotated[str, StringConstraints(max_length=25)]
-    celular = Annotated[str, StringConstraints(max_length=10)]
-    correo = Annotated[str, StringConstraints(max_length=70)]
-    clave = Annotated[str, StringConstraints(max_length=255)]
-    estado = str
+    id_usuario: int
+    id_rol: int
+    id_tipo_documento: int
+    documento: Annotated[str, StringConstraints(max_length=55)]
+    nombres: Annotated[str, StringConstraints(max_length=25)]
+    apellidos: Annotated[str, StringConstraints(max_length=25)]
+    celular: Annotated[str, StringConstraints(max_length=10)]
+    correo: Annotated[str, StringConstraints(max_length=70)]
+    clave: Annotated[str, StringConstraints(max_length=255)]
+    estado: str
