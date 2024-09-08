@@ -16,7 +16,7 @@ from .proyecto import Proyecto
 from .autor import Autor
 from .tipo_documento import Tipo_documento
 from .titulo_academico import Titulo_academico
-from .detalle_personal import Detalle_personal
+from .detalle_institucional import Detalle_institucional
 from .asistente import Asistente
 from .proyecto_convocatoria import Proyecto_convocatoria
 from .participante_proyecto import Participante_proyecto

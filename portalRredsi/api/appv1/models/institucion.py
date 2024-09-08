@@ -9,3 +9,4 @@ class Institucion(Base):
     
     detalles_personales = relationship("Detalle_personal",back_populates="institucion")
     proyectos = relationship("Proyecto", back_populates="institucion")
+    detalles_institucionales = relationship("Detalle_institucional", back_populates="institucion")

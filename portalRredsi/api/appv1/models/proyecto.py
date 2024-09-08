@@ -27,3 +27,4 @@ class Proyecto(Base):
     proyectos_convocatorias = relationship("Proyecto_convocatoria", back_populates="proyecto")
     presentaciones_proyectos = relationship("Presentacion_proyecto", back_populates="proyecto")
     autores = relationship("Autor", back_populates="proyecto")
+    participantes_proyectos = relationship("Participante_proyecto", back_populates="proyecto")

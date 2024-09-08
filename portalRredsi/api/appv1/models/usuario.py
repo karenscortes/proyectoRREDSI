@@ -23,6 +23,9 @@ class Usuario(Base):
    
     tipo_documento = relationship("Tipo_documento", back_populates="usuarios")
     rol = relationship("Rol", back_populates="usuarios")
-    detalle_personal = relationship("Detalle_personal",back_populates="usuario")
     postulaciones_evaluadores = relationship("Postulacion_evaluador", back_populates="evaluador")
     salas = relationship("Sala", back_populates="usuario")
+    titulos_academicos = relationship("Titulo_academico", back_populates="usuario")
+    detalles_institucionales = relationship("Detalle_institucional", back_populates="usuario")
+    asistentes = relationship('Asistente', back_populates='usuario')
+    participantes_proyectos = relationship('Participante_proyecto', back_populates="usuario")

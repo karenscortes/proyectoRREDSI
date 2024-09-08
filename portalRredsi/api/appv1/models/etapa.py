@@ -11,3 +11,4 @@ class Etapa(Base):
     convocatoria = relationship("Convocatoria", back_populates="etapas")
     fases = relationship("Fase", back_populates="etapa")
     rubricas = relationship("Rubrica", back_populates="etapa")
+    participantes_proyectos = relationship("Participante_proyecto", back_populates="etapa")
