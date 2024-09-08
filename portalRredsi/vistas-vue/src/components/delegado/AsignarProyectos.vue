@@ -9,10 +9,11 @@
         </div>
         <div class="accordion accordion-flush border-bottom" id="accordionFlushExample">
 
-            <AcordeonProyecto v-for="(proyecto, index) in proyectos" :key="index" :titulo="proyecto.titulo"
-                :institucion="proyecto.institucion" :modalidad="proyecto.modalidad" :autores="proyecto.autores"
-                :areaConocimiento="proyecto.areaConocimiento" :posiblesEvaluadores="proyecto.posiblesEvaluadores"
-                :index="index" />
+            <AcordeonProyecto v-for="(proyecto, index) in proyectos" 
+                :key="index" 
+                :proyecto="proyecto"
+                :index="index" 
+            />
 
         </div>
         <!-- Paginador -->

@@ -1,8 +1,8 @@
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
-from appv1.schemas.delegado.asignacionProyectoEtapaVirtual import AsignarProyectoEtapaUno
+from appv1.schemas.delegado.asignacionProyectoEtapaVirtual import AsignarProyectoEtapaUno, PosibleEvaluadorEtapaVirtual
 from db.database import get_db
-from appv1.crud.delegado.asignarProyectoEtapaVirtual import asignar_proyecto_etapa_virtual, get_convocatoria_actual_por_proyecto
+from appv1.crud.delegado.asignarProyectoEtapaVirtual import asignar_proyecto_etapa_virtual, get_convocatoria_actual_por_proyecto, get_posibles_evaluadores_para_proyecto
 
 router_proyecto_etapa_uno = APIRouter()
 
@@ -31,3 +31,15 @@ async def buscar_convocatoria_por_proyecto(
         }
     else:
         return {"mensaje":"El proyecto no se ha podido encontrar en una convocatoria vigente."}
+
+@router_proyecto_etapa_uno.get("/get-posibles-evaluadores/", response_model=None)
+async def read_detalle_sala(
+    area_conocimiento: str,
+    id_institucion: int,
+    db: Session = Depends(get_db),
+):
+    sala_detalle = get_posibles_evaluadores_para_proyecto(db,area_conocimiento,id_institucion)
+    if len(sala_detalle) == 0:
+        raise HTTPException(status_code=404, detail="No hay evaluadores disponibles")
+    
+    return sala_detalle
