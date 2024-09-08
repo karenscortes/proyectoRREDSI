@@ -1,9 +1,9 @@
 from typing import List
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
-from appv1.schemas.evaluador.evaluador import PaginatedResponse, PostulacionEvaluadorCreate
+from appv1.schemas.evaluador.evaluador import PaginatedResponse, PostulacionEvaluadorCreate, RespuestaRubricaCreate
 from db.database import get_db
-from appv1.crud.evaluador.proyectos import create_postulacion_evaluador, get_current_convocatoria, get_proyectos_asignados, get_proyectos_por_estado, get_proyectos_por_etapa
+from appv1.crud.evaluador.proyectos import create_postulacion_evaluador, get_current_convocatoria, get_proyectos_asignados, get_proyectos_por_estado, get_proyectos_por_etapa, insert_respuesta_rubrica
 
 routerCalificarProyectos = APIRouter()
 
@@ -48,7 +48,7 @@ async def postular_evaluador(
     postulacion: PostulacionEvaluadorCreate,
     db: Session = Depends(get_db),
 ):
-    # Consultar la convocatoria actual que esté en curso
+
     convocatoria_actual = get_current_convocatoria(db)
     
     if not convocatoria_actual:
@@ -68,3 +68,24 @@ async def postular_evaluador(
         return {"message": "Postulación registrada exitosamente."}
     else:
         raise HTTPException(status_code=500, detail="Error al registrar la postulación.")
+
+@routerCalificarProyectos.post("/create-calificar-rubrica/")
+async def calificar_proyecto(
+    respuesta: RespuestaRubricaCreate,
+    db: Session = Depends(get_db),
+):
+
+    response = insert_respuesta_rubrica(
+        db=db,
+        id_item_rubrica=respuesta.id_item_rubrica,
+        id_usuario=respuesta.id_usuario,
+        id_proyecto=respuesta.id_proyecto,
+        observacion=respuesta.observacion,
+        calificacion=respuesta.calificacion,
+        calificacion_final=respuesta.calificacion_final
+    )
+        
+    if response:
+        return {"message": "Respuesta de rúbrica registrada exitosamente y calificación final actualizada."}
+    else:
+        raise HTTPException(status_code=500, detail="Error al registrar la calificación.")

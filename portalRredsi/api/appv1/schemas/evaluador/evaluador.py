@@ -1,6 +1,5 @@
 from typing import List
 from pydantic import BaseModel
-from enum import Enum
 
 class ProyectoSchema(BaseModel):
     id_proyecto: int
@@ -27,4 +26,12 @@ class PostulacionEvaluadorCreate(BaseModel):
     etapa_presencial: int
     jornada_manana: int
     jornada_tarde: int
+
+class RespuestaRubricaCreate(BaseModel):
+    id_item_rubrica: int
+    id_usuario: int
+    id_proyecto: int
+    observacion: str
+    calificacion: float
+    calificacion_final: float
 

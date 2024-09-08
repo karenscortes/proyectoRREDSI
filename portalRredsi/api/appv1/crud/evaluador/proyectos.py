@@ -249,3 +249,134 @@ def create_postulacion_evaluador(db: Session, id_convocatoria: int, id_evaluador
         db.rollback()
         print(f"Error al crear la postulación: {e}")
         raise HTTPException(status_code=500, detail="Error al crear la postulación")
+
+
+def get_proyecto_convocatoria(db: Session, id_proyecto: int):
+    try:
+        sql_query = text(
+            """
+            SELECT proyectos_convocatoria.id_proyecto_convocatoria
+            FROM proyectos_convocatoria
+            JOIN convocatorias ON proyectos_convocatoria.id_convocatoria = convocatorias.id_convocatoria
+            WHERE proyectos_convocatoria.id_proyecto = :id_proyecto
+            AND convocatorias.estado = 'en curso'
+            """
+        )
+        result = db.execute(sql_query, {"id_proyecto": id_proyecto}).fetchone()
+        if result:
+            return result[0]
+        else:
+            raise HTTPException(status_code=404, detail="No se encontró una convocatoria en curso para el proyecto.")
+    except SQLAlchemyError as e:
+        db.rollback()
+        print(f"Error al consultar el proyecto convocatoria: {e}")
+        raise HTTPException(status_code=500, detail="Error al consultar el proyecto convocatoria")
+    
+    
+def insert_respuesta_rubrica(db: Session, id_item_rubrica: int, id_usuario: int, id_proyecto: int, observacion: str, calificacion: float, calificacion_final: float):
+    try:
+        # Obtener id_proyecto_convocatoria
+        id_proyecto_convocatoria = get_proyecto_convocatoria(db, id_proyecto)
+        
+        if not id_proyecto_convocatoria:
+            raise HTTPException(status_code=404, detail="No se encontró una convocatoria en curso para el proyecto.")
+        
+        # Verificar si ya existe un id_rubrica_resultado para este proyecto y usuario
+        sql_check_rubrica_resultado = text(
+            """
+            SELECT rubricas_resultados.id_rubrica_resultado, rubricas_resultados.puntaje_aprobacion
+            FROM rubricas_resultados
+            JOIN respuestas_rubricas ON rubricas_resultados.id_rubrica_resultado = respuestas_rubricas.id_rubrica_resultado
+            WHERE respuestas_rubricas.id_proyecto_convocatoria = :id_proyecto_convocatoria
+            AND respuestas_rubricas.id_usuario = :id_usuario
+            """
+        )
+        rubrica_resultado = db.execute(sql_check_rubrica_resultado, {
+            "id_proyecto_convocatoria": id_proyecto_convocatoria,
+            "id_usuario": id_usuario
+        }).fetchone()
+
+        if rubrica_resultado:
+            # Si ya existe, reutilizamos el id_rubrica_resultado
+            id_rubrica_resultado = rubrica_resultado[0]
+            existing_puntaje = rubrica_resultado[1]
+        else:
+            # Si no existe, insertamos en rubricas_resultados
+            sql_insert_rubrica_resultado = text(
+                """
+                INSERT INTO rubricas_resultados (estado_proyecto, puntaje_aprobacion)
+                VALUES ('calificado', 0.0);
+                """
+            )
+            db.execute(sql_insert_rubrica_resultado)
+            id_rubrica_resultado = db.execute(text("SELECT LAST_INSERT_ID();")).fetchone()[0]
+        
+        # Verificar si la respuesta ya existe para este ítem, usuario, y proyecto_convocatoria
+        sql_check_respuesta = text(
+            """
+            SELECT id_respuestas_rubrica
+            FROM respuestas_rubricas
+            WHERE id_item_rubrica = :id_item_rubrica
+            AND id_rubrica_resultado = :id_rubrica_resultado
+            AND id_usuario = :id_usuario
+            AND id_proyecto_convocatoria = :id_proyecto_convocatoria
+            """
+        )
+        existing_respuesta = db.execute(sql_check_respuesta, {
+            "id_item_rubrica": id_item_rubrica,
+            "id_rubrica_resultado": id_rubrica_resultado,
+            "id_usuario": id_usuario,
+            "id_proyecto_convocatoria": id_proyecto_convocatoria
+        }).fetchone()
+
+        if not existing_respuesta:
+            # Insertar solo si no existe
+            sql_insert_respuesta_rubrica = text(
+                """
+                INSERT INTO respuestas_rubricas (
+                    id_item_rubrica, id_rubrica_resultado, id_usuario, id_proyecto_convocatoria, observacion, calificacion
+                ) 
+                VALUES (
+                    :id_item_rubrica, :id_rubrica_resultado, :id_usuario, :id_proyecto_convocatoria, :observacion, :calificacion
+                );
+                """
+            )
+            params = {
+                "id_item_rubrica": id_item_rubrica,
+                "id_rubrica_resultado": id_rubrica_resultado,
+                "id_usuario": id_usuario,
+                "id_proyecto_convocatoria": id_proyecto_convocatoria,
+                "observacion": observacion,
+                "calificacion": calificacion
+            }
+            db.execute(sql_insert_respuesta_rubrica, params)
+
+        # Actualizar la calificación final solo si es necesario
+        if existing_puntaje != calificacion_final:
+            sql_update_rubrica_resultado = text(
+                """
+                UPDATE rubricas_resultados
+                SET puntaje_aprobacion = :calificacion_final,
+                estado_proyecto = 'calificado'
+                WHERE id_rubrica_resultado = :id_rubrica_resultado;
+                """
+            )
+            db.execute(sql_update_rubrica_resultado, {
+                "calificacion_final": calificacion_final,
+                "id_rubrica_resultado": id_rubrica_resultado
+            })
+
+        # Hacer commit de todas las operaciones
+        db.commit()
+        return {"message": "Respuesta de rúbrica registrada exitosamente y calificación final actualizada si era necesario."}
+
+    except SQLAlchemyError as e:
+        db.rollback()
+        print(f"Error al insertar respuesta de rúbrica: {e}")
+        raise HTTPException(status_code=500, detail="Error al insertar respuesta de rúbrica")
+
+
+
+
+
+
