@@ -25,6 +25,6 @@ class Proyecto(Base):
     modalidad = relationship("Modalidad", back_populates="proyectos")
     area_conocimiento = relationship("Area_conocimiento", back_populates="proyectos")
     proyectos_convocatorias = relationship("Proyecto_convocatoria", back_populates="proyecto")
-    presentaciones_proyectos = relationship("Presentacion_proyecto", back_populates="proyecto")
     autores = relationship("Autor", back_populates="proyecto")
     participantes_proyectos = relationship("Participante_proyecto", back_populates="proyecto")
+    presentaciones_proyectos = relationship("Presentacion_proyecto", back_populates="proyecto")

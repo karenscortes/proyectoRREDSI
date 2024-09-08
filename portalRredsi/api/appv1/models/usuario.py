@@ -29,3 +29,5 @@ class Usuario(Base):
     detalles_institucionales = relationship("Detalle_institucional", back_populates="usuario")
     asistentes = relationship('Asistente', back_populates='usuario')
     participantes_proyectos = relationship('Participante_proyecto', back_populates="usuario")
+    respuestas_rubricas = relationship("Respuesta_rubricas", back_populates="usuario")
+    historial_actividades_admin = relationship("Historial_admin", back_populates="historial_actividades_admin")

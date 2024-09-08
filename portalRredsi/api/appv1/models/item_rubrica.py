@@ -10,5 +10,6 @@ class Item_rubrica(Base):
     descripcion = Column(Text)
     valor_max = Column(Float(2,1))
 
-    rubrica = relationship("Rubrica", back_populates='itemsRubrica')
-
+    rubrica = relationship("Rubrica", back_populates='items_rubrica')
+    respuestas_rubricas = relationship("Respuesta_rubricas", back_populates="item_rubrica")
+    

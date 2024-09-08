@@ -11,5 +11,6 @@ class Proyecto_convocatoria(Base):
     
     proyecto = relationship('Proyecto', back_populates="proyectos_convocatorias")
     convocatoria = relationship('Convocatoria', back_populates="proyectos_convocatorias")
-    detalles_salas = relationship("Detalle_sala", back_populates="proyecto_convocatoria")
     participantes_proyectos = relationship("Participante_proyecto", back_populates="proyecto_convocatoria")
+    respuestas_rubricas = relationship("Respuesta_rubricas", back_populates="proyecto_convocatoria")
+    detalles_salas = relationship("Detalle_sala", back_populates="proyecto_convocatoria")

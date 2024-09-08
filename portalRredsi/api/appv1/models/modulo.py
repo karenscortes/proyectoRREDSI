@@ -8,3 +8,5 @@ class Modulo(Base):
     nombre = Column(String(50))
 
     permisos = relationship("Permiso", back_populates="modulo") 
+    historial_actividades_admin = relationship("Historial_admin", back_populates="modulo")
+    

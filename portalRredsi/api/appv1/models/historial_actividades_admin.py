@@ -18,5 +18,5 @@ class Historial_admin(Base):
     id_usuario = Column(Integer, ForeignKey("usuarios.id_usuario"))
     fecha = Column(TIMESTAMP, default=func.current_timestamp()) 
 
-    modulo = relationship("Modulo")
-    usuario = relationship("Usuario")
+    modulo = relationship("Modulo", back_populates="historial_actividades_admin")
+    usuario = relationship("Usuario", back_populates="historial_actividades_admin")
