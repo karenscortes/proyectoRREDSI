@@ -13,4 +13,4 @@ class Rubrica_resultado(Base):
     estado = Column(Enum(Estados), default=Estados.pendiente, nullable=False)
     puntaje_aprobacion =  Column(Float(2,1))
 
-    respuestas_rubricas = relationship("Respuesta_rubricas", back_populates="rubrica_resultado")
+    resp_rubricas = relationship("Respuesta_rubricas", back_populates="rubrica_resultado")

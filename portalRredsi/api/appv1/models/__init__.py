@@ -25,3 +25,4 @@ from .sala import Sala
 from .detalle_sala import Detalle_sala
 from .presentacion_proyecto import Presentacion_proyecto
 from .historial_actividades_admin import Historial_admin
+from .respuesta_rubrica import Respuesta_rubricas

@@ -7,9 +7,9 @@ class Item_rubrica(Base):
     id_item_rubrica = Column(Integer, primary_key=True, autoincrement=True)
     id_rubrica = Column(Integer, ForeignKey('rubricas.id_rubrica'))
     titulo = Column(String(50))
-    descripcion = Column(Text)
+    componente= Column(Text)
     valor_max = Column(Float(2,1))
 
     rubrica = relationship("Rubrica", back_populates='items_rubrica')
-    respuestas_rubricas = relationship("Respuesta_rubricas", back_populates="item_rubrica")
+    resp_rubricas = relationship("Respuesta_rubricas", back_populates="item_rubrica")
     

@@ -14,7 +14,7 @@ def transform_results(results):
         'items': []
     })
 
-    for (id_rubrica, titulo, id_etapa, id_modalidad, id_item_rubrica, item_titulo, descripcion, valor_max) in results:
+    for (id_rubrica, titulo, id_etapa, id_modalidad, id_item_rubrica, item_titulo, componente, valor_max) in results:
         rubrica = rubricas_dict[id_rubrica]
         rubrica['id_rubrica'] = id_rubrica
         rubrica['titulo'] = titulo
@@ -24,7 +24,7 @@ def transform_results(results):
             rubrica['items'].append({
                 'id_item_rubrica': id_item_rubrica,
                 'titulo': item_titulo,
-                'descripcion': descripcion,
+                'componente': componente,
                 'valor_max': valor_max
             })
 
@@ -40,7 +40,7 @@ def get_all_rubricas(db: Session):
             Rubrica.id_modalidad, 
             Item_rubrica.id_item_rubrica, 
             Item_rubrica.titulo,
-            Item_rubrica.descripcion, 
+            Item_rubrica.componente, 
             Item_rubrica.valor_max
         ).join(Item_rubrica, Rubrica.id_rubrica == Item_rubrica.id_rubrica).all()
         rubricas = transform_results(result) 

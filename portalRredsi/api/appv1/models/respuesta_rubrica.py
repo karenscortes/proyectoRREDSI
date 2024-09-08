@@ -12,8 +12,8 @@ class Respuesta_rubricas(Base):
     observacion = Column(Text)
     calificacion = Column(Float(2,1))
 
-    item_rubrica = relationship("Item_rubrica", back_populates="respuestas_rubricas")
-    rubrica_resultado = relationship("Rubrica_resultado", back_populates="respuestas_rubricas")
-    usuario = relationship("Usuario", back_populates="respuestas_rubricas")
-    proyecto_convocatoria = relationship("Proyecto_convocatoria", back_populates="respuestas_rubricas")
+    item_rubrica = relationship("Item_rubrica", back_populates="resp_rubricas")
+    rubrica_resultado = relationship("Rubrica_resultado", back_populates="resp_rubricas")
+    usuario = relationship("Usuario", back_populates="resp_rubricas")
+    proyecto_convocatoria = relationship("Proyecto_convocatoria", back_populates="resp_rubricas")
 
