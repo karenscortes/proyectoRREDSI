@@ -1,5 +1,5 @@
 from collections import defaultdict
-from sqlalchemy.orm import Session, joinedload
+from sqlalchemy.orm import Session
 from sqlalchemy.exc import SQLAlchemyError
 from fastapi import HTTPException
 from appv1.models.rubrica import Rubrica 
@@ -46,6 +46,6 @@ def get_all_rubricas(db: Session):
         rubricas = transform_results(result) 
         return rubricas
     except SQLAlchemyError as e:
-        print(f"Error al buscar los delegados: {e}")
-        raise HTTPException(status_code=500, detail=f"Error al buscar las rubricas{e}",)
+        print(f"Error al consultar las rubricas: {e}")
+        raise HTTPException(status_code=500, detail=f"Error al consultar las rubricas{e}",)
 

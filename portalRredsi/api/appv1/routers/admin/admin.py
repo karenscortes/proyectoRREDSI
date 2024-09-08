@@ -1,7 +1,10 @@
+from typing import List
 from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
+from appv1.crud.admin.gest_rubricas import get_all_rubricas
 from appv1.crud.admin.admin import create_convocatoria, create_etapa, create_fase, get_fases_by_etapa, update_etapa, update_fase
 from appv1.schemas.admin.admin import ConvocatoriaCreate, EtapaCreate, FaseCreate, EtapaUpdate, FaseUpdate
+from appv1.schemas.administrador.rubrica import RubricaResponse
 from db.database import get_db
 
 router_admin = APIRouter()
@@ -35,3 +38,17 @@ async def update_existing_etapa(id_etapa: int, etapa_update: EtapaUpdate, db: Se
 @router_admin.put("/edit-fase/{id_fase}/")
 async def update_existing_fase(id_fase: int, fase_update: FaseUpdate, db: Session = Depends(get_db)):
     return update_fase(db, id_fase, fase_update)
+
+
+#Obtener todas las rubricas
+@router_admin.get("/rubrics/", response_model=List[RubricaResponse])
+async def consult_rubrics(db: Session = Depends(get_db)):
+    existing_rubrics = get_all_rubricas(db)
+    print(existing_rubrics)
+    if existing_rubrics:
+        return existing_rubrics
+    else:
+        return{
+            'success': False,
+            'message': 'Error',
+        }

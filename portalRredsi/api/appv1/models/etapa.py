@@ -9,3 +9,5 @@ class Etapa(Base):
     id_convocatoria = Column(Integer, ForeignKey('convocatorias.id_convocatoria'), nullable=False)
 
     convocatoria = relationship("Convocatoria", back_populates="etapas")
+    fases = relationship("Fase", back_populates="etapa")
+    rubricas = relationship("Rubrica", back_populates="etapa")

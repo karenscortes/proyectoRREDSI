@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Float, ForeignKey, Integer, Text
+from sqlalchemy import Column, Float, ForeignKey, Integer, Text,String
 from sqlalchemy.orm import relationship
 from .base_class import Base
 
@@ -6,7 +6,7 @@ class Item_rubrica(Base):
     __tablename__ = 'items_rubrica'
     id_item_rubrica = Column(Integer, primary_key=True, autoincrement=True)
     id_rubrica = Column(Integer, ForeignKey('rubricas.id_rubrica'))
-    titulo = Column(Text)
+    titulo = Column(String(50))
     descripcion = Column(Text)
     valor_max = Column(Float(2,1))
 

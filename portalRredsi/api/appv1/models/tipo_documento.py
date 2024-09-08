@@ -8,3 +8,4 @@ class Tipo_documento(Base):
     nombre = Column(String(10))
     
     detalles_personales = relationship("Detalle_personal",back_populates="tipo_documento")
+    usuarios = relationship("Usuario",back_populates="tipo_documento")

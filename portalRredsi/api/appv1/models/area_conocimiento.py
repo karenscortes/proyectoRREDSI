@@ -8,3 +8,4 @@ class Area_conocimiento(Base):
     nombre = Column(String(35))
     
     salas = relationship("Sala", back_populates="area_conocimiento")
+    proyectos = relationship("Proyecto", back_populates="area_conocimiento")
