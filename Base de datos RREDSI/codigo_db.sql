@@ -361,18 +361,20 @@ CREATE TABLE participantes_proyecto (
     id_participante_proyecto INT PRIMARY KEY AUTO_INCREMENT,
     id_usuario INT,
     id_etapa INT,
+    id_proyecto INT,
     id_proyecto_convocatoria INT,
     FOREIGN KEY (id_usuario) REFERENCES usuarios(id_usuario),
     FOREIGN KEY (id_etapa) REFERENCES etapas(id_etapa),
+    FOREIGN KEY (id_proyecto) REFERENCES proyectos(id_proyecto),
     FOREIGN KEY (id_proyecto_convocatoria) REFERENCES proyectos_convocatoria(id_proyecto_convocatoria)
 );
 
-INSERT INTO participantes_proyecto (id_usuario, id_proyecto, id_etapa, id_proyecto_convocatoria, tipo_participante)
+INSERT INTO participantes_proyecto (id_usuario, id_etapa, id_proyecto, tipo_participante)
 VALUES
 (1, 1, 1, 1, 'ponente'),           
 (2, 2, 2, 2, 'tutor'),             
-(3, 3, 1, 3, 'ponente'),         
-(4, 4, 2, 4, 'suplente evaluador'); 
+(3, 3, 3, 3, 'ponente'),         
+(4, 4, 4, 4, 'suplente evaluador'); 
 
 CREATE TABLE rubricas_resultados (
     id_rubrica_resultado INT PRIMARY KEY AUTO_INCREMENT,
