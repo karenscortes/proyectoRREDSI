@@ -1,14 +1,6 @@
 
-import enum
 from typing import Annotated
 from pydantic import BaseModel, StringConstraints
-
-# class participante_tipo(enum.Enum):
-#     ponente = "ponente"
-#     tutor = "tutor"
-#     suplente_evaluador = "suplente evaluador"
-#     suplente_ponente = "suplente ponente"
-#     evaluador = "evaluador"
 
 class ProyectoEtapaUnoBase(BaseModel):
     id_participante_proyecto: int
@@ -20,3 +12,14 @@ class AsignarProyectoEtapaUno(BaseModel):
     id_proyecto_convocatoria: int
     tipo_participante : Annotated[str, StringConstraints(max_length=25)]
     
+class PosibleEvaluadorEtapaVirtual():
+    id_usuario = int
+    id_rol =int
+    id_tipo_documento = int
+    documento = Annotated[str, StringConstraints(max_length=55)]
+    nombres = Annotated[str, StringConstraints(max_length=25)]
+    apellidos = Annotated[str, StringConstraints(max_length=25)]
+    celular = Annotated[str, StringConstraints(max_length=10)]
+    correo = Annotated[str, StringConstraints(max_length=70)]
+    clave = Annotated[str, StringConstraints(max_length=255)]
+    estado = str

@@ -38,19 +38,8 @@
                 </div>
             </div>
             <div class="accordion accordion-flush" id="accordionFlushExample">
-                <AcordeonPostulaciones
-                    v-for="(evaluador, index) in evaluadores"
-                    :key="index"
-                    :nombreEvaluador="evaluador.nombreEvaluador"
-                    :institucion="evaluador.institucion"
-                    :areaConocimiento="evaluador.areaConocimiento"
-                    :areaConocimientoSecundaria="evaluador.areaConocimientoSecundaria"
-                    :telefono="evaluador.telefono"
-                    :correo="evaluador.correo"
-                    :estado="evaluador.estado"
-                    :urlArchivo="evaluador.urlArchivo"
-                    :index="index" 
-                />
+                <AcordeonPostulaciones v-for="(evaluador, index) in evaluadores" :key="index" :evaluador="evaluador"
+                    :index="index" />
             </div>
         </div>
     </div>
@@ -75,6 +64,10 @@ export default {
                     correo: "usma@mail.com",
                     estado: "Aceptado",
                     urlArchivo: "ruta/al/archivo.pdf",
+                    etapa_virtual: true,
+                    etapa_presencial: true,
+                    jornada_manana: true,
+                    jornada_tarde: false
                 },
                 {
                     nombreEvaluador: "Maribel Obando",
@@ -85,11 +78,58 @@ export default {
                     correo: "obando@mail.com",
                     estado: "Pendiente",
                     urlArchivo: "ruta/al/archivo2.pdf",
+                    etapa_virtual: true,
+                    etapa_presencial: false,
+                    jornada_manana: false,
+                    jornada_tarde: false
                 },
-            
+                {
+                    nombreEvaluador: "María Pérez",
+                    institucion: "Universidad Nacional",
+                    areaConocimiento: "Ingeniería",
+                    areaConocimientoSecundaria: "Matemáticas",
+                    telefono: "987654321",
+                    correo: "mperez@unacional.edu.co",
+                    estado: "Pendiente",
+                    urlArchivo: "documentos/cv_maria_perez.pdf",
+                    etapa_virtual: false,
+                    etapa_presencial: true,
+                    jornada_manana: false,
+                    jornada_tarde: true
+                },
+                {
+                    nombreEvaluador: "Juan Rodríguez",
+                    institucion: "Universidad de Antioquia",
+                    areaConocimiento: "Medicina",
+                    areaConocimientoSecundaria: "Biología",
+                    telefono: "1122334455",
+                    correo: "jrodriguez@udea.edu.co",
+                    estado: "Aceptado",
+                    urlArchivo: "documentos/juan_rodriguez.pdf",
+                    etapa_virtual: false,
+                    etapa_presencial: true,
+                    jornada_manana: true,
+                    jornada_tarde: true
+                },
+                {
+                    nombreEvaluador: "Laura Gómez",
+                    institucion: "Pontificia Universidad Javeriana",
+                    areaConocimiento: "Artes",
+                    areaConocimientoSecundaria: "Diseño Gráfico",
+                    telefono: "5566778899",
+                    correo: "laura.gomez@javeriana.edu.co",
+                    estado: "Rechazado",
+                    urlArchivo: "documentos/laura_gomez_cv.pdf",
+                    etapa_virtual: true,
+                    etapa_presencial: false,
+                    jornada_manana: false,
+                    jornada_tarde: false
+                }
+
+
+
             ],
         };
     },
 };
 </script>
-

@@ -9,7 +9,9 @@ from appv1.schemas.delegado.salas import AsignarProyectoSala
 
 def asignar_proyecto_a_sala(db: Session, asignacion: AsignarProyectoSala ):
     try:
-        sql = text("INSERT INTO detalle_sala (id_sala, id_proyecto_convocatoria, fecha, hora_inicio, hora_fin) VALUES (:id_sala, :id_proyecto_convocatoria, :fecha, :hora_inicio, :hora_fin)")
+        sql = text("""INSERT INTO detalle_sala (id_sala, id_proyecto_convocatoria, fecha, hora_inicio, hora_fin) 
+                        VALUES (:id_sala, :id_proyecto_convocatoria, :fecha, :hora_inicio, :hora_fin)
+                    """)
         
         params={
             "id_sala": asignacion.id_sala,
@@ -51,7 +53,13 @@ def get_salas_por_convocatoria(db: Session, page: int = 1, page_size: int = 10):
     try:
         offset = (page - 1) * page_size
         
-        sql = text("SELECT * FROM salas JOIN detalle_sala ON salas.id_sala = detalle_sala.id_sala JOIN proyectos_convocatoria ON proyectos_convocatoria.id_proyecto_convocatoria = detalle_sala.id_proyecto_convocatoria JOIN convocatorias ON proyectos_convocatoria.id_convocatoria = convocatorias.id_convocatoria WHERE convocatorias.estado = 'en curso' LIMIT :page_size OFFSET :offset ")
+        sql = text("""SELECT * FROM salas 
+                        JOIN detalle_sala ON salas.id_sala = detalle_sala.id_sala 
+                        JOIN proyectos_convocatoria ON proyectos_convocatoria.id_proyecto_convocatoria = detalle_sala.id_proyecto_convocatoria 
+                        JOIN convocatorias ON proyectos_convocatoria.id_convocatoria = convocatorias.id_convocatoria 
+                        WHERE convocatorias.estado = 'en curso' 
+                        LIMIT :page_size OFFSET :offset 
+                    """)
         
         params ={
             "page_size": page_size,
@@ -60,7 +68,12 @@ def get_salas_por_convocatoria(db: Session, page: int = 1, page_size: int = 10):
         result = db.execute(sql,params).mappings().all()
         
         # Obtener el número total de usuarios
-        count_sql = text("SELECT COUNT(*) FROM salas JOIN detalle_sala ON salas.id_sala = detalle_sala.id_sala JOIN proyectos_convocatoria ON proyectos_convocatoria.id_proyecto_convocatoria = detalle_sala.id_proyecto_convocatoria JOIN convocatorias ON proyectos_convocatoria.id_convocatoria = convocatorias.id_convocatoria WHERE convocatorias.estado = 'en curso'")
+        count_sql = text("""SELECT COUNT(*) FROM salas 
+                                JOIN detalle_sala ON salas.id_sala = detalle_sala.id_sala 
+                                JOIN proyectos_convocatoria ON proyectos_convocatoria.id_proyecto_convocatoria = detalle_sala.id_proyecto_convocatoria 
+                                JOIN convocatorias ON proyectos_convocatoria.id_convocatoria = convocatorias.id_convocatoria 
+                                WHERE convocatorias.estado = 'en curso'
+                            """)
         total_salas = db.execute(count_sql).scalar()
 
         # Calcular el número total de páginas
