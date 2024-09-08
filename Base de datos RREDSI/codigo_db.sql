@@ -240,7 +240,7 @@ CREATE TABLE items_rubrica (
     id_item_rubrica INT PRIMARY KEY AUTO_INCREMENT,
     id_rubrica INT,
     titulo VARCHAR(50),
-    descripcion TEXT,
+    componente TEXT,
     valor_max FLOAT(2, 1),
     FOREIGN KEY (id_rubrica) REFERENCES rubricas(id_rubrica)
 );
