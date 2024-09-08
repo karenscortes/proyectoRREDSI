@@ -11,16 +11,17 @@ def get_asistentes_por_convocatoria(db: Session, page: int = 1, page_size: int =
             SELECT 
                 asistentes.id_asistente, 
                 asistentes.asistencia,
-                detalles_personales.nombres, 
-                detalles_personales.apellidos, 
-                detalles_personales.documento, 
+                usuarios.nombres, 
+                usuarios.apellidos, 
+                usuarios.documento, 
                 instituciones.nombre
             FROM asistentes
             JOIN usuarios ON asistentes.id_usuario = usuarios.id_usuario
             JOIN participantes_proyecto ON usuarios.id_usuario = participantes_proyecto.id_usuario
             JOIN proyectos_convocatoria ON participantes_proyecto.id_proyecto_convocatoria = proyectos_convocatoria.id_proyecto_convocatoria
             JOIN convocatorias ON proyectos_convocatoria.id_convocatoria = convocatorias.id_convocatoria
-            JOIN instituciones ON usuarios.id_usuario = detalles_institucionales.id_usuario
+            JOIN detalles_institucionales ON usuarios.id_usuario = detalles_institucionales.id_usuario
+            JOIN instituciones ON detalles_institucionales.id_institucion = instituciones.id_institucion
             WHERE convocatorias.estado = 'en curso'
             LIMIT :page_size OFFSET :offset;
         """)
@@ -32,13 +33,16 @@ def get_asistentes_por_convocatoria(db: Session, page: int = 1, page_size: int =
         result = db.execute(sql, params).mappings().all()
 
         # Consulta SQL para contar el número total de asistentes
-        count_sql = text("""SELECT COUNT(*) FROM asistentes
+        count_sql = text("""SELECT COUNT(*)
+            FROM asistentes
             JOIN usuarios ON asistentes.id_usuario = usuarios.id_usuario
             JOIN participantes_proyecto ON usuarios.id_usuario = participantes_proyecto.id_usuario
             JOIN proyectos_convocatoria ON participantes_proyecto.id_proyecto_convocatoria = proyectos_convocatoria.id_proyecto_convocatoria
             JOIN convocatorias ON proyectos_convocatoria.id_convocatoria = convocatorias.id_convocatoria
-            JOIN instituciones ON usuarios.id_usuario = detalles_institucionales.id_usuario
+            JOIN detalles_institucionales ON usuarios.id_usuario = detalles_institucionales.id_usuario
+            JOIN instituciones ON detalles_institucionales.id_institucion = instituciones.id_institucion
             WHERE convocatorias.estado = 'en curso' """)
+        
         total_asistentes = db.execute(count_sql).scalar()
 
         # Calcular el número total de páginas
@@ -57,23 +61,24 @@ def get_asistentes_por_sala(db: Session, numero_sala: str, page: int = 1, page_s
         sql = text("""
             SELECT 
                 asistentes.id_asistente, 
-                asistentes.asistencia,
-                usuarios.documento, 
+                asistentes.asistencia, 
                 usuarios.nombres, 
                 usuarios.apellidos, 
+                usuarios.documento, 
                 instituciones.nombre
             FROM asistentes
-            JOIN usuarios ON asistentes.id_usuario = usuario.id_usuario
+            JOIN usuarios ON asistentes.id_usuario = usuarios.id_usuario
+            JOIN salas ON salas.id_usuario = usuarios.id_usuario
+            JOIN detalles_institucionales ON usuarios.id_usuario = detalles_institucionales.id_usuario
+            JOIN instituciones ON detalles_institucionales.id_institucion = instituciones.id_institucion        
             JOIN participantes_proyecto ON usuarios.id_usuario = participantes_proyecto.id_usuario
             JOIN proyectos_convocatoria ON participantes_proyecto.id_proyecto_convocatoria = proyectos_convocatoria.id_proyecto_convocatoria
-            JOIN convocatorias ON proyectos_convocatoria.id_convocatoria = convocatorias.id_convocatoria
-            JOIN detalle_sala ON proyectos_convocatoria.id_proyecto_convocatoria = detalle_sala.id_proyecto_convocatoria
-            JOIN salas ON detalle_sala.id_sala = salas.id_sala
-            JOIN instituciones ON detalles_personales.id_institucion = instituciones.id_institucion
-            WHERE convocatorias.estado = 'en curso'
-            AND salas.numero_sala = :numero_sala
+            JOIN convocatorias ON proyectos_convocatoria.id_convocatoria = convocatorias.id_convocatoria        
+            WHERE salas.numero_sala = :numero_sala
+            AND convocatorias.estado = 'en curso'
             LIMIT :page_size OFFSET :offset;
         """)
+
 
         params = {
             "numero_sala": numero_sala,
@@ -84,16 +89,17 @@ def get_asistentes_por_sala(db: Session, numero_sala: str, page: int = 1, page_s
         result = db.execute(sql, params).mappings().all()
 
         # Consulta SQL para contar el número total de asistentes por sala
-        count_sql = text("""SELECT COUNT(*)FROM FROM asistentes
-            JOIN detalles_personales ON asistentes.id_detalles_personales = detalles_personales.id_detalle_personal
-            JOIN participantes_proyecto ON detalles_personales.id_detalle_personal = participantes_proyecto.id_datos_personales
+        count_sql = text("""SELECT COUNT(*)
+            FROM asistentes
+            JOIN usuarios ON asistentes.id_usuario = usuarios.id_usuario
+            JOIN salas ON salas.id_usuario = usuarios.id_usuario
+            JOIN detalles_institucionales ON usuarios.id_usuario = detalles_institucionales.id_usuario
+            JOIN instituciones ON detalles_institucionales.id_institucion = instituciones.id_institucion        
+            JOIN participantes_proyecto ON usuarios.id_usuario = participantes_proyecto.id_usuario
             JOIN proyectos_convocatoria ON participantes_proyecto.id_proyecto_convocatoria = proyectos_convocatoria.id_proyecto_convocatoria
-            JOIN convocatorias ON proyectos_convocatoria.id_convocatoria = convocatorias.id_convocatoria
-            JOIN detalle_sala ON proyectos_convocatoria.id_proyecto_convocatoria = detalle_sala.id_proyecto_convocatoria
-            JOIN salas ON detalle_sala.id_sala = salas.id_sala
-            JOIN instituciones ON detalles_personales.id_institucion = instituciones.id_institucion
-            WHERE convocatorias.estado = 'en curso'
-            AND salas.numero_sala = :numero_sala""")
+            JOIN convocatorias ON proyectos_convocatoria.id_convocatoria = convocatorias.id_convocatoria        
+            WHERE salas.numero_sala = :numero_sala
+            AND convocatorias.estado = 'en curso'""")
 
         total_asistentes = db.execute(count_sql, {"numero_sala": numero_sala}).scalar()
         total_pages = (total_asistentes + page_size - 1) // page_size
