@@ -1,6 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router';
 // import { useAuthStore } from '@/store'; 
-import RubricaAdminView from '../views/RubricaAdminView.vue';
 import ProyectosAsignados from '../components/Users/evaluador/ProyectosAsignados.vue';
 
 const routes = [
