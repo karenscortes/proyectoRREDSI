@@ -10,7 +10,6 @@ class AsignarProyectoEtapaUno(BaseModel):
     id_proyecto: int
     id_etapa: int
     id_proyecto_convocatoria: int
-    tipo_participante : Annotated[str, StringConstraints(max_length=25)]
     
 class PosibleEvaluadorEtapaVirtual():
     id_usuario: int
