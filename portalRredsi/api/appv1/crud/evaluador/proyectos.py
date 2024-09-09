@@ -9,7 +9,7 @@ def get_proyectos_por_etapa(db: Session, nombre_etapa: str, id_usuario: int, pag
         offset = (page - 1) * page_size
         
         sql = text("""
-            SELECT proyectos.*, rubricas_resultados.estado_proyecto AS estado_evaluacion
+            SELECT DISTINCT proyectos.*, rubricas_resultados.estado_proyecto AS estado_evaluacion
             FROM proyectos
             JOIN participantes_proyecto 
                 ON proyectos.id_proyecto = participantes_proyecto.id_proyecto  
@@ -40,7 +40,7 @@ def get_proyectos_por_etapa(db: Session, nombre_etapa: str, id_usuario: int, pag
         result = db.execute(sql, params).mappings().all()
         
         count_sql = text("""
-            SELECT COUNT(*)
+            SELECT COUNT(DISTINCT proyectos.id_proyecto)
             FROM proyectos
             JOIN participantes_proyecto 
                 ON proyectos.id_proyecto = participantes_proyecto.id_proyecto  
@@ -71,6 +71,7 @@ def get_proyectos_por_etapa(db: Session, nombre_etapa: str, id_usuario: int, pag
     except SQLAlchemyError as e:
         print(f"Error al buscar proyectos por etapa: {e}")
         raise HTTPException(status_code=500, detail="Error al buscar proyectos por etapa")
+
     
     
 #Consulta para sacar los proyectos asignados a un evaluador por estado (paginado)
@@ -79,7 +80,7 @@ def get_proyectos_por_estado(db: Session, estado_evaluacion: str, id_usuario: in
         offset = (page - 1) * page_size
         
         sql = text("""
-            SELECT proyectos.*, rubricas_resultados.estado_proyecto AS estado_evaluacion
+            SELECT DISTINCT proyectos.*, rubricas_resultados.estado_proyecto AS estado_evaluacion
             FROM proyectos
             JOIN participantes_proyecto 
                 ON proyectos.id_proyecto = participantes_proyecto.id_proyecto  
@@ -108,7 +109,7 @@ def get_proyectos_por_estado(db: Session, estado_evaluacion: str, id_usuario: in
         result = db.execute(sql, params).mappings().all()
         
         count_sql = text("""
-            SELECT COUNT(*)
+            SELECT COUNT(DISTINCT proyectos.id_proyecto)
             FROM proyectos
             JOIN participantes_proyecto 
                 ON proyectos.id_proyecto = participantes_proyecto.id_proyecto  
@@ -139,13 +140,14 @@ def get_proyectos_por_estado(db: Session, estado_evaluacion: str, id_usuario: in
         raise HTTPException(status_code=500, detail="Error al buscar proyectos por estado de evaluación")
 
 
+
 #Consulta para sacar los proyectos asignados a un evaluador (paginado)
 def get_proyectos_asignados(db: Session, id_usuario: int, page: int = 1, page_size: int = 10):
     try:
         offset = (page - 1) * page_size
         
         sql = text("""
-            SELECT proyectos.*, rubricas_resultados.estado_proyecto AS estado_evaluacion
+            SELECT DISTINCT proyectos.*, rubricas_resultados.estado_proyecto AS estado_evaluacion
             FROM proyectos
             JOIN participantes_proyecto 
                 ON proyectos.id_proyecto = participantes_proyecto.id_proyecto  
@@ -172,7 +174,7 @@ def get_proyectos_asignados(db: Session, id_usuario: int, page: int = 1, page_si
         result = db.execute(sql, params).mappings().all()
         
         count_sql = text("""
-            SELECT COUNT(*)
+            SELECT COUNT(DISTINCT proyectos.id_proyecto)
             FROM proyectos
             JOIN participantes_proyecto 
                 ON proyectos.id_proyecto = participantes_proyecto.id_proyecto  
@@ -195,6 +197,8 @@ def get_proyectos_asignados(db: Session, id_usuario: int, page: int = 1, page_si
     except SQLAlchemyError as e:
         print(f"Error al buscar proyectos asignados: {e}")
         raise HTTPException(status_code=500, detail="Error al buscar proyectos asignados")
+
+    
 
 # Consulta para obtener la convocatoria actual con estado 'en curso'
 def get_current_convocatoria(db: Session):
@@ -251,6 +255,7 @@ def create_postulacion_evaluador(db: Session, id_convocatoria: int, id_evaluador
         raise HTTPException(status_code=500, detail="Error al crear la postulación")
 
 
+# Consulta para obtener el id_proyecto_convocatoria con el id_proyecto
 def get_proyecto_convocatoria(db: Session, id_proyecto: int):
     try:
         sql_query = text(
@@ -284,11 +289,10 @@ def insert_respuesta_rubrica(db: Session, id_item_rubrica: int, id_usuario: int,
         # Verificar si ya existe un id_rubrica_resultado para este proyecto y usuario
         sql_check_rubrica_resultado = text(
             """
-            SELECT rubricas_resultados.id_rubrica_resultado, rubricas_resultados.puntaje_aprobacion
+            SELECT rubricas_resultados.id_rubrica_resultado
             FROM rubricas_resultados
             JOIN respuestas_rubricas ON rubricas_resultados.id_rubrica_resultado = respuestas_rubricas.id_rubrica_resultado
             WHERE respuestas_rubricas.id_proyecto_convocatoria = :id_proyecto_convocatoria
-            AND respuestas_rubricas.id_usuario = :id_usuario
             """
         )
         rubrica_resultado = db.execute(sql_check_rubrica_resultado, {
@@ -297,11 +301,9 @@ def insert_respuesta_rubrica(db: Session, id_item_rubrica: int, id_usuario: int,
         }).fetchone()
 
         if rubrica_resultado:
-            # Si ya existe, reutilizamos el id_rubrica_resultado
             id_rubrica_resultado = rubrica_resultado[0]
-            existing_puntaje = rubrica_resultado[1]
         else:
-            # Si no existe, insertamos en rubricas_resultados
+            # Inserción en rubricas_resultados
             sql_insert_rubrica_resultado = text(
                 """
                 INSERT INTO rubricas_resultados (estado_proyecto, puntaje_aprobacion)
@@ -309,66 +311,46 @@ def insert_respuesta_rubrica(db: Session, id_item_rubrica: int, id_usuario: int,
                 """
             )
             db.execute(sql_insert_rubrica_resultado)
-            id_rubrica_resultado = db.execute(text("SELECT LAST_INSERT_ID();")).fetchone()[0]
+
+            # Obtener el último id insertado usando scalar()
+            id_rubrica_resultado = db.execute(text("SELECT LAST_INSERT_ID();")).scalar()
         
-        # Verificar si la respuesta ya existe para este ítem, usuario, y proyecto_convocatoria
-        sql_check_respuesta = text(
+    
+        sql_insert_respuesta_rubrica = text(
             """
-            SELECT id_respuestas_rubrica
-            FROM respuestas_rubricas
-            WHERE id_item_rubrica = :id_item_rubrica
-            AND id_rubrica_resultado = :id_rubrica_resultado
-            AND id_usuario = :id_usuario
-            AND id_proyecto_convocatoria = :id_proyecto_convocatoria
+            INSERT INTO respuestas_rubricas (
+                id_item_rubrica, id_rubrica_resultado, id_usuario, id_proyecto_convocatoria, observacion, calificacion
+            ) 
+            VALUES (
+                :id_item_rubrica, :id_rubrica_resultado, :id_usuario, :id_proyecto_convocatoria, :observacion, :calificacion
+            );
             """
         )
-        existing_respuesta = db.execute(sql_check_respuesta, {
+        params = {
             "id_item_rubrica": id_item_rubrica,
             "id_rubrica_resultado": id_rubrica_resultado,
             "id_usuario": id_usuario,
-            "id_proyecto_convocatoria": id_proyecto_convocatoria
-        }).fetchone()
+            "id_proyecto_convocatoria": id_proyecto_convocatoria,
+            "observacion": observacion,
+            "calificacion": calificacion
+        }
+        db.execute(sql_insert_respuesta_rubrica, params)
 
-        if not existing_respuesta:
-            # Insertar solo si no existe
-            sql_insert_respuesta_rubrica = text(
-                """
-                INSERT INTO respuestas_rubricas (
-                    id_item_rubrica, id_rubrica_resultado, id_usuario, id_proyecto_convocatoria, observacion, calificacion
-                ) 
-                VALUES (
-                    :id_item_rubrica, :id_rubrica_resultado, :id_usuario, :id_proyecto_convocatoria, :observacion, :calificacion
-                );
-                """
-            )
-            params = {
-                "id_item_rubrica": id_item_rubrica,
-                "id_rubrica_resultado": id_rubrica_resultado,
-                "id_usuario": id_usuario,
-                "id_proyecto_convocatoria": id_proyecto_convocatoria,
-                "observacion": observacion,
-                "calificacion": calificacion
-            }
-            db.execute(sql_insert_respuesta_rubrica, params)
+        sql_update_rubrica_resultado = text(
+            """
+            UPDATE rubricas_resultados
+            SET puntaje_aprobacion = :calificacion_final,
+            estado_proyecto = 'calificado'
+            WHERE id_rubrica_resultado = :id_rubrica_resultado;
+            """
+        )
+        db.execute(sql_update_rubrica_resultado, {
+            "calificacion_final": calificacion_final,
+            "id_rubrica_resultado": id_rubrica_resultado
+        })
 
-        # Actualizar la calificación final solo si es necesario
-        if existing_puntaje != calificacion_final:
-            sql_update_rubrica_resultado = text(
-                """
-                UPDATE rubricas_resultados
-                SET puntaje_aprobacion = :calificacion_final,
-                estado_proyecto = 'calificado'
-                WHERE id_rubrica_resultado = :id_rubrica_resultado;
-                """
-            )
-            db.execute(sql_update_rubrica_resultado, {
-                "calificacion_final": calificacion_final,
-                "id_rubrica_resultado": id_rubrica_resultado
-            })
-
-        # Hacer commit de todas las operaciones
         db.commit()
-        return {"message": "Respuesta de rúbrica registrada exitosamente y calificación final actualizada si era necesario."}
+        return {"message": "Respuesta de rúbrica registrada exitosamente."}
 
     except SQLAlchemyError as e:
         db.rollback()
