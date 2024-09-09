@@ -1,4 +1,5 @@
 from datetime import date
+from typing import Optional
 from fastapi import HTTPException
 from sqlalchemy.orm import Session
 from appv1.models.convocatoria import Convocatoria
@@ -31,41 +32,64 @@ def create_etapa(db: Session, nombre: str, id_convocatoria: int):
 
 # Crear una nueva fase dentro de una etapa
 def create_fase(db: Session, nombre: str, id_etapa: int):
+    # Verifica que la etapa existe
     etapa = db.query(Etapa).get(id_etapa)
     if not etapa:
         raise HTTPException(status_code=404, detail="Etapa no encontrada")
 
+    # Crea la nueva fase
     fase = Fase(nombre=nombre, id_etapa=id_etapa)
+    
+    # Añade y guarda en la base de datos
     db.add(fase)
     db.commit()
-    return {"message": "Fase creada exitosamente"}
+    db.refresh(fase)  # Refresca el objeto fase con el ID generado
+    return {"message": "Fase creada exitosamente", "fase_id": fase.id_fase}
 
 # Traer fases por etapa
 def get_fases_by_etapa(db: Session, id_etapa: int):
-    fases = db.query(Fase).filter(Fase.id_etapa == id_etapa).all()
-    if not fases:
-        raise HTTPException(status_code=404, detail="Fases no encontradas para la etapa")
-    return fases
-
-# Editar una etapa
-def update_etapa(db: Session, id_etapa: int, nombre: str = None):
+    # Verifica que la etapa exista
     etapa = db.query(Etapa).get(id_etapa)
     if not etapa:
         raise HTTPException(status_code=404, detail="Etapa no encontrada")
+    
+    # Obtiene todas las fases asociadas a la etapa
+    fases = db.query(Fase).filter(Fase.id_etapa == id_etapa).all()
+    return fases
+
+
+# Editar una etapa
+def update_etapa(db: Session, id_etapa: int, nombre: Optional[str] = None):
+    # Verifica que la etapa exista
+    etapa = db.query(Etapa).get(id_etapa)
+    if not etapa:
+        raise HTTPException(status_code=404, detail="Etapa no encontrada")
+
+    # Actualiza los campos que sean provistos
     if nombre:
         etapa.nombre = nombre
+
+    # Guarda los cambios en la base de datos
     db.commit()
-    return {"message": "Etapa actualizada exitosamente"}
+    db.refresh(etapa)
+    return etapa
+
 
 # Editar una fase
-def update_fase(db: Session, id_fase: int, nombre: str = None):
+def update_fase(db: Session, id_fase: int, nombre: Optional[str] = None):
+    # Verifica que la fase exista
     fase = db.query(Fase).get(id_fase)
     if not fase:
         raise HTTPException(status_code=404, detail="Fase no encontrada")
+
+    # Actualiza los campos que sean provistos
     if nombre:
         fase.nombre = nombre
+
+    # Guarda los cambios en la base de datos
     db.commit()
-    return {"message": "Fase actualizada exitosamente"}
+    db.refresh(fase)
+    return fase
 
 # Crear una nueva programación de fase
 def create_programacion_fase(db: Session, id_fase: int, id_convocatoria: int, fecha_inicio: date, fecha_fin: date):
