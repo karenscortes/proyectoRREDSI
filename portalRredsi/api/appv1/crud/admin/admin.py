@@ -2,10 +2,13 @@ from datetime import date
 from typing import Optional
 from fastapi import HTTPException
 from sqlalchemy.orm import Session
+from appv1.models.area_conocimiento import Area_conocimiento
 from appv1.models.convocatoria import Convocatoria
 from appv1.models.etapa import Etapa
 from appv1.models.fase import Fase
 from appv1.models.programacion_fase import Programacion_fase
+from appv1.models.sala import Sala
+from appv1.models.usuario import Usuario
 from appv1.schemas.admin.admin import EstadoDeConvocatoria
 
 # Crear una nueva convocatoria
@@ -97,3 +100,10 @@ def create_programacion_fase(db: Session, id_fase: int, id_convocatoria: int, fe
     db.add(programacion_fase)
     db.commit()
     return {"message": "Programación de fase creada exitosamente"}
+
+# Crear una nueva sala
+def create_sala(db: Session, user: int, area_conocimiento: int,  numero: str, nombre: str):
+    sala = Sala(id_usuario=user, id_area_conocimiento=area_conocimiento, numero_sala=numero, nombre_sala=nombre)
+    db.add(sala)
+    db.commit()
+    return {"message": "Sala creada exitosamente"}

@@ -1,8 +1,8 @@
 from typing import Optional
 from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
-from appv1.crud.admin.admin import create_convocatoria, create_etapa, create_fase, get_fases_by_etapa, update_etapa, update_fase
-from appv1.schemas.admin.admin import ConvocatoriaCreate, EtapaCreate, FaseCreate, EtapaUpdate, FaseUpdate
+from appv1.crud.admin.admin import create_convocatoria, create_etapa, create_fase, create_sala, get_fases_by_etapa, update_etapa, update_fase
+from appv1.schemas.admin.admin import ConvocatoriaCreate, CreateSala, EtapaCreate, FaseCreate, EtapaUpdate, FaseUpdate
 from db.database import get_db
 
 router_admin = APIRouter()
@@ -36,3 +36,8 @@ def modify_etapa(id_etapa: int, nombre: Optional[str] = None, db: Session = Depe
 @router_admin.put("/fases/{id_fase}")
 def modify_fase(id_fase: int, nombre: Optional[str] = None, db: Session = Depends(get_db)):
     return update_fase(db, id_fase, nombre)
+
+# Crear sala
+@router_admin.post("/crear-sala")
+def create_sala_admin(sala: CreateSala, db: Session = Depends(get_db)):
+    return create_sala(db, sala.id_usuario, sala.area_conocimento, sala.numero_sala, sala.nombre_sala)
