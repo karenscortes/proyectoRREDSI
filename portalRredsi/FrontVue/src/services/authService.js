@@ -1,30 +1,19 @@
 import api from './api'; 
 
 // Función para manejar el inicio de sesión
-export const login = async (username, password) => {
+export const login = async () => {
   try {
-    // Enviar solicitud de inicio de sesión
-    const response = await api.post('/access/token', new URLSearchParams({
-      grant_type: '',
-      username,
-      password,
-      scope: '',
-      client_id: '',
-      client_secret: ''
-    }), {
-      headers: {
-        'Content-Type': 'application/x-www-form-urlencoded'
-      }
+    const response = await api.get(`/proyectosSinAsignar/get-all-unassiggned-Projects/`, {
+        headers: {
+            'Authorization': `Bearer` // Incluye el token de autenticación
+        }
     });
-    
-    // Retornar la respuesta de la API
     return response;
-  } catch (error) {
-    // Manejar errores de la solicitud
+} catch (error) {
     if (error.response) {
-      throw error; // Lanza el error para que lo maneje el store
+        throw error; // Lanza el error para que lo maneje el store
     } else {
-      throw new Error('Error de red o de servidor'); // Manejar errores de red
+        throw new Error('Error de red o de servidor'); // Manejar errores de red
     }
-  }
+}
 };
