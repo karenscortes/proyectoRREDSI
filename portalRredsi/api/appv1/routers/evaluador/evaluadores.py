@@ -1,12 +1,13 @@
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
-from appv1.schemas.evaluador.evaluador import PaginatedResponse, PostulacionEvaluadorCreate, RespuestaRubricaCreate
+from appv1.schemas.evaluador.evaluador import PaginatedResponse, PaginatedResponseHorario, PostulacionEvaluadorCreate, RespuestaRubricaCreate
 from db.database import get_db
-from appv1.crud.evaluador.proyectos import create_postulacion_evaluador, get_current_convocatoria, get_proyectos_asignados, get_proyectos_por_estado, get_proyectos_por_etapa, insert_respuesta_rubrica
+from appv1.crud.evaluador.proyectos import convertir_timedelta_a_hora, create_postulacion_evaluador, get_current_convocatoria, get_proyectos_asignados, get_proyectos_etapa_presencial_con_horario, get_proyectos_por_estado, get_proyectos_por_etapa, insert_respuesta_rubrica
 
 routerObtenerProyectos = APIRouter()
 routerInsertarPostulacionEvaluador = APIRouter()
 routerInsetarCalificacionRubrica = APIRouter()
+routerObtenerHorarioEvaluador = APIRouter()
 
 #Ruta para obtener los proyectos asignados por etapa (Presencial/Virtual) paginados
 @routerObtenerProyectos.get("/obtener-proyectos-por-etapa-paginados/", response_model=PaginatedResponse)
@@ -95,3 +96,28 @@ async def insertar_calificacion_proyecto(
         return {"message": "Respuesta de rúbrica registrada exitosamente."}
     else:
         raise HTTPException(status_code=500, detail="Error al registrar la calificación.")
+    
+
+# Ruta para obtener los proyectos asignados en la etapa presencial con horario
+@routerObtenerHorarioEvaluador.get("/obtener-horario-evaluador/", response_model=PaginatedResponseHorario)
+async def obtener_horario_evaluador(
+    id_usuario: int,
+    page: int = 1,
+    page_size: int = 10,
+    db: Session = Depends(get_db),
+):
+    try:
+        response = get_proyectos_etapa_presencial_con_horario(db, id_usuario, page, page_size)
+        
+        # Convertir RowMapping a diccionario y aplicar la conversión de hora
+        proyectos = []
+        for proyecto in response["data"]:
+            proyecto_dict = dict(proyecto)  # Convertir RowMapping a dict
+            proyecto_dict['hora_inicio'] = convertir_timedelta_a_hora(proyecto_dict['hora_inicio'])
+            proyecto_dict['hora_fin'] = convertir_timedelta_a_hora(proyecto_dict['hora_fin'])
+            proyectos.append(proyecto_dict)
+        
+        # Devolver el resultado con los proyectos actualizados
+        return {"data": proyectos, "total_pages": response["total_pages"]}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Error al obtener el horario: {str(e)}")

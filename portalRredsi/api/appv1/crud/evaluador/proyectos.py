@@ -2,6 +2,7 @@ from sqlalchemy.orm import Session
 from sqlalchemy import text
 from sqlalchemy.exc import SQLAlchemyError, IntegrityError
 from fastapi import HTTPException
+from datetime import timedelta
 
 #Consulta para sacar los proyectos asignados a un evaluador por etapa (paginado)
 def get_proyectos_por_etapa(db: Session, nombre_etapa: str, id_usuario: int, page: int = 1, page_size: int = 10):
@@ -358,6 +359,91 @@ def insert_respuesta_rubrica(db: Session, id_item_rubrica: int, id_usuario: int,
         raise HTTPException(status_code=500, detail="Error al insertar respuesta de rúbrica")
 
 
+def get_proyectos_etapa_presencial_con_horario(db: Session, id_usuario: int, page: int = 1, page_size: int = 10):
+    try:
+        offset = (page - 1) * page_size
+        
+        sql = text("""
+            SELECT DISTINCT proyectos.*, 
+                   rubricas_resultados.estado_proyecto AS estado_evaluacion, 
+                   salas.numero_sala, 
+                   salas.nombre_sala, 
+                   detalle_sala.fecha, 
+                   detalle_sala.hora_inicio, 
+                   detalle_sala.hora_fin
+            FROM proyectos
+            JOIN participantes_proyecto 
+                ON proyectos.id_proyecto = participantes_proyecto.id_proyecto  
+            JOIN etapas 
+                ON participantes_proyecto.id_etapa = etapas.id_etapa 
+            JOIN proyectos_convocatoria 
+                ON proyectos.id_proyecto = proyectos_convocatoria.id_proyecto 
+            JOIN convocatorias 
+                ON proyectos_convocatoria.id_convocatoria = convocatorias.id_convocatoria
+            LEFT JOIN respuestas_rubricas 
+                ON proyectos_convocatoria.id_proyecto_convocatoria = respuestas_rubricas.id_proyecto_convocatoria
+                AND respuestas_rubricas.id_usuario = :id_usuario
+            LEFT JOIN rubricas_resultados 
+                ON respuestas_rubricas.id_rubrica_resultado = rubricas_resultados.id_rubrica_resultado
+            LEFT JOIN detalle_sala 
+                ON proyectos_convocatoria.id_proyecto_convocatoria = detalle_sala.id_proyecto_convocatoria
+            LEFT JOIN salas 
+                ON detalle_sala.id_sala = salas.id_sala
+            WHERE etapas.nombre = 'Presencial'
+              AND participantes_proyecto.id_usuario = :id_usuario
+              AND convocatorias.estado = 'en curso'
+            LIMIT :page_size OFFSET :offset
+        """)
+        
+        params = {
+            "id_usuario": id_usuario,
+            "page_size": page_size,
+            "offset": offset
+        }
+        
+        result = db.execute(sql, params).mappings().all()
+        
+        count_sql = text("""
+            SELECT COUNT(DISTINCT proyectos.id_proyecto)
+            FROM proyectos
+            JOIN participantes_proyecto 
+                ON proyectos.id_proyecto = participantes_proyecto.id_proyecto  
+            JOIN etapas 
+                ON participantes_proyecto.id_etapa = etapas.id_etapa 
+            JOIN proyectos_convocatoria 
+                ON proyectos.id_proyecto = proyectos_convocatoria.id_proyecto 
+            JOIN convocatorias 
+                ON proyectos_convocatoria.id_convocatoria = convocatorias.id_convocatoria
+            LEFT JOIN respuestas_rubricas 
+                ON proyectos_convocatoria.id_proyecto_convocatoria = respuestas_rubricas.id_proyecto_convocatoria
+                AND respuestas_rubricas.id_usuario = :id_usuario
+            LEFT JOIN rubricas_resultados 
+                ON respuestas_rubricas.id_rubrica_resultado = rubricas_resultados.id_rubrica_resultado
+            LEFT JOIN detalle_sala 
+                ON proyectos_convocatoria.id_proyecto_convocatoria = detalle_sala.id_proyecto_convocatoria
+            WHERE etapas.nombre = 'Presencial'
+              AND participantes_proyecto.id_usuario = :id_usuario
+              AND convocatorias.estado = 'en curso'
+        """)
+        
+        total_proyectos = db.execute(count_sql, {"id_usuario": id_usuario}).scalar()
+        
+        total_pages = (total_proyectos + page_size - 1) // page_size
+        
+        return {
+            "data": result,
+            "total_pages": total_pages
+        }
+    except SQLAlchemyError as e:
+        print(f"Error al buscar proyectos por etapa: {e}")
+        raise HTTPException(status_code=500, detail="Error al buscar proyectos por etapa")
+    
+
+
+def convertir_timedelta_a_hora(timedelta_obj: timedelta) -> str:
+    total_seconds = int(timedelta_obj.total_seconds())
+    horas, minutos = divmod(total_seconds // 60, 60)
+    return f"{horas:02}:{minutos:02}"
 
 
 
