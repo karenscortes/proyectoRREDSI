@@ -2,7 +2,8 @@ from typing import List
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 from appv1.crud.usuarios import create_user_sql,  get_user_by_email
-from appv1.schemas.usuario import UserCreate
+from appv1.routers.login import get_current_user
+from appv1.schemas.usuario import UserCreate, UserResponse
 from db.database import get_db
 
 router_user = APIRouter()
@@ -12,6 +13,8 @@ MODULE = 'usuarios'
 async def insert_user(
     user: UserCreate, 
     db: Session = Depends(get_db),
+    current_user : UserResponse =Depends(get_current_user)
+    
 ):
 
     respuesta = create_user_sql(db, user)
@@ -20,7 +23,7 @@ async def insert_user(
         
 
 # Verificar si el email ya está registrado
-    existing_user = get_user_by_email(db, user.mail)
+    existing_user = get_user_by_email(db, user.correo)
     if existing_user:
         raise HTTPException(status_code=400, detail="El email ya está registrado")
 

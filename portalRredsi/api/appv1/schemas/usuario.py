@@ -1,5 +1,5 @@
 from typing import Annotated, List
-from pydantic import BaseModel, EmailStr
+from pydantic import BaseModel, EmailStr, StringConstraints
 from datetime import datetime
 import enum
 
@@ -9,19 +9,23 @@ class EstadosEnum(str, enum.Enum):
     pendiente = "Pendiente"
 
 class UserBase(BaseModel):
+    id_rol :int
+    id_tipo_documento : int
+    documento: Annotated[str, StringConstraints(max_length=55)]
+    nombres: Annotated[str, StringConstraints(max_length=25)]
+    apellidos: Annotated[str, StringConstraints(max_length=25)]
+    celular: Annotated[str, StringConstraints(max_length=10)]
     correo: EmailStr
-    id_rol: int
+    estado: str
 
 class UserCreate(UserBase):
     clave: Annotated[str, "Clave del usuario"]
 
 class UserResponse(UserBase):
-    user_id: str
-    user_status: EstadosEnum = EstadosEnum.activo
-    created_at: datetime
-    updated_at: datetime
-
-
+    id_usuario: str
+    correo: EmailStr
+    estado: EstadosEnum = EstadosEnum.activo
+    id_rol :int
     
 class PaginatedUsersResponse(BaseModel):
     users: List[UserResponse]
@@ -30,7 +34,7 @@ class PaginatedUsersResponse(BaseModel):
     page_size: int
 
 class UserLoggin(UserBase):
-    user_id: str
+    id_usuario: int
 
 class PermissionsRol(BaseModel):
     module_name: str
@@ -38,7 +42,7 @@ class PermissionsRol(BaseModel):
 
 class ResponseLoggin(BaseModel):
     user: UserLoggin
-    permissions: List[PermissionsRol]
+    # permissions: List[PermissionsRol]
     access_token: str
 
 class ChangePassword(BaseModel):
