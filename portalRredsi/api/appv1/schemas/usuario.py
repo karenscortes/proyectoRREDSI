@@ -21,7 +21,6 @@ class UserResponse(UserBase):
     created_at: datetime
     updated_at: datetime
 
-
     
 class PaginatedUsersResponse(BaseModel):
     users: List[UserResponse]

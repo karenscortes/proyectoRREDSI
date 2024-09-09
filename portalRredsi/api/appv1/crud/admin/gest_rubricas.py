@@ -33,18 +33,7 @@ def transform_results(results):
 
 def get_all_rubricas(db: Session):
     try:
-        result =  db.query(
-            Rubrica.id_rubrica, 
-            Rubrica.titulo, 
-            Rubrica.id_etapa, 
-            Rubrica.id_modalidad, 
-            Item_rubrica.id_item_rubrica, 
-            Item_rubrica.titulo,
-            Item_rubrica.componente, 
-            Item_rubrica.valor_max
-        ).join(Item_rubrica, Rubrica.id_rubrica == Item_rubrica.id_rubrica).all()
-        rubricas = transform_results(result) 
-        return rubricas
+        return  db.query(Rubrica).all()
     except SQLAlchemyError as e:
         print(f"Error al consultar las rubricas: {e}")
         raise HTTPException(status_code=500, detail=f"Error al consultar las rubricas{e}",)

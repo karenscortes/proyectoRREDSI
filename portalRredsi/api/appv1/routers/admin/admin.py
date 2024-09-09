@@ -44,7 +44,6 @@ async def update_existing_fase(id_fase: int, fase_update: FaseUpdate, db: Sessio
 @router_admin.get("/rubrics/", response_model=List[RubricaResponse])
 async def consult_rubrics(db: Session = Depends(get_db)):
     existing_rubrics = get_all_rubricas(db)
-    print(existing_rubrics)
     if existing_rubrics:
         return existing_rubrics
     else:
