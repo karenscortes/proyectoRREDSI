@@ -32,14 +32,14 @@ async def buscar_convocatoria_por_proyecto(
     else:
         return {"mensaje":"El proyecto no se ha podido encontrar en una convocatoria vigente."}
 
-@router_proyecto_etapa_uno.get("/get-posibles-evaluadores/", response_model=None)
-async def read_detalle_sala(
+@router_proyecto_etapa_uno.get("/get-posibles-evaluadores/", response_model=dict)
+async def read_posibles_evaluadores(
     area_conocimiento: str,
     id_institucion: int,
     db: Session = Depends(get_db),
 ):
-    sala_detalle = get_posibles_evaluadores_para_proyecto(db,area_conocimiento,id_institucion)
-    if len(sala_detalle) == 0:
+    posibles_evaluadores = get_posibles_evaluadores_para_proyecto(db,area_conocimiento,id_institucion)
+    if len(posibles_evaluadores) == 0:
         raise HTTPException(status_code=404, detail="No hay evaluadores disponibles")
     
-    return sala_detalle
+    return posibles_evaluadores

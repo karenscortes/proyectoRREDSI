@@ -7,15 +7,14 @@ from appv1.schemas.delegado.asignacionProyectoEtapaVirtual import AsignarProyect
 
 def asignar_proyecto_etapa_virtual(db: Session, asignacion: AsignarProyectoEtapaUno ):
     try:
-        sql = text("""INSERT INTO participantes_proyecto (id_datos_personales, id_proyecto, id_etapa, id_proyecto_convocatoria, tipo_participante) 
-                        VALUES (:id_dp, :id_p, :id_etp, :id_pc, :tipo_p)""")
+        sql = text("""INSERT INTO participantes_proyecto (id_datos_personales, id_proyecto, id_etapa, id_proyecto_convocatoria) 
+                        VALUES (:id_dp, :id_p, :id_etp, :id_pc)""")
         
         params={
             "id_dp": asignacion.id_datos_personales,
             "id_p": asignacion.id_proyecto,
             "id_etp": asignacion.id_etapa,
             "id_pc": asignacion.id_proyecto_convocatoria,
-            "tipo_p": asignacion.tipo_participante
         }
         result = db.execute(sql,params)
         db.commit()
@@ -37,28 +36,41 @@ def asignar_proyecto_etapa_virtual(db: Session, asignacion: AsignarProyectoEtapa
     
     
 def get_convocatoria_actual_por_proyecto(db: Session, id_proyecto: int):
-    sql = text("""SELECT * FROM proyectos_convocatoria 
-                    JOIN convocatorias ON proyectos_convocatoria.id_convocatoria = convocatorias.id_convocatoria  
-                    WHERE proyectos_convocatoria.id_proyecto = :id_p 
-                    AND convocatorias.estado = 'en curso'
-                """)
-    result = db.execute(sql, {"id_p": id_proyecto}).fetchone()
+    try:
+        sql = text("""SELECT * FROM proyectos_convocatoria 
+                        JOIN convocatorias ON proyectos_convocatoria.id_convocatoria = convocatorias.id_convocatoria  
+                        WHERE proyectos_convocatoria.id_proyecto = :id_p 
+                        AND convocatorias.estado = 'en curso'
+                    """)
+        result = db.execute(sql, {"id_p": id_proyecto}).fetchone()
+    except SQLAlchemyError as e:
+        db.rollback()
+        print(f"Error al buscar proyecto en una convocatoria activa")
+        raise HTTPException(status_code=404, detail="Error al buscar proyecto en una convocatoria activa")
     
     return result
 
 def get_posibles_evaluadores_para_proyecto(db: Session, id_area_conocimiento: str, id_institucion: int):
-    sql = text("""SELECT usuarios.* FROM detalles_institucionales 
-                    JOIN usuarios ON detalles_institucionales.id_usuario = usuario.id_usuario 
-                    JOIN areas_conocimiento ON detalles_institucionales.id_area_conocimiento = areas_conocimiento.id_area_conocimiento 
-                    WHERE institución != :id_i 
-                    AND detalles_institucionales.id_area_conocimiento.nombre LIKE '%:ac%'
-                        
-                """)
+    try:
+        sql = text("""SELECT usuarios.* FROM detalles_institucionales 
+                        JOIN usuarios ON detalles_institucionales.id_usuario = usuarios.id_usuario 
+                        JOIN areas_conocimiento ON detalles_institucionales.id_primera_area_conocimiento = areas_conocimiento.id_area_conocimiento 
+                        WHERE detalles_institucionales.id_institucion != :id_i 
+                        AND areas_conocimiento.nombre LIKE ':ac'
+                        AND usuario.id_rol = 1 OR usuario.id_rol = 2
+                        AND usuario.estado = 'activo'
+                            
+                    """)
+        
+        params = {
+                    "ac": id_area_conocimiento,
+                    "id_i": id_institucion
+                }
+        result = db.execute(sql, params).fetchall()
+        
+        return result
     
-    params = {
-                "ac": id_area_conocimiento,
-                "id_i": id_institucion
-            }
-    result = db.execute(sql, params).fetchone()
-    
-    return result
+    except SQLAlchemyError as e:
+        db.rollback()
+        print(f"Error al buscar evaluadores")
+        raise HTTPException(status_code=404, detail="Error al buscar evaluadores")

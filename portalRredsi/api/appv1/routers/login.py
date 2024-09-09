@@ -22,15 +22,15 @@ async def get_current_user(
     user_db = get_user_by_id(db, user)
     if user_db is None:
         raise HTTPException(status_code=404, detail="User not found")
-    if not user_db.user_status:
+    if not user_db.estado:
         raise HTTPException(status_code=403, detail="User Deleted, Not authorized")
     return user_db
 
-def authenticate_user(username: str, password: str, db: Session):
-    user = get_user_by_email(db, username)
+def authenticate_user(correo: str, clave: str, db: Session):
+    user = get_user_by_email(db, correo)
     if not user:
         return False
-    if not verify_password(password, user.passhash):
+    if not verify_password(clave, user.clave):
         return False
     return user
 
@@ -47,19 +47,24 @@ async def login_for_access_token(
             headers={"WWW-Authenticate": "Bearer"},
         )
     access_token = create_access_token(
-        data={"sub": user.user_id, "rol":user.user_role}
+        data={"sub": user.id_usuario, "rol":user.id_rol}
     )
 
-    permisos = get_all_permissions(db, user.user_role)
+    # permisos = get_all_permissions(db, user.id_rol)
 
     return ResponseLoggin(
         user=UserLoggin(
-            user_id=user.user_id,
-            full_name=user.full_name,
-            mail=user.mail,
-            user_role=user.user_role
+            id_rol = user.id_rol,
+            id_tipo_documento = user.id_tipo_documento,
+            documento = user.documento,
+            nombres = user.nombres,
+            apellidos = user.apellidos,
+            celular =user.celular,
+            correo = user.correo,
+            estado = user.estado,
+            id_usuario=user.id_usuario
         ),
-        permissions=permisos,
+        # permissions=permisos,
         access_token=access_token
     )
 
@@ -68,7 +73,7 @@ async def register_user(
     user: UserCreate,
     db: Session = Depends(get_db)
 ):
-    user.user_role = 'Cliente'
+    user.id_rol = 1
     respuesta = create_user_sql(db, user)
     if respuesta:
         return {"mensaje":"usuario registrado con éxito"}

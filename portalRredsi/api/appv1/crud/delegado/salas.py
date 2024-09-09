@@ -86,6 +86,10 @@ def get_salas_por_convocatoria(db: Session, page: int = 1, page_size: int = 10):
     
     
 def get_detalle_sala(db: Session, id_sala: str):
-    sql = text("SELECT * FROM detalle_sala WHERE id_sala = :id_sala")
-    result = db.execute(sql, {"id_sala": id_sala}).fetchone()
-    return result
+    try:
+        sql = text("SELECT * FROM detalle_sala WHERE id_sala = :id_sala")
+        result = db.execute(sql, {"id_sala": id_sala}).fetchone()
+        return result
+    except SQLAlchemyError as e:
+        print(f"La sala no se ha encontrado")
+        raise HTTPException(status_code=500, detail="La sala no se ha encontrado")
