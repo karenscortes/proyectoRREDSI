@@ -1,15 +1,17 @@
-from typing import List
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
-from appv1.schemas.evaluador.evaluador import PaginatedResponse, PostulacionEvaluadorCreate, RespuestaRubricaCreate
+from appv1.schemas.evaluador.evaluador import PaginatedResponse, PaginatedResponseHorario, PostulacionEvaluadorCreate, RespuestaRubricaCreate
 from db.database import get_db
-from appv1.crud.evaluador.proyectos import create_postulacion_evaluador, get_current_convocatoria, get_proyectos_asignados, get_proyectos_por_estado, get_proyectos_por_etapa, insert_respuesta_rubrica
+from appv1.crud.evaluador.proyectos import convertir_timedelta_a_hora, create_postulacion_evaluador, get_current_convocatoria, get_proyectos_asignados, get_proyectos_etapa_presencial_con_horario, get_proyectos_por_estado, get_proyectos_por_etapa, insert_respuesta_rubrica
 
-routerCalificarProyectos = APIRouter()
+routerObtenerProyectos = APIRouter()
+routerInsertarPostulacionEvaluador = APIRouter()
+routerInsetarCalificacionRubrica = APIRouter()
+routerObtenerHorarioEvaluador = APIRouter()
 
-
-@routerCalificarProyectos.get("/get-proyectos-por-etapa-paginados/", response_model=PaginatedResponse)
-async def read_proyectos_por_etapa(
+#Ruta para obtener los proyectos asignados por etapa (Presencial/Virtual) paginados
+@routerObtenerProyectos.get("/obtener-proyectos-por-etapa-paginados/", response_model=PaginatedResponse)
+async def obtener_proyectos_por_etapa(
     nombre_etapa: str,
     id_usuario: int,
     page: int = 1,
@@ -20,8 +22,9 @@ async def read_proyectos_por_etapa(
     return response
 
 
-@routerCalificarProyectos.get("/get-proyectos-por-estado-paginados/", response_model=PaginatedResponse)
-async def read_proyectos_por_estado(
+#Ruta para obtener los proyectos asignados por estado (calificado/pendiente) paginados
+@routerObtenerProyectos.get("/obtener-proyectos-por-estado-paginados/", response_model=PaginatedResponse)
+async def obtener_proyectos_por_estado(
     estado_evaluacion: str,
     id_usuario: int,
     page: int = 1,
@@ -32,8 +35,9 @@ async def read_proyectos_por_estado(
     return response
 
 
-@routerCalificarProyectos.get("/get-proyectos-asignados-paginados/", response_model=PaginatedResponse)
-async def read_proyectos_asignados(
+#Ruta para obtener los proyectos asignados
+@routerObtenerProyectos.get("/obtener-proyectos-asignados-paginados/", response_model=PaginatedResponse)
+async def obtener_proyectos_asignados(
     id_usuario: int,
     page: int = 1,
     page_size: int = 10,
@@ -43,8 +47,9 @@ async def read_proyectos_asignados(
     return response
 
 
-@routerCalificarProyectos.post("/create-postulacion-evaluador/")
-async def postular_evaluador(
+#Ruta para insertar la postulacion del evaluador
+@routerInsertarPostulacionEvaluador.post("/insertar-postulacion-evaluador/")
+async def insertar_postulacion_evaluador(
     postulacion: PostulacionEvaluadorCreate,
     db: Session = Depends(get_db),
 ):
@@ -68,9 +73,11 @@ async def postular_evaluador(
         return {"message": "Postulación registrada exitosamente."}
     else:
         raise HTTPException(status_code=500, detail="Error al registrar la postulación.")
+    
 
-@routerCalificarProyectos.post("/create-calificar-rubrica/")
-async def calificar_proyecto(
+#Ruta para insertar la calificacion de la rúbrica
+@routerInsetarCalificacionRubrica.post("/insertar-calificacion-rubrica/")
+async def insertar_calificacion_proyecto(
     respuesta: RespuestaRubricaCreate,
     db: Session = Depends(get_db),
 ):
@@ -86,6 +93,31 @@ async def calificar_proyecto(
     )
         
     if response:
-        return {"message": "Respuesta de rúbrica registrada exitosamente y calificación final actualizada."}
+        return {"message": "Respuesta de rúbrica registrada exitosamente."}
     else:
         raise HTTPException(status_code=500, detail="Error al registrar la calificación.")
+    
+
+# Ruta para obtener los proyectos asignados en la etapa presencial con horario
+@routerObtenerHorarioEvaluador.get("/obtener-horario-evaluador/", response_model=PaginatedResponseHorario)
+async def obtener_horario_evaluador(
+    id_usuario: int,
+    page: int = 1,
+    page_size: int = 10,
+    db: Session = Depends(get_db),
+):
+    try:
+        response = get_proyectos_etapa_presencial_con_horario(db, id_usuario, page, page_size)
+        
+        # Convertir RowMapping a diccionario y aplicar la conversión de hora
+        proyectos = []
+        for proyecto in response["data"]:
+            proyecto_dict = dict(proyecto)  # Convertir RowMapping a dict
+            proyecto_dict['hora_inicio'] = convertir_timedelta_a_hora(proyecto_dict['hora_inicio'])
+            proyecto_dict['hora_fin'] = convertir_timedelta_a_hora(proyecto_dict['hora_fin'])
+            proyectos.append(proyecto_dict)
+        
+        # Devolver el resultado con los proyectos actualizados
+        return {"data": proyectos, "total_pages": response["total_pages"]}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Error al obtener el horario: {str(e)}")
