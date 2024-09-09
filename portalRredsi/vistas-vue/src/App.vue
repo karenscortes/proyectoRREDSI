@@ -2,18 +2,16 @@
 
   <img alt="Vue logo" src="./assets/logo.png">
   <HelloWorld msg="Welcome to Your Vue.js App"/>
-  <ListaDelegadosView></ListaDelegadosView>
 </template>
 <script>
 import HelloWorld from './components/HelloWorld.vue';
-import ListaDelegadosView from './components/administrador/gest_delegado/ListaDelegadosView.vue';
+
 
 
 export default {
   name: 'App',
   components: {
     HelloWorld,
-    ListaDelegadosView,
   }
 }
 </script>
