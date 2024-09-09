@@ -96,12 +96,12 @@
 
 <script setup>
 import { reactive } from "vue";
-import CardTipo from "../components/administrador/rubricas/CardTipo.vue";
-import ItemTBody from "../components/administrador/rubricas/ItemTBody.vue";
-import ItemThead from "../components/administrador/rubricas/ItemThead.vue";
-import FootTable from "../components/administrador/rubricas/FootTable.vue";
-import ModalAdd from "../components/administrador/rubricas/ModalAdd.vue";
-import ModalDelete from "../components/administrador/rubricas/ModalDelete.vue";
+import CardTipo from "../components/Users/administrador/rubricas/CardTipo.vue";
+import ItemTBody from "../components/Users/administrador/rubricas/ItemTBody.vue";
+import ItemThead from "../components/Users/administrador/rubricas/ItemThead.vue";
+import FootTable from "../components/Users/administrador/rubricas/FootTable.vue";
+import ModalAdd from "../components/Users/administrador/rubricas/ModalAdd.vue";
+import ModalDelete from "../components/Users/administrador/rubricas/ModalDelete.vue";
 
 //Titulo contenedor principal
 const tituloPrincipal = "Gestionar rúbricas";

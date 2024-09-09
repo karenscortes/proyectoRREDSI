@@ -11,4 +11,4 @@ class Rubrica(Base):
 
     etapa = relationship('Etapa', back_populates='rubricas')
     modalidad = relationship("Modalidad", back_populates='rubricas')
-    itemsRubrica = relationship("Item_rubrica", back_populates='rubrica')
+    items_rubrica = relationship("Item_rubrica", back_populates='rubrica')
