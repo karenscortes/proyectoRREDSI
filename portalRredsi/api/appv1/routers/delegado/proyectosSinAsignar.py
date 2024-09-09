@@ -17,6 +17,7 @@ async def read_all_unassignedProjects(
     # if not permisos.p_select:
     #     raise HTTPException(status_code=401, detail="Usuario no autorizado")
     projects = get_unassigned_projects(db)
+    
     if len(projects) == 0:
         raise HTTPException(status_code=404, detail="No hay proyectos sin asignar")
     return projects

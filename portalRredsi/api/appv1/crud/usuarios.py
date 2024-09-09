@@ -4,21 +4,26 @@ from sqlalchemy import text
 from sqlalchemy.orm import Session
 from appv1.schemas.usuario import UserCreate
 from core.security import get_hashed_password
-from core.utils import generate_user_id, generate_user_id_int
+from core.utils import generate_user_id_int
 from sqlalchemy.exc import SQLAlchemyError, IntegrityError
 
 def create_user_sql(db: Session, usuario: UserCreate):
 
     try:
         sql_query = text(
-        "INSERT INTO usuarios (id_usuario,id_rol, correo, clave, estado) VALUES (:user_id, :rol, :mail, :passhash, :status);"
+        "INSERT INTO usuarios (id_usuario,id_rol, id_tipo_documento, documento, nombres, apellidos, celular, correo, clave, estado) VALUES (:id_usuario, :id_rol, :id_tipo_documento, :documento, :nombres, :apellidos, :celular, :correo, :passhash, :estado);"
         )
         params = {
-            "user_id": generate_user_id_int(),
-            "rol": usuario.id_rol,
-            "mail": usuario.correo,
+            "id_usuario": generate_user_id_int(),
+            "id_rol": usuario.id_rol,
+            "id_tipo_documento": usuario.id_tipo_documento,
+            "documento": usuario.documento,
+            "nombres": usuario.nombres,
+            "apellidos": usuario.apellidos,
+            "celular": usuario.nombres,
+            "correo": usuario.correo,
             "passhash": get_hashed_password(usuario.clave),
-            "status":'activo'
+            "estado":usuario.estado
         }
         db.execute(sql_query, params)
         db.commit()
@@ -43,7 +48,7 @@ def create_user_sql(db: Session, usuario: UserCreate):
 # Consultar un usuario por su email
 def get_user_by_email(db: Session, p_mail: str):
     try:
-        sql = text("SELECT * FROM usuarios WHERE mail = :mail")
+        sql = text("SELECT * FROM usuarios WHERE correo = :mail")
         result = db.execute(sql, {"mail": p_mail}).fetchone()
         return result
     except SQLAlchemyError as e:
