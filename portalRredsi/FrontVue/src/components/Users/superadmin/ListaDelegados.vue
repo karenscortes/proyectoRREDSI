@@ -31,7 +31,7 @@
           <table id="basic-datatables" class="display table table-striped table-hover text-dark">
             <thead class="bg-warning">
               <tr>
-                <th>Identificación</th>
+                <th class="bg-warning">Identificación</th>
                 <th>Delegado</th>
                 <th>Área de conocimiento</th>
                 <th>Institución</th>
@@ -341,6 +341,10 @@
     background-color: #ffb606;
     border-color: #ffb606;
     color: #fff;
+  }
+
+  .bg-warning {
+    background-color: #ffb606;
   }
   </style>
   

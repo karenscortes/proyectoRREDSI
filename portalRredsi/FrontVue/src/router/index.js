@@ -1,10 +1,10 @@
 import { createRouter, createWebHistory } from 'vue-router';
 // import { useAuthStore } from '@/store'; 
-import RubricaAdminView from '../views/RubricaAdminView.vue';
+import SuperAdminView from '../views/SuperAdminView.vue';
 
 const routes = [
   // Ruta por defecto que apunta a LoginView
-  { path: '/', name: 'RubricaAdminView', component: RubricaAdminView },
+  { path: '/', name: 'SuperAdminView', component: SuperAdminView },
   // Otras rutas
 
   // Redirección en caso de ruta no encontrada

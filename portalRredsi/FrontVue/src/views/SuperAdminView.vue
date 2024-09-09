@@ -3,13 +3,13 @@
       <table id="basic-datatables" class="display table table-striped table-hover text-dark">
         <thead class="bg-warning">
           <tr>
-            <th>Identificación</th>
-            <th>Delegado</th>
-            <th>Área de conocimiento</th>
-            <th>Institución</th>
-            <th>Estado</th>
-            <th>Detalle</th>
-            <th>Historial</th>
+            <th class="bg-warning">Identificación</th>
+            <th class="bg-warning">Delegado</th>
+            <th class="bg-warning">Área de conocimiento</th>
+            <th class="bg-warning">Institución</th>
+            <th class="bg-warning">Estado</th>
+            <th class="bg-warning">Detalle</th>
+            <th class="bg-warning">Historial</th>
           </tr>
         </thead>
         <tbody>
