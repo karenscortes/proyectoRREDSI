@@ -41,7 +41,7 @@ async def update_existing_fase(id_fase: int, fase_update: FaseUpdate, db: Sessio
 
 
 #Obtener todas las rubricas
-@router_admin.get("/rubrics/", response_model=List[RubricaResponse])
+@router_admin.get("/all-rubrics/", response_model=List[RubricaResponse])
 async def consult_rubrics(db: Session = Depends(get_db)):
     existing_rubrics = get_all_rubricas(db)
     if existing_rubrics:
@@ -51,3 +51,6 @@ async def consult_rubrics(db: Session = Depends(get_db)):
             'success': False,
             'message': 'Error',
         }
+
+""" 
+Active delegate """
