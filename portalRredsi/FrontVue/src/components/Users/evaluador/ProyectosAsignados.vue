@@ -45,7 +45,6 @@
   </template>
   
   <script setup>
-  import { defineProps } from 'vue';
   
   const props = defineProps({
     pdfProyecto: String,
@@ -177,3 +176,4 @@
   }
   </style>
   
+  <style src="../../assets/Styles/listaProyectos_evaluadorEtapa2_styles.css" scoped></style>
