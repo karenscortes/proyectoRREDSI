@@ -4,12 +4,12 @@ from sqlalchemy.orm import relationship
 from .base_class import Base
 
 class Estados(PyEnum):
-    activo = "Activo"
-    inactivo = "Inactivo"
-    pendiente = "Pendiente"
+    activo = "activo"
+    inactivo = "inactivo"
+    pendiente = "pendiente"
 
 class Usuario(Base):
-    _tablename_ = 'usuarios'
+    __tablename__ = 'usuarios'
     id_usuario = Column(Integer, primary_key=True, autoincrement=True)
     id_rol = Column(Integer, ForeignKey('roles.id_rol'))
     id_tipo_documento = Column(Integer, ForeignKey('tipos_documento.id_tipo_documento'))
