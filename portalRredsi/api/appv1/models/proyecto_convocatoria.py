@@ -10,5 +10,7 @@ class Proyecto_convocatoria(Base):
     id_convocatoria = Column(Integer, ForeignKey('convocatorias.id_convocatoria') )
     
     proyecto = relationship('Proyecto', back_populates="proyectos_convocatorias")
-    convocatoria = relationship('Convocatoria')
+    convocatoria = relationship('Convocatoria', back_populates="proyectos_convocatorias")
+    participantes_proyectos = relationship("Participante_proyecto", back_populates="proyecto_convocatoria")
+    resp_rubricas = relationship("Respuesta_rubricas", back_populates="proyecto_convocatoria")
     detalles_salas = relationship("Detalle_sala", back_populates="proyecto_convocatoria")
