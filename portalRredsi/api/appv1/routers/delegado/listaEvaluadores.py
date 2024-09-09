@@ -1,14 +1,14 @@
 from typing import List
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
-from appv1.schemas.usuario import UserResponse
+from appv1.schemas.delegado.listaEvaluadores import EvaluatorsResponse
 from db.database import get_db
-from appv1.crud.delegado.listaEvaluadores import get_all_evaluators, get_evaluator_by_document, get_id_rol, update_evaluator_status
+from appv1.crud.delegado.listaEvaluadores import get_all_evaluators, get_evaluator_by_document, update_evaluator_status
 
 router_evaluadores = APIRouter()
 MODULE = 'usuarios'
 
-@router_evaluadores.get("/get-all-evaluators/", response_model=List[UserResponse])
+@router_evaluadores.get("/get-all-evaluators/", response_model=List[EvaluatorsResponse])
 async def read_all_evaluators(
     db: Session = Depends(get_db)
     #current_user: UserResponse = Depends(get_current_user)
@@ -16,8 +16,7 @@ async def read_all_evaluators(
     # permisos = get_permissions(db, current_user.user_role, MODULE)
     # if not permisos.p_select:
     #     raise HTTPException(status_code=401, detail="Usuario no autorizado")
-    id_rol = get_id_rol(db,'Evaluador')
-    evaluadores = get_all_evaluators(db, id_rol)
+    evaluadores = get_all_evaluators(db)
     if len(evaluadores) == 0:
         raise HTTPException(status_code=404, detail="No hay Evaluadores")
     return evaluadores
@@ -43,7 +42,7 @@ def update_application_status(
         return {"mensaje": "Postulación procesada con exito" }
 
 
-@router_evaluadores.get("/get-evaluator-by-document/", response_model=UserResponse)
+@router_evaluadores.get("/get-evaluator-by-document/", response_model=EvaluatorsResponse)
 async def read_evaluator_by_document(
     documento: str, 
     db: Session = Depends(get_db),

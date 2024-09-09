@@ -22,11 +22,14 @@ app.include_router(rol.router_rol, prefix="/roles", tags=["Roles"])
 app.include_router(login.router, prefix="/access", tags=["access"])
 
 # EVALUADORES 
-app.include_router(evaluadores.routerCalificarProyectos, prefix="/proyectos", tags=["Evaluadores"])
+app.include_router(evaluadores.routerObtenerProyectos, prefix="/obtenerProyectosEvaluador", tags=["Evaluadores"])
+app.include_router(evaluadores.routerInsertarPostulacionEvaluador, prefix="/postulacionEvaluador", tags=["Evaluadores"])
+app.include_router(evaluadores.routerInsetarCalificacionRubrica, prefix="/calificacionRubrica", tags=["Evaluadores"])
+app.include_router(evaluadores.routerObtenerHorarioEvaluador, prefix="/obtenerHorarioEvaluador", tags=["Evaluadores"])
 
 # DELEGADO
-app.include_router(asignarProyectoEtapaVirtual.router_proyecto_etapa_uno, prefix="/asignarProyectoEtapaVirtual", tags=["Delegado"])
-app.include_router(salas.router_sala, prefix="/salas", tags=["Delegado"])
+app.include_router(asignarProyectoEtapaVirtual.router_proyecto_etapa_uno, prefix="/asignarProyectoEtapaVirtual", tags=["Delegado - Proyecto Etapa Virtual"])
+app.include_router(salas.router_sala, prefix="/salas", tags=["Delegado - Salas"])
 app.include_router(postulaciones.router_postulaciones, prefix="/postulaciones", tags=["Delegado - Lista Postulaciones"])
 app.include_router(listaEvaluadores.router_evaluadores, prefix="/listaEvaluadores", tags=["Delegado - Lista Evaluadores"])
 app.include_router(proyectosSinAsignar.router_proyectosSinAsignar, prefix="/proyectosSinAsignar", tags=["Delegado - Lista Proyectos sin Asignar"])

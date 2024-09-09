@@ -1,4 +1,4 @@
-from typing import List
+from typing import List, Optional
 from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
 from appv1.crud.admin.gest_rubricas import get_all_rubricas
@@ -14,25 +14,25 @@ router_admin = APIRouter()
 def create_new_convocatoria(convocatoria: ConvocatoriaCreate, db: Session = Depends(get_db)):
     return create_convocatoria(db, convocatoria.nombre, convocatoria.fecha_inicio, convocatoria.fecha_fin, convocatoria.estado)
 
-# Crear etapa dentro de convocatoria
-@router_admin.post("/crear-etapa/")
-async def create_new_etapa(etapa: EtapaCreate, db: Session = Depends(get_db)):
-    return create_etapa(db, etapa)
+# Endpoint para crear una nueva etapa
+@router_admin.post("/convocatoria/{id_convocatoria}/etapas")
+def add_etapa(id_convocatoria: int, nombre: str, db: Session = Depends(get_db)):
+    return create_etapa(db, nombre, id_convocatoria)
 
-# Crear fase dentro de etapa
-@router_admin.post("/crear-fase/")
-async def create_new_fase(fase: FaseCreate, db: Session = Depends(get_db)):
-    return create_fase(db, fase)
+# Endpoint para crear una nueva fase
+@router_admin.post("/etapas/{id_etapa}/fases")
+def add_fase(id_etapa: int, nombre: str, db: Session = Depends(get_db)):
+    return create_fase(db, nombre, id_etapa)
 
-# Obtener fases por etapa
-@router_admin.get("/fases/{id_etapa}/")
-async def get_fases_for_etapa(id_etapa: int, db: Session = Depends(get_db)):
+# Endpoint para obtener fases por etapa
+@router_admin.get("/etapas/{id_etapa}/fases")
+def get_fases(id_etapa: int, db: Session = Depends(get_db)):
     return get_fases_by_etapa(db, id_etapa)
 
-# Editar etapa
-@router_admin.put("/edit-etapa/{id_etapa}/")
-async def update_existing_etapa(id_etapa: int, etapa_update: EtapaUpdate, db: Session = Depends(get_db)):
-    return update_etapa(db, id_etapa, etapa_update)
+# Endpoint para editar una etapa
+@router_admin.put("/etapas/{id_etapa}")
+def modify_etapa(id_etapa: int, nombre: Optional[str] = None, db: Session = Depends(get_db)):
+    return update_etapa(db, id_etapa, nombre)
 
 # Editar fase
 @router_admin.put("/edit-fase/{id_fase}/")
@@ -52,5 +52,8 @@ async def consult_rubrics(db: Session = Depends(get_db)):
             'message': 'Error',
         }
 
-""" 
-Active delegate """
+
+# Endpoint para editar una fase
+@router_admin.put("/fases/{id_fase}")
+def modify_fase(id_fase: int, nombre: Optional[str] = None, db: Session = Depends(get_db)):
+    return update_fase(db, id_fase, nombre)

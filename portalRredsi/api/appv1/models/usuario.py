@@ -9,7 +9,7 @@ class Estados(PyEnum):
     pendiente = "Pendiente"
 
 class Usuario(Base):
-    __tablename__ = 'usuarios'
+    _tablename_ = 'usuarios'
     id_usuario = Column(Integer, primary_key=True, autoincrement=True)
     id_rol = Column(Integer, ForeignKey('roles.id_rol'))
     id_tipo_documento = Column(Integer, ForeignKey('tipos_documento.id_tipo_documento'))
