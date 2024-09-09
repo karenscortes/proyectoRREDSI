@@ -3,7 +3,7 @@ from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 from appv1.schemas.delegado.asistencia import AsistenciaResponse
 from db.database import get_db
-from appv1.crud.delegado.asistencia import get_asistentes_por_convocatoria, get_asistentes_por_sala
+from appv1.crud.delegado.asistencia import get_asistente_por_cedula, get_asistentes_por_convocatoria, get_asistentes_por_rol, get_asistentes_por_sala
 
 router_asistencia = APIRouter()
 
@@ -14,12 +14,12 @@ async def read_all_asistentes(
 ):
     asistentes, total_pages = get_asistentes_por_convocatoria(db, page, page_size)
     if len(asistentes) == 0:
-        raise HTTPException(status_code=404, detail="Asistentes no encontrados")
+        raise HTTPException(status_code=404, detail="Asistentes no encontrados en esta convocatoria")
         
     asistentes_convocatoria = [dict(asistente) for asistente in asistentes]
 
     return {
-        "salas": asistentes_convocatoria,
+        "asistentes": asistentes_convocatoria,
         "total_pages": total_pages,
         "current_page": page,
         "page_size": page_size
@@ -42,3 +42,34 @@ async def read_asistentes_por_sala(
         "current_page": page,
         "page_size": page_size
     }
+
+
+@router_asistencia.get("/get-asistentes-por-rol/{rol}", response_model=dict)
+async def read_asistentes_por_rol(
+    rol: str, 
+    page: int = 1, 
+    page_size: int = 10, 
+    db: Session = Depends(get_db)
+):
+    asistentes, total_pages = get_asistentes_por_rol(db, rol, page, page_size)
+    
+    if len(asistentes) == 0:
+        raise HTTPException(status_code=404, detail="Asistentes no encontrados para el rol especificado")
+        
+    asistentes_por_rol = [dict(asistente) for asistente in asistentes]
+
+    return {
+        "asistentes": asistentes_por_rol,
+        "total_pages": total_pages,
+        "current_page": page,
+        "page_size": page_size
+    }
+
+@router_asistencia.get("/get-asistente-por-cedula/{documento}", response_model=dict)
+async def read_asistente_por_cedula(documento: str, db: Session = Depends(get_db)):
+    asistente = get_asistente_por_cedula(db, documento)
+    
+    if not asistente:
+        raise HTTPException(status_code=404, detail="Asistente no encontrado con el documento especificado")
+    
+    return asistente

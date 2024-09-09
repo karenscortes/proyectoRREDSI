@@ -4,7 +4,7 @@
             <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
                 :data-bs-target="`#flush-collapseProyecto${index}`" aria-expanded="false"
                 aria-controls="flush-collapseProyecto1">
-                <h4 class="h5">{{ titulo }}</h4>
+                <h4 class="h5">{{ proyecto.titulo }}</h4>
             </button>
         </h2>
         <div :id="`flush-collapseProyecto${index}`" class="accordion-collapse collapse"
@@ -13,22 +13,22 @@
                 <div class="row">
                     <div class="col-md-4 col-12">
                         <p class="mb-2 text-dark"><strong>Modalidad:</strong></p>
-                        <p class="text-dark">{{ modalidad }}</p>
+                        <p class="text-dark">{{ proyecto.modalidad }}</p>
                     </div>
                     <div class="col-md-4 col-12">
                         <p class="mb-2 text-dark"><strong>Institución:</strong></p>
-                        <p class="text-dark">{{ institucion }}</p>
+                        <p class="text-dark">{{ proyecto.institucion }}</p>
                     </div>
                     <div class="col-md-4 col-12">
                         <p class="mb-2 text-dark"><strong>Autores:</strong></p>
-                        <span class="text-dark" v-for="(autor, index) in autores" :key="index">{{ index > 0 ? `,
+                        <span class="text-dark" v-for="(autor, index) in proyecto.autores" :key="index">{{ index > 0 ? `,
                             ${autor.nombre}` : autor.nombre }}</span>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-md-4 col-12">
                         <p class="mb-2 text-dark"><strong>Área de conocimiento:</strong></p>
-                        <p class="text-dark">{{ areaConocimiento }}</p>
+                        <p class="text-dark">{{ proyecto.areaConocimiento }}</p>
                     </div>
                 </div>
                 <div class="row mt-4 justify-content-center">
@@ -36,7 +36,7 @@
                         <label for="" class="Text-dark fw-bold">Seleccionar evaluador:</label>
                         <select class="form-select text-dark">
                             <option selected>Seleccionar evaluador</option>
-                            <option v-for="(posibleEvaluador, index) in posiblesEvaluadores" :key="index"
+                            <option v-for="(posibleEvaluador, index) in proyecto.posiblesEvaluadores" :key="index"
                                 :value="posibleEvaluador.nombreEvaluador">
                                 {{ posibleEvaluador.nombreEvaluador }}</option>
                         </select>
@@ -79,12 +79,7 @@
 <script>
 export default {
     props: {
-        titulo: String,
-        institucion: String,
-        modalidad: String,
-        autores: Array,
-        areaConocimiento: String,
-        posiblesEvaluadores: Array,
+        proyecto: Object,
         index: Number
     }
 }

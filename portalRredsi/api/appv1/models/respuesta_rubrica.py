@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Float, ForeignKey, Integer, Text
+from sqlalchemy import DECIMAL, Column, ForeignKey, Integer, Text
 from sqlalchemy.orm import relationship
 from .base_class import Base
 
@@ -10,7 +10,7 @@ class Respuesta_rubricas(Base):
     id_usuario = Column(Integer, ForeignKey('usuarios.id_usuario'))
     id_proyecto_convocatoria = Column(Integer, ForeignKey('proyectos_convocatoria.id_proyecto_convocatoria'))
     observacion = Column(Text)
-    calificacion = Column(Float(2,1))
+    calificacion = Column(DECIMAL(3,1))
 
     item_rubrica = relationship("Item_rubrica")
     rubrica_resultado = relationship("Rubrica_resultado")
