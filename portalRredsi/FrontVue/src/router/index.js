@@ -1,10 +1,12 @@
 import { createRouter, createWebHistory } from 'vue-router';
 // import { useAuthStore } from '@/store'; 
-import AsistenciaEvento from '../components/Users/delegado/asistencia/AsistenciaEvento.vue';
+import RubricaAdminView from '../views/RubricaAdminView.vue';
+import InicioLogin from '../views/InicioLogin.vue';
 
 const routes = [
   // Ruta por defecto que apunta a LoginView
-  { path: '/', name: 'AsistenciaEvento', component: AsistenciaEvento },
+  { path: '/', name: 'Login', component: InicioLogin },
+  { path: '/', name: 'RubricaAdminView', component: RubricaAdminView },
   // Otras rutas
 
   // Redirección en caso de ruta no encontrada

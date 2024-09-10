@@ -241,7 +241,7 @@ CREATE TABLE items_rubrica (
     id_rubrica INT,
     titulo VARCHAR(50),
     componente TEXT,
-    valor_max FLOAT(2, 1),
+    valor_max FLOAT(3, 1),
     FOREIGN KEY (id_rubrica) REFERENCES rubricas(id_rubrica)
 );
 
@@ -379,7 +379,7 @@ VALUES
 CREATE TABLE rubricas_resultados (
     id_rubrica_resultado INT PRIMARY KEY AUTO_INCREMENT,
     estado_proyecto ENUM('pendiente', 'calificado'),
-    puntaje_aprobacion FLOAT(2, 1)
+    puntaje_aprobacion FLOAT(3, 1)
 );
 
 INSERT INTO rubricas_resultados (estado_proyecto, puntaje_aprobacion)
@@ -396,7 +396,7 @@ CREATE TABLE respuestas_rubricas (
     id_usuario INT,
     id_proyecto_convocatoria INT,
     observacion TEXT,
-    calificacion FLOAT(2, 1),
+    calificacion FLOAT(3, 1),
     FOREIGN KEY (id_item_rubrica) REFERENCES items_rubrica(id_item_rubrica),
     FOREIGN KEY (id_rubrica_resultado) REFERENCES rubricas_resultados(id_rubrica_resultado),
     FOREIGN KEY (id_usuario) REFERENCES usuarios(id_usuario),

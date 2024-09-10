@@ -1,4 +1,5 @@
 from pydantic import BaseModel
+from typing import List
 
 class applicationsResponse(BaseModel):
     id_convocatoria:int
@@ -14,6 +15,12 @@ class applicationsResponse(BaseModel):
     nombre_institucion:str
     area_conocimiento:str
     otra_area:str
+
+class PaginatedApplications(BaseModel):
+    users: List[applicationsResponse]
+    total_pages: int
+    current_page: int
+    page_size: int
 
 class certificatesResponse(BaseModel):
     id_titulo_academico:int
