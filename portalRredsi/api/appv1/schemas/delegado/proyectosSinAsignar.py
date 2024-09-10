@@ -9,7 +9,7 @@ class UnassignedProjects(BaseModel):
     area_conocimiento:str
 
 class PaginatedUnassignedProjects(BaseModel):
-    users: List[UnassignedProjects]
+    projects: List[UnassignedProjects]
     total_pages: int
     current_page: int
     page_size: int

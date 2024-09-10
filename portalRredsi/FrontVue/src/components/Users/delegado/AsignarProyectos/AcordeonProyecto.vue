@@ -21,7 +21,8 @@
                     </div>
                     <div class="col-md-4 col-12">
                         <p class="mb-2 text-dark"><strong>Autores:</strong></p>
-                        <span class="text-dark" v-for="(autor, index) in proyecto.autores" :key="index">{{ index > 0 ? `,
+                        <span class="text-dark" v-for="(autor, i) in autores" :key="i">{{ i > 0 ?
+                            `,
                             ${autor.nombre}` : autor.nombre }}</span>
                     </div>
                 </div>
@@ -66,7 +67,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class=" col-md-6 col-12 text-center" >
+                    <div class=" col-md-6 col-12 text-center">
                         <a href="#" class="btn w-100 mt-1 fw-bold" style="background: rgb(255, 182, 6);">ASIGNAR</a>
                     </div>
 
@@ -77,10 +78,31 @@
 </template>
 
 <script>
+import { obtenerAutoresProyecto } from '../../../../services/delegadoService'
+
 export default {
     props: {
         proyecto: Object,
         index: Number
+    },
+    data() {
+        return {
+            autores : [] 
+        }
+    },
+    methods: {
+        async asignarAutoresAProyectos() {
+            const autores_cant = await obtenerAutoresProyecto(this.proyecto.id_proyecto);
+            
+            if (autores_cant){
+                this.autores = autores_cant.data; 
+            }
+
+            console.log(this.proyecto.id_proyecto);  // Para verificar que los autores se asignan correctamente
+        }
+    },
+    mounted() {
+        this.asignarAutoresAProyectos();
     }
 }
 </script>
@@ -102,5 +124,4 @@ export default {
     filter: invert(0);
     /* Mantiene el color del icono de colapso en negro */
 }
-
 </style>
