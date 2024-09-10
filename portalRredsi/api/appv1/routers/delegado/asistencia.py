@@ -65,7 +65,7 @@ async def read_asistentes_por_rol(
         "page_size": page_size
     }
 
-@router_asistencia.get("/get-asistente-por-cedula/{documento}", response_model=dict)
+@router_asistencia.get("/get-asistente-por-cedula/", response_model=dict)
 async def read_asistente_por_cedula(documento: str, db: Session = Depends(get_db)):
     asistente = get_asistente_por_cedula(db, documento)
     

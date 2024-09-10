@@ -4,10 +4,10 @@ from sqlalchemy.orm import relationship
 from .base_class import Base
 
 class Niveles_academicos(PyEnum):
-    pregrado = "Pregrado"
-    especializacion = "Especializacion"
-    maestria = "Maestria"
-    doctorado = "Doctorado"
+    pregrado = "pregrado"
+    especializacion = "especializacion"
+    maestria = "maestria"
+    doctorado = "doctorado"
 
 class Titulo_academico(Base):
     __tablename__ = 'titulos_academicos'

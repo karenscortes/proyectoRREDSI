@@ -2,6 +2,7 @@ from typing import List
 from pydantic import BaseModel
 
 class UnassignedProjects(BaseModel):
+    id_proyecto:int
     titulo:str
     modalidad:str
     institucion:str

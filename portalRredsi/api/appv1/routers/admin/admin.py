@@ -5,6 +5,9 @@ from appv1.crud.admin.gest_delegado import get_delegados_activos
 from appv1.crud.admin.gest_rubricas import get_all_rubricas
 from appv1.crud.admin.admin import create_convocatoria, create_etapa, create_fase, create_sala, get_fases_by_etapa, update_etapa, update_fase
 from appv1.schemas.admin.admin import ConvocatoriaCreate, CreateSala, EtapaCreate, FaseCreate, EtapaUpdate, FaseUpdate
+from appv1.crud.admin.admin import create_convocatoria, create_etapa, create_fase, get_fases_by_etapa, update_etapa, update_fase
+from appv1.schemas.admin.admin import ConvocatoriaCreate, EtapaCreate, FaseCreate, EtapaUpdate, FaseUpdate
+from appv1.schemas.admin.delegado import DelegadoResponse
 from appv1.schemas.administrador.rubrica import RubricaResponse
 from appv1.schemas.usuario import UserResponse
 from db.database import get_db
@@ -59,7 +62,7 @@ async def consult_rubrics(db: Session = Depends(get_db)):
         }
 
 #Obtener delegados activos
-@router_admin.get("/all-active-delegates/", response_model=List[UserResponse])
+@router_admin.get("/all-active-delegates/", response_model=List[DelegadoResponse])
 async def consult_delegates(db: Session = Depends(get_db)):
     active_delegates = get_delegados_activos(db)
     if active_delegates:

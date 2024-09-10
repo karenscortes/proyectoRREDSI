@@ -9,7 +9,8 @@ def get_unassigned_projects(db: Session, page: int = 1, page_size: int = 10):
 
                 sql = text(
                 """
-                        SELECT  proyectos.titulo,
+                        SELECT  proyectos.id_proyecto,
+                                proyectos.titulo,
                                 modalidades.nombre        AS modalidad,
                                 instituciones.nombre      AS institucion,
                                 areas_conocimiento.nombre AS area_conocimiento
