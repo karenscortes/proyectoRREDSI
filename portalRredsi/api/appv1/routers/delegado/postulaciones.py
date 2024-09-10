@@ -20,7 +20,7 @@ async def read_all_applications(
     #     raise HTTPException(status_code=401, detail="Usuario no autorizado")
     applications,total_pages = get_all_applications(db, page, page_size)
     return {
-        "users": applications,
+        "applications": applications,
         "total_pages": total_pages,
         "current_page": page,
         "page_size": page_size
