@@ -7,19 +7,14 @@
                     data-bs-toggle="collapse" :data-bs-target="`#flush-collapse${index}`" aria-expanded="false"
                     :aria-controls="`flush-collapse${index}`">
                     <div class="col-8">
-                        <h4 class="h5 m-0">{{ evaluador.nombreEvaluador }}</h4>
+                        <h4 class="h5 m-0">{{ evaluator.nombres}}{{evaluator.apellidos}}</h4>
                     </div>
                 </button>
             </div>
             <div class="col-3 col-sm-1 d-flex justify-content-end">
                 <div class="mx-3">
                     <a href="#">
-                        <svg v-if="evaluador.estado == 'Rechazado'" xmlns="http://www.w3.org/2000/svg" height="24px"
-                            viewBox="0 -960 960 960" width="24px" fill="#FF0000">
-                            <path
-                                d="M240-840h440v520L400-40l-50-50q-7-7-11.5-19t-4.5-23v-14l44-174H120q-32 0-56-24t-24-56v-80q0-7 2-15t4-15l120-282q9-20 30-34t44-14Zm360 80H240L120-480v80h360l-54 220 174-174v-406Zm0 406v-406 406Zm80 34v-80h120v-360H680v-80h200v520H680Z" />
-                        </svg>
-                        <svg v-else xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960"
+                        <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960"
                             width="24px" fill="#00000">
                             <path
                                 d="M240-840h440v520L400-40l-50-50q-7-7-11.5-19t-4.5-23v-14l44-174H120q-32 0-56-24t-24-56v-80q0-7 2-15t4-15l120-282q9-20 30-34t44-14Zm360 80H240L120-480v80h360l-54 220 174-174v-406Zm0 406v-406 406Zm80 34v-80h120v-360H680v-80h200v520H680Z" />
@@ -28,12 +23,7 @@
                 </div>
                 <div class="mx-3">
                     <a href="#">
-                        <svg v-if="evaluador.estado == 'Aceptado'" xmlns="http://www.w3.org/2000/svg" height="24px"
-                            viewBox="0 -960 960 960" width="24px" fill="#12d336">
-                            <path
-                                d="M720-120H280v-520l280-280 50 50q7 7 11.5 19t4.5 23v14l-44 174h258q32 0 56 24t24 56v80q0 7-2 15t-4 15L794-168q-9 20-30 34t-44 14Zm-360-80h360l120-280v-80H480l54-220-174 174v406Zm0-406v406-406Zm-80-34v80H160v360h120v80H80v-520h200Z" />
-                        </svg>
-                        <svg v-else xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960"
+                        <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960"
                             width="24px" fill="#00000">
                             <path
                                 d="M720-120H280v-520l280-280 50 50q7 7 11.5 19t4.5 23v14l-44 174h258q32 0 56 24t24 56v80q0 7-2 15t-4 15L794-168q-9 20-30 34t-44 14Zm-360-80h360l120-280v-80H480l54-220-174 174v406Zm0-406v406-406Zm-80-34v80H160v360h120v80H80v-520h200Z" />
@@ -47,49 +37,49 @@
                 <div class="row">
                     <div class="col-md-4 col-12">
                         <p class="text-dark"><strong>Institución:</strong></p>
-                        <p class="text-dark">{{ evaluador.institucion }}</p>
+                        <p class="text-dark">{{ evaluator.nombre_institucion }}</p>
                     </div>
                     <div class="col-md-4 col-12">
                         <p class="text-dark"><strong>Área de conocimiento:</strong></p>
-                        <p class="text-dark">{{ evaluador.areaConocimiento }}</p>
+                        <p class="text-dark">{{ evaluator.area_conocimiento }}</p>
                     </div>
                     <div class="col-md-4 col-12">
                         <p class="text-dark"><strong>Área de conocimiento secundaria:</strong></p>
-                        <p class="text-dark">{{ evaluador.areaConocimientoSecundaria }}</p>
+                        <p class="text-dark">{{ evaluator.otra_area}}</p>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-md-4 col-12">
                         <p class="text-dark"><strong>Teléfono:</strong></p>
-                        <p class="text-dark">{{ evaluador.telefono }}</p>
+                        <p class="text-dark">{{ evaluator.celular }}</p>
                     </div>
                     <div class="col-md-4 col-12">
                         <p class="text-dark"><strong>Correo electrónico:</strong></p>
-                        <p class="text-dark">{{ evaluador.correo }}</p>
+                        <p class="text-dark">{{ evaluator.correo }}</p>
                     </div>
                     <div class="col-md-4 col-12">
                         <p class="text-dark"><strong>Estado:</strong></p>
-                        <p class="text-dark">{{ evaluador.estado }}</p>
+                        <p class="text-dark">{{ evaluator.estado_postulacion}}</p>
                     </div>
                 </div>
 
                 <div class="row mt-4 justify-content-start">
                     <div class="col-md-4 col-12">
                         <p class="text-dark"><strong>Etapa:</strong></p>
-                        <p v-if="evaluador.etapa_virtual && evaluador.etapa_presencial" class="text-dark"> Virtual y
+                        <p v-if="evaluator.etapa_virtual && evaluator.etapa_presencial" class="text-dark"> Virtual y
                             presencial</p>
-                        <p v-else>{{ evaluador.etapa_virtual ? "Virtual" : "Presencial" }}</p>
+                        <p v-else>{{ evaluator.etapa_virtual ? "Virtual" : "Presencial" }}</p>
 
                     </div>
-                    <div v-if="evaluador.etapa_virtual && evaluador.etapa_presencial || evaluador.etapa_presencial"
+                    <div v-if="evaluator.etapa_virtual && evaluator.etapa_presencial || evaluator.etapa_presencial"
                         class="col-md-4 col-12">
                         <p class="text-dark"><strong>Jornada:</strong></p>
-                        <p v-if="evaluador.jornada_manana && evaluador.jornada_tarde" class="text-dark"> Mañana y tarde
+                        <p v-if="evaluator.jornada_manana && evaluator.jornada_tarde" class="text-dark"> Mañana y tarde
                         </p>
-                        <p v-else>{{ evaluador.jornada_manana ? "Mañana" : "Tarde" }}</p>
+                        <p v-else>{{ evaluator.jornada_manana ? "Mañana" : "Tarde" }}</p>
                     </div>
                     <div class="col-md-4 col-12">
-                        <a data-bs-toggle="modal" data-bs-target="#modal_titulos"
+                        <a data-bs-toggle="modal" data-bs-target="#modal_titulos" @click="openModal(evaluator)"
                             class="btn btn-outline-primary w-100 mb-3">Visualizar
                             Títulos</a>
                     </div>
@@ -134,8 +124,21 @@
 export default {
     name: "AcordeonPostulaciones",
     props: {
-        evaluador: Object,
+        evaluator: Object,
         index: Number
+    },
+    data(){
+        return{
+            currentEvaluator: {}, 
+        }
+    },
+    methods: {
+        
+        // Abre el modal para visualizar titulos
+        openModal(evaluator) {
+            this.currentEvaluator = { ...evaluator}; 
+            $('#modal_titulos').modal('show'); // Abre el modal
+        },
     }
 };
 </script>
