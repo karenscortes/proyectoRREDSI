@@ -103,11 +103,7 @@
                     </div>
                     <div class="modal-body">
                         <div class="list-group">
-                            <a href="#pregrado" class="list-group-item list-group-item-action">Pregrado</a>
-                            <a href="#maestria" class="list-group-item list-group-item-action">Maestría</a>
-                            <a href="#especializacion"
-                                class="list-group-item list-group-item-action">Especialización</a>
-                            <a href="#doctorado" class="list-group-item list-group-item-action">Doctorado</a>
+                            <a v-for="(certificate,index) in certificates"  :key="index" :href="certificate.url_titulo" class="list-group-item list-group-item-action">{{certificate.nivel}}</a>
                         </div>
                     </div>
                     <div class="row justify-content-center mb-2">
@@ -130,24 +126,19 @@ export default {
     },
     data(){
         return{
-            currentEvaluator: {}, 
+            certificates:[]
         }
     },
     methods: {
         
-        async fetchCertificates() {
+        async openModal(evaluator) {
             try {
-                const response = await getCertificatesById(evaluator);
-                this.evaluators = response.data.applications; 
-                this.totalPages = response.data.total_pages;
+                const response = await getCertificatesById(evaluator.id_evaluador);
+                this.certificates = response.certificates; 
+                $('#modal_titulos').modal('show'); 
             } catch (error) {
                 console.log(error);
             }
-        },
-
-        openModal(evaluator) {
-            this.currentEvaluator = { ...evaluator}; 
-            $('#modal_titulos').modal('show'); // Abre el modal
         },
     }
 };
