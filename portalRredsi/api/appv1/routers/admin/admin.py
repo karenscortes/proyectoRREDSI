@@ -1,8 +1,8 @@
 from typing import List, Optional
 from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
-from admin.gest_delegado import get_delegados_activos
-from admin.gest_rubricas import get_all_rubricas
+from appv1.crud.admin.gest_delegado import get_delegados_activos
+from appv1.crud.admin.gest_rubricas import get_all_rubricas
 from appv1.crud.admin.admin import create_convocatoria, create_etapa, create_fase, create_sala, get_fases_by_etapa, update_etapa, update_fase
 from appv1.schemas.admin.admin import ConvocatoriaCreate, CreateSala, EtapaCreate, FaseCreate, EtapaUpdate, FaseUpdate
 from appv1.schemas.administrador.rubrica import RubricaResponse
