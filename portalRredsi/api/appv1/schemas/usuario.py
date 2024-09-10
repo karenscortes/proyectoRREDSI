@@ -1,9 +1,8 @@
 from typing import Annotated, List, Optional
-from pydantic import BaseModel, EmailStr, StringConstraints
+from pydantic import BaseModel, EmailStr, StringConstraints, constr
 from datetime import datetime
 import enum
-
-from appv1.schemas.detalle_institucional import DetalleInstitucionalResponse
+from appv1.schemas.tipo_documento import TipoDocumentoResponse
 
 class EstadosEnum(str, enum.Enum):
     activo = "activo"
@@ -12,14 +11,15 @@ class EstadosEnum(str, enum.Enum):
 
 class UserBase(BaseModel):
     id_rol :int
-    tipo_documento : int
+    tipo_documento : Optional[TipoDocumentoResponse] = None 
     documento: Annotated[str, StringConstraints(max_length=55)]
     nombres: Annotated[str, StringConstraints(max_length=25)]
     apellidos: Annotated[str, StringConstraints(max_length=25)]
     celular: Annotated[str, StringConstraints(max_length=12)]
     correo: EmailStr
     estado: EstadosEnum
-    detalles_institucionales: List[DetalleInstitucionalResponse]
+    class Config:
+        orm_mode = True
 
 class UserCreate(UserBase):
     clave: Annotated[str, "Clave del usuario"]
@@ -51,28 +51,20 @@ class ChangePassword(BaseModel):
     code: str
     
     
-class UsuarioUpdate(BaseModel):
-    nombres: Optional[str]
-    apellidos: Optional[str]
+class UserUpdate(BaseModel):
+    nombres: Annotated[str, StringConstraints(max_length=25)]
+    apellidos: Annotated[str, StringConstraints(max_length=25)]
+    tipo_documento: Optional[int]  # ID del tipo de documento
+    documento: Annotated[str, StringConstraints(max_length=55)]
     correo: Optional[EmailStr]
     clave: Optional[str]
-
-# Esquema para la actualización de detalles institucionales
-class DetallesInstitucionalesUpdate(BaseModel):
-    id_institucion: Optional[int]
-    semillero: Optional[str]
+    nueva_clave: Optional[str]
+    id_institucion: Optional[int]  # ID de la institución educativa
     grupo_investigacion: Optional[str]
-    id_primera_area_conocimiento: Optional[int]
-    id_segunda_area_conocimiento: Optional[int]
-
-# Esquema para la actualización de títulos académicos
-class TituloAcademicoUpdate(BaseModel):
-    nivel: str
-    nombre_titulo: str
-    url_titulo: Optional[str]
-    
-# Esquema completo de actualización de perfil
-class PerfilUpdate(BaseModel):
-    usuario: Optional[UsuarioUpdate]
-    detalles_institucionales: Optional[DetallesInstitucionalesUpdate]
-    titulos_academicos: Optional[list[TituloAcademicoUpdate]]
+    nombre_semillero: Optional[str]
+    titulo_pregrado: Optional[str]
+    titulo_especializacion: Optional[str]
+    titulo_maestria: Optional[str]
+    titulo_doctorado: Optional[str]
+    id_area_conocimiento: Optional[int]  # ID de la primera área de conocimiento
+    otra_area_conocimiento: Optional[int]  # ID de la segunda área de conocimiento
