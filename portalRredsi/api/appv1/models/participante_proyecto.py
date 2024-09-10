@@ -11,14 +11,12 @@ class Tipo_de_participante(PyEnum):
 class Participante_proyecto(Base):
     __tablename__ = 'participantes_proyecto'
     id_participante_proyecto = Column(Integer, primary_key=True, autoincrement=True)
-    id_datos_personales = Column(Integer, ForeignKey("detalles_personales.id_detalle_personal"))
-    id_proyecto = Column(Integer, ForeignKey('proyectos.id_proyecto') )
+    id_usuario = Column(Integer, ForeignKey('usuarios.id_usuario'))
     id_etapa = Column(Integer, ForeignKey("etapas.id_etapa"))
-    id_proyecto_convocatoria = Column(Integer, ForeignKey('proyectos_convocatoria.id_proyecto_convocatoria') )
-    tipo_participante = Column(Enum(Tipo_de_participante))
+    id_proyecto = Column(Integer, ForeignKey('proyectos.id_proyecto') )
+    id_proyecto_convocatoria = Column(Integer, ForeignKey('proyectos_convocatoria.id_proyecto_convocatoria') )    
     
-    
-    detalle_personal = relationship('Detalle_personal')
-    proyecto = relationship('Proyecto')
-    etapa = relationship('Etapa')
-    proyecto_convocatoria = relationship('Proyecto_convocatoria')
+    usuario = relationship('Usuario', back_populates="participantes_proyectos")
+    proyecto = relationship('Proyecto', back_populates="participantes_proyectos")
+    etapa = relationship('Etapa', back_populates="participantes_proyectos")
+    proyecto_convocatoria = relationship('Proyecto_convocatoria', back_populates="participantes_proyectos")

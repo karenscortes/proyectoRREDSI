@@ -12,7 +12,7 @@ class RubricaBase(BaseModel):
 
 class RubricaResponse(RubricaBase):
     id_rubrica: int
-    items: List[ItemRubricaResponse]
+    items_rubrica: List[ItemRubricaResponse]
 
     class Config:
         orm_mode = True 

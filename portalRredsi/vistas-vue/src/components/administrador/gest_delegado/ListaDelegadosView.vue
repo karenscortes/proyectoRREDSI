@@ -124,8 +124,16 @@ export default {
       },
     ]);
     
-    const infoModalEdit= ref({
-
+    const infoModalEdit= reactive({
+      p_idDelegado: 1,
+      p_tipo_documento: "cedula", 
+      p_documento: "234567",
+      p_nombre: "Laura", 
+      p_apellidos: "Motato", 
+      p_areaConocimiento: "Sistemas", 
+      p_institucion: "SENA",
+      p_telefono: "302434566", 
+      p_correo: "lau@gmail.com"
     }); 
 
     const showModalAdd = () =>{
@@ -136,7 +144,15 @@ export default {
     }
 
     const showModalEdit = infoDelegado =>{
-      console.log("esta es la informacion del delagado");
+      infoModalEdit.p_idDelegado = infoDelegado.p_idDelegado; 
+      infoModalEdit.p_tipo_documento = infoDelegado.p_tipoDocumento, 
+      infoModalEdit.p_documento = "234567",
+      infoModalEdit.p_nombre = "Laura", 
+      infoModalEdit.p_apellidos = "Motato", 
+      infoModalEdit.p_areaConocimiento = "Sistemas"; 
+      infoModalEdit.p_institucion = "SENA";
+      infoModalEdit.p_telefono = "302434566";
+      infoModalEdit.p_correo = "lau@gmail.com"
       isModalOpenEdit.value = true;
     }
     const closeModalEdit = () =>{

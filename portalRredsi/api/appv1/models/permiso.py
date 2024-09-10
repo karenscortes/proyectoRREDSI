@@ -15,5 +15,5 @@ class Permiso(Base):
         PrimaryKeyConstraint('id_modulo', 'id_rol'),
     )
 
-    rol = relationship("Rol") 
-    modulo = relationship("Modulo")
+    rol = relationship("Rol", back_populates="permisos") 
+    modulo = relationship("Modulo", back_populates="permisos")

@@ -28,7 +28,7 @@
                         {{ opcion }}
                     </option>
                 </select>
-            </div>
+            </div> 
         </div>
 
         <!-- Filtros -->
@@ -64,10 +64,10 @@
                 <tbody>
                     <tr v-for="(asistente, index) in asistentes" :key="index">
                         <td>{{ asistente.documento }}</td>
-                        <td>{{ asistente.nombre }}</td>
+                        <td>{{ asistente.nombres }} {{ asistente.apellidos }}</td>
                         <td>{{ asistente.institucion }}</td>
                         <td colspan="1">
-                            <input type="checkbox" class="form-check-input ml-4" :checked="asistente.asistio">
+                            <input type="checkbox" class="form-check-input ml-4" :checked="asistente.asistencia">
                         </td>
 
                     </tr>
@@ -102,49 +102,27 @@
 </template>
 
 <script>
-export default {
+import {asistenciaEvento} from '../../../../services/delegadoService';
+
+export default{
     data() {
         return {
-            opciones_select: ["Sala 1", "Sala 2", "Sala 3", "Sala 4"],
-            asistentes: [
-                {
-                    documento: "24644221",
-                    nombre: "Sebastian Usma",
-                    institucion: "SENA",
-                    asistio: false
-                },
-                {
-                    documento: "246415441",
-                    nombre: "Luisa Lopez Agudelo",
-                    institucion: "Universidad Sergio Arboleda",
-                    asistio: true
-                },
-                {
-                    documento: "104644221",
-                    nombre: "Miguel Alzate",
-                    institucion: "SENA",
-                    asistio: false
-                },
-                {
-                    documento: "345987651",
-                    nombre: "Andrea Perez",
-                    institucion: "Universidad Nacional",
-                    asistio: true
-                },
-                {
-                    documento: "894561234",
-                    nombre: "Carlos Martínez",
-                    institucion: "Universidad de Antioquia",
-                    asistio: false
-                },
-                {
-                    documento: "783951462",
-                    nombre: "Diana Ramírez",
-                    institucion: "Universidad del Valle",
-                    asistio: true
-                }
-            ]
+            asistentes: []
         }
+    },
+    methods: {
+        async fetchAsistentes() {
+            try {
+                const responde = await asistenciaEvento();
+                this.asistentes = responde.data.asistentes;
+                console.log(this.asistentes);
+            } catch (error) {
+                alert("Error al obtener asistentes: ", error);
+            }
+        }
+    },
+    mounted() {
+        this.fetchAsistentes();
     }
 }
 

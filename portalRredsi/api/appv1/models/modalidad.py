@@ -8,3 +8,4 @@ class Modalidad(Base):
     nombre = Column(String(20))
 
     rubricas = relationship('Rubrica', back_populates='modalidad')
+    proyectos= relationship('Proyecto', back_populates='modalidad')
