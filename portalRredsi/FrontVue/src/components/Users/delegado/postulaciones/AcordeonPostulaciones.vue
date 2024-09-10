@@ -13,7 +13,7 @@
             </div>
             <div class="col-3 col-sm-1 d-flex justify-content-end">
                 <div class="mx-3">
-                    <a href="#">
+                    <a href="#" class="icono1" @click="updateApplication(evaluator,'rechazada')">
                         <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960"
                             width="24px" fill="#00000">
                             <path
@@ -22,7 +22,7 @@
                     </a>
                 </div>
                 <div class="mx-3">
-                    <a href="#">
+                    <a href="#" class="icono2" @click="updateApplication(evaluator,'aceptada')">
                         <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960"
                             width="24px" fill="#00000">
                             <path
@@ -34,7 +34,7 @@
         </h2>
         <div :id="`flush-collapse${index}`" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
             <div class="accordion-body col-10 pl-0 text-dark text-start">
-                <div class="row">
+                <div class="row mt-4">
                     <div class="col-md-4 col-12">
                         <p class="text-dark"><strong>Institución:</strong></p>
                         <p class="text-dark">{{ evaluator.nombre_institucion }}</p>
@@ -48,7 +48,7 @@
                         <p class="text-dark">{{ evaluator.otra_area}}</p>
                     </div>
                 </div>
-                <div class="row">
+                <div class="row mt-4">
                     <div class="col-md-4 col-12">
                         <p class="text-dark"><strong>Teléfono:</strong></p>
                         <p class="text-dark">{{ evaluator.celular }}</p>
@@ -57,14 +57,7 @@
                         <p class="text-dark"><strong>Correo electrónico:</strong></p>
                         <p class="text-dark">{{ evaluator.correo }}</p>
                     </div>
-                    <div class="col-md-4 col-12">
-                        <p class="text-dark"><strong>Estado:</strong></p>
-                        <p class="text-dark">{{ evaluator.estado_postulacion}}</p>
-                    </div>
-                </div>
-
-                <div class="row mt-4 justify-content-start">
-                    <div class="col-md-4 col-12">
+                    <div class="col-md-2 col-12">
                         <p class="text-dark"><strong>Etapa:</strong></p>
                         <p v-if="evaluator.etapa_virtual && evaluator.etapa_presencial" class="text-dark"> Virtual y
                             presencial</p>
@@ -72,12 +65,14 @@
 
                     </div>
                     <div v-if="evaluator.etapa_virtual && evaluator.etapa_presencial || evaluator.etapa_presencial"
-                        class="col-md-4 col-12">
+                        class="col-md-2 col-12">
                         <p class="text-dark"><strong>Jornada:</strong></p>
                         <p v-if="evaluator.jornada_manana && evaluator.jornada_tarde" class="text-dark"> Mañana y tarde
                         </p>
                         <p v-else>{{ evaluator.jornada_manana ? "Mañana" : "Tarde" }}</p>
                     </div>
+                </div>
+                <div class="row mt-4 justify-content-center">
                     <div class="col-md-4 col-12">
                         <a data-bs-toggle="modal" data-bs-target="#modal_titulos" @click="openModal(evaluator)"
                             class="btn btn-outline-primary w-100 mb-3">Visualizar
@@ -117,7 +112,7 @@
 </template>
 
 <script>
-import { getCertificatesById} from '@/services/PostulacionService';
+import { getCertificatesById, updateApplication} from '@/services/postulacionService';
 export default {
     name: "AcordeonPostulaciones",
     props: {
@@ -130,11 +125,19 @@ export default {
         }
     },
     methods: {
+        async updateStatus(evaluator,estado) {
+            try {
+                await updateApplication(evaluator.id_evaluador, estado);
+                alert('Usuario actualizado exitosamente');
+            } catch (error) {
+                alert(error.data.detail);
+            }
+        },
         
         async openModal(evaluator) {
             try {
                 const response = await getCertificatesById(evaluator.id_evaluador);
-                this.certificates = response.certificates; 
+                this.certificates = response.data; 
                 $('#modal_titulos').modal('show'); // Abre el modal
             } catch (error) {
                 console.log(error);
@@ -157,5 +160,13 @@ export default {
 
 .accordion-button::after {
     filter: invert(0);
+}
+
+.icono1:hover{
+    fill:#f50c0c ;
+}
+
+.icono2:hover{
+    fill:#12d336 ;
 }
 </style>
