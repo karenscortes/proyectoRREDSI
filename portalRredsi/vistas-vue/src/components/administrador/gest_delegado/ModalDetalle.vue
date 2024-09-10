@@ -4,7 +4,6 @@
     id="delegateInformation"
     tabindex="-1"
     aria-labelledby="modalLabel"
-    aria-hidden="true"
   >
     <div class="modal-dialog modal-dialog-centered">
       <div
@@ -18,47 +17,47 @@
           >
             <span aria-hidden="true">&times;</span>
           </button>
-          <h3 class="modal-title mt-5" id="modalLabel">Emmanuel Echeverry</h3>
+          <h3 class="modal-title mt-5" id="modalLabel">{{infoModal.p_nombres}} {{ infoModal.p_apellidos }}</h3>
         </div>
         <div class="modal-body mt-3">
           <div class="row mx-auto justify-content-center">
-            <div class="col-5 text-dark font-weight-bold">
+            <div class="col-6 text-dark font-weight-bold">
               Tipo de Documento:
             </div>
-            <div class="col-5 border mb-3">
-              <span class="text-dark" id="conocimiento">Cedula</span>
+            <div class="col-6 border mb-3">
+              <span class="text-dark" id="tipo_documento">{{ infoModal.p_tipoDocumento }}</span>
             </div>
-            <div class="col-5 text-dark font-weight-bold">Documento:</div>
-            <div class="col-5 border mb-3">
-              <span class="text-dark" id="conocimiento">2102156348</span>
+            <div class="col-6 text-dark font-weight-bold">Documento:</div>
+            <div class="col-6 border mb-3">
+              <span class="text-dark" id="conocimiento">{{ infoModal.p_documento}}</span>
             </div>
-            <div class="col-5 text-dark font-weight-bold">Nombre Completo:</div>
-            <div class="col-5 border mb-3">
-              <span class="text-dark" id="conocimiento">Maria Luisa</span>
+            <div class="col-6 text-dark font-weight-bold">Nombre Completo:</div>
+            <div class="col-6 border mb-3">
+              <span class="text-dark" id="conocimiento">{{ infoModal.p_nombres }} {{ infoModal.p_apellidos}}</span>
             </div>
-            <div class="col-5 text-dark font-weight-bold">
+            <div class="col-6 text-dark font-weight-bold">
               Area de conocimiento:
             </div>
-            <div class="col-5 border mb-3">
-              <span class="text-dark" id="conocimiento">Sistemas</span>
+            <div class="col-6 border mb-3">
+              <span class="text-dark" id="conocimiento">{{ infoModal.p_areaConocimiento }}</span>
             </div>
-            <div class="col-5 text-dark font-weight-bold">Institución:</div>
-            <div class="col-5 border mb-3">
-              <span class="text-dark" id="conocimiento">SENA</span>
+            <div class="col-6 text-dark font-weight-bold">Institución:</div>
+            <div class="col-6 border mb-3">
+              <span class="text-dark" id="conocimiento">{{ infoModal.p_institucion }}</span>
             </div>
-            <div class="col-5 text-dark font-weight-bold">Teléfono:</div>
-            <div class="col-5 border mb-3">
-              <span class="text-dark" id="conocimiento">3204562023</span>
+            <div class="col-6 text-dark font-weight-bold">Teléfono:</div>
+            <div class="col-6 border mb-3">
+              <span class="text-dark" id="conocimiento">{{ infoModal.p_telefono }}</span>
             </div>
-            <div class="col-5 text-dark font-weight-bold">Correo:</div>
-            <div class="col-5 border mb-3">
-              <span class="text-dark" id="conocimiento">maria60@gmail.com</span>
+            <div class="col-6 text-dark font-weight-bold">Correo:</div>
+            <div class="col-6 border mb-3">
+              <span class="text-dark" id="conocimiento">{{ infoModal.p_correo}}</span>
             </div>
 
             <div class="text-center mt-3">
               <a
                 href="/constancia_NotasAprendiz.pdf"
-                class="btn btn-outline-primary"
+                class="btn btn-warning"
                 target="_blank"
               >
                 Ver Títulos
@@ -73,6 +72,25 @@
 <script>
 
 export default {
+  props:{
+    infoModal: {
+      type: Object,  
+      default: null,
+      validator(value){
+        return(
+          typeof value.p_idDelegado === 'number' &&
+          typeof value.p_tipoDocumento === 'string' &&
+          typeof value.p_documento === 'string' &&
+          typeof value.p_nombres === 'string' &&
+          typeof value.p_apellidos === 'string' &&
+          typeof value.p_areaConocimiento === 'string' &&
+          typeof value.p_institucion === 'string' &&
+          typeof value.p_telefono === 'string' &&
+          typeof value.p_correo === 'string'
+        );
+      }
+    }
+  },
   emits: ["closeModalDetail"],
   setup(props, { emit }) {
     const closeModal = () => {
