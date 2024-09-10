@@ -2,7 +2,7 @@
 from fastapi import HTTPException
 from sqlalchemy import text
 from sqlalchemy.orm import Session
-from appv1.schemas.usuario import UserCreate
+from appv1.schemas.usuario import UserCreate, UserUpdate
 from core.security import get_hashed_password
 from core.utils import generate_user_id_int
 from sqlalchemy.exc import SQLAlchemyError, IntegrityError

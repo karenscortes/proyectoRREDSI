@@ -1,27 +1,32 @@
 from typing import List
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
-from appv1.schemas.delegado.postulaciones import applicationsResponse, certificatesResponse
+from appv1.schemas.delegado.postulaciones import PaginatedApplications, certificatesResponse
 from db.database import get_db
-from appv1.crud.delegado.postulaciones import get_all_applications, get_all_certificates, update_application_status
+from appv1.crud.delegado.postulaciones import get_all_applications, get_certificates_by_id, update_application_status
 
 router_postulaciones = APIRouter()
 MODULE = 'postulaciones_evaluadores'
 
-@router_postulaciones.get("/get-all-applications/", response_model=List[applicationsResponse])
+@router_postulaciones.get("/get-all-applications/", response_model=PaginatedApplications)
 async def read_all_applications(
+    page: int = 1,
+    page_size: int = 10,
     db: Session = Depends(get_db)
     #current_user: UserResponse = Depends(get_current_user)
 ):
     # permisos = get_permissions(db, current_user.user_role, MODULE)
     # if not permisos.p_select:
     #     raise HTTPException(status_code=401, detail="Usuario no autorizado")
-    applications = get_all_applications(db)
-    if len(applications) == 0:
-        raise HTTPException(status_code=404, detail="No hay postulaciones")
-    return applications
+    applications,total_pages = get_all_applications(db, page, page_size)
+    return {
+        "applications": applications,
+        "total_pages": total_pages,
+        "current_page": page,
+        "page_size": page_size
+    }
 
-@router_postulaciones.get("/get-all-certificates", response_model=List[certificatesResponse])
+@router_postulaciones.get("/get-certificates-by-id", response_model=List[certificatesResponse])
 async def read_all_certificates(
     id_usuario:int,
     db: Session = Depends(get_db)
@@ -30,7 +35,7 @@ async def read_all_certificates(
     # permisos = get_permissions(db, current_user.user_role, MODULE)
     # if not permisos.p_select:
     #     raise HTTPException(status_code=401, detail="Usuario no autorizado")
-    certificates = get_all_certificates(db, id_usuario)
+    certificates = get_certificates_by_id(db, id_usuario)
     if len(certificates) == 0:
         raise HTTPException(status_code=404, detail="No hay titulos académicos")
     return certificates

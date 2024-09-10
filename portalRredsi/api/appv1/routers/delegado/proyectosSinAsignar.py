@@ -21,7 +21,7 @@ async def read_all_unassignedProjects(
     projects,total_pages = get_unassigned_projects(db, page, page_size)
     
     return {
-        "users": projects,
+        "projects": projects,
         "total_pages": total_pages,
         "current_page": page,
         "page_size": page_size

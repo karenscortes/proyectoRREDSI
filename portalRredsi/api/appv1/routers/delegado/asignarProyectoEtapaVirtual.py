@@ -42,4 +42,4 @@ async def read_posibles_evaluadores(
     if len(posibles_evaluadores) == 0:
         raise HTTPException(status_code=404, detail="No hay evaluadores disponibles")
     
-    return posibles_evaluadores
+    return [posibles_evaluadores]
