@@ -1,4 +1,28 @@
 <template>
+    <!-- Título -->
+        <div class="row mb-5 mt-2">
+          <div class="col">
+            <div class="section_title text-center">
+              <h1>Información delegados</h1>
+            </div>
+          </div>
+        </div>
+  
+        <!-- Buscador -->
+        <div class="row mb-4 justify-content-end">
+          <div class="col-8 col-sm-6">
+            <div class="row justify-content-end">
+              <div class="col-8">
+                <input type="text" v-model="busqueda" class="form-control" placeholder="Buscar...">
+              </div>
+              <div class="col-4">
+                <button class="btn w-100 font-weight-bold" style="background: rgb(255, 182, 6);" @click="buscarDelegado">
+                  Buscar
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
     <div class="table-responsive">
       <table id="basic-datatables" class="display table table-striped table-hover text-dark">
         <thead class="bg-warning">

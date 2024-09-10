@@ -4,14 +4,14 @@ import router from '@/router'; // Importa el router de Vue
 
 // Crear una instancia de Axios
 const api = axios.create({
-  baseURL: import.meta.env.VITE_API_URL, // Usar la URL de la API desde el archivo .env
+  baseURL: import.meta.env.VITE_API_API, // Usar la URL de la API desde el archivo .env
   headers: {
     'Content-Type': 'application/json',
     'Accept': 'application/json',
   }
 });
 
-// Interceptor para añadir el token de autorización
+//Interceptor para añadir el token de autorización
 api.interceptors.request.use(config => {
     const authStore = useAuthStore(); // Obtener el store de autenticación
     const token = authStore.accessToken;
@@ -24,7 +24,7 @@ api.interceptors.request.use(config => {
   });
 
 
-// Interceptor para manejar errores
+//Interceptor para manejar errores
 api.interceptors.response.use(response => {
   return response;
 }, error => {

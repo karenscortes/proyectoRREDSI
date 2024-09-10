@@ -17,5 +17,4 @@ class Titulo_academico(Base):
     url_titulo = Column(String(255))
     id_usuario = Column(Integer, ForeignKey('usuarios.id_usuario'))
    
-
-    usuario = relationship("Usuario")
+    usuario = relationship("Usuario", back_populates="titulos_academicos")

@@ -1,31 +1,31 @@
-from typing import Annotated, List
+from typing import Annotated, List, Optional
 from pydantic import BaseModel, EmailStr, StringConstraints
 from datetime import datetime
 import enum
 
+from appv1.schemas.detalle_institucional import DetalleInstitucionalResponse
+
 class EstadosEnum(str, enum.Enum):
-    activo = "Activo"
-    inactivo = "Inactivo"
-    pendiente = "Pendiente"
+    activo = "activo"
+    inactivo = "inactivo"
+    pendiente = "pendiente"
 
 class UserBase(BaseModel):
     id_rol :int
-    id_tipo_documento : int
+    tipo_documento : int
     documento: Annotated[str, StringConstraints(max_length=55)]
     nombres: Annotated[str, StringConstraints(max_length=25)]
     apellidos: Annotated[str, StringConstraints(max_length=25)]
-    celular: Annotated[str, StringConstraints(max_length=10)]
+    celular: Annotated[str, StringConstraints(max_length=12)]
     correo: EmailStr
-    estado: str
+    estado: EstadosEnum
+    detalles_institucionales: List[DetalleInstitucionalResponse]
 
 class UserCreate(UserBase):
     clave: Annotated[str, "Clave del usuario"]
 
 class UserResponse(UserBase):
-    id_usuario: str
-    correo: EmailStr
-    estado: EstadosEnum = EstadosEnum.activo
-    id_rol :int
+    id_usuario: int
     
 class PaginatedUsersResponse(BaseModel):
     users: List[UserResponse]
@@ -50,3 +50,29 @@ class ChangePassword(BaseModel):
     new_password: str
     code: str
     
+    
+class UsuarioUpdate(BaseModel):
+    nombres: Optional[str]
+    apellidos: Optional[str]
+    correo: Optional[EmailStr]
+    clave: Optional[str]
+
+# Esquema para la actualización de detalles institucionales
+class DetallesInstitucionalesUpdate(BaseModel):
+    id_institucion: Optional[int]
+    semillero: Optional[str]
+    grupo_investigacion: Optional[str]
+    id_primera_area_conocimiento: Optional[int]
+    id_segunda_area_conocimiento: Optional[int]
+
+# Esquema para la actualización de títulos académicos
+class TituloAcademicoUpdate(BaseModel):
+    nivel: str
+    nombre_titulo: str
+    url_titulo: Optional[str]
+    
+# Esquema completo de actualización de perfil
+class PerfilUpdate(BaseModel):
+    usuario: Optional[UsuarioUpdate]
+    detalles_institucionales: Optional[DetallesInstitucionalesUpdate]
+    titulos_academicos: Optional[list[TituloAcademicoUpdate]]
