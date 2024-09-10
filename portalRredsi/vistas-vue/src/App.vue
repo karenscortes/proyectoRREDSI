@@ -6,14 +6,11 @@
 </template>
 <script>
 import HelloWorld from './components/HelloWorld.vue';
-import MenuUsuarios from './components/menus/MenuUsuarios.vue';
-
 
 export default {
   name: 'App',
   components: {
     HelloWorld,
-    MenuUsuarios,
   }
 }
 </script>
