@@ -1,11 +1,11 @@
 import { createRouter, createWebHistory } from 'vue-router';
 // import { useAuthStore } from '@/store'; 
 import RubricaAdminView from '../views/RubricaAdminView.vue';
-import InicioLogin from '../views/InicioLogin.vue';
+import AsignarProyecto from '../components/Users/delegado/AsignarProyectos/AsignarProyectos.vue';
 
 const routes = [
   // Ruta por defecto que apunta a LoginView
-  { path: '/', name: 'Login', component: InicioLogin },
+  { path: '/', name: 'AsignarProyecto', component: AsignarProyecto },
   { path: '/', name: 'RubricaAdminView', component: RubricaAdminView },
   // Otras rutas
 
