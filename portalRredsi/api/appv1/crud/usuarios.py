@@ -80,7 +80,7 @@ def update_password(db: Session, email: str, new_password: str):
         raise HTTPException(status_code=500, detail="Error al actualizar password")
     
     
-def update_user_profile(db: Session, user_id: int, usuario: UserUpdate):
+# def update_user_profile(db: Session, user_id: int, usuario: UserUpdate):
     try:
         # Inicia la consulta SQL para actualizar los datos del usuario
         sql = "UPDATE usuarios SET "
