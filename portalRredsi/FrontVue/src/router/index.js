@@ -3,6 +3,7 @@ import { useAuthStore } from '@/store';
 import RubricaAdminView from '../views/RubricaAdminView.vue';
 import InicioLogin from '../views/InicioLogin.vue';
 import DelegadoView from '../views/DelegadoView.vue';
+import PostulacionesEvaluadoresView from '../views/PostulacionesEvaluadoresView.vue'
 
 import AsignarProyecto from '../components/Users/delegado/AsignarProyectos/AsignarProyectos.vue';
 
@@ -16,7 +17,7 @@ const routes = [
   // RUTAS DELEGADO
   { path: '/asignar-proyecto', name: 'AsignarProyecto', component: AsignarProyecto },
   { path: '/principal-delegado', name: 'DelegadoView', component: DelegadoView },
-
+  { path: '/postulaciones-evaluadores', name: 'PostulacionesEvaluadoresView', component: PostulacionesEvaluadoresView},
 
   // RUTAS ADMIN
   { path: '/rubrica-admin', name: 'RubricaAdminView', component: RubricaAdminView },

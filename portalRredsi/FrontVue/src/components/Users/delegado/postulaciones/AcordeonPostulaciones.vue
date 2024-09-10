@@ -135,7 +135,7 @@ export default {
             try {
                 const response = await getCertificatesById(evaluator.id_evaluador);
                 this.certificates = response.certificates; 
-                $('#modal_titulos').modal('show'); 
+                $('#modal_titulos').modal('show'); // Abre el modal
             } catch (error) {
                 console.log(error);
             }
