@@ -114,7 +114,7 @@ CREATE TABLE usuarios (
     documento VARCHAR(55) UNIQUE NOT NULL,
     nombres VARCHAR(25),
     apellidos VARCHAR(25),
-    celular VARCHAR(10) UNIQUE NOT NULL,
+    celular VARCHAR(12) UNIQUE NOT NULL,
     correo VARCHAR(70) NOT NULL UNIQUE,
     clave VARCHAR(255) NOT NULL,
     estado ENUM('activo', 'inactivo') NOT NULL,

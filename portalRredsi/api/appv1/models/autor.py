@@ -8,4 +8,4 @@ class Autor(Base):
     nombre = Column(String(50))
     id_proyecto = Column(Integer, ForeignKey('proyectos.id_proyecto') )
     
-    proyecto = relationship("Proyecto")
+    proyecto = relationship("Proyecto", back_populates="autores")
