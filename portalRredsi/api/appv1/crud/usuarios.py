@@ -2,7 +2,7 @@
 from fastapi import HTTPException
 from sqlalchemy import text
 from sqlalchemy.orm import Session
-from appv1.schemas.usuario import UserCreate
+from appv1.schemas.usuario import UserCreate, UserUpdate
 from core.security import get_hashed_password
 from core.utils import generate_user_id_int
 from sqlalchemy.exc import SQLAlchemyError, IntegrityError
@@ -80,80 +80,76 @@ def update_password(db: Session, email: str, new_password: str):
         raise HTTPException(status_code=500, detail="Error al actualizar password")
     
     
-# def update_user_profile(db: Session, user_id: int, usuario: UserUpdate):
+from sqlalchemy.orm import Session
+from sqlalchemy.exc import IntegrityError, SQLAlchemyError
+from fastapi import HTTPException
+from sqlalchemy import text
+
+def update_user(db: Session, user_id: int, usuario: UserUpdate):
     try:
-        # Inicia la consulta SQL para actualizar los datos del usuario
         sql = "UPDATE usuarios SET "
-        params = {"user_id": user_id}
+        params = {"id_usuario": user_id}
         updates = []
         
-        # Actualización de la tabla usuarios
-        if 'nombres' in user_data:
+        if usuario.nombres:
             updates.append("nombres = :nombres")
-            params["nombres"] = user_data['nombres']
-        if 'apellidos' in user_data:
+            params["nombres"] = usuario.nombres
+        if usuario.apellidos:
             updates.append("apellidos = :apellidos")
-            params["apellidos"] = user_data['apellidos']
-        if 'correo' in user_data:
+            params["apellidos"] = usuario.apellidos
+        if usuario.tipo_documento:
+            updates.append("id_tipo_documento = :tipo_documento")
+            params["tipo_documento"] = usuario.tipo_documento
+        if usuario.documento:
+            updates.append("documento = :documento")
+            params["documento"] = usuario.documento
+        if usuario.correo:
             updates.append("correo = :correo")
-            params["correo"] = user_data['correo']
-        if 'clave' in user_data:
+            params["correo"] = usuario.correo
+        if usuario.clave:
             updates.append("clave = :clave")
-            params["clave"] = user_data['clave']
-
-        # Genera las partes de la consulta SQL
-        if updates:
-            sql += ", ".join(updates) + " WHERE id_usuario = :user_id"
-            sql = text(sql)
-            db.execute(sql, params)
-
-        # Actualización de detalles institucionales
-        if 'institucion' in user_data or 'grupo_investigacion' in user_data or 'semillero' in user_data:
-            sql_institucional = "UPDATE detalles_institucionales SET "
-            params_institucional = {"user_id": user_id}
-            updates_institucional = []
-
-            if 'institucion' in user_data:
-                updates_institucional.append("id_institucion = :id_institucion")
-                params_institucional["id_institucion"] = user_data['institucion']
-            if 'grupo_investigacion' in user_data:
-                updates_institucional.append("grupo_investigacion = :grupo_investigacion")
-                params_institucional["grupo_investigacion"] = user_data['grupo_investigacion']
-            if 'semillero' in user_data:
-                updates_institucional.append("semillero = :semillero")
-                params_institucional["semillero"] = user_data['semillero']
-
-            if updates_institucional:
-                sql_institucional += ", ".join(updates_institucional) + " WHERE id_usuario = :user_id"
-                sql_institucional = text(sql_institucional)
-                db.execute(sql_institucional, params_institucional)
-
-        # Actualización de títulos académicos
-        if 'titulos_academicos' in user_data:
-            for titulo in user_data['titulos_academicos']:
-                sql_titulo = """
-                INSERT INTO titulos_academicos (nivel, nombre_titulo, url_titulo, id_usuario)
-                VALUES (:nivel, :nombre_titulo, :url_titulo, :user_id)
-                ON DUPLICATE KEY UPDATE nombre_titulo = VALUES(nombre_titulo), url_titulo = VALUES(url_titulo)
-                """
-                params_titulo = {
-                    "nivel": titulo['nivel'],
-                    "nombre_titulo": titulo['nombre_titulo'],
-                    "url_titulo": titulo['url_titulo'],
-                    "user_id": user_id
-                }
-                db.execute(text(sql_titulo), params_titulo)
-
+            params["clave"] = usuario.clave
+        if usuario.id_institucion:
+            updates.append("id_institucion = :id_institucion")
+            params["id_institucion"] = usuario.id_institucion
+        if usuario.grupo_investigacion:
+            updates.append("grupo_investigacion = :grupo_investigacion")
+            params["grupo_investigacion"] = usuario.grupo_investigacion
+        if usuario.nombre_semillero:
+            updates.append("nombre_semillero = :nombre_semillero")
+            params["nombre_semillero"] = usuario.nombre_semillero
+        if usuario.titulo_pregrado:
+            updates.append("titulo_pregrado = :titulo_pregrado")
+            params["titulo_pregrado"] = usuario.titulo_pregrado
+        if usuario.titulo_especializacion:
+            updates.append("titulo_especializacion = :titulo_especializacion")
+            params["titulo_especializacion"] = usuario.titulo_especializacion
+        if usuario.titulo_maestria:
+            updates.append("titulo_maestria = :titulo_maestria")
+            params["titulo_maestria"] = usuario.titulo_maestria
+        if usuario.titulo_doctorado:
+            updates.append("titulo_doctorado = :titulo_doctorado")
+            params["titulo_doctorado"] = usuario.titulo_doctorado
+        if usuario.id_area_conocimiento:
+            updates.append("id_primera_area_conocimiento = :id_area_conocimiento")
+            params["id_area_conocimiento"] = usuario.id_area_conocimiento
+        if usuario.otra_area_conocimiento:
+            updates.append("id_segunda_area_conocimiento = :otra_area_conocimiento")
+            params["otra_area_conocimiento"] = usuario.otra_area_conocimiento
+        
+        sql += ", ".join(updates) + " WHERE id_usuario = :id_usuario"
+        
+        sql = text(sql)
+        
+        db.execute(sql, params)
         db.commit()
         return True
     except IntegrityError as e:
         db.rollback()
-        print(f"Error al actualizar usuario: {e}")
         if 'for key' in str(e.orig):
-            raise HTTPException(status_code=400, detail="Error. El dato ya está registrado.")
+            raise HTTPException(status_code=400, detail="Error. Integridad de datos violada")
         else:
-            raise HTTPException(status_code=400, detail="Error de integridad de datos al actualizar usuario.")
+            raise HTTPException(status_code=400, detail="Error. Conflicto de datos al actualizar usuario")
     except SQLAlchemyError as e:
         db.rollback()
-        print(f"Error al actualizar usuario: {e}")
-        raise HTTPException(status_code=500, detail="Error al actualizar usuario")
+        raise HTTPException(status_code=500, detail="Error interno del servidor al actualizar usuario")
