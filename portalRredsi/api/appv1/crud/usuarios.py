@@ -2,7 +2,7 @@
 from fastapi import HTTPException
 from sqlalchemy import text
 from sqlalchemy.orm import Session
-from appv1.schemas.usuario import UserCreate
+from appv1.schemas.usuario import UserCreate, UserUpdate
 from core.security import get_hashed_password
 from core.utils import generate_user_id_int
 from sqlalchemy.exc import SQLAlchemyError, IntegrityError
@@ -78,3 +78,78 @@ def update_password(db: Session, email: str, new_password: str):
         db.rollback()  # Deshacer los cambios si ocurre un error
         print(f"Error al actualizar password: {e}")
         raise HTTPException(status_code=500, detail="Error al actualizar password")
+    
+    
+from sqlalchemy.orm import Session
+from sqlalchemy.exc import IntegrityError, SQLAlchemyError
+from fastapi import HTTPException
+from sqlalchemy import text
+
+def update_user(db: Session, user_id: int, usuario: UserUpdate):
+    try:
+        sql = "UPDATE usuarios SET "
+        params = {"id_usuario": user_id}
+        updates = []
+        
+        if usuario.nombres:
+            updates.append("nombres = :nombres")
+            params["nombres"] = usuario.nombres
+        if usuario.apellidos:
+            updates.append("apellidos = :apellidos")
+            params["apellidos"] = usuario.apellidos
+        if usuario.tipo_documento:
+            updates.append("id_tipo_documento = :tipo_documento")
+            params["tipo_documento"] = usuario.tipo_documento
+        if usuario.documento:
+            updates.append("documento = :documento")
+            params["documento"] = usuario.documento
+        if usuario.correo:
+            updates.append("correo = :correo")
+            params["correo"] = usuario.correo
+        if usuario.clave:
+            updates.append("clave = :clave")
+            params["clave"] = usuario.clave
+        if usuario.id_institucion:
+            updates.append("id_institucion = :id_institucion")
+            params["id_institucion"] = usuario.id_institucion
+        if usuario.grupo_investigacion:
+            updates.append("grupo_investigacion = :grupo_investigacion")
+            params["grupo_investigacion"] = usuario.grupo_investigacion
+        if usuario.nombre_semillero:
+            updates.append("nombre_semillero = :nombre_semillero")
+            params["nombre_semillero"] = usuario.nombre_semillero
+        if usuario.titulo_pregrado:
+            updates.append("titulo_pregrado = :titulo_pregrado")
+            params["titulo_pregrado"] = usuario.titulo_pregrado
+        if usuario.titulo_especializacion:
+            updates.append("titulo_especializacion = :titulo_especializacion")
+            params["titulo_especializacion"] = usuario.titulo_especializacion
+        if usuario.titulo_maestria:
+            updates.append("titulo_maestria = :titulo_maestria")
+            params["titulo_maestria"] = usuario.titulo_maestria
+        if usuario.titulo_doctorado:
+            updates.append("titulo_doctorado = :titulo_doctorado")
+            params["titulo_doctorado"] = usuario.titulo_doctorado
+        if usuario.id_area_conocimiento:
+            updates.append("id_primera_area_conocimiento = :id_area_conocimiento")
+            params["id_area_conocimiento"] = usuario.id_area_conocimiento
+        if usuario.otra_area_conocimiento:
+            updates.append("id_segunda_area_conocimiento = :otra_area_conocimiento")
+            params["otra_area_conocimiento"] = usuario.otra_area_conocimiento
+        
+        sql += ", ".join(updates) + " WHERE id_usuario = :id_usuario"
+        
+        sql = text(sql)
+        
+        db.execute(sql, params)
+        db.commit()
+        return True
+    except IntegrityError as e:
+        db.rollback()
+        if 'for key' in str(e.orig):
+            raise HTTPException(status_code=400, detail="Error. Integridad de datos violada")
+        else:
+            raise HTTPException(status_code=400, detail="Error. Conflicto de datos al actualizar usuario")
+    except SQLAlchemyError as e:
+        db.rollback()
+        raise HTTPException(status_code=500, detail="Error interno del servidor al actualizar usuario")

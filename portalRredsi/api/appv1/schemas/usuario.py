@@ -1,5 +1,6 @@
 from typing import Annotated, List, Optional
-from pydantic import BaseModel, EmailStr, StringConstraints
+from pydantic import BaseModel, EmailStr, StringConstraints, constr
+from datetime import datetime
 import enum
 from appv1.schemas.tipo_documento import TipoDocumentoResponse
 
@@ -49,3 +50,21 @@ class ChangePassword(BaseModel):
     new_password: str
     code: str
     
+    
+class UserUpdate(BaseModel):
+    nombres: Annotated[str, StringConstraints(max_length=25)]
+    apellidos: Annotated[str, StringConstraints(max_length=25)]
+    tipo_documento: Optional[int]  # ID del tipo de documento
+    documento: Annotated[str, StringConstraints(max_length=55)]
+    correo: Optional[EmailStr]
+    clave: Optional[str]
+    nueva_clave: Optional[str]
+    id_institucion: Optional[int]  # ID de la institución educativa
+    grupo_investigacion: Optional[str]
+    nombre_semillero: Optional[str]
+    titulo_pregrado: Optional[str]
+    titulo_especializacion: Optional[str]
+    titulo_maestria: Optional[str]
+    titulo_doctorado: Optional[str]
+    id_area_conocimiento: Optional[int]  # ID de la primera área de conocimiento
+    otra_area_conocimiento: Optional[int]  # ID de la segunda área de conocimiento

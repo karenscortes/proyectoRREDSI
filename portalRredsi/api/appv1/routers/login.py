@@ -2,7 +2,7 @@ from typing import Annotated, List
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 from appv1.crud.permissions import get_all_permissions
-from appv1.crud.usuarios import create_user_sql, get_user_by_email, get_user_by_id, update_password
+from appv1.crud.usuarios import  create_user_sql, get_user_by_email, get_user_by_id, update_password
 from appv1.schemas.usuario import ChangePassword, ResponseLoggin, UserCreate, UserLoggin
 from core.security import create_access_token, verify_password, verify_token
 from db.database import get_db
