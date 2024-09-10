@@ -121,6 +121,7 @@
 </template>
 
 <script>
+import { getCertificatesById} from '@/services/PostulacionService';
 export default {
     name: "AcordeonPostulaciones",
     props: {
@@ -134,7 +135,16 @@ export default {
     },
     methods: {
         
-        // Abre el modal para visualizar titulos
+        async fetchCertificates() {
+            try {
+                const response = await getCertificatesById(evaluator);
+                this.evaluators = response.data.applications; 
+                this.totalPages = response.data.total_pages;
+            } catch (error) {
+                console.log(error);
+            }
+        },
+
         openModal(evaluator) {
             this.currentEvaluator = { ...evaluator}; 
             $('#modal_titulos').modal('show'); // Abre el modal
