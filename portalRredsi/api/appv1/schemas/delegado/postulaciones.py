@@ -4,6 +4,7 @@ from typing import List
 class applicationsResponse(BaseModel):
     id_convocatoria:int
     id_evaluador:int
+    estado_postulacion:str
     etapa_virtual:bool
     etapa_presencial:bool
     jornada_manana:bool

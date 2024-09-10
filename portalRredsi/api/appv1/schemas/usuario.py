@@ -2,8 +2,7 @@ from typing import Annotated, List, Optional
 from pydantic import BaseModel, EmailStr, StringConstraints, constr
 from datetime import datetime
 import enum
-
-from appv1.schemas.detalle_institucional import DetalleInstitucionalResponse
+from appv1.schemas.tipo_documento import TipoDocumentoResponse
 
 class EstadosEnum(str, enum.Enum):
     activo = "activo"
@@ -12,14 +11,15 @@ class EstadosEnum(str, enum.Enum):
 
 class UserBase(BaseModel):
     id_rol :int
-    tipo_documento : int
+    tipo_documento : Optional[TipoDocumentoResponse] = None 
     documento: Annotated[str, StringConstraints(max_length=55)]
     nombres: Annotated[str, StringConstraints(max_length=25)]
     apellidos: Annotated[str, StringConstraints(max_length=25)]
     celular: Annotated[str, StringConstraints(max_length=12)]
     correo: EmailStr
     estado: EstadosEnum
-    detalles_institucionales: List[DetalleInstitucionalResponse]
+    class Config:
+        orm_mode = True
 
 class UserCreate(UserBase):
     clave: Annotated[str, "Clave del usuario"]
