@@ -50,22 +50,21 @@ def get_convocatoria_actual_por_proyecto(db: Session, id_proyecto: int):
     
     return result
 
-def get_posibles_evaluadores_para_proyecto(db: Session, id_area_conocimiento: str, id_institucion: int):
+def get_posibles_evaluadores_para_proyecto(db: Session, id_area_conocimiento: int, id_institucion: int):
     try:
         sql = text("""
-            SELECT usuarios.* 
+            SELECT usuarios.id_usuario, usuarios.documento, usuarios.nombres, usuarios.apellidos, usuarios.celular, usuarios.correo 
             FROM detalles_institucionales 
-            JOIN usuarios ON detalles_institucionales.id_usuario = usuarios.id_usuario 
-            JOIN areas_conocimiento ON detalles_institucionales.id_primera_area_conocimiento = areas_conocimiento.id_area_conocimiento 
+            JOIN usuarios ON detalles_institucionales.id_usuario = usuarios.id_usuario
             WHERE detalles_institucionales.id_institucion != :id_i 
-            AND areas_conocimiento.nombre LIKE :ac 
+            AND (detalles_institucionales.id_primera_area_conocimiento = :id_ac OR detalles_institucionales.id_segunda_area_conocimiento = :id_ac)
             AND (usuarios.id_rol = 1 OR usuarios.id_rol = 2)
             AND usuarios.estado = 'activo'
         """)
         
         # Preparar los parámetros con comodines para LIKE
         params = {
-            "ac": f'%{id_area_conocimiento}%',  # Incluir los comodines % aquí
+            "id_ac": id_area_conocimiento,  # Incluir los comodines % aquí
             "id_i": id_institucion
         }
         result = db.execute(sql, params).fetchall()
@@ -76,3 +75,12 @@ def get_posibles_evaluadores_para_proyecto(db: Session, id_area_conocimiento: st
         db.rollback()
         print(f"Error al buscar evaluadores")
         raise HTTPException(status_code=404, detail="Error al buscar evaluadores")
+
+def get_area_conocimiento_por_nombre(db: Session, nombre_area: str):
+    try:
+        sql = text("SELECT * FROM areas_conocimiento WHERE nombre like :nombre_area")
+        result = db.execute(sql, {"nombre_area": nombre_area}).fetchone()
+        return result
+    except SQLAlchemyError as e:
+        print(f"Area de conocimiento no se ha encontrado")
+        raise HTTPException(status_code=500, detail="Area de conocimiento no se ha encontrado")

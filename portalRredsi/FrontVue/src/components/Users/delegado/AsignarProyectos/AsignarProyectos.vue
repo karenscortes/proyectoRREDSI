@@ -1,6 +1,6 @@
 <template>
-    <div class="container pt-5">
-        <div class="row mb-4 mt-2">
+    <div class="container pt-5 mt-5">
+        <div class="row mb-4 mt-5">
             <div class="col">
                 <div class="section_title text-center">
                     <h1>Asignar proyectos</h1>

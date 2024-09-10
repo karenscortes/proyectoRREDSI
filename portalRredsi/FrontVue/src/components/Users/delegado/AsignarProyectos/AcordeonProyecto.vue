@@ -98,7 +98,6 @@ export default {
                 this.autores = autores_cant.data; 
             }
 
-            console.log(this.proyecto.id_proyecto);  // Para verificar que los autores se asignan correctamente
         }
     },
     mounted() {
