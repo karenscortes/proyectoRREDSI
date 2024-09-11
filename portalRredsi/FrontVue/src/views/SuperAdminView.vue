@@ -1,4 +1,7 @@
 <template>
+    <!-- HEADER  -->
+    <MenuPrincipal :rol="user?.id_rol"/>
+        <h4>{{ user?.nombres }} {{ user?.apellidos }}</h4>
     <!-- Título -->
         <div class="row mb-5 mt-2">
           <div class="col">
