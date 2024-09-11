@@ -129,6 +129,15 @@ export default {
                 visibilidad: 'd-none',
                 yellow_tab: 'Cerrar Sesión'
             });
+        } else if (props.rol === 'SuperAdmin') {
+            Object.assign(state, {
+                left_tabs: [{ nombre: 'Inicio', ruta: '#' }, { nombre: 'Perfil', ruta: '#' }],
+                mid_tabs: [{ nombre: 'Informacion-delegados', ruta: '#' }, { nombre: 'Informacion-delegados', ruta: '#' }],
+                tab_name: 'Convocatoria',
+                visibilidadLogin: 'd-none',
+                visibilidad: 'd-inline-block',
+                yellow_tab: 'Cerrar Sesión'
+            });    
         } else if (props.rol === 'Delegado') {
             Object.assign(state, {
                 left_tabs: [{ nombre: 'Inicio', ruta: '#' }, { nombre: 'Perfil', ruta: '#' }],
@@ -170,7 +179,7 @@ export default {
                 if (authStore.authError) {
                     errorMessage.value = authStore.authError;
                 } else {
-                    router.push('/asignar-proyecto'); // Reemplaza '/dashboard' con la ruta deseada
+                    router.push('/super-admin'); // Reemplaza '/dashboard' con la ruta deseada
                 }
             } catch (error) {
                 errorMessage.value = 'Error durante el login: ' + error.message;
