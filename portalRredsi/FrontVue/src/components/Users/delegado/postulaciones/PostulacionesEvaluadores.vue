@@ -58,7 +58,7 @@
 
 <script>
 import { getApplicationsByPage} from '@/services/PostulacionService';
-import AcordeonPostulaciones from '../components/Users/delegado/postulaciones/AcordeonPostulaciones.vue';
+import AcordeonPostulaciones from './AcordeonPostulaciones.vue';
 
 export default {
     components: {
