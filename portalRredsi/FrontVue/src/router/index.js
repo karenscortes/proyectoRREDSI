@@ -4,6 +4,7 @@ import RubricaAdminView from '../views/RubricaAdminView.vue';
 import InicioLogin from '../views/InicioLogin.vue';
 import DelegadoView from '../views/DelegadoView.vue';
 import PostulacionesEvaluadoresView from '../views/PostulacionesEvaluadoresView.vue'
+import SuperAdminView from '../views/SuperAdminView.vue';
 
 import AsignarProyecto from '../components/Users/delegado/AsignarProyectos/AsignarProyectos.vue';
 
@@ -23,6 +24,7 @@ const routes = [
   { path: '/rubrica-admin', name: 'RubricaAdminView', component: RubricaAdminView },
 
   // RUTAS SUPERADMIN
+  { path: '/super-admin', name: 'SuperAdminView', component: SuperAdminView},
 
   // Redirección en caso de ruta no encontrada
   { path: '/:pathMatch(.)', redirect: '/not-found' },

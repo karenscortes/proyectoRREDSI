@@ -1,7 +1,7 @@
 from typing import List
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
-from appv1.crud.usuarios import create_user_sql,  get_user_by_email, get_user_by_id, update_user
+from appv1.crud.usuarios import create_user_sql,  get_user_by_email, get_user_by_id
 from appv1.routers.login import get_current_user
 from appv1.schemas.usuario import UserCreate, UserResponse, UserUpdate
 from db.database import get_db
