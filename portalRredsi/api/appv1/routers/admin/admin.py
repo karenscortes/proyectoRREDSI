@@ -1,7 +1,7 @@
 from typing import List, Optional
 from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
-from appv1.crud.admin.gest_delegado import create_delegados, get_delegados_activos, get_delegados_by_document
+from appv1.crud.admin.gest_delegado import create_delegado, get_delegados_activos, get_delegados_by_document
 from appv1.crud.admin.gest_rubricas import create_items, delete_items, get_all_rubricas, update_items
 from appv1.crud.admin.gest_delegado import get_delegados_activos
 from appv1.crud.admin.gest_rubricas import get_all_rubricas
@@ -90,7 +90,7 @@ def consult_by_document(document: str, db: Session = Depends(get_db)):
 #Crear delegado 
 @router_admin.post("/create-delegates/")
 def consult_by_document(user: UserCreate, db: Session = Depends(get_db)):
-    new_user = create_delegados(user, db)
+    new_user = create_delegado(user, db)
     if new_user:
         return print("Registrado con éxito")
     else: 
