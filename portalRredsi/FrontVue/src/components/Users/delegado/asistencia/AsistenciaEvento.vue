@@ -109,7 +109,7 @@ export default {
         };
     },
     methods: {
-        async fetchAsistentes(filtroRol = null) {
+        async fetchAsistentes(filtroRol) {
             try {
                 const response = await asistenciaEvento(this.currentPage); 
                 let asistentes = response.data.asistentes;
@@ -140,7 +140,7 @@ export default {
         async fetchSalas() {
             try {
                 const response = await obtenerSalas(); 
-                this.opciones_select = response.data.salas; 
+                this.opciones = response.data.salas; 
             } catch (error) {
                 alert("Error al obtener las salas: " + error);
             }
@@ -155,14 +155,14 @@ export default {
         },
 
     
-        async toggleAsistencia(asistente) {
-            try {
-                asistente.asistencia = !asistente.asistencia; 
-                await actualizarAsistencia(asistente.documento, asistente.asistencia); 
-            } catch (error) {
-                alert("Error al actualizar la asistencia: " + error);
-            }
-        },
+        // async toggleAsistencia(asistente) {
+        //     try {
+        //         asistente.asistencia = !asistente.asistencia; 
+        //         await actualizarAsistencia(asistente.documento, asistente.asistencia); 
+        //     } catch (error) {
+        //         alert("Error al actualizar la asistencia: " + error);
+        //     }
+        // },
 
         // página siguiente
         nextPage() {
@@ -181,7 +181,7 @@ export default {
         }
     },
     mounted() {
-        this.fetchAsistentes(); 
+        this.fetchAsistentes(1); 
         this.fetchSalas();
     }
 };

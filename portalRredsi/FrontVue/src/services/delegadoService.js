@@ -91,23 +91,23 @@ export const obtenerAsistentePorDocumento = async (documento) => {
     }
 };
 
-//Actualizar asistencia (check)
-export const actualizarAsistencia = async (documento, asistencia) => {
-    try {
-        const response = await api.patch(`asistencia/update-asistencia/${documento}`, { asistencia }, {
-            headers: {
-                'Authorization': `Bearer`
-            }
-        });
-        return response;
-    } catch (error) {
-        if (error.response) {
-            throw error;
-        } else {
-            throw new Error('Error de red o de servidor');
-        }
-    }
-};
+// //Actualizar asistencia (check)
+// export const actualizarAsistencia = async (documento, asistencia) => {
+//     try {
+//         const response = await api.patch(`asistencia/update-asistencia/${documento}`, { asistencia }, {
+//             headers: {
+//                 'Authorization': `Bearer`
+//             }
+//         });
+//         return response;
+//     } catch (error) {
+//         if (error.response) {
+//             throw error;
+//         } else {
+//             throw new Error('Error de red o de servidor');
+//         }
+//     }
+// };
 
 
 
