@@ -37,3 +37,9 @@ class ProgramacionFaseCreate(BaseModel):
     id_convocatoria: int
     fecha_inicio: date
     fecha_fin: date
+
+class CreateSala(BaseModel):
+    id_usuario: int 
+    area_conocimento: int
+    numero_sala: str
+    nombre_sala: str

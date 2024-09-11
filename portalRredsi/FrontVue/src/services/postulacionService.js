@@ -19,9 +19,9 @@ export const getApplicationsByPage = async (page = 1, pageSize = 10) => {
 };
 
 // Función para obtener los certificados
-export const getCertificatesById = async (id_usuario) => {
+export const getCertificatesById = async (id_evaluador) => {
     try {
-      const response = await api.get(`/postulaciones/get-certificates-by-id/?id_usuario=${encodeURIComponent(id_usuario)}`);
+      const response = await api.get(`/postulaciones/get-certificates-by-id/?id_usuario=${encodeURIComponent(id_evaluador)}`);
       return response;
     } catch (error) {
       if (error.response) {
@@ -33,11 +33,9 @@ export const getCertificatesById = async (id_usuario) => {
 };
 
 // Función para actualizar estado de postulación
-export const updateAppplication = async (id_evaluador,estado) => {
+export const updateApplication = async (id_evaluador,estado) => {
     try {
-      const response = await api.put(`/postulaciones/update-application-status/?id_evaluador=${id_evaluador}`, {
-        estado: estado
-      });
+      const response = await api.put(`/postulaciones/update-application-status/?id_evaluador=${id_evaluador}&estado=${estado}`);
       return response;
     } catch (error) {
       if (error.response) {
