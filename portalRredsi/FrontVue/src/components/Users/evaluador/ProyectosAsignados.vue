@@ -1,199 +1,49 @@
 <template>
-    
-        <div class="row mb-4 mt-2">
-            <div class="col">
-                <div class="section_title text-center">
-                    <h1>Proyectos Asignados</h1>
-                    <h2 class="text-muted">Primera Etapa</h2>
+    <ul class="cards justify-content-center">
+        <li>
+            <a class="card">
+                <div class="text-center pt-5 card__image">
+                    <a :href="proyecto.url_propuesta_escrita" class="d-inline-flex" target="_blank">
+                        <button type="button" class="btn btn-warning rounded-circle border border-dark mx-2">
+                            <i class="far fa-file-alt h3"></i>
+                        </button>
+                    </a>
+                    <button type="button" class="btn btn-warning rounded-circle border border-dark mx-2">
+                        <i class="fa-solid fa-list-check fa-xl"></i>
+                    </button> 
                 </div>
-            </div>
-        </div>
-
-        <div class="row justify-content-center">
-            <div class="col-xl-10 col-lg-8 col-md-8">
-                <div class="row row-cols-3 row-cols-sm-3 row-cols-md-4 ">
-                    <div class="col text-left"><button class="btn cards__buttons w-100 h-100"><i class="fa-solid fa-circle-arrow-left fa-2xl"></i></button></div>
-                    <div class="col text-center pt-1 mid_tab">
-                        <button class="btn cards__buttons border w-100">Calificados</button>
+                <div class="card__overlay">
+                    <div class="card__header">
+                        <svg class="card__arc" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M 40 80 c 22 0 40 -22 40 -40 v 40 Z"/>
+                        </svg>                     
+                        <div class="border border-white text-white card__thumb text-center pt-3">
+                            <h2>{{ proyecto.id_proyecto }}</h2>
+                        </div>
+                        <div class="card__header-text text-justify">
+                            <h3 class="text-left texto-recortado">{{ proyecto.titulo }}</h3> 
+                            <h4 class="text-left texto-recortado">{{ proyecto.programa_academico }}</h4>                                                                   
+                        </div> 
                     </div>
-                    <div class="col text-center pt-1">
-                        <button class="btn cards__buttons border w-100 mid_tab">Pendientes</button>
-                        <form action="" class="select_item">
-                            <select id="inputDocumentType" type="select" class="form-control text-dark custom-select mt-1"
-                                required>
-                                <option value="Calificados" selected>Calificados</option>
-                                <option value="Pendientes">Pendientes</option>>
-                            </select>
-                        </form>
-                    </div>
-                    <div class="col text-right"><button class="btn cards__buttons w-100 h-100"><i class="fa-solid fa-circle-arrow-right fa-2xl"></i></button></div>
-                </div>     
-            </div>
-        </div>
-
-        <div class="row justify-content-center">
-            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-8 align-items-center">    
-                <!-- Card de proyecto asignado -->
-                <ul class="cards justify-content-center">
-                    <li>
-                        <a class="card">
-                            <div class="text-center pt-5 card__image">
-                                <a :href="pdfProyecto" class="d-inline-flex" target="_blank">
-                                <button type="button" class="btn btn-warning rounded-circle border border-dark mx-2">
-                                    <i class="far fa-file-alt h3"></i>
-                                </button>
-                                </a>
-                                <!-- <router-link :to="{ path: 'calificar_proyectos_etapa1.html' }" class="d-inline-flex"> -->
-                                <button type="button" class="btn btn-warning rounded-circle border border-dark mx-2">
-                                    <i class="fa-solid fa-list-check fa-xl"></i>
-                                </button> 
-                                <!-- </router-link>     -->
-                            </div> 
-                            <div class="card__overlay">
-                                <div class="card__header">
-                                <svg class="card__arc" xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M 40 80 c 22 0 40 -22 40 -40 v 40 Z"/>
-                                </svg>                     
-                                <div class="border border-white text-white card__thumb text-center pt-3">
-                                    <h2>{{ numeroProyecto }}</h2>
-                                </div>   
-                                <div class="card__header-text text-justify">
-                                    <h3 class="text-left texto-recortado">{{ tituloProyecto }}</h3> 
-                                    <h4 class="text-left texto-recortado">{{ institucionProyecto }}</h4>                                                                   
-                                </div> 
-                                </div>
-                                <div class="card__footer text-center">
-                                <div>
-                                    <p class="card__description"><strong>Modalidad:</strong> {{ modalidadProyecto }}</p>
-                                    <p class="card__description"><strong>Estado:</strong> {{ estadoProyecto }}</p>
-                                </div>
-                                </div>           
-                            </div>
-                        </a>      
-                    </li>
-                    <li>
-                        <a class="card">
-                            <div class="text-center pt-5 card__image">
-                                <a :href="pdfProyecto" class="d-inline-flex" target="_blank">
-                                <button type="button" class="btn btn-warning rounded-circle border border-dark mx-2">
-                                    <i class="far fa-file-alt h3"></i>
-                                </button>
-                                </a>
-                                <!-- <router-link :to="{ path: 'calificar_proyectos_etapa1.html' }" class="d-inline-flex"> -->
-                                <button type="button" class="btn btn-warning rounded-circle border border-dark mx-2">
-                                    <i class="fa-solid fa-list-check fa-xl"></i>
-                                </button> 
-                                <!-- </router-link>     -->
-                            </div> 
-                            <div class="card__overlay">
-                                <div class="card__header">
-                                <svg class="card__arc" xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M 40 80 c 22 0 40 -22 40 -40 v 40 Z"/>
-                                </svg>                     
-                                <div class="border border-white text-white card__thumb text-center pt-3">
-                                    <h2>{{ numeroProyecto }}</h2>
-                                </div>   
-                                <div class="card__header-text text-justify">
-                                    <h3 class="text-left texto-recortado">{{ tituloProyecto }}</h3> 
-                                    <h4 class="text-left texto-recortado">{{ institucionProyecto }}</h4>                                                                   
-                                </div> 
-                                </div>
-                                <div class="card__footer text-center">
-                                <div>
-                                    <p class="card__description"><strong>Modalidad:</strong> {{ modalidadProyecto }}</p>
-                                    <p class="card__description"><strong>Estado:</strong> {{ estadoProyecto }}</p>
-                                </div>
-                                </div>           
-                            </div>
-                        </a>      
-                    </li>
-                    <li>
-                        <a class="card">
-                            <div class="text-center pt-5 card__image">
-                                <a :href="pdfProyecto" class="d-inline-flex" target="_blank">
-                                <button type="button" class="btn btn-warning rounded-circle border border-dark mx-2">
-                                    <i class="far fa-file-alt h3"></i>
-                                </button>
-                                </a>
-                                <!-- <router-link :to="{ path: 'calificar_proyectos_etapa1.html' }" class="d-inline-flex"> -->
-                                <button type="button" class="btn btn-warning rounded-circle border border-dark mx-2">
-                                    <i class="fa-solid fa-list-check fa-xl"></i>
-                                </button> 
-                                <!-- </router-link>     -->
-                            </div> 
-                            <div class="card__overlay">
-                                <div class="card__header">
-                                <svg class="card__arc" xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M 40 80 c 22 0 40 -22 40 -40 v 40 Z"/>
-                                </svg>                     
-                                <div class="border border-white text-white card__thumb text-center pt-3">
-                                    <h2>{{ numeroProyecto }}</h2>
-                                </div>   
-                                <div class="card__header-text text-justify">
-                                    <h3 class="text-left texto-recortado">{{ tituloProyecto }}</h3> 
-                                    <h4 class="text-left texto-recortado">{{ institucionProyecto }}</h4>                                                                   
-                                </div> 
-                                </div>
-                                <div class="card__footer text-center">
-                                <div>
-                                    <p class="card__description"><strong>Modalidad:</strong> {{ modalidadProyecto }}</p>
-                                    <p class="card__description"><strong>Estado:</strong> {{ estadoProyecto }}</p>
-                                </div>
-                                </div>           
-                            </div>
-                        </a>      
-                    </li>
-                    <li>
-                        <a class="card">
-                            <div class="text-center pt-5 card__image">
-                                <a :href="pdfProyecto" class="d-inline-flex" target="_blank">
-                                <button type="button" class="btn btn-warning rounded-circle border border-dark mx-2">
-                                    <i class="far fa-file-alt h3"></i>
-                                </button>
-                                </a>
-                                <!-- <router-link :to="{ path: 'calificar_proyectos_etapa1.html' }" class="d-inline-flex"> -->
-                                <button type="button" class="btn btn-warning rounded-circle border border-dark mx-2">
-                                    <i class="fa-solid fa-list-check fa-xl"></i>
-                                </button> 
-                                <!-- </router-link>     -->
-                            </div> 
-                            <div class="card__overlay">
-                                <div class="card__header">
-                                <svg class="card__arc" xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M 40 80 c 22 0 40 -22 40 -40 v 40 Z"/>
-                                </svg>                     
-                                <div class="border border-white text-white card__thumb text-center pt-3">
-                                    <h2>{{ numeroProyecto }}</h2>
-                                </div>   
-                                <div class="card__header-text text-justify">
-                                    <h3 class="text-left texto-recortado">{{ tituloProyecto }}</h3> 
-                                    <h4 class="text-left texto-recortado">{{ institucionProyecto }}</h4>                                                                   
-                                </div> 
-                                </div>
-                                <div class="card__footer text-center">
-                                <div>
-                                    <p class="card__description"><strong>Modalidad:</strong> {{ modalidadProyecto }}</p>
-                                    <p class="card__description"><strong>Estado:</strong> {{ estadoProyecto }}</p>
-                                </div>
-                                </div>           
-                            </div>
-                        </a>      
-                    </li>
-                </ul>
-            </div>
-        </div>
-
-  </template>
+                    <div class="card__footer text-center">
+                        <div>
+                            <p class="card__description"><strong>Modalidad:</strong> {{ proyecto.modalidad }}</p>
+                            <p class="card__description"><strong>Estado:</strong> {{ proyecto.estado_evaluacion }}</p>
+                        </div>
+                    </div>           
+                </div>
+            </a>      
+        </li>
+    </ul>
+</template>
   
 <script setup>
-    const props = defineProps({
-        pdfProyecto: String,
-        numeroProyecto: Number,
-        tituloProyecto: String,
-        institucionProyecto: String,
-        modalidadProyecto: String,
-        estadoProyecto: String
-    });
+const props = defineProps({
+    proyecto: {
+        type: Object,
+        required: true
+    }
+});
 </script>
   
 <style>

@@ -1,8 +1,13 @@
-from typing import Optional
+from typing import List, Optional
 from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
+from appv1.crud.admin.gest_delegado import get_delegados_activos
+from appv1.crud.admin.gest_rubricas import get_all_rubricas
 from appv1.crud.admin.admin import create_convocatoria, create_etapa, create_fase, get_fases_by_etapa, update_etapa, update_fase
 from appv1.schemas.admin.admin import ConvocatoriaCreate, EtapaCreate, FaseCreate, EtapaUpdate, FaseUpdate
+from appv1.schemas.admin.delegado import DelegadoResponse
+from appv1.schemas.administrador.rubrica import RubricaResponse
+from appv1.schemas.usuario import UserResponse
 from db.database import get_db
 
 router_admin = APIRouter()
@@ -32,7 +37,38 @@ def get_fases(id_etapa: int, db: Session = Depends(get_db)):
 def modify_etapa(id_etapa: int, nombre: Optional[str] = None, db: Session = Depends(get_db)):
     return update_etapa(db, id_etapa, nombre)
 
+# Editar fase
+@router_admin.put("/edit-fase/{id_fase}/")
+async def update_existing_fase(id_fase: int, fase_update: FaseUpdate, db: Session = Depends(get_db)):
+    return update_fase(db, id_fase, fase_update)
+
 # Endpoint para editar una fase
 @router_admin.put("/fases/{id_fase}")
 def modify_fase(id_fase: int, nombre: Optional[str] = None, db: Session = Depends(get_db)):
     return update_fase(db, id_fase, nombre)
+
+#Obtener todas las rubricas
+@router_admin.get("/all-rubrics/", response_model=List[RubricaResponse])
+async def consult_rubrics(db: Session = Depends(get_db)):
+    existing_rubrics = get_all_rubricas(db)
+    if existing_rubrics:
+        return existing_rubrics
+    else:
+        return{
+            'success': False,
+            'message': 'Error',
+        }
+
+#Obtener delegados activos
+@router_admin.get("/all-active-delegates/", response_model=List[DelegadoResponse])
+async def consult_delegates(db: Session = Depends(get_db)):
+    active_delegates = get_delegados_activos(db)
+    if active_delegates:
+        return active_delegates
+    else:
+        return{
+            'success': False,
+            'message': 'Error',
+        }
+
+

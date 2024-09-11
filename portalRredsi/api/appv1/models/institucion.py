@@ -7,4 +7,5 @@ class Institucion(Base):
     id_institucion = Column(Integer, primary_key=True, autoincrement=True)
     nombre = Column(String(50))
     
-    detalles_personales = relationship("Detalle_personal",back_populates="institucion")
+    proyectos = relationship("Proyecto", back_populates="institucion")
+    detalles_institucionales = relationship("Detalle_institucional", back_populates="institucion")

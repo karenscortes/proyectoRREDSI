@@ -1,10 +1,14 @@
 import { createRouter, createWebHistory } from 'vue-router';
 // import { useAuthStore } from '@/store'; 
-import ProyectosAsignados from '../components/Users/evaluador/ProyectosAsignados.vue';
+// import RubricaAdminView from '../views/RubricaAdminView.vue';
+// import InicioLogin from '../views/InicioLogin.vue';
+import ProyectosAsignadosEvaluadorView from '../views/ProyectosAsignadosEvaluadorView.vue';
 
 const routes = [
   // Ruta por defecto que apunta a LoginView
-  { path: '/', name: 'ProyectosAsignados', component: ProyectosAsignados },
+  // { path: '/', name: 'Login', component: InicioLogin },
+  // { path: '/', name: 'RubricaAdminView', component: RubricaAdminView },
+  { path: '/', name: 'ProyectosAsignadosEvaluadorView', component: ProyectosAsignadosEvaluadorView },
   // Otras rutas
 
   // Redirección en caso de ruta no encontrada
