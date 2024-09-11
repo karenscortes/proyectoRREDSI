@@ -1,8 +1,15 @@
 from typing import List, Optional
 from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
+<<<<<<< HEAD
 from appv1.crud.admin.gest_delegado import create_delegados, get_delegados_activos, get_delegados_by_document
 from appv1.crud.admin.gest_rubricas import create_items, get_all_rubricas
+=======
+from appv1.crud.admin.gest_delegado import get_delegados_activos
+from appv1.crud.admin.gest_rubricas import get_all_rubricas
+from appv1.crud.admin.admin import create_convocatoria, create_etapa, create_fase, create_sala, get_fases_by_etapa, update_etapa, update_fase
+from appv1.schemas.admin.admin import ConvocatoriaCreate, CreateSala, EtapaCreate, FaseCreate, EtapaUpdate, FaseUpdate
+>>>>>>> master
 from appv1.crud.admin.admin import create_convocatoria, create_etapa, create_fase, get_fases_by_etapa, update_etapa, update_fase
 from appv1.schemas.admin.admin import ConvocatoriaCreate, EtapaCreate, FaseCreate, EtapaUpdate, FaseUpdate
 from appv1.schemas.admin.delegado import DelegadoResponse
@@ -101,3 +108,8 @@ def consult_by_document(item: ItemCreate, db: Session = Depends(get_db)):
         return print("Registrado con éxito")
     else: 
         return False
+    
+# Crear sala
+@router_admin.post("/crear-sala")
+def create_sala_admin(sala: CreateSala, db: Session = Depends(get_db)):
+    return create_sala(db, sala.id_usuario, sala.area_conocimento, sala.numero_sala, sala.nombre_sala)

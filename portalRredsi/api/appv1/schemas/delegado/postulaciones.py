@@ -18,7 +18,7 @@ class applicationsResponse(BaseModel):
     otra_area:str
 
 class PaginatedApplications(BaseModel):
-    users: List[applicationsResponse]
+    applications: List[applicationsResponse]
     total_pages: int
     current_page: int
     page_size: int
