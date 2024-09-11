@@ -58,7 +58,7 @@
 
 <script>
 import { getApplicationsByPage} from '@/services/PostulacionService';
-import AcordeonPostulaciones from '../components/Users/delegado/postulaciones/AcordeonPostulaciones.vue';
+import AcordeonPostulaciones from './AcordeonPostulaciones.vue';
 
 export default {
     components: {
@@ -102,7 +102,7 @@ export default {
 
         selectedPage(pagina) {
             this.current_page = pagina;
-            this.fetchProyectos();
+            this.fetchEvaluators();
         },
     }, 
     mounted() {

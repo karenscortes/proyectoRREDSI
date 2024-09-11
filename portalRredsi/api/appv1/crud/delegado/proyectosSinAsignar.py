@@ -19,7 +19,7 @@ def get_unassigned_projects(db: Session, page: int = 1, page_size: int = 10):
                                 INNER JOIN instituciones ON (proyectos.id_institucion = instituciones.id_institucion)
                                 INNER JOIN areas_conocimiento ON (proyectos.id_area_conocimiento = areas_conocimiento.id_area_conocimiento)
                                 INNER JOIN proyectos_convocatoria ON (proyectos.id_proyecto = proyectos_convocatoria.id_proyecto)              
-                        WHERE proyectos.estado = 'pendiente'
+                        WHERE proyectos.estado = 'pendiente_virtual'
                         AND proyectos_convocatoria.id_convocatoria IN (
                                 SELECT id_convocatoria
                                 FROM convocatorias
@@ -36,7 +36,7 @@ def get_unassigned_projects(db: Session, page: int = 1, page_size: int = 10):
         
                 result = db.execute(sql, params).mappings().all()
 
-                count_sql = text("SELECT COUNT(proyectos.id_proyecto) AS cantidad_proyectos FROM proyectos JOIN proyectos_convocatoria ON (proyectos.id_proyecto = proyectos_convocatoria.id_proyecto) WHERE proyectos_convocatoria.id_convocatoria IN (SELECT id_convocatoria FROM convocatorias WHERE estado = 'en curso') AND proyectos.estado = 'pendiente'")
+                count_sql = text("SELECT COUNT(proyectos.id_proyecto) AS cantidad_proyectos FROM proyectos JOIN proyectos_convocatoria ON (proyectos.id_proyecto = proyectos_convocatoria.id_proyecto) WHERE proyectos_convocatoria.id_convocatoria IN (SELECT id_convocatoria FROM convocatorias WHERE estado = 'en curso') AND proyectos.estado = 'pendiente_virtual'")
 
                 total_proyectos = db.execute(count_sql).scalar()
 
