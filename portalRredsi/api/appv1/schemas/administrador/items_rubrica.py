@@ -4,11 +4,11 @@ class ItemRubrica(BaseModel):
     titulo: Annotated[str, StringConstraints(max_length=50)]
     componente: str
     valor_max: Annotated[float,condecimal(max_digits=2, decimal_places=1)]
+    id_rubrica: int
     
 
 class ItemRubricaResponse(ItemRubrica):
     id_item_rubrica: int
-    id_rubrica: int
 
     class Config:
         orm_mode = True 
