@@ -38,13 +38,18 @@ def get_all_admin(db: Session):
 # Actualizar el rol de un usuario si es un administrador activo
 def update_user_role(db: Session, user_id: int, new_role_id: int):
     try:
-        # Verificar si el usuario es un administrador activo
-        sql_check = text("SELECT id_usuario FROM usuarios WHERE id_usuario = :user_id AND id_rol = 3 AND estado = 'activo'")
+        # Verificar si el usuario es un administrador o delegado activo
+        sql_check = text("SELECT id_usuario, id_rol FROM usuarios WHERE id_usuario = :user_id AND (id_rol = 2 OR id_rol = 3) AND estado = 'activo'")
         params_check = {"user_id": user_id}
         user_to_update = db.execute(sql_check, params_check).fetchone()
 
         if not user_to_update:
-            raise HTTPException(status_code=404, detail="Usuario no encontrado o no es un administrador activo")
+            raise HTTPException(status_code=404, detail="Usuario no encontrado o no es un administrador o delegado activo")
+
+        current_role_id = user_to_update[1]
+
+        if current_role_id == new_role_id:
+            raise HTTPException(status_code=400, detail="El usuario ya tiene el rol seleccionado")
 
         # Proceder con la actualización del rol
         sql_update = text("UPDATE usuarios SET id_rol = :new_role_id WHERE id_usuario = :user_id AND estado = 'activo'")
@@ -52,7 +57,7 @@ def update_user_role(db: Session, user_id: int, new_role_id: int):
 
         db.execute(sql_update, params_update)
         db.commit()
-        return True
+        return True  # Return a boolean value indicating success
     except SQLAlchemyError as e:
         db.rollback()  # Revertir la transacción en caso de error
         print(f"Error al actualizar rol de usuario: {e}")

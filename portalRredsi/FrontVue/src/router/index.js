@@ -1,24 +1,16 @@
 import { createRouter, createWebHistory } from 'vue-router';
-<<<<<<< HEAD
-// import { useAuthStore } from '@/store'; 
-import SuperAdminView from '../views/SuperAdminView.vue';
-=======
 import { useAuthStore } from '@/store'; 
 import RubricaAdminView from '../views/RubricaAdminView.vue';
 import InicioLogin from '../views/InicioLogin.vue';
 import DelegadoView from '../views/DelegadoView.vue';
 import PostulacionesEvaluadoresView from '../views/PostulacionesEvaluadoresView.vue'
+import SuperAdminView from '../views/SuperAdminView.vue';
 
 import AsignarProyecto from '../components/Users/delegado/AsignarProyectos/AsignarProyectos.vue';
->>>>>>> origin
 
 const routes = [
   
   // Ruta por defecto que apunta a LoginView
-<<<<<<< HEAD
-  { path: '/', name: 'SuperAdminView', component: SuperAdminView },
-  // Otras rutas
-=======
   { path: '/', name: 'InicioLogin', component: InicioLogin },
   
   // RUTAS EVALUADOR
@@ -32,7 +24,7 @@ const routes = [
   { path: '/rubrica-admin', name: 'RubricaAdminView', component: RubricaAdminView },
 
   // RUTAS SUPERADMIN
->>>>>>> origin
+  { path: '/super-admin', name: 'SuperAdminView', component: SuperAdminView},
 
   // Redirección en caso de ruta no encontrada
   { path: '/:pathMatch(.)', redirect: '/not-found' },
