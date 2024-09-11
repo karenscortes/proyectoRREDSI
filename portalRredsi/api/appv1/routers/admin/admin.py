@@ -2,17 +2,16 @@ from typing import List, Optional
 from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
 from appv1.crud.admin.gest_delegado import create_delegados, get_delegados_activos, get_delegados_by_document
-from appv1.crud.admin.gest_rubricas import create_items, get_all_rubricas
+from appv1.crud.admin.gest_rubricas import create_items, delete_items, get_all_rubricas, update_items
 from appv1.crud.admin.gest_delegado import get_delegados_activos
 from appv1.crud.admin.gest_rubricas import get_all_rubricas
 from appv1.crud.admin.admin import create_convocatoria, create_etapa, create_fase, create_sala, get_fases_by_etapa, update_etapa, update_fase
-from appv1.schemas.admin.admin import ConvocatoriaCreate, CreateSala, EtapaCreate, FaseCreate, EtapaUpdate, FaseUpdate
+from appv1.schemas.admin.admin import ConvocatoriaCreate, CreateSala, FaseUpdate
 from appv1.crud.admin.admin import create_convocatoria, create_etapa, create_fase, get_fases_by_etapa, update_etapa, update_fase
-from appv1.schemas.admin.admin import ConvocatoriaCreate, EtapaCreate, FaseCreate, EtapaUpdate, FaseUpdate
 from appv1.schemas.admin.delegado import DelegadoResponse
-from appv1.schemas.administrador.items_rubrica import ItemCreate
-from appv1.schemas.administrador.rubrica import RubricaResponse
-from appv1.schemas.usuario import UserCreate, UserResponse
+from appv1.schemas.admin.items_rubrica import ItemCreate, ItemUpdate
+from appv1.schemas.admin.rubrica import RubricaResponse
+from appv1.schemas.usuario import UserCreate
 from db.database import get_db
 
 router_admin = APIRouter()
@@ -99,13 +98,31 @@ def consult_by_document(user: UserCreate, db: Session = Depends(get_db)):
 
 #Crear items
 @router_admin.post("/create-items/")
-def consult_by_document(item: ItemCreate, db: Session = Depends(get_db)):
-    new_user = create_items(item, db)
-    if new_user:
+def create_item_rubric(item: ItemCreate, db: Session = Depends(get_db)):
+    new_item = create_items(item, db)
+    if new_item:
         return print("Registrado con éxito")
     else: 
         return False
     
+#Editar items
+@router_admin.post("/update-items/{id_item}/")
+def update_item(id_item:int, item_nuevo: ItemUpdate, db: Session = Depends(get_db)):
+    item = update_items(id_item,item_nuevo,db)
+    if item:
+        return print("update con éxito")
+    else: 
+        return False
+    
+#Eliminar items
+@router_admin.post("/delete-items/{id_item}/")
+def delete_item(id_item:int, db: Session = Depends(get_db)):
+    item = delete_items(id_item,db)
+    if item:
+        return print("update con éxito")
+    else: 
+        return False
+   
 # Crear sala
 @router_admin.post("/crear-sala")
 def create_sala_admin(sala: CreateSala, db: Session = Depends(get_db)):

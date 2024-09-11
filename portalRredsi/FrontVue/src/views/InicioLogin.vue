@@ -170,8 +170,7 @@ export default {
                 if (authStore.authError) {
                     errorMessage.value = authStore.authError;
                 } else {
-                    
-                    router.push('/principal-delegado'); // Reemplaza '/dashboard' con la ruta deseada
+                    router.push('/principal-evaluador'); // Reemplaza '/dashboard' con la ruta deseada
                 }
             } catch (error) {
                 errorMessage.value = 'Error durante el login: ' + error.message;
