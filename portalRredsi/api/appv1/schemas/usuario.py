@@ -11,7 +11,6 @@ class EstadosEnum(str, enum.Enum):
 
 class UserBase(BaseModel):
     id_rol :int
-    tipo_documento : Optional[TipoDocumentoResponse] = None 
     documento: Annotated[str, StringConstraints(max_length=55)]
     nombres: Annotated[str, StringConstraints(max_length=25)]
     apellidos: Annotated[str, StringConstraints(max_length=25)]
@@ -22,6 +21,7 @@ class UserBase(BaseModel):
         orm_mode = True
 
 class UserCreate(UserBase):
+    id_tipo_documento: int
     clave: Annotated[str, "Clave del usuario"]
 
 class UserResponse(UserBase):
