@@ -102,7 +102,7 @@ export default {
 
         selectedPage(pagina) {
             this.current_page = pagina;
-            this.fetchProyectos();
+            this.fetchEvaluators();
         },
     }, 
     mounted() {
