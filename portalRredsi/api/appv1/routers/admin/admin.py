@@ -110,3 +110,8 @@ def consult_by_document(item: ItemCreate, db: Session = Depends(get_db)):
 @router_admin.post("/crear-sala")
 def create_sala_admin(sala: CreateSala, db: Session = Depends(get_db)):
     return create_sala(db, sala.id_usuario, sala.area_conocimento, sala.numero_sala, sala.nombre_sala)
+
+# Editar sala
+@router_admin.put("/salas/{id_sala}")
+def modify_etapa(id_etapa: int, nombre: Optional[str] = None, db: Session = Depends(get_db)):
+    return update_etapa(db, id_etapa, nombre)

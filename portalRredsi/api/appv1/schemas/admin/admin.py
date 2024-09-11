@@ -43,3 +43,9 @@ class CreateSala(BaseModel):
     area_conocimento: int
     numero_sala: str
     nombre_sala: str
+
+class UpdateSala(BaseModel):
+    id_usuario: int 
+    area_conocimento: int
+    numero_sala: str
+    nombre_sala: str

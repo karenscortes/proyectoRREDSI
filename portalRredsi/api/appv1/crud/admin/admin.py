@@ -106,3 +106,20 @@ def create_sala(db: Session, id_usuario: int, area_conocimiento: int,  numero: s
     db.add(sala)
     db.commit()
     return {"message": "Sala creada exitosamente"}
+
+
+# Editar una sala
+def update_fase(db: Session, id_sala: int, nombre: Optional[str] = None):
+    # Verifica que la sala exista
+    sala = db.query(Sala).get(id_sala)
+    if not sala:
+        raise HTTPException(status_code=404, detail="Sala no encontrada")
+
+    # Actualiza los campos que sean provistos
+    if nombre:
+        sala.nombre = nombre
+
+    # Guarda los cambios en la base de datos
+    db.commit()
+    db.refresh(sala)
+    return sala
