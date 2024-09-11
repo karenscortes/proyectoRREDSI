@@ -2,6 +2,7 @@ from datetime import date
 from typing import Optional
 from fastapi import HTTPException
 from sqlalchemy.orm import Session
+from appv1.models.area_conocimiento import Area_conocimiento
 from appv1.models.convocatoria import Convocatoria
 from appv1.models.etapa import Etapa
 from appv1.models.fase import Fase
@@ -109,17 +110,30 @@ def create_sala(db: Session, id_usuario: int, area_conocimiento: int,  numero: s
 
 
 # Editar una sala
-def update_fase(db: Session, id_sala: int, nombre: Optional[str] = None):
+def update_sala(db: Session, id_sala: int, id_usuario: Optional[int] = None, area_conocimiento: Optional[int] = None, nombre_sala: Optional[str] = None, numero_sala: Optional[str] = None):
     # Verifica que la sala exista
     sala = db.query(Sala).get(id_sala)
     if not sala:
         raise HTTPException(status_code=404, detail="Sala no encontrada")
 
-    # Actualiza los campos que sean provistos
-    if nombre:
-        sala.nombre = nombre
+    # Si se proporciona un área de conocimiento, obtén el objeto correspondiente
+    if area_conocimiento:
+        area = db.query(Area_conocimiento).get(area_conocimiento)
+        if not area:
+            raise HTTPException(status_code=404, detail="Área de conocimiento no encontrada")
+        sala.area_conocimiento = area
+
+    # Actualiza otros campos si se proporcionan
+    if nombre_sala:
+        sala.nombre_sala = nombre_sala
+    if numero_sala:
+        sala.numero_sala = numero_sala
+    if id_usuario:
+        sala.id_usuario = id_usuario
 
     # Guarda los cambios en la base de datos
     db.commit()
     db.refresh(sala)
     return sala
+
+

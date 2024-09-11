@@ -5,7 +5,7 @@ from appv1.crud.admin.gest_delegado import create_delegados, get_delegados_activ
 from appv1.crud.admin.gest_rubricas import create_items, delete_items, get_all_rubricas, update_items
 from appv1.crud.admin.gest_delegado import get_delegados_activos
 from appv1.crud.admin.gest_rubricas import get_all_rubricas
-from appv1.crud.admin.admin import create_convocatoria, create_etapa, create_fase, create_sala, get_fases_by_etapa, update_etapa, update_fase
+from appv1.crud.admin.admin import create_convocatoria, create_etapa, create_fase, create_sala, get_fases_by_etapa, update_etapa, update_fase, update_sala
 from appv1.schemas.admin.admin import ConvocatoriaCreate, CreateSala, FaseUpdate
 from appv1.crud.admin.admin import create_convocatoria, create_etapa, create_fase, get_fases_by_etapa, update_etapa, update_fase
 from appv1.schemas.admin.delegado import DelegadoResponse
@@ -130,5 +130,5 @@ def create_sala_admin(sala: CreateSala, db: Session = Depends(get_db)):
 
 # Editar sala
 @router_admin.put("/salas/{id_sala}")
-def modify_etapa(id_etapa: int, nombre: Optional[str] = None, db: Session = Depends(get_db)):
-    return update_etapa(db, id_etapa, nombre)
+def update_sala_admin(id_sala: int, id_usuario: Optional[int] = None, area_conocimiento: Optional[int] = None, nombre_sala: Optional[str] = None, numero_sala: Optional[str] = None, db: Session = Depends(get_db)):
+    return update_sala(db, id_sala, id_usuario, area_conocimiento,nombre_sala,numero_sala)
