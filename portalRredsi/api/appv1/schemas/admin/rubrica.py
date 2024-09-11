@@ -1,7 +1,7 @@
 from typing import Annotated, List
 from pydantic import BaseModel, StringConstraints
 
-from appv1.schemas.administrador.items_rubrica import ItemRubricaResponse
+from appv1.schemas.admin.items_rubrica import ItemRubricaResponse
 
 
 class RubricaBase(BaseModel):

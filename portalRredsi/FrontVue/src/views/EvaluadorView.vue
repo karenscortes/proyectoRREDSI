@@ -1,11 +1,11 @@
 <template>
     <div>
         <!-- HEADER  -->
-        <MenuPrincipal :rol="'Delegado'"/>
+        <MenuPrincipal :rol="'Evaluador'"/>
         <h4>{{ user?.nombres }} {{ user?.apellidos }}</h4>
         
         <main class="content mt-4">
-            <ComponenteDinamicoDelegado :currentComponent="currentComponent" />
+            <ComponenteDinamicoEvaluador :currentComponent="currentComponent" />
         </main>
 
         <footer class="bg-dark mt-5 text-white text-center py-3">
@@ -17,31 +17,30 @@
 <script>
 import { markRaw } from 'vue';
 import MenuPrincipal from '../components/Menus/MenuPrincipal.vue';
-import AsignarProyectos from '../components/Users/delegado/AsignarProyectos/AsignarProyectos.vue';
+import ProyectosAsignadosEvaluadorView from './ProyectosAsignadosEvaluadorView.vue';
 
-import ComponenteDinamicoDelegado from '../components/Users/delegado/ComponenteDinamicoDelegado.vue';
+import ComponenteDinamicoEvaluador from '../components/Users/evaluador/ComponenteDinamicoEvaluador.vue';
 import { useAuthStore } from '@/store';
 import { useRouter } from 'vue-router'; 
 
 export default {
     components: {
-        ComponenteDinamicoDelegado, 
+        ComponenteDinamicoEvaluador, 
         MenuPrincipal: markRaw(MenuPrincipal),
-        AsignarProyectos: markRaw(AsignarProyectos)
+        ProyectosAsignadosEvaluadorView: markRaw(ProyectosAsignadosEvaluadorView)
 
     },
     data() {
         return {
-            currentComponent: AsignarProyectos
+            currentComponent: ProyectosAsignadosEvaluadorView
         };
     },
     methods: {
         changeComponent(componentName) {
             const componentMap = {
-                AsignarProyectos: AsignarProyectos,
-                MenuPrincipal: MenuPrincipal, 
+                ProyectosAsignadosEvaluadorView: ProyectosAsignadosEvaluadorView,
             };
-            this.currentComponent = componentMap[componentName] || AsignarProyectos;
+            this.currentComponent = componentMap[componentName] || ProyectosAsignadosEvaluadorView;
         }
     },setup() {
         const authStore = useAuthStore();

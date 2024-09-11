@@ -1,4 +1,4 @@
-from typing import List
+from typing import List,  Optional
 from datetime import date, time
 from pydantic import BaseModel
 
@@ -15,8 +15,8 @@ class ProyectoSchema(BaseModel):
     nombre_semillero: str
     url_propuesta_escrita: str
     url_aval: str
-    estado_evaluacion: str
-
+    estado_evaluacion: Optional[str] = None
+    
 class PaginatedResponse(BaseModel):
     data: List[ProyectoSchema]
     total_pages: int

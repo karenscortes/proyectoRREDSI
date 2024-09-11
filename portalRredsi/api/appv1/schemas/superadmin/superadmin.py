@@ -1,3 +1,4 @@
+from typing import Optional
 from pydantic import BaseModel, EmailStr
 from enum import Enum
 from datetime import datetime
@@ -7,12 +8,18 @@ class EstadoEnum(str, Enum):
     activo = "activo"
     inactivo = "inactivo"
 
-# Esquema de respuesta para los detalles de los administradores
+# Esquema de respuesta para los detalles completos de los administradores
 class SuperAdminResponse(BaseModel):
     id_usuario: int
     id_rol: int
+    documento: int
+    nombres: str  
+    apellidos: str  
     correo: EmailStr
-    estado: EstadoEnum
+    estado: str
+    celular: Optional[str] = None
+    direccion: Optional[str] = None 
+    rol_nombre: str
 
     class Config:
         orm_mode = True
