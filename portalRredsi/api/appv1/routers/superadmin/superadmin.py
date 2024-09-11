@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
-from appv1.crud.superadmin.superadmin import get_all_admin, update_user_role, get_activity_history_by_admin
+from appv1.crud.superadmin.superadmin import get_all_admins, update_user_role, get_activity_history_by_admin
 from appv1.schemas.superadmin.superadmin import SuperAdminResponse, UserRoleUpdateSchema, ActivityHistoryResponse
 from db.database import get_db
 from typing import List
@@ -12,7 +12,7 @@ router_superadmin = APIRouter()
 async def read_all_admin(
     db: Session = Depends(get_db)
 ):
-    administradores = get_all_admin(db)
+    administradores = get_all_admins(db)
     if not administradores:
         raise HTTPException(status_code=404, detail="Administradores no encontrados")
     return administradores

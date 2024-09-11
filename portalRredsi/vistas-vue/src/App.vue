@@ -2,18 +2,14 @@
 
   <img alt="Vue logo" src="./assets/logo.png">
   <HelloWorld msg="Welcome to Your Vue.js App"/>
-  <MenuUsuarios rol="Delegado"></MenuUsuarios>
 </template>
 <script>
 import HelloWorld from './components/HelloWorld.vue';
-import MenuUsuarios from './components/menus/MenuUsuarios.vue';
-
 
 export default {
   name: 'App',
   components: {
     HelloWorld,
-    MenuUsuarios,
   }
 }
 </script>

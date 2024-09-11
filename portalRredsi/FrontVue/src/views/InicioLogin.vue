@@ -83,7 +83,7 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-                        <button type="button" class="btn btn-primary custom-login-button" @click="handleLogin">Iniciar Sesión</button>
+                        <button type="button" data-bs-dismiss="modal" aria-label="Close" class="btn btn-primary custom-login-button" @click="handleLogin">Iniciar Sesión</button>
                     </div>
                 </div>
             </div>
@@ -170,7 +170,7 @@ export default {
                 if (authStore.authError) {
                     errorMessage.value = authStore.authError;
                 } else {
-                    router.push('/DelegadoView'); // Reemplaza '/dashboard' con la ruta deseada
+                    router.push('/principal-delegado'); // Reemplaza '/dashboard' con la ruta deseada
                 }
             } catch (error) {
                 errorMessage.value = 'Error durante el login: ' + error.message;

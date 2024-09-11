@@ -55,14 +55,14 @@
               :key="index"
               :index="index"
             :infoDelegado="delegado"
-            @open="showModalEdit($event)" @check="cambiarEstadoCheckboxDelegado($event)">
+            @open="showModalDetail($event)" @check="cambiarEstadoCheckboxDelegado($event)">
             </RowTableDelegado>
           </tbody>
         </table>
       </div>
     </div>
     <ModalAdd @close="closeModalAdd()" v-if="isModalOpenAdd"></ModalAdd>
-    <ModalDetalle v-if="isModalOpenEdit" @closeModalDetail="closeModalEdit()"></ModalDetalle>
+    <ModalDetalle v-if="isModalOpenEdit" @closeModalDetail="closeModalDetail()" :infoModal="infoModalDetail"></ModalDetalle>
   </div>
 </template>
 <script>
@@ -124,16 +124,16 @@ export default {
       },
     ]);
     
-    const infoModalEdit= reactive({
-      p_idDelegado: 1,
-      p_tipo_documento: "cedula", 
-      p_documento: "234567",
-      p_nombre: "Laura", 
-      p_apellidos: "Motato", 
-      p_areaConocimiento: "Sistemas", 
-      p_institucion: "SENA",
-      p_telefono: "302434566", 
-      p_correo: "lau@gmail.com"
+    const infoModalDetail= reactive({
+      p_idDelegado: null,
+      p_tipoDocumento: "", 
+      p_documento: "",
+      p_nombres: "", 
+      p_apellidos: "", 
+      p_areaConocimiento: "", 
+      p_institucion: "",
+      p_telefono: "", 
+      p_correo: ""
     }); 
 
     const showModalAdd = () =>{
@@ -143,29 +143,29 @@ export default {
       isModalOpenAdd.value = false; 
     }
 
-    const showModalEdit = infoDelegado =>{
-      infoModalEdit.p_idDelegado = infoDelegado.p_idDelegado; 
-      infoModalEdit.p_tipo_documento = infoDelegado.p_tipoDocumento, 
-      infoModalEdit.p_documento = "234567",
-      infoModalEdit.p_nombre = "Laura", 
-      infoModalEdit.p_apellidos = "Motato", 
-      infoModalEdit.p_areaConocimiento = "Sistemas"; 
-      infoModalEdit.p_institucion = "SENA";
-      infoModalEdit.p_telefono = "302434566";
-      infoModalEdit.p_correo = "lau@gmail.com"
+    const showModalDetail = infoDelegado =>{
+      infoModalDetail.p_idDelegado = infoDelegado.p_idDelegado; 
+      infoModalDetail.p_tipoDocumento = infoDelegado.p_tipoDocumento, 
+      infoModalDetail.p_documento = infoDelegado.p_documento,
+      infoModalDetail.p_nombres = infoDelegado.p_nombres, 
+      infoModalDetail.p_apellidos = infoDelegado.p_apellidos, 
+      infoModalDetail.p_areaConocimiento = infoDelegado.p_areaConocimiento; 
+      infoModalDetail.p_institucion = infoDelegado.p_institucion;
+      infoModalDetail.p_telefono = infoDelegado.p_telefono;
+      infoModalDetail.p_correo = infoDelegado.p_correo;
       isModalOpenEdit.value = true;
     }
-    const closeModalEdit = () =>{
+    const closeModalDetail = () =>{
       isModalOpenEdit.value = false; 
     }
     return { 
     busqueda, 
     ArrayDelegados,
-    infoModalEdit,
+    infoModalDetail,
     isModalOpenEdit,
     isModalOpenAdd,
-    closeModalEdit, 
-    showModalEdit, 
+    closeModalDetail, 
+    showModalDetail, 
     closeModalAdd,
     showModalAdd, 
     cambiarEstadoCheckboxDelegado,

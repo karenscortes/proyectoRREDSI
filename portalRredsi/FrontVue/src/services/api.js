@@ -24,7 +24,7 @@ const api = axios.create({
 //   });
 
 
-// //Interceptor para manejar errores
+//Interceptor para manejar errores
 // api.interceptors.response.use(response => {
 //   return response;
 // }, error => {
