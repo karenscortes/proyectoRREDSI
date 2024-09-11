@@ -37,9 +37,9 @@
                         <label for="" class="Text-dark fw-bold">Seleccionar evaluador:</label>
                         <select class="form-select text-dark">
                             <option selected>Seleccionar evaluador</option>
-                            <option v-for="(posibleEvaluador, index) in proyecto.posiblesEvaluadores" :key="index"
-                                :value="posibleEvaluador.nombreEvaluador">
-                                {{ posibleEvaluador.nombreEvaluador }}</option>
+                            <option v-for="(posibleEvaluador, index) in posiblesEvaluadores.data" :key="index"
+                                :value="posibleEvaluador">
+                                {{ posibleEvaluador.nombres }} {{ posibleEvaluador.apellidos }}</option>
                         </select>
                     </div>
                     <div class="col-md-6 col-12 mb-5">
@@ -78,7 +78,7 @@
 </template>
 
 <script>
-import { obtenerAutoresProyecto } from '../../../../services/delegadoService'
+import { obtenerAutoresProyecto, obtenerIdAreaConocimiento, obtenerPosiblesEvaluadores, obtenerIdInstitucion, obtenerListaEvaluadores } from '../../../../services/delegadoService'
 
 export default {
     props: {
@@ -87,22 +87,44 @@ export default {
     },
     data() {
         return {
+            posiblesEvaluadores: [],
             autores : [] 
         }
     },
     methods: {
         async asignarAutoresAProyectos() {
-            const autores_cant = await obtenerAutoresProyecto(this.proyecto.id_proyecto);
+            try {
+                const autores_cant = await obtenerAutoresProyecto(this.proyecto.id_proyecto);
             
-            if (autores_cant){
-                this.autores = autores_cant.data; 
+                if (autores_cant){
+                    this.autores = autores_cant.data; 
+                }
+            } catch (error) {
+                console.log(`Proyecto ${this.proyecto.titulo} Sin autores`)
             }
 
-            console.log(this.proyecto.id_proyecto);  // Para verificar que los autores se asignan correctamente
-        }
+        },
+        async fetchPosiblesEvaluadores() {
+            try {
+                const id_area_conocimiento = await obtenerIdAreaConocimiento(this.proyecto.area_conocimiento);
+                const id_institucion = await obtenerIdInstitucion(this.proyecto.institucion)
+
+                const response = await obtenerPosiblesEvaluadores(id_area_conocimiento.data.id_area_conocimiento, id_institucion.data.id_institucion);
+
+                this.posiblesEvaluadores = response.data;
+
+                if(this.posiblesEvaluadores.detail == "No hay evaluadores disponibles"){
+                    this.posiblesEvaluadores = await obtenerListaEvaluadores();
+                }
+
+            } catch (error) {
+                alert("Error al obtener proyectos: ", error);
+            }
+        },
     },
     mounted() {
         this.asignarAutoresAProyectos();
+        this.fetchPosiblesEvaluadores();
     }
 }
 </script>

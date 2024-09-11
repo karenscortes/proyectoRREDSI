@@ -1,6 +1,6 @@
 <template>
-    <div class="container pt-5">
-        <div class="row mb-4 mt-2">
+    <div class="container pt-5 mt-5">
+        <div class="row mb-4 mt-5">
             <div class="col">
                 <div class="section_title text-center">
                     <h1>Asignar proyectos</h1>
@@ -37,7 +37,7 @@
 
 <script>
 import AcordeonProyecto from './AcordeonProyecto.vue';
-import { proyectosSinAsignar, obtenerAutoresProyecto } from '../../../../services/delegadoService'
+import { proyectosSinAsignar } from '../../../../services/delegadoService'
 
 export default {
     data() {
@@ -57,8 +57,7 @@ export default {
             } catch (error) {
                 alert("Error al obtener proyectos: ", error);
             }
-        }
-        ,
+        },
         nextPage() {
             if (this.current_page < this.totalPages) {
                 this.current_page++;

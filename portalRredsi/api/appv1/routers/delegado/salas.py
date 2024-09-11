@@ -10,7 +10,7 @@ router_sala = APIRouter()
 
 # < RUTAS SALAS
 
-@router_sala.post("/asignar-proyecto-etapa-presencial")
+@router_sala.post("/asignar-proyecto-etapa-presencial/")
 async def asignar_proyecto(asignacion: AsignarProyectoSala, db: Session = Depends(get_db)):
     respuesta = asignar_proyecto_a_sala(db, asignacion)
     if respuesta:

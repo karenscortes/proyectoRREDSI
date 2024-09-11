@@ -105,6 +105,7 @@ export default {
         const authStore = useAuthStore();
         const router = useRouter();
 
+        const user = ref({})
         // Define las propiedades reactivas para el email, la contraseña y el mensaje de error
         const email = ref('');
         const password = ref('');
@@ -179,7 +180,16 @@ export default {
                 if (authStore.authError) {
                     errorMessage.value = authStore.authError;
                 } else {
-                    router.push('/super-admin'); // Reemplaza '/dashboard' con la ruta deseada
+                    
+                    const user = authStore.user;
+                    console.log(user)
+                    // const permissions = authStore.permissions;
+                    if(user?.id_rol == 2){
+                     // Reemplaza '/dashboard' con la ruta deseada
+                        router.push('/principal-delegado');
+                    }else if(user?.id_rol == 1){
+                        router.push('/principal-evaluador');
+                    }
                 }
             } catch (error) {
                 errorMessage.value = 'Error durante el login: ' + error.message;
@@ -192,6 +202,8 @@ export default {
             password,
             errorMessage,
             handleLogin,
+            user,
+            // permissions
         };
     },
 };

@@ -11,9 +11,9 @@ export const proyectosSinAsignar = async (page = 1, pageSize = 2) => {
         return response;
     } catch (error) {
         if (error.response) {
-            throw error; // Lanza el error para que lo maneje el store
+            throw error; 
         } else {
-            throw new Error('Error de red o de servidor'); // Manejar errores de red
+            throw new Error('Error de red o de servidor');
         }
     }
 };
@@ -29,15 +29,87 @@ export const obtenerAutoresProyecto = async (id_proyecto) => {
         return response;
     } catch (error) {
         if (error.response) {
-            throw error; // Lanza el error para que lo maneje el store
+            throw error;
         } else {
-            throw new Error('Error de red o de servidor'); // Manejar errores de red
+            throw new Error('Error de red o de servidor');
+        }
+    }
+};
+
+// Función para obtener Posibles evaluadores para un proyecto
+export const obtenerPosiblesEvaluadores = async (id_area_conocimiento,id_institucion) => {
+    try {
+        const response = await api.get(`/asignarProyectoEtapaVirtual/get-posibles-evaluadores/?area_conocimiento=${id_area_conocimiento}&id_institucion=${id_institucion}`, {
+            headers: {
+                'Authorization': `Bearer` // Incluye el token de autenticación
+            }
+        });
+        return response;
+    } catch (error) {
+        if (error.response) {
+            throw error;
+        } else {
+            throw new Error('Error de red o de servidor');
+        }
+    }
+};
+
+// Función para obtener la lista de evaluadores para un proyectos en caso de que no hayan recomendados
+export const obtenerListaEvaluadores = async () => {
+    try {
+        const response = await api.get(`/listaEvaluadores/get-all-evaluators/`, {
+            headers: {
+                'Authorization': `Bearer` // Incluye el token de autenticación
+            }
+        });
+        return response;
+    } catch (error) {
+        if (error.response) {
+            throw error;
+        } else {
+            throw new Error('Error de red o de servidor');
+        }
+    }
+};
+
+// Función para obtener id de area de conocimiento
+export const obtenerIdAreaConocimiento = async (area_conocimiento) => {
+    try {
+        const response = await api.get(`/asignarProyectoEtapaVirtual/get-id-area-conocimiento/?nombre_area=${area_conocimiento}`, {
+            headers: {
+                'Authorization': `Bearer` // Incluye el token de autenticación
+            }
+        });
+        return response;
+    } catch (error) {
+        if (error.response) {
+            throw error;
+        } else {
+            throw new Error('Error de red o de servidor');
+        }
+    }
+};
+
+// Función para obtener id de institucion
+export const obtenerIdInstitucion = async (institucion) => {
+    try {
+        const response = await api.get(`/asignarProyectoEtapaVirtual/get-id-institucion/?nombre_institucion=${institucion}`, {
+            headers: {
+                'Authorization': `Bearer` // Incluye el token de autenticación
+            }
+        });
+        return response;
+    } catch (error) {
+        if (error.response) {
+            throw error;
+        } else {
+            throw new Error('Error de red o de servidor');
         }
     }
 };
 
 //Asistencia
-export const asistenciaEvento = async (page= 1, page_size = 10,) => {
+export const asistenciaEvento = async (page= 1, page_size = 10) => {
     try {
         const response = await api.get(`asistencia/get-all-asistentes/?page=${page}&page_size=${page_size}`, {
             headers: {
@@ -110,9 +182,9 @@ export const obtenerAsistentePorDocumento = async (documento) => {
 };
 
 //Actualizar asistencia (check)
-export const actualizarAsistencia = async (documento, asistencia) => {
+export const actualizarAsistencia = async (id_asistencia, id_usuario,asistencia) => {
     try {
-        const response = await api.patch(`asistencia/update-asistencia/${documento}`, { asistencia }, {
+        const response = await api.patch(`/asistencia/update-asistencia/?id_asistencia=${id_asistencia}&id_usuario=${id_usuario}&asistencia=${asistencia}`, {
             headers: {
                 'Authorization': `Bearer`
             }
