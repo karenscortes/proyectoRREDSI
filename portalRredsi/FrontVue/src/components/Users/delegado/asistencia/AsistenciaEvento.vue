@@ -68,7 +68,7 @@
                         <td>{{ asistente.nombres }} {{ asistente.apellidos }}</td>
                         <td>{{ asistente.institucion }}</td>
                         <td colspan="1">
-                            <input type="checkbox" class="form-check-input ml-4" :checked="asistente.asistencia" @change="toggleAsistencia(asistente)">
+                            <input type="checkbox" class="form-check-input ml-4" :checked="asistente.asistencia" @change="toggleActualizarAsistencia(asistente)">
                         </td>
                     </tr>
                 </tbody>
@@ -95,7 +95,7 @@
 </template>
 
 <script>
-import { asistenciaEvento, actualizarAsistencia, obtenerSalas } from '../../../../services/delegadoService';
+import { asistenciaEvento, actualizarAsistencia } from '@/services/delegadoService';
 
 export default {
     data() {
@@ -109,27 +109,12 @@ export default {
         };
     },
     methods: {
-        async fetchAsistentes(filtroRol = null) {
+        async fetchAsistentes() {
             try {
                 const response = await asistenciaEvento(this.currentPage); 
-                let asistentes = response.data.asistentes;
+                const listaAsistentes = response.data.asistentes;
 
-                // Filtro por sala
-                if (this.salaSeleccionada !== 'Sala') {
-                    asistentes = asistentes.filter(asistente => asistente.sala === this.salaSeleccionada);
-                }
-
-                // Filtro por rol
-                if (filtroRol) {
-                    asistentes = asistentes.filter(asistente => asistente.rol === filtroRol);
-                }
-
-                // Filtro por búsqueda
-                if (this.busqueda) {
-                    asistentes = asistentes.filter(asistente => asistente.documento.includes(this.busqueda));
-                }
-
-                this.asistentes = asistentes;
+                this.asistentes = listaAsistentes;
                 this.totalPages = response.data.totalPages; // Actualizar el número total de páginas (asumiendo que la API lo devuelve)
             } catch (error) {
                 alert("Error al obtener asistentes: " + error);
@@ -137,28 +122,21 @@ export default {
         },
 
         // Obtener salas disponibles
-        async fetchSalas() {
-            try {
-                const response = await obtenerSalas(); 
-                this.opciones_select = response.data.salas; 
-            } catch (error) {
-                alert("Error al obtener las salas: " + error);
-            }
-        },
+        // async fetchSalas() {
+        //     try {
+        //         const response = await obtenerSalas(); 
+        //         this.opciones_select = response.data.salas; 
+        //     } catch (error) {
+        //         alert("Error al obtener las salas: " + error);
+        //     }
+        // },
 
-        filtrarParticipantes() {
-            this.fetchAsistentes('participante');
-        },
-
-        filtrarEvaluadores() {
-            this.fetchAsistentes('evaluador');
-        },
 
     
-        async toggleAsistencia(asistente) {
+        async toggleActualizarAsistencia(asistente) {
             try {
                 asistente.asistencia = !asistente.asistencia; 
-                await actualizarAsistencia(asistente.documento, asistente.asistencia); 
+                await actualizarAsistencia(asistente.id_asistente,asistente.id_usuario, asistente.asistencia); 
             } catch (error) {
                 alert("Error al actualizar la asistencia: " + error);
             }
@@ -182,12 +160,11 @@ export default {
     },
     mounted() {
         this.fetchAsistentes(); 
-        this.fetchSalas();
     }
 };
 </script>
 
-<style>
+<style scoped>
 .section_title h1 {
     display: block;
     color: #1a1a1a;
