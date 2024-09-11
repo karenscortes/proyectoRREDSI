@@ -37,7 +37,7 @@
 
 <script>
 import AcordeonProyecto from './AcordeonProyecto.vue';
-import { proyectosSinAsignar, obtenerAutoresProyecto } from '../../../../services/delegadoService'
+import { proyectosSinAsignar } from '../../../../services/delegadoService'
 
 export default {
     data() {
@@ -57,8 +57,7 @@ export default {
             } catch (error) {
                 alert("Error al obtener proyectos: ", error);
             }
-        }
-        ,
+        },
         nextPage() {
             if (this.current_page < this.totalPages) {
                 this.current_page++;

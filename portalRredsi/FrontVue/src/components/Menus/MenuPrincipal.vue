@@ -43,7 +43,7 @@
         href="#"
         class="header_side d-flex flex-row justify-content-center align-items-center"
       >
-        <h3 class="main_nav_item text-dark">{{yellow_tab}}</h3>
+        <h3 class="main_nav_item text-dark" @click="logout">{{yellow_tab}}</h3>
       </a>
 
       <!-- Hamburger -->
@@ -113,6 +113,8 @@
 </template>
   
 <script>
+import { useAuthStore } from '@/store';
+import { useRouter } from 'vue-router';
     export default {
     props: {
         rol: String,
@@ -183,6 +185,24 @@
             };
         }
     },
+    setup(){
+      const authStore = useAuthStore();
+        const router = useRouter(); 
+
+        const user = authStore.user;
+        const permissions = authStore.permissions;
+
+        const logout = () => {
+            authStore.logout(); 
+            router.push('/');
+        };
+
+        return {
+            user,
+            permissions,
+            logout
+        };
+    }
     };
 </script>
   

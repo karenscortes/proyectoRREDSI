@@ -2,12 +2,13 @@
     <div>
         <!-- HEADER  -->
         <MenuPrincipal :rol="'Delegado'"/>
+        <h4>{{ user?.nombres }} {{ user?.apellidos }}</h4>
         
         <main class="content mt-4">
             <ComponenteDinamicoDelegado :currentComponent="currentComponent" />
         </main>
 
-        <footer class="text-white text-center py-3">
+        <footer class="bg-dark mt-5 text-white text-center py-3">
             <h2>ESTE ES EL FOOTER</h2>
         </footer>
     </div>
@@ -19,32 +20,46 @@ import MenuPrincipal from '../components/Menus/MenuPrincipal.vue';
 import AsignarProyectos from '../components/Users/delegado/AsignarProyectos/AsignarProyectos.vue';
 
 import ComponenteDinamicoDelegado from '../components/Users/delegado/ComponenteDinamicoDelegado.vue';
+import { useAuthStore } from '@/store';
+import { useRouter } from 'vue-router'; 
 
 export default {
     components: {
-        ComponenteDinamicoDelegado, // Registra el componente dinámico
+        ComponenteDinamicoDelegado, 
         MenuPrincipal: markRaw(MenuPrincipal),
         AsignarProyectos: markRaw(AsignarProyectos)
 
     },
     data() {
         return {
-            // Define el componente que se mostrará inicialmente
             currentComponent: AsignarProyectos
         };
     },
     methods: {
         changeComponent(componentName) {
-            // Mapea nombres a componentes
             const componentMap = {
                 AsignarProyectos: AsignarProyectos,
-                MenuPrincipal: MenuPrincipal, // Añade el componente ListUsers al mapeo de nombres a componentes
-                // Añadir aquí más componentes al mapear nombres a componentes, como:
-                // otros componentes
+                MenuPrincipal: MenuPrincipal, 
             };
-            // Cambia el componente actual
             this.currentComponent = componentMap[componentName] || AsignarProyectos;
         }
+    },setup() {
+        const authStore = useAuthStore();
+        const router = useRouter(); 
+
+        const user = authStore.user;
+        const permissions = authStore.permissions;
+
+        const logout = () => {
+            authStore.logout(); 
+            router.push('/');
+        };
+
+        return {
+            user,
+            permissions,
+            logout
+        };
     }
 };
 </script>

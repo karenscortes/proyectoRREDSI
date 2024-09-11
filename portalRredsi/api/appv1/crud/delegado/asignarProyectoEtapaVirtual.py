@@ -74,7 +74,7 @@ def get_posibles_evaluadores_para_proyecto(db: Session, id_area_conocimiento: in
     except SQLAlchemyError as e:
         db.rollback()
         print(f"Error al buscar evaluadores")
-        raise HTTPException(status_code=404, detail="Error al buscar evaluadores")
+        raise HTTPException(status_code=204, detail="Error al buscar evaluadores")
 
 def get_area_conocimiento_por_nombre(db: Session, nombre_area: str):
     try:
@@ -83,4 +83,13 @@ def get_area_conocimiento_por_nombre(db: Session, nombre_area: str):
         return result
     except SQLAlchemyError as e:
         print(f"Area de conocimiento no se ha encontrado")
-        raise HTTPException(status_code=500, detail="Area de conocimiento no se ha encontrado")
+        raise HTTPException(status_code=204, detail="Area de conocimiento no se ha encontrado")
+    
+def get_institucion_por_nombre(db: Session, nombre_institucion: str):
+    try:
+        sql = text("SELECT * FROM instituciones WHERE nombre like :n_institucion")
+        result = db.execute(sql, {"n_institucion": nombre_institucion}).fetchone()
+        return result
+    except SQLAlchemyError as e:
+        print(f"Area de conocimiento no se ha encontrado")
+        raise HTTPException(status_code=204, detail="Area de conocimiento no se ha encontrado")

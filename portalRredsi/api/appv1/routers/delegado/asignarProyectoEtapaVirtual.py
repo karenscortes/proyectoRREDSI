@@ -3,8 +3,9 @@ from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 from appv1.schemas.area_conocimiento import AreaConocimientoBase
 from appv1.schemas.delegado.asignacionProyectoEtapaVirtual import AsignarProyectoEtapaUno, PosibleEvaluadorEtapaVirtual
+from appv1.schemas.institucion import InstitucionBase
 from db.database import get_db
-from appv1.crud.delegado.asignarProyectoEtapaVirtual import asignar_proyecto_etapa_virtual, get_area_conocimiento_por_nombre, get_convocatoria_actual_por_proyecto, get_posibles_evaluadores_para_proyecto
+from appv1.crud.delegado.asignarProyectoEtapaVirtual import asignar_proyecto_etapa_virtual, get_area_conocimiento_por_nombre, get_convocatoria_actual_por_proyecto, get_institucion_por_nombre, get_posibles_evaluadores_para_proyecto
 
 router_proyecto_etapa_uno = APIRouter()
 
@@ -43,7 +44,7 @@ async def read_posibles_evaluadores(
     posibles_evaluadores = get_posibles_evaluadores_para_proyecto(db, area_conocimiento, id_institucion)
 
     if len(posibles_evaluadores) == 0:
-        raise HTTPException(status_code=404, detail="No hay evaluadores disponibles")
+        raise HTTPException(status_code=200, detail="No hay evaluadores disponibles")
 
     # Serialización manual
     evaluadores = [
@@ -65,8 +66,19 @@ async def read_detalle_sala(
     nombre_area: str,
     db: Session = Depends(get_db),
 ):
-    sala_detalle = get_area_conocimiento_por_nombre(db,nombre_area)
-    if len(sala_detalle) == 0:
+    area_conocimiento = get_area_conocimiento_por_nombre(db,nombre_area)
+    if len(area_conocimiento) == 0:
         raise HTTPException(status_code=404, detail="Area de conocimiento no encontrada")
     
-    return sala_detalle
+    return area_conocimiento
+
+@router_proyecto_etapa_uno.get("/get-id-institucion/", response_model=InstitucionBase)
+async def read_detalle_sala(
+    nombre_institucion: str,
+    db: Session = Depends(get_db),
+):
+    area_conocimiento = get_institucion_por_nombre(db,nombre_institucion)
+    if len(area_conocimiento) == 0:
+        raise HTTPException(status_code=404, detail="Institucion no encontrada")
+    
+    return area_conocimiento
