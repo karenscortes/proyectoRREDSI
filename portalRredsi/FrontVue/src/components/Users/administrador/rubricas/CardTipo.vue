@@ -1,5 +1,5 @@
 <template>
-  <div class="card">
+  <div class="card" @click="oprimir()">
     <img
       v-if="infoCard.image"
       :src="`/src/assets/${infoCard.image}`"
@@ -22,7 +22,7 @@
 </template>
 
 <script setup>
-defineProps({
+const props = defineProps({
   infoCard: {
     type: Object,
     required: true,
@@ -30,12 +30,20 @@ defineProps({
       return (
         typeof value.image === "string" &&
         typeof value.altImage === "string" &&
+        typeof value.idModalidad === "number" &&
         typeof value.modalidadProyecto === "string" &&
+        typeof value.idFase === "number" &&
         typeof value.faseProyecto === "string"
       );
     },
   },
 });
+
+const emit = defineEmits(["cardSeleccionada"]);
+
+const oprimir = () => {
+  emit("cardSeleccionada", props.infoCard);
+};
 </script>
 
 <style scoped>

@@ -42,16 +42,13 @@
                 v-for="(item, index) in infoItems"
                 :key="index"
                 :infoItem="item"
+                @editarItem="onEditModal($event)"
               >
               </ItemTBody>
               <!-- row btn añadir item-->
               <tr class="tr_item_rubrica">
                 <td class="td_boton text-center" colspan="3">
-                  <button
-                    data-bs-toggle="modal"
-                    data-bs-target="#modalAñadirItem"
-                    class="boton_añadir"
-                  >
+                  <button class="boton_añadir" @click="showModal()">
                     Añadir
                   </button>
                 </td>
@@ -89,30 +86,36 @@
       <button class="btn boton pl-5 pr-5 mx-auto">Editar</button>
     </div>
     <!--Sesion de modales-->
-    <ModalAdd :infoModalEditar="infoModalEditar"></ModalAdd>
+    <ModalAdd
+      v-if="isModalOpen"
+      @close="closeModal()"
+      :infoModalEditar="infoModalEditar"
+    ></ModalAdd>
     <ModalDelete></ModalDelete>
   </div>
 </template>
 
 <script setup>
 import { reactive } from "vue";
+import { ref } from 'vue';
+import ModalDelete from "../components/Users/administrador/rubricas/ModalDelete.vue";
+import ModalAdd from "../components/Users/administrador/rubricas/ModalAdd.vue";
 import CardTipo from "../components/Users/administrador/rubricas/CardTipo.vue";
 import ItemTBody from "../components/Users/administrador/rubricas/ItemTBody.vue";
-import ItemThead from "../components/Users/administrador/rubricas/ItemThead.vue";
 import FootTable from "../components/Users/administrador/rubricas/FootTable.vue";
-import ModalAdd from "../components/Users/administrador/rubricas/ModalAdd.vue";
-import ModalDelete from "../components/Users/administrador/rubricas/ModalDelete.vue";
+import ItemThead from "../components/Users/administrador/rubricas/ItemThead.vue";
+
+const isModalOpen = ref(false);
 
 //Titulo contenedor principal
 const tituloPrincipal = "Gestionar rúbricas";
 
 //info para enviar al modal(Editar)
 const infoModalEditar = reactive({
-  p_idRubrica: 1,
-  p_tituloItem: "Presentación oral",
-  p_valorMax: 10,
-  p_descripcion:
-    "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quae?",
+  p_idItem: null,
+  p_tituloItem: "",
+  p_valorMax: null,
+  p_descripcion: "",
 });
 
 //info imputs del Thead
@@ -134,51 +137,96 @@ const infoImputs = reactive([
   },
 ]);
 
-//info row del tbody
+//info items rubrica
 const infoItems = reactive([
   {
-    p_encabezadoTr: "Presentación oral",
-    p_contenidoTr:
+    p_idItem: 1,
+    p_tituloItem: "Presentación oral",
+    p_descripcion:
       "Lorem ipsum dolor sit amet consectetur adipisicing elit. Obcaecati!",
+    p_valorMax: Math.round(Math.random() * 100),
   },
   {
-    p_encabezadoTr: "Presentación oral",
-    p_contenidoTr:
+    p_idItem: 2,
+    p_tituloItem: "Presentación oral",
+    p_descripcion:
       "Lorem ipsum dolor sit amet consectetur adipisicing elit. Obcaecati!",
+    p_valorMax: Math.round(Math.random() * 100),
   },
   {
-    p_encabezadoTr: "Presentación oral",
-    p_contenidoTr:
+    p_idItem: 3,
+    p_tituloItem: "Presentación oral",
+    p_descripcion:
       "Lorem ipsum dolor sit amet consectetur adipisicing elit. Obcaecati!",
+    p_valorMax: Math.round(Math.random() * 100),
   },
   {
-    p_encabezadoTr: "Presentación oral",
-    p_contenidoTr:
+    p_idItem: 4,
+    p_tituloItem: "Presentación oral",
+    p_descripcion:
       "Lorem ipsum dolor sit amet consectetur adipisicing elit. Obcaecati!",
+    p_valorMax: Math.round(Math.random() * 100),
   },
 ]);
 
 //info para la card
 const infoCards = reactive([
   {
-    image: "vue.svg",
+    image: "logo.png",
     altImage: "Esto es un ejemplo",
+    idModalidad: 1,
     modalidadProyecto: "Poster",
+    idFase: 1,
     faseProyecto: "Presencial",
   },
   {
-    image: "vue.svg",
+    image: "logo.png",
     altImage: "Esto es un ejemplo",
+    idModalidad: 1,
     modalidadProyecto: "Poster",
+    idFase: 1,
     faseProyecto: "Presencial",
   },
   {
-    image: "vue.svg",
+    image: "logo.png",
     altImage: "Esto es un ejemplo",
+    idModalidad: 1,
     modalidadProyecto: "Poster",
+    idFase: 1,
+    faseProyecto: "Presencial",
+  },
+  {
+    image: "logo.png",
+    altImage: "Esto es un ejemplo",
+    idModalidad: 1,
+    modalidadProyecto: "Poster",
+    idFase: 1,
     faseProyecto: "Presencial",
   },
 ]);
+
+//Evento cambiar valores modal por info actual
+const onEditModal = (informacionTr) => {
+  infoModalEditar.p_idItem = informacionTr.p_idItem;
+  infoModalEditar.p_tituloItem = informacionTr.p_tituloItem;
+  infoModalEditar.p_valorMax = informacionTr.p_valorMax;
+  infoModalEditar.p_descripcion = informacionTr.p_descripcion;
+  showModal();
+};
+
+//Evento para cerrar el modal
+const closeModal = () => {
+  infoModalEditar.p_idItem = null;
+  infoModalEditar.p_valorMax = null;
+  infoModalEditar.p_tituloItem = "";
+  infoModalEditar.p_descripcion = "";
+  isModalOpen.value = false;
+};
+
+//Evento para abrir el modal
+const showModal = () => {
+  isModalOpen.value = true;
+};
 </script>
 
 <style scoped>
@@ -193,8 +241,6 @@ const infoCards = reactive([
 }
 .titulo_principal {
   color: black;
-  margin-left: 25%;
-  font-weight: 600;
 }
 .contenedor_principal {
   gap: 20px;
@@ -316,7 +362,7 @@ const infoCards = reactive([
     width: 79%;
   }
   .titulo_principal {
-    margin-left: 22%;
+    margin-left: 25%;
   }
 }
 

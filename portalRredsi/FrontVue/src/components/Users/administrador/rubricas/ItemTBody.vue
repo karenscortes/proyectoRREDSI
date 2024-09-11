@@ -2,19 +2,15 @@
   <tr class="tr_item_rubrica">
     <td class="td_item">
       <div>
-        <h4 class="d-inline-block mb-0 me-1">{{ infoItem.p_encabezadoTr }}</h4>
+        <h4 class="d-inline-block mb-0 me-1">{{ infoItem.p_tituloItem }}</h4>
         <span>
-          {{ infoItem.p_contenidoTr }}
+          {{ infoItem.p_descripcion }}
         </span>
       </div>
     </td>
     <td class="td_boton">
       <!--Boton editar-->
-      <button
-        data-bs-toggle="modal"
-        data-bs-target="#modalAñadirItem"
-        class="botones_rubrica"
-      >
+      <button class="botones_rubrica" @click="accionEditar()">
         <i class="fas fa-edit"></i>
       </button>
     </td>
@@ -35,18 +31,26 @@
 </template>
 
 <script setup>
-defineProps({
+const props = defineProps({
   infoItem: {
     type: Object,
     required: true,
     validator(value) {
       return (
-        typeof value.p_encabezadoTr === "string" &&
-        typeof value.p_contenidoTr === "string"
+        typeof value.p_idItem === "number" &&
+        typeof value.p_tituloItem === "string" &&
+        typeof value.p_descripcion === "string" &&
+        typeof value.p_valorMax === "number"
       );
     },
   },
 });
+
+const emit = defineEmits(["editarItem"]);
+
+const accionEditar = () => {
+  emit("editarItem", props.infoItem);
+};
 </script>
 
 <style scoped>
