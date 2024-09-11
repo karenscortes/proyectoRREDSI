@@ -80,11 +80,6 @@
         </div>
       </div>
     </div>
-    <!--Btn regresar, Btn editar-->
-    <div class="cont_boton d-flex justify-content-center mt-3 w-lg-75">
-      <button class="btn boton pl-5 pr-5 mx-auto">Regresar</button>
-      <button class="btn boton pl-5 pr-5 mx-auto">Editar</button>
-    </div>
     <!--Sesion de modales-->
     <ModalAdd
       v-if="isModalOpen"
@@ -140,6 +135,7 @@ const infoImputs = reactive([
 //info items rubrica
 const infoItems = reactive([
   {
+    p_id_rubrica:1,
     p_idItem: 1,
     p_tituloItem: "Presentación oral",
     p_descripcion:
@@ -147,6 +143,7 @@ const infoItems = reactive([
     p_valorMax: Math.round(Math.random() * 100),
   },
   {
+    p_id_rubrica:1,
     p_idItem: 2,
     p_tituloItem: "Presentación oral",
     p_descripcion:
@@ -154,6 +151,7 @@ const infoItems = reactive([
     p_valorMax: Math.round(Math.random() * 100),
   },
   {
+    p_id_rubrica:1,
     p_idItem: 3,
     p_tituloItem: "Presentación oral",
     p_descripcion:
@@ -161,6 +159,7 @@ const infoItems = reactive([
     p_valorMax: Math.round(Math.random() * 100),
   },
   {
+    p_id_rubrica:2,
     p_idItem: 4,
     p_tituloItem: "Presentación oral",
     p_descripcion:
@@ -172,7 +171,7 @@ const infoItems = reactive([
 //info para la card
 const infoCards = reactive([
   {
-    image: "logo.png",
+    image: "rubrica.png",
     altImage: "Esto es un ejemplo",
     idModalidad: 1,
     modalidadProyecto: "Poster",
@@ -180,7 +179,7 @@ const infoCards = reactive([
     faseProyecto: "Presencial",
   },
   {
-    image: "logo.png",
+    image: "rubrica.png",
     altImage: "Esto es un ejemplo",
     idModalidad: 1,
     modalidadProyecto: "Poster",
@@ -188,7 +187,7 @@ const infoCards = reactive([
     faseProyecto: "Presencial",
   },
   {
-    image: "logo.png",
+    image: "rubrica.png",
     altImage: "Esto es un ejemplo",
     idModalidad: 1,
     modalidadProyecto: "Poster",
@@ -196,7 +195,7 @@ const infoCards = reactive([
     faseProyecto: "Presencial",
   },
   {
-    image: "logo.png",
+    image: "rubrica.png",
     altImage: "Esto es un ejemplo",
     idModalidad: 1,
     modalidadProyecto: "Poster",
@@ -207,6 +206,7 @@ const infoCards = reactive([
 
 //Evento cambiar valores modal por info actual
 const onEditModal = (informacionTr) => {
+  infoModalEditar.p_id_rubrica = informacionTr.p_id_rubrica
   infoModalEditar.p_idItem = informacionTr.p_idItem;
   infoModalEditar.p_tituloItem = informacionTr.p_tituloItem;
   infoModalEditar.p_valorMax = informacionTr.p_valorMax;
@@ -268,8 +268,8 @@ const showModal = () => {
   overflow-x: hidden;
 }
 .col_card {
-  padding-left: 24px;
-  padding-right: 24px;
+  padding-left: 19px;
+  padding-right: 19px;
   padding-top: 10px;
 }
 .boton {

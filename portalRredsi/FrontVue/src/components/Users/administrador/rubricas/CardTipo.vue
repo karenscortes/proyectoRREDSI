@@ -2,14 +2,14 @@
   <div class="card" @click="oprimir()">
     <img
       v-if="infoCard.image"
-      :src="`/src/assets/${infoCard.image}`"
-      class="img-fluid w-25 pb-2 pt-3"
+      :src="`/src/assets/img/${infoCard.image}`"
+      class="img-fluid w-50 pb-2 pt-3"
       :alt="infoCard.altImage"
     />
 
     <div class="card-body">
       <!--info rubrica-->
-      <div class="pb-1 mb-2">
+      <div class="mb-2">
         <h6 class="card-subtitle mb-2">Fase de proyecto:</h6>
         <p class="card-text">{{ infoCard.faseProyecto }}</p>
       </div>
@@ -36,7 +36,7 @@ const props = defineProps({
         typeof value.faseProyecto === "string"
       );
     },
-  },
+  }
 });
 
 const emit = defineEmits(["cardSeleccionada"]);
@@ -49,6 +49,7 @@ const oprimir = () => {
 <style scoped>
 .card-subtitle {
   font-weight: bold;
+  font-size: 15px;
 }
 .card {
   display: block;

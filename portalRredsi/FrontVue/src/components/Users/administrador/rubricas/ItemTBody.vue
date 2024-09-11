@@ -37,6 +37,7 @@ const props = defineProps({
     required: true,
     validator(value) {
       return (
+        typeof value.p_id_rubrica === "number" &&
         typeof value.p_idItem === "number" &&
         typeof value.p_tituloItem === "string" &&
         typeof value.p_descripcion === "string" &&

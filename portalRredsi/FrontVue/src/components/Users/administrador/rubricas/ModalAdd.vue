@@ -6,7 +6,6 @@
     data-bs-keyboard="false"
     tabindex="-1"
     aria-labelledby="staticBackdropLabel"
-    aria-hidden="true"
   >
     <div class="modal-dialog">
       <div class="modal-content rounded-st-1 shadow-lg modal-responsive">
@@ -80,10 +79,11 @@ import { ref, defineEmits } from 'vue';
     default: null,
     validator(value) {
       return (
-        (typeof value.p_idItem === 'number' || value.p_idItem === null) &&
-        typeof value.p_tituloItem === 'string' &&
-        typeof value.p_valorMax === 'number' &&
-        typeof value.p_descripcion === 'string'
+        typeof (value.p_id_rubrica === "number" || value.p_id_rubrica === null) &&
+        typeof (value.p_idItem === 'number' || value.p_idItem === null) &&
+        typeof (value.p_tituloItem === 'string' || value.p_tituloItem === null) &&
+        typeof (value.p_valorMax === 'number' || value.p_valorMax === null) &&
+        typeof (value.p_descripcion === 'string' || value.p_descripcion === null)
       );
     }
   }
