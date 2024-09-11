@@ -17,8 +17,8 @@ class ItemCreate(ItemRubrica):
     pass
 
 class ItemUpdate(BaseModel):
-    titulo: Optional[Annotated[str, StringConstraints(max_length=50)]]
-    componente: Optional[str]
-    valor_max: Optional[Annotated[float,condecimal(max_digits=2, decimal_places=1)]]
+    titulo: Optional[Annotated[str, StringConstraints(max_length=50)]] = None
+    componente: Optional[str] = None
+    valor_max: Optional[Annotated[float,condecimal(max_digits=2, decimal_places=1)]] = None
     class Config:
         orm_mode = True
