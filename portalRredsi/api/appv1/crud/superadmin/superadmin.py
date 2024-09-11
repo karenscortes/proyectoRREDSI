@@ -29,7 +29,7 @@ def get_all_admins(db: Session, page: int = 1):
         result = db.execute(sql, params).fetchall()
 
         if not result:
-            raise HTTPException(status_code=404, detail="No se encontraron administradores activos")
+            raise HTTPException(status_code=404, detail="No se encontraron administñradores activos")
 
         return result
     except SQLAlchemyError as e:
