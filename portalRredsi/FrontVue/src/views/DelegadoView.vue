@@ -1,7 +1,7 @@
 <template>
     <div>
         <!-- HEADER  -->
-        <MenuPrincipal :rol="'Delegado'"/>
+        <MenuPrincipal :rol="user?.id_rol"/>
         <h4>{{ user?.nombres }} {{ user?.apellidos }}</h4>
         
         <main class="content mt-4">

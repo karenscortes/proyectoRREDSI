@@ -170,6 +170,7 @@ export default {
                 if (authStore.authError) {
                     errorMessage.value = authStore.authError;
                 } else {
+                    
                     router.push('/principal-delegado'); // Reemplaza '/dashboard' con la ruta deseada
                 }
             } catch (error) {
