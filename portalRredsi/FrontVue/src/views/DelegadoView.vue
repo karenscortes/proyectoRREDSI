@@ -1,7 +1,7 @@
 <template>
     <div>
         <!-- HEADER  -->
-        <MenuPrincipal :rol="user?.id_rol"/>
+        <MenuPrincipal :rol="user?.id_rol" @component-selected="changeComponent"/>
         <h4>{{ user?.nombres }} {{ user?.apellidos }}</h4>
         
         <main class="content mt-4">

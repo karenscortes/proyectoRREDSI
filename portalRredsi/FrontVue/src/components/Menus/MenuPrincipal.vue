@@ -12,7 +12,7 @@
         <nav class="main_nav_container">
           <div class="main_nav">
             <ul class="main_nav_list d-flex justify-content-between">
-              <li class="main_nav_item" v-for="(tab, index) in left_tabs" :key="index"><a :href="tab.ruta">{{ tab.nombre
+              <li class="main_nav_item" v-for="(tab, index) in left_tabs" :key="index"><a class="text-dark" @click="selectComponent(tab.ruta)">{{ tab.nombre
                   }}</a></li>
               <li class="main_nav_item" v-for="(tab, index) in mid_tabs" :key="index">
                 <div class="dropdown">
@@ -101,7 +101,7 @@ export default defineComponent({
   },
   data() {
     // Lógica condicional basada en el rol
-    if (this.rol === '3') { // Administrador
+    if (this.rol === 3) { // Administrador
       return {
         left_tabs: [{ nombre: 'Inicio', ruta: '#' }, { nombre: 'Perfil', ruta: '#' }, { nombre: 'Cuentas', ruta: '#' }, { nombre: 'Rubricas', ruta: '#' }],
         mid_tabs: [
@@ -115,9 +115,9 @@ export default defineComponent({
         visibilidad: "d-none",
         yellow_tab: 'Cerrar Sesión'
       };
-    } else if (this.rol === '2') { // Delegado
+    } else if (this.rol === 2) { // Delegado
       return {
-        left_tabs: [{ nombre: 'Inicio', ruta: '#' }, { nombre: 'Perfil', ruta: '#' }],
+        left_tabs: [{ nombre: 'Inicio', ruta: 'PostulacionesEvaluadoresView' }, { nombre: 'Perfil', ruta: '#' }],
         mid_tabs: [
           {
             nombre: "Evaluadores",
@@ -137,7 +137,7 @@ export default defineComponent({
         visibilidad: "d-none",
         yellow_tab: 'Cerrar Sesión'
       };
-    } else if (this.rol === '1') { // Evaluador
+    } else if (this.rol === 1) { // Evaluador
       return {
         left_tabs: [{ nombre: 'Inicio', ruta: '#' }, { nombre: 'Perfil', ruta: '#' }],
         mid_tabs: [
