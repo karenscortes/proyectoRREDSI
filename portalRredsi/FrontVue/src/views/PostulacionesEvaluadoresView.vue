@@ -30,7 +30,7 @@
                 </div>
             </div>
             <div class="accordion accordion-flush" id="accordionFlushExample">
-                <AcordeonPostulaciones v-for="(evaluator,index) in evaluators" :key="index" :evaluator="evaluator" :index="index"/>
+                <AcordeonPostulaciones v-for="(evaluator,index) in evaluators" :key="index" :evaluator="evaluator" :index="index" @notify="handleNotification"/>
             </div>
 
             <!-- Paginador -->
@@ -42,7 +42,7 @@
                                 style="border-radius: 20px; color: black;">Previous</button>
                         </li>
                         <li v-for="i in totalPages"  :key="i" class="page-item rounded m-1">
-                            <button @click="paginaSeleted(i)" class="page-link rounded-circle" style="color: black;">{{ i
+                            <button @click="selectedPage(i)" class="page-link rounded-circle" style="color: black;">{{ i
                                 }}</button>
                         </li>
                         <li class="page-item m-1">
@@ -73,6 +73,9 @@ export default {
         };
     },
     methods: {
+        handleNotification() {
+            this.fetchEvaluators();
+        },
         async fetchEvaluators() {
             try {
                 const response = await getApplicationsByPage(this.currentPage);
@@ -97,7 +100,7 @@ export default {
             }
         },
 
-        paginaSeleted(pagina) {
+        selectedPage(pagina) {
             this.current_page = pagina;
             this.fetchProyectos();
         },

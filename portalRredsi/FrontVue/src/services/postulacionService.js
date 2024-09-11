@@ -33,7 +33,7 @@ export const getCertificatesById = async (id_evaluador) => {
 };
 
 // Función para actualizar estado de postulación
-export const updateAppplication = async (id_evaluador,estado) => {
+export const updateApplication = async (id_evaluador,estado) => {
     try {
       const response = await api.put(`/postulaciones/update-application-status/?id_evaluador=${id_evaluador}&estado=${estado}`);
       return response;
