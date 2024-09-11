@@ -6,13 +6,12 @@ from appv1.crud.admin.gest_rubricas import create_items, delete_items, get_all_r
 from appv1.crud.admin.gest_delegado import get_delegados_activos
 from appv1.crud.admin.gest_rubricas import get_all_rubricas
 from appv1.crud.admin.admin import create_convocatoria, create_etapa, create_fase, create_sala, get_fases_by_etapa, update_etapa, update_fase
-from appv1.schemas.admin.admin import ConvocatoriaCreate, CreateSala, EtapaCreate, FaseCreate, EtapaUpdate, FaseUpdate
+from appv1.schemas.admin.admin import ConvocatoriaCreate, CreateSala, FaseUpdate
 from appv1.crud.admin.admin import create_convocatoria, create_etapa, create_fase, get_fases_by_etapa, update_etapa, update_fase
-from appv1.schemas.admin.admin import ConvocatoriaCreate, EtapaCreate, FaseCreate, EtapaUpdate, FaseUpdate
 from appv1.schemas.admin.delegado import DelegadoResponse
 from appv1.schemas.admin.items_rubrica import ItemCreate, ItemUpdate
 from appv1.schemas.admin.rubrica import RubricaResponse
-from appv1.schemas.usuario import UserCreate, UserResponse
+from appv1.schemas.usuario import UserCreate
 from db.database import get_db
 
 router_admin = APIRouter()
