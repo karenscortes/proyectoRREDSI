@@ -34,11 +34,21 @@ def update_items(item_id: int, nuevo_item: ItemUpdate,db: Session):
         item_editar = db.query(Item_rubrica).filter(Item_rubrica.id_item_rubrica == item_id).first()
         if item_editar is None:
             raise HTTPException(status_code=404, detail="Sala no encontrada")
-
+        
         #validar campos 
-        item_editar.titulo = nuevo_item.titulo
-        item_editar.componente = nuevo_item.componente
-        item_editar.valor_max = nuevo_item.valor_max
+        if(nuevo_item.titulo): 
+            item_editar.titulo = nuevo_item.titulo
+
+        if(nuevo_item.componente):
+            item_editar.componente = nuevo_item.componente
+
+        if(nuevo_item.valor_max):
+            item_editar.valor_max = nuevo_item.valor_max
+
+        if(nuevo_item.valor_max and nuevo_item.componente and nuevo_item.titulo): 
+            item_editar.titulo = nuevo_item.titulo
+            item_editar.componente = nuevo_item.componente
+            item_editar.valor_max = nuevo_item.valor_max
 
         try:
             db.commit() 
