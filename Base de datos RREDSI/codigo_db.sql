@@ -312,7 +312,7 @@ CREATE TABLE detalles_institucionales (
     grupo_investigacion VARCHAR(35),
     id_primera_area_conocimiento INT,
     id_segunda_area_conocimiento INT,
-    PRIMARY KEY (id_detalle_personal, id_usuario),
+    PRIMARY KEY (id_detalle_institucional, id_usuario),
     FOREIGN KEY (id_usuario) REFERENCES usuarios(id_usuario),
     FOREIGN KEY (id_institucion) REFERENCES instituciones(id_institucion),
     FOREIGN KEY (id_primera_area_conocimiento) REFERENCES areas_conocimiento(id_area_conocimiento),
@@ -337,10 +337,10 @@ CREATE TABLE asistentes (
 
 INSERT INTO asistentes (id_usuario, asistencia, tipo_asistente, fecha, url_comprobante_pago)
 VALUES
-(1, 1, 'evaluador', '2024-09-10 09:00:00', 'https://comprobantes.com/pago_juan'),
-(2, 0, 'delegado', '2024-09-11 10:00:00', 'https://comprobantes.com/pago_ana'),
-(3, 1, 'ponente', '2024-09-12 11:00:00', 'https://comprobantes.com/pago_carlos'),
-(4, 1, 'externos', '2024-09-13 12:00:00', 'https://comprobantes.com/pago_maria');
+(1, 1,  '2024-09-10 09:00:00', 'https://comprobantes.com/pago_juan'),
+(2, 0,  '2024-09-11 10:00:00', 'https://comprobantes.com/pago_ana'),
+(3, 1,  '2024-09-12 11:00:00', 'https://comprobantes.com/pago_carlos'),
+(4, 1,  '2024-09-13 12:00:00', 'https://comprobantes.com/pago_maria');
 
 CREATE TABLE proyectos_convocatoria (
     id_proyecto_convocatoria INT PRIMARY KEY AUTO_INCREMENT,
@@ -362,11 +362,11 @@ CREATE TABLE participantes_proyecto (
     id_usuario INT,
     id_etapa INT,
     id_proyecto INT,
-    id_proyecto_convocatoria INT,
+    id_proyectos_convocatoria INT,
     FOREIGN KEY (id_usuario) REFERENCES usuarios(id_usuario),
     FOREIGN KEY (id_etapa) REFERENCES etapas(id_etapa),
     FOREIGN KEY (id_proyecto) REFERENCES proyectos(id_proyecto),
-    FOREIGN KEY (id_proyecto_convocatoria) REFERENCES proyectos_convocatoria(id_proyecto_convocatoria)
+    FOREIGN KEY (id_proyectos_convocatoria) REFERENCES proyectos_convocatoria(id_proyecto_convocatoria)
 );
 
 INSERT INTO participantes_proyecto (id_usuario, id_etapa, id_proyecto, tipo_participante)
@@ -413,11 +413,13 @@ VALUES
 CREATE TABLE salas (
     id_sala INT PRIMARY KEY AUTO_INCREMENT,
     id_usuario INT,
-    area_conocimiento INT,
+    id_area_conocimiento INT,
+    id_convocatoria INT,
     numero_sala VARCHAR(25),
     nombre_sala VARCHAR(25),
     FOREIGN KEY (id_usuario) REFERENCES usuarios(id_usuario),
-    FOREIGN KEY (area_conocimiento) REFERENCES areas_conocimiento(id_area_conocimiento)
+    FOREIGN KEY (id_area_conocimiento) REFERENCES areas_conocimiento(id_area_conocimiento),
+    FOREIGN KEY (id_convocatoria) REFERENCES convocatorias(id_convocatoria)
 );
 
 INSERT INTO salas (id_usuario, area_conocimiento, numero_sala, nombre_sala)

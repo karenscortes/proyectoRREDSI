@@ -101,8 +101,8 @@ def create_programacion_fase(db: Session, id_fase: int, id_convocatoria: int, fe
     return {"message": "Programación de fase creada exitosamente"}
 
 # Crear una nueva sala
-def create_sala(db: Session, id_usuario: int, id_area_conocimiento: int,  numero: str, nombre: str):
-    sala = Sala(id_usuario=id_usuario, id_area_conocimiento=id_area_conocimiento, numero_sala=numero, nombre_sala=nombre)
+def create_sala(db: Session, id_usuario: int, area_conocimiento: int,  numero: str, nombre: str):
+    sala = Sala(id_usuario=id_usuario, id_area_conocimiento=area_conocimiento, numero_sala=numero, nombre_sala=nombre)
     db.add(sala)
     db.commit()
     return {"message": "Sala creada exitosamente"}

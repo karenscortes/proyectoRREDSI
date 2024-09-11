@@ -40,6 +40,6 @@ class ProgramacionFaseCreate(BaseModel):
 
 class CreateSala(BaseModel):
     id_usuario: int 
-    id_area_conocimento: int
+    area_conocimento: int
     numero_sala: str
     nombre_sala: str

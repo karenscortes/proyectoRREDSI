@@ -11,7 +11,7 @@
 
         <!-- Información evaluadores -->
         <div class="container mt-5">
-            <div class="row justify-content-center mb-4">
+            <div class="row justify-content-center text-center mb-4">
                 <div class="col-3 col-sm-3">
                     <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px"
                         fill="#00000">
@@ -38,7 +38,7 @@
 
 <script>
 import { getApplicationsByPage} from '@/services/PostulacionService';
-import AcordeonPostulaciones from "'../components/Users/delegado/postulaciones/AcordeonPostulaciones.vue'";
+import AcordeonPostulaciones from '../components/Users/delegado/postulaciones/AcordeonPostulaciones.vue';
 
 export default {
     components: {

@@ -4,7 +4,7 @@ import { login } from '@/services/authService'; // Importa el servicio de autent
 export const useAuthStore = defineStore('auth', {
   state: () => ({
     user: JSON.parse(localStorage.getItem('user')) || null,
-    permissions: JSON.parse(localStorage.getItem('permissions')) || [],
+    // permissions: JSON.parse(localStorage.getItem('permissions')) || [],
     accessToken: localStorage.getItem('access_token') || null,
     authError: null,
   }),
@@ -14,13 +14,13 @@ export const useAuthStore = defineStore('auth', {
         const response = await login(username, password); // Usa el servicio para la autenticación
         
         this.user = response.data.user;
-        this.permissions = response.data.permissions;
+        // this.permissions = response.data.permissions;
         this.accessToken = response.data.access_token;
         this.authError = null;
 
         // Guardar datos en localStorage
         localStorage.setItem('user', JSON.stringify(this.user));
-        localStorage.setItem('permissions', JSON.stringify(this.permissions));
+        // localStorage.setItem('permissions', JSON.stringify(this.permissions));
         localStorage.setItem('access_token', this.accessToken);
       } catch (error) {
         if (error.response && error.response.status === 401) {
