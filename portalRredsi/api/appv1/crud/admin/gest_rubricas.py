@@ -15,7 +15,7 @@ def get_all_rubricas(db: Session):
     except SQLAlchemyError as e:
         db.rollback()
         print(f"Error al consultar las rubricas: {e}")
-        raise HTTPException(status_code=500, detail=f"Error al consultar las rubricas{e}",)
+        raise HTTPException(status_code=500, detail=f"Error. No hay Integridad de datos",)
 
 def create_items(item: ItemCreate,db: Session):
     try:
@@ -30,18 +30,18 @@ def create_items(item: ItemCreate,db: Session):
         return True
     except IntegrityError as e:
         db.rollback()
-        raise HTTPException(status_code=400, detail="Error. No hay Integridad de datos crear el item")
+        raise HTTPException(status_code=400, detail="Error. No hay Integridad de datos al crear el item")
         
     except SQLAlchemyError as e:
-        print(f"Error al consultar las rubricas: {e}")
-        raise HTTPException(status_code=500, detail=f"Error al crear items{e}",)
+        print(f"Error al crear el item: {e}")
+        raise HTTPException(status_code=500, detail=f"Error. No hay Integridad de datos",)
 
 
 def update_items(item_id: int, nuevo_item: ItemUpdate,db: Session):
     try:
         item_editar = db.query(Item_rubrica).filter(Item_rubrica.id_item_rubrica == item_id).first()
         if item_editar is None:
-            raise HTTPException(status_code=404, detail="Sala no encontrada")
+            raise HTTPException(status_code=404, detail="Item no encontrado")
         
         if(nuevo_item.titulo): 
             item_editar.titulo = nuevo_item.titulo
@@ -63,23 +63,23 @@ def update_items(item_id: int, nuevo_item: ItemUpdate,db: Session):
             return item_editar
         except Exception as e:
             db.rollback()
-            raise HTTPException(status_code=500, detail="Error al actualizar la sala")
+            raise HTTPException(status_code=500, detail="Error al actualizar los items")
         
     except SQLAlchemyError as e:
-        print(f"Error al consultar las rubricas: {e}")
-        raise HTTPException(status_code=500, detail=f"Error al consultar las rubricas{e}",)
+        print(f"Error al actualizar el item: {e}")
+        raise HTTPException(status_code=500, detail=f"Error. No hay Integridad de datos",)
     
 
 def delete_items(id_item:int,db: Session):
     try:
         item = db.query(Item_rubrica).filter(Item_rubrica.id_item_rubrica == id_item).first()       
         if item is None:
-            raise HTTPException(status_code=404, detail="Sala no encontrada")
+            raise HTTPException(status_code=404, detail="Item no encontrado")
 
         db.delete(item)
         db.commit()
         return True
     except SQLAlchemyError as e:
-        print(f"Error al consultar las rubricas: {e}")
-        raise HTTPException(status_code=500, detail=f"Error al consultar las rubricas{e}",)
+        print(f"Error al eliminar el item: {e}")
+        raise HTTPException(status_code=500, detail=f"Error. No hay Integridad de datos",)
     
