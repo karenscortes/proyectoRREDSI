@@ -4,7 +4,7 @@ from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy import text
 
 # Consultar toda la información de los administradores activos
-def get_all_admin(db: Session):
+def get_all_admins(db: Session, page: int = 1):
     try:
         # Consulta SQL completa sin abreviaturas
         sql = text("""
@@ -22,10 +22,11 @@ def get_all_admin(db: Session):
             FROM usuarios
             JOIN roles ON usuarios.id_rol = roles.id_rol
             WHERE usuarios.id_rol = 3
-            AND usuarios.estado = 'activo';
-
+            AND usuarios.estado = 'activo'
+            LIMIT 10 OFFSET :offset;
         """)
-        result = db.execute(sql).fetchall()
+        params = {"offset": (page - 1) * 10}
+        result = db.execute(sql, params).fetchall()
 
         if not result:
             raise HTTPException(status_code=404, detail="No se encontraron administradores activos")
