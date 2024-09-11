@@ -5,7 +5,7 @@
             <div class="header_content with_button d-flex flex-row align-items-center justify-content-start">
                 <div class="logo_container">
                     <div class="logo">
-                        <img class="img-fluid" src="../../assets/logoRredsi.png" alt="Logo" />
+                        <img class="img-fluid" src="../assets/img/logoRredsi.png" alt="Logo" />
                         <span>RREDSI</span>
                     </div>
                 </div>
@@ -132,9 +132,8 @@ export default {
             });
         } else if (props.rol === 'SuperAdmin') {
             Object.assign(state, {
-                left_tabs: [{ nombre: 'Inicio', ruta: '#' }, { nombre: 'Perfil', ruta: '#' }],
-                mid_tabs: [{ nombre: 'Informacion-delegados', ruta: '#' }, { nombre: 'Informacion-delegados', ruta: '#' }],
-                tab_name: 'Convocatoria',
+                left_tabs: [{ nombre: 'Inicio', ruta: '#' }],
+                mid_tabs: [{ nombre: 'Informacion delegados', ruta: '#' }],
                 visibilidadLogin: 'd-none',
                 visibilidad: 'd-inline-block',
                 yellow_tab: 'Cerrar Sesión'
