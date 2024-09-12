@@ -12,19 +12,22 @@
         <nav class="main_nav_container">
           <div class="main_nav">
             <ul class="main_nav_list d-flex justify-content-between">
-              <li class="main_nav_item" v-for="(tab, index) in left_tabs" :key="index"><a class="text-dark" @click="selectComponent(tab.ruta)">{{ tab.nombre
-                  }}</a></li>
+              <li class="main_nav_item" v-for="(tab, index) in left_tabs" :key="index">
+                <a class="text-dark" @click="selectComponent(tab.ruta)">{{ tab.nombre }}</a>
+              </li>
               <li class="main_nav_item" v-for="(tab, index) in mid_tabs" :key="index">
                 <div class="dropdown">
-                  <a class=" dropdown-toggle text-dark" type="button" data-toggle="dropdown" aria-expanded="false">
+                  <a class="dropdown-toggle text-dark" type="button" data-toggle="dropdown" aria-expanded="false">
                     {{ tab.nombre }}
                   </a>
-                  <div v-for="(opcion, index) in opciones" :key="index" class="dropdown-menu text-center">
-                    <a :href="opcion.ruta">{{ opcion.nombre }}</a><br>
+                  <div class="dropdown-menu text-center ">
+                    <a v-for="(opcion, index) in tab.opciones" :key="index" @click="selectComponent(opcion.ruta)"><span>{{ opcion.nombre }}</span><br></a> 
                   </div>
                 </div>
               </li>
-              <li :class="['main_nav_item', visibilidad]"><a href="#">{{ tab_name }}</a></li>
+              <li :class="['main_nav_item', visibilidad]">
+                <a href="#">{{ tab_name }}</a>
+              </li>
               <li :class="['main_nav_item', visibilidadLogin]">
                 <a href="#" type="button" data-toggle="modal" data-target="#LoginModal">Login</a>
               </li>
@@ -129,19 +132,19 @@ export default defineComponent({
     }
      else if (this.rol === 2) { // Delegado
       return {
-        left_tabs: [{ nombre: 'Inicio', ruta: 'PostulacionesEvaluadoresView' }, { nombre: 'Perfil', ruta: '#' }],
+        left_tabs: [{ nombre: 'Inicio', ruta: '#' }, { nombre: 'Perfil', ruta: '#' }],
         mid_tabs: [
           {
             nombre: "Evaluadores",
-            opciones: [{ nombre: 'Postulaciones', ruta: '' }, { nombre: 'Lista de Evaluadores', ruta: '#' }]
+            opciones: [{ nombre: 'Postulaciones', ruta: 'PostulacionesEvaluadores' }, { nombre: 'Lista de Evaluadores', ruta: 'ListaEvaluadores' }]
           },
           {
             nombre: "Proyectos",
-            opciones: [{ nombre: 'Asignacion de Proyectos', ruta: '#' }, { nombre: 'Lista de Proyectos', ruta: '#' }]
+            opciones: [{ nombre: 'Asignacion de Proyectos', ruta: 'AsignarProyectos' }, { nombre: 'Lista de Proyectos', ruta: '#' }]
           },
           {
             nombre: "Evento",
-            opciones: [{ nombre: 'Salas', ruta: '#' }, { nombre: 'Asistencia', ruta: '#' }]
+            opciones: [{ nombre: 'Salas', ruta: '#' }, { nombre: 'Asistencia', ruta: 'AsistenciaEvento' }]
           }
         ],
         tab_name: '',
@@ -151,11 +154,11 @@ export default defineComponent({
       };
     } else if (this.rol === 1) { // Evaluador
       return {
-        left_tabs: [{ nombre: 'Inicio', ruta: '#' }, { nombre: 'Perfil', ruta: '#' }],
+        left_tabs: [{ nombre: 'Inicio', ruta: 'PaginaInicioEvaluadorView' }, { nombre: 'Perfil', ruta: '#' }],
         mid_tabs: [
           {
             nombre: "Proyectos",
-            opciones: [{ nombre: 'Primera Etapa', ruta: '#' }, { nombre: 'Segunda Etapa', ruta: '#' }]
+            opciones: [{ nombre: 'Primera Etapa', ruta: 'ProyectosAsignadosEvaluadorView' }, { nombre: 'Segunda Etapa', ruta: '#' }]
           }
         ],
         tab_name: 'Convocatoria',
