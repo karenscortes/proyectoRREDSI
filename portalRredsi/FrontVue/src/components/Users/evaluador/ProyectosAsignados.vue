@@ -1,40 +1,42 @@
 <template>
-    <ul class="cards justify-content-center">
-        <li>
-            <a class="card">
-                <div class="text-center pt-5 card__image">
-                    <a :href="proyecto.url_propuesta_escrita" class="d-inline-flex" target="_blank">
-                        <button type="button" class="btn btn-warning rounded-circle border border-dark mx-2">
-                            <i class="far fa-file-alt h3"></i>
-                        </button>
-                    </a>
-                    <button type="button" class="btn btn-warning rounded-circle border border-dark mx-2">
-                        <i class="fa-solid fa-list-check fa-xl"></i>
-                    </button> 
-                </div>
-                <div class="card__overlay">
-                    <div class="card__header">
-                        <svg class="card__arc" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M 40 80 c 22 0 40 -22 40 -40 v 40 Z"/>
-                        </svg>                     
-                        <div class="border border-white text-white card__thumb text-center pt-3">
-                            <h2>{{ proyecto.id_proyecto }}</h2>
+        <div class="col-xl-3 col-lg-6 col-md-4 col-sm-6 align-items-center">    
+            <ul class="cards justify-content-center">
+                <li>    
+                    <a class="card">
+                        <div class="text-center pt-5 card__image">
+                            <a :href="proyecto.url_propuesta_escrita" class="d-inline-flex" target="_blank">
+                                <button type="button" class="btn btn-warning rounded-circle border border-dark mx-2">
+                                    <i class="far fa-file-alt h3"></i>
+                                </button>
+                            </a>
+                            <button type="button" class="btn btn-warning rounded-circle border border-dark mx-2">
+                                <i class="fa-solid fa-list-check fa-xl"></i>
+                            </button> 
                         </div>
-                        <div class="card__header-text text-justify">
-                            <h3 class="text-left texto-recortado">{{ proyecto.titulo }}</h3> 
-                            <h4 class="text-left texto-recortado">{{ proyecto.programa_academico }}</h4>                                                                   
-                        </div> 
-                    </div>
-                    <div class="card__footer text-center">
-                        <div>
-                            <p class="card__description"><strong>Modalidad:</strong> {{ proyecto.modalidad }}</p>
-                            <p class="card__description"><strong>Estado:</strong> {{ proyecto.estado_evaluacion }}</p>
+                        <div class="card__overlay">
+                            <div class="card__header">
+                                <svg class="card__arc" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M 40 80 c 22 0 40 -22 40 -40 v 40 Z"/>
+                                </svg>                     
+                                <div class="border border-white text-white card__thumb text-center pt-3">
+                                    <h2>{{ proyecto.id_proyecto }}</h2>
+                                </div>
+                                <div class="card__header-text text-justify">
+                                    <h3 class="text-left texto-recortado">{{ proyecto.titulo }}</h3> 
+                                    <h4 class="text-left texto-recortado">{{ proyecto.institucion }}</h4>                                                                   
+                                </div> 
+                            </div>
+                            <div class="card__footer text-center">
+                                <div>
+                                    <p class="card__description"><strong>Modalidad:</strong> {{ proyecto.modalidad }}</p>
+                                    <p class="card__description"><strong>Estado:</strong> {{ proyecto.estado_evaluacion }}</p>
+                                </div>
+                            </div>           
                         </div>
-                    </div>           
-                </div>
-            </a>      
-        </li>
-    </ul>
+                    </a>      
+                </li>
+            </ul>
+        </div>
 </template>
   
 <script setup>
@@ -51,7 +53,9 @@ const props = defineProps({
         --surface-color: rgb(255, 182, 6);
         --curve: 40;
     }
-    
+</style>
+
+<style scoped> 
     .texto-recortado {
         width: 200px; 
         overflow: hidden;
@@ -177,33 +181,6 @@ const props = defineProps({
         font-weight: 500;
         color: #4e4e4e;
         margin-top: -12px;
-    }
-
-    .section_title h1 {
-        display: block;
-        color: #1a1a1a;
-        font-weight: bold;
-        padding-top: 24px;
-    }
-
-    h2 {
-        font-weight: bold;
-    }
-
-    .section_title h1::before {
-        display: block;
-        position: absolute;
-        top: 0;
-        left: 50%;
-        -webkit-transform: translateX(-50%);
-        -moz-transform: translateX(-50%);
-        -ms-transform: translateX(-50%);
-        -o-transform: translateX(-50%);
-        transform: translateX(-50%);
-        width: 55px;
-        height: 4px;
-        content: '';
-        background: #ffb606;
     }
 </style>
   

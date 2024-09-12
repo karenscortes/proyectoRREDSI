@@ -1,13 +1,13 @@
 <template>
     <div>
         <!-- HEADER  -->
-        <MenuPrincipal :rol="user?.id_rol"/>
-        <h4>{{ user?.nombres }} {{ user?.apellidos }}</h4>
+        <MenuPrincipal :rol="user?.id_rol" @component-selected="changeComponent"/>
         
         <main class="content mt-4">
             <ComponenteDinamicoEvaluador :currentComponent="currentComponent" />
         </main>
 
+        <!-- FOOTER  -->
         <footer class="bg-dark mt-5 text-white text-center py-3">
             <h2>ESTE ES EL FOOTER</h2>
         </footer>
@@ -66,7 +66,7 @@ export default {
 <style scoped>
 
 .content {
-    padding-top: 20px;
+    padding-top: 70px;
 }
 
 </style>

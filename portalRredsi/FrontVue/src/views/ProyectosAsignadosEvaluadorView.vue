@@ -1,6 +1,4 @@
 <template>
-    <!-- Header -->
-
     <!-- Contenido principal -->
     <div class="container pt-5">
         <div class="row mb-4 mt-2">
@@ -11,20 +9,18 @@
                 </div>
             </div>
         </div>
-
-        <!-- Mostrar proyectos -->
-        <div class="row justify-content-center">
-            <ProyectosAsignados v-for="(proyecto, index) in proyectos" :key="index" :proyecto="proyecto" />
-        </div>
+    </div>
+    <div class="row justify-content-center">
+        <ProyectosAsignados v-for="(proyecto, index) in proyectos" :key="index" :proyecto="proyecto" />
     </div>
     <!-- Fin contenido principal -->
 
-    <!-- Footer -->
 </template>
 
 <script>
     import { obtenerProyectosAsignados } from '../services/evaluadorService';
     import ProyectosAsignados from '../components/Users/evaluador/ProyectosAsignados.vue';
+    import { useAuthStore } from '@/store';    
 
     export default {
         components: {
@@ -38,7 +34,11 @@
         methods: {
             async fetchProyectos() {
                 try {
-                    const response = await obtenerProyectosAsignados(1, 1, 10);
+                    const authStore = useAuthStore();
+                    const user = authStore.user;
+
+                    const response = await obtenerProyectosAsignados(user.id_usuario, 1, 8);
+
                     // Asegúrate de acceder correctamente a la data de la respuesta
                     this.proyectos = response.data.data; 
                     console.log(this.proyectos);
