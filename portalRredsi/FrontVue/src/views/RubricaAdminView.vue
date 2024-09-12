@@ -11,7 +11,7 @@
         class="contenedor_principal d-flex justify-content-between flex-lg-row flex-column-reverse"
       >
         <!-- Tabla -->
-        <div class="table-responsive w-sm-100 w-md-100 w-lg-75">
+        <div class="table w-sm-100 w-md-100 w-lg-75 h-30">
           <table
             class="display table text-dark table-bordered-dark"
             id="basic-datatables"
@@ -201,6 +201,7 @@ const fetchAllRubrics = async () => {
     primerRubrica.forEach(function (item, i) {
       infoItems[i] = item; 
     });
+;
   } catch (error) {
     console.error("Error al obtener rubricas: ", error);
     alert("Error al obtener las rúbricas");
@@ -212,6 +213,12 @@ onMounted(() => {
 </script>
 
 <style scoped>
+.table{
+  max-height: 90%;
+  overflow-y: auto;
+  display: block;
+  -webkit-overflow-scrolling: touch;
+}
 .boton_añadir {
   border: none;
   width: 150px;
