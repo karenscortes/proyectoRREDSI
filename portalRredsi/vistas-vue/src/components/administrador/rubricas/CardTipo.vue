@@ -28,6 +28,7 @@ export default {
       required: true,
       validator(value){
         return(
+          //id_rubrica
           typeof value.image === 'string' &&
           typeof value.altImage === 'string' &&
           typeof value.idModalidad === 'number' &&
@@ -42,7 +43,6 @@ export default {
   setup(props, {emit}){
     const oprimir = () => {
       emit('cardSeleccionada',props.infoCard); 
-      console.log(props.infoCard);
     }
     return{oprimir}
   }

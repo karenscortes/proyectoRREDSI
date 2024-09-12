@@ -179,13 +179,15 @@ def get_asistente_por_cedula(db: Session, documento: str):
         print(f"Error al buscar asistente por documento: {e}")
         raise HTTPException(status_code=500, detail="Error al buscar asistente")
 
-def actualizar_asistencia(db: Session,id_asistencia:int, id_usuario:int, asistencia: int):
-    sql = text("UPDATE asistentes SET asistencia = :asistencia WHERE id_asistente = :id_asist AND id_usuario = :id_usuario")
+
+def actualizar_asistencia(db: Session, id_asistente: int, id_usuario: int, asistencia: int):
+    sql = text("UPDATE asistentes SET asistencia = :asistencia WHERE id_asistente = :id_asistente AND id_usuario = :id_usuario")
     params = {
-        "id_asist": id_asistencia,
-        "id_usu": id_usuario,
+        "id_asistente": id_asistente,
+        "id_usuario": id_usuario,
         "asistencia": asistencia
     }
     db.execute(sql, params)
     db.commit()
     return True
+

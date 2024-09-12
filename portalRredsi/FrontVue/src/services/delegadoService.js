@@ -1,7 +1,7 @@
 import api from './api'; 
 
 // Función para obtener proyectos sin asignar
-export const proyectosSinAsignar = async (page = 1, pageSize = 2) => {
+export const proyectosSinAsignar = async (page = 1, pageSize = 10) => {
     try {
         const response = await api.get(`/proyectosSinAsignar/get-all-unassiggned-Projects/?page=${page}&page_size=${pageSize}`, {
             headers: {
@@ -126,12 +126,12 @@ export const asistenciaEvento = async (page= 1, page_size = 10) => {
     }
 };
 
-// Asistentes por numero de sala
-export const obtenerAsistentesPorSala = async ( page = 1, page_size = 10) => {
+//Numeros de sala
+export const obtenerSalasPorConvocatoria = async (page = 1, page_size = 10) => {
     try {
-        const response = await api.get(`/salas/get-salas-por-convocatoria/?page=${page}&page_size=${page_size}`, {
+        const response = await api.get(`/get-salas-por-convocatoria/?page=${page}&page_size=${page_size}`, {
             headers: {
-                'Authorization': `Bearer YOUR_TOKEN_HERE` // Incluye el token si es necesario
+                'Authorization': `Bearer`
             }
         });
         return response;
@@ -144,6 +144,23 @@ export const obtenerAsistentesPorSala = async ( page = 1, page_size = 10) => {
     }
 };
 
+// Asistentes por sala
+export const obtenerAsistentesPorSala = async (numero_sala, page = 1, page_size = 10) => {
+    try {
+        const response = await api.get(`asistencia/get-asistentes-por-sala/${numero_sala}?page=${page}&page_size=${page_size}`, {
+            headers: {
+                'Authorization': `Bearer` // Incluye el token si es necesario
+            }
+        });
+        return response;
+    } catch (error) {
+        if (error.response) {
+            throw error;
+        } else {
+            throw new Error('Error de red o de servidor');
+        }
+    }
+};
 
 
 // Asistentes por rol (participantes, evaluadores)
@@ -183,11 +200,15 @@ export const obtenerAsistentePorDocumento = async (documento) => {
 };
 
 //Actualizar asistencia (check)
-export const actualizarAsistencia = async (id_asistencia, id_usuario,asistencia) => {
+export const actualizarAsistencia = async (id_asistencia, id_usuario, asistencia) => {
     try {
-        const response = await api.patch(`/asistencia/update-asistencia/?id_asistencia=${id_asistencia}&id_usuario=${id_usuario}&asistencia=${asistencia}`, {
+        const response = await api.put(`/update-asistencia/`, {
+            id_asistente: id_asistencia,
+            id_usuario: id_usuario,
+            asistencia: asistencia
+        }, {
             headers: {
-                'Authorization': `Bearer`
+                'Authorization': `Bearer YOUR_TOKEN_HERE`
             }
         });
         return response;
@@ -199,6 +220,8 @@ export const actualizarAsistencia = async (id_asistencia, id_usuario,asistencia)
         }
     }
 };
+
+
 
 
 
