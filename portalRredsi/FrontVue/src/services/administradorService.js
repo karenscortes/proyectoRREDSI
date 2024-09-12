@@ -3,7 +3,8 @@ import api from './api';
 // Función para obtener todas las rubricas
 export const getRubricsAll = async () => {
     try {
-        const response = await api.get(`/admin/all-rubrics/`, {
+        const url = `/admin/all-rubrics/`;
+        const response = await api.get(url, {
         headers: {
           'Authorization': `Bearer ${localStorage.getItem('access_token')}` 
         }
@@ -21,7 +22,8 @@ export const getRubricsAll = async () => {
 // Función para editar itemsRubrica
 export const updateItems = async ($id_item_rubrica, item_nuevo) => {
   try {
-      const response = await api.put(`/admin/update-items/?id_item=${$id_item_rubrica}&item_nuevo=${item_nuevo}/`,{
+      const url = `/admin/update-items/${$id_item_rubrica}/`;
+      const response = await api.put(url, item_nuevo,{
       headers: {
         'Authorization': `Bearer ${localStorage.getItem('access_token')}` 
       }
