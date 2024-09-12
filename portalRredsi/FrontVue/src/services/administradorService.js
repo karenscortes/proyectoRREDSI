@@ -21,8 +21,7 @@ export const getRubricsAll = async () => {
 // Función para editar itemsRubrica
 export const updateItems = async ($id_item_rubrica, item_nuevo) => {
   try {
-      const response = await api.put(`/admin/update-items/${$id_item_rubrica}/`,
-        item_nuevo, {
+      const response = await api.put(`/admin/update-items/?id_item=${$id_item_rubrica}&item_nuevo=${item_nuevo}/`,{
       headers: {
         'Authorization': `Bearer ${localStorage.getItem('access_token')}` 
       }
