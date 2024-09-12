@@ -21,8 +21,9 @@ import { useRouter } from 'vue-router';
 import MenuPrincipal from '../components/Menus/MenuPrincipal.vue';
 import AsignarProyectos from '../components/Users/delegado/AsignarProyectos/AsignarProyectos.vue';
 import AsistenciaEvento from '../components/Users/delegado/asistencia/AsistenciaEvento.vue';
+import PostulacionesEvaluadores from '../components/Users/delegado/postulaciones/PostulacionesEvaluadores.vue';
 
-import PostulacionesEvaluadoresView from '../views/PostulacionesEvaluadoresView.vue'
+
 import ComponenteDinamicoDelegado from '../components/Users/delegado/ComponenteDinamicoDelegado.vue';
 
 export default {
@@ -30,7 +31,7 @@ export default {
         ComponenteDinamicoDelegado, 
         MenuPrincipal: markRaw(MenuPrincipal),
         AsignarProyectos: markRaw(AsignarProyectos),
-        PostulacionesEvaluadoresView: markRaw(PostulacionesEvaluadoresView),
+        PostulacionesEvaluadores: markRaw(PostulacionesEvaluadores),
         AsistenciaEvento: markRaw(AsistenciaEvento)
 
     },
@@ -43,7 +44,7 @@ export default {
         changeComponent(componentName) {
             const componentMap = {
                 AsignarProyectos: AsignarProyectos,
-                PostulacionesEvaluadoresView: PostulacionesEvaluadoresView,
+                PostulacionesEvaluadores: PostulacionesEvaluadores,
                 AsistenciaEvento: AsistenciaEvento
             };
             this.currentComponent = componentMap[componentName] || AsignarProyectos;

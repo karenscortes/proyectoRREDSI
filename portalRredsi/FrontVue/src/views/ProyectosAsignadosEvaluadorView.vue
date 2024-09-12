@@ -18,17 +18,19 @@
         </div>
     </div>
     <!-- Fin contenido principal -->
-
+    <FooterSecundario />
     <!-- Footer -->
 </template>
 
 <script>
     import { obtenerProyectosAsignados } from '../services/evaluadorService';
     import ProyectosAsignados from '../components/Users/evaluador/ProyectosAsignados.vue';
+    import FooterSecundario from '../components/Footers/FooterSecundario.vue';
 
     export default {
         components: {
-            ProyectosAsignados
+            ProyectosAsignados,
+            FooterSecundario
         },
         data() {
             return {

@@ -1,11 +1,11 @@
 from typing import List, Optional
 from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
-from appv1.crud.admin.gest_delegado import create_delegados, get_delegados_activos, get_delegados_by_document
+from appv1.crud.admin.gest_delegado import create_delegado, get_delegados_activos, get_delegados_by_document
 from appv1.crud.admin.gest_rubricas import create_items, delete_items, get_all_rubricas, update_items
 from appv1.crud.admin.gest_delegado import get_delegados_activos
 from appv1.crud.admin.gest_rubricas import get_all_rubricas
-from appv1.crud.admin.admin import create_convocatoria, create_etapa, create_fase, create_sala, get_fases_by_etapa, update_etapa, update_fase
+from appv1.crud.admin.admin import create_convocatoria, create_etapa, create_fase, create_sala, get_fases_by_etapa, update_etapa, update_fase, update_sala
 from appv1.schemas.admin.admin import ConvocatoriaCreate, CreateSala, FaseUpdate
 from appv1.crud.admin.admin import create_convocatoria, create_etapa, create_fase, get_fases_by_etapa, update_etapa, update_fase
 from appv1.schemas.admin.delegado import DelegadoResponse
@@ -60,7 +60,7 @@ async def consult_rubrics(db: Session = Depends(get_db)):
     else:
         return{
             'success': False,
-            'message': 'Error',
+            'message': 'Error al consultar las rúbricas',
         }
 
 #Obtener delegados activos
@@ -84,46 +84,75 @@ def consult_by_document(document: str, db: Session = Depends(get_db)):
     else:
         return{
             'success': False,
-            'message': 'Error',
+            'message': 'Error en la consulta',
         }
 
 #Crear delegado 
 @router_admin.post("/create-delegates/")
 def consult_by_document(user: UserCreate, db: Session = Depends(get_db)):
-    new_user = create_delegados(user, db)
+    new_user = create_delegado(user, db)
     if new_user:
-        return print("Registrado con éxito")
+        return{
+            'success': True,
+            'message': 'Registrado con éxito',
+        }
     else: 
-        return False
+        return{
+            'success': False,
+            'message': 'Error, no se pudo registrar con éxito',
+        }
 
 #Crear items
 @router_admin.post("/create-items/")
 def create_item_rubric(item: ItemCreate, db: Session = Depends(get_db)):
     new_item = create_items(item, db)
     if new_item:
-        return print("Registrado con éxito")
+        return{
+            'success': True,
+            'message': 'Registrado con éxito',
+        }
     else: 
-        return False
+        return{
+            'success': False,
+            'message': 'Error, no se pudo registrar con éxito',
+        }
     
 #Editar items
 @router_admin.post("/update-items/{id_item}/")
 def update_item(id_item:int, item_nuevo: ItemUpdate, db: Session = Depends(get_db)):
     item = update_items(id_item,item_nuevo,db)
     if item:
-        return print("update con éxito")
+        return{
+            'success': True,
+            'message': 'Se actualizo con éxito',
+        }
     else: 
-        return False
+        return{
+            'success': False,
+            'message': 'Error al actualizar',
+        }
     
 #Eliminar items
 @router_admin.post("/delete-items/{id_item}/")
 def delete_item(id_item:int, db: Session = Depends(get_db)):
     item = delete_items(id_item,db)
     if item:
-        return print("update con éxito")
+        return{
+            'success': True,
+            'message': 'Se elimino con éxito',
+        }
     else: 
-        return False
+        return{
+            'success': False,
+            'message': 'Error al eliminar',
+        }
    
 # Crear sala
 @router_admin.post("/crear-sala")
 def create_sala_admin(sala: CreateSala, db: Session = Depends(get_db)):
     return create_sala(db, sala.id_usuario, sala.area_conocimento, sala.numero_sala, sala.nombre_sala)
+
+# Editar sala
+@router_admin.put("/salas/{id_sala}")
+def update_sala_admin(id_sala: int, id_usuario: Optional[int] = None, area_conocimiento: Optional[int] = None, nombre_sala: Optional[str] = None, numero_sala: Optional[str] = None, db: Session = Depends(get_db)):
+    return update_sala(db, id_sala, id_usuario, area_conocimiento,nombre_sala,numero_sala)

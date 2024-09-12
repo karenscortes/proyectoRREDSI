@@ -4,7 +4,7 @@ import RubricaAdminView from '../views/RubricaAdminView.vue';
 import InicioLogin from '../views/InicioLogin.vue';
 import DelegadoView from '../views/DelegadoView.vue';
 import EvaluadorView from '../views/EvaluadorView.vue';
-import PostulacionesEvaluadoresView from '../views/PostulacionesEvaluadoresView.vue'
+import PostulacionesEvaluadores from '../components/Users/delegado/postulaciones/PostulacionesEvaluadores.vue'
 import SuperAdminView from '../views/SuperAdminView.vue';
 import ProyectosAsignadosEvaluadorView from '../views/ProyectosAsignadosEvaluadorView.vue';
 
@@ -23,7 +23,7 @@ const routes = [
   // RUTAS DELEGADO
   { path: '/asignar-proyecto', name: 'AsignarProyecto', component: AsignarProyecto },
   { path: '/principal-delegado', name: 'DelegadoView', component: DelegadoView },
-  { path: '/postulaciones-evaluadores', name: 'PostulacionesEvaluadoresView', component: PostulacionesEvaluadoresView},
+  { path: '/postulaciones-evaluadores', name: 'PostulacionesEvaluadores', component: PostulacionesEvaluadores},
 
   // RUTAS ADMIN
   { path: '/rubrica-admin', name: 'RubricaAdminView', component: RubricaAdminView },
