@@ -14,7 +14,6 @@
         <ProyectosAsignados v-for="(proyecto, index) in proyectos" :key="index" :proyecto="proyecto" />
     </div>
     <!-- Fin contenido principal -->
-
 </template>
 
 <script>
@@ -24,7 +23,7 @@
 
     export default {
         components: {
-            ProyectosAsignados
+            ProyectosAsignados,
         },
         data() {
             return {

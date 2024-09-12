@@ -8,9 +8,7 @@
         </main>
 
         <!-- FOOTER  -->
-        <footer class="bg-dark mt-5 text-white text-center py-3">
-            <h2>ESTE ES EL FOOTER</h2>
-        </footer>
+        <FooterSecundario />
     </div>
 </template>
 
@@ -18,7 +16,7 @@
 import { markRaw } from 'vue';
 import MenuPrincipal from '../components/Menus/MenuPrincipal.vue';
 import ProyectosAsignadosEvaluadorView from './ProyectosAsignadosEvaluadorView.vue';
-
+import FooterSecundario from '../components/Footers/FooterSecundario.vue';
 import ComponenteDinamicoEvaluador from '../components/Users/evaluador/ComponenteDinamicoEvaluador.vue';
 import { useAuthStore } from '@/store';
 import { useRouter } from 'vue-router'; 
@@ -27,7 +25,8 @@ export default {
     components: {
         ComponenteDinamicoEvaluador, 
         MenuPrincipal: markRaw(MenuPrincipal),
-        ProyectosAsignadosEvaluadorView: markRaw(ProyectosAsignadosEvaluadorView)
+        ProyectosAsignadosEvaluadorView: markRaw(ProyectosAsignadosEvaluadorView),
+        FooterSecundario: markRaw(FooterSecundario),
 
     },
     data() {
