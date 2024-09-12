@@ -30,7 +30,7 @@
                 </div>
             </div>
             <div class="accordion accordion-flush" id="accordionFlushExample">
-                <AcordeonPostulaciones v-for="(evaluator,index) in evaluators" :key="index" :evaluator="evaluator" :index="index" @notify="handleNotification"/>
+                <AcordeonPostulaciones v-for="(evaluator,index) in evaluators" :key="index" :evaluator="evaluator"  @notify="handleNotification"/>
             </div>
 
             <!-- Paginador -->
@@ -38,7 +38,7 @@
                 <div aria-label="Page navigation example mb-5">
                     <ul class="pagination justify-content-center">
                         <li class="page-item m-1">
-                            <button @click="prevPage" :disabled="current_page == 1" class="page-link"
+                            <button @click="prevPage" :disabled="currentPage == 1" class="page-link"
                                 style="border-radius: 20px; color: black;">Previous</button>
                         </li>
                         <li v-for="i in totalPages"  :key="i" class="page-item rounded m-1">
@@ -46,7 +46,7 @@
                                 }}</button>
                         </li>
                         <li class="page-item m-1">
-                            <button @click="nextPage" :disabled="current_page == totalPages" class="page-link"
+                            <button @click="nextPage" :disabled="currentPage == totalPages" class="page-link"
                                 style="border-radius: 20px; color: black;">Next</button>
                         </li>
                     </ul>
@@ -101,7 +101,7 @@ export default {
         },
 
         selectedPage(pagina) {
-            this.current_page = pagina;
+            this.currentPage = pagina;
             this.fetchEvaluators();
         },
     }, 

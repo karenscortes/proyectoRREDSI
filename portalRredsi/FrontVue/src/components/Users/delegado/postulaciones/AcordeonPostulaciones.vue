@@ -4,8 +4,8 @@
         <h2 class="accordion-header row align-items-center">
             <div class="col-8 col-md-10">
                 <button class="accordion-button collapsed row align-items-center" type="button"
-                    data-bs-toggle="collapse" :data-bs-target="`#flush-collapse${index}`" aria-expanded="false"
-                    :aria-controls="`flush-collapse${index}`">
+                    data-bs-toggle="collapse" :data-bs-target="`#flush-collapse${evaluator.id_evaluador}`" aria-expanded="false"
+                    :aria-controls="`flush-collapse${evaluator.id_evaluador}`">
                     <div class="col-8">
                         <h4 class="h5 m-0">{{ evaluator.nombres}} {{evaluator.apellidos}}</h4>
                     </div>
@@ -32,7 +32,7 @@
                 </div>
             </div>
         </h2>
-        <div :id="`flush-collapse${index}`" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
+        <div :id="`flush-collapse${evaluator.id_evaluador}`" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
             <div class="accordion-body col-10 pl-0 text-dark text-start">
                 <div class="row mt-4">
                     <div class="col-md-4 col-12">
@@ -117,7 +117,6 @@ export default {
     name: "AcordeonPostulaciones",
     props: {
         evaluator: Object,
-        index: Number
     },
     data(){
         return{
@@ -142,7 +141,9 @@ export default {
         
         async openModal(evaluator) {
             try {
+                this.certificates = [];
                 const response = await getCertificatesById(evaluator.id_evaluador);
+                console.log(response.data);
                 this.certificates = response.data; 
                 $('#modal_titulos').modal('show'); // Abre el modal
             } catch (error) {
