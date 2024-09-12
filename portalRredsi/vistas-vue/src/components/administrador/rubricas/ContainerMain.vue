@@ -141,7 +141,7 @@ export default {
         p_titulo: "Titulo",
       },
     ]);
-
+    
     //info items rubrica
     const infoItems = reactive([
       {
