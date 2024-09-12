@@ -1,3 +1,4 @@
+
 <template>
     <!-- Título -->
         <div class="row mb-5 mt-2">
@@ -61,10 +62,16 @@
         </tbody>
       </table>
     </div>
+
   </template>
   
   <script>
+  import FooterPrincipal from '../components/Footers/FooterPrincipal.vue';
+
   export default {
+    components: {
+      FooterPrincipal
+    },
     props: {
       delegados: Array
     },
