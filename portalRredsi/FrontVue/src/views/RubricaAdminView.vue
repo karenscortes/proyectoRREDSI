@@ -1,5 +1,7 @@
 <template>
   <div class="container mt-5">
+    <!-- HEADER  -->
+    <MenuUsuarios :rol="rolUser"></MenuUsuarios>
     <div>
       <!--Titulo principal-->
       <div>
@@ -91,10 +93,13 @@
 </template>
 
 <script setup>
+import { useAuthStore } from "@/store";
+import { useRouter } from "vue-router";
 import { onMounted } from "vue";
 import { getRubricsAll } from "@/services/administradorService";
 import { reactive } from "vue";
 import { ref } from "vue";
+import MenuUsuarios from "../components/Menus/MenuUsuarios.vue";
 import ModalDelete from "../components/Users/administrador/rubricas/ModalDelete.vue";
 import ModalAdd from "../components/Users/administrador/rubricas/ModalAdd.vue";
 import CardTipo from "../components/Users/administrador/rubricas/CardTipo.vue";
@@ -102,6 +107,7 @@ import ItemTBody from "../components/Users/administrador/rubricas/ItemTBody.vue"
 import FootTable from "../components/Users/administrador/rubricas/FootTable.vue";
 import ItemThead from "../components/Users/administrador/rubricas/ItemThead.vue";
 
+const rolUser = ref("Delegado");
 const isModalOpen = ref(false);
 //Titulo contenedor principal
 const tituloPrincipal = "Gestionar rúbricas";
@@ -199,9 +205,8 @@ const fetchAllRubrics = async () => {
     const response = await getRubricsAll();
     const primerRubrica = response.data[0].items_rubrica;
     primerRubrica.forEach(function (item, i) {
-      infoItems[i] = item; 
+      infoItems[i] = item;
     });
-;
   } catch (error) {
     console.error("Error al obtener rubricas: ", error);
     alert("Error al obtener las rúbricas");
@@ -210,10 +215,20 @@ const fetchAllRubrics = async () => {
 onMounted(() => {
   fetchAllRubrics();
 });
+const authStore = useAuthStore();
+const router = useRouter();
+
+const user = authStore.user;
+const permissions = authStore.permissions;
+
+const logout = () => {
+  authStore.logout();
+  router.push("/");
+};
 </script>
 
 <style scoped>
-.table{
+.table {
   max-height: 90%;
   overflow-y: auto;
   display: block;
