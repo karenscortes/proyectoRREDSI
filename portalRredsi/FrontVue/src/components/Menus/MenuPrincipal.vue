@@ -4,7 +4,7 @@
       <div class="header_content with_button d-flex flex-row align-items-center justify-content-start">
         <div class="logo_container">
           <div class="logo">
-            <img class="img-fluid" src="../../assets/logoRredsi.png" alt="" />
+            <img class="img-fluid" src="../assets/logoRredsi.png" alt="" />
             <span>RREDSI</span>
           </div>
         </div>
@@ -88,6 +88,7 @@
       </div>
     </div>
   </div>
+
 </template>
 
 <script>
