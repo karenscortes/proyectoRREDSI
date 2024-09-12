@@ -65,7 +65,7 @@ async def read_asistentes_por_rol(
         "page_size": page_size
     }
 
-@router_asistencia.get("/get-asistente-por-cedula/", response_model=dict)
+@router_asistencia.get("/get-asistente-por-cedula/{documento}", response_model=dict)
 async def read_asistente_por_cedula(documento: str, db: Session = Depends(get_db)):
     asistente = get_asistente_por_cedula(db, documento)
     
@@ -74,13 +74,20 @@ async def read_asistente_por_cedula(documento: str, db: Session = Depends(get_db
     
     return asistente
 
+
 @router_asistencia.put("/update-asistencia/", response_model=dict)
 def update_asistencia_evento(
-    id_asistencia:int,
-    id_usuario:int,
+    id_asistente: int,
+    id_usuario: int,
     asistencia: int,
     db: Session = Depends(get_db),
 ):
-    updated= actualizar_asistencia(db, id_asistencia, id_usuario, asistencia)
-    if updated:
-        return {"mensaje": "Asistencia actualizada con exito" }
+    try:
+        updated = actualizar_asistencia(db, id_asistente, id_usuario, asistencia)
+        if updated:
+            return {"mensaje": "Asistencia actualizada con éxito"}
+        else:
+            raise HTTPException(status_code=400, detail="No se pudo actualizar la asistencia")
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
