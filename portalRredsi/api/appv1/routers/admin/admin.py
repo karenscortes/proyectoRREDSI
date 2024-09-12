@@ -118,7 +118,7 @@ def create_item_rubric(item: ItemCreate, db: Session = Depends(get_db)):
         }
     
 #Editar items
-@router_admin.post("/update-items/{id_item}/")
+@router_admin.put("/update-items/")
 def update_item(id_item:int, item_nuevo: ItemUpdate, db: Session = Depends(get_db)):
     item = update_items(id_item,item_nuevo,db)
     if item:
