@@ -137,20 +137,21 @@ export default defineComponent({
         visibilidad: "d-none",
         yellow_tab: "Cerrar Sesión",
       });
-    } else if (props.rol === 6) { //superAdmi
+    } else if (props.rol === 6) { //superAdmin
       Object.assign(state, {
         left_tabs: [
-          { nombre: "Inicio", ruta: "/super-admin" },
+          { nombre: "Inicio", ruta: "/super-admin" }, 
         ],
         mid_tabs: [
-          { nombre: "Informacion delegados", ruta: "/lista-delegados-superadmin"},
+          { nombre: "Informacion delegados", ruta: "/lista-delegados-superadmin" },
         ],
         tab_name: "",
         visibilidadLogin: "d-none",
         visibilidad: "d-none",
         yellow_tab: "Cerrar Sesión",
-      }); 
-    } 
+      });
+    }
+
     else if (props.rol === 2) { //delegado
       Object.assign(state, {
         left_tabs: [

@@ -31,7 +31,7 @@ const routes = [
   { path: '/rubrica-admin', name: 'RubricaAdminView', component: RubricaAdminView },
 
   // RUTAS SUPERADMIN
-  { path: '/super-admin', name: 'SuperAdminView', component: SuperAdminView},
+  { path: '/principal-superadmin', name: 'SuperAdminView', component: SuperAdminView},
   { path: '/lista-delegados-superadmin', name: 'ListaDelegados', component: ListaDelegados},
 
   // Redirección en caso de ruta no encontrada
