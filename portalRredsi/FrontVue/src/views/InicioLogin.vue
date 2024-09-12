@@ -1,59 +1,4 @@
 <template>
-<<<<<<< HEAD
-    <div class="super_container">
-        <!-- Header -->
-        <header class="header d-flex flex-row">
-            <div class="header_content with_button d-flex flex-row align-items-center justify-content-start">
-                <div class="logo_container">
-                    <div class="logo">
-                        <img class="img-fluid" src="../assets/img/logoRredsi.png" alt="Logo" />
-                        <span>RREDSI</span>
-                    </div>
-                </div>
-
-                <nav class="main_nav_container">
-                    <div class="main_nav">
-                        <ul class="main_nav_list d-flex justify-content-between">
-                            <li class="main_nav_item" v-for="(tab, index) in left_tabs" :key="`left-${index}`">
-                                <a :href="tab.ruta">{{ tab.nombre }}</a>
-                            </li>
-                            <li class="main_nav_item" v-for="(tab, index) in mid_tabs" :key="`mid-${index}`">
-                                <div class="dropdown">
-                                    <a class="dropdown-toggle text-dark" href="#" role="button" 
-                                       data-bs-toggle="dropdown" aria-expanded="false">
-                                        {{ tab.nombre }}
-                                    </a>
-                                    <div class="dropdown-menu text-center">
-                                        <a v-for="(opcion, opcionIndex) in tab.opciones" :key="`option-${opcionIndex}`"
-                                            :href="opcion.ruta">
-                                            {{ opcion.nombre }}
-                                        </a>
-                                    </div>
-                                </div>
-                            </li>
-                            <li :class="['main_nav_item', visibilidad]"><a href="#">{{ tab_name }}</a></li>
-                            <li :class="['main_nav_item', visibilidadLogin]">
-                                <a href="#" type="button" data-bs-toggle="modal" data-bs-target="#LoginModal">Login</a>
-                            </li>
-                        </ul>
-                    </div>
-                </nav>
-            </div>
-
-            <a href="#" class="header_side d-flex flex-row justify-content-center align-items-center">
-                <h3 class="main_nav_item text-dark">{{ yellow_tab }}</h3>
-            </a>
-
-            <!-- Hamburger -->
-            <div class="hamburger_container">
-                <i class="fas fa-bars trans_200"></i>
-            </div>
-        </header>
-
-        <!-- Sidebar -->
-        <div class="menu_container menu_mm">
-            <!-- Sidebar content here -->
-=======
   <div class="super_container">
     <!-- Header -->
     <header class="header d-flex flex-row">
@@ -69,7 +14,6 @@
             />
             <span>RREDSI</span>
           </div>
->>>>>>> origin
         </div>
 
         <nav class="main_nav_container">
@@ -254,47 +198,6 @@ export default {
       yellow_tab: "Contáctanos",
     });
 
-<<<<<<< HEAD
-        if (props.rol === 'Administrador') {
-            Object.assign(state, {
-                left_tabs: [{ nombre: 'Inicio', ruta: '#' }, { nombre: 'Perfil', ruta: '#' }, { nombre: 'Cuentas', ruta: '#' }, { nombre: 'Rubricas', ruta: '#' }],
-                mid_tabs: [{ nombre: 'Eventos', opciones: [{ nombre: 'Salas', ruta: '#' }, { nombre: 'Asistencia', ruta: '#' }, { nombre: 'Convocatoria', ruta: '#' }] }],
-                tab_name: '',
-                visibilidadLogin: 'd-none',
-                visibilidad: 'd-none',
-                yellow_tab: 'Cerrar Sesión'
-            });
-        } else if (props.rol === 'SuperAdmin') {
-            Object.assign(state, {
-                left_tabs: [{ nombre: 'Inicio', ruta: '#' }],
-                mid_tabs: [{ nombre: 'Informacion delegados', ruta: '#' }],
-                visibilidadLogin: 'd-none',
-                visibilidad: 'd-inline-block',
-                yellow_tab: 'Cerrar Sesión'
-            });    
-        } else if (props.rol === 'Delegado') {
-            Object.assign(state, {
-                left_tabs: [{ nombre: 'Inicio', ruta: '#' }, { nombre: 'Perfil', ruta: '#' }],
-                mid_tabs: [
-                    { nombre: 'Evaluadores', opciones: [{ nombre: 'Postulaciones', ruta: '#' }, { nombre: 'Lista de Evaluadores', ruta: '#' }] },
-                    { nombre: 'Proyectos', opciones: [{ nombre: 'Asignacion de Proyectos', ruta: '#' }, { nombre: 'Lista de Proyectos', ruta: '#' }] },
-                    { nombre: 'Evento', opciones: [{ nombre: 'Salas', ruta: '#' }, { nombre: 'Asistencia', ruta: '#' }] },
-                ],
-                tab_name: '',
-                visibilidadLogin: 'd-none',
-                visibilidad: 'd-none',
-                yellow_tab: 'Cerrar Sesión'
-            });
-        } else if (props.rol === 'Evaluador') {
-            Object.assign(state, {
-                left_tabs: [{ nombre: 'Inicio', ruta: '#' }, { nombre: 'Perfil', ruta: '#' }],
-                mid_tabs: [{ nombre: 'Proyectos', opciones: [{ nombre: 'Primera Etapa', ruta: '#' }, { nombre: 'Segunda Etapa', ruta: '#' }] }],
-                tab_name: 'Convocatoria',
-                visibilidadLogin: 'd-none',
-                visibilidad: 'd-inline-block',
-                yellow_tab: 'Cerrar Sesión'
-            });
-=======
     if (props.rol === "Administrador") {
       Object.assign(state, {
         left_tabs: [
@@ -318,7 +221,20 @@ export default {
         visibilidad: "d-none",
         yellow_tab: "Cerrar Sesión",
       });
-    } else if (props.rol === "Delegado") {
+    } else if (props.rol === "SuperAdmin") {
+      Object.assign(state, {
+        left_tabs: [
+          { nombre: "Inicio", ruta: "/super-admin" },
+        ],
+        mid_tabs: [
+          { nombre: "Informacion delegados", ruta: "/lista-delegados-superadmin"},
+        ],
+        tab_name: "",
+        visibilidadLogin: "d-none",
+        visibilidad: "d-none",
+        yellow_tab: "Cerrar Sesión",
+      }); } 
+    else if (props.rol === "Delegado") {
       Object.assign(state, {
         left_tabs: [
           { nombre: "Inicio", ruta: "#" },
@@ -398,7 +314,6 @@ export default {
 
         if (authStore.authError) {
           errorMessage.value = authStore.authError;
->>>>>>> origin
         } else {
           const user = authStore.user;
           console.log(user);
@@ -408,51 +323,15 @@ export default {
             router.push("/principal-delegado");
           } else if (user?.id_rol == 1) {
             router.push("/principal-evaluador");
-          }
+          }else if(user?.id_rol == 6){
+            router.push('/super-admin');
+            }
         }
       } catch (error) {
         errorMessage.value = "Error durante el login: " + error.message;
       }
     };
 
-<<<<<<< HEAD
-        // Método para manejar el login
-        const handleLogin = async () => {
-            try {
-                await authStore.login(email.value, password.value);
-
-                if (authStore.authError) {
-                    errorMessage.value = authStore.authError;
-                } else {
-                    
-                    const user = authStore.user;
-                    console.log(user)
-                    // const permissions = authStore.permissions;
-                    if(user?.id_rol == 2){
-                     // Reemplaza '/dashboard' con la ruta deseada
-                        router.push('/principal-delegado');
-                    }else if(user?.id_rol == 1){
-                        router.push('/principal-evaluador');
-                    }else if(user?.id_rol == 6){
-                        router.push('/super-admin');
-                    }   
-                }
-            } catch (error) {
-                errorMessage.value = 'Error durante el login: ' + error.message;
-            }
-        };
-
-        return {
-            ...state,
-            email,
-            password,
-            errorMessage,
-            handleLogin,
-            user,
-            // permissions
-        };
-    },
-=======
     return {
       ...state,
       email,
@@ -463,7 +342,6 @@ export default {
       // permissions
     };
   },
->>>>>>> origin
 };
 </script>
 
