@@ -26,7 +26,7 @@ export default {
         ComponenteDinamicoEvaluador, 
         MenuPrincipal: markRaw(MenuPrincipal),
         ProyectosAsignadosEvaluadorView: markRaw(ProyectosAsignadosEvaluadorView),
-        FooterSecundario: markRaw(FooterSecundario),
+        FooterSecundario: markRaw(MenuPrincipal),
 
     },
     data() {

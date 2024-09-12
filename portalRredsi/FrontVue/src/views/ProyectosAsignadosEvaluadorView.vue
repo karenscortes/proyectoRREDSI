@@ -9,10 +9,11 @@
                 </div>
             </div>
         </div>
+        <div class="row justify-content-center">
+            <ProyectosAsignados v-for="(proyecto, index) in proyectos" :key="index" :proyecto="proyecto" />
+        </div>
     </div>
-    <div class="row justify-content-center">
-        <ProyectosAsignados v-for="(proyecto, index) in proyectos" :key="index" :proyecto="proyecto" />
-    </div>
+   
     <!-- Fin contenido principal -->
 </template>
 
@@ -36,7 +37,7 @@
                     const authStore = useAuthStore();
                     const user = authStore.user;
 
-                    const response = await obtenerProyectosAsignados(user.id_usuario, 1, 8);
+                    const response = await obtenerProyectosAsignados(user.id_usuario, 1, 9);
 
                     // Asegúrate de acceder correctamente a la data de la respuesta
                     this.proyectos = response.data.data; 

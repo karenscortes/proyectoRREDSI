@@ -1,42 +1,42 @@
 <template>
-        <div class="col-xl-3 col-lg-6 col-md-4 col-sm-6 align-items-center">    
-            <ul class="cards justify-content-center">
-                <li>    
-                    <a class="card">
-                        <div class="text-center pt-5 card__image">
-                            <a :href="proyecto.url_propuesta_escrita" class="d-inline-flex" target="_blank">
-                                <button type="button" class="btn btn-warning rounded-circle border border-dark mx-2">
-                                    <i class="far fa-file-alt h3"></i>
-                                </button>
-                            </a>
+    <div class="col-xl-4 col-md-6 col-sm-12 align-items-center">    
+        <ul class="cards justify-content-center">
+            <li>    
+                <a class="card">
+                    <div class="text-center pt-5 card__image">
+                        <a :href="proyecto.url_propuesta_escrita" class="d-inline-flex" target="_blank">
                             <button type="button" class="btn btn-warning rounded-circle border border-dark mx-2">
-                                <i class="fa-solid fa-list-check fa-xl"></i>
-                            </button> 
-                        </div>
-                        <div class="card__overlay">
-                            <div class="card__header">
-                                <svg class="card__arc" xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M 40 80 c 22 0 40 -22 40 -40 v 40 Z"/>
-                                </svg>                     
-                                <div class="border border-white text-white card__thumb text-center pt-3">
-                                    <h2>{{ proyecto.id_proyecto }}</h2>
-                                </div>
-                                <div class="card__header-text text-justify">
-                                    <h3 class="text-left texto-recortado">{{ proyecto.titulo }}</h3> 
-                                    <h4 class="text-left texto-recortado">{{ proyecto.institucion }}</h4>                                                                   
-                                </div> 
+                                <i class="far fa-file-alt h3"></i>
+                            </button>
+                        </a>
+                        <button type="button" class="btn btn-warning rounded-circle border border-dark mx-2">
+                            <i class="fa-solid fa-list-check fa-xl"></i>
+                        </button> 
+                    </div>
+                    <div class="card__overlay">
+                        <div class="card__header">
+                            <svg class="card__arc" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M 40 80 c 22 0 40 -22 40 -40 v 40 Z"/>
+                            </svg>                     
+                            <div class="border border-white text-white card__thumb text-center pt-3">
+                                <h2>{{ proyecto.id_proyecto }}</h2>
                             </div>
-                            <div class="card__footer text-center">
-                                <div>
-                                    <p class="card__description"><strong>Modalidad:</strong> {{ proyecto.modalidad }}</p>
-                                    <p class="card__description"><strong>Estado:</strong> {{ proyecto.estado_evaluacion }}</p>
-                                </div>
-                            </div>           
+                            <div class="card__header-text text-justify">
+                                <h3 class="text-left texto-recortado">{{ proyecto.titulo }}</h3> 
+                                <h4 class="text-left texto-recortado">{{ proyecto.institucion }}</h4>                                                                   
+                            </div> 
                         </div>
-                    </a>      
-                </li>
-            </ul>
-        </div>
+                        <div class="card__footer text-center">
+                            <div>
+                                <p class="card__description"><strong>Modalidad:</strong> {{ proyecto.modalidad }}</p>
+                                <p class="card__description"><strong>Estado:</strong> {{ proyecto.estado_evaluacion }}</p>
+                            </div>
+                        </div>           
+                    </div>
+                </a>      
+            </li>
+        </ul>
+    </div>
 </template>
   
 <script setup>
@@ -139,18 +139,12 @@ const props = defineProps({
     }
   
     .card {
-        display: block;
         border-radius: 30px; 
         height: auto; 
         cursor: default;
     }
 
-    .col_card {
-        padding-left: 30px;
-        padding-right: 30px;
-        padding-top: 10px;
-    }
-    
+   
     .card-img-top {
         border-top-left-radius: 0px;
         border-top-right-radius: 0px;
