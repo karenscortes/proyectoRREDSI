@@ -10,7 +10,20 @@ def get_proyectos_por_etapa(db: Session, nombre_etapa: str, id_usuario: int, pag
         offset = (page - 1) * page_size
         
         sql = text("""
-            SELECT DISTINCT proyectos.*, rubricas_resultados.estado_proyecto AS estado_evaluacion
+            SELECT DISTINCT 
+                proyectos.id_proyecto,
+                instituciones.nombre AS institucion,
+                modalidades.nombre AS modalidad,
+                areas_conocimiento.nombre AS area_conocimiento,
+                proyectos.titulo,
+                proyectos.estado,
+                proyectos.programa_academico,
+                proyectos.grupo_investigacion,
+                proyectos.linea_investigacion,
+                proyectos.nombre_semillero,
+                proyectos.url_propuesta_escrita,
+                proyectos.url_aval,
+                rubricas_resultados.estado_proyecto AS estado_evaluacion
             FROM proyectos
             JOIN participantes_proyecto 
                 ON proyectos.id_proyecto = participantes_proyecto.id_proyecto  
@@ -25,6 +38,12 @@ def get_proyectos_por_etapa(db: Session, nombre_etapa: str, id_usuario: int, pag
                 AND respuestas_rubricas.id_usuario = :id_usuario
             LEFT JOIN rubricas_resultados 
                 ON respuestas_rubricas.id_rubrica_resultado = rubricas_resultados.id_rubrica_resultado
+            JOIN instituciones 
+                ON proyectos.id_institucion = instituciones.id_institucion
+            JOIN modalidades 
+                ON proyectos.id_modalidad = modalidades.id_modalidad
+            JOIN areas_conocimiento 
+                ON proyectos.id_area_conocimiento = areas_conocimiento.id_area_conocimiento
             WHERE etapas.nombre = :nombre_etapa 
               AND participantes_proyecto.id_usuario = :id_usuario
               AND convocatorias.estado = 'en curso'
@@ -73,15 +92,26 @@ def get_proyectos_por_etapa(db: Session, nombre_etapa: str, id_usuario: int, pag
         print(f"Error al buscar proyectos por etapa: {e}")
         raise HTTPException(status_code=500, detail="Error al buscar proyectos por etapa")
 
-    
-    
 #Consulta para sacar los proyectos asignados a un evaluador por estado (paginado)
 def get_proyectos_por_estado(db: Session, estado_evaluacion: str, id_usuario: int, page: int = 1, page_size: int = 10):
     try:
         offset = (page - 1) * page_size
         
         sql = text("""
-            SELECT DISTINCT proyectos.*, rubricas_resultados.estado_proyecto AS estado_evaluacion
+            SELECT DISTINCT 
+                proyectos.id_proyecto,
+                instituciones.nombre AS institucion,
+                modalidades.nombre AS modalidad,
+                areas_conocimiento.nombre AS area_conocimiento,
+                proyectos.titulo,
+                proyectos.estado,
+                proyectos.programa_academico,
+                proyectos.grupo_investigacion,
+                proyectos.linea_investigacion,
+                proyectos.nombre_semillero,
+                proyectos.url_propuesta_escrita,
+                proyectos.url_aval,
+                rubricas_resultados.estado_proyecto AS estado_evaluacion
             FROM proyectos
             JOIN participantes_proyecto 
                 ON proyectos.id_proyecto = participantes_proyecto.id_proyecto  
@@ -94,6 +124,12 @@ def get_proyectos_por_estado(db: Session, estado_evaluacion: str, id_usuario: in
                 AND respuestas_rubricas.id_usuario = :id_usuario
             LEFT JOIN rubricas_resultados 
                 ON respuestas_rubricas.id_rubrica_resultado = rubricas_resultados.id_rubrica_resultado
+            JOIN instituciones 
+                ON proyectos.id_institucion = instituciones.id_institucion
+            JOIN modalidades 
+                ON proyectos.id_modalidad = modalidades.id_modalidad
+            JOIN areas_conocimiento 
+                ON proyectos.id_area_conocimiento = areas_conocimiento.id_area_conocimiento
             WHERE participantes_proyecto.id_usuario = :id_usuario
               AND rubricas_resultados.estado_proyecto = :estado_evaluacion
               AND convocatorias.estado = 'en curso'
@@ -140,15 +176,26 @@ def get_proyectos_por_estado(db: Session, estado_evaluacion: str, id_usuario: in
         print(f"Error al buscar proyectos por estado de evaluación: {e}")
         raise HTTPException(status_code=500, detail="Error al buscar proyectos por estado de evaluación")
 
-
-
 #Consulta para sacar los proyectos asignados a un evaluador (paginado)
 def get_proyectos_asignados(db: Session, id_usuario: int, page: int = 1, page_size: int = 10):
     try:
         offset = (page - 1) * page_size
         
         sql = text("""
-            SELECT DISTINCT proyectos.*, rubricas_resultados.estado_proyecto AS estado_evaluacion
+            SELECT DISTINCT 
+                proyectos.id_proyecto,
+                instituciones.nombre AS institucion,
+                modalidades.nombre AS modalidad,
+                areas_conocimiento.nombre AS area_conocimiento,
+                proyectos.titulo,
+                proyectos.estado,
+                proyectos.programa_academico,
+                proyectos.grupo_investigacion,
+                proyectos.linea_investigacion,
+                proyectos.nombre_semillero,
+                proyectos.url_propuesta_escrita,
+                proyectos.url_aval,
+                rubricas_resultados.estado_proyecto AS estado_evaluacion
             FROM proyectos
             JOIN participantes_proyecto 
                 ON proyectos.id_proyecto = participantes_proyecto.id_proyecto  
@@ -161,6 +208,12 @@ def get_proyectos_asignados(db: Session, id_usuario: int, page: int = 1, page_si
                 AND respuestas_rubricas.id_usuario = :id_usuario
             LEFT JOIN rubricas_resultados 
                 ON respuestas_rubricas.id_rubrica_resultado = rubricas_resultados.id_rubrica_resultado
+            JOIN instituciones 
+                ON proyectos.id_institucion = instituciones.id_institucion
+            JOIN modalidades 
+                ON proyectos.id_modalidad = modalidades.id_modalidad
+            JOIN areas_conocimiento 
+                ON proyectos.id_area_conocimiento = areas_conocimiento.id_area_conocimiento
             WHERE participantes_proyecto.id_usuario = :id_usuario
               AND convocatorias.estado = 'en curso'
             LIMIT :page_size OFFSET :offset
@@ -199,8 +252,6 @@ def get_proyectos_asignados(db: Session, id_usuario: int, page: int = 1, page_si
         print(f"Error al buscar proyectos asignados: {e}")
         raise HTTPException(status_code=500, detail="Error al buscar proyectos asignados")
 
-    
-
 # Consulta para obtener la convocatoria actual con estado 'en curso'
 def get_current_convocatoria(db: Session):
     try:
@@ -217,7 +268,6 @@ def get_current_convocatoria(db: Session):
         print(f"Error al consultar la convocatoria: {e}")
         raise HTTPException(status_code=500, detail="Error al consultar la convocatoria")
     
-
 # Inserción en la tabla postulaciones_evaluadores
 def create_postulacion_evaluador(db: Session, id_convocatoria: int, id_evaluador: int, etapa_virtual: int, etapa_presencial: int, jornada_manana: int, jornada_tarde: int):
     try:
@@ -255,7 +305,6 @@ def create_postulacion_evaluador(db: Session, id_convocatoria: int, id_evaluador
         print(f"Error al crear la postulación: {e}")
         raise HTTPException(status_code=500, detail="Error al crear la postulación")
 
-
 # Consulta para obtener el id_proyecto_convocatoria con el id_proyecto
 def get_proyecto_convocatoria(db: Session, id_proyecto: int):
     try:
@@ -277,7 +326,6 @@ def get_proyecto_convocatoria(db: Session, id_proyecto: int):
         db.rollback()
         print(f"Error al consultar el proyecto convocatoria: {e}")
         raise HTTPException(status_code=500, detail="Error al consultar el proyecto convocatoria")
-    
     
 def insert_respuesta_rubrica(db: Session, id_item_rubrica: int, id_usuario: int, id_proyecto: int, observacion: str, calificacion: float, calificacion_final: float):
     try:
@@ -358,7 +406,6 @@ def insert_respuesta_rubrica(db: Session, id_item_rubrica: int, id_usuario: int,
         print(f"Error al insertar respuesta de rúbrica: {e}")
         raise HTTPException(status_code=500, detail="Error al insertar respuesta de rúbrica")
 
-
 def get_proyectos_etapa_presencial_con_horario(db: Session, id_usuario: int, page: int = 1, page_size: int = 10):
     try:
         offset = (page - 1) * page_size
@@ -437,8 +484,6 @@ def get_proyectos_etapa_presencial_con_horario(db: Session, id_usuario: int, pag
     except SQLAlchemyError as e:
         print(f"Error al buscar proyectos por etapa: {e}")
         raise HTTPException(status_code=500, detail="Error al buscar proyectos por etapa")
-    
-
 
 def convertir_timedelta_a_hora(timedelta_obj: timedelta) -> str:
     total_seconds = int(timedelta_obj.total_seconds())

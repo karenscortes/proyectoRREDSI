@@ -29,7 +29,7 @@
                        
                             </div>
                             <div class="card__footer text-center">
-                                <div>
+                                <div class="text-justify">
                                     <p class="card__description"><strong>Modalidad:</strong> {{ modalidadProyecto }}</p>
                                     <p class="card__description"><strong>Estado:</strong> {{ estadoProyecto }}</p>
                                 </div>

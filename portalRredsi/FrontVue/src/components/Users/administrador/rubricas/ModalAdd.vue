@@ -31,7 +31,7 @@
                   id="titulo"
                   name="titulo"
                   required="required"
-                  class="form_modal form-control" v-model="tituloItem"
+                  class="form_modal form-control" v-model="itemActual.titulo"
                 />
               </div>
               <div class="col-md-6 mb-4">
@@ -44,7 +44,7 @@
                   id="valor_maximo"
                   name="valor_maximo"
                   required="required"
-                  class="form_modal form-control" v-model="valorMax"
+                  class="form_modal form-control" v-model="itemActual.valor_max"
                 />
               </div>
               <div class="col-md-12 mb-4">
@@ -56,7 +56,7 @@
                   id="descripcion"
                   name="descripcion"
                   required="required"
-                  class="form_textArea form-control" v-model="descripcion"
+                  class="form_textArea form-control" v-model="itemActual.componente"
                 ></textarea>
               </div>
             </div>
@@ -64,7 +64,7 @@
         </div>
         <div class="modal-footer">
           <button class="btn" data-bs-dismiss="modal" @click="closeModal()">Cerrar</button>
-          <button class="btn" data-bs-dismiss="modal">Guardar</button>
+          <button class="btn" data-bs-dismiss="modal" @click="save()">Guardar</button>
         </div>
       </div>
     </div>
@@ -72,31 +72,42 @@
 </template>
 
 <script setup>
-import { ref, defineEmits } from 'vue';
+import { updateItems} from "@/services/administradorService";
+import { ref, defineEmits, reactive } from 'vue';
   const props = defineProps({
   infoModalEditar: {
     type: Object,
     default: null,
     validator(value) {
       return (
-        typeof (value.p_id_rubrica === "number" || value.p_id_rubrica === null) &&
-        typeof (value.p_idItem === 'number' || value.p_idItem === null) &&
-        typeof (value.p_tituloItem === 'string' || value.p_tituloItem === null) &&
-        typeof (value.p_valorMax === 'number' || value.p_valorMax === null) &&
-        typeof (value.p_descripcion === 'string' || value.p_descripcion === null)
+        
+        typeof (value.id_item_rubrica === "number" || value.id_item_rubrica === null) &&
+        typeof (value.id_rubrica === 'number' || value.id_rubrica === null) &&
+        typeof (value.titulo === 'string' || value.titulo === null) &&
+        typeof (value.componente === 'number' || value.componente=== null) &&
+        typeof (value.valor_max === 'string' || value.valor_max  === null)
       );
     }
   }
 });
 
 const emit = defineEmits(['close']);
-const tituloItem = ref(props.infoModalEditar.p_tituloItem);
-const valorMax = ref(props.infoModalEditar.p_valorMax);
-const descripcion = ref(props.infoModalEditar.p_descripcion);
+const itemActual = reactive({
+  id_item_rubrica: props.infoModalEditar.id_item_rubrica,
+  titulo : props.infoModalEditar.titulo,
+  componente: props.infoModalEditar.componente, 
+  valor_max: props.infoModalEditar.valor_max
+});
 
 const closeModal = () => {
   emit('close');
 };
+
+const save = async () =>{
+  const result = await updateItems(itemActual.id_item_rubrica, itemActual); 
+  console.log("Ya le diste a guardar"); 
+  console.log(itemActual);
+}
 </script>
 
 <style scoped>
