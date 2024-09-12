@@ -4,9 +4,9 @@ from pydantic import BaseModel
 
 class ProyectoSchema(BaseModel):
     id_proyecto: int
-    id_institucion: int 
-    id_modalidad: int
-    id_area_conocimiento: int
+    institucion: str 
+    modalidad: str
+    area_conocimiento: str
     titulo: str
     estado: str
     programa_academico: str

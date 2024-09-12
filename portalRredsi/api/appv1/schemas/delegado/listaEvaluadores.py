@@ -1,3 +1,4 @@
+from typing import List
 from pydantic import BaseModel
 
 class EvaluatorsResponse(BaseModel):
@@ -10,3 +11,9 @@ class EvaluatorsResponse(BaseModel):
     nombre_institucion:str
     area_conocimiento:str
     otra_area:str
+    
+class PaginatedUnassignedEvaluators(BaseModel):
+    evaluators: List[EvaluatorsResponse]
+    total_pages: int
+    current_page: int
+    page_size: int

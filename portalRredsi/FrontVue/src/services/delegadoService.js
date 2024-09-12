@@ -1,7 +1,7 @@
 import api from './api'; 
 
 // Función para obtener proyectos sin asignar
-export const proyectosSinAsignar = async (page = 1, pageSize = 2) => {
+export const proyectosSinAsignar = async (page = 1, pageSize = 10) => {
     try {
         const response = await api.get(`/proyectosSinAsignar/get-all-unassiggned-Projects/?page=${page}&page_size=${pageSize}`, {
             headers: {

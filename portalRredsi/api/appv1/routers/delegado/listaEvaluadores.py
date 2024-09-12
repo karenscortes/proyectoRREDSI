@@ -1,25 +1,33 @@
 from typing import List
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
-from appv1.schemas.delegado.listaEvaluadores import EvaluatorsResponse
+from appv1.schemas.delegado.listaEvaluadores import EvaluatorsResponse, PaginatedUnassignedEvaluators
 from db.database import get_db
 from appv1.crud.delegado.listaEvaluadores import get_all_evaluators, get_evaluator_by_document, update_evaluator_status
 
 router_evaluadores = APIRouter()
 MODULE = 'usuarios'
 
-@router_evaluadores.get("/get-all-evaluators/", response_model=List[EvaluatorsResponse])
+@router_evaluadores.get("/get-all-evaluators/", response_model=PaginatedUnassignedEvaluators)
 async def read_all_evaluators(
+    page: int = 1,
+    page_size: int = 10,
     db: Session = Depends(get_db)
     #current_user: UserResponse = Depends(get_current_user)
 ):
     # permisos = get_permissions(db, current_user.user_role, MODULE)
     # if not permisos.p_select:
     #     raise HTTPException(status_code=401, detail="Usuario no autorizado")
-    evaluadores = get_all_evaluators(db)
+    evaluadores,total_pages = get_all_evaluators(db, page, page_size)
     if len(evaluadores) == 0:
         raise HTTPException(status_code=404, detail="No hay Evaluadores")
-    return evaluadores
+    
+    return {
+        "evaluators": evaluadores,
+        "total_pages": total_pages,
+        "current_page": page,
+        "page_size": page_size
+    }
 
 
 @router_evaluadores.put("/update-evaluator-status/", response_model=dict)
