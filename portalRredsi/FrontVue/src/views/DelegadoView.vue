@@ -1,8 +1,10 @@
 <template>
     <div>
         <!-- HEADER  -->
-        <MenuPrincipal :rol="user?.id_rol" @component-selected="changeComponent"/>
-        
+        <!-- <MenuPrincipal :rol="user?.id_rol" @component-selected="changeComponent"/> -->
+        <component :is="selectedMenu" :rol="user?.id_rol" @component-selected="changeComponent"/>
+
+
         <!-- BODY  -->
         <main class="content mt-4">
             <ComponenteDinamicoDelegado :currentComponent="currentComponent" />
@@ -25,12 +27,14 @@ import PostulacionesEvaluadores from '../components/Users/delegado/postulaciones
 import ListaEvaluadores from '../components/Users/delegado/listaEvaluadores/ListaEvaluadores.vue';
 
 import ComponenteDinamicoDelegado from '../components/Users/delegado/ComponenteDinamicoDelegado.vue';
+import MenuUsuarios from '../components/Menus/MenuUsuarios.vue';
 
 export default {
     components: {
         ComponenteDinamicoDelegado, 
         FooterSecundario,
         MenuPrincipal: markRaw(MenuPrincipal),
+        MenuUsuarios: markRaw(MenuUsuarios),
         AsignarProyectos: markRaw(AsignarProyectos),
         PostulacionesEvaluadores: markRaw(PostulacionesEvaluadores),
         AsistenciaEvento: markRaw(AsistenciaEvento),
@@ -41,6 +45,15 @@ export default {
         return {
             currentComponent: ListaEvaluadores
         };
+    },
+    computed: {
+        selectedMenu() {
+            // Aquí defines la lógica para elegir el menú correcto según el componente actual
+            if (this.currentComponent === ListaEvaluadores) {
+                return MenuPrincipal;
+            }
+            return MenuUsuarios;
+        }
     },
     methods: {
         changeComponent(componentName) {
@@ -69,7 +82,7 @@ export default {
             permissions,
             logout
         };
-    }
+    },
 };
 </script>
 
