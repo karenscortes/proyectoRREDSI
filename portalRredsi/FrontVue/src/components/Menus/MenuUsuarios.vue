@@ -12,7 +12,7 @@
             <nav class="main_nav_container">
                 <div class="main_nav">
                     <ul class="main_nav_list d-flex justify-content-between">
-                        <li class="main_nav_item" v-for="(tab, index) in left_tabs" :key="index"><a :href="tab.ruta">{{ tab.nombre }}</a></li>
+                        <li class="main_nav_item" v-for="(tab, index) in left_tabs" :key="index"><a @click="selectComponent(tab.ruta)">{{ tab.nombre }}</a></li>
                         <li :class="['main_nav_item', visibilidad]" v-for="(tab, index) in mid_tabs" :key="index">
                             <div class="dropdown">
                                 <a class=" dropdown-toggle text-dark" type="button" data-toggle="dropdown"
@@ -25,7 +25,8 @@
                             </div>
                         </li>
                         
-                        <li class="main_nav_item" v-for="(tab, index) in right_tabs" :key="index"><a :href="tab.ruta">{{ tab.nombre }}</a></li>
+                        <li class="main_nav_item" v-if="rol === 1"><a href="#">Convocatoria</a></li>
+                        <li class="main_nav_item" v-else><a href="#" @click="logout">Cerrar Sesión</a></li>
                     </ul>
                 </div>
             </nav>
@@ -45,26 +46,35 @@
 </template>
 
 <script>
-    export default {
-    props: {
-        rol: String,
-    },
-    data() {
-        if (this.rol === "Administrador") {
-            return {
+import { defineComponent,reactive } from "vue";
+import { useRouter } from "vue-router";
+import { useAuthStore } from "@/store";
+export default defineComponent({
+  props: {
+    rol: Number,
+  },
+  setup(props, { emit }) {
+        
+        const state = reactive({
+        left_tabs: [],
+        mid_tabs: [],
+        visibilidad: "d-none",
+        });
+
+        if (props.rol === 3) {
+            Object.assign(state, {
                 left_tabs: [{nombre:'Inicio', ruta:'#'}, {nombre:'Perfil', ruta:'#'}, {nombre:'Cuentas', ruta:'#'},{nombre:'Rubricas', ruta:'#'}],
                 mid_tabs:[
                     {   nombre:"Eventos", 
                         opciones:[{nombre:'Salas', ruta:'#'}, {nombre:'Asistencia',ruta:'#'}, {nombre:'Convocatoria', ruta:'#'}]
                     }
                 ],
-                right_tabs: [{nombre:'Cerrar Sesión', ruta:'#'}],
                 visibilidad:"d-inline-block"
 
-            };
-        } else if (this.rol === "Delegado") {
-            return {
-                left_tabs: [{nombre:'Inicio', ruta:'#'}, {nombre:'Perfil', ruta:'#'}],
+            });
+        } else if (props.rol === 2) {
+            Object.assign(state, {
+                left_tabs: [{nombre:'Inicio', ruta:'ListaEvaluadores'}, {nombre:'Perfil', ruta:'AsistenciaEvento'}],
                 mid_tabs:[
                     {   nombre:"Evaluadores", 
                         opciones:[{nombre:'Postulaciones', ruta:'#'}, {nombre:'Lista de Evaluadores',ruta:'#'}]
@@ -78,11 +88,10 @@
                         opciones:[{nombre:'Salas', ruta:'#'}, {nombre:'Asistencia',ruta:'#'}]
                     }
                 ],
-                right_tabs: [{nombre:'Cerrar Sesión', ruta:'#'}],
                 visibilidad:"d-inline-block"
-            };
-        } else if (this.rol === "Evaluador") {
-            return {
+            });
+        } else if (props.rol === 1) {
+            Object.assign(state, {
                 left_tabs: [{nombre:'Inicio', ruta:'#'}, {nombre:'Perfil', ruta:'#'}],
                 mid_tabs:[
                     {
@@ -90,19 +99,36 @@
                         opciones:[{nombre:'Primera Etapa', ruta:'#'}, {nombre:'Segunda Etapa',ruta:'#'}]
                     }
                 ],
-                right_tabs: [{nombre:'Convocatoria', ruta:'#'},{nombre:'Cerrar Sesión', ruta:'#'}],
                 visibilidad:"d-inline-block"
-            };
-        } else if(this.rol == "SuperAdmin") {
-            return {
+            });
+        } else if(props.rol == 6) {
+            Object.assign(state, {
                 left_tabs: [{nombre:'Inicio', ruta:'#'},{nombre:'Información Delegados', ruta:'#'}],
-                right_tabs: [{nombre:'Cerrar Sesión', ruta:'#'}],
                 visibilidad:"d-none"
 
-            };
+            });
         }
+
+        const authStore = useAuthStore(); 
+        const router = useRouter(); 
+
+        const selectComponent = (componentName) => {
+            emit('component-selected', componentName); // Emite un evento para seleccionar el componente
+        };
+
+        // Acción para cerrar sesión
+        const logout = () => {
+        authStore.logout(); 
+        router.push('/'); 
+        };
+
+        return {
+            ...state,
+            selectComponent,
+            logout
+        };
     },
-    };
+});
 </script>
 
 <style scoped>

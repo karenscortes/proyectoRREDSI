@@ -4,7 +4,7 @@
       <div class="header_content with_button d-flex flex-row align-items-center justify-content-start">
         <div class="logo_container">
           <div class="logo">
-            <img class="img-fluid" src="../assets/logoRredsi.png" alt="" />
+            <img class="img-fluid" src="../../assets/img/logoRredsi.png" alt="" />
             <span>RREDSI</span>
           </div>
         </div>
@@ -92,115 +92,152 @@
 </template>
 
 <script>
-import { defineComponent, toRefs } from 'vue';
-import { useAuthStore } from '@/store';
-import { useRouter } from 'vue-router'; 
-
+import { defineComponent,reactive, onMounted} from "vue";
+import { useRouter } from "vue-router";
+import { useAuthStore } from "@/store";
 export default defineComponent({
   props: {
-    rol: String,
+    rol: Number,
   },
-  data() {
-    // Lógica condicional basada en el rol
-    if (this.rol === 3) { // Administrador
-      return {
-        left_tabs: [{ nombre: 'Inicio', ruta: '#' }, { nombre: 'Perfil', ruta: '#' }, { nombre: 'Cuentas', ruta: '#' }, { nombre: 'Rubricas', ruta: '#' }],
+  setup(props, { emit }) {
+
+    // Define las propiedades dinámicas según el rol
+    const state = reactive({
+      left_tabs: [],
+      mid_tabs: [],
+      tab_name: "",
+      visibilidad: "d-none",
+      visibilidadLogin: "d-inline-block",
+      yellow_tab: "Contáctanos",
+    });
+
+    if (props.rol === 3) { //Administrador
+      Object.assign(state, {
+        left_tabs: [
+          { nombre: "Inicio", ruta: "#" },
+          { nombre: "Perfil", ruta: "#" },
+          { nombre: "Cuentas", ruta: "#" },
+          { nombre: "Rubricas", ruta: "RubricaAdminView" },
+        ],
         mid_tabs: [
           {
             nombre: "Eventos",
-            opciones: [{ nombre: 'Salas', ruta: '#' }, { nombre: 'Asistencia', ruta: '#' }, { nombre: 'Convocatoria', ruta: '#' }]
-          }
+            opciones: [
+              { nombre: "Salas", ruta: "#" },
+              { nombre: "Asistencia", ruta: "#" },
+              { nombre: "Convocatoria", ruta: "#" },
+            ],
+          },
         ],
-        tab_name: '',
+        tab_name: "",
         visibilidadLogin: "d-none",
         visibilidad: "d-none",
-        yellow_tab: 'Cerrar Sesión'
-      };
-      
-    }
-     else if (this.rol === 6) { // Superadmin
-      return {
-        left_tabs: [{ nombre: 'Inicio', ruta: 'super-admin' }],
-        mid_tabs: [{nombre: "Informacion delegados", ruta: 'informacion-delegados' }],
+        yellow_tab: "Cerrar Sesión",
+      });
+    } else if (props.rol === 6) { //superAdmi
+      Object.assign(state, {
+        left_tabs: [
+          { nombre: "Inicio", ruta: "/super-admin" },
+        ],
+        mid_tabs: [
+          { nombre: "Informacion delegados", ruta: "/lista-delegados-superadmin"},
+        ],
+        tab_name: "",
         visibilidadLogin: "d-none",
-        visibilidad: "d-inline-block",
-        yellow_tab: 'Cerrar Sesión'
-      };
-    }
-     else if (this.rol === 2) { // Delegado
-      return {
-        left_tabs: [{ nombre: 'Inicio', ruta: 'PostulacionesEvaluadoresView' }, { nombre: 'Perfil', ruta: '#' }],
+        visibilidad: "d-none",
+        yellow_tab: "Cerrar Sesión",
+      }); 
+    } 
+    else if (props.rol === 2) { //delegado
+      Object.assign(state, {
+        left_tabs: [
+          { nombre: "Inicio", ruta: "ListaEvaluadores" },
+          { nombre: "Perfil", ruta: "AsistenciaEvento" },
+        ],
         mid_tabs: [
           {
             nombre: "Evaluadores",
-            opciones: [{ nombre: 'Postulaciones', ruta: '' }, { nombre: 'Lista de Evaluadores', ruta: '#' }]
+            opciones: [
+              { nombre: "Postulaciones", ruta: "#" },
+              { nombre: "Lista de Evaluadores", ruta: "#" },
+            ],
           },
           {
             nombre: "Proyectos",
-            opciones: [{ nombre: 'Asignacion de Proyectos', ruta: '#' }, { nombre: 'Lista de Proyectos', ruta: '#' }]
+            opciones: [
+              { nombre: "Asignacion de Proyectos", ruta: "#" },
+              { nombre: "Lista de Proyectos", ruta: "#" },
+            ],
           },
           {
             nombre: "Evento",
-            opciones: [{ nombre: 'Salas', ruta: '#' }, { nombre: 'Asistencia', ruta: '#' }]
-          }
+            opciones: [
+              { nombre: "Salas", ruta: "#" },
+              { nombre: "Asistencia", ruta: "#" },
+            ],
+          },
         ],
-        tab_name: '',
+        tab_name: "",
         visibilidadLogin: "d-none",
         visibilidad: "d-none",
-        yellow_tab: 'Cerrar Sesión'
-      };
-    } else if (this.rol === 1) { // Evaluador
-      return {
-        left_tabs: [{ nombre: 'Inicio', ruta: '#' }, { nombre: 'Perfil', ruta: '#' }],
+        yellow_tab: "Cerrar Sesión",
+      });
+    } else if (props.rol === 1) {//evaluador
+      Object.assign(state, {
+        left_tabs: [
+          { nombre: "Inicio", ruta: "#" },
+          { nombre: "Perfil", ruta: "#" },
+        ],
         mid_tabs: [
           {
             nombre: "Proyectos",
-            opciones: [{ nombre: 'Primera Etapa', ruta: '#' }, { nombre: 'Segunda Etapa', ruta: '#' }]
-          }
+            opciones: [
+              { nombre: "Primera Etapa", ruta: "#" },
+              { nombre: "Segunda Etapa", ruta: "#" },
+            ],
+          },
         ],
-        tab_name: 'Convocatoria',
+        tab_name: "Convocatoria",
         visibilidadLogin: "d-none",
         visibilidad: "d-inline-block",
-        yellow_tab: 'Cerrar Sesión'
-      };
-    } else { // Visitante
-      return {
-        left_tabs: [{ nombre: 'Inicio', ruta: '#' }],
+        yellow_tab: "Cerrar Sesión",
+      });
+    } else {
+      Object.assign(state, {
+        left_tabs: [{ nombre: "Inicio", ruta: "#" }],
         mid_tabs: [
           {
             nombre: "Proyectos",
-            opciones: [{ nombre: 'Registrar Proyecto', ruta: '#' }, { nombre: 'Consultar Proyecto', ruta: '#' }]
-          }
+            opciones: [
+              { nombre: "Registrar Proyecto", ruta: "#" },
+              { nombre: "Consultar Proyecto", ruta: "#" },
+            ],
+          },
         ],
-        tab_name: 'Evaluadores',
+        tab_name: "Evaluadores",
         visibilidadLogin: "d-inline-block",
         visibilidad: "d-inline-block",
-        yellow_tab: 'Contáctanos'
-      };
+        yellow_tab: "Contáctanos",
+      });
     }
-  },
-  setup(_, { emit }) {
-    const authStore = useAuthStore(); // Accede al store de autenticación
-    const { permissions } = toRefs(authStore); // Desestructura y hace reactiva la propiedad permissions
-    const router = useRouter();
-    const user = authStore.user;
 
-    // Función para cerrar sesión
-    const logout = () => {
-      authStore.logout();
-      router.push('/');
+    const authStore = useAuthStore(); 
+    const router = useRouter(); 
+
+    const selectComponent = (componentName) => {
+      emit('component-selected', componentName); // Emite un evento para seleccionar el componente
     };
 
-    // Función para seleccionar componentes dinámicamente
-    const selectComponent = (componentName) => {
-      emit('component-selected', componentName);
+    // Acción para cerrar sesión
+    const logout = () => {
+      authStore.logout(); 
+      router.push('/'); 
     };
 
     return {
-      user,
-      permissions,
-      logout,
-      selectComponent
+      ...state,
+      selectComponent,
+      logout
     };
   }
 });
@@ -351,7 +388,7 @@ h3 {
   height: 100%;
 }
 
-.header_content::before {
+<!-- .header_content::before {
   display: block;
   position: absolute;
   top: 0;
@@ -361,7 +398,7 @@ h3 {
   content: "";
   box-shadow: 0px 20px 49px rgba(0, 0, 0, 0.67);
   z-index: -1;
-}
+} -->
 
 /*********************************
                 3. Logo
