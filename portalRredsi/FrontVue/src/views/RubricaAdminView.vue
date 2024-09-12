@@ -91,8 +91,10 @@
 </template>
 
 <script setup>
+import { onMounted } from "vue";
+import { getRubricsAll } from "@/services/administradorService";
 import { reactive } from "vue";
-import { ref } from 'vue';
+import { ref } from "vue";
 import ModalDelete from "../components/Users/administrador/rubricas/ModalDelete.vue";
 import ModalAdd from "../components/Users/administrador/rubricas/ModalAdd.vue";
 import CardTipo from "../components/Users/administrador/rubricas/CardTipo.vue";
@@ -101,16 +103,15 @@ import FootTable from "../components/Users/administrador/rubricas/FootTable.vue"
 import ItemThead from "../components/Users/administrador/rubricas/ItemThead.vue";
 
 const isModalOpen = ref(false);
-
 //Titulo contenedor principal
 const tituloPrincipal = "Gestionar rúbricas";
 
 //info para enviar al modal(Editar)
 const infoModalEditar = reactive({
-  p_idItem: null,
-  p_tituloItem: "",
-  p_valorMax: null,
-  p_descripcion: "",
+  id_item_rubrica: null,
+  titulo: "",
+  valor_max: null,
+  componente: "",
 });
 
 //info imputs del Thead
@@ -118,55 +119,22 @@ const infoImputs = reactive([
   {
     p_name_imput: "titulo",
     p_id: "titulo",
-    p_titulo: "Titulo",
+    p_titulo: "Título:",
   },
   {
-    p_name_imput: "titulo",
-    p_id: "titulo",
-    p_titulo: "Titulo",
+    p_name_imput: "ponente",
+    p_id: "ponente",
+    p_titulo: "Ponente(es):",
   },
   {
-    p_name_imput: "titulo",
-    p_id: "titulo",
-    p_titulo: "Titulo",
+    p_name_imput: "universidad",
+    p_id: "universidad",
+    p_titulo: "Universidad:",
   },
 ]);
 
 //info items rubrica
-const infoItems = reactive([
-  {
-    p_id_rubrica:1,
-    p_idItem: 1,
-    p_tituloItem: "Presentación oral",
-    p_descripcion:
-      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Obcaecati!",
-    p_valorMax: Math.round(Math.random() * 100),
-  },
-  {
-    p_id_rubrica:1,
-    p_idItem: 2,
-    p_tituloItem: "Presentación oral",
-    p_descripcion:
-      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Obcaecati!",
-    p_valorMax: Math.round(Math.random() * 100),
-  },
-  {
-    p_id_rubrica:1,
-    p_idItem: 3,
-    p_tituloItem: "Presentación oral",
-    p_descripcion:
-      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Obcaecati!",
-    p_valorMax: Math.round(Math.random() * 100),
-  },
-  {
-    p_id_rubrica:2,
-    p_idItem: 4,
-    p_tituloItem: "Presentación oral",
-    p_descripcion:
-      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Obcaecati!",
-    p_valorMax: Math.round(Math.random() * 100),
-  },
-]);
+const infoItems = reactive([]);
 
 //info para la card
 const infoCards = reactive([
@@ -206,20 +174,19 @@ const infoCards = reactive([
 
 //Evento cambiar valores modal por info actual
 const onEditModal = (informacionTr) => {
-  infoModalEditar.p_id_rubrica = informacionTr.p_id_rubrica
-  infoModalEditar.p_idItem = informacionTr.p_idItem;
-  infoModalEditar.p_tituloItem = informacionTr.p_tituloItem;
-  infoModalEditar.p_valorMax = informacionTr.p_valorMax;
-  infoModalEditar.p_descripcion = informacionTr.p_descripcion;
+  infoModalEditar.id_item_rubrica = informacionTr.id_item_rubrica;
+  infoModalEditar.titulo = informacionTr.titulo;
+  infoModalEditar.valor_max = informacionTr.valor_max;
+  infoModalEditar.componente = informacionTr.componente;
   showModal();
 };
 
 //Evento para cerrar el modal
 const closeModal = () => {
-  infoModalEditar.p_idItem = null;
-  infoModalEditar.p_valorMax = null;
-  infoModalEditar.p_tituloItem = "";
-  infoModalEditar.p_descripcion = "";
+  infoModalEditar.id_item_rubrica = null;
+  infoModalEditar.titulo = "";
+  infoModalEditar.valor_max = null;
+  infoModalEditar.componente = "";
   isModalOpen.value = false;
 };
 
@@ -227,6 +194,21 @@ const closeModal = () => {
 const showModal = () => {
   isModalOpen.value = true;
 };
+const fetchAllRubrics = async () => {
+  try {
+    const response = await getRubricsAll();
+    const primerRubrica = response.data[0].items_rubrica;
+    primerRubrica.forEach(function (item, i) {
+      infoItems[i] = item; 
+    });
+  } catch (error) {
+    console.error("Error al obtener rubricas: ", error);
+    alert("Error al obtener las rúbricas");
+  }
+};
+onMounted(() => {
+  fetchAllRubrics();
+});
 </script>
 
 <style scoped>

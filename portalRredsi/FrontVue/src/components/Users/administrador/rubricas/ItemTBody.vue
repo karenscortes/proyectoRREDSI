@@ -2,9 +2,9 @@
   <tr class="tr_item_rubrica">
     <td class="td_item">
       <div>
-        <h4 class="d-inline-block mb-0 me-1">{{ infoItem.p_tituloItem }}</h4>
+        <h4 class="d-inline-block mb-0 me-1">{{ infoItem.titulo }}</h4>
         <span>
-          {{ infoItem.p_descripcion }}
+          {{ infoItem.componente }}
         </span>
       </div>
     </td>
@@ -24,7 +24,7 @@
         <i class="fas fa-trash-alt"></i>
       </button>
     </td>
-    <td class="td_valor_max"></td>
+    <td class="td_valor_max text-center">{{ infoItem.valor_max }}</td>
     <td class="td_calificacion"></td>
     <td class="td_resultado"></td>
   </tr>
@@ -37,11 +37,11 @@ const props = defineProps({
     required: true,
     validator(value) {
       return (
-        typeof value.p_id_rubrica === "number" &&
-        typeof value.p_idItem === "number" &&
-        typeof value.p_tituloItem === "string" &&
-        typeof value.p_descripcion === "string" &&
-        typeof value.p_valorMax === "number"
+        typeof value.id_item_rubrica === "number" &&
+        typeof value.id_rubrica === "number" &&
+        typeof value.titulo === "string" &&
+        typeof value.componente === "string" &&
+        typeof value.valor_max === "number"
       );
     },
   },
