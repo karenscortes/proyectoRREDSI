@@ -20,6 +20,7 @@ import ComponenteDinamicoEvaluador from '../components/Users/evaluador/Component
 import { useAuthStore } from '@/store';
 import { useRouter } from 'vue-router'; 
 import FooterSecundario from '../components/Footers/FooterSecundario.vue';
+import PaginaInicioEvaluadorView from './PaginaInicioEvaluadorView.vue';
 
 export default {
     components: {
@@ -27,19 +28,20 @@ export default {
         MenuPrincipal: markRaw(MenuPrincipal),
         ProyectosAsignadosEvaluadorView: markRaw(ProyectosAsignadosEvaluadorView),
         FooterSecundario: markRaw(FooterSecundario),
-
+        PaginaInicioEvaluadorView: markRaw(PaginaInicioEvaluadorView),
     },
     data() {
         return {
-            currentComponent: ProyectosAsignadosEvaluadorView
+            currentComponent: PaginaInicioEvaluadorView
         };
     },
     methods: {
         changeComponent(componentName) {
             const componentMap = {
                 ProyectosAsignadosEvaluadorView: ProyectosAsignadosEvaluadorView,
+                PaginaInicioEvaluadorView: PaginaInicioEvaluadorView,
             };
-            this.currentComponent = componentMap[componentName] || ProyectosAsignadosEvaluadorView;
+            this.currentComponent = componentMap[componentName] || PaginaInicioEvaluadorView;
         }
     },setup() {
         const authStore = useAuthStore();

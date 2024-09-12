@@ -12,19 +12,22 @@
         <nav class="main_nav_container">
           <div class="main_nav">
             <ul class="main_nav_list d-flex justify-content-between">
-              <li class="main_nav_item" v-for="(tab, index) in left_tabs" :key="index"><a class="text-dark" @click="selectComponent(tab.ruta)">{{ tab.nombre
-                  }}</a></li>
+              <li class="main_nav_item" v-for="(tab, index) in left_tabs" :key="index">
+                <a class="text-dark" @click="selectComponent(tab.ruta)">{{ tab.nombre }}</a>
+              </li>
               <li class="main_nav_item" v-for="(tab, index) in mid_tabs" :key="index">
                 <div class="dropdown">
-                  <a class=" dropdown-toggle text-dark" type="button" data-toggle="dropdown" aria-expanded="false">
+                  <a class="dropdown-toggle text-dark" type="button" data-toggle="dropdown" aria-expanded="false">
                     {{ tab.nombre }}
                   </a>
-                  <div v-for="(opcion, index) in opciones" :key="index" class="dropdown-menu text-center">
-                    <a :href="opcion.ruta">{{ opcion.nombre }}</a><br>
+                  <div class="dropdown-menu text-center ">
+                    <a v-for="(opcion, index) in tab.opciones" :key="index" @click="selectComponent(opcion.ruta)"><span>{{ opcion.nombre }}</span><br></a> 
                   </div>
                 </div>
               </li>
-              <li :class="['main_nav_item', visibilidad]"><a href="#">{{ tab_name }}</a></li>
+              <li :class="['main_nav_item', visibilidad]">
+                <a href="#">{{ tab_name }}</a>
+              </li>
               <li :class="['main_nav_item', visibilidadLogin]">
                 <a href="#" type="button" data-toggle="modal" data-target="#LoginModal">Login</a>
               </li>
@@ -180,22 +183,16 @@ export default defineComponent({
         tab_name: "",
         visibilidadLogin: "d-none",
         visibilidad: "d-none",
-        yellow_tab: "Cerrar Sesión",
+        yellow_tab: 'Cerrar Sesión'
       });
-    } else if (props.rol === 1) {//evaluador
+    } else if (props.rol === 1) { // Evaluador
       Object.assign(state, {
-        left_tabs: [
-          { nombre: "Inicio", ruta: "#" },
-          { nombre: "Perfil", ruta: "#" },
-        ],
+        left_tabs: [{ nombre: 'Inicio', ruta: 'PaginaInicioEvaluadorView' }, { nombre: 'Perfil', ruta: '#' }],
         mid_tabs: [
           {
             nombre: "Proyectos",
-            opciones: [
-              { nombre: "Primera Etapa", ruta: "#" },
-              { nombre: "Segunda Etapa", ruta: "#" },
-            ],
-          },
+            opciones: [{ nombre: 'Primera Etapa', ruta: 'ProyectosAsignadosEvaluadorView' }, { nombre: 'Segunda Etapa', ruta: '#' }]
+          }
         ],
         tab_name: "Convocatoria",
         visibilidadLogin: "d-none",
