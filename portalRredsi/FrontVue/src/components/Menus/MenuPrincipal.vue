@@ -116,7 +116,18 @@ export default defineComponent({
         visibilidad: "d-none",
         yellow_tab: 'Cerrar Sesión'
       };
-    } else if (this.rol === 2) { // Delegado
+      
+    }
+     else if (this.rol === 6) { // Superadmin
+      return {
+        left_tabs: [{ nombre: 'Inicio', ruta: 'super-admin' }],
+        mid_tabs: [{nombre: "Informacion delegados", ruta: 'informacion-delegados' }],
+        visibilidadLogin: "d-none",
+        visibilidad: "d-inline-block",
+        yellow_tab: 'Cerrar Sesión'
+      };
+    }
+     else if (this.rol === 2) { // Delegado
       return {
         left_tabs: [{ nombre: 'Inicio', ruta: 'PostulacionesEvaluadoresView' }, { nombre: 'Perfil', ruta: '#' }],
         mid_tabs: [

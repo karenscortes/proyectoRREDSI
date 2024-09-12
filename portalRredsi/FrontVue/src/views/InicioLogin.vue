@@ -221,7 +221,20 @@ export default {
         visibilidad: "d-none",
         yellow_tab: "Cerrar Sesión",
       });
-    } else if (props.rol === "Delegado") {
+    } else if (props.rol === "SuperAdmin") {
+      Object.assign(state, {
+        left_tabs: [
+          { nombre: "Inicio", ruta: "/super-admin" },
+        ],
+        mid_tabs: [
+          { nombre: "Informacion delegados", ruta: "/lista-delegados-superadmin"},
+        ],
+        tab_name: "",
+        visibilidadLogin: "d-none",
+        visibilidad: "d-none",
+        yellow_tab: "Cerrar Sesión",
+      }); } 
+    else if (props.rol === "Delegado") {
       Object.assign(state, {
         left_tabs: [
           { nombre: "Inicio", ruta: "#" },
@@ -310,7 +323,9 @@ export default {
             router.push("/principal-delegado");
           } else if (user?.id_rol == 1) {
             router.push("/principal-evaluador");
-          }
+          }else if(user?.id_rol == 6){
+            router.push('/super-admin');
+            }
         }
       } catch (error) {
         errorMessage.value = "Error durante el login: " + error.message;

@@ -84,7 +84,7 @@ export default {
 }
 
 </script>
-<style>
+<style scoped>
 .section_title h1 {
     display: block;
     color: #1a1a1a;
