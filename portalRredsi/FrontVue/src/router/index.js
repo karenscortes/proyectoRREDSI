@@ -8,8 +8,8 @@ import PostulacionesEvaluadores from '../components/Users/delegado/postulaciones
 import SuperAdminView from '../views/SuperAdminView.vue';
 import ListaDelegados from '../components/Users/superadmin/ListaDelegados.vue'
 import ProyectosAsignadosEvaluadorView from '../views/ProyectosAsignadosEvaluadorView.vue';
-
 import AsignarProyecto from '../components/Users/delegado/AsignarProyectos/AsignarProyectos.vue';
+import PaginaInicioEvaluadorView from '../views/PaginaInicioEvaluadorView.vue';
 
 const routes = [
   
@@ -19,6 +19,7 @@ const routes = [
   // RUTAS EVALUADOR
   { path: '/principal-evaluador', name: 'EvaluadorView', component: EvaluadorView },
   { path: '/proyectos-asignados', name: 'ProyectosAsignadosEvaluadorView', component: ProyectosAsignadosEvaluadorView },
+  { path: '/pagina-inicio', name: 'PaginaInicioEvaluadorView', component: PaginaInicioEvaluadorView },
 
 
   // RUTAS DELEGADO
