@@ -118,13 +118,14 @@ def create_item_rubric(item: ItemCreate, db: Session = Depends(get_db)):
         }
     
 #Editar items
-@router_admin.put("/update-items/")
+@router_admin.put("/update-items/{id_item}/")
 def update_item(id_item:int, item_nuevo: ItemUpdate, db: Session = Depends(get_db)):
     item = update_items(id_item,item_nuevo,db)
     if item:
         return{
             'success': True,
             'message': 'Se actualizo con éxito',
+            'data': item,
         }
     else: 
         return{

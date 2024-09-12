@@ -92,8 +92,9 @@ import { ref, defineEmits, reactive } from 'vue';
 });
 
 const emit = defineEmits(['close']);
+const id_item_rubrica = props.infoModalEditar.id_item_rubrica; 
+console.log(id_item_rubrica)
 const itemActual = reactive({
-  id_item_rubrica: props.infoModalEditar.id_item_rubrica,
   titulo : props.infoModalEditar.titulo,
   componente: props.infoModalEditar.componente, 
   valor_max: props.infoModalEditar.valor_max
@@ -104,9 +105,10 @@ const closeModal = () => {
 };
 
 const save = async () =>{
-  const result = await updateItems(itemActual.id_item_rubrica, itemActual); 
+  const result = await updateItems(id_item_rubrica, itemActual); 
   console.log("Ya le diste a guardar"); 
   console.log(itemActual);
+  console.log(result)
 }
 </script>
 
