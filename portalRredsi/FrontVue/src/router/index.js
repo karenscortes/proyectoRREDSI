@@ -6,6 +6,7 @@ import DelegadoView from '../views/DelegadoView.vue';
 import EvaluadorView from '../views/EvaluadorView.vue';
 import PostulacionesEvaluadores from '../components/Users/delegado/postulaciones/PostulacionesEvaluadores.vue'
 import SuperAdminView from '../views/SuperAdminView.vue';
+import ListaDelegados from '../components/Users/superadmin/ListaDelegados.vue'
 import ProyectosAsignadosEvaluadorView from '../views/ProyectosAsignadosEvaluadorView.vue';
 
 import AsignarProyecto from '../components/Users/delegado/AsignarProyectos/AsignarProyectos.vue';
@@ -30,6 +31,7 @@ const routes = [
 
   // RUTAS SUPERADMIN
   { path: '/super-admin', name: 'SuperAdminView', component: SuperAdminView},
+  { path: '/lista-delegados-superadmin', name: 'ListaDelegados', component: ListaDelegados},
 
   // Redirección en caso de ruta no encontrada
   { path: '/:pathMatch(.)', redirect: '/not-found' },
