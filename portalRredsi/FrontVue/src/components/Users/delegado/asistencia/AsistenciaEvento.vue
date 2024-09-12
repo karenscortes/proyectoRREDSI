@@ -8,7 +8,7 @@
             </div>
         </div>
 
-        <!-- buscador -->
+        <!-- Buscador -->
         <div class="row mb-5 justify-content-between">
             <div class="col-8 col-sm-6">
                 <div class="row">
@@ -16,42 +16,42 @@
                         <input type="text" v-model="busqueda" id="busqueda" class="form-control" placeholder="Buscar...">
                     </div>
                     <div class="col-4">
-                        <button class="btn w-100 font-weight-bold" @click="fetchAsistentes">Buscar</button>
+                        <button class="btn w-100 font-weight-bold" @click="buscarPorDocumento">Buscar</button>
                     </div>
                 </div>
             </div>
 
             <!-- Select de salas disponibles -->
             <div class="col-4 col-sm-2">
-                <select class="form-select text-dark" v-model="salaSeleccionada" @change="fetchAsistentes">
+                <select class="form-select text-dark" v-model="salaSeleccionada" @change="filtrarPorSala">
                     <option :value="'Sala'" selected>Sala</option>
                     <option v-for="opcion in opciones" :value="opcion" :key="opcion">
-                        {{ opcion.numero }} 
+                        {{ opcion.numero }}
                     </option>
                 </select>
-            </div> 
+            </div>
         </div>
 
         <!-- Filtros -->
         <div class="row ml-1 mb-2 justify-content-start mt-3">
             <div class="col-auto">
-                <a href="#" @click.prevent="fetchAsistentes()" class="mx-1 px-2 border text-white bg-secondary" style="border-radius: 20px;">
+                <a href="#" @click.prevent="fetchAsistentes" :class="['mx-1 px-2 border', filtroActivo === 'Todos' ? 'bg-secondary text-white' : 'text-dark']" style="border-radius: 20px;">
                     Todos
                 </a>
             </div>
             <div class="col-auto">
-                <a href="#" @click.prevent="filtrarParticipantes" class="mx-1 px-2 border text-dark" style="border-radius: 20px;">
+                <a href="#" @click.prevent="filtrarParticipantes" :class="['mx-1 px-2 border', filtroActivo === 'Participantes' ? 'bg-secondary text-white' : 'text-dark']" style="border-radius: 20px;">
                     Participantes
                 </a>
             </div>
             <div class="col-auto">
-                <a href="#" @click.prevent="filtrarEvaluadores" class="mx-1 px-2 border text-dark" style="border-radius: 20px;">
+                <a href="#" @click.prevent="filtrarEvaluadores" :class="['mx-1 px-2 border', filtroActivo === 'Evaluadores' ? 'bg-secondary text-white' : 'text-dark']" style="border-radius: 20px;">
                     Evaluadores
                 </a>
             </div>
         </div>
 
-        <!-- tabla -->
+        <!-- Tabla -->
         <div class="table-responsive">
             <table id="basic-datatables" class="display table table-striped table-hover text-dark">
                 <thead>
@@ -68,14 +68,14 @@
                         <td>{{ asistente.nombres }} {{ asistente.apellidos }}</td>
                         <td>{{ asistente.institucion }}</td>
                         <td colspan="1">
-                            <input type="checkbox" class="form-check-input ml-4" :checked="asistente.asistencia" @change="toggleAsistencia(asistente)">
+                            <input type="checkbox" class="form-check-input ml-4" :checked="asistente.asistencia" @change="toggleActualizarAsistencia(asistente)">
                         </td>
                     </tr>
                 </tbody>
             </table>
         </div>
 
-        <!-- paginador  -->
+        <!-- Paginador -->
         <div class="mt-5">
             <div aria-label="Page navigation example mb-5">
                 <ul class="pagination justify-content-center">
@@ -95,7 +95,7 @@
 </template>
 
 <script>
-import { asistenciaEvento, actualizarAsistencia, obtenerSalas } from '../../../../services/delegadoService';
+import { asistenciaEvento, actualizarAsistencia, obtenerAsistentesPorSala, obtenerAsistentesPorRol, obtenerAsistentePorDocumento } from '@/services/delegadoService';
 
 export default {
     data() {
@@ -106,65 +106,81 @@ export default {
             opciones: [], // Lista de salas
             currentPage: 1, 
             totalPages: 0, 
+            filtroActivo: 'Todos' // filtro
         };
     },
     methods: {
-        async fetchAsistentes(filtroRol) {
+        async fetchAsistentes() {
             try {
-                const response = await asistenciaEvento(this.currentPage); 
-                let asistentes = response.data.asistentes;
-
-                // Filtro por sala
-                if (this.salaSeleccionada !== 'Sala') {
-                    asistentes = asistentes.filter(asistente => asistente.sala === this.salaSeleccionada);
-                }
-
-                // Filtro por rol
-                if (filtroRol) {
-                    asistentes = asistentes.filter(asistente => asistente.rol === filtroRol);
-                }
-
-                // Filtro por búsqueda
-                if (this.busqueda) {
-                    asistentes = asistentes.filter(asistente => asistente.documento.includes(this.busqueda));
-                }
-
-                this.asistentes = asistentes;
-                this.totalPages = response.data.totalPages; // Actualizar el número total de páginas (asumiendo que la API lo devuelve)
+                const response = await asistenciaEvento(this.currentPage);
+                this.asistentes = response.data.asistentes;
+                this.totalPages = response.data.totalPages;
+                this.filtroActivo = 'Todos'; // Restablecer a 'Todos'
             } catch (error) {
                 alert("Error al obtener asistentes: " + error);
             }
         },
 
-        // Obtener salas disponibles
         async fetchSalas() {
             try {
-                const response = await obtenerSalas(); 
-                this.opciones = response.data.salas; 
+                const response = await obtenerAsistentesPorSala();
+                this.opciones = response.data.salas;
             } catch (error) {
                 alert("Error al obtener las salas: " + error);
             }
         },
 
-        filtrarParticipantes() {
-            this.fetchAsistentes('participante');
+        async filtrarParticipantes() {
+            try {
+                const response = await obtenerAsistentesPorRol('participante', this.currentPage);
+                this.asistentes = response.data.asistentes;
+                this.filtroActivo = 'Participantes'; // Cambiar filtro  a 'Participantes'
+            } catch (error) {
+                alert("Error al filtrar participantes: " + error);
+            }
         },
 
-        filtrarEvaluadores() {
-            this.fetchAsistentes('evaluador');
+        async filtrarEvaluadores() {
+            try {
+                const response = await obtenerAsistentesPorRol('evaluador', this.currentPage);
+                this.asistentes = response.data.asistentes;
+                this.filtroActivo = 'Evaluadores'; // Cambiar filtro a 'Evaluadores'
+            } catch (error) {
+                alert("Error al filtrar evaluadores: " + error);
+            }
         },
 
-    
-        // async toggleAsistencia(asistente) {
-        //     try {
-        //         asistente.asistencia = !asistente.asistencia; 
-        //         await actualizarAsistencia(asistente.documento, asistente.asistencia); 
-        //     } catch (error) {
-        //         alert("Error al actualizar la asistencia: " + error);
-        //     }
-        // },
+        async filtrarPorSala() {
+            try {
+                if (this.salaSeleccionada !== 'Sala') {
+                    const response = await obtenerAsistentesPorSala(this.salaSeleccionada.numero, this.currentPage);
+                    this.asistentes = response.data.asistentes;
+                } else {
+                    this.fetchAsistentes(); // Restablecer si se selecciona "Sala"
+                }
+            } catch (error) {
+                alert("Error al filtrar por sala: " + error);
+            }
+        },
 
-        // página siguiente
+        async buscarPorDocumento() {
+            try {
+                const response = await obtenerAsistentePorDocumento(this.busqueda);
+                this.asistentes = [response.data];
+            } catch (error) {
+                alert("Error al buscar asistente: " + error);
+            }
+        },
+
+        async toggleActualizarAsistencia(asistente) {
+            try {
+                asistente.asistencia = !asistente.asistencia; 
+                await actualizarAsistencia(asistente.id_asistente, asistente.id_usuario, asistente.asistencia);
+            } catch (error) {
+                alert("Error al actualizar la asistencia: " + error);
+            }
+        },
+
         nextPage() {
             if (this.currentPage < this.totalPages) {
                 this.currentPage++;
@@ -172,7 +188,6 @@ export default {
             }
         },
 
-        // página anterior
         prevPage() {
             if (this.currentPage > 1) {
                 this.currentPage--;
@@ -181,13 +196,13 @@ export default {
         }
     },
     mounted() {
-        this.fetchAsistentes(1); 
+        this.fetchAsistentes();
         this.fetchSalas();
     }
 };
 </script>
 
-<style>
+<style scoped>
 .section_title h1 {
     display: block;
     color: #1a1a1a;
@@ -218,5 +233,12 @@ export default {
 th, button {
     background: rgb(255, 182, 6) !important;
 }
+
+.mx-1.px-2.border {
+    cursor: pointer;
+}
+
+.mx-1.px-2.border.text-dark:hover {
+    background-color: rgba(0, 0, 0, 0.1);
+}
 </style>
-zz

@@ -3,7 +3,7 @@ from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 from appv1.schemas.delegado.asistencia import AsistenciaResponse
 from db.database import get_db
-from appv1.crud.delegado.asistencia import get_asistente_por_cedula, get_asistentes_por_convocatoria, get_asistentes_por_rol, get_asistentes_por_sala
+from appv1.crud.delegado.asistencia import actualizar_asistencia, get_asistente_por_cedula, get_asistentes_por_convocatoria, get_asistentes_por_rol, get_asistentes_por_sala
 
 router_asistencia = APIRouter()
 
@@ -65,7 +65,7 @@ async def read_asistentes_por_rol(
         "page_size": page_size
     }
 
-@router_asistencia.get("/get-asistente-por-cedula/", response_model=dict)
+@router_asistencia.get("/get-asistente-por-cedula/{documento}", response_model=dict)
 async def read_asistente_por_cedula(documento: str, db: Session = Depends(get_db)):
     asistente = get_asistente_por_cedula(db, documento)
     
@@ -73,3 +73,14 @@ async def read_asistente_por_cedula(documento: str, db: Session = Depends(get_db
         raise HTTPException(status_code=404, detail="Asistente no encontrado con el documento especificado")
     
     return asistente
+
+@router_asistencia.put("/update-asistencia/", response_model=dict)
+def update_asistencia_evento(
+    id_asistencia:int,
+    id_usuario:int,
+    asistencia: int,
+    db: Session = Depends(get_db),
+):
+    updated= actualizar_asistencia(db, id_asistencia, id_usuario, asistencia)
+    if updated:
+        return {"mensaje": "Asistencia actualizada con exito" }

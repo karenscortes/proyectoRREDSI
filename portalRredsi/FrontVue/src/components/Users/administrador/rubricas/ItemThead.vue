@@ -7,7 +7,7 @@
   </tr>
 </template>
 <script setup>
-defineProps(
+const props = defineProps(
   {
     infoImputs: {
       type: Object,  
@@ -16,7 +16,7 @@ defineProps(
         return(
           typeof value.p_titulo === 'string' &&
           typeof value.p_name_imput === 'string' &&
-          typeof value.p_titulo == 'string'
+          typeof value.p_id == 'string'
         );
       }
     },

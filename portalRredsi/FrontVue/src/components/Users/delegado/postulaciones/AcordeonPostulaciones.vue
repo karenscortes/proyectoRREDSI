@@ -2,29 +2,29 @@
     <!-- Acordeón para cada evaluador -->
     <div class="accordion-item">
         <h2 class="accordion-header row align-items-center">
-            <div class="col-9 col-sm-11">
+            <div class="col-8 col-md-10">
                 <button class="accordion-button collapsed row align-items-center" type="button"
                     data-bs-toggle="collapse" :data-bs-target="`#flush-collapse${index}`" aria-expanded="false"
                     :aria-controls="`flush-collapse${index}`">
                     <div class="col-8">
-                        <h4 class="h5 m-0">{{ evaluator.nombres}}{{evaluator.apellidos}}</h4>
+                        <h4 class="h5 m-0">{{ evaluator.nombres}} {{evaluator.apellidos}}</h4>
                     </div>
                 </button>
             </div>
-            <div class="col-3 col-sm-1 d-flex justify-content-end">
-                <div class="mx-3">
-                    <a href="#">
+            <div class="col-4 col-md-2 d-flex ">
+                <div >
+                    <a href="#" @click="updateStatus(evaluator,'rechazada')">
                         <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960"
-                            width="24px" fill="#00000">
+                            width="24px" fill="#00000"  class="icono1">
                             <path
                                 d="M240-840h440v520L400-40l-50-50q-7-7-11.5-19t-4.5-23v-14l44-174H120q-32 0-56-24t-24-56v-80q0-7 2-15t4-15l120-282q9-20 30-34t44-14Zm360 80H240L120-480v80h360l-54 220 174-174v-406Zm0 406v-406 406Zm80 34v-80h120v-360H680v-80h200v520H680Z" />
                         </svg>
                     </a>
                 </div>
-                <div class="mx-3">
-                    <a href="#">
+                <div class="ms-3">
+                    <a href="#" @click="updateStatus(evaluator,'aceptada')">
                         <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960"
-                            width="24px" fill="#00000">
+                            width="24px" fill="#00000"  class="icono2">
                             <path
                                 d="M720-120H280v-520l280-280 50 50q7 7 11.5 19t4.5 23v14l-44 174h258q32 0 56 24t24 56v80q0 7-2 15t-4 15L794-168q-9 20-30 34t-44 14Zm-360-80h360l120-280v-80H480l54-220-174 174v406Zm0-406v406-406Zm-80-34v80H160v360h120v80H80v-520h200Z" />
                         </svg>
@@ -34,7 +34,7 @@
         </h2>
         <div :id="`flush-collapse${index}`" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
             <div class="accordion-body col-10 pl-0 text-dark text-start">
-                <div class="row">
+                <div class="row mt-4">
                     <div class="col-md-4 col-12">
                         <p class="text-dark"><strong>Institución:</strong></p>
                         <p class="text-dark">{{ evaluator.nombre_institucion }}</p>
@@ -48,7 +48,7 @@
                         <p class="text-dark">{{ evaluator.otra_area}}</p>
                     </div>
                 </div>
-                <div class="row">
+                <div class="row mt-4">
                     <div class="col-md-4 col-12">
                         <p class="text-dark"><strong>Teléfono:</strong></p>
                         <p class="text-dark">{{ evaluator.celular }}</p>
@@ -57,14 +57,7 @@
                         <p class="text-dark"><strong>Correo electrónico:</strong></p>
                         <p class="text-dark">{{ evaluator.correo }}</p>
                     </div>
-                    <div class="col-md-4 col-12">
-                        <p class="text-dark"><strong>Estado:</strong></p>
-                        <p class="text-dark">{{ evaluator.estado_postulacion}}</p>
-                    </div>
-                </div>
-
-                <div class="row mt-4 justify-content-start">
-                    <div class="col-md-4 col-12">
+                    <div class="col-md-2 col-12">
                         <p class="text-dark"><strong>Etapa:</strong></p>
                         <p v-if="evaluator.etapa_virtual && evaluator.etapa_presencial" class="text-dark"> Virtual y
                             presencial</p>
@@ -72,12 +65,14 @@
 
                     </div>
                     <div v-if="evaluator.etapa_virtual && evaluator.etapa_presencial || evaluator.etapa_presencial"
-                        class="col-md-4 col-12">
+                        class="col-md-2 col-12">
                         <p class="text-dark"><strong>Jornada:</strong></p>
                         <p v-if="evaluator.jornada_manana && evaluator.jornada_tarde" class="text-dark"> Mañana y tarde
                         </p>
                         <p v-else>{{ evaluator.jornada_manana ? "Mañana" : "Tarde" }}</p>
                     </div>
+                </div>
+                <div class="row mt-4 justify-content-center">
                     <div class="col-md-4 col-12">
                         <a data-bs-toggle="modal" data-bs-target="#modal_titulos" @click="openModal(evaluator)"
                             class="btn btn-outline-primary w-100 mb-3">Visualizar
@@ -103,11 +98,7 @@
                     </div>
                     <div class="modal-body">
                         <div class="list-group">
-                            <a href="#pregrado" class="list-group-item list-group-item-action">Pregrado</a>
-                            <a href="#maestria" class="list-group-item list-group-item-action">Maestría</a>
-                            <a href="#especializacion"
-                                class="list-group-item list-group-item-action">Especialización</a>
-                            <a href="#doctorado" class="list-group-item list-group-item-action">Doctorado</a>
+                            <a v-for="(certificate,index) in certificates"  :key="index" :href="certificate.url_titulo" class="list-group-item list-group-item-action">{{certificate.nivel}}</a>
                         </div>
                     </div>
                     <div class="row justify-content-center mb-2">
@@ -121,7 +112,7 @@
 </template>
 
 <script>
-import { getCertificatesById} from '@/services/PostulacionService';
+import { getCertificatesById, updateApplication} from '@/services/postulacionService';
 export default {
     name: "AcordeonPostulaciones",
     props: {
@@ -130,24 +121,33 @@ export default {
     },
     data(){
         return{
-            currentEvaluator: {}, 
+            certificates:[]
         }
     },
     methods: {
-        
-        async fetchCertificates() {
+
+        notifyParent(){
+            this.$emit('notify');
+        },
+
+        async updateStatus(evaluator,estado) {
             try {
-                const response = await getCertificatesById(evaluator);
-                this.evaluators = response.data.applications; 
-                this.totalPages = response.data.total_pages;
+                await updateApplication(evaluator.id_evaluador, estado);
+                alert('Usuario actualizado exitosamente');
+                this.notifyParent();
+            } catch (error) {
+                alert(error.data.detail);
+            }
+        },
+        
+        async openModal(evaluator) {
+            try {
+                const response = await getCertificatesById(evaluator.id_evaluador);
+                this.certificates = response.data; 
+                $('#modal_titulos').modal('show'); // Abre el modal
             } catch (error) {
                 console.log(error);
             }
-        },
-
-        openModal(evaluator) {
-            this.currentEvaluator = { ...evaluator}; 
-            $('#modal_titulos').modal('show'); // Abre el modal
         },
     }
 };
@@ -166,5 +166,13 @@ export default {
 
 .accordion-button::after {
     filter: invert(0);
+}
+
+.icono1:hover{ 
+    fill:#f50c0c ;
+}
+
+.icono2:hover{
+    fill:#12d336 ;
 }
 </style>
