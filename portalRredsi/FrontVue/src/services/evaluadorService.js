@@ -48,5 +48,23 @@ export const obtenerProyectosPorEstado = async (estado_evaluacion, idUsuario, pa
   }
 };
 
+// Función para insertar una postulación de evaluador
+export const insertarPostulacionEvaluador = async (postulacionData) => {
+  try {
+    const response = await api.post('/postulacionEvaluador/insertar-postulacion-evaluador/', postulacionData, {
+      headers: {
+        'Authorization': `Bearer`, // Incluye el token de autenticación
+        'Content-Type': 'application/json'
+      }
+    });
+    return response;
+  } catch (error) {
+    if (error.response) {
+      throw error; // Lanza el error para que lo maneje el store o componente
+    } else {
+      throw new Error('Error de red o de servidor'); // Manejar errores de red
+    }
+  }
+};
 
 
