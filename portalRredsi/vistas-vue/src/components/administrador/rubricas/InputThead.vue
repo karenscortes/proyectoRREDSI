@@ -16,7 +16,7 @@ export default {
         return(
           typeof value.p_titulo === 'string' &&
           typeof value.p_name_imput === 'string' &&
-          typeof value.p_titulo == 'string'
+          typeof value.p_id == 'string'
         );
       }
     },
