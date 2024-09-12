@@ -16,17 +16,17 @@
 import { markRaw } from 'vue';
 import MenuPrincipal from '../components/Menus/MenuPrincipal.vue';
 import ProyectosAsignadosEvaluadorView from './ProyectosAsignadosEvaluadorView.vue';
-import FooterSecundario from '../components/Footers/FooterSecundario.vue';
 import ComponenteDinamicoEvaluador from '../components/Users/evaluador/ComponenteDinamicoEvaluador.vue';
 import { useAuthStore } from '@/store';
 import { useRouter } from 'vue-router'; 
+import FooterSecundario from '../components/Footers/FooterSecundario.vue';
 
 export default {
     components: {
         ComponenteDinamicoEvaluador, 
         MenuPrincipal: markRaw(MenuPrincipal),
         ProyectosAsignadosEvaluadorView: markRaw(ProyectosAsignadosEvaluadorView),
-        FooterSecundario: markRaw(MenuPrincipal),
+        FooterSecundario: markRaw(FooterSecundario),
 
     },
     data() {
