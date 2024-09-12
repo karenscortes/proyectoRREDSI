@@ -341,7 +341,7 @@
               <div class="col-lg-4 order-lg-3 order-1">
                 <div class="event_image">
                   <img
-                    src="../plantilla/images/event_1.jpg"
+                    src="../assets/img/event_1.jpg"
                     alt="https://unsplash.com/@theunsteady5"
                   />
                 </div>
@@ -382,7 +382,7 @@
               <div class="col-lg-4 order-lg-3 order-1">
                 <div class="event_image">
                   <img
-                    src="../plantilla/images/event_2.jpg"
+                    src="../assets/img/event_2.jpg"
                     alt="https://unsplash.com/@claybanks1989"
                   />
                 </div>
@@ -421,7 +421,7 @@
               <div class="col-lg-4 order-lg-3 order-1">
                 <div class="event_image">
                   <img
-                    src="../plantilla/images/event_3.jpg"
+                    src="../assets/img/event_3.jpg"
                     alt="https://unsplash.com/@juanmramosjr"
                   />
                 </div>
