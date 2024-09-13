@@ -74,7 +74,7 @@
                 </div>
                 <div class="row mt-4 justify-content-center">
                     <div class="col-md-4 col-12">
-                        <a data-bs-toggle="modal" data-bs-target="#modal_titulos" @click="openModal(evaluator)"
+                        <a data-bs-toggle="modal" :data-bs-target="`#modal_titulos_${evaluator.id_evaluador}`" @click="openModal(evaluator)"
                             class="btn btn-outline-primary w-100 mb-3">Visualizar
                             Títulos</a>
                     </div>
@@ -84,7 +84,7 @@
 
 
         <!-- Modal -->
-        <div class="modal fade" id="modal_titulos" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal fade" :id="`modal_titulos_${evaluator.id_evaluador}`" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content">
                     <div class="row text-center justify-content-end mt-2">
