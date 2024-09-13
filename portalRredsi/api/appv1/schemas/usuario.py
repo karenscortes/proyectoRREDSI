@@ -37,12 +37,12 @@ class UserLoggin(UserBase):
     id_usuario: int
 
 class PermissionsRol(BaseModel):
-    module_name: str
-    p_select: bool
+    id_modulo: int
+    p_consultar: bool
 
 class ResponseLoggin(BaseModel):
     user: UserLoggin
-    # permissions: List[PermissionsRol]
+    permisos: List[PermissionsRol]
     access_token: str
 
 class ChangePassword(BaseModel):

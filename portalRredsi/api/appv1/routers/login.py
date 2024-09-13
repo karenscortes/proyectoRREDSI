@@ -12,6 +12,30 @@ router = APIRouter()
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/access/token")
 
+# async def get_current_user(
+#         token: str = Depends(oauth2_scheme),
+#         db: Session = Depends(get_db)
+# ):
+    
+#     user = await verify_token(token)
+    
+#     if user is None:
+#         raise HTTPException(status_code=401, detail="Invalid token")
+#     user_db = get_user_by_id(db, user)
+#     if user_db is None:
+#         raise HTTPException(status_code=404, detail="User not found")
+#     if not user_db.estado:
+#         raise HTTPException(status_code=403, detail="User Deleted, Not authorized")
+#     return user_db
+
+def authenticate_user(correo: str, clave: str, db: Session):
+    user = get_user_by_email(db, correo)
+    if not user:
+        return False
+    if not verify_password(clave, user.clave):
+        return False
+    return user
+
 async def get_current_user(
         token: str = Depends(oauth2_scheme),
         db: Session = Depends(get_db)
@@ -22,17 +46,9 @@ async def get_current_user(
     user_db = get_user_by_id(db, user)
     if user_db is None:
         raise HTTPException(status_code=404, detail="User not found")
-    if not user_db.estado:
+    if not user_db.user_status:
         raise HTTPException(status_code=403, detail="User Deleted, Not authorized")
     return user_db
-
-def authenticate_user(correo: str, clave: str, db: Session):
-    user = get_user_by_email(db, correo)
-    if not user:
-        return False
-    if not verify_password(clave, user.clave):
-        return False
-    return user
 
 @router.post("/token", response_model=ResponseLoggin)
 async def login_for_access_token(
@@ -49,8 +65,8 @@ async def login_for_access_token(
     access_token = create_access_token(
         data={"sub": user.id_usuario, "rol":user.id_rol}
     )
-
-    # permisos = get_all_permissions(db, user.id_rol)
+    
+    permisos_bd = get_all_permissions(db, user.id_rol)
 
     return ResponseLoggin(
         user=UserLoggin(
@@ -64,7 +80,7 @@ async def login_for_access_token(
             estado = user.estado,
             id_usuario=user.id_usuario
         ),
-        # permissions=permisos,
+        permisos=permisos_bd,
         access_token=access_token
     )
 
