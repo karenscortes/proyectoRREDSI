@@ -26,6 +26,7 @@ const routes = [
   { path: '/asignar-proyecto', name: 'AsignarProyecto', component: AsignarProyecto },
   { path: '/principal-delegado', name: 'DelegadoView', component: DelegadoView },
   { path: '/postulaciones-evaluadores', name: 'PostulacionesEvaluadores', component: PostulacionesEvaluadores},
+  
 
   // RUTAS ADMIN
   { path: '/rubrica-admin', name: 'RubricaAdminView', component: RubricaAdminView },
