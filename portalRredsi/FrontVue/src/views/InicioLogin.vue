@@ -15,9 +15,6 @@
         <div class="hero_slide">
           <div
             class="hero_slide_background"
-            style="
-              background-image: url(../assets/img/slider_background.jpg);
-            "
           ></div>
           <div
             class="hero_slide_container d-flex flex-column align-items-center justify-content-center"
@@ -38,7 +35,7 @@
           <div
             class="hero_slide_background"
             style="
-              background-image: url(../plantilla/images/slider_background.jpg);
+              background-image: url(../assets/img/slider_background.jpg);
             "
           ></div>
           <div
@@ -94,7 +91,7 @@
             <div
               class="hero_box d-flex flex-row align-items-center justify-content-start"
             >
-              <img src="../plantilla/images/books.svg" class="svg" alt="" />
+              <img src="../assets/img/books.svg" class="svg" alt="" />
               <div class="hero_box_content">
                 <h2 class="hero_box_title">Convocatorias</h2>
                 <a
@@ -111,7 +108,7 @@
               class="hero_box d-flex flex-row align-items-center justify-content-start"
             >
               <img
-                src="../plantilla/images/earth-globe.svg"
+                src="../assets/img/earth-globe.svg"
                 class="svg"
                 alt=""
               />
@@ -128,7 +125,7 @@
             <div
               class="hero_box d-flex flex-row align-items-center justify-content-start"
             >
-              <img src="../plantilla/images/professor.svg" class="svg" alt="" />
+              <img src="../assets/img/professor.svg" class="svg" alt="" />
               <div class="hero_box_content">
                 <h2 class="hero_box_title">Pertenecer</h2>
                 <a
@@ -477,3 +474,9 @@ export default {
   
 };
 </script>
+
+<style>
+.hero_slide_background{
+  background-image: url(../assets/img/slider_background.jpg)
+}
+</style>
