@@ -5,7 +5,7 @@
         <div class="row mb-5 mt-2">
           <div class="col">
             <div class="section_title text-center">
-              <h1>Información delegados</h1>
+              <h1>Información administradores</h1>
             </div>
           </div>
         </div>

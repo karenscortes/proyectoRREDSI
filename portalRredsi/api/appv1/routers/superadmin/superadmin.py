@@ -19,7 +19,7 @@ from typing import List
 router_superadmin = APIRouter()
 
 # Definir el nombre del módulo (por ejemplo, "superadmin") para verificar permisos
-MODULE = "superadmin"
+MODULE = 3
 
 # Obtener todos los administradores activos con paginación
 @router_superadmin.get("/get-all-admins/", response_model=List[AdminResponse])
