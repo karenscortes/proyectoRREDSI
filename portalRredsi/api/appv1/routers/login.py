@@ -12,22 +12,6 @@ router = APIRouter()
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/access/token")
 
-# async def get_current_user(
-#         token: str = Depends(oauth2_scheme),
-#         db: Session = Depends(get_db)
-# ):
-    
-#     user = await verify_token(token)
-    
-#     if user is None:
-#         raise HTTPException(status_code=401, detail="Invalid token")
-#     user_db = get_user_by_id(db, user)
-#     if user_db is None:
-#         raise HTTPException(status_code=404, detail="User not found")
-#     if not user_db.estado:
-#         raise HTTPException(status_code=403, detail="User Deleted, Not authorized")
-#     return user_db
-
 def authenticate_user(correo: str, clave: str, db: Session):
     user = get_user_by_email(db, correo)
     if not user:
@@ -46,7 +30,7 @@ async def get_current_user(
     user_db = get_user_by_id(db, user)
     if user_db is None:
         raise HTTPException(status_code=404, detail="User not found")
-    if not user_db.user_status:
+    if not user_db.estado:
         raise HTTPException(status_code=403, detail="User Deleted, Not authorized")
     return user_db
 
@@ -63,7 +47,7 @@ async def login_for_access_token(
             headers={"WWW-Authenticate": "Bearer"},
         )
     access_token = create_access_token(
-        data={"sub": user.id_usuario, "rol":user.id_rol}
+        data={"sub": f"{user.id_usuario}", "rol":user.id_rol}
     )
     
     permisos_bd = get_all_permissions(db, user.id_rol)

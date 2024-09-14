@@ -56,8 +56,8 @@ def get_user_by_email(db: Session, p_mail: str):
         raise HTTPException(status_code=500, detail="Error al buscar usuario por email")
 
 # Consultar un usuario por su ID
-def get_user_by_id(db: Session, user_id: str):
-    sql = text("SELECT * FROM users WHERE user_id = :user_id")
+def get_user_by_id(db: Session, user_id: int):
+    sql = text("SELECT * FROM usuarios WHERE id_usuario = :user_id")
     result = db.execute(sql, {"user_id": user_id}).fetchone()
     return result
 
