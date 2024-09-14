@@ -5,7 +5,7 @@
         <div class="row mb-5 mt-2">
           <div class="col">
             <div class="section_title text-center">
-              <h1>Información delegados</h1>
+              <h1>Información administradores</h1>
             </div>
           </div>
         </div>
@@ -29,15 +29,15 @@
         <!-- Tabla de delegados -->
         <div class="table-responsive">
           <table id="basic-datatables" class="display table table-striped table-hover text-dark">
-            <thead class="bg-warning">
+            <thead>
               <tr>
                 <th class="bg-warning">Identificación</th>
-                <th>Delegado</th>
-                <th>Área de conocimiento</th>
-                <th>Institución</th>
-                <th>Estado</th>
-                <th>Detalle</th>
-                <th>Historial</th>
+                <th class="bg-warning">Delegado</th>
+                <th class="bg-warning">Área de conocimiento</th>
+                <th class="bg-warning">Institución</th>
+                <th class="bg-warning">Estado</th>
+                <th class="bg-warning">Detalle</th>
+                <th class="bg-warning">Historial</th>
               </tr>
             </thead>
             <tbody>

@@ -17,9 +17,7 @@
     <td class="td_boton text-center">
       <!--Boton eliminar-->
       <button
-        data-bs-toggle="modal"
-        data-bs-target="#modalEliminar"
-        class="botones_rubrica"
+        class="botones_rubrica" @click="accionEliminar()"
       >
         <i class="fas fa-trash-alt"></i>
       </button>
@@ -47,11 +45,15 @@ const props = defineProps({
   },
 });
 
-const emit = defineEmits(["editarItem"]);
+const emit = defineEmits(["editarItem", "eliminarItem"]);
 
 const accionEditar = () => {
   emit("editarItem", props.infoItem);
 };
+
+const accionEliminar = () => {
+  emit("eliminarItem", props.infoItem.id_item_rubrica); 
+}
 </script>
 
 <style scoped>

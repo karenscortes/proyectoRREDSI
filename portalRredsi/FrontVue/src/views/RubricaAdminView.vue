@@ -42,13 +42,14 @@
                 v-for="(item, index) in infoItems"
                 :key="index"
                 :infoItem="item"
+                @eliminarItem = "onDeleteModal($event)"
                 @editarItem="onEditModal($event)"
               >
               </ItemTBody>
               <!-- row btn añadir item-->
               <tr class="tr_item_rubrica">
                 <td class="td_boton text-center" colspan="3">
-                  <button class="boton_añadir" @click="showModal()">
+                  <button class="boton_añadir" @click="showModalEdit()">
                     Añadir
                   </button>
                 </td>
@@ -82,11 +83,17 @@
     </div>
     <!--Sesion de modales-->
     <ModalAdd
-      v-if="isModalOpen"
-      @close="closeModal()"
+      v-if="isModalEditOpen"
+      @close="closeEditModal()"
       :infoModalEditar="infoModalEditar"
+      @actualizarRubrica="actualizarItemEdit($event)"
     ></ModalAdd>
-    <ModalDelete></ModalDelete>
+    <ModalDelete 
+    v-if="isModalDeleteOpen" 
+    :id_item_rubrica = "id_item_delete" 
+    @close="CloseDeleteModal()"
+    @actualizarRubrica="actualizarItemDelete($event)">
+    </ModalDelete>
   </div>
 </template>
 
@@ -102,17 +109,16 @@ import ItemTBody from "../components/Users/administrador/rubricas/ItemTBody.vue"
 import FootTable from "../components/Users/administrador/rubricas/FootTable.vue";
 import ItemThead from "../components/Users/administrador/rubricas/ItemThead.vue";
 
-const isModalOpen = ref(false);
-//Titulo contenedor principal
-const tituloPrincipal = "Gestionar rúbricas";
 
-//info para enviar al modal(Editar)
-const infoModalEditar = reactive({
-  id_item_rubrica: null,
-  titulo: "",
-  valor_max: null,
-  componente: "",
-});
+//Propiedades para manejar la apertura de los modales
+const isModalEditOpen = ref(false);
+const isModalDeleteOpen = ref(false); 
+
+//Propiedad para guardar el id_item que se eliminara
+const id_item_delete  = ref(null);
+
+//Titulo h1 del contenedor principal
+const tituloPrincipal = "Gestionar rúbricas";
 
 //info imputs del Thead
 const infoImputs = reactive([
@@ -133,7 +139,15 @@ const infoImputs = reactive([
   },
 ]);
 
-//info items rubrica
+//info para enviar al modal(Editar)
+const infoModalEditar = reactive({
+  id_item_rubrica: null,
+  titulo: "",
+  valor_max: null,
+  componente: "",
+});
+
+//info para los items rubrica
 const infoItems = reactive([]);
 
 //info para la card
@@ -172,36 +186,67 @@ const infoCards = reactive([
   },
 ]);
 
-//Evento cambiar valores modal por info actual
+//Evento para abrir el modal de editar
+const showModalEdit = () => {
+  isModalEditOpen.value = true;
+};
+
+//Evento para cambiar la información del modal editar por info actual y abrir modal de editar
 const onEditModal = (informacionTr) => {
   infoModalEditar.id_item_rubrica = informacionTr.id_item_rubrica;
   infoModalEditar.titulo = informacionTr.titulo;
   infoModalEditar.valor_max = informacionTr.valor_max;
   infoModalEditar.componente = informacionTr.componente;
-  showModal();
+  showModalEdit();
 };
 
-//Evento para cerrar el modal
-const closeModal = () => {
+//Evento para cerrar el modal de editar y limpiar los campos
+const closeEditModal = () => {
   infoModalEditar.id_item_rubrica = null;
   infoModalEditar.titulo = "";
   infoModalEditar.valor_max = null;
   infoModalEditar.componente = "";
-  isModalOpen.value = false;
+  isModalEditOpen.value = false;
 };
 
-//Evento para abrir el modal
-const showModal = () => {
-  isModalOpen.value = true;
+//Evento para cambiar el valor del id_item que se enviara y abrir el modal de eliminar
+const onDeleteModal = (id_item_rubrica) => {
+  id_item_delete.value = id_item_rubrica; 
+  isModalDeleteOpen.value = true; 
 };
+
+//Evento para cerrar el modal de eliminar
+const CloseDeleteModal = () =>{
+  isModalDeleteOpen.value = false; 
+}
+
+//Función para actualizar los items cuando se haya eliminado uno
+const actualizarItemDelete = (id_item)=>{
+  infoItems.forEach(function (item, i) {
+    if(item.id_item_rubrica == id_item){
+      infoItems.splice(i, 1);
+    }
+  });
+}
+
+//Función para actualizar los items cuando se haya editado
+const actualizarItemEdit = ({id_item_rubrica, itemActual})=>{
+  infoItems.forEach(function (item, i) {
+    if(item.id_item_rubrica == id_item_rubrica){
+      infoItems[i] = itemActual; 
+    }
+  });
+}
+
+//Utilizando el servicio para traer todas las rubricas
 const fetchAllRubrics = async () => {
   try {
     const response = await getRubricsAll();
+    //Definiendo que la rubrica que se mostrara por defecto es la primera
     const primerRubrica = response.data[0].items_rubrica;
     primerRubrica.forEach(function (item, i) {
-      infoItems[i] = item; 
+      infoItems[i] = item;
     });
-;
   } catch (error) {
     console.error("Error al obtener rubricas: ", error);
     alert("Error al obtener las rúbricas");
@@ -213,7 +258,7 @@ onMounted(() => {
 </script>
 
 <style scoped>
-.table{
+.table {
   max-height: 90%;
   overflow-y: auto;
   display: block;

@@ -4,9 +4,6 @@ import api from './api';
 export const obtenerProyectosAsignados = async (idUsuario, page = 1, pageSize = 10) => {
   try {
     const response = await api.get('/obtenerProyectosEvaluador/obtener-proyectos-asignados-paginados/', {
-      headers: {
-        'Authorization': `Bearer` // Incluye el token de autenticación
-      },
       params: {
         id_usuario: idUsuario,
         page: page,

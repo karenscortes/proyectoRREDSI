@@ -137,20 +137,17 @@ export default defineComponent({
         visibilidad: "d-none",
         yellow_tab: "Cerrar Sesión",
       });
-    } else if (props.rol === 6) { //superAdmi
+    } else if (props.rol === 6) { //superAdmin
       Object.assign(state, {
         left_tabs: [
-          { nombre: "Inicio", ruta: "/super-admin" },
-        ],
-        mid_tabs: [
-          { nombre: "Informacion delegados", ruta: "/lista-delegados-superadmin"},
-        ],
+          { nombre: "Inicio", ruta: "SuperAdminView" }, { nombre: "Informacion administradores", ruta: "ListaAdministradores" }],
         tab_name: "",
         visibilidadLogin: "d-none",
         visibilidad: "d-none",
         yellow_tab: "Cerrar Sesión",
-      }); 
-    } 
+      });
+    }
+
     else if (props.rol === 2) { //delegado
       Object.assign(state, {
         left_tabs: [
@@ -161,22 +158,22 @@ export default defineComponent({
           {
             nombre: "Evaluadores",
             opciones: [
-              { nombre: "Postulaciones", ruta: "#" },
-              { nombre: "Lista de Evaluadores", ruta: "#" },
+              { nombre: "Postulaciones", ruta: "PostulacionesEvaluadores" },
+              { nombre: "Lista de Evaluadores", ruta: "ListaEvaluadores" },
             ],
           },
           {
             nombre: "Proyectos",
             opciones: [
-              { nombre: "Asignacion de Proyectos", ruta: "#" },
-              { nombre: "Lista de Proyectos", ruta: "#" },
+              { nombre: "Asignacion de Proyectos", ruta: "AsignarProyectos" },
+              { nombre: "Lista de Proyectos", ruta: "" },
             ],
           },
           {
             nombre: "Evento",
             opciones: [
               { nombre: "Salas", ruta: "#" },
-              { nombre: "Asistencia", ruta: "#" },
+              { nombre: "Asistencia", ruta: "AsistenciaEvento"},
             ],
           },
         ],

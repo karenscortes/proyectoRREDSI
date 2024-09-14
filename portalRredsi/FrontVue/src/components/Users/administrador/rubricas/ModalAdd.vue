@@ -64,7 +64,7 @@
         </div>
         <div class="modal-footer">
           <button class="btn" data-bs-dismiss="modal" @click="closeModal()">Cerrar</button>
-          <button class="btn" data-bs-dismiss="modal" @click="save()">Guardar</button>
+          <button class="btn" @click="save()">Guardar</button>
         </div>
       </div>
     </div>
@@ -73,14 +73,13 @@
 
 <script setup>
 import { updateItems} from "@/services/administradorService";
-import { ref, defineEmits, reactive } from 'vue';
+import {defineEmits, reactive } from 'vue';
   const props = defineProps({
   infoModalEditar: {
     type: Object,
     default: null,
     validator(value) {
       return (
-        
         typeof (value.id_item_rubrica === "number" || value.id_item_rubrica === null) &&
         typeof (value.id_rubrica === 'number' || value.id_rubrica === null) &&
         typeof (value.titulo === 'string' || value.titulo === null) &&
@@ -91,24 +90,33 @@ import { ref, defineEmits, reactive } from 'vue';
   }
 });
 
-const emit = defineEmits(['close']);
+const emit = defineEmits(['close', 'actualizarRubrica']);
+
+//Propiedad auxiliar para guardar el id del item 
 const id_item_rubrica = props.infoModalEditar.id_item_rubrica; 
-console.log(id_item_rubrica)
+
+//Objeto reactivo para almacenar los cambios que se realicen
 const itemActual = reactive({
   titulo : props.infoModalEditar.titulo,
   componente: props.infoModalEditar.componente, 
   valor_max: props.infoModalEditar.valor_max
 });
 
+//Método para cerrar el modal
 const closeModal = () => {
   emit('close');
 };
 
+//Método para emitir el evento a la rubrica
+const actualizar = ()=>{
+  emit('actualizarRubrica', {id_item_rubrica, itemActual});
+}
+
+//Método para hacer el guardado, cerrar modal y disparar el método que emitira
 const save = async () =>{
-  const result = await updateItems(id_item_rubrica, itemActual); 
-  console.log("Ya le diste a guardar"); 
-  console.log(itemActual);
-  console.log(result)
+  const itemActualizado = await updateItems(id_item_rubrica, itemActual); 
+  actualizar(); 
+  closeModal();
 }
 </script>
 

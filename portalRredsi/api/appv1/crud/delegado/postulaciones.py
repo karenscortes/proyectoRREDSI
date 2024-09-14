@@ -39,7 +39,7 @@ def get_all_applications(db: Session, page: int = 1, page_size: int = 10):
 
         result = db.execute(sql, params).mappings().all()
 
-        count_sql = text("SELECT COUNT(id_evaluador) AS cantidad_postulaciones FROM postulaciones_evaluadores WHERE id_convocatoria IN (SELECT id_convocatoria FROM convocatorias WHERE estado = 'en curso')")
+        count_sql = text("SELECT COUNT(id_evaluador) AS cantidad_postulaciones FROM postulaciones_evaluadores WHERE id_convocatoria IN (SELECT id_convocatoria FROM convocatorias WHERE estado = 'en curso') AND estado_postulacion = 'pendiente'")
 
         total_postulaciones = db.execute(count_sql).scalar()
 

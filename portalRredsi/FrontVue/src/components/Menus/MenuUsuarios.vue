@@ -103,9 +103,8 @@ export default defineComponent({
             });
         } else if(props.rol == 6) {
             Object.assign(state, {
-                left_tabs: [{nombre:'Inicio', ruta:'#'},{nombre:'Información Delegados', ruta:'#'}],
-                visibilidad:"d-none"
-
+                left_tabs: [{nombre: "Inicio", ruta: "SuperAdminView" }, {nombre: "Informacion delegados", ruta: "ListaDelegados" }],
+                visibilidadLogin: "d-none",
             });
         }
 
