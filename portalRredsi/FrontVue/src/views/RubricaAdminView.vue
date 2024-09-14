@@ -1,5 +1,5 @@
 <template>
-  <div class="container mt-5">
+  <div class="container">
     <div>
       <!--Titulo principal-->
       <div>
@@ -259,10 +259,11 @@ onMounted(() => {
 
 <style scoped>
 .table {
-  max-height: 90%;
+  max-height: 750px;
   overflow-y: auto;
-  display: block;
-  -webkit-overflow-scrolling: touch;
+}
+.container{
+  margin-top: 10%;
 }
 .boton_añadir {
   border: none;
@@ -297,10 +298,11 @@ onMounted(() => {
   border: 1px solid black;
 }
 .scroll-div {
-  height: 60vh;
+  height: 75vh;
   overflow-y: auto;
   overflow-x: hidden;
 }
+
 .col_card {
   padding-left: 19px;
   padding-right: 19px;
@@ -333,6 +335,26 @@ onMounted(() => {
   font-size: 18px;
   font-weight: bold;
 }
+
+::-webkit-scrollbar {
+  width: 13px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f0f0f0;
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: rgb(255, 212, 128);
+  border-radius: 10px;
+  border: 2px solid #ffffff;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: rgb(255, 200, 100);
+}
+
 @media only screen and (min-width: 500px) and (max-width: 768px) {
   .modal-dialog {
     min-width: 97%;

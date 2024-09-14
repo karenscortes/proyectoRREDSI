@@ -65,10 +65,10 @@
 </template>
 
 <script setup>
-import RowTableSala from "../components/Users/administrador/salas/RowTableSala.vue";
-import ModalAddSala from "../components/Users/administrador/salas/ModalAddSala.vue";
-import ModalEditSala from "../components/Users/administrador/salas/ModalEditSala.vue";
+import ModalAddSala from "../components/Users/administrador/rubricas/ModalAdd.vue";
 import { reactive } from "vue";
+import RowTableSala from "../components/Users/administrador/gest_salas/RowTableSala.vue";
+import ModalEditSala from "../components/Users/administrador/gest_salas/ModalEditSala.vue";
 
 const infoSalas = reactive([
   {
