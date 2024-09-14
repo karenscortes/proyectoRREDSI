@@ -19,17 +19,17 @@ import MenuPrincipal from '../components/Menus/MenuPrincipal.vue';
 import DynamicComponentSuperAdmin from '../components/Users/superadmin/DynamicComponentSuperAdmin.vue';
 import FooterSecundario from '../components/Footers/FooterSecundario.vue';
 import InicioSuperAdminView from './InicioSuperAdminView.vue';
-import ListaDelegados from '../components/Users/superadmin/ListaDelegados.vue';
+import ListaAdministradores from '../components/Users/superadmin/ListaAdministradores.vue';
 import { useAuthStore } from '@/store';
 import { useRouter } from 'vue-router';
 
 export default {
   components: {
-    MenuPrincipal: markRaw(MenuPrincipal),
     DynamicComponentSuperAdmin,
+    MenuPrincipal: markRaw(MenuPrincipal),
     FooterSecundario: markRaw(FooterSecundario),
     InicioSuperAdminView: markRaw(InicioSuperAdminView),
-    ListaDelegados: markRaw(ListaDelegados),
+    ListaAdministradores: markRaw(ListaAdministradores),
   },
   data() {
     return {
@@ -40,8 +40,8 @@ export default {
     
     changeComponent(componentName) {
       const componentMap = {
-        'InicioSuperAdminView': InicioSuperAdminView,
-        'ListaDelegados': ListaDelegados,
+          InicioSuperAdminView: InicioSuperAdminView,
+          ListaAdministradores: ListaAdministradores,
       };
       
       this.currentComponent = componentMap[componentName] || InicioSuperAdminView;

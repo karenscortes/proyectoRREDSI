@@ -140,11 +140,7 @@ export default defineComponent({
     } else if (props.rol === 6) { //superAdmin
       Object.assign(state, {
         left_tabs: [
-          { nombre: "Inicio", ruta: "/super-admin" }, 
-        ],
-        mid_tabs: [
-          { nombre: "Informacion delegados", ruta: "/lista-delegados-superadmin" },
-        ],
+          { nombre: "Inicio", ruta: "SuperAdminView" }, { nombre: "Informacion administradores", ruta: "ListaAdministradores" }],
         tab_name: "",
         visibilidadLogin: "d-none",
         visibilidad: "d-none",

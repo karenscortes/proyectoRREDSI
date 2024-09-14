@@ -359,26 +359,28 @@ export default {
                         // Reemplaza '/dashboard' con la ruta deseada
                         router.push("/principal-delegado");
 
-          } else if (user?.id_rol == 1) {
-            router.push("/principal-evaluador");
-          }else if(user?.id_rol == 6){
-            router.push('/principal-superadmin');
-          }
-          
-        }
-      } catch (error) {
-        errorMessage.value = "Error durante el login: " + error.message;
-      }
-    };
-    
-    return {
-      email,
-      password,
-      errorMessage,
-      handleLogin,
-      user,
-      // permissions
-    };
+                    } else if (user?.id_rol == 1) {
+                        router.push("/principal-evaluador");
+                    } else if (user?.id_rol == 6) {
+                        router.push('/principal-superadmin');
+                    }
+
+                }
+            } catch (error) {
+                errorMessage.value = "Error durante el login: " + error.message;
+            }
+        };
+
+        return {
+            email,
+            password,
+            errorMessage,
+            handleLogin,
+            user,
+            // permissions
+        };
+
+    },
 
 };
 </script>
