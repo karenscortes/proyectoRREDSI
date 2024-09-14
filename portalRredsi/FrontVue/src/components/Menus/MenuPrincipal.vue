@@ -117,7 +117,7 @@ export default defineComponent({
     if (props.rol === 3) { //Administrador
       Object.assign(state, {
         left_tabs: [
-          { nombre: "Inicio", ruta: "#" },
+          { nombre: "Inicio", ruta: "InicioAdminView" },
           { nombre: "Perfil", ruta: "#" },
           { nombre: "Cuentas", ruta: "#" },
           { nombre: "Rubricas", ruta: "RubricaAdminView" },
@@ -126,7 +126,7 @@ export default defineComponent({
           {
             nombre: "Eventos",
             opciones: [
-              { nombre: "Salas", ruta: "#" },
+              { nombre: "Salas", ruta: "" },
               { nombre: "Asistencia", ruta: "#" },
               { nombre: "Convocatoria", ruta: "#" },
             ],
@@ -137,20 +137,17 @@ export default defineComponent({
         visibilidad: "d-none",
         yellow_tab: "Cerrar Sesión",
       });
-    } else if (props.rol === 6) { //superAdmi
+    } else if (props.rol === 6) { //superAdmin
       Object.assign(state, {
         left_tabs: [
-          { nombre: "Inicio", ruta: "/super-admin" },
-        ],
-        mid_tabs: [
-          { nombre: "Informacion delegados", ruta: "/lista-delegados-superadmin"},
-        ],
+          { nombre: "Inicio", ruta: "SuperAdminView" }, { nombre: "Informacion administradores", ruta: "ListaAdministradores" }],
         tab_name: "",
         visibilidadLogin: "d-none",
         visibilidad: "d-none",
         yellow_tab: "Cerrar Sesión",
-      }); 
-    } 
+      });
+    }
+
     else if (props.rol === 2) { //delegado
       Object.assign(state, {
         left_tabs: [
