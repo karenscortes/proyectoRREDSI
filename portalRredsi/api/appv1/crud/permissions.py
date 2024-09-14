@@ -4,9 +4,9 @@ from sqlalchemy.orm import Session
 from sqlalchemy.exc import SQLAlchemyError
 
 # consultar permisos de un rol por modulo
-def get_permissions(db: Session, rol: str, module: str):
+def get_permissions(db: Session, rol: int, module: int):
     try:
-        sql = text("SELECT p_select, p_insert, p_update, p_delete FROM permisos WHERE rol_name = :rol AND module_name = :module")
+        sql = text("SELECT p_consultar, p_insertar, p_actualizar, p_eliminar FROM permisos WHERE id_rol = :rol AND id_modulo = :module")
         result = db.execute(sql, {"rol": rol, "module": module}).fetchone()
         return result
     except SQLAlchemyError as e:
@@ -14,9 +14,9 @@ def get_permissions(db: Session, rol: str, module: str):
         raise HTTPException(status_code=500, detail="Error al obtener permisos")
 
 # consultar todos los permisos de un rol
-def get_all_permissions(db: Session, rol: str):
+def get_all_permissions(db: Session, rol: int):
     try:
-        sql = text("SELECT module_name, p_select FROM permissions WHERE rol_name = :rol")
+        sql = text("SELECT id_modulo, p_consultar FROM permisos WHERE id_rol = :rol")
         result = db.execute(sql, {"rol": rol}).mappings().all()
         return result
     except SQLAlchemyError as e:
