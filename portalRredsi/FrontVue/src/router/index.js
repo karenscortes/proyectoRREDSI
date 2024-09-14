@@ -6,7 +6,7 @@ import DelegadoView from '../views/DelegadoView.vue';
 import EvaluadorView from '../views/EvaluadorView.vue';
 import PostulacionesEvaluadores from '../components/Users/delegado/postulaciones/PostulacionesEvaluadores.vue'
 import SuperAdminView from '../views/SuperAdminView.vue';
-import ListaDelegados from '../components/Users/superadmin/ListaDelegados.vue'
+import ListaAdministradores from '../components/Users/superadmin/ListaAdministradores.vue'
 import ProyectosAsignadosEvaluadorView from '../views/ProyectosAsignadosEvaluadorView.vue';
 import AsignarProyecto from '../components/Users/delegado/AsignarProyectos/AsignarProyectos.vue';
 import PaginaInicioEvaluadorView from '../views/PaginaInicioEvaluadorView.vue';
@@ -32,8 +32,8 @@ const routes = [
   { path: '/rubrica-admin', name: 'RubricaAdminView', component: RubricaAdminView },
 
   // RUTAS SUPERADMIN
-  { path: '/super-admin', name: 'SuperAdminView', component: SuperAdminView},
-  { path: '/lista-delegados-superadmin', name: 'ListaDelegados', component: ListaDelegados},
+  { path: '/principal-superadmin', name: 'SuperAdminView', component: SuperAdminView},
+  { path: '/lista-admin-superadmin', name: 'ListaAdministradores', component: ListaAdministradores},
 
   // Redirección en caso de ruta no encontrada
   { path: '/:pathMatch(.)', redirect: '/not-found' },

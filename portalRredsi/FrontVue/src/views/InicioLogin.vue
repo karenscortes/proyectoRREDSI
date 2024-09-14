@@ -362,7 +362,7 @@ export default {
                     } else if (user?.id_rol == 1) {
                         router.push("/principal-evaluador");
                     } else if (user?.id_rol == 6) {
-                        router.push('/super-admin');
+                        router.push('/principal-superadmin');
                     }
 
                 }
