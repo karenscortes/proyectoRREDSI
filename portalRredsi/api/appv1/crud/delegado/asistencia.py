@@ -52,7 +52,7 @@ def get_asistentes_por_convocatoria(db: Session, page: int = 1, page_size: int =
     except SQLAlchemyError as e:
         print(f"Error al buscar asistentes: {e}")
         raise HTTPException(status_code=500, detail="Error al buscar asistentes")
-
+    
 # Asistentes por sala 
 def get_asistentes_por_sala(db: Session, numero_sala: str, page: int = 1, page_size: int = 10):
     try:
@@ -179,7 +179,7 @@ def get_asistente_por_cedula(db: Session, documento: str):
         print(f"Error al buscar asistente por documento: {e}")
         raise HTTPException(status_code=500, detail="Error al buscar asistente")
 
-
+#Actualizar check asistencia
 def actualizar_asistencia(db: Session, id_asistente: int, id_usuario: int, asistencia: int):
     sql = text("UPDATE asistentes SET asistencia = :asistencia WHERE id_asistente = :id_asistente AND id_usuario = :id_usuario")
     params = {

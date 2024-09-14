@@ -126,24 +126,6 @@ export const asistenciaEvento = async (page= 1, page_size = 10) => {
     }
 };
 
-//Numeros de sala
-export const obtenerSalasPorConvocatoria = async (page = 1, page_size = 10) => {
-    try {
-        const response = await api.get(`/get-salas-por-convocatoria/?page=${page}&page_size=${page_size}`, {
-            headers: {
-                'Authorization': `Bearer`
-            }
-        });
-        return response;
-    } catch (error) {
-        if (error.response) {
-            throw error;
-        } else {
-            throw new Error('Error de red o de servidor');
-        }
-    }
-};
-
 // Asistentes por sala
 export const obtenerAsistentesPorSala = async (numero_sala, page = 1, page_size = 10) => {
     try {
@@ -162,6 +144,23 @@ export const obtenerAsistentesPorSala = async (numero_sala, page = 1, page_size 
     }
 };
 
+// Salas por convocatoria en curso
+export const obtenerSalas = async () => {
+    try {
+        const response = await api.get(`salas/get-salas-por-convocatoria/?page=${page}&page_size=${page_size}`,{
+            headers: {
+                'Authorization': `Bearer` // Incluye el token de autenticación
+            }  
+        });
+        return response;
+    } catch (error) {
+        if(error.response){
+            throw error;
+        }else {
+            throw new Error('Error al obtener las salas');
+        }
+    }
+};
 
 // Asistentes por rol (participantes, evaluadores)
 export const obtenerAsistentesPorRol = async (rol, page = 1, page_size = 10) => {

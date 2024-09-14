@@ -1,7 +1,7 @@
 <template>
     <div>
         <div class="container pt-5">
-            <div class="row mb-5 mt-5">
+            <div class="row mb-5 mt-2">
                 <div class="col">
                     <div class="section_title text-center">
                         <h1>Asistencia</h1>
@@ -26,8 +26,8 @@
                 <!-- Select de salas disponibles -->
                 <div class="col-4 col-sm-2">
                     <select class="form-select text-dark" v-model="salaSeleccionada" @change="filtrarPorSala">
-                        <option :value="'Sala'" selected>Sala</option>
-                        <option v-for="opcion in opciones" :value="opcion" :key="opcion">
+                        <option value="Sala" selected>Sala</option>
+                        <option v-for="opcion in opciones" :value="opcion.numero" :key="opcion.id">
                             {{ opcion.numero }}
                         </option>
                     </select>
@@ -108,7 +108,7 @@
 </template>
 
 <script>
-import { asistenciaEvento, actualizarAsistencia, obtenerSalasPorConvocatoria, obtenerAsistentesPorSala, obtenerAsistentesPorRol, obtenerAsistentePorDocumento } from '@/services/delegadoService';
+import { asistenciaEvento, actualizarAsistencia, obtenerAsistentesPorSala, obtenerAsistentesPorRol, obtenerAsistentePorDocumento, obtenerSalas } from '@/services/delegadoService';
 
 export default {
     data() {
@@ -134,18 +134,9 @@ export default {
             }
         },
 
-        async fetchSalas() {
-            try {
-                const response = await obtenerSalasPorConvocatoria(this.currentPage);
-                this.opciones = response.data.salas; // Asegúrate de que la respuesta contenga las salas
-            } catch (error) {
-                alert("Error al obtener las salas: " + error);
-            }
-        },
-
         async fetchAsistentesSalas() {
             try {
-                const response = await obtenerAsistentesPorSala();
+                const response = await obtenerSalas(this.currentPage, 10); // Asegúrate de pasar page y page_size si es necesario
                 this.opciones = response.data.salas;
             } catch (error) {
                 alert("Error al obtener las salas: " + error);
@@ -156,7 +147,7 @@ export default {
             try {
                 const response = await obtenerAsistentesPorRol('Ponente', this.currentPage);
                 this.asistentes = response.data.asistentes;
-                this.filtroActivo = 'Ponentes'; // Cambiar filtro  a 'Ponentes'
+                this.filtroActivo = 'Ponentes'; // Cambiar filtro a 'Ponentes'
             } catch (error) {
                 alert("Error al filtrar ponentes: " + error);
             }
@@ -196,13 +187,12 @@ export default {
 
         async toggleActualizarAsistencia(asistente) {
             try {
-                asistente.asistencia = asistente.asistencia ? 0 : 1; 
+                asistente.asistencia = asistente.asistencia ? 0 : 1;
                 await actualizarAsistencia(asistente.id_asistente, asistente.id_usuario, asistente.asistencia);
             } catch (error) {
                 alert("Error al actualizar la asistencia: " + error.message);
             }
         },
-
 
         nextPage() {
             if (this.currentPage < this.totalPages) {
@@ -220,11 +210,12 @@ export default {
     },
     mounted() {
         this.fetchAsistentes();
-        this.fetchAsistentesSalas()
-        this.fetchSalas();
+        this.fetchAsistentesSalas();
+        this.filtrarPorSala();
     }
 };
 </script>
+
 
 <style scoped>
 .section_title h1 {
