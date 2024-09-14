@@ -91,22 +91,28 @@ import {defineEmits, reactive } from 'vue';
 });
 
 const emit = defineEmits(['close', 'actualizarRubrica']);
+
+//Propiedad auxiliar para guardar el id del item 
 const id_item_rubrica = props.infoModalEditar.id_item_rubrica; 
 
+//Objeto reactivo para almacenar los cambios que se realicen
 const itemActual = reactive({
   titulo : props.infoModalEditar.titulo,
   componente: props.infoModalEditar.componente, 
   valor_max: props.infoModalEditar.valor_max
 });
 
+//Método para cerrar el modal
 const closeModal = () => {
   emit('close');
 };
 
+//Método para emitir el evento a la rubrica
 const actualizar = ()=>{
   emit('actualizarRubrica', {id_item_rubrica, itemActual});
 }
 
+//Método para hacer el guardado, cerrar modal y disparar el método que emitira
 const save = async () =>{
   const itemActualizado = await updateItems(id_item_rubrica, itemActual); 
   actualizar(); 

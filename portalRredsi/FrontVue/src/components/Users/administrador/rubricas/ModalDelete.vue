@@ -44,20 +44,25 @@ const props = defineProps({
   },
 });
 
+//Definimos los eventos a emitir
 const emit = defineEmits(['close', 'actualizarRubrica']);
+
+//Método para cerrar el evento 
 const closeModal = () => {
   emit('close'); 
 }
 
+//Método que emitira el evento a la rubrica
 const actualizar = (id_item)=>{
   emit('actualizarRubrica', id_item); 
 }
+
+//Función para eliminar item, cerrar modal y disparar el método que emitira a la rubrica
 const save = () => {
   const aux_id_item = props.id_item_rubrica;  
   const result = deleteItems(aux_id_item); 
   closeModal();
   actualizar(aux_id_item); 
-  console.log(aux_id_item);
 }
 </script>
 <style scoped>
