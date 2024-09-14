@@ -1,7 +1,7 @@
 <template>
   <!--Modal confirmación eliminar rúbrica-->
   <div
-    class="modal fade"
+    class="modalCabecero modal fade show"
     id="modalEliminar"
     data-bs-backdrop="static"
     data-bs-keyboard="false"
@@ -14,53 +14,75 @@
         <button
           type="button"
           class="btn-close"
-          data-bs-dismiss="modal"
-          aria-label="Close"
+          @click="closeModal()"
         ></button>
         <div class="modal-body">
           <form action="">
             <div class="row">
               <div class="col-md-12 mb-4">
-                <h2 class="mensaje_body">
+                <h2 class="mensaje_body text-center">
                   ¿Seguro que quieres eliminar este ítem?
                 </h2>
               </div>
             </div>
           </form>
         </div>
-        <div
-          class="modal-footer"
-        >
-          <button class="btn mx-auto" data-bs-dismiss="modal">
-            Cancelar
-          </button>
-          <button class="btn mx-auto" data-bs-dismiss="modal">
-            Aceptar
-          </button>
+        <div class="modal-footer">
+          <button class="btn mx-auto" @click="closeModal()">Cancelar</button>
+          <button class="btn mx-auto" @click="save()">Aceptar</button>
         </div>
       </div>
     </div>
   </div>
 </template>
+<script setup>
+import {deleteItems} from "@/services/administradorService";
+const props = defineProps({
+  id_item_rubrica: {
+    type: Number,
+    required: true,
+  },
+});
+
+const emit = defineEmits(['close', 'actualizarRubrica']);
+const closeModal = () => {
+  emit('close'); 
+}
+
+const actualizar = (id_item)=>{
+  emit('actualizarRubrica', id_item); 
+}
+const save = () => {
+  const aux_id_item = props.id_item_rubrica;  
+  const result = deleteItems(aux_id_item); 
+  closeModal();
+  actualizar(aux_id_item); 
+  console.log(aux_id_item);
+}
+</script>
 <style scoped>
-.btn-close{
-    margin-left: auto
+.modalCabecero{
+  display: block;
 }
-.mensaje_body{
-    font-size: 24px; color: black
+.btn-close {
+  margin-left: auto;
 }
-.btn{
+.mensaje_body {
+  font-size: 24px;
+  color: black;
+}
+.btn {
   background-color: rgb(255, 182, 6);
   font-weight: 700;
 }
-.btn:focus{
+.btn:focus {
   border: none;
   box-shadow: none;
   color: #494949;
   background-color: rgb(255, 182, 6);
 }
-.modal-footer{
-    border: 1px solid yellow;
+.modal-footer {
+  border: 1px solid yellow;
 }
 @media only screen and (min-width: 500px) and (max-width: 768px) {
   .modal-dialog {
