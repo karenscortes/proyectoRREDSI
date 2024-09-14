@@ -1,8 +1,8 @@
 <template>
     <div>
         <!-- HEADER  -->
-        <!-- <MenuPrincipal :rol="user?.id_rol" @component-selected="changeComponent"/> -->
-        <component :is="selectedMenu" :rol="user?.id_rol" @component-selected="changeComponent"/>
+        <MenuPrincipal :rol="user?.id_rol" @component-selected="changeComponent"/>
+        <!-- <component :is="selectedMenu" :rol="user?.id_rol" @component-selected="changeComponent"/> -->
 
 
         <!-- BODY  -->
@@ -43,7 +43,7 @@ export default {
     },
     data() {
         return {
-            currentComponent: AsistenciaEvento
+            currentComponent: AsignarProyectos
         };
     },
     computed: {

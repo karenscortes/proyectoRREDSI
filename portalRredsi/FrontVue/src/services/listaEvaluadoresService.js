@@ -6,7 +6,7 @@ export const obtenerListaEvaluadores = async (page = 1, page_size = 10) => {
         const response = await api.get(`/listaEvaluadores/get-all-evaluators/?page=${page}&page_size=${page_size}
 `, {
             headers: {
-                'Authorization': `Bearer` // Incluye el token de autenticación
+                'Authorization': `Bearer ${localStorage.getItem('access_token')}`
             }
         });
         return response;

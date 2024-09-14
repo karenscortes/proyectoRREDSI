@@ -6,7 +6,6 @@ from sqlalchemy.exc import SQLAlchemyError, IntegrityError
 from appv1.schemas.delegado.salas import AsignarProyectoSala
 
 
-
 def asignar_proyecto_a_sala(db: Session, asignacion: AsignarProyectoSala ):
     try:
         sql = text("""INSERT INTO detalle_sala (id_sala, id_proyecto_convocatoria, fecha, hora_inicio, hora_fin) 
