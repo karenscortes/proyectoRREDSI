@@ -12,6 +12,7 @@ routerInsertarPostulacionEvaluador = APIRouter()
 routerInsetarCalificacionRubrica = APIRouter()
 routerObtenerHorarioEvaluador = APIRouter()
 
+# ID del modulo el cual quieren probar / validen en workbench el id en la tabla permisos
 MODULE = 11
 
 #Ruta para obtener los proyectos asignados por etapa (Presencial/Virtual) paginados
@@ -49,10 +50,14 @@ async def obtener_proyectos_asignados(
     current_user: UserResponse = Depends(get_current_user),
     db: Session = Depends(get_db),
 ):
+    # Aqui tienen que consultar que permisos tiene asignados por rol :)
     permisos = get_permissions(db, current_user.id_rol, MODULE)
     
+    # Si no tiene permiso que necesita tira el mensaje de error
     if not permisos.p_consultar:
         raise HTTPException(status_code=401, detail="No está autorizado a utilizar este modulo")
+    
+    # si no imprime el resultado
     response = get_proyectos_asignados(db, id_usuario, page, page_size)
     return response
 

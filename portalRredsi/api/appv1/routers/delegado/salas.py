@@ -10,6 +10,7 @@ from appv1.crud.permissions import get_permissions
 
 router_sala = APIRouter()
 
+# ID del modulo el cual quieren probar / validen en workbench los id en la tabla permisos
 MODULE = 15
 
 @router_sala.post("/asignar-proyecto-etapa-presencial/")
@@ -38,11 +39,14 @@ async def read_all_salas_por_convocatoria(
     db: Session = Depends(get_db)
     
 ):
+    # Aqui tienen que consultar que permisos tiene asignados por rol :)
     permisos = get_permissions(db, current_user.id_rol, MODULE)
     
+    # Si no tiene permiso que necesita tira el mensaje de error
     if not permisos.p_consultar:
         raise HTTPException(status_code=401, detail="No está autorizado a utilizar este modulo")
-
+    
+    # si no imprime el resultado
     salas, total_pages = get_salas_por_convocatoria(db, page, page_size)
     if len(salas) == 0:
         raise HTTPException(status_code=404, detail="Salas no encontradas")
