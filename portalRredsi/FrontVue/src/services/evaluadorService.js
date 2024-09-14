@@ -5,7 +5,7 @@ export const obtenerProyectosAsignados = async (idUsuario, page = 1, pageSize = 
   try {
     const response = await api.get('/obtenerProyectosEvaluador/obtener-proyectos-asignados-paginados/', {
       headers: {
-        'Authorization': `Bearer` // Incluye el token de autenticación
+        'Authorization': `Bearer ${localStorage.getItem('access_token')}` // Incluye el token de autenticación
       },
       params: {
         id_usuario: idUsuario,

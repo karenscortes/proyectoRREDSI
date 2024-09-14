@@ -41,7 +41,7 @@ async def read_all_salas_por_convocatoria(
     permisos = get_permissions(db, current_user.id_rol, MODULE)
     
     if not permisos.p_consultar:
-        raise HTTPException(status_code=401, detail="No está autorizado")
+        raise HTTPException(status_code=401, detail="No está autorizado a utilizar este modulo")
 
     salas, total_pages = get_salas_por_convocatoria(db, page, page_size)
     if len(salas) == 0:
