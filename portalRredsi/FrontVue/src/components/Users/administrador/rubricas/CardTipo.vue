@@ -1,21 +1,21 @@
 <template>
   <div class="card" @click="oprimir()">
     <img
-      v-if="infoCard.image"
-      :src="`/src/assets/img/${infoCard.image}`"
+      v-if="infoImage.image"
+      :src="`/src/assets/img/${infoImage.image}`"
       class="img-fluid w-50 pb-2 pt-3"
-      :alt="infoCard.altImage"
+      :alt="infoImage.altImage"
     />
 
     <div class="card-body">
       <!--info rubrica-->
       <div class="mb-2">
-        <h6 class="card-subtitle mb-2">Fase de proyecto:</h6>
-        <p class="card-text">{{ infoCard.faseProyecto }}</p>
+        <h6 class="card-subtitle mb-2">Etapa:</h6>
+        <p class="card-text">{{ infoCard.nombreEtapa }}</p>
       </div>
       <div>
-        <h6 class="card-subtitle mb-2">Modalidad proyecto:</h6>
-        <p class="card-text">{{ infoCard.modalidadProyecto }}</p>
+        <h6 class="card-subtitle mb-2">Modalidad:</h6>
+        <p class="card-text">{{ infoCard.nombreModalidad }}</p>
       </div>
     </div>
   </div>
@@ -28,21 +28,28 @@ const props = defineProps({
     required: true,
     validator(value) {
       return (
-        typeof value.image === "string" &&
-        typeof value.altImage === "string" &&
-        typeof value.idModalidad === "number" &&
-        typeof value.modalidadProyecto === "string" &&
-        typeof value.idFase === "number" &&
-        typeof value.faseProyecto === "string"
+        typeof value.nombreModalidad === "string" &&
+        typeof value.nombreEtapa === "string" && 
+        typeof value.id_rubrica === 'number'
       );
-    },
+    }
+  }
+  ,infoImage:{
+    type: Object,
+    required: true,
+    validator(value) {
+      return (
+        typeof value.image === "string" &&
+        typeof value.altImage === "string"
+      );
+    }
   }
 });
 
 const emit = defineEmits(["cardSeleccionada"]);
 
 const oprimir = () => {
-  emit("cardSeleccionada", props.infoCard);
+  emit("cardSeleccionada", props.infoCard.id_rubrica);
 };
 </script>
 
