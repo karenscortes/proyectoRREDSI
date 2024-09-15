@@ -168,7 +168,8 @@ def create_item_rubric(
     if new_item:
         return{
             'success': True,
-            'message': 'Registrado con éxito',
+            'message': 'Registrado con éxito', 
+            'data': new_item,
         }
     else: 
         return{

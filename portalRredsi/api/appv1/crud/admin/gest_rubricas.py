@@ -29,7 +29,7 @@ def create_items(item: ItemCreate,db: Session):
         )
         db.add(nuevo_item)
         db.commit()
-        return True
+        return nuevo_item
     except IntegrityError as e:
         db.rollback()
         raise HTTPException(status_code=400, detail="Error. No hay Integridad de datos al crear el item")
