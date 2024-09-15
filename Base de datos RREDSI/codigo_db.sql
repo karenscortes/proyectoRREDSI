@@ -253,7 +253,7 @@ VALUES
 (2, 'Social','Impacto social', 9.0);
 
 CREATE TABLE proyectos (
-    id_proyecto INT PRIMARY KEY,
+    id_proyecto INT PRIMARY KEY AUTO_INCREMENT,
     id_institucion INT,
     id_modalidad INT,
     id_area_conocimiento INT,

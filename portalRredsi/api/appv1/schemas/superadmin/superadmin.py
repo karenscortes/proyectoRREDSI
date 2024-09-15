@@ -8,28 +8,31 @@ class EstadoEnum(str, Enum):
     activo = "activo"
     inactivo = "inactivo"
 
-# Esquema de respuesta para los detalles completos de los administradores
-class AdminResponse(BaseModel):  # Cambié el nombre a algo más genérico
+# Esquema para los detalles completos de los administradores
+class AdminResponse(BaseModel):
     id_usuario: int
     id_rol: int
-    documento: int
+    documento: str
     nombres: str  
     apellidos: str  
     correo: EmailStr
     estado: str
-    celular: Optional[str] = None
-    direccion: Optional[str] = None  # Puede quedar como opcional si planeas usarlo en el futuro
+    telefono: Optional[str] = None
+    direccion: Optional[str] = None 
     rol_nombre: str
 
     class Config:
         orm_mode = True
 
-# Esquema para paginacion de administradores
-class PaginatedAdminsResponse(BaseModel):
-    users: List[AdminResponse]
+# Esquema para la respuesta paginada
+class PaginatedAdminResponse(BaseModel):
+    admins: List[AdminResponse]
     total_pages: int
     current_page: int
     page_size: int
+
+    class Config:
+        orm_mode = True
 
 # Esquema de solicitud para actualizar el rol de un usuario
 class UserRoleUpdateSchema(BaseModel):

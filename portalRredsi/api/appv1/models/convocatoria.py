@@ -2,7 +2,7 @@ from enum import Enum as PyEnum
 from .base_class import Base
 from sqlalchemy import DATE, Column, Integer, Enum, String # type: ignore
 from sqlalchemy.orm import relationship
-
+from datetime import date
 class estado(PyEnum):
     en_curso = "en curso"
     concluida= "concluida"
