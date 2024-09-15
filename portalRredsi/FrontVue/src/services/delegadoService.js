@@ -111,9 +111,9 @@ export const obtenerIdInstitucion = async (institucion) => {
 //Asistencia
 export const asistenciaEvento = async (page= 1, page_size = 10) => {
     try {
-        const response = await api.get(`asistencia/get-all-asistentes/?page=${page}&page_size=${page_size}`, {
+        const response = await api.get(`/asistencia/get-all-asistentes/?page=${page}&page_size=${page_size}`, {
             headers: {
-                'Authorization': `Bearer` // Incluye el token de autenticación
+                'Authorization': `Bearer ${localStorage.getItem('access_token')}` 
             }
         });
         return response;
@@ -129,9 +129,9 @@ export const asistenciaEvento = async (page= 1, page_size = 10) => {
 // Asistentes por sala
 export const obtenerAsistentesPorSala = async (numero_sala, page = 1, page_size = 10) => {
     try {
-        const response = await api.get(`asistencia/get-asistentes-por-sala/${numero_sala}?page=${page}&page_size=${page_size}`, {
+        const response = await api.get(`/asistencia/get-asistentes-por-sala/?numero_sala=${numero_sala}&page=${page}&page_size=${page_size}`, {
             headers: {
-                'Authorization': `Bearer` // Incluye el token si es necesario
+                'Authorization': `Bearer ${localStorage.getItem('access_token')}` 
             }
         });
         return response;
@@ -145,11 +145,11 @@ export const obtenerAsistentesPorSala = async (numero_sala, page = 1, page_size 
 };
 
 // Salas por convocatoria en curso
-export const obtenerSalas = async () => {
+export const obtenerSalas = async (page= 1, page_size=10) => {
     try {
-        const response = await api.get(`salas/get-salas-por-convocatoria/?page=${page}&page_size=${page_size}`,{
+        const response = await api.get(`/salas/get-salas-por-convocatoria/?page=${page}&page_size=${page_size}`,{
             headers: {
-                'Authorization': `Bearer` // Incluye el token de autenticación
+                'Authorization': `Bearer ${localStorage.getItem('access_token')}` 
             }  
         });
         return response;
@@ -199,15 +199,15 @@ export const obtenerAsistentePorDocumento = async (documento) => {
 };
 
 //Actualizar asistencia (check)
-export const actualizarAsistencia = async (id_asistencia, id_usuario, asistencia) => {
+export const actualizarAsistencia = async (id_asistente, id_usuario, asistencia) => {
     try {
-        const response = await api.put(`/update-asistencia/`, {
-            id_asistente: id_asistencia,
+        const response = await api.put(`/asistencia/update-asistencia/?id_asistente=${id_asistente}&id_usuario=${id_usuario}&asistencia=${asistencia}`, {
+            id_asistente: id_asistente,
             id_usuario: id_usuario,
             asistencia: asistencia
         }, {
             headers: {
-                'Authorization': `Bearer YOUR_TOKEN_HERE`
+                'Authorization': `Bearer ${localStorage.getItem('access_token')}`
             }
         });
         return response;

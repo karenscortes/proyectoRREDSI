@@ -43,7 +43,7 @@ export default {
     },
     data() {
         return {
-            currentComponent: AsignarProyectos
+            currentComponent: AsistenciaEvento
         };
     },
     computed: {

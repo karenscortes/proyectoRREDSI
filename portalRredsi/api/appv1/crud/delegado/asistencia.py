@@ -11,6 +11,7 @@ def get_asistentes_por_convocatoria(db: Session, page: int = 1, page_size: int =
             SELECT 
                 asistentes.id_asistente, 
                 asistentes.asistencia,
+                usuarios.id_usuario,
                 usuarios.nombres, 
                 usuarios.apellidos, 
                 usuarios.documento, 
@@ -41,38 +42,30 @@ def get_asistentes_por_convocatoria(db: Session, page: int = 1, page_size: int =
             JOIN convocatorias ON proyectos_convocatoria.id_convocatoria = convocatorias.id_convocatoria
             JOIN detalles_institucionales ON usuarios.id_usuario = detalles_institucionales.id_usuario
             JOIN instituciones ON detalles_institucionales.id_institucion = instituciones.id_institucion
-            WHERE convocatorias.estado = 'en curso' """)
+            WHERE convocatorias.estado = 'en curso'
+            """)
         
         total_asistentes = db.execute(count_sql).scalar()
-
+        print("Total de asistentes:", total_asistentes)
         # Calcular el número total de páginas
         total_pages = (total_asistentes + page_size - 1) // page_size
-
         return result, total_pages
     except SQLAlchemyError as e:
         print(f"Error al buscar asistentes: {e}")
         raise HTTPException(status_code=500, detail="Error al buscar asistentes")
     
-# Asistentes por sala 
+# Asistentes por numero de sala    
 def get_asistentes_por_sala(db: Session, numero_sala: str, page: int = 1, page_size: int = 10):
     try:
         offset = (page - 1) * page_size
         sql = text("""
-            SELECT 
-                asistentes.id_asistente, 
-                asistentes.asistencia, 
-                usuarios.nombres, 
-                usuarios.apellidos, 
-                usuarios.documento, 
-                instituciones.nombre AS institucion
+            SELECT  *
             FROM asistentes
             JOIN usuarios ON asistentes.id_usuario = usuarios.id_usuario
             JOIN salas ON salas.id_usuario = usuarios.id_usuario
-            JOIN detalles_institucionales ON usuarios.id_usuario = detalles_institucionales.id_usuario
-            JOIN instituciones ON detalles_institucionales.id_institucion = instituciones.id_institucion        
-            JOIN participantes_proyecto ON usuarios.id_usuario = participantes_proyecto.id_usuario
-            JOIN proyectos_convocatoria ON participantes_proyecto.id_proyectos_convocatoria = proyectos_convocatoria.id_proyecto_convocatoria
-            JOIN convocatorias ON proyectos_convocatoria.id_convocatoria = convocatorias.id_convocatoria        
+            JOIN detalles_institucionales ON asistentes.id_usuario = detalles_institucionales.id_usuario
+            JOIN instituciones ON detalles_institucionales.id_institucion = instituciones.id_institucion       
+            JOIN convocatorias ON salas.id_convocatoria = convocatorias.id_convocatoria        
             WHERE salas.numero_sala = :numero_sala
             AND convocatorias.estado = 'en curso'
             LIMIT :page_size OFFSET :offset;
@@ -89,11 +82,9 @@ def get_asistentes_por_sala(db: Session, numero_sala: str, page: int = 1, page_s
             FROM asistentes
             JOIN usuarios ON asistentes.id_usuario = usuarios.id_usuario
             JOIN salas ON salas.id_usuario = usuarios.id_usuario
-            JOIN detalles_institucionales ON usuarios.id_usuario = detalles_institucionales.id_usuario
-            JOIN instituciones ON detalles_institucionales.id_institucion = instituciones.id_institucion        
-            JOIN participantes_proyecto ON usuarios.id_usuario = participantes_proyecto.id_usuario
-            JOIN proyectos_convocatoria ON participantes_proyecto.id_proyectos_convocatoria = proyectos_convocatoria.id_proyecto_convocatoria
-            JOIN convocatorias ON proyectos_convocatoria.id_convocatoria = convocatorias.id_convocatoria        
+            JOIN detalles_institucionales ON asistentes.id_usuario = detalles_institucionales.id_usuario
+            JOIN instituciones ON detalles_institucionales.id_institucion = instituciones.id_institucion       
+            JOIN convocatorias ON salas.id_convocatoria = convocatorias.id_convocatoria        
             WHERE salas.numero_sala = :numero_sala
             AND convocatorias.estado = 'en curso'""")
 
@@ -180,7 +171,7 @@ def get_asistente_por_cedula(db: Session, documento: str):
         raise HTTPException(status_code=500, detail="Error al buscar asistente")
 
 #Actualizar check asistencia
-def actualizar_asistencia(db: Session, id_asistente: int, id_usuario: int, asistencia: int):
+def actualizar_asistencia(db: Session, id_asistente: int, id_usuario: int, asistencia: bool):
     sql = text("UPDATE asistentes SET asistencia = :asistencia WHERE id_asistente = :id_asistente AND id_usuario = :id_usuario")
     params = {
         "id_asistente": id_asistente,
