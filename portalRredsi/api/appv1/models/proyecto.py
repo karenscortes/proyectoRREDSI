@@ -3,8 +3,11 @@ from sqlalchemy.orm import relationship # type: ignore
 from enum import Enum as PyEnum #Enum de python
 from .base_class import Base
 class Estados(PyEnum):
+    pendiente_virtual = "pendiente_virtual"
+    asignado_virtual = "asignado_virtual"
     asignado = "asignado"
     pendiente = "pendiente"
+
 
 class Proyecto(Base):
     __tablename__ = 'proyectos'

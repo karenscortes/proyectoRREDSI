@@ -4,8 +4,7 @@ from appv1.routers import eventos, login, proyectos, rol, usuarios
 from appv1.routers.admin import admin
 from appv1.routers.delegado import asignarProyectoEtapaVirtual, asistencia, listaEvaluadores, postulaciones, proyectosSinAsignar, salas
 from appv1.routers.evaluador import evaluadores
-
-
+from appv1.routers.valeria_routers import convocatorias
 from appv1.routers.superadmin import superadmin
 from db.database import test_db_connection
 from fastapi.middleware.cors import CORSMiddleware
@@ -50,6 +49,9 @@ app.include_router(admin.router_admin, prefix="/admin", tags=["Administrador"])
 #SUPERADMIN
 app.include_router(superadmin.router_superadmin, prefix="/superadmin", tags=["SuperAdmin"])
 
+
+#CONVOCATORIA
+app.include_router(convocatorias.router, prefix="/convocatorias", tags=["Convocatoriasrutas"])
 
 def on_startup():
     test_db_connection()
