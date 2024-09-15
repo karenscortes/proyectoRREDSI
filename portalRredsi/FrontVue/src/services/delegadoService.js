@@ -5,7 +5,7 @@ export const proyectosSinAsignar = async (page = 1, pageSize = 10) => {
     try {
         const response = await api.get(`/proyectosSinAsignar/get-all-unassiggned-Projects/?page=${page}&page_size=${pageSize}`, {
             headers: {
-                'Authorization': `Bearer` // Incluye el token de autenticación
+                'Authorization': `Bearer ${localStorage.getItem('access_token')}`
             }
         });
         return response;
@@ -23,7 +23,7 @@ export const obtenerAutoresProyecto = async (id_proyecto) => {
     try {
         const response = await api.get(`/proyectosSinAsignar/get-all-authors?id_proyecto=${id_proyecto}`, {
             headers: {
-                'Authorization': `Bearer` // Incluye el token de autenticación
+                'Authorization': `Bearer ${localStorage.getItem('access_token')}`
             }
         });
         return response;
@@ -41,7 +41,7 @@ export const obtenerPosiblesEvaluadores = async (id_area_conocimiento,id_institu
     try {
         const response = await api.get(`/asignarProyectoEtapaVirtual/get-posibles-evaluadores/?area_conocimiento=${id_area_conocimiento}&id_institucion=${id_institucion}`, {
             headers: {
-                'Authorization': `Bearer` // Incluye el token de autenticación
+                'Authorization': `Bearer ${localStorage.getItem('access_token')}`
             }
         });
         return response;
@@ -59,7 +59,7 @@ export const obtenerListaEvaluadores = async () => {
     try {
         const response = await api.get(`/listaEvaluadores/get-all-evaluators/`, {
             headers: {
-                'Authorization': `Bearer` // Incluye el token de autenticación
+                'Authorization': `Bearer ${localStorage.getItem('access_token')}`
             }
         });
         return response;
@@ -77,7 +77,7 @@ export const obtenerIdAreaConocimiento = async (area_conocimiento) => {
     try {
         const response = await api.get(`/asignarProyectoEtapaVirtual/get-id-area-conocimiento/?nombre_area=${area_conocimiento}`, {
             headers: {
-                'Authorization': `Bearer` // Incluye el token de autenticación
+                'Authorization': `Bearer ${localStorage.getItem('access_token')}`
             }
         });
         return response;
@@ -95,7 +95,7 @@ export const obtenerIdInstitucion = async (institucion) => {
     try {
         const response = await api.get(`/asignarProyectoEtapaVirtual/get-id-institucion/?nombre_institucion=${institucion}`, {
             headers: {
-                'Authorization': `Bearer` // Incluye el token de autenticación
+                'Authorization': `Bearer ${localStorage.getItem('access_token')}`
             }
         });
         return response;

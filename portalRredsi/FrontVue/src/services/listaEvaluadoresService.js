@@ -18,3 +18,22 @@ export const obtenerListaEvaluadores = async (page = 1, page_size = 10) => {
         }
     }
 };
+
+// Función para actualizar el estado de un evalaudor
+export const actualizarEstadoEvaluador = async (id_evaluador, estado) => {
+    try {
+        const response = await api.put(`/listaEvaluadores/update-evaluator-status/?id_evaluador=${id_evaluador}&estado=${estado}
+`, {
+            headers: {
+                'Authorization': `Bearer ${localStorage.getItem('access_token')}`
+            }
+        });
+        return response;
+    } catch (error) {
+        if (error.response) {
+            throw error;
+        } else {
+            throw new Error('Error de red o de servidor');
+        }
+    }
+};

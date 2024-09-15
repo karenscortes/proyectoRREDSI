@@ -43,7 +43,7 @@
                             <td class="pl-4">
                                 <div class="custom-control custom-switch d-flex">
                                     <input type="checkbox" class="custom-control-input" :id="index"
-                                        :checked="evaluador.estado == 'activo' ? true : false">
+                                        :checked="evaluador.estado == 'activo' ? true : false" @click="actualizarEvaluador(evaluador.id_usuario,evaluador.estado)">
                                     <label class="custom-control-label" :for="index"></label>
                                 </div>
                             </td>
@@ -135,7 +135,7 @@
 
 <script>
 import { reactive } from 'vue';
-import { obtenerListaEvaluadores } from '@/services/listaEvaluadoresService';
+import { obtenerListaEvaluadores, actualizarEstadoEvaluador } from '@/services/listaEvaluadoresService';
 export default {
     data() {
         return {
@@ -183,6 +183,23 @@ export default {
 
             } catch (error) {
                 alert("Aún no hay Evaluadores registrados");
+            }
+        },
+        async actualizarEvaluador(id_evaluador,estado) {
+            try {
+                let nuevoEstado = "inactivo";
+
+                if(estado === "activo"){
+                    nuevoEstado = "inactivo";
+                }else{
+                    nuevoEstado = "activo";
+                }
+
+                await actualizarEstadoEvaluador(id_evaluador, nuevoEstado);
+                alert("Actualizado con exito");
+                this.fecthEvaluadores();
+            } catch (error) {
+                alert("Error al actualizar el estado del evaluador");
             }
         },
         nextPage() {
