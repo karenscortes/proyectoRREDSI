@@ -170,7 +170,7 @@ def create_item_rubric(
         return{
             'success': True,
             'message': 'Registrado con éxito', 
-            'data': item.id_rubrica,
+            'data': item.id_item_rubrica,
         }
     else: 
         return{
