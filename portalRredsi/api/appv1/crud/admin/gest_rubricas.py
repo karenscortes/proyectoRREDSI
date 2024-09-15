@@ -6,6 +6,7 @@ from appv1.models.item_rubrica import Item_rubrica
 from appv1.schemas.admin.items_rubrica import ItemCreate, ItemUpdate
 from sqlalchemy.exc import SQLAlchemyError, IntegrityError
 
+#Obtener todas las rubricas existentes
 def get_all_rubricas(db: Session):    
     try:
         result = db.query(Rubrica).all()
@@ -17,6 +18,7 @@ def get_all_rubricas(db: Session):
         print(f"Error al consultar las rubricas: {e}")
         raise HTTPException(status_code=500, detail=f"Error. No hay Integridad de datos",)
 
+#Crear item 
 def create_items(item: ItemCreate,db: Session):
     try:
         nuevo_item = Item_rubrica(
@@ -36,7 +38,7 @@ def create_items(item: ItemCreate,db: Session):
         print(f"Error al crear el item: {e}")
         raise HTTPException(status_code=500, detail=f"Error. No hay Integridad de datos",)
 
-
+#Actualizar item
 def update_items(item_id: int, nuevo_item: ItemUpdate,db: Session):
     try:
         item_editar = db.query(Item_rubrica).filter(Item_rubrica.id_item_rubrica == item_id).first()
@@ -69,7 +71,7 @@ def update_items(item_id: int, nuevo_item: ItemUpdate,db: Session):
         print(f"Error al actualizar el item: {e}")
         raise HTTPException(status_code=500, detail=f"Error. No hay Integridad de datos",)
     
-
+#Eliminar item
 def delete_items(id_item:int,db: Session):
     try:
         item = db.query(Item_rubrica).filter(Item_rubrica.id_item_rubrica == id_item).first()       

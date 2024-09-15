@@ -55,6 +55,17 @@ def get_user_by_email(db: Session, p_mail: str):
         print(f"Error al buscar usuario por email: {e}")
         raise HTTPException(status_code=500, detail="Error al buscar usuario por email")
 
+# Consultar un usuario por su documento
+def get_user_by_documento(db: Session, p_documento: str):
+    try:
+        sql = text("SELECT * FROM usuarios WHERE documento = :doc")
+        result = db.execute(sql, {"doc": p_documento}).fetchone()
+        return result
+    except SQLAlchemyError as e:
+        print(f"Error al buscar usuario por email: {e}")
+        raise HTTPException(status_code=500, detail="Error al buscar usuario por email")
+
+
 # Consultar un usuario por su ID
 def get_user_by_id(db: Session, user_id: int):
     sql = text("SELECT * FROM usuarios WHERE id_usuario = :user_id")
