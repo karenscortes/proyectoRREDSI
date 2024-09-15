@@ -318,7 +318,7 @@ import '../assets/plugins/OwlCarousel2-2.2.1/owl.theme.default.css';
 import '../assets/plugins/fontawesome-free-5.0.1/css/fontawesome-all.css';
 
 // Plugins and scripts
-import '../assets/plugins/OwlCarousel2-2.2.1/owl.carousel';
+import '../assets/plugins/OwlCarousel2-2.2.1/owl.carousel.js';
 import '../assets/plugins/greensock/TweenMax.min.js';
 import '../assets/plugins/greensock/TimelineMax.min.js';
 
@@ -355,7 +355,9 @@ export default {
                     console.log(user);
                     // const permissions = authStore.permissions;
 
-                    if (user?.id_rol == 2) {
+                    if(user?.id_rol === 3){
+                        router.push('/pagina-inicio-admin')
+                    }else if (user?.id_rol == 2) {
                         // Reemplaza '/dashboard' con la ruta deseada
                         router.push("/principal-delegado");
 

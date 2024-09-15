@@ -1,7 +1,7 @@
 <template>
     <div>
         <div class="container pt-5">
-            <div class="row mb-5 mt-5">
+            <div class="row mb-5 mt-2">
                 <div class="col">
                     <div class="section_title text-center">
                         <h1>Asistencia</h1>
@@ -26,9 +26,9 @@
                 <!-- Select de salas disponibles -->
                 <div class="col-4 col-sm-2">
                     <select class="form-select text-dark" v-model="salaSeleccionada" @change="filtrarPorSala">
-                        <option :value="'Sala'" selected>Sala</option>
-                        <option v-for="opcion in opciones" :value="opcion" :key="opcion">
-                            {{ opcion.numero }}
+                        <option value="" disabled selected>Salas</option>
+                        <option v-for="opcion in opciones" :value="opcion.numero_sala" :key="opcion.id_sala">
+                            {{ opcion.numero_sala }}
                         </option>
                     </select>
                 </div>
@@ -85,20 +85,20 @@
             </div>
 
             <!-- Paginador -->
-            <div class="mt-5">
+            <div v-if="totalPages > 1" class="mt-5">
                 <div aria-label="Page navigation example mb-5">
                     <ul class="pagination justify-content-center">
-                        <li class="page-item" :class="{ disabled: currentPage === 1 }">
-                            <a class="page-link" href="#" @click.prevent="prevPage"
-                                style="border-radius: 20px; color: black;">Previous</a>
+                        <li class="page-item m-1">
+                            <button @click="prevPage" :disabled="currentPage == 1" class="page-link"
+                                style="border-radius: 20px; color: black;">Previous</button>
                         </li>
-                        <li class="page-item" v-for="n in totalPages" :key="n" :class="{ active: currentPage === n }">
-                            <a class="page-link rounded-circle" href="#"
-                                @click.prevent="currentPage = n; fetchAsistentes()">{{ n }}</a>
+                        <li v-for="i in totalPages" :key="i" class="page-item rounded m-1">
+                            <button @click="selectedPage(i)" class="page-link rounded-circle" style="color: black;">{{ i
+                                }}</button>
                         </li>
-                        <li class="page-item" :class="{ disabled: currentPage === totalPages }">
-                            <a class="page-link" href="#" @click.prevent="nextPage"
-                                style="border-radius: 20px; color: black;">Next</a>
+                        <li class="page-item m-1">
+                            <button @click="nextPage" :disabled="currentPage == totalPages" class="page-link"
+                                style="border-radius: 20px; color: black;">Next</button>
                         </li>
                     </ul>
                 </div>
@@ -108,14 +108,14 @@
 </template>
 
 <script>
-import { asistenciaEvento, actualizarAsistencia, obtenerSalasPorConvocatoria, obtenerAsistentesPorSala, obtenerAsistentesPorRol, obtenerAsistentePorDocumento } from '@/services/delegadoService';
+import { asistenciaEvento, actualizarAsistencia, obtenerAsistentesPorSala, obtenerAsistentesPorRol, obtenerAsistentePorDocumento, obtenerSalas } from '@/services/delegadoService';
 
 export default {
     data() {
         return {
             asistentes: [], // Lista de asistentes
             busqueda: '',
-            salaSeleccionada: 'Sala',
+            salaSeleccionada: '',
             opciones: [], // Lista de salas
             currentPage: 1,
             totalPages: 0,
@@ -127,25 +127,20 @@ export default {
             try {
                 const response = await asistenciaEvento(this.currentPage);
                 this.asistentes = response.data.asistentes;
-                this.totalPages = response.data.totalPages;
+                this.totalPages = response.data.totalPages || 1;
+                console.log('Total Pages:', this.totalPages);
+                console.log('current pages:', this.currentPage);
                 this.filtroActivo = 'Todos'; // Restablecer a 'Todos'
+                this.busqueda = ''; //lipio buscador
+                this.salaSeleccionada = ''; //lipio select
             } catch (error) {
                 alert("Error al obtener asistentes: " + error);
             }
         },
 
-        async fetchSalas() {
-            try {
-                const response = await obtenerSalasPorConvocatoria(this.currentPage);
-                this.opciones = response.data.salas; // Asegúrate de que la respuesta contenga las salas
-            } catch (error) {
-                alert("Error al obtener las salas: " + error);
-            }
-        },
-
         async fetchAsistentesSalas() {
             try {
-                const response = await obtenerAsistentesPorSala();
+                const response = await obtenerSalas(this.currentPage);
                 this.opciones = response.data.salas;
             } catch (error) {
                 alert("Error al obtener las salas: " + error);
@@ -156,7 +151,7 @@ export default {
             try {
                 const response = await obtenerAsistentesPorRol('Ponente', this.currentPage);
                 this.asistentes = response.data.asistentes;
-                this.filtroActivo = 'Ponentes'; // Cambiar filtro  a 'Ponentes'
+                this.filtroActivo = 'Ponentes'; // Cambiar filtro a 'Ponentes'
             } catch (error) {
                 alert("Error al filtrar ponentes: " + error);
             }
@@ -174,12 +169,8 @@ export default {
 
         async filtrarPorSala() {
             try {
-                if (this.salaSeleccionada !== 'Sala') {
-                    const response = await obtenerAsistentesPorSala(this.salaSeleccionada.numero, this.currentPage);
-                    this.asistentes = response.data.asistentes;
-                } else {
-                    this.fetchAsistentes(); // Restablecer si se selecciona "Sala"
-                }
+                const response = await obtenerAsistentesPorSala(this.salaSeleccionada, this.currentPage);
+                this.asistentes = response.data.asistentes;
             } catch (error) {
                 alert("Error al filtrar por sala: " + error);
             }
@@ -196,18 +187,18 @@ export default {
 
         async toggleActualizarAsistencia(asistente) {
             try {
-                asistente.asistencia = asistente.asistencia ? 0 : 1; 
+                asistente.asistencia = asistente.asistencia ? 0 : 1;
                 await actualizarAsistencia(asistente.id_asistente, asistente.id_usuario, asistente.asistencia);
+                alert('Actualizado exitosamente');
             } catch (error) {
                 alert("Error al actualizar la asistencia: " + error.message);
             }
         },
-
-
         nextPage() {
             if (this.currentPage < this.totalPages) {
-                this.currentPage++;
+                this.currentPage++; 
                 this.fetchAsistentes();
+                this.fetchAsistentesSalas(); 
             }
         },
 
@@ -215,16 +206,25 @@ export default {
             if (this.currentPage > 1) {
                 this.currentPage--;
                 this.fetchAsistentes();
+                this.fetchAsistentesSalas();
             }
-        }
+        },
+
+        selectedPage(pagina) {
+            this.currentPage = pagina;
+            this.fetchAsistentes();
+            this.fetchAsistentesSalas();
+        },
     },
+    // Final de los metodos
     mounted() {
         this.fetchAsistentes();
-        this.fetchAsistentesSalas()
-        this.fetchSalas();
+        this.fetchAsistentesSalas(); // Cargar salas disponibles
+
     }
 };
 </script>
+
 
 <style scoped>
 .section_title h1 {

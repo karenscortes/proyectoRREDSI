@@ -60,7 +60,6 @@ def get_fases_by_etapa(db: Session, id_etapa: int):
     fases = db.query(Fase).filter(Fase.id_etapa == id_etapa).all()
     return fases
 
-
 # Editar una etapa
 def update_etapa(db: Session, id_etapa: int, nombre: Optional[str] = None):
     # Verifica que la etapa exista
@@ -107,7 +106,6 @@ def create_sala(db: Session, id_usuario: int, area_conocimiento: int,  numero: s
     db.add(sala)
     db.commit()
     return {"message": "Sala creada exitosamente"}
-
 
 # Editar una sala
 def update_sala(db: Session, id_sala: int, id_usuario: Optional[int] = None, area_conocimiento: Optional[int] = None, nombre_sala: Optional[str] = None, numero_sala: Optional[str] = None):

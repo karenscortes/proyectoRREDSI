@@ -117,7 +117,7 @@ export default defineComponent({
     if (props.rol === 3) { //Administrador
       Object.assign(state, {
         left_tabs: [
-          { nombre: "Inicio", ruta: "#" },
+          { nombre: "Inicio", ruta: "InicioAdminView" },
           { nombre: "Perfil", ruta: "#" },
           { nombre: "Cuentas", ruta: "#" },
           { nombre: "Rubricas", ruta: "RubricaAdminView" },
@@ -126,7 +126,7 @@ export default defineComponent({
           {
             nombre: "Eventos",
             opciones: [
-              { nombre: "Salas", ruta: "#" },
+              { nombre: "Salas", ruta: "" },
               { nombre: "Asistencia", ruta: "#" },
               { nombre: "Convocatoria", ruta: "#" },
             ],

@@ -1,7 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import { useAuthStore } from '@/store'; 
 import RubricaAdminView from '../views/RubricaAdminView.vue';
-import InicioLogin from '../views/InicioLogin.vue';
+import InicioLogin from '../views/InicioLoginView.vue';
 import DelegadoView from '../views/DelegadoView.vue';
 import EvaluadorView from '../views/EvaluadorView.vue';
 import PostulacionesEvaluadores from '../components/Users/delegado/postulaciones/PostulacionesEvaluadores.vue'
@@ -10,6 +10,8 @@ import ListaAdministradores from '../components/Users/superadmin/ListaAdministra
 import ProyectosAsignadosEvaluadorView from '../views/ProyectosAsignadosEvaluadorView.vue';
 import AsignarProyecto from '../components/Users/delegado/AsignarProyectos/AsignarProyectos.vue';
 import PaginaInicioEvaluadorView from '../views/PaginaInicioEvaluadorView.vue';
+import AdminView from '../views/AdminView.vue';
+import SalasAdminView from '../views/SalasAdminView.vue';
 
 const routes = [
   
@@ -29,7 +31,9 @@ const routes = [
   
 
   // RUTAS ADMIN
-  { path: '/rubrica-admin', name: 'RubricaAdminView', component: RubricaAdminView },
+  { path: '/rubrica-admin', name: 'RubricaAdminView', component: RubricaAdminView, meta: { requiresAuth: true, allowedRoles: [3] }},
+  {path: '/pagina-inicio-admin', name: 'PaginaInicioAdminView', component: AdminView, meta: { requiresAuth: true, allowedRoles: [3]}}, 
+  {path: '/gest-salas', name: 'SalasView', component: SalasAdminView, meta: { requiresAuth: true, allowedRoles: [3]}}, 
 
   // RUTAS SUPERADMIN
   { path: '/principal-superadmin', name: 'SuperAdminView', component: SuperAdminView},
@@ -60,6 +64,8 @@ router.beforeEach((to, from, next) => {
         next('/principal-evaluador');
       } else if (userRole === 2) {
         next('/principal-delegado');
+      }else if (userRole === 3){
+        next('/pagina-inicio-admin');
       } else {
         next('/');
       }

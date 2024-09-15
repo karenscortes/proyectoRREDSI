@@ -1,5 +1,5 @@
 <template>
-    <header class="header d-flex flex-row position-relative">
+    <header class="header d-flex flex-row position-static">
         <div class="header_content d-flex flex-row align-items-center justify-content-start">
 
             <div class="logo_container">
@@ -54,6 +54,7 @@ export default defineComponent({
     rol: Number,
   },
   setup(props, { emit }) {
+    console.log(props.rol)
         
         const state = reactive({
         left_tabs: [],
@@ -63,10 +64,10 @@ export default defineComponent({
 
         if (props.rol === 3) {
             Object.assign(state, {
-                left_tabs: [{nombre:'Inicio', ruta:'#'}, {nombre:'Perfil', ruta:'#'}, {nombre:'Cuentas', ruta:'#'},{nombre:'Rubricas', ruta:'#'}],
+                left_tabs: [{nombre:'Inicio', ruta:'AdminView'}, {nombre:'Perfil', ruta:'#'}, {nombre:'Cuentas', ruta:'#'},{nombre:'Rubricas', ruta:'RubricaAdminView'}],
                 mid_tabs:[
                     {   nombre:"Eventos", 
-                        opciones:[{nombre:'Salas', ruta:'#'}, {nombre:'Asistencia',ruta:'#'}, {nombre:'Convocatoria', ruta:'#'}]
+                        opciones:[{nombre:'Salas', ruta:'SalasView'}, {nombre:'Asistencia',ruta:'#'}, {nombre:'Convocatoria', ruta:'#'}]
                     }
                 ],
                 visibilidad:"d-inline-block"
@@ -112,6 +113,7 @@ export default defineComponent({
         const router = useRouter(); 
 
         const selectComponent = (componentName) => {
+            console.log(props.rol)
             emit('component-selected', componentName); // Emite un evento para seleccionar el componente
         };
 
