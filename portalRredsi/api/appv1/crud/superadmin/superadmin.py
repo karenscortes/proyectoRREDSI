@@ -24,7 +24,7 @@ def get_all_admins(db: Session, page: int = 1, page_size: int = 10):
                 roles.nombre AS rol_nombre
             FROM usuarios
             JOIN roles ON usuarios.id_rol = roles.id_rol
-            WHERE usuarios.id_rol = 3
+            WHERE (usuarios.id_rol = 3 OR usuarios.id_rol = 2)
             AND usuarios.estado = 'activo'
             LIMIT :page_size OFFSET :offset;
         """)
