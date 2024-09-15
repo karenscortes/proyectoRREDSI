@@ -1,3 +1,4 @@
+import json
 from typing import List, Optional
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
@@ -164,11 +165,12 @@ def create_item_rubric(
     if permisos is None or not permisos.p_insertar:
         raise HTTPException(status_code=401, detail="Usuario no autorizado")
     
-    new_item = create_items(item, db)
-    if new_item:
+    item = create_items(item, db)
+    if item:
         return{
             'success': True,
-            'message': 'Registrado con éxito',
+            'message': 'Registrado con éxito', 
+            'data': item.id_item_rubrica,
         }
     else: 
         return{
