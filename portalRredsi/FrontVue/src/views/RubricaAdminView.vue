@@ -45,6 +45,7 @@
                 @eliminarItem = "onDeleteModal($event)"
                 @editarItem="onEditModal($event)"
               >
+
               </ItemTBody>
               <!-- row btn añadir item-->
               <tr class="tr_item_rubrica">
@@ -75,7 +76,7 @@
               v-for="(card, index) in infoCards"
               :key="index"
             >
-              <CardTipo :infoCard="card"> </CardTipo>
+              <CardTipo :infoCard="card" :infoImage="infoImageCards" @cardSeleccionada="onCardSeleccionada($event)"> </CardTipo>
             </div>
           </div>
         </div>
@@ -109,7 +110,8 @@ import ItemTBody from "../components/Users/administrador/rubricas/ItemTBody.vue"
 import FootTable from "../components/Users/administrador/rubricas/FootTable.vue";
 import ItemThead from "../components/Users/administrador/rubricas/ItemThead.vue";
 
-
+//arreglo con las rubricas 
+const arrayRubricas = reactive([]);
 //Propiedades para manejar la apertura de los modales
 const isModalEditOpen = ref(false);
 const isModalDeleteOpen = ref(false); 
@@ -150,48 +152,46 @@ const infoModalEditar = reactive({
 //info para los items rubrica
 const infoItems = reactive([]);
 
-//info para la card
-const infoCards = reactive([
-  {
-    image: "rubrica.png",
-    altImage: "Esto es un ejemplo",
-    idModalidad: 1,
-    modalidadProyecto: "Poster",
-    idFase: 1,
-    faseProyecto: "Presencial",
-  },
-  {
-    image: "rubrica.png",
-    altImage: "Esto es un ejemplo",
-    idModalidad: 1,
-    modalidadProyecto: "Poster",
-    idFase: 1,
-    faseProyecto: "Presencial",
-  },
-  {
-    image: "rubrica.png",
-    altImage: "Esto es un ejemplo",
-    idModalidad: 1,
-    modalidadProyecto: "Poster",
-    idFase: 1,
-    faseProyecto: "Presencial",
-  },
-  {
-    image: "rubrica.png",
-    altImage: "Esto es un ejemplo",
-    idModalidad: 1,
-    modalidadProyecto: "Poster",
-    idFase: 1,
-    faseProyecto: "Presencial",
-  },
-]);
+//info image card 
+const infoImageCards = reactive({
+  image: "rubrica.png",
+  altImage: "Esto es un ejemplo",
+});
 
-//Evento para abrir el modal de editar
+//info para la card
+const infoCards = reactive([]);
+
+//Método para recorrer items de cualquier rubrica que le pasemos por parametros(array_items)
+const recorrerItemsRubrica = (arrayItems) => {
+  infoItems.splice(0, infoItems.length)
+  arrayItems.values.forEach(function (item, i) {
+    infoItems[i] = item;
+  });
+} 
+
+//Método para actualizar rubrica con la card(rubrica) seleccionada
+const onCardSeleccionada = (id_rubrica) =>{
+  const itemsRubricaActual = buscarItemsRubricaSeleccionada(id_rubrica);
+  console.log(itemsRubricaActual)
+  recorrerItemsRubrica(itemsRubricaActual);
+}
+
+//Método para buscar item de la rubrica seleccionada en las cards 
+const buscarItemsRubricaSeleccionada = (id_rubrica)=>{
+  const arrayItemsActual = reactive([]); 
+  arrayRubricas.values.data.forEach(function (rubricActual,i) {
+    if(rubricActual.id_rubrica == id_rubrica){
+      arrayItemsActual.values = rubricActual.items_rubrica; 
+    }
+  });
+  return arrayItemsActual;
+} 
+//Método para abrir el modal de editar
 const showModalEdit = () => {
   isModalEditOpen.value = true;
 };
 
-//Evento para cambiar la información del modal editar por info actual y abrir modal de editar
+//Método para cambiar la información del modal editar por info actual y abrir modal de editar
 const onEditModal = (informacionTr) => {
   infoModalEditar.id_item_rubrica = informacionTr.id_item_rubrica;
   infoModalEditar.titulo = informacionTr.titulo;
@@ -200,7 +200,7 @@ const onEditModal = (informacionTr) => {
   showModalEdit();
 };
 
-//Evento para cerrar el modal de editar y limpiar los campos
+//Método para cerrar el modal de editar y limpiar los campos
 const closeEditModal = () => {
   infoModalEditar.id_item_rubrica = null;
   infoModalEditar.titulo = "";
@@ -209,18 +209,18 @@ const closeEditModal = () => {
   isModalEditOpen.value = false;
 };
 
-//Evento para cambiar el valor del id_item que se enviara y abrir el modal de eliminar
+//Método para cambiar el valor del id_item que se enviara y abrir el modal de eliminar
 const onDeleteModal = (id_item_rubrica) => {
   id_item_delete.value = id_item_rubrica; 
   isModalDeleteOpen.value = true; 
 };
 
-//Evento para cerrar el modal de eliminar
+//Método para cerrar el modal de eliminar
 const CloseDeleteModal = () =>{
   isModalDeleteOpen.value = false; 
 }
 
-//Función para actualizar los items cuando se haya eliminado uno
+//Método para actualizar los items cuando se haya eliminado uno
 const actualizarItemDelete = (id_item)=>{
   infoItems.forEach(function (item, i) {
     if(item.id_item_rubrica == id_item){
@@ -229,7 +229,7 @@ const actualizarItemDelete = (id_item)=>{
   });
 }
 
-//Función para actualizar los items cuando se haya editado
+//Método para actualizar los items cuando se haya editado
 const actualizarItemEdit = ({id_item_rubrica, itemActual})=>{
   infoItems.forEach(function (item, i) {
     if(item.id_item_rubrica == id_item_rubrica){
@@ -238,15 +238,33 @@ const actualizarItemEdit = ({id_item_rubrica, itemActual})=>{
   });
 }
 
+//Método para recorrer items de la primer rubrica(la de por defecto)
+const itemsPrimerRubrica = () => {
+  const primerRubrica = arrayRubricas.values.data[0].items_rubrica;
+  primerRubrica.forEach(function (item, i) {
+    infoItems[i] = item;
+  });
+}
+
+//Método para recorrer todas las rubricas y llenar el array que se enviara a las cards(Para que se listen en cards)
+const rubricas = () => {
+  arrayRubricas.values.data.forEach(function (rubricActual,i) {
+    const objectInfoCard = {
+      'nombreModalidad': rubricActual.modalidad.nombre, 
+      'nombreEtapa': rubricActual.etapa.nombre,
+      'id_rubrica': rubricActual.id_rubrica,
+    }
+    infoCards[i] = objectInfoCard; 
+  });
+}
+
 //Utilizando el servicio para traer todas las rubricas
 const fetchAllRubrics = async () => {
   try {
     const response = await getRubricsAll();
-    //Definiendo que la rubrica que se mostrara por defecto es la primera
-    const primerRubrica = response.data[0].items_rubrica;
-    primerRubrica.forEach(function (item, i) {
-      infoItems[i] = item;
-    });
+    arrayRubricas.values = response;
+    itemsPrimerRubrica(); 
+    rubricas(); 
   } catch (error) {
     console.error("Error al obtener rubricas: ", error);
     alert("Error al obtener las rúbricas");
@@ -298,7 +316,7 @@ onMounted(() => {
   border: 1px solid black;
 }
 .scroll-div {
-  height: 75vh;
+  height: 73vh;
   overflow-y: auto;
   overflow-x: hidden;
 }

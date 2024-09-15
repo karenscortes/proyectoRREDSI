@@ -52,7 +52,6 @@ async def obtener_proyectos_asignados(
 ):
     # Aqui tienen que consultar que permisos tiene asignados por rol :)
     permisos = get_permissions(db, current_user.id_rol, MODULE)
-    
     # Si no tiene permiso que necesita tira el mensaje de error
     if not permisos.p_consultar:
         raise HTTPException(status_code=401, detail="No está autorizado a utilizar este modulo")

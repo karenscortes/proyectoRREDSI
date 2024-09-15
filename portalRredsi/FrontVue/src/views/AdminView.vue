@@ -52,7 +52,6 @@ export default {
     },
     methods: {
         changeComponent(componentName) {
-            console.log(componentName)
             const componentMap = {
                 RubricaAdminView: RubricaAdminView,
                 SalasAdminView: SalasAdminView, 
