@@ -2,15 +2,12 @@
     <div>
         <!-- HEADER  -->
         <MenuPrincipal :rol="user?.id_rol" @component-selected="changeComponent"/>
-        <!-- <component :is="selectedMenu" :rol="user?.id_rol" @component-selected="changeComponent"/> -->
-
-
-        <!-- BODY  -->
+        
         <main class="content mt-4">
-            <ComponenteDinamicoDelegado :currentComponent="currentComponent" />
+            <ComponenteDinamicoAdmin :currentComponent="currentComponent" />
         </main>
 
-        <!-- FOOTER -->
+        <!-- FOOTER  -->
         <FooterSecundario />
     </div>
 </template>
@@ -21,35 +18,33 @@ import { useAuthStore } from '@/store';
 import { useRouter } from 'vue-router'; 
 import MenuPrincipal from '../components/Menus/MenuPrincipal.vue';
 import FooterSecundario from '../components/Footers/FooterSecundario.vue';
-import AsignarProyectos from '../components/Users/delegado/AsignarProyectos/AsignarProyectos.vue';
-import AsistenciaEvento from '../components/Users/delegado/asistencia/AsistenciaEvento.vue';
-import PostulacionesEvaluadores from '../components/Users/delegado/postulaciones/PostulacionesEvaluadores.vue';
-import ListaEvaluadores from '../components/Users/delegado/listaEvaluadores/ListaEvaluadores.vue';
+import RubricaAdminView from './RubricaAdminView.vue';
+import SalasAdminView from './SalasAdminView.vue';
 
-import ComponenteDinamicoDelegado from '../components/Users/delegado/ComponenteDinamicoDelegado.vue';
 import MenuUsuarios from '../components/Menus/MenuUsuarios.vue';
+import ComponenteDinamicoAdmin from '../components/Users/administrador/ComponenteDinamicoAdmin.vue';
+import InicioAdminView from './InicioAdminView.vue';
 
 export default {
     components: {
-        ComponenteDinamicoDelegado, 
+        ComponenteDinamicoAdmin, 
         FooterSecundario,
         MenuPrincipal: markRaw(MenuPrincipal),
         MenuUsuarios: markRaw(MenuUsuarios),
-        AsignarProyectos: markRaw(AsignarProyectos),
-        PostulacionesEvaluadores: markRaw(PostulacionesEvaluadores),
-        AsistenciaEvento: markRaw(AsistenciaEvento),
-        ListaEvaluadores: markRaw(ListaEvaluadores)
-
+        InicioAdminView: markRaw(InicioAdminView),
+        RubricaAdminView: markRaw(RubricaAdminView),
+        SalasAdminView: markRaw(SalasAdminView),
     },
     data() {
+        //El componente por defecto que se mostrará
         return {
-            currentComponent: AsistenciaEvento
+            currentComponent: InicioAdminView,
         };
     },
     computed: {
         selectedMenu() {
             // Aquí defines la lógica para elegir el menú correcto según el componente actual
-            if (this.currentComponent === ListaEvaluadores) {
+            if (this.currentComponent === InicioAdminView) {
                 return MenuPrincipal;
             }
             return MenuUsuarios;
@@ -58,12 +53,11 @@ export default {
     methods: {
         changeComponent(componentName) {
             const componentMap = {
-                AsignarProyectos: AsignarProyectos,
-                PostulacionesEvaluadores: PostulacionesEvaluadores,
-                AsistenciaEvento: AsistenciaEvento,
-                ListaEvaluadores: ListaEvaluadores
+                RubricaAdminView: RubricaAdminView,
+                SalasAdminView: SalasAdminView, 
+                InicioAdmin: InicioAdminView,
             };
-            this.currentComponent = componentMap[componentName] || AsignarProyectos;
+            this.currentComponent = componentMap[componentName] || InicioAdminView;
         }
     },setup() {
         const authStore = useAuthStore();

@@ -154,6 +154,7 @@ export default defineComponent({
         }
 
         const selectComponent = (componentName) => {
+            console.log(props.rol)
             emit('component-selected', componentName); // Emite un evento para seleccionar el componente
         };
 

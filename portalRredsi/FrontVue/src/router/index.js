@@ -26,6 +26,7 @@ const routes = [
   { path: '/principal-evaluador', name: 'EvaluadorView', component: EvaluadorView, meta: { requiresAuth: true, allowedRoles: [1] }   },
   { path: '/proyectos-asignados', name: 'ProyectosAsignadosEvaluadorView', component: ProyectosAsignadosEvaluadorView, meta: { requiresAuth: true, allowedRoles: [1] }  },
   { path: '/pagina-inicio', name: 'PaginaInicioEvaluadorView', component: PaginaInicioEvaluadorView, meta: { requiresAuth: true, allowedRoles: [1] } },
+  {path: '/calificar-proyecto/:id', name: 'CalificarProyecto', component: CalificarProyectoEvaluadorView, meta: { requiresAuth: true, allowedRoles: [1] }},
 
 
   // RUTAS DELEGADO
@@ -35,7 +36,9 @@ const routes = [
   
 
   // RUTAS ADMIN
-  { path: '/rubrica-admin', name: 'RubricaAdminView', component: RubricaAdminView },
+  { path: '/rubrica-admin', name: 'RubricaAdminView', component: RubricaAdminView, meta: { requiresAuth: true, allowedRoles: [3] }},
+  {path: '/pagina-inicio-admin', name: 'PaginaInicioAdminView', component: AdminView, meta: { requiresAuth: true, allowedRoles: [3]}}, 
+  {path: '/gest-salas', name: 'SalasView', component: SalasAdminView, meta: { requiresAuth: true, allowedRoles: [3]}}, 
 
   // RUTAS SUPERADMIN
   { path: '/principal-superadmin', name: 'SuperAdminView', component: SuperAdminView},
@@ -69,6 +72,8 @@ router.beforeEach((to, from, next) => {
         next('/principal-evaluador');
       } else if (userRole === 2) {
         next('/principal-delegado');
+      }else if (userRole === 3){
+        next('/pagina-inicio-admin');
       } else {
         next('/');
       }
