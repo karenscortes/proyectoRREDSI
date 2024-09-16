@@ -12,6 +12,9 @@ import AsignarProyecto from '../components/Users/delegado/AsignarProyectos/Asign
 import PaginaInicioEvaluadorView from '../views/PaginaInicioEvaluadorView.vue';
 import UsersLayout from '../views/UsersLayout.vue';
 import NotAvailable from '../views/NotAvailable.vue';
+import CalificarProyectoEvaluadorView from '../views/CalificarProyectoEvaluadorView.vue';
+import AdminView from '../views/InicioAdminView.vue'
+import SalasAdminView from '../views/SalasAdminView.vue';
 
 
 const routes = [

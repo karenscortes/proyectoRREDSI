@@ -102,7 +102,7 @@
 import { obtenerProyectosAsignados, obtenerProyectosPorEstado } from '../services/evaluadorService';
 import ProyectosAsignados from '../components/Users/evaluador/ProyectosAsignados.vue';
 import CalificarProyectoEvaluadorView from './CalificarProyectoEvaluadorView.vue'; 
-import { useAuthStore } from '@/store';    
+import { useAuthStore } from '@/store';     
 
 export default {
     components: {
