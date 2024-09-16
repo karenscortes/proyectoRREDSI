@@ -27,6 +27,7 @@ import CalificarProyecto from "../components/Users/evaluador/CalificarProyecto.v
 import ListaAdministradores from '../components/Users/superadmin/ListaAdministradores.vue';
 import HistorialActividades from "../components/Users/superadmin/HistorialActividades.vue";
 import NotAvailable from "./NotAvailable.vue";
+import ListaSalasDelegado from "../components/Users/delegado/listaSalas/ListaSalasDelegado.vue";
 
 
 // Styles
@@ -47,6 +48,7 @@ export default {
         AsistenciaEvento: markRaw(AsistenciaEvento),
         ListaEvaluadores: markRaw(ListaEvaluadores),
         PostulacionesEvaluadores: markRaw(PostulacionesEvaluadores),
+        ListaSalasDelegado: markRaw(ListaSalasDelegado),
 
         //Componentes Evaluador
         PaginaInicioEvaluadorView: markRaw(PaginaInicioEvaluadorView),
@@ -82,6 +84,8 @@ export default {
                 AsistenciaEvento: AsistenciaEvento,
                 ListaEvaluadores: ListaEvaluadores,
                 PostulacionesEvaluadores: PostulacionesEvaluadores,
+                ListaSalasDelegado: ListaSalasDelegado,
+
 
                 //Evaluador
                 PaginaInicioEvaluadorView: PaginaInicioEvaluadorView,

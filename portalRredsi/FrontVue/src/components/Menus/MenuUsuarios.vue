@@ -136,7 +136,7 @@ export default defineComponent({
                     },
                     {
                         nombre:"Evento", 
-                        opciones:[{nombre:'Salas', ruta:'GestionSala'}, {nombre:'Asistencia',ruta:'AsistenciaEvento'}]
+                        opciones:[{nombre:'Salas', ruta:'ListaSalasDelegado'}, {nombre:'Asistencia',ruta:'AsistenciaEvento'}]
                     }
                 ],
                 visibilidad:"d-inline-block"
