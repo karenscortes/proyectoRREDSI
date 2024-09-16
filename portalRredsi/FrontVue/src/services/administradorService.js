@@ -19,6 +19,25 @@ export const getRubricsAll = async () => {
     }
 };
 
+// Función para crear item 
+export const InsertItems = async ($new_item) => {
+  try {
+      const url = `/admin/create-items/`;
+      const response = await api.post(url, $new_item,{
+      headers: {
+        'Authorization': `Bearer ${localStorage.getItem('access_token')}` 
+      }
+    });
+    return response;
+  } catch (error) {
+    if (error.response) {
+      throw error;
+    } else {
+      throw new Error('Error de red o de servidor'); 
+    }
+  }
+};
+
 // Función para editar itemsRubrica
 export const updateItems = async ($id_item_rubrica, item_nuevo) => {
   try {
