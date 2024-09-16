@@ -3,6 +3,7 @@
         <!-- HEADER  -->
         <MenuPrincipal :rol="user?.id_rol" @component-selected="changeComponent"/>
         
+        <!-- BODY -->
         <main class="content mt-4">
             <ComponenteDinamicoEvaluador :currentComponent="currentComponent" />
         </main>
@@ -10,7 +11,7 @@
         <!-- FOOTER  -->
         <FooterSecundario />
     </div>
-</template>
+</template> 
 
 <script>
 import { markRaw } from 'vue';
@@ -21,6 +22,7 @@ import { useAuthStore } from '@/store';
 import { useRouter } from 'vue-router'; 
 import FooterSecundario from '../components/Footers/FooterSecundario.vue';
 import PaginaInicioEvaluadorView from './PaginaInicioEvaluadorView.vue';
+import CalificarProyectoEvaluadorView from './CalificarProyectoEvaluadorView.vue';
 
 export default {
     components: {
@@ -29,6 +31,7 @@ export default {
         ProyectosAsignadosEvaluadorView: markRaw(ProyectosAsignadosEvaluadorView),
         FooterSecundario: markRaw(FooterSecundario),
         PaginaInicioEvaluadorView: markRaw(PaginaInicioEvaluadorView),
+        CalificarProyectoEvaluadorView: markRaw(CalificarProyectoEvaluadorView),
     },
     data() {
         return {
@@ -40,6 +43,7 @@ export default {
             const componentMap = {
                 ProyectosAsignadosEvaluadorView: ProyectosAsignadosEvaluadorView,
                 PaginaInicioEvaluadorView: PaginaInicioEvaluadorView,
+                CalificarProyectoEvaluadorView: CalificarProyectoEvaluadorView,
             };
             this.currentComponent = componentMap[componentName] || PaginaInicioEvaluadorView;
         }

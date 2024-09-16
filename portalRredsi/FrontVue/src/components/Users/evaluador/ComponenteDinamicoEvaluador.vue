@@ -5,12 +5,12 @@
 </template>
 
 <script>
-export default {
-    props: {
-        currentComponent: {
-            type: [String, Object], // Acepta tanto nombres de componentes como objetos de componente
-            required: true
+    export default {
+        props: {
+            currentComponent: {
+                type: [String, Object], // Acepta tanto nombres de componentes como objetos de componente
+                required: true
+            }
         }
-    }
-};
+    };
 </script>

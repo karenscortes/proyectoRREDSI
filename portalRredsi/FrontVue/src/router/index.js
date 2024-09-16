@@ -1,7 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import { useAuthStore } from '@/store'; 
 import RubricaAdminView from '../views/RubricaAdminView.vue';
-import InicioLogin from '../views/InicioLoginView.vue';
+import MainLayout from '../views/MainLayout.vue';
 import DelegadoView from '../views/DelegadoView.vue';
 import EvaluadorView from '../views/EvaluadorView.vue';
 import PostulacionesEvaluadores from '../components/Users/delegado/postulaciones/PostulacionesEvaluadores.vue'
@@ -10,18 +10,26 @@ import ListaAdministradores from '../components/Users/superadmin/ListaAdministra
 import ProyectosAsignadosEvaluadorView from '../views/ProyectosAsignadosEvaluadorView.vue';
 import AsignarProyecto from '../components/Users/delegado/AsignarProyectos/AsignarProyectos.vue';
 import PaginaInicioEvaluadorView from '../views/PaginaInicioEvaluadorView.vue';
+import UsersLayout from '../views/UsersLayout.vue';
+import NotAvailable from '../views/NotAvailable.vue';
 import AdminView from '../views/AdminView.vue';
+import CalificarProyectoEvaluadorView from '../views/CalificarProyectoEvaluadorView.vue';
 import SalasAdminView from '../views/SalasAdminView.vue';
+
 
 const routes = [
   
   // Ruta por defecto que apunta a LoginView
-  { path: '/', name: 'InicioLogin', component: InicioLogin },
+  { path: '/', name: 'mainLayout', component: MainLayout },
+
+  //RUTA A USERSLAYOUT
+  { path: '/pagina-usuario', name: 'UsersLayout', component: UsersLayout },
   
   // RUTAS EVALUADOR
   { path: '/principal-evaluador', name: 'EvaluadorView', component: EvaluadorView, meta: { requiresAuth: true, allowedRoles: [1] }   },
   { path: '/proyectos-asignados', name: 'ProyectosAsignadosEvaluadorView', component: ProyectosAsignadosEvaluadorView, meta: { requiresAuth: true, allowedRoles: [1] }  },
   { path: '/pagina-inicio', name: 'PaginaInicioEvaluadorView', component: PaginaInicioEvaluadorView, meta: { requiresAuth: true, allowedRoles: [1] } },
+  {path: '/calificar-proyecto/:id', name: 'CalificarProyecto', component: CalificarProyectoEvaluadorView, meta: { requiresAuth: true, allowedRoles: [1] }},
 
 
   // RUTAS DELEGADO
@@ -41,6 +49,9 @@ const routes = [
 
   // Redirección en caso de ruta no encontrada
   { path: '/:pathMatch(.)', redirect: '/not-found' },
+
+  //RUTA A NOTAVAILABLE
+  { path: '/seccionNoDisponible', name: 'NotAvailable', component: NotAvailable },
 ];
 
 const router = createRouter({

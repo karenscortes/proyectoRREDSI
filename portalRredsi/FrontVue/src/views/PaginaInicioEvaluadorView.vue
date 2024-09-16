@@ -1,5 +1,6 @@
 <template>
-    <div class="become">
+    <!-- Contenido principal -->
+    <div class="become mt-5">
         <div class="container">
             <div class="row row-eq-height">
                 <div class="col-lg-6 order-2 order-lg-1">
@@ -7,6 +8,7 @@
                         <h1>Bienvenido al portal RREDSI</h1>
                     </div>
                     <p class="become_text">RREDSI es una red reconocida por su impacto en el desarrollo de proyectos de innovación y tecnología. A lo largo de los años, nuestros evaluadores han desempeñado un rol clave en garantizar la calidad y relevancia de los proyectos presentados. Su capacidad para analizar y proporcionar retroalimentación precisa ha contribuido significativamente al éxito de cada convocatoria. Los logros obtenidos demuestran el compromiso y la excelencia en cada evaluación realizada. RREDSI sigue avanzando como un motor de progreso para la ciencia y la innovación en Colombia. ¿Que esperas para unirte?</p>
+                    <!-- Postulacion -->
                     <div class="become_button text-center trans_200">
                         <a href="#">Postularme</a>
                     </div>
@@ -20,6 +22,7 @@
             </div>
         </div>
     </div>
+    <!-- Fin del contenido principal -->
 </template>
 
 <script>
@@ -97,6 +100,7 @@
     .become_text
     {
         font-weight: 500;
+        font-size: 16px;
         color: #a5a5a1;
         margin-top: 48px;
         margin-bottom: 0px;
@@ -128,5 +132,19 @@
     .become_image img
     {
         width: 100%;
+    }
+
+    /* Media query para pantallas pequeñas */
+    @media (max-width: 990px) {
+        .become_image {
+            margin-top: 1px; 
+        }
+        
+        .become_text {
+            margin-top: 30px; 
+        }
+        .become_title {
+            margin-top: 40px; 
+        }
     }
 </style>
