@@ -89,7 +89,7 @@
 </template>
 
 <script>
-import { obtenerAutoresProyecto, obtenerIdAreaConocimiento, obtenerPosiblesEvaluadores, obtenerIdInstitucion, obtenerListaEvaluadores, obtenerProyectoConvocatoria, asignarProyectoEtapaVirtual, obtenerIdEvaluador } from '../../../../services/delegadoService'
+import { obtenerAutoresProyecto, obtenerIdAreaConocimiento, obtenerPosiblesEvaluadores, obtenerIdInstitucion, obtenerListaEvaluadores, obtenerProyectoConvocatoria, asignarProyectoEtapaVirtual, obtenerIdEvaluador, actualizarEstadoProyecto } from '../../../../services/delegadoService'
 import { ref } from 'vue'
 
 export default {
@@ -165,7 +165,6 @@ export default {
                     const response = await obtenerIdEvaluador(this.evaluadorBuscado);
                     id_evaluador = response.data.id_usuario;
 
-                    alert(" evaluador: "+id_evaluador);
                 } catch (error) {
                     alert("Evaluador no encontrado, intenta de nuevo ");
                     return;
@@ -173,7 +172,6 @@ export default {
 
             }else if(this.evaluadorSeleccionado != null && this.evaluadorBuscado == ""){
                 id_evaluador = this.evaluadorSeleccionado;
-                alert(" evaluador: "+id_evaluador);
             }
 
             try {
@@ -184,9 +182,12 @@ export default {
                     "id_proyecto_convocatoria": id_proyecto_convocatoria
                 }
                 await asignarProyectoEtapaVirtual(datosAsignacion);
+                
+                // Actualiza el estado del proyecto a asignado para que salga de la vista
+                await actualizarEstadoProyecto(this.proyecto.id_proyecto);
                 alert("Proyecto asignado con exito");
 
-                console.log("id proyecto convocatoria "+id_proyecto_convocatoria); 
+                // console.log("id proyecto convocatoria "+id_proyecto_convocatoria); 
             } catch (error) {
                 alert("Error al asignar proyecto");
             }

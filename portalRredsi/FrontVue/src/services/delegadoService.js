@@ -161,6 +161,24 @@ export const obtenerIdEvaluador = async (documento) => {
         }
     }
 };
+
+// Función para obtener id de un evaluador por su documento
+export const actualizarEstadoProyecto = async (id_proyecto) => {
+    try {
+        const response = await api.put(`/asignarProyectoEtapaVirtual/update-estado-proyecto/?id_proyecto=${id_proyecto}`, {
+            headers: {
+                'Authorization': `Bearer ${localStorage.getItem('access_token')}`
+            }
+        });
+        return response;
+    } catch (error) {
+        if (error.response) {
+            throw error;
+        } else {
+            throw new Error('Error de red o de servidor');
+        }
+    }
+};
 //Asistencia
 export const asistenciaEvento = async (page= 1, page_size = 10) => {
     try {
