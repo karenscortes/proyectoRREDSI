@@ -6,10 +6,10 @@ import enum
 class EstadosEnum(str, enum.Enum):
     activo = "activo"
     inactivo = "inactivo"
-    pendiente = "pendiente"
 
 class UserBase(BaseModel):
     id_rol :int
+    id_tipo_documento: int 
     documento: Annotated[str, StringConstraints(max_length=55)]
     nombres: Annotated[str, StringConstraints(max_length=25)]
     apellidos: Annotated[str, StringConstraints(max_length=25)]
@@ -19,13 +19,22 @@ class UserBase(BaseModel):
     
     class Config:
         orm_mode = True
+        
+class UserResponse(UserBase):
+    id_usuario: int
 
+class UserUpdate(BaseModel):
+    id_tipo_documento: int 
+    documento: Optional[Annotated[str, StringConstraints(max_length=55)]] = None
+    nombres: Optional[Annotated[str, StringConstraints(max_length=25)]] = None
+    apellidos: Optional[Annotated[str, StringConstraints(max_length=25)]]= None
+    celular: Optional[Annotated[str, StringConstraints(max_length=12)]]= None
+    correo: Optional[EmailStr]= None 
+            
 class UserCreate(UserBase):
     id_tipo_documento: int
     clave: Annotated[str, "Clave del usuario"]
 
-class UserResponse(UserBase):
-    id_usuario: int
     
 class PaginatedUsersResponse(BaseModel):
     users: List[UserResponse]
@@ -49,21 +58,4 @@ class ChangePassword(BaseModel):
     email: str
     new_password: str
     code: str
-    
-class UserUpdate(BaseModel):
-    nombres: Annotated[str, StringConstraints(max_length=25)]
-    apellidos: Annotated[str, StringConstraints(max_length=25)]
-    tipo_documento: Optional[int]  # ID del tipo de documento
-    documento: Annotated[str, StringConstraints(max_length=55)]
-    correo: Optional[EmailStr]
-    clave: Optional[str]
-    nueva_clave: Optional[str]
-    id_institucion: Optional[int]  # ID de la institución educativa
-    grupo_investigacion: Optional[str]
-    nombre_semillero: Optional[str]
-    titulo_pregrado: Optional[str]
-    titulo_especializacion: Optional[str]
-    titulo_maestria: Optional[str]
-    titulo_doctorado: Optional[str]
-    id_area_conocimiento: Optional[int]  # ID de la primera área de conocimiento
-    otra_area_conocimiento: Optional[int]  # ID de la segunda área de conocimiento
+

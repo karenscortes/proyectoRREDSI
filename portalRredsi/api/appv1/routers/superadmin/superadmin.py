@@ -1,25 +1,52 @@
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
-from appv1.crud.superadmin.superadmin import get_all_admins, update_user_role, get_activity_history_by_admin
-from appv1.schemas.superadmin.superadmin import SuperAdminResponse, UserRoleUpdateSchema, ActivityHistoryResponse
+from appv1.crud.superadmin.superadmin import (
+    get_all_admins, 
+    update_user_role, 
+    get_activity_history_by_admin
+)
+from appv1.schemas.superadmin.superadmin import (
+    AdminResponse,
+    PaginatedAdminResponse, 
+    UserRoleUpdateSchema, 
+    ActivityHistoryResponse
+)
 from db.database import get_db
+# Elimina la dependencia de autenticación
+# from appv1.routers.login import get_current_user
+# from appv1.schemas.usuario import UserResponse  # Esquema del usuario autenticado
+# from appv1.crud.permissions import get_permissions  # Si usas permisos
 from typing import List
 
 router_superadmin = APIRouter()
 
-# Obtener todos los administradores activos
-@router_superadmin.get("/get-all-admin/", response_model=List[SuperAdminResponse])
-async def read_all_admin(
+# Obtener todos los administradores activos con paginación
+@router_superadmin.get("/get-all-admins/", response_model=PaginatedAdminResponse)
+async def read_all_admins_by_page(
+    page: int = 1,
+    page_size: int = 10,
     db: Session = Depends(get_db)
 ):
-    administradores = get_all_admins(db)
-    if not administradores:
-        raise HTTPException(status_code=404, detail="Administradores no encontrados")
-    return administradores
+    # Obtener administradores paginados
+    admins, total_pages = get_all_admins(db, page, page_size)
+
+    # Retornar la respuesta en la estructura del esquema
+    return {
+        "admins": admins,
+        "total_pages": total_pages,
+        "current_page": page,
+        "page_size": page_size
+    }
 
 # Modificar el rol de un usuario
 @router_superadmin.put("/update-role/", response_model=bool)
-async def modify_user_role(user_role_update: UserRoleUpdateSchema, db: Session = Depends(get_db)):
+async def modify_user_role(
+    user_role_update: UserRoleUpdateSchema, 
+    db: Session = Depends(get_db)
+
+):
+    
+    # Actualizar rol
     updated = update_user_role(db, user_id=user_role_update.user_id, new_role_id=user_role_update.new_role_id)
     if not updated:
         raise HTTPException(status_code=400, detail="No se pudo actualizar el rol del usuario")
@@ -27,7 +54,17 @@ async def modify_user_role(user_role_update: UserRoleUpdateSchema, db: Session =
 
 # Obtener el historial de actividades de un administrador
 @router_superadmin.get("/get-activity-history/{user_id}/", response_model=List[ActivityHistoryResponse])
-async def get_activity_history(user_id: int, db: Session = Depends(get_db)):
+async def get_activity_history(
+    user_id: int, 
+    db: Session = Depends(get_db)
+    # current_user: UserResponse = Depends(get_current_user)
+):
+    # Elimina la verificación de permisos para pruebas
+    # permisos = get_permissions(db, current_user.id_rol, MODULE)
+    # if not permisos.p_select:
+    #     raise HTTPException(status_code=401, detail="Usuario no autorizado")
+
+    # Obtener historial de actividades
     activity_history = get_activity_history_by_admin(db, user_id=user_id)
     if not activity_history:
         raise HTTPException(status_code=404, detail="No se encontró historial de actividades para este administrador")

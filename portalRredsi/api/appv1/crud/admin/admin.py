@@ -10,6 +10,7 @@ from appv1.models.programacion_fase import Programacion_fase
 from appv1.models.sala import Sala
 from appv1.models.usuario import Usuario
 from appv1.schemas.admin.admin import EstadoDeConvocatoria
+from sqlalchemy.exc import SQLAlchemyError, IntegrityError
 
 # Crear una nueva convocatoria
 def create_convocatoria(db: Session, nombre: str, fecha_inicio: date, fecha_fin: date, estado: EstadoDeConvocatoria):
@@ -60,7 +61,6 @@ def get_fases_by_etapa(db: Session, id_etapa: int):
     fases = db.query(Fase).filter(Fase.id_etapa == id_etapa).all()
     return fases
 
-
 # Editar una etapa
 def update_etapa(db: Session, id_etapa: int, nombre: Optional[str] = None):
     # Verifica que la etapa exista
@@ -103,11 +103,23 @@ def create_programacion_fase(db: Session, id_fase: int, id_convocatoria: int, fe
 
 # Crear una nueva sala
 def create_sala(db: Session, id_usuario: int, area_conocimiento: int,  numero: str, nombre: str):
-    sala = Sala(id_usuario=id_usuario, id_area_conocimiento=area_conocimiento, numero_sala=numero, nombre_sala=nombre)
-    db.add(sala)
-    db.commit()
-    return {"message": "Sala creada exitosamente"}
-
+    try:
+        sala = Sala(
+            id_usuario=id_usuario, 
+            id_area_conocimiento=area_conocimiento, 
+            numero_sala=numero, 
+            nombre_sala=nombre
+        )
+        db.add(sala)
+        db.commit()
+        return {"message": "Sala creada exitosamente"}
+    except IntegrityError as e:
+        db.rollback()
+        raise HTTPException(status_code=400, detail="Error. No hay Integridad de datos al crear la sala")
+    except SQLAlchemyError as e:
+        print(f"Error al crear el item: {e}")
+        raise HTTPException(status_code=500, detail=f"Error. No hay Integridad de datos",)
+    
 
 # Editar una sala
 def update_sala(db: Session, id_sala: int, id_usuario: Optional[int] = None, area_conocimiento: Optional[int] = None, nombre_sala: Optional[str] = None, numero_sala: Optional[str] = None):

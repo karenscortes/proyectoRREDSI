@@ -1,71 +1,75 @@
 <template>
-    <div>
-      <!-- HEADER -->
-      <MenuPrincipal :rol="user?.id_rol" @changeComponent="updateCurrentComponent" />
+  <div>
+    <!-- HEADER -->
+    <MenuPrincipal :rol="user?.id_rol" @component-selected="changeComponent" />
     
-      <main class="content mt-5">
-        <!-- Componente dinámico -->
-        <DynamicComponentSuperAdmin :currentComponent="currentComponent" />
-      </main>
+    <main class="content mt-5">
+      <!-- Componente dinámico -->
+      <DynamicComponentSuperAdmin :currentComponent="currentComponent" />
+    </main>
     
-      <FooterSecundario/>
-    </div>
-  </template>
-  
-  <script>
-  import { markRaw } from 'vue';
-  import MenuPrincipal from '../components/Menus/MenuPrincipal.vue';
-  import InicioSuperAdminView from './InicioSuperAdminView.vue';
-  
-  
-  import DynamicComponentSuperAdmin from '../components/Users/superadmin/DynamicComponentSuperAdmin.vue';
-  import { useAuthStore } from '@/store';
-  import { useRouter } from 'vue-router';
-  import FooterSecundario from '../components/Footers/FooterSecundario.vue';
-  import ListaDelegados from '../components/Users/superadmin/ListaDelegados.vue';
-  
-  export default {
-    components: {
-      DynamicComponentSuperAdmin,
-      MenuPrincipal: markRaw(MenuPrincipal),
-      InicioSuperAdminView: markRaw(InicioSuperAdminView),
-      FooterSecundario,
-      ListaDelegados: markRaw(ListaDelegados)
-    },
-    data() {
-      return {
-          currentComponent: InicioSuperAdminView
+    <!-- FOOTER -->
+    <FooterSecundario />
+  </div>
+</template>
+
+<script>
+import { markRaw } from 'vue';
+import MenuPrincipal from '../components/Menus/MenuPrincipal.vue';
+import DynamicComponentSuperAdmin from '../components/Users/superadmin/DynamicComponentSuperAdmin.vue';
+import FooterSecundario from '../components/Footers/FooterSecundario.vue';
+import InicioSuperAdminView from './InicioSuperAdminView.vue';
+import ListaAdministradores from '../components/Users/superadmin/ListaAdministradores.vue';
+import { useAuthStore } from '@/store';
+import { useRouter } from 'vue-router';
+
+export default {
+  components: {
+    DynamicComponentSuperAdmin,
+    MenuPrincipal: markRaw(MenuPrincipal),
+    FooterSecundario: markRaw(FooterSecundario),
+    InicioSuperAdminView: markRaw(InicioSuperAdminView),
+    ListaAdministradores: markRaw(ListaAdministradores),
+  },
+  data() {
+    return {
+      currentComponent: InicioSuperAdminView, // Componente inicial
+    };
+  },
+  methods: {
+    
+    changeComponent(componentName) {
+      const componentMap = {
+          InicioSuperAdminView: InicioSuperAdminView,
+          ListaAdministradores: ListaAdministradores,
       };
+      
+      this.currentComponent = componentMap[componentName] || InicioSuperAdminView;
     },
-    methods: {
-      updateCurrentComponent(componentName) {
-        console.log('updateCurrentComponent llamada con parámetro:', componentName);
-        this.changeComponent(componentName);
-      }
-    },
-    setup() {
-      const authStore = useAuthStore();
-      const router = useRouter();
-  
-      const user = authStore.user;
-      const permissions = authStore.permissions;
-  
-      const logout = () => {
-        authStore.logout();
-        router.push('/');
-      };
-  
-      return {
-        user,
-        permissions,
-        logout
-      };
-    }
-  };
-  </script>
-  
-  <style scoped>
-  .content {
-    padding-top: 100px;
-  }
-  </style>
+  },
+  setup() {
+    const authStore = useAuthStore();
+    const router = useRouter();
+
+    const user = authStore.user;
+    const permissions = authStore.permissions;
+
+    const logout = () => {
+      authStore.logout();
+      router.push('/');
+    };
+
+    return {
+      user,
+      permissions,
+      logout,
+    };
+  },
+};
+</script>
+
+<style scoped>
+.content {
+  padding-top: 100px;
+}
+</style>

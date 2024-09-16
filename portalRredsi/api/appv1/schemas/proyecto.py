@@ -4,40 +4,33 @@ from pydantic import BaseModel, EmailStr, constr
 from datetime import datetime
 
 class EstadoProyectoEnum(str, enum.Enum):
-    activo = "activo"
-    inactivo = "inactivo"
+    pendiente_virtual = "pendiente_virtual"
+    asignado_virtual = "asignado_virtual"
+    asignado = "asignado"
     pendiente = "pendiente"
 
-class PonenteBase(BaseModel):
-    nombre: Annotated[str, constr(max_length=50)]
-    apellido: Annotated[str, constr(max_length=50)]
-    correo: EmailStr
-    documento: Annotated[str, constr(max_length=20)]
-    telefono: Annotated[str, constr(max_length=15)]
-
-class TutorBase(BaseModel):
-    nombre: Annotated[str, constr(max_length=50)]
-    apellido: Annotated[str, constr(max_length=50)]
-    correo: EmailStr
-    documento: Annotated[str, constr(max_length=20)]
-    telefono: Annotated[str, constr(max_length=15)]
 
 class ProyectoBase(BaseModel):
+    id_institucion: int
+    id_modalidad:int
+    id_area_conocimiento:int
     titulo: Annotated[str, constr(max_length=100)]
-    descripcion: Annotated[str, constr(max_length=255)]
-    fecha_inicio: datetime
-    fecha_fin: Optional[datetime]
-    estado: EstadoProyectoEnum
+    programa_academico: Annotated[str, constr(max_length=50)]
+    grupo_investigacion:Annotated[str, constr(max_length=50)]
+    linea_investigacion:Annotated[str, constr(max_length=50)]
+    nombre_semillero:Annotated[str, constr(max_length=50)]
+    url_propuesta_escrita: Annotated[str, constr(max_length=255)]
+    url_aval: Annotated[str, constr(max_length=255)]
+
 
 class ProyectoCreate(ProyectoBase):
-    tutores: List[TutorBase]
-    ponentes: List[PonenteBase]
+    pass
 
 class ProyectoResponse(ProyectoBase):
     id_proyecto: int
-    tutores: List[TutorBase]
-    ponentes: List[PonenteBase]
-
+    
+class ProyectoUpdate(ProyectoBase):
+    pass
 class PaginatedProyectosResponse(BaseModel):
     proyectos: List[ProyectoResponse]
     total_pages: int

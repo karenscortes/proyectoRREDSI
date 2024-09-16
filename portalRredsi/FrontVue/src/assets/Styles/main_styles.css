@@ -311,7 +311,7 @@ section {
 	width: 1318px;
 	height: 104px;
 	background: #FFFFFF;
-	z-index: 10;
+	z-index: 8;
 	-webkit-transition: all 200ms ease;
 	-moz-transition: all 200ms ease;
 	-ms-transition: all 200ms ease;
@@ -639,6 +639,7 @@ section {
 
 .menu_copyright {
 	margin-top: 60px;
+	margin-left: 30px;
 	-webkit-transform: translateY(3.5rem);
 	-moz-transform: translateY(3.5rem);
 	-ms-transform: translateY(3.5rem);
@@ -650,7 +651,7 @@ section {
 	-o-transition: all 1000ms 1200ms ease;
 	transition: all 1000ms 1200ms ease;
 	opacity: 0;
-	padding-left: 3px;
+	padding-left: 4px;
 }
 
 .menu_container.active .menu_copyright {
@@ -1520,11 +1521,6 @@ input:last-of-type {
 	overflow-x: hidden;
 }
 
-body {
-	font-family: Arial, sans-serif;
-	margin: 20px;
-	background-color: #f7f7f7;
-}
 
 .form-section {
 	background-color: #f8f9fa;

@@ -1,4 +1,6 @@
 from typing import List, Optional
+
+from pydantic import BaseModel
 from appv1.schemas.detalle_institucional import DetalleInstitucionalResponse
 from appv1.schemas.tipo_documento import TipoDocumentoResponse
 from appv1.schemas.titulo_academico import TituloAcademicoResponse
@@ -13,5 +15,10 @@ class DelegadoResponse(DelegadoBase):
     class Config:
         orm_mode = True
 
-
-    
+class PaginatedDelegadoResponse(BaseModel):
+    users: List[DelegadoResponse]
+    total_pages: int
+    current_page: int
+    page_size: int
+    class Config:
+        orm_mode = True

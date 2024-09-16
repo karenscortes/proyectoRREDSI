@@ -1,18 +1,21 @@
+import json
 from typing import List, Optional
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
-from appv1.crud.admin.gest_delegado import create_delegado, get_delegados_activos, get_delegados_by_document
+from appv1.crud.admin.gest_delegado import create_delegado,get_delegados_activos_paginated, get_delegados_by_document
 from appv1.crud.admin.gest_rubricas import create_items, delete_items, get_all_rubricas, update_items
-from appv1.crud.admin.gest_delegado import get_delegados_activos
 from appv1.crud.admin.gest_rubricas import get_all_rubricas
 from appv1.crud.admin.admin import create_convocatoria, create_etapa, create_fase, create_sala, get_fases_by_etapa, update_etapa, update_fase, update_sala
+from appv1.routers.login import get_current_user
 from appv1.schemas.admin.admin import ConvocatoriaCreate, CreateSala, FaseUpdate
 from appv1.crud.admin.admin import create_convocatoria, create_etapa, create_fase, get_fases_by_etapa, update_etapa, update_fase
-from appv1.schemas.admin.delegado import DelegadoResponse
+from appv1.schemas.admin.delegado import DelegadoResponse, PaginatedDelegadoResponse
 from appv1.schemas.admin.items_rubrica import ItemCreate, ItemUpdate
 from appv1.schemas.admin.rubrica import RubricaResponse
-from appv1.schemas.usuario import UserCreate
+from appv1.schemas.usuario import UserCreate, UserResponse
 from db.database import get_db
+from appv1.crud.permissions import get_permissions
+from appv1.crud.usuarios import get_user_by_documento, get_user_by_email
 
 router_admin = APIRouter()
 
@@ -53,43 +56,90 @@ def modify_fase(id_fase: int, nombre: Optional[str] = None, db: Session = Depend
 
 #Obtener todas las rubricas
 @router_admin.get("/all-rubrics/", response_model=List[RubricaResponse])
-async def consult_rubrics(db: Session = Depends(get_db)):
+async def consult_rubrics(
+    db: Session = Depends(get_db), 
+    current_user: UserResponse = Depends(get_current_user),
+):
+    MODULE = 9
+    permisos = get_permissions(db, current_user.id_rol, MODULE)
+
+    if permisos is None or not permisos.p_consultar:
+        raise HTTPException(status_code=401, detail="Usuario no autorizado")
+    
     existing_rubrics = get_all_rubricas(db)
-    if existing_rubrics:
-        return existing_rubrics
-    else:
-        return{
-            'success': False,
-            'message': 'Error al consultar las rúbricas',
-        }
 
-#Obtener delegados activos
-@router_admin.get("/all-active-delegates/", response_model=List[DelegadoResponse])
-async def consult_delegates(db: Session = Depends(get_db)):
-    active_delegates = get_delegados_activos(db)
-    if active_delegates:
-        return active_delegates
-    else:
-        return{
-            'success': False,
-            'message': 'Error',
-        }
+    if len(existing_rubrics) == 0:
+        raise HTTPException(status_code=404, detail="No hay rubricas")
+    
+    return existing_rubrics
 
-#Obtener delegado por cedula
+#Obtener delegados activos(paginado)
+@router_admin.get("/all-active-delegates/", response_model=PaginatedDelegadoResponse)
+async def consult_delegates(
+    db: Session = Depends(get_db),
+    page: int = 1,
+    page_size: int = 10,
+    current_user: UserResponse = Depends(get_current_user),
+):  
+    MODULE = 3
+    permisos = get_permissions(db, current_user.id_rol, MODULE)
+
+    if permisos is None or not permisos.p_consultar:
+        raise HTTPException(status_code=401, detail="Usuario no autorizado")
+    
+    users, total_pages = get_delegados_activos_paginated(db, page, page_size)
+
+    if len(users) == 0:
+        raise HTTPException(status_code=404, detail="No hay delegados activos")
+
+    return {
+        "users": users,
+        "total_pages": total_pages,
+        "current_page": page,
+        "page_size": page_size
+    }
+
+#Obtener delegado por documento
 @router_admin.get("/delegates/{doc}/", response_model= DelegadoResponse)
-def consult_by_document(document: str, db: Session = Depends(get_db)):
-    delegates = get_delegados_by_document(document, db)
-    if delegates:
-        return delegates
-    else:
-        return{
-            'success': False,
-            'message': 'Error en la consulta',
-        }
+def consult_by_document(
+    document: str, 
+    db: Session = Depends(get_db),
+    current_user: UserResponse = Depends(get_current_user),
+):
+    MODULE = 3
+    permisos = get_permissions(db, current_user.id_rol, MODULE)
+
+    if permisos is None or not permisos.p_consultar:
+        raise HTTPException(status_code=401, detail="Usuario no autorizado")
+    
+    delegate = get_delegados_by_document(document, db)
+
+    if (delegate is None):
+        raise HTTPException(status_code=404, detail="No se encontró un delegado con ese documento")
+
+    return delegate
 
 #Crear delegado 
 @router_admin.post("/create-delegates/")
-def consult_by_document(user: UserCreate, db: Session = Depends(get_db)):
+def consult_by_document(
+    user: UserCreate, 
+    db: Session = Depends(get_db),
+    current_user: UserResponse = Depends(get_current_user),
+):
+    MODULE = 3
+    permisos = get_permissions(db, current_user.id_rol, MODULE)
+
+    if permisos is None or not permisos.p_insertar:
+        raise HTTPException(status_code=401, detail="Usuario no autorizado")
+    
+    existing_user_email = get_user_by_email(db, user.correo)
+    existing_user_doc = get_user_by_documento(db,user.documento) 
+    if existing_user_email:
+        raise HTTPException(status_code=400, detail="Ya se encuentra registrado un usuario con este email")
+    
+    if existing_user_doc: 
+        raise HTTPException(status_code=400, detail="Ya se encuentra registrado un usuario con este documento")
+    
     new_user = create_delegado(user, db)
     if new_user:
         return{
@@ -104,12 +154,23 @@ def consult_by_document(user: UserCreate, db: Session = Depends(get_db)):
 
 #Crear items
 @router_admin.post("/create-items/")
-def create_item_rubric(item: ItemCreate, db: Session = Depends(get_db)):
-    new_item = create_items(item, db)
-    if new_item:
+def create_item_rubric(
+    item: ItemCreate, 
+    db: Session = Depends(get_db), 
+    current_user: UserResponse = Depends(get_current_user),
+):
+    MODULE = 10
+    permisos = get_permissions(db, current_user.id_rol, MODULE)
+
+    if permisos is None or not permisos.p_insertar:
+        raise HTTPException(status_code=401, detail="Usuario no autorizado")
+    
+    item = create_items(item, db)
+    if item:
         return{
             'success': True,
-            'message': 'Registrado con éxito',
+            'message': 'Registrado con éxito', 
+            'data': item.id_item_rubrica,
         }
     else: 
         return{
@@ -119,7 +180,18 @@ def create_item_rubric(item: ItemCreate, db: Session = Depends(get_db)):
     
 #Editar items
 @router_admin.put("/update-items/{id_item}/")
-def update_item(id_item:int, item_nuevo: ItemUpdate, db: Session = Depends(get_db)):
+def update_item(
+    id_item:int, 
+    item_nuevo: ItemUpdate, 
+    db: Session = Depends(get_db), 
+    current_user: UserResponse = Depends(get_current_user),
+):
+    MODULE = 10
+    permisos = get_permissions(db, current_user.id_rol, MODULE)
+    
+    if permisos is None or not permisos.p_actualizar:
+        raise HTTPException(status_code=401, detail="Usuario no autorizado")
+    
     item = update_items(id_item,item_nuevo,db)
     if item:
         return{
@@ -135,7 +207,18 @@ def update_item(id_item:int, item_nuevo: ItemUpdate, db: Session = Depends(get_d
     
 #Eliminar items
 @router_admin.post("/delete-items/{id_item}/")
-def delete_item(id_item:int, db: Session = Depends(get_db)):
+def delete_item(
+    id_item:int, 
+    db: Session = Depends(get_db),
+    current_user: UserResponse = Depends(get_current_user),
+):
+     
+    MODULE = 10
+    permisos = get_permissions(db, current_user.id_rol, MODULE)
+    
+    if permisos is None or not permisos.p_eliminar:
+        raise HTTPException(status_code=401, detail="Usuario no autorizado")
+    
     item = delete_items(id_item,db)
     if item:
         return{
@@ -150,8 +233,29 @@ def delete_item(id_item:int, db: Session = Depends(get_db)):
    
 # Crear sala
 @router_admin.post("/crear-sala")
-def create_sala_admin(sala: CreateSala, db: Session = Depends(get_db)):
-    return create_sala(db, sala.id_usuario, sala.area_conocimento, sala.numero_sala, sala.nombre_sala)
+def create_sala_admin(
+    sala: CreateSala, 
+    db: Session = Depends(get_db),
+    current_user: UserResponse = Depends(get_current_user),   
+):
+    MODULE = 15
+    permisos = get_permissions(db, current_user.id_rol, MODULE)
+
+    if permisos is None or not permisos.p_insertar:
+        raise HTTPException(status_code=401, detail="Usuario no autorizado")
+
+    new_sala = create_sala(db, sala.id_usuario, sala.area_conocimento, sala.numero_sala, sala.nombre_sala)
+    if new_sala:
+        return{
+            'success': True,
+            'message': 'Se agregó sala con éxito',
+        }
+    else: 
+        return{
+            'success': False,
+            'message': 'Error al crear sala',
+        }
+
 
 # Editar sala
 @router_admin.put("/salas/{id_sala}")

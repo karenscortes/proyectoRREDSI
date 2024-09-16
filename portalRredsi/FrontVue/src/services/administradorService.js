@@ -37,3 +37,22 @@ export const updateItems = async ($id_item_rubrica, item_nuevo) => {
     }
   }
 };
+
+// Función para eliminar item
+export const deleteItems = async ($id_item_rubrica) => {
+  try {
+      const url = `/admin/delete-items/${$id_item_rubrica}/`;
+      const response = await api.post(url, {
+      headers: {
+        'Authorization': `Bearer ${localStorage.getItem('access_token')}` 
+      }
+    });
+    return response;
+  } catch (error) {
+    if (error.response) {
+      throw error;
+    } else {
+      throw new Error('Error de red o de servidor'); 
+    }
+  }
+};
