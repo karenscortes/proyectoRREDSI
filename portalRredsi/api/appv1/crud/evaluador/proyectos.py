@@ -527,7 +527,7 @@ def get_datos_calificar_proyecto(db: Session, id_proyecto: int, id_usuario: int)
 
         if not result:
             raise HTTPException(status_code=404, detail="Datos no encontrados")
-
+        
         proyecto_respuesta = CalificarProyectoRespuesta(
             titulo_proyecto=result.titulo_proyecto,
             universidad_proyecto=result.universidad_proyecto,
@@ -544,3 +544,39 @@ def get_datos_calificar_proyecto(db: Session, id_proyecto: int, id_usuario: int)
         db.rollback()
         raise HTTPException(status_code=500, detail=f"Error al consultar los datos del proyecto: {e}")
 
+# Obtener los datos de la rubrica que fue asignada a un proyecto especifico
+def get_datos_rubrica_proyecto(db: Session, id_proyecto: int, id_usuario: int):
+    try:
+        sql_query = text("""
+            SELECT items_rubrica.* FROM items_rubrica
+            JOIN rubricas ON items_rubrica.id_rubrica = rubricas.id_rubrica 
+            JOIN participantes_proyecto ON rubricas.id_etapa = participantes_proyecto.id_etapa
+            JOIN proyectos_convocatoria ON participantes_proyecto.id_proyecto = proyectos_convocatoria.id_proyecto         
+            JOIN proyectos ON proyectos_convocatoria.id_proyecto = proyectos.id_proyecto
+            JOIN convocatorias ON proyectos_convocatoria.id_convocatoria = convocatorias.id_convocatoria
+            
+            WHERE 
+                participantes_proyecto.id_proyecto = :id_proyecto
+                AND participantes_proyecto.id_usuario = :id_usuario
+                AND rubricas.id_modalidad = proyectos.id_modalidad
+                AND participantes_proyecto.id_etapa = rubricas.id_etapa
+                AND convocatorias.estado = 'en curso'
+
+        """)
+        params = {
+            "id_proyecto": id_proyecto, 
+            "id_usuario": id_usuario
+        }
+        # result = db.execute(sql_query, params).fetchall()
+        result = db.execute(sql_query,params).mappings().all()
+
+        if len(result)==0:
+            raise HTTPException(status_code=404, detail="Datos no encontrados")
+        
+
+        
+        return result
+    
+    except Exception as e:
+        db.rollback()
+        raise HTTPException(status_code=500, detail=f"Error al consultar la rubrica del proyecto{e}")
