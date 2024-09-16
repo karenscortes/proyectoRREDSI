@@ -12,6 +12,7 @@ import AsignarProyecto from '../components/Users/delegado/AsignarProyectos/Asign
 import PaginaInicioEvaluadorView from '../views/PaginaInicioEvaluadorView.vue';
 import AdminView from '../views/AdminView.vue';
 import SalasAdminView from '../views/SalasAdminView.vue';
+import CalificarProyectoEvaluadorView from '../views/CalificarProyectoEvaluadorView.vue';
 
 const routes = [
   
@@ -22,6 +23,7 @@ const routes = [
   { path: '/principal-evaluador', name: 'EvaluadorView', component: EvaluadorView, meta: { requiresAuth: true, allowedRoles: [1] }   },
   { path: '/proyectos-asignados', name: 'ProyectosAsignadosEvaluadorView', component: ProyectosAsignadosEvaluadorView, meta: { requiresAuth: true, allowedRoles: [1] }  },
   { path: '/pagina-inicio', name: 'PaginaInicioEvaluadorView', component: PaginaInicioEvaluadorView, meta: { requiresAuth: true, allowedRoles: [1] } },
+  {path: '/calificar-proyecto/:id', name: 'CalificarProyecto', component: CalificarProyectoEvaluadorView, meta: { requiresAuth: true, allowedRoles: [1] }},
 
 
   // RUTAS DELEGADO
