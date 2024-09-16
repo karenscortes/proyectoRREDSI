@@ -4,7 +4,7 @@ from sqlalchemy.exc import SQLAlchemyError, IntegrityError
 from fastapi import HTTPException
 from datetime import timedelta
 
-from appv1.schemas.evaluador.evaluador import ProyectoRespuesta
+from appv1.schemas.evaluador.evaluador import CalificarProyectoRespuesta
 
 #Consulta para sacar los proyectos asignados a un evaluador por etapa (paginado)
 def get_proyectos_por_etapa(db: Session, nombre_etapa: str, id_usuario: int, page: int = 1, page_size: int = 10):
@@ -495,9 +495,8 @@ def convertir_timedelta_a_hora(timedelta_obj: timedelta) -> str:
     horas, minutos = divmod(total_seconds // 60, 60)
     return f"{horas:02}:{minutos:02}"
 
-
 # Obtener los datos para calificar un proyecto
-def get_datos_proyecto_evaluador(db: Session, id_proyecto: int, id_usuario: int):
+def get_datos_calificar_proyecto(db: Session, id_proyecto: int, id_usuario: int):
     try:
         sql_query = text("""
             SELECT 
@@ -529,7 +528,7 @@ def get_datos_proyecto_evaluador(db: Session, id_proyecto: int, id_usuario: int)
         if not result:
             raise HTTPException(status_code=404, detail="Datos no encontrados")
 
-        proyecto_respuesta = ProyectoRespuesta(
+        proyecto_respuesta = CalificarProyectoRespuesta(
             titulo_proyecto=result.titulo_proyecto,
             universidad_proyecto=result.universidad_proyecto,
             nombre_evaluador=result.nombre_evaluador,

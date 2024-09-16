@@ -69,7 +69,7 @@ class Componente(BaseModel):
     calificacion: Optional[float] = None
     observaciones: Optional[str] = None
 
-class ProyectoRespuesta(BaseModel):
+class CalificarProyectoRespuesta(BaseModel):
     titulo_proyecto: str
     universidad_proyecto: str
     nombre_evaluador: str
