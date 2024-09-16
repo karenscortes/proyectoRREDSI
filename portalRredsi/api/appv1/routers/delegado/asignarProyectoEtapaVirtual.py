@@ -25,7 +25,7 @@ async def asignar_proyecto_etapa_uno(
 ):
     respuesta = asignar_proyecto_etapa_virtual(db, asignacion)
     if respuesta:
-        return {"mensaje":f"Proyecto asignado a {asignacion.id_datos_personales} "}
+        return {"mensaje": "Proyecto asignado con exito"}
     else:
         return {"mensaje":"El proyecto no se ha podido asignar con exito"}
 

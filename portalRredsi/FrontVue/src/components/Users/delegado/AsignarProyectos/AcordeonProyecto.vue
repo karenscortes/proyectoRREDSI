@@ -39,23 +39,25 @@
                 <div class="row mt-4 justify-content-center">
                     <div class="col-md-6 col-12">
                         <label for="" class="Text-dark fw-bold">Seleccionar evaluador:</label>
-                        <select class="form-select text-dark">
+                        <select class="form-select text-dark" v-model="evaluadorSeleccionado">
                             <option selected disabled>Seleccionar evaluador</option>
                             <option v-if="evaluadoresEspecificos" v-for="(posibleEvaluador, index) in posiblesEvaluadores" :key="index"
-                                :value="posibleEvaluador.nombre">
+                                :value="posibleEvaluador.id">
                                 {{ posibleEvaluador.nombre }} {{ posibleEvaluador.apellido }}
                             </option>
+                            
                             <option v-else v-for="(posibleEvaluador, i) in posiblesEvaluadores" :key="i"
-                                :value="posibleEvaluador.nombres">
+                                :value="posibleEvaluador.id_usuario">
                                 {{ posibleEvaluador.nombres }} {{ posibleEvaluador.apellidos }}
                             </option>
+                            <option :value="'otro'">Otro:</option>
                         </select>
                     </div>
                     <div class="col-md-6 col-12 mb-5">
                         <label for="" class="text-dark fw-bold">Otro evaluador diferente a los sugeridos:</label>
                         <div class="d-flex align-items-center position-relative">
                             <input type="text" class="form-control text-dark"
-                                placeholder="Identificación del evaluador">
+                                placeholder="Identificación del evaluador" v-model="evaluadorBuscado">
                             <p class="d-inline-flex gap-1 mb-0">
                                 <a data-bs-toggle="collapse" :href="`#collapseExample${index}`" role="button"
                                     aria-expanded="false" :aria-controls="`collapseExample${index}`"
@@ -77,7 +79,7 @@
                         </div>
                     </div>
                     <div class=" col-md-6 col-12 text-center">
-                        <a href="#" class="btn w-100 mt-1 fw-bold" style="background: rgb(255, 182, 6);">ASIGNAR</a>
+                        <a @click="asignarProyecto()" class="btn w-100 mt-1 fw-bold" style="background: rgb(255, 182, 6);">ASIGNAR</a>
                     </div>
 
                 </div>
@@ -87,7 +89,8 @@
 </template>
 
 <script>
-import { obtenerAutoresProyecto, obtenerIdAreaConocimiento, obtenerPosiblesEvaluadores, obtenerIdInstitucion, obtenerListaEvaluadores } from '../../../../services/delegadoService'
+import { obtenerAutoresProyecto, obtenerIdAreaConocimiento, obtenerPosiblesEvaluadores, obtenerIdInstitucion, obtenerListaEvaluadores, obtenerProyectoConvocatoria, asignarProyectoEtapaVirtual, obtenerIdEvaluador } from '../../../../services/delegadoService'
+import { ref } from 'vue'
 
 export default {
     props: {
@@ -98,6 +101,8 @@ export default {
         return {
             posiblesEvaluadores: [],
             evaluadoresEspecificos: true,
+            evaluadorSeleccionado: ref(null),
+            evaluadorBuscado: ref(""),
             autores : [] 
         }
     },
@@ -132,7 +137,62 @@ export default {
                 alert("Error al obtener evaluadores: ", error);
             }
         },
+        async obtenerIdProyectoConvocatoria(){
+            try {
+                const response = await obtenerProyectoConvocatoria(this.proyecto.id_proyecto);
+                let id_proyecto_convocatoria = response.data.proyecto_convocatoria.id_proyecto_convocatoria
+                ;
+                return id_proyecto_convocatoria;
+
+            } catch (error) {
+                alert("Error al obtener id de proyecto convocatoria ");
+            }
+        },
+        async asignarProyecto(){
+
+            let id_evaluador = null;
+            let id_proyecto_convocatoria = await this.obtenerIdProyectoConvocatoria();
+
+            // validaciones para que se ingrese un evaluador correctamente
+            if(this.evaluadorSeleccionado == null && this.evaluadorBuscado.trim() == "" || this.evaluadorSeleccionado == "otro" && this.evaluadorBuscado.trim() == "" ){
+                alert("Debes seleccionar un evaluador");
+                return;
+            }else if(this.evaluadorSeleccionado != null && this.evaluadorSeleccionado != "otro" && this.evaluadorBuscado.trim() != ""){
+                alert("Debes seleccionar un solo evaluador");
+                return;
+            }else if(this.evaluadorSeleccionado == "otro" && this.evaluadorBuscado.trim() != ""){
+                try {
+                    const response = await obtenerIdEvaluador(this.evaluadorBuscado);
+                    id_evaluador = response.data.id_usuario;
+
+                    alert(" evaluador: "+id_evaluador);
+                } catch (error) {
+                    alert("Evaluador no encontrado, intenta de nuevo ");
+                    return;
+                }
+
+            }else if(this.evaluadorSeleccionado != null && this.evaluadorBuscado == ""){
+                id_evaluador = this.evaluadorSeleccionado;
+                alert(" evaluador: "+id_evaluador);
+            }
+
+            try {
+                const datosAsignacion = {
+                    "id_usuario": id_evaluador,
+                    "id_proyecto": this.proyecto.id_proyecto,
+                    "id_etapa": 2,
+                    "id_proyecto_convocatoria": id_proyecto_convocatoria
+                }
+                await asignarProyectoEtapaVirtual(datosAsignacion);
+                alert("Proyecto asignado con exito");
+
+                console.log("id proyecto convocatoria "+id_proyecto_convocatoria); 
+            } catch (error) {
+                alert("Error al asignar proyecto");
+            }
+        },
         ProyectoSelecionado(){
+            this.obtenerIdProyectoConvocatoria();
             this.fetchPosiblesEvaluadores(this.proyecto.area_conocimiento,this.proyecto.institucion);
             this.asignarAutoresAProyectos(this.proyecto.id_proyecto);
         }

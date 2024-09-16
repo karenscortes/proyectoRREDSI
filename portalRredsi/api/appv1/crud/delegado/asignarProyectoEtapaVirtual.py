@@ -7,7 +7,7 @@ from appv1.schemas.delegado.asignacionProyectoEtapaVirtual import AsignarProyect
 
 def asignar_proyecto_etapa_virtual(db: Session, asignacion: AsignarProyectoEtapaUno ):
     try:
-        sql = text("""INSERT INTO participantes_proyecto (id_usuario, id_proyecto, id_etapa, id_proyecto_convocatoria) 
+        sql = text("""INSERT INTO participantes_proyecto (id_usuario, id_proyecto, id_etapa, id_proyectos_convocatoria) 
                         VALUES (:id_us, :id_p, :id_etp, :id_pc)""")
         
         params={

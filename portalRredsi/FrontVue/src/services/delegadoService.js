@@ -108,6 +108,59 @@ export const obtenerIdInstitucion = async (institucion) => {
     }
 };
 
+// Función para obtener proyecto convocatoria
+export const obtenerProyectoConvocatoria = async (id_proyecto) => {
+    try {
+        const response = await api.get(`/asignarProyectoEtapaVirtual/obtener-proyecto-convocatoria/?id_proyecto=${id_proyecto}`, {
+            headers: {
+                'Authorization': `Bearer ${localStorage.getItem('access_token')}`
+            }
+        });
+        return response;
+    } catch (error) {
+        if (error.response) {
+            throw error;
+        } else {
+            throw new Error('Error de red o de servidor');
+        }
+    }
+};
+
+// Función para asignar proyecto etapa virtual
+export const asignarProyectoEtapaVirtual = async (datosAsignacion) => {
+    try {
+        const response = await api.post(`/asignarProyectoEtapaVirtual/asignar-proyecto-etapa-uno/`,datosAsignacion, {
+            headers: {
+                'Authorization': `Bearer ${localStorage.getItem('access_token')}`
+            }
+        });
+        return response;
+    } catch (error) {
+        if (error.response) {
+            throw error;
+        } else {
+            throw new Error('Error de red o de servidor');
+        }
+    }
+};
+
+// Función para obtener id de un evaluador por su documento
+export const obtenerIdEvaluador = async (documento) => {
+    try {
+        const response = await api.get(`/listaEvaluadores/get-evaluator-by-document/?documento=${documento}`, {
+            headers: {
+                'Authorization': `Bearer ${localStorage.getItem('access_token')}`
+            }
+        });
+        return response;
+    } catch (error) {
+        if (error.response) {
+            throw error;
+        } else {
+            throw new Error('Error de red o de servidor');
+        }
+    }
+};
 //Asistencia
 export const asistenciaEvento = async (page= 1, page_size = 10) => {
     try {
