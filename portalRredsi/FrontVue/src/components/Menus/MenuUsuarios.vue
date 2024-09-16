@@ -1,10 +1,10 @@
 <template>
     <header class="header d-flex flex-row position-relative">
-        <div class="header_content d-flex flex-row align-items-center justify-content-start">
+        <div class="topbar_content d-flex flex-row align-items-center justify-content-start">
 
             <div class="logo_container">
                 <div class="logo">
-                    <img class="img-fluid" src="../../assets/logoRredsi.png" alt="">
+                    <img class="img-fluid" src="../../assets/img/logoRredsi.png" alt="">
                     <span>RREDSI</span>
                 </div>
             </div>
@@ -12,21 +12,21 @@
             <nav class="main_nav_container">
                 <div class="main_nav">
                     <ul class="main_nav_list d-flex justify-content-between">
-                        <li class="main_nav_item" v-for="(tab, index) in left_tabs" :key="index"><a @click="selectComponent(tab.ruta)">{{ tab.nombre }}</a></li>
+                        <li class="main_nav_item" v-for="(tab, index) in left_tabs" :key="index"><a href="#" @click="selectComponent(tab.ruta)">{{ tab.nombre }}</a></li>
                         <li :class="['main_nav_item', visibilidad]" v-for="(tab, index) in mid_tabs" :key="index">
                             <div class="dropdown">
-                                <a class=" dropdown-toggle text-dark" type="button" data-toggle="dropdown"
-                                    aria-expanded="false">
+                                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                     {{ tab.nombre }}
                                 </a>
-                                <div v-for="(opcion, index) in opciones" :key="index" class="dropdown-menu text-center">
-                                    <a  :href="opcion.ruta">{{ opcion.nombre }}</a><br>
-                                </div>
+                                <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                <li v-for="(opcion, index) in tab.opciones" :key="index"><a href="#"  class="dropdown-item" @click="selectComponent(opcion.ruta)">{{ opcion.nombre }}</a></li>
+                                </ul>
                             </div>
                         </li>
+
                         
-                        <li class="main_nav_item" v-if="rol === 1"><a href="#">Convocatoria</a></li>
-                        <li class="main_nav_item" v-else><a href="#" @click="logout">Cerrar Sesión</a></li>
+                        <li class="main_nav_item" v-if="user.id_rol === 1"><a href="#" @click="selectComponent('ConvocatoriaInfoPage')">Convocatoria</a></li>
+                        <li class="main_nav_item"><a href="#" @click="logout">Cerrar Sesión</a></li>
                     </ul>
                 </div>
             </nav>
@@ -43,73 +43,115 @@
     <div class="container-fluid" id="cont_ejemplo">
        
     </div>
+
+    <!-- Sidebar -->
+    <div class="menu_container menu_mm">
+
+        <!-- Menu Close Button -->
+        <div class="menu_close_container">
+            <div class="menu_close"></div>
+        </div>
+
+        <!-- Menu Items -->
+        <div class="menu_inner menu_mm">
+            <div class="menu menu_mm">
+                <ul class="menu_list menu_mm ">
+                    <li class="menu_item menu_mm"  v-for="(tab, index) in left_tabs" :key="index"><a href="#" @click="selectComponent(tab.ruta)">{{ tab.nombre }}</a></li>
+                    <li :class="['menu_item menu_mm d-block ', visibilidad]" v-for="(tab, index) in mid_tabs" :key="index">
+                        <div class="dropdown menu_mm">
+                            <a class="nav-link dropdown-toggle menu_mm" href="#" id="navbarDropdown" role="button" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                {{ tab.nombre }}
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                <li v-for="(opcion, index) in tab.opciones" :key="index"><a href="#"  class="dropdown-item" @click="selectComponent(opcion.ruta)">{{ opcion.nombre }}</a></li>
+                            </ul>
+                        </div>
+                    </li>
+                    <li class="menu_item menu_mm" v-if="user.id_rol === 1"><a href="#" @click="selectComponent('ConvocatoriaInfoPage')">Convocatoria</a></li>
+                    <li class="menu_item menu_mm"><a href="#"  @click="logout">Cerrar sesión</a></li>
+                </ul>
+
+                <!-- Menu Social -->
+
+                <div class="menu_social_container menu_mm">
+                    <ul class="menu_social menu_mm">
+                        <li class="menu_social_item menu_mm"><a href="https://www.instagram.com/rredsiquindio/"><i
+                                    class="fab fa-instagram"></i></a></li>
+                        <li class="menu_social_item menu_mm"><a
+                                href="https://www.facebook.com/rredsi?mibextid=ZbWKwL"><i
+                                    class="fab fa-facebook-f"></i></a></li>
+                        <li class="menu_social_item menu_mm"><a href="https://x.com/Rredsi"><i
+                                    class="fab fa-twitter"></i></a></li>
+                    </ul>
+                </div>
+
+                <div class="menu_copyright menu_mm">ADSO 2670586 All rights reserved</div>
+            </div>
+
+        </div>
+
+    </div>
 </template>
 
 <script>
 import { defineComponent,reactive } from "vue";
 import { useRouter } from "vue-router";
 import { useAuthStore } from "@/store";
+
 export default defineComponent({
-  props: {
-    rol: Number,
-  },
-  setup(props, { emit }) {
-        
+    setup(_,{emit}) {
+        const authStore = useAuthStore(); 
+        const router = useRouter(); 
+        const user = authStore.user;
+
         const state = reactive({
-        left_tabs: [],
-        mid_tabs: [],
-        visibilidad: "d-none",
+            left_tabs: [],
+            mid_tabs: [],
+            visibilidad: "d-none",
         });
 
-        if (props.rol === 3) {
+
+
+        if (user?.id_rol === 3) {
             Object.assign(state, {
-                left_tabs: [{nombre:'Inicio', ruta:'#'}, {nombre:'Perfil', ruta:'#'}, {nombre:'Cuentas', ruta:'#'},{nombre:'Rubricas', ruta:'#'}],
+                left_tabs: [{nombre:'Inicio', ruta:'InicioAdmin'}, {nombre:'Perfil', ruta:'PerfilAdmin'}, {nombre:'Cuentas', ruta:'CuentasDelegados'},{nombre:'Rubricas', ruta:'RubricaAdminView'}],
                 mid_tabs:[
                     {   nombre:"Eventos", 
-                        opciones:[{nombre:'Salas', ruta:'#'}, {nombre:'Asistencia',ruta:'#'}, {nombre:'Convocatoria', ruta:'#'}]
+                        opciones:[{nombre:'Salas', ruta:'SalasAdminView'}, {nombre:'Asistencia',ruta:'GestionarAsistentes'}, {nombre:'Convocatoria', ruta:'GestionarConvocatorias'}]
                     }
                 ],
                 visibilidad:"d-inline-block"
 
             });
-        } else if (props.rol === 2) {
+        } else if (user?.id_rol === 2) {
             Object.assign(state, {
-                left_tabs: [{nombre:'Inicio', ruta:'ListaEvaluadores'}, {nombre:'Perfil', ruta:'AsistenciaEvento'}],
+                left_tabs: [{nombre:'Inicio', ruta:'InicioDelegados'}, {nombre:'Perfil', ruta:'PerfilDelegados'}],
                 mid_tabs:[
                     {   nombre:"Evaluadores", 
-                        opciones:[{nombre:'Postulaciones', ruta:'#'}, {nombre:'Lista de Evaluadores',ruta:'#'}]
+                        opciones:[{nombre:'Postulaciones', ruta:'PostulacionesEvaluadores'}, {nombre:'Lista de Evaluadores',ruta:'ListaEvaluadores'}]
                     },
                     {
                         nombre:"Proyectos", 
-                        opciones:[{nombre:'Asignacion de Proyectos', ruta:'#'}, {nombre:'Lista de Proyectos',ruta:'#'}]
+                        opciones:[{nombre:'Asignacion de Proyectos', ruta:'AsignarProyectos'}, {nombre:'Lista de Proyectos',ruta:'ListaProyectos'}]
                     },
                     {
                         nombre:"Evento", 
-                        opciones:[{nombre:'Salas', ruta:'#'}, {nombre:'Asistencia',ruta:'#'}]
+                        opciones:[{nombre:'Salas', ruta:'GestionSala'}, {nombre:'Asistencia',ruta:'AsistenciaEvento'}]
                     }
                 ],
                 visibilidad:"d-inline-block"
             });
-        } else if (props.rol === 1) {
+        } else if (user?.id_rol === 1) {
             Object.assign(state, {
-                left_tabs: [{nombre:'Inicio', ruta:'#'}, {nombre:'Perfil', ruta:'#'}],
-                mid_tabs:[
-                    {
-                        nombre:"Proyectos", 
-                        opciones:[{nombre:'Primera Etapa', ruta:'#'}, {nombre:'Segunda Etapa',ruta:'#'}]
-                    }
-                ],
-                visibilidad:"d-inline-block"
+                left_tabs: [{nombre:'Inicio', ruta:'PaginaInicioEvaluadorView'}, {nombre:'Perfil', ruta:'PerfilEvaluador'}, {nombre:'Proyectos', ruta:'ProyectosAsignadosEvaluadorView'}],
+                visibilidad:"d-none"
             });
-        } else if(props.rol == 6) {
+        } else if(user?.id_rol == 6) {
             Object.assign(state, {
-                left_tabs: [{nombre: "Inicio", ruta: "SuperAdminView" }, {nombre: "Informacion delegados", ruta: "ListaDelegados" }],
-                visibilidadLogin: "d-none",
+                left_tabs: [{nombre: "Inicio", ruta: "InicioSuperAdminView" }, {nombre: "Gestionar Administradores", ruta: "ListaAdministradores" }],
+                visibilidad: "d-none",
             });
         }
-
-        const authStore = useAuthStore(); 
-        const router = useRouter(); 
 
         const selectComponent = (componentName) => {
             emit('component-selected', componentName); // Emite un evento para seleccionar el componente
@@ -117,11 +159,12 @@ export default defineComponent({
 
         // Acción para cerrar sesión
         const logout = () => {
-        authStore.logout(); 
-        router.push('/'); 
+            authStore.logout(); 
+            router.push('/'); 
         };
 
         return {
+            user,
             ...state,
             selectComponent,
             logout
@@ -151,14 +194,7 @@ export default defineComponent({
         background: #FFFFFF;
         color: #a5a5a5;
     }
-    div
-    {
-        display: block;
-        position: relative;
-        -webkit-box-sizing: border-box;
-        -moz-box-sizing: border-box;
-        box-sizing: border-box;
-    }
+    
     ul
     {
         list-style: none;
@@ -263,6 +299,205 @@ export default defineComponent({
     }
 
 /*********************************
+4. Menu
+*********************************/
+
+.menu_container {
+	position: fixed;
+	top: 0;
+	right: -50vw;
+	width: 50vw;
+	height: 100vh;
+	background: #FFFFFF;
+	z-index: 12;
+	-webkit-transition: all 0.6s ease;
+	-moz-transition: all 0.6s ease;
+	-ms-transition: all 0.6s ease;
+	-o-transition: all 0.6s ease;
+	transition: all 0.6s ease;
+	visibility: hidden;
+	opacity: 0;
+}
+
+.menu_container.active {
+	visibility: visible;
+	opacity: 1;
+	right: 0;
+}
+
+.menu {
+	position: absolute;
+	top: 150px;
+	left: 0;
+	padding-left: 15%;
+}
+
+.menu_list {
+	-webkit-transform: translateY(3.5rem);
+	-moz-transform: translateY(3.5rem);
+	-ms-transform: translateY(3.5rem);
+	-o-transform: translateY(3.5rem);
+	transform: translateY(3.5rem);
+	-webkit-transition: all 200ms ease;
+	-moz-transition: all 200ms ease;
+	-ms-transition: all 200ms ease;
+	-o-transition: all 200ms ease;
+	transition: all 1000ms 600ms ease;
+	opacity: 0;
+}
+
+.menu_container.active .menu_list {
+	-webkit-transform: translateY(0px);
+	-moz-transform: translateY(0px);
+	-ms-transform: translateY(0px);
+	-o-transform: translateY(0px);
+	transform: translateY(0px);
+	opacity: 1;
+}
+
+.menu_item {
+
+	margin-bottom: 9px;
+
+}
+
+.menu_item a {
+	font-family: 'Open Sans', sans-serif;
+	font-size: 30px;
+	font-weight: 700;
+	color: #3a3a3a;
+	-webkit-transition: all 200ms ease;
+	-moz-transition: all 200ms ease;
+	-ms-transition: all 200ms ease;
+	-o-transition: all 200ms ease;
+	transition: all 200ms ease;
+
+}
+
+.menu_item a:hover {
+	color: #ffb606;
+}
+
+.menu_close_container {
+	position: absolute;
+	top: 86px;
+	right: 79px;
+	width: 21px;
+	height: 21px;
+	cursor: pointer;
+	-webkit-transform: rotate(45deg);
+	-moz-transform: rotate(45deg);
+	-ms-transform: rotate(45deg);
+	-o-transform: rotate(45deg);
+	transform: rotate(45deg);
+}
+
+.menu_close {
+	top: 9px;
+	width: 21px;
+	height: 3px;
+	background: #3a3a3a;
+	-webkit-transition: all 200ms ease;
+	-moz-transition: all 200ms ease;
+	-ms-transition: all 200ms ease;
+	-o-transition: all 200ms ease;
+	transition: all 200ms ease;
+}
+
+.menu_close::after {
+	display: block;
+	position: absolute;
+	top: -9px;
+	left: 9px;
+	content: '';
+	width: 3px;
+	height: 21px;
+	background: #3a3a3a;
+	-webkit-transition: all 200ms ease;
+	-moz-transition: all 200ms ease;
+	-ms-transition: all 200ms ease;
+	-o-transition: all 200ms ease;
+	transition: all 200ms ease;
+}
+
+.menu_close_container:hover .menu_close,
+.menu_close_container:hover .menu_close::after {
+	background: #ffb606;
+}
+
+/*********************************
+4.1 Menu Social
+*********************************/
+
+.menu_social_container {
+	margin-top: 100px;
+	-webkit-transform: translateY(3.5rem);
+	-moz-transform: translateY(3.5rem);
+	-ms-transform: translateY(3.5rem);
+	-o-transform: translateY(3.5rem);
+	transform: translateY(3.5rem);
+	-webkit-transition: all 1000ms 1000ms ease;
+	-moz-transition: all 1000ms 1000ms ease;
+	-ms-transition: all 1000ms 1000ms ease;
+	-o-transition: all 1000ms 1000ms ease;
+	transition: all 1000ms 1000ms ease;
+	opacity: 0;
+	padding-left: 4px;
+}
+
+.menu_social_item {
+	display: inline-block;
+	margin-right: 30px;
+}
+
+.menu_social_item a i {
+	color: #3a3a3a;
+}
+
+.menu_social_item a i:hover {
+	color: #ffb606;
+}
+
+.menu_container.active .menu_social_container {
+	-webkit-transform: translateY(0px);
+	-moz-transform: translateY(0px);
+	-ms-transform: translateY(0px);
+	-o-transform: translateY(0px);
+	transform: translateY(0px);
+	opacity: 1;
+}
+
+/*********************************
+4.2 Menu copyright
+*********************************/
+
+.menu_copyright {
+	margin-top: 60px;
+	margin-left: 5px;
+	-webkit-transform: translateY(3.5rem);
+	-moz-transform: translateY(3.5rem);
+	-ms-transform: translateY(3.5rem);
+	-o-transform: translateY(3.5rem);
+	transform: translateY(3.5rem);
+	-webkit-transition: all 1000ms 1200ms ease;
+	-moz-transition: all 1000ms 1200ms ease;
+	-ms-transition: all 1000ms 1200ms ease;
+	-o-transition: all 1000ms 1200ms ease;
+	transition: all 1000ms 1200ms ease;
+	opacity: 0;
+}
+
+.menu_container.active .menu_copyright {
+	-webkit-transform: translateY(0px);
+	-moz-transform: translateY(0px);
+	-ms-transform: translateY(0px);
+	-o-transform: translateY(0px);
+	transform: translateY(0px);
+	opacity: 1;
+}
+
+
+/*********************************
 3.2 Main Nav
 *********************************/
 
@@ -282,9 +517,9 @@ export default defineComponent({
     .main_nav_item
     {
         display: inline-block;
+
     }
-    .main_nav_item:last-child
-    {
+    .main_nav_item:last-child{
         margin-right: 0px;
     }
     .main_nav_item a
@@ -355,14 +590,14 @@ export default defineComponent({
         transition: all 200ms ease;
     }
 
-    .header_content
+    .topbar_content
     {
         width: 100%;
         padding: 1.9rem;
         height: 100%;
 
     }
-    .header_content::before
+    .topbar_content::before
     {
         display: block;
         position: absolute;
@@ -380,7 +615,7 @@ export default defineComponent({
         {
             width: 1200px;
         }
-        .header_content
+        .topbar_content
         {
             width: 100%;
         }
@@ -409,7 +644,7 @@ export default defineComponent({
         {
             width: 90%;
         }
-        .header_content
+        .topbar_content
         {
             width: 100%;
         }
