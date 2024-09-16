@@ -43,13 +43,9 @@ async def read_all_admins_by_page(
 async def modify_user_role(
     user_role_update: UserRoleUpdateSchema, 
     db: Session = Depends(get_db)
-    # current_user: UserResponse = Depends(get_current_user)
-):
-    # Elimina la verificación de permisos para pruebas
-    # permisos = get_permissions(db, current_user.id_rol, MODULE)
-    # if not permisos.p_update:
-    #     raise HTTPException(status_code=401, detail="Usuario no autorizado")
 
+):
+    
     # Actualizar rol
     updated = update_user_role(db, user_id=user_role_update.user_id, new_role_id=user_role_update.new_role_id)
     if not updated:
