@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
 from appv1.crud.superadmin.superadmin import (
     get_all_admins, 
@@ -6,16 +6,11 @@ from appv1.crud.superadmin.superadmin import (
     get_activity_history_by_admin
 )
 from appv1.schemas.superadmin.superadmin import (
-    AdminResponse,
     PaginatedAdminResponse, 
     UserRoleUpdateSchema, 
     ActivityHistoryResponse
 )
 from db.database import get_db
-# Elimina la dependencia de autenticación
-# from appv1.routers.login import get_current_user
-# from appv1.schemas.usuario import UserResponse  # Esquema del usuario autenticado
-# from appv1.crud.permissions import get_permissions  # Si usas permisos
 from typing import List
 
 router_superadmin = APIRouter()
@@ -43,13 +38,9 @@ async def read_all_admins_by_page(
 async def modify_user_role(
     user_role_update: UserRoleUpdateSchema, 
     db: Session = Depends(get_db)
-
 ):
-    
     # Actualizar rol
     updated = update_user_role(db, user_id=user_role_update.user_id, new_role_id=user_role_update.new_role_id)
-    if not updated:
-        raise HTTPException(status_code=400, detail="No se pudo actualizar el rol del usuario")
     return updated
 
 # Obtener el historial de actividades de un administrador
@@ -57,15 +48,6 @@ async def modify_user_role(
 async def get_activity_history(
     user_id: int, 
     db: Session = Depends(get_db)
-    # current_user: UserResponse = Depends(get_current_user)
 ):
-    # Elimina la verificación de permisos para pruebas
-    # permisos = get_permissions(db, current_user.id_rol, MODULE)
-    # if not permisos.p_select:
-    #     raise HTTPException(status_code=401, detail="Usuario no autorizado")
-
     # Obtener historial de actividades
-    activity_history = get_activity_history_by_admin(db, user_id=user_id)
-    if not activity_history:
-        raise HTTPException(status_code=404, detail="No se encontró historial de actividades para este administrador")
-    return activity_history
+    return get_activity_history_by_admin(db, user_id=user_id)

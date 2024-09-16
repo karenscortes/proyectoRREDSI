@@ -38,6 +38,7 @@
                     role="switch"
                     :id="'estado' + index"
                     v-model="administrador.estado"
+                    disabled
                   >
                   <label class="form-check-label" :for="'estado' + index"></label>
                 </div>
@@ -46,14 +47,14 @@
               <!-- Columna de acciones existente -->
               <td>
                 <a @click="mostrarDetalle(administrador)" data-bs-toggle="modal" data-bs-target="#detalleAdminModal">
-                  <button class="far fa-eye" style="font-size: 25px;"></button>
+                  <button class="far fa-eye border border-0" style="font-size: 25px;"></button>
                 </a>
               </td>
 
-              <!-- Columna para ver detalles en el modal -->
+              <!-- Columna para ver acciones en el modal -->
               <td>
-                <a @click="mostrarDetalle(administrador)" data-bs-toggle="modal" data-bs-target="#detalleAdminModal">
-                  <i class="far fa-eye" style="font-size: 25px;"></i>
+                <a @click="mostrarAcciones(administrador)" data-bs-toggle="modal" data-bs-target="#accionesAdminModal">
+                  <button class="far fa-list-alt border border-0" style="font-size: 25px;"></button>
                 </a>
               </td>
             </tr>
