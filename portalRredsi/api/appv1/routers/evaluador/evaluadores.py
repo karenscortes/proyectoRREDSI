@@ -1,10 +1,10 @@
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 from appv1.routers.login import get_current_user
-from appv1.schemas.evaluador.evaluador import PaginatedResponse, PaginatedResponseHorario, PostulacionEvaluadorCreate, RespuestaRubricaCreate
+from appv1.schemas.evaluador.evaluador import PaginatedResponse, PaginatedResponseHorario, PostulacionEvaluadorCreate, ProyectoRespuesta, RespuestaRubricaCreate
 from appv1.schemas.usuario import UserResponse
 from db.database import get_db
-from appv1.crud.evaluador.proyectos import convertir_timedelta_a_hora, create_postulacion_evaluador, get_current_convocatoria, get_proyectos_asignados, get_proyectos_etapa_presencial_con_horario, get_proyectos_por_estado, get_proyectos_por_etapa, insert_respuesta_rubrica
+from appv1.crud.evaluador.proyectos import convertir_timedelta_a_hora, create_postulacion_evaluador, get_current_convocatoria, get_datos_proyecto_evaluador, get_proyectos_asignados, get_proyectos_etapa_presencial_con_horario, get_proyectos_por_estado, get_proyectos_por_etapa, insert_respuesta_rubrica
 from appv1.crud.permissions import get_permissions
 
 routerObtenerProyectos = APIRouter()
@@ -135,3 +135,21 @@ async def obtener_horario_evaluador(
         return {"data": proyectos, "total_pages": response["total_pages"]}
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Error al obtener el horario: {str(e)}")
+
+# Ruta para obtener el detalle del proyecto y evaluador para calificar un proyecto
+@routerObtenerProyectos.get("/obtener-datos-proyecto-y-evaluador/", response_model=ProyectoRespuesta)
+async def obtener_datos_proyecto_evaluador(
+    id_proyecto: int,
+    id_usuario: int,
+    current_user: UserResponse = Depends(get_current_user),
+    db: Session = Depends(get_db),
+):
+    # Aquí tienes que consultar qué permisos tiene asignados por rol :)
+    permisos = get_permissions(db, current_user.id_rol, MODULE)
+    # Si no tiene el permiso necesario, se lanza un mensaje de error
+    if not permisos.p_consultar:
+        raise HTTPException(status_code=401, detail="No está autorizado a utilizar este módulo")
+    
+    # Llama a la función para obtener los datos del proyecto y evaluador
+    proyecto = get_datos_proyecto_evaluador(db, id_proyecto, id_usuario)
+    return proyecto

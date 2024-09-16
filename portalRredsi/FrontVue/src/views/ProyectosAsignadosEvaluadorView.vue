@@ -4,6 +4,7 @@
         <component 
             v-if="showCalificarProyecto && selectedComponent" 
             :is="selectedComponent" 
+            :proyectoSeleccionado="selectedProyecto" 
             @volver="handleVolver" 
         />
         
@@ -111,13 +112,14 @@ export default {
     },
     data() {
         return {
-            proyectos: [],         
-            currentPage: 1,       
-            totalPages: 1,         
-            itemsPerPage: 6,      
+            proyectos: [],
+            currentPage: 1,
+            totalPages: 1,
+            itemsPerPage: 6,
             selectedState: '',
-            selectedComponent: '',  
-            showCalificarProyecto: false // Nueva bandera
+            selectedComponent: '',
+            selectedProyecto: null, 
+            showCalificarProyecto: false
         };
     },
     computed: {
@@ -193,12 +195,12 @@ export default {
             }
         },
 
-        changeComponent(componentName) {
-        this.selectedComponent = componentName;
-        this.showCalificarProyecto = true; 
+        changeComponent({ componentName, proyecto }) {
+            this.selectedComponent = componentName;
+            this.selectedProyecto = proyecto; 
+            this.showCalificarProyecto = true; 
         },
 
-        // Nueva función para manejar el evento de volver
         handleVolver() {
             this.showCalificarProyecto = false;
         }

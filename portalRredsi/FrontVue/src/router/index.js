@@ -29,7 +29,7 @@ const routes = [
   { path: '/principal-evaluador', name: 'EvaluadorView', component: EvaluadorView, meta: { requiresAuth: true, allowedRoles: [1] }   },
   { path: '/proyectos-asignados', name: 'ProyectosAsignadosEvaluadorView', component: ProyectosAsignadosEvaluadorView, meta: { requiresAuth: true, allowedRoles: [1] }  },
   { path: '/pagina-inicio', name: 'PaginaInicioEvaluadorView', component: PaginaInicioEvaluadorView, meta: { requiresAuth: true, allowedRoles: [1] } },
-  {path: '/calificar-proyecto/:id', name: 'CalificarProyecto', component: CalificarProyectoEvaluadorView, meta: { requiresAuth: true, allowedRoles: [1] }},
+  {path: '/calificar-proyecto', name: 'CalificarProyecto', component: CalificarProyectoEvaluadorView, meta: { requiresAuth: true, allowedRoles: [1] }},
 
 
   // RUTAS DELEGADO

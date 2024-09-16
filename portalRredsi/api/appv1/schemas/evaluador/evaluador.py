@@ -60,3 +60,20 @@ class ProyectoConSalaSchema(BaseModel):
 class PaginatedResponseHorario(BaseModel):
     data: List[ProyectoConSalaSchema]
     total_pages: int
+
+
+class Componente(BaseModel):
+    titulo: str
+    descripcion: str
+    valor_maximo: float
+    calificacion: Optional[float] = None
+    observaciones: Optional[str] = None
+
+class ProyectoRespuesta(BaseModel):
+    titulo_proyecto: str
+    universidad_proyecto: str
+    nombre_evaluador: str
+    cedula_evaluador: str
+    universidad_evaluador: str
+    email_evaluador: str
+    celular_evaluador: str

@@ -89,6 +89,7 @@ import { ref, computed, watch } from 'vue';
 
 export default {
     setup(props) {
+        console.log('ID del proyecto:', props.proyecto.id_proyecto);
         const puntajeTotal = ref(0);
 
         const actualizarPuntajeTotal = () => {
@@ -114,19 +115,14 @@ export default {
         return { caracteresActuales, actualizarCaracteres, puntajeTotal, formateadoPuntajeTotal, actualizarPuntajeTotal };
     },
     props: {
-        tituloProyecto: String,
-        ponentesProyecto: String,
-        universidadProyecto: String,
-        nombreEvaluador: String,
-        cedulaEvaluador: String,
-        universidadEvaluador: String,
-        emailEvaluador: String,
-        celularEvaluador: String,
-        componentes: Array 
+        proyecto: {
+            type: Object,
+            required: true
+        }
     },
     methods: {
         
-    },
+    }
 }
 </script>
 

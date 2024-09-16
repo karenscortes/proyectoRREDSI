@@ -4,6 +4,8 @@ from sqlalchemy.exc import SQLAlchemyError, IntegrityError
 from fastapi import HTTPException
 from datetime import timedelta
 
+from appv1.schemas.evaluador.evaluador import ProyectoRespuesta
+
 #Consulta para sacar los proyectos asignados a un evaluador por etapa (paginado)
 def get_proyectos_por_etapa(db: Session, nombre_etapa: str, id_usuario: int, page: int = 1, page_size: int = 10):
     try:
@@ -327,6 +329,7 @@ def get_proyecto_convocatoria(db: Session, id_proyecto: int):
         print(f"Error al consultar el proyecto convocatoria: {e}")
         raise HTTPException(status_code=500, detail="Error al consultar el proyecto convocatoria")
     
+# Inserción de las respuestas de un proyecto
 def insert_respuesta_rubrica(db: Session, id_item_rubrica: int, id_usuario: int, id_proyecto: int, observacion: str, calificacion: float, calificacion_final: float):
     try:
         # Obtener id_proyecto_convocatoria
@@ -405,7 +408,8 @@ def insert_respuesta_rubrica(db: Session, id_item_rubrica: int, id_usuario: int,
         db.rollback()
         print(f"Error al insertar respuesta de rúbrica: {e}")
         raise HTTPException(status_code=500, detail="Error al insertar respuesta de rúbrica")
-
+    
+#  Consultar los detalles del proyecto con horario 
 def get_proyectos_etapa_presencial_con_horario(db: Session, id_usuario: int, page: int = 1, page_size: int = 10):
     try:
         offset = (page - 1) * page_size
@@ -484,12 +488,60 @@ def get_proyectos_etapa_presencial_con_horario(db: Session, id_usuario: int, pag
     except SQLAlchemyError as e:
         print(f"Error al buscar proyectos por etapa: {e}")
         raise HTTPException(status_code=500, detail="Error al buscar proyectos por etapa")
-
+    
+# Funcion para convetir la hora de la db a tiempo real
 def convertir_timedelta_a_hora(timedelta_obj: timedelta) -> str:
     total_seconds = int(timedelta_obj.total_seconds())
     horas, minutos = divmod(total_seconds // 60, 60)
     return f"{horas:02}:{minutos:02}"
 
 
+# Obtener los datos para calificar un proyecto
+def get_datos_proyecto_evaluador(db: Session, id_proyecto: int, id_usuario: int):
+    try:
+        sql_query = text("""
+            SELECT 
+                proyectos.titulo AS titulo_proyecto,
+                inst_proyecto.nombre AS universidad_proyecto,
+                usuarios.nombres AS nombre_evaluador,
+                usuarios.documento AS cedula_evaluador,
+                inst_evaluador.nombre AS universidad_evaluador,
+                usuarios.correo AS email_evaluador,
+                usuarios.celular AS celular_evaluador
+            FROM 
+                proyectos
+            JOIN 
+                participantes_proyecto ON proyectos.id_proyecto = participantes_proyecto.id_proyecto
+            JOIN 
+                usuarios ON usuarios.id_usuario = participantes_proyecto.id_usuario
+            JOIN 
+                detalles_institucionales ON usuarios.id_usuario = detalles_institucionales.id_usuario
+            JOIN 
+                instituciones AS inst_proyecto ON proyectos.id_institucion = inst_proyecto.id_institucion
+            JOIN 
+                instituciones AS inst_evaluador ON detalles_institucionales.id_institucion = inst_evaluador.id_institucion
+            WHERE 
+                proyectos.id_proyecto = :id_proyecto
+                AND usuarios.id_usuario = :id_usuario
+        """)
+        result = db.execute(sql_query, {"id_proyecto": id_proyecto, "id_usuario": id_usuario}).fetchone()
 
+        if not result:
+            raise HTTPException(status_code=404, detail="Datos no encontrados")
+
+        proyecto_respuesta = ProyectoRespuesta(
+            titulo_proyecto=result.titulo_proyecto,
+            universidad_proyecto=result.universidad_proyecto,
+            nombre_evaluador=result.nombre_evaluador,
+            cedula_evaluador=result.cedula_evaluador,
+            universidad_evaluador=result.universidad_evaluador,
+            email_evaluador=result.email_evaluador,
+            celular_evaluador=result.celular_evaluador
+        )
+        
+        return proyecto_respuesta
+    
+    except Exception as e:
+        db.rollback()
+        raise HTTPException(status_code=500, detail=f"Error al consultar los datos del proyecto: {e}")
 
