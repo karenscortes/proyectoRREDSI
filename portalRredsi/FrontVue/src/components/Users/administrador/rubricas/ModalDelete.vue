@@ -7,7 +7,6 @@
     data-bs-keyboard="false"
     tabindex="-1"
     aria-labelledby="staticBackdropLabel"
-    aria-hidden="true"
   >
     <div class="modal-dialog modal-dialog-centered" style="max-width: 25%">
       <div class="modal-content rounded-st-1 shadow-lg modal-responsiven">
@@ -37,11 +36,24 @@
 </template>
 <script setup>
 import {deleteItems} from "@/services/administradorService";
+import { reactive } from "vue";
 const props = defineProps({
-  id_item_rubrica: {
-    type: Number,
-    required: true,
-  },
+  infoModalEliminar: {
+    type: Object,
+    default: null,
+    validator(value) {
+      return (
+        typeof value.id_item_rubrica === "number" &&
+        typeof value.id_rubrica === 'number'
+      );
+    }
+  }
+  
+});
+
+const infoBorrar = reactive({
+  'id_rubrica': props.infoModalEliminar.id_rubrica, 
+  'id_item_rubrica': props.infoModalEliminar.id_item_rubrica,
 });
 
 //Definimos los eventos a emitir
@@ -53,16 +65,18 @@ const closeModal = () => {
 }
 
 //Método que emitira el evento a la rubrica
-const actualizar = (id_item)=>{
-  emit('actualizarRubrica', id_item); 
+const actualizar = ()=>{
+  emit('actualizarRubrica', infoBorrar); 
 }
 
 //Función para eliminar item, cerrar modal y disparar el método que emitira a la rubrica
 const save = () => {
-  const aux_id_item = props.id_item_rubrica;  
+  console.log("Hola desde modal delete")
+  console.log(infoBorrar);
+  const aux_id_item = props.infoModalEliminar.id_item_rubrica;  
   const result = deleteItems(aux_id_item); 
   closeModal();
-  actualizar(aux_id_item); 
+  actualizar(); 
 }
 </script>
 <style scoped>

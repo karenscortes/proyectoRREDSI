@@ -114,7 +114,7 @@ export default defineComponent({
 
         if (user?.id_rol === 3) {
             Object.assign(state, {
-                left_tabs: [{nombre:'Inicio', ruta:'InicioAdmin'}, {nombre:'Perfil', ruta:'PerfilAdmin'}, {nombre:'Cuentas', ruta:'CuentasDelegados'},{nombre:'Rubricas', ruta:'RubricaAdminView'}],
+                left_tabs: [{nombre:'Inicio', ruta:'InicioAdminView'}, {nombre:'Perfil', ruta:'PerfilAdmin'}, {nombre:'Cuentas', ruta:'DelegadosAdminView'},{nombre:'Rubricas', ruta:'RubricaAdminView'}],
                 mid_tabs:[
                     {   nombre:"Eventos", 
                         opciones:[{nombre:'Salas', ruta:'SalasAdminView'}, {nombre:'Asistencia',ruta:'GestionarAsistentes'}, {nombre:'Convocatoria', ruta:'GestionarConvocatorias'}]
