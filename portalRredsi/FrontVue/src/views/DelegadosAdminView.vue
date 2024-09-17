@@ -64,7 +64,7 @@
       </div>
     </div>
     <PaginatorBody
-      :totalPages="10"
+      :totalPages="total_pages"
       @page-changed="handlePaginate($event)"
     ></PaginatorBody>
     <ModalAdd @close="closeModalAdd()" v-if="isModalOpenAdd"></ModalAdd>
@@ -86,6 +86,7 @@ import { getDelegatesAll } from "@/services/administradorService";
 const isModalOpenEdit = ref(false);
 const isModalOpenAdd = ref(false);
 const page = ref(1);
+const total_pages = ref(0);
 
 const busqueda = ref("");
 const estadoActualDelegado = ref("");
@@ -99,6 +100,8 @@ const handlePaginate = async(pagina) => {
   page.value = pagina;
   const newPage = await fetchAllDelegates(page.value);
   console.log("Soy respuesta desde rubrica paginador")
+  total_pages.value = newPage.data.total_pages;
+  console.log(total_pages.value);
   console.log(newPage.data.users);
 };
 
@@ -180,6 +183,7 @@ const closeModalDetail = () => {
 const fetchAllDelegates = async () => {
   try {
     const response = await getDelegatesAll(page.value);
+    total_pages.value = response.data.total_pages;
     console.log(response)
     return response
   } catch (error) {
