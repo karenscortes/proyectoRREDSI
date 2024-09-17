@@ -40,7 +40,7 @@
                   <span class="text-danger fw-bold">*</span>
                 </label>
                 <input
-                  type="text"
+                  type="number"
                   id="valor_maximo"
                   name="valor_maximo"
                   required="required"
@@ -73,6 +73,7 @@
 
 <script setup>
 import { updateItems} from "@/services/administradorService";
+import { InsertItems} from "@/services/administradorService";
 import {defineEmits, reactive } from 'vue';
   const props = defineProps({
   infoModalEditar: {
@@ -90,13 +91,14 @@ import {defineEmits, reactive } from 'vue';
   }
 });
 
-const emit = defineEmits(['close', 'actualizarRubrica']);
+const emit = defineEmits(['close', 'actualizarRubrica', 'newRubricAdded']);
 
 //Propiedad auxiliar para guardar el id del item 
 const id_item_rubrica = props.infoModalEditar.id_item_rubrica; 
 
 //Objeto reactivo para almacenar los cambios que se realicen
 const itemActual = reactive({
+  id_rubrica: props.infoModalEditar.id_rubrica,
   titulo : props.infoModalEditar.titulo,
   componente: props.infoModalEditar.componente, 
   valor_max: props.infoModalEditar.valor_max
@@ -112,9 +114,23 @@ const actualizar = ()=>{
   emit('actualizarRubrica', {id_item_rubrica, itemActual});
 }
 
+const newRubricAdded = (nuevo_item)=> emit('newRubricAdded', nuevo_item);
+
 //Método para hacer el guardado, cerrar modal y disparar el método que emitira
 const save = async () =>{
-  const itemActualizado = await updateItems(id_item_rubrica, itemActual); 
+  if(id_item_rubrica == null){
+    const { data } = await InsertItems(itemActual);
+    const { data : id_item_rubrica } = data
+    newRubricAdded({id_item_rubrica, ...itemActual }) 
+    // Spread operator -> objNombre = { nombre: "Laura" } objApellido = {apellido: "Motato"} -> 
+    
+    // nuevoObjeto = { objAepllido } -> {objAellido: {apellido: "Motato"}}
+    // nuevoObjConSpread = {...objApellido } -> { apellido: "Motato" }
+    // nuevoObjConSpreadConvinado = {...objNombre, ...objApellido}
+
+  }else{
+    const itemActualizado = await updateItems(id_item_rubrica, itemActual);
+  }
   actualizar(); 
   closeModal();
 }

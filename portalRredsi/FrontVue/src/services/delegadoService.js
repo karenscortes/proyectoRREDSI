@@ -179,6 +179,8 @@ export const actualizarEstadoProyecto = async (id_proyecto) => {
         }
     }
 };
+
+
 //Asistencia
 export const asistenciaEvento = async (page= 1, page_size = 10) => {
     try {

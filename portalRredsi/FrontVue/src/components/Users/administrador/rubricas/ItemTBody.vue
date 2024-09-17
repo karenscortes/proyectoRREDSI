@@ -29,6 +29,8 @@
 </template>
 
 <script setup>
+import { reactive } from 'vue';
+
 const props = defineProps({
   infoItem: {
     type: Object,
@@ -45,6 +47,11 @@ const props = defineProps({
   },
 });
 
+const infoEliminar = reactive({
+  'id_rubrica': props.infoItem.id_rubrica, 
+  'id_item_rubrica': props.infoItem.id_item_rubrica,
+});
+
 const emit = defineEmits(["editarItem", "eliminarItem"]);
 
 const accionEditar = () => {
@@ -52,7 +59,7 @@ const accionEditar = () => {
 };
 
 const accionEliminar = () => {
-  emit("eliminarItem", props.infoItem.id_item_rubrica); 
+  emit("eliminarItem", infoEliminar); 
 }
 </script>
 
