@@ -48,6 +48,10 @@ def get_unassigned_projects(db: Session, page: int = 1, page_size: int = 10):
                 raise HTTPException(status_code=500, detail="Error al obtener todos los proyectos no asignados")
 
 def get_all_authors(db: Session,  id_proyecto:int):
-    sql = text("SELECT nombre FROM autores WHERE id_proyecto = :id_proyecto")
-    result = db.execute(sql, {"id_proyecto": id_proyecto}).fetchall()
-    return result
+    try:    
+        sql = text("SELECT nombre FROM autores WHERE id_proyecto = :id_proyecto")
+        result = db.execute(sql, {"id_proyecto": id_proyecto}).fetchall()
+        return result
+    except SQLAlchemyError as e:
+        print(f"Error al obtener autores del proyecto: {e}")
+        raise HTTPException(status_code=500, detail="al obtener autores del proyecto")

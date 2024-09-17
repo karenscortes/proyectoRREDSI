@@ -52,27 +52,35 @@ def get_all_applications(db: Session, page: int = 1, page_size: int = 10):
 
 
 def update_application_status(db: Session, id_evaluador:int, estado: str):
-    sql = text(
-    """
-        UPDATE postulaciones_evaluadores SET estado_postulacion = :estado 
-        WHERE id_evaluador = :id_evaluador AND id_convocatoria IN (
-            SELECT id_convocatoria 
-            FROM convocatorias 
-            WHERE estado = 'en curso'
+    try:
+        sql = text(
+        """
+            UPDATE postulaciones_evaluadores SET estado_postulacion = :estado 
+            WHERE id_evaluador = :id_evaluador AND id_convocatoria IN (
+                SELECT id_convocatoria 
+                FROM convocatorias 
+                WHERE estado = 'en curso'
+            )
+        """
         )
-    """
-    )
 
-    params = {
-        "estado": estado,
-        "id_evaluador": id_evaluador
-    }
-    db.execute(sql, params)
-    db.commit()
-    return True
+        params = {
+            "estado": estado,
+            "id_evaluador": id_evaluador
+        }
+        db.execute(sql, params)
+        db.commit()
+        return True
+    except SQLAlchemyError as e:
+        print(f"Error al actualizar estado de postulación: {e}")
+        raise HTTPException(status_code=500, detail="Error al actualizar estado de postulación")
 
 def get_certificates_by_id(db: Session,  id_usuario:int):
-    sql = text("SELECT * FROM titulos_academicos WHERE id_usuario = :id_usuario")
-    result = db.execute(sql, {"id_usuario": id_usuario}).fetchall()
-    return result
+    try:
+        sql = text("SELECT * FROM titulos_academicos WHERE id_usuario = :id_usuario")
+        result = db.execute(sql, {"id_usuario": id_usuario}).fetchall()
+        return result
+    except SQLAlchemyError as e:
+        print(f"Error al obtener titulos academicos por usuario: {e}")
+        raise HTTPException(status_code=500, detail="Error al obtener titulos academicos por usuario")
 

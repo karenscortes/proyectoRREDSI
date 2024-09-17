@@ -17,6 +17,7 @@ import ComponenteDinamico from '../components/ComponenteDinamico.vue';
 import InicioSuperAdminView from "./InicioSuperAdminView.vue";
 import RubricaAdminView from "./RubricaAdminView.vue";
 import SalasAdminView from "./SalasAdminView.vue";
+import DelegadosAdminView from "./DelegadosAdminView.vue";
 import AsignarProyectos from "../components/Users/delegado/AsignarProyectos/AsignarProyectos.vue";
 import AsistenciaEvento from "../components/Users/delegado/asistencia/AsistenciaEvento.vue";
 import PaginaInicioEvaluadorView from './PaginaInicioEvaluadorView.vue';
@@ -29,10 +30,10 @@ import HistorialActividades from "../components/Users/superadmin/HistorialActivi
 import NotAvailable from "./NotAvailable.vue";
 import ListaSalasDelegado from "../components/Users/delegado/listaSalas/ListaSalasDelegado.vue";
 
+import InicioAdminView from "./InicioAdminView.vue";
 
 // Styles
 import '../assets/plugins/fontawesome-free-5.0.1/css/fontawesome-all.css';
-
 
 export default {
     components: {
@@ -40,8 +41,10 @@ export default {
         FooterSecundario: markRaw(FooterSecundario),
 
         //Componentes Admin
+        InicioAdminView: markRaw(InicioAdminView),
         RubricaAdminView: markRaw(RubricaAdminView),
         SalasAdminView: markRaw(SalasAdminView),
+        DelegadosAdmin: markRaw(DelegadosAdminView),
 
         //Componentes Delegado
         AsignarProyectos: markRaw(AsignarProyectos),
@@ -76,8 +79,10 @@ export default {
                 NotAvailable: NotAvailable,
 
                 //Admin
+                InicioAdminView: InicioAdminView,
                 RubricaAdminView: RubricaAdminView,
                 SalasAdminView: SalasAdminView,
+                DelegadosAdminView: DelegadosAdminView,
 
                 //Delegado
                 AsignarProyectos: AsignarProyectos,

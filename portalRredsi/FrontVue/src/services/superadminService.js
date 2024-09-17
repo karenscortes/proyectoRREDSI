@@ -32,3 +32,18 @@ export const updateUserRole = async (userId, newRoleId) => {
         }
     }
 };
+
+// Funcion para obtener el historial de actividades por administrador
+export const getActivityHistoryByAdmin = async (userId) => {
+    try {
+            const response = await api.get(`/superadmin/get-activity-history/${userId}/`);
+            return response.data; // Retorna el historial de actividades
+    } catch (error) {
+        if (error.response) {
+
+            throw error.response.data;
+        } else {
+            throw new Error('Error de red o de servidor');
+        }       
+    }
+};        

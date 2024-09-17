@@ -65,7 +65,7 @@
 </template>
 
 <script setup>
-import ModalAddSala from "../components/Users/administrador/rubricas/ModalAdd.vue";
+import ModalAddSala from "../components/Users/administrador/rubricas/ModalAddOrEdit.vue";
 import { reactive } from "vue";
 import RowTableSala from "../components/Users/administrador/gest_salas/RowTableSala.vue";
 import ModalEditSala from "../components/Users/administrador/gest_salas/ModalEditSala.vue";

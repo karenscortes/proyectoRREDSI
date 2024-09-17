@@ -38,6 +38,7 @@
                     role="switch"
                     :id="'estado' + index"
                     v-model="administrador.estado"
+                    disabled
                   >
                   <label class="form-check-label" :for="'estado' + index"></label>
                 </div>
@@ -46,14 +47,14 @@
               <!-- Columna de acciones existente -->
               <td>
                 <a @click="mostrarDetalle(administrador)" data-bs-toggle="modal" data-bs-target="#detalleAdminModal">
-                  <button class="far fa-eye" style="font-size: 25px;"></button>
+                  <button class="far fa-eye border border-0" style="font-size: 25px;"></button>
                 </a>
               </td>
 
-              <!-- Columna para ver detalles en el modal -->
+              <!-- Columna para ver acciones en el modal -->
               <td>
-                <a @click="mostrarDetalle(administrador)" data-bs-toggle="modal" data-bs-target="#detalleAdminModal">
-                  <i class="far fa-eye" style="font-size: 25px;"></i>
+                <a @click="mostrarAcciones(administrador)" data-bs-toggle="modal" data-bs-target="#accionesAdminModal">
+                  <button class="far fa-list-alt border border-0" style="font-size: 25px;"></button>
                 </a>
               </td>
             </tr>
@@ -140,13 +141,55 @@
         </div>
       </div>
 
+      <!-- Modal historial administrador -->
+      <div class="modal fade" id="accionesAdminModal" tabindex="-1" aria-labelledby="detalleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+          <div class="modal-content">
+            <div class="modal-header bg-warning">
+              <h3 class="modal-title" id="detalleModalLabel">
+                Historial del Administrador: {{ adminSeleccionado.nombres }} {{ adminSeleccionado.apellidos }}
+              </h3>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body text-dark">
+              <!-- Historial detallado del administrador/delegado -->
+              <div class="row text-dark" v-if="historialAdmin.length">
+                <div class="col-12" v-for="(actividad, index) in historialAdmin" :key="index">
+                  <div class="row mb-3">
+                    <div class="col-4">
+                      <strong>Módulo:</strong>
+                      <p class="text-dark">{{ actividad.modulo_nombre }}</p>
+                    </div>
+                    <div class="col-4">
+                      <strong>Acción:</strong>
+                      <p class="text-dark">{{ actividad.accion }}</p>
+                    </div>
+                    <div class="col-4">
+                      <strong>Fecha:</strong>
+                      <p class="text-dark">{{ actividad.fecha }}</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div v-else>
+                <p>No se encontraron actividades.</p>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
     </div>
   </div>
 </template>
 
 
 <script>
-import { getAdminsByPage, updateUserRole } from '../../../services/superadminService';
+import { getAdminsByPage, updateUserRole, getActivityHistoryByAdmin } from '../../../services/superadminService';
 
 export default {
   data() {
@@ -156,11 +199,13 @@ export default {
       nuevoRolSeleccionado: null, // Rol seleccionado para actualizar
       paginaActual: 1,  // Página actual de la paginación
       totalPaginas: 0,  // Total de páginas disponibles
+      historialAdmin: [],
     };
   },
   computed: {
     administradoresFiltrados() {
-      return this.administradores;  // Puedes agregar filtros si es necesario
+      return this.administradores;
+       
     },
   },
   methods: {
@@ -192,6 +237,18 @@ export default {
         }
       } catch (error) {
         alert(error.detail || 'Error al actualizar el rol');
+      }
+    },
+
+    // Mostrar las acciones del administrador en el modal
+    async mostrarAcciones(admin) {
+        this.adminSeleccionado = admin;
+      try {
+        // Llama al servicio para obtener el historial de actividades
+        const historial = await getActivityHistoryByAdmin(admin.id_usuario);
+        this.historialAdmin = historial;  // Asigna el historial de actividades
+     } catch (error) {
+        this.historialAdmin = [];  // En caso de error, deja vacío el historial
       }
     },
     // Paginación
