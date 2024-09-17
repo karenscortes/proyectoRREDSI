@@ -51,6 +51,45 @@ def get_all_applications(db: Session, page: int = 1, page_size: int = 10):
         raise HTTPException(status_code=500, detail="Error al obtener todas las postulaciones de evaluadores")
 
 
+def get_application_by_id(db: Session, id_evaluador:int):
+    try:
+        
+        sql = text(
+        """
+        SELECT postulaciones_evaluadores.*,
+        usuarios.correo,
+        usuarios.nombres,
+        usuarios.apellidos,
+        usuarios.celular,
+        instituciones.nombre AS nombre_institucion,
+        area1.nombre         AS area_conocimiento,
+        area2.nombre         AS otra_area
+            FROM postulaciones_evaluadores
+                INNER JOIN usuarios ON (postulaciones_evaluadores.id_evaluador = usuarios.id_usuario)
+                INNER JOIN detalles_institucionales ON (usuarios.id_usuario = detalles_institucionales.id_usuario)
+                INNER JOIN instituciones ON (detalles_institucionales.id_institucion = instituciones.id_institucion)
+                LEFT JOIN areas_conocimiento area1 ON (detalles_institucionales.id_primera_area_conocimiento = area1.id_area_conocimiento)
+                LEFT JOIN areas_conocimiento area2 ON (detalles_institucionales.id_segunda_area_conocimiento= area2.id_area_conocimiento)
+            WHERE postulaciones_evaluadores.id_evaluador = :id_evaluador
+            AND postulaciones_evaluadores.estado_postulacion = 'pendiente'
+            AND postulaciones_evaluadores.id_convocatoria IN (
+                SELECT id_convocatoria 
+                FROM convocatorias 
+                WHERE estado = 'en curso'
+            )
+        """
+        )
+
+        result = db.execute(sql, {"id_evaluador": id_evaluador}).fetchone()
+
+        return result
+    
+    except SQLAlchemyError as e:
+        print(f"Error al obtener postulacion por id: {e}")
+        raise HTTPException(status_code=500, detail="Error al obtener todas las postulacion por id")
+
+
+
 def update_application_status(db: Session, id_evaluador:int, estado: str):
     try:
         sql = text(

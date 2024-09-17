@@ -18,6 +18,7 @@ MODULE_USUARIOS= 3
 MODULE_PROYECTOS= 11
 MODULE_PARTICIPANTES_PROYECTO = 13
 
+# RUTA PARA ASIGNAR UN PROYECTO A UN EVALUADOR EN LA ETAPA VIRTUAL
 @router_proyecto_etapa_uno.post("/asignar-proyecto-etapa-uno/")
 async def asignar_proyecto_etapa_uno(
     asignacion: AsignarProyectoEtapaUno,
@@ -34,7 +35,7 @@ async def asignar_proyecto_etapa_uno(
     else:
         return {"mensaje":"El proyecto no se ha podido asignar con exito"}
 
-
+# RUTA PARA OBTENER EL ID DE PROYECTO CONVOCATORIA LA QUE ESTE RELACIONADO UN PROYECTO
 @router_proyecto_etapa_uno.get("/obtener-proyecto-convocatoria/", response_model=dict)
 async def buscar_convocatoria_por_proyecto(
     id_proyecto: int,
@@ -53,6 +54,7 @@ async def buscar_convocatoria_por_proyecto(
     else:
         return {"mensaje":"El proyecto no se ha podido encontrar en una convocatoria vigente."}
 
+# RUTA PARA OBTENER UNA LISTA DE POSIBLES EVALUADORES PARA UN PROYECTO
 @router_proyecto_etapa_uno.get("/get-posibles-evaluadores/", response_model=dict)
 async def read_posibles_evaluadores(
     area_conocimiento: int,
@@ -84,6 +86,7 @@ async def read_posibles_evaluadores(
         "posibles_evaluadores": evaluadores
     }
 
+# RUTA PARA OBTENER EL NOMBRE UNA AREA DE CONOCIMIENTO POR MEDIO DE SU ID 
 @router_proyecto_etapa_uno.get("/get-id-area-conocimiento/", response_model=AreaConocimientoBase)
 async def read_detalle_sala(
     nombre_area: str,
@@ -100,6 +103,7 @@ async def read_detalle_sala(
     
     return area_conocimiento
 
+# RUTA PARA OBTENER EL NOMBRE UNA INSTITUCION POR MEDIO DE SU ID 
 @router_proyecto_etapa_uno.get("/get-id-institucion/", response_model=InstitucionBase)
 async def read_detalle_sala(
     nombre_institucion: str,
@@ -116,7 +120,7 @@ async def read_detalle_sala(
     
     return area_conocimiento
 
-
+# RUTA PARA ACTUALIZAR EL ESTADO DE UN PROYECTO CUANDO ES ASIGNADO 
 @router_proyecto_etapa_uno.put("/update-estado-proyecto/")
 async def read_detalle_sala(
     id_proyecto: int,

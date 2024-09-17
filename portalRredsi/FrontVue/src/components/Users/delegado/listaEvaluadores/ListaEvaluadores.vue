@@ -13,7 +13,7 @@
                 <div class="col-10 col-sm-6 justify-content-end">
                     <div class="row justify-content-end">
                         <div class="col-7">
-                            <input v-model="documento_evaluador" type="text" id="busqueda" class="form-control text-dark" placeholder="Buscar...">
+                            <input v-model="documento_evaluador" type="text" id="busqueda" class="form-control text-dark" placeholder="Ingrese documento del evaluador">
                         </div>
                         <div class="col-5">
                             <button class="btn btn-buscar w-100 font-weight-bold" @click="buscarEvaluador">Buscar</button>

@@ -45,6 +45,26 @@ export const obtenerProyectosPorEstado = async (estado_evaluacion, idUsuario, pa
   }
 };
 
+// Servicio para obtener los datos para calificar un proyecto
+export const obtenerDatosParaCalificarProyecto = async (idProyecto, idUsuario) => {
+  try {
+    const response = await api.get('/obtenerProyectosEvaluador/obtener-datos-para-calificar-proyecto/', {
+      params: {
+        id_proyecto: idProyecto,
+        id_usuario: idUsuario
+      }
+    });
+    return response.data;
+  } catch (error) {
+    if (error.response) {
+      throw error; // Lanza el error para que lo maneje el componente
+    } else {
+      throw new Error('Error de red o de servidor'); // Manejar errores de red
+    }
+  }
+};
+
+
 // Función para insertar una postulación de evaluador
 export const insertarPostulacionEvaluador = async (postulacionData) => {
   try {
@@ -63,5 +83,3 @@ export const insertarPostulacionEvaluador = async (postulacionData) => {
     }
   }
 };
-
-

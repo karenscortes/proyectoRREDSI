@@ -1,6 +1,5 @@
 from typing import Annotated, List, Optional
-from pydantic import BaseModel, EmailStr, StringConstraints, constr
-from datetime import datetime
+from pydantic import BaseModel, EmailStr, StringConstraints
 import enum
 
 class EstadosEnum(str, enum.Enum):
@@ -58,4 +57,3 @@ class ChangePassword(BaseModel):
     email: str
     new_password: str
     code: str
-

@@ -4,6 +4,7 @@
         <component 
             v-if="showCalificarProyecto && selectedComponent" 
             :is="selectedComponent" 
+            :proyectoSeleccionado="selectedProyecto" 
             @volver="handleVolver" 
         />
         
@@ -99,114 +100,115 @@
 </template>
 
 <script>
-import { obtenerProyectosAsignados, obtenerProyectosPorEstado } from '../services/evaluadorService';
-import ProyectosAsignados from '../components/Users/evaluador/ProyectosAsignados.vue';
-import CalificarProyectoEvaluadorView from './CalificarProyectoEvaluadorView.vue'; 
-import { useAuthStore } from '@/store';    
+    import { obtenerProyectosAsignados, obtenerProyectosPorEstado } from '../services/evaluadorService';
+    import ProyectosAsignados from '../components/Users/evaluador/ProyectosAsignados.vue';
+    import CalificarProyectoEvaluadorView from './CalificarProyectoEvaluadorView.vue'; 
+    import { useAuthStore } from '@/store';     
 
-export default {
-    components: {
-        ProyectosAsignados,
-        CalificarProyectoEvaluadorView 
-    },
-    data() {
-        return {
-            proyectos: [],         
-            currentPage: 1,       
-            totalPages: 1,         
-            itemsPerPage: 6,      
-            selectedState: '',
-            selectedComponent: '',  
-            showCalificarProyecto: false // Nueva bandera
-        };
-    },
-    computed: {
-        hasProyectos() {
-            return this.proyectos.length > 0;
+    export default {
+        components: {
+            ProyectosAsignados,
+            CalificarProyectoEvaluadorView 
         },
-
-        mensajeSinProyectos() {
-            if (!this.selectedState) {
-                return "No tienes proyectos asignados por el momento...";
-            } else if (this.selectedState === 'Calificado') {
-                return "No tienes proyectos calificados...";
-            } else if (this.selectedState === 'Pendiente') {
-                return "No tienes proyectos pendientes...";
-            }
-            return "No hay proyectos disponibles.";
-        }
-    },
-    methods: {
-        async fetchProyectos(page = 1) {
-            try {
-                this.selectedState = ''; 
-
-                const authStore = useAuthStore();
-                const user = authStore.user;
-
-                const response = await obtenerProyectosAsignados(user.id_usuario, page, this.itemsPerPage);
-
-                this.proyectos = response.data.data; 
-                this.totalPages = response.data.total_pages; 
-                this.currentPage = page;
-
-            } catch (error) {
-                console.error("Error al obtener proyectos: ", error);
-                alert("Error al obtener proyectos");
-            }
+        data() {
+            return {
+                proyectos: [],
+                currentPage: 1,
+                totalPages: 1,
+                itemsPerPage: 6,
+                selectedState: '',
+                selectedComponent: '',
+                selectedProyecto: null, 
+                showCalificarProyecto: false
+            };
         },
+        computed: {
+            hasProyectos() {
+                return this.proyectos.length > 0;
+            },
 
-        async fetchProyectosPorEstado(estado) {
-            try {
-                const authStore = useAuthStore();
-                const user = authStore.user;
-                
-                this.selectedState = estado;
-
-                const response = await obtenerProyectosPorEstado(estado, user.id_usuario, this.currentPage, this.itemsPerPage);
-
-                this.proyectos = response.data.data;
-                this.totalPages = response.data.total_pages;
-
-            } catch (error) {
-                console.error("Error al obtener proyectos por estado: ", error);
-                alert("Error al obtener proyectos por estado");
-            }
-        },
-
-        nextPage() {
-            if (this.currentPage < this.totalPages) {
-                if (this.selectedState) {
-                    this.fetchProyectosPorEstado(this.selectedState);
-                } else {
-                    this.fetchProyectos(this.currentPage + 1);
+            mensajeSinProyectos() {
+                if (!this.selectedState) {
+                    return "No tienes proyectos asignados por el momento...";
+                } else if (this.selectedState === 'Calificado') {
+                    return "No tienes proyectos calificados...";
+                } else if (this.selectedState === 'Pendiente') {
+                    return "No tienes proyectos pendientes...";
                 }
+                return "No hay proyectos disponibles.";
             }
         },
-        prevPage() {
-            if (this.currentPage > 1) {
-                if (this.selectedState) {
-                    this.fetchProyectosPorEstado(this.selectedState);
-                } else {
-                    this.fetchProyectos(this.currentPage - 1);
+        methods: {
+            async fetchProyectos(page = 1) {
+                try {
+                    this.selectedState = ''; 
+
+                    const authStore = useAuthStore();
+                    const user = authStore.user;
+
+                    const response = await obtenerProyectosAsignados(user.id_usuario, page, this.itemsPerPage);
+
+                    this.proyectos = response.data.data; 
+                    this.totalPages = response.data.total_pages; 
+                    this.currentPage = page;
+
+                } catch (error) {
+                    console.error("Error al obtener proyectos: ", error);
+                    alert("Error al obtener proyectos");
                 }
+            },
+
+            async fetchProyectosPorEstado(estado) {
+                try {
+                    const authStore = useAuthStore();
+                    const user = authStore.user;
+                    
+                    this.selectedState = estado;
+
+                    const response = await obtenerProyectosPorEstado(estado, user.id_usuario, this.currentPage, this.itemsPerPage);
+
+                    this.proyectos = response.data.data;
+                    this.totalPages = response.data.total_pages;
+
+                } catch (error) {
+                    console.error("Error al obtener proyectos por estado: ", error);
+                    alert("Error al obtener proyectos por estado");
+                }
+            },
+
+            nextPage() {
+                if (this.currentPage < this.totalPages) {
+                    if (this.selectedState) {
+                        this.fetchProyectosPorEstado(this.selectedState);
+                    } else {
+                        this.fetchProyectos(this.currentPage + 1);
+                    }
+                }
+            },
+            prevPage() {
+                if (this.currentPage > 1) {
+                    if (this.selectedState) {
+                        this.fetchProyectosPorEstado(this.selectedState);
+                    } else {
+                        this.fetchProyectos(this.currentPage - 1);
+                    }
+                }
+            },
+
+            changeComponent({ componentName, proyecto }) {
+                this.selectedComponent = componentName;
+                this.selectedProyecto = proyecto; 
+                this.showCalificarProyecto = true; 
+            },
+
+            handleVolver() {
+                this.showCalificarProyecto = false;
             }
         },
-
-        changeComponent(componentName) {
-        this.selectedComponent = componentName;
-        this.showCalificarProyecto = true; 
-        },
-
-        // Nueva función para manejar el evento de volver
-        handleVolver() {
-            this.showCalificarProyecto = false;
+        mounted() {
+            this.fetchProyectos();
         }
-    },
-    mounted() {
-        this.fetchProyectos();
-    }
-};
+    };
 </script>
 
 

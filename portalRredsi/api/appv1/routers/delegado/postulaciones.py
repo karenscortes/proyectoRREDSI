@@ -5,9 +5,8 @@ from appv1.routers.login import get_current_user
 from appv1.schemas.delegado.postulaciones import PaginatedApplications, certificatesResponse
 from appv1.schemas.usuario import UserResponse
 from db.database import get_db
-from appv1.crud.delegado.postulaciones import get_all_applications, get_certificates_by_id, update_application_status
+from appv1.crud.delegado.postulaciones import get_all_applications, get_application_by_id, get_certificates_by_id, update_application_status
 from appv1.crud.permissions import get_permissions
-from appv1.crud.usuarios import get_user_by_id
 
 router_postulaciones = APIRouter()
 MODULE = 8
@@ -53,9 +52,9 @@ def update_status(
         if not permisos.p_actualizar:
             raise HTTPException(status_code=401, detail="Usuario no autorizado")
 
-    verify_evaluator = get_user_by_id(db, id_evaluador)
-    if verify_evaluator is None:
-        raise HTTPException(status_code=404, detail="Evaluador no encontrado")     
+    verify_application = get_application_by_id(db, id_evaluador)
+    if verify_application is None:
+        raise HTTPException(status_code=404, detail="Postulación no encontrada")     
     updated= update_application_status(db,id_evaluador,estado)
     if updated:
         return {"mensaje": "El estado de la Postulación fue modificado con éxito" }

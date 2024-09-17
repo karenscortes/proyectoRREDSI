@@ -347,7 +347,7 @@ CREATE TABLE proyectos_convocatoria (
     id_proyecto INT,
     id_convocatoria INT,
     FOREIGN KEY (id_proyecto) REFERENCES proyectos(id_proyecto),
-    FOREIGN KEY (id_convocatoria) REFERENCES convocatorias(id_convocatoria)
+    FOREIGN KEY (id_convocatoria) REFERENCES convocatorias(id_convocatoria) 
 );
 
 INSERT INTO proyectos_convocatoria (id_proyecto, id_convocatoria)
