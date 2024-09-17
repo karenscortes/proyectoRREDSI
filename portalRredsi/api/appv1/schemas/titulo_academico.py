@@ -16,8 +16,9 @@ class TituloAcademicoBase(BaseModel):
     class Config:
         orm_mode = True 
 
-
 class TituloAcademicoResponse(TituloAcademicoBase):
     id_titulo_academico: int
+
+
     
     

@@ -12,20 +12,18 @@ from sqlalchemy.exc import SQLAlchemyError, IntegrityError
 def get_delegados_activos_paginated(db: Session, page, page_size):
     try:
         offset = (page - 1) * page_size
-        users = db.query(Usuario).filter(
-        Usuario.estado == Estados.activo, 
+        users = db.query(Usuario).filter( 
         Usuario.rol.has(Rol.nombre == "Delegado")).order_by(Usuario.nombres.asc()).limit(page_size).offset(offset).all()
         if users is None:
-            raise HTTPException(status_code=404, detail="No hay delegados activos")
+            raise HTTPException(status_code=404, detail="No hay delegados")
         
-        total_users = db.query(Usuario).filter(Usuario.estado == Estados.activo, 
-        Usuario.rol.has(Rol.nombre == "Delegado")).count()
+        total_users = db.query(Usuario).filter(Usuario.rol.has(Rol.nombre == "Delegado")).count()
 
         # Calcular el número total de páginas
         total_pages = (total_users + page_size - 1) // page_size
         return users, total_pages
     except SQLAlchemyError as e:
-        print(f"Error al buscar los delegados activos: {e}")
+        print(f"Error al buscar los delegados: {e}")
         raise HTTPException(status_code=500, detail="Error. No hay integridad de datos")
 
 #Obtener delegado por numero de documento
