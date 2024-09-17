@@ -4,7 +4,7 @@ from appv1.routers import eventos, login, proyectos, rol, usuarios
 from appv1.routers.admin import admin
 from appv1.routers.delegado import asignarProyectoEtapaVirtual, asistencia, listaEvaluadores, postulaciones, proyectosSinAsignar, salas
 from appv1.routers.evaluador import evaluadores
-from appv1.routers.valeria_routers import convocatorias
+from appv1.routers.inicio import convocatorias
 from appv1.routers.superadmin import superadmin
 from db.database import test_db_connection
 from fastapi.middleware.cors import CORSMiddleware
