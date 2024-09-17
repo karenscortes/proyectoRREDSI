@@ -1,5 +1,5 @@
 <template>
-  <div class="container-fluid">
+  
     <footer class="footer mt-5">
       <div class="container">
         <!-- Footer Copyright -->
@@ -31,7 +31,7 @@
         </div>
       </div>
     </footer>
-  </div>
+
 </template>
 
 <style scoped>

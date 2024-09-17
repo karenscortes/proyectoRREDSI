@@ -24,7 +24,7 @@ def get_all_admins(db: Session, page: int = 1, page_size: int = 10):
                 roles.nombre AS rol_nombre
             FROM usuarios
             JOIN roles ON usuarios.id_rol = roles.id_rol
-            WHERE usuarios.id_rol = 3
+            WHERE (usuarios.id_rol = 3 OR usuarios.id_rol = 2)
             AND usuarios.estado = 'activo'
             LIMIT :page_size OFFSET :offset;
         """)
@@ -84,20 +84,40 @@ def update_user_role(db: Session, user_id: int, new_role_id: int):
         print(f"Error al actualizar rol de usuario: {e}")
         raise HTTPException(status_code=500, detail="Error al actualizar rol de usuario")
 
-# Obtener historial de actividades por administrador (sin importar el estado)
+# Obtener historial de actividades por administrador/delegado
 def get_activity_history_by_admin(db: Session, user_id: int):
     try:
+        # Consulta SQL para obtener el historial de actividades por id_usuario
         sql = text("""
-            SELECT actividades.id_actividad, actividades.descripcion, actividades.fecha, usuarios.id_usuario, usuarios.correo 
-            FROM actividades 
-            JOIN usuarios ON actividades.id_usuario = usuarios.id_usuario 
+            SELECT 
+                historial_actividades_admin.id_actividad,
+                historial_actividades_admin.accion,
+                historial_actividades_admin.fecha,
+                historial_actividades_admin.id_modulo,   
+                modulos.nombre AS modulo_nombre,
+                historial_actividades_admin.id_registro,
+                usuarios.id_usuario, 
+                usuarios.correo 
+            FROM historial_actividades_admin
+            JOIN usuarios ON historial_actividades_admin.id_usuario = usuarios.id_usuario 
+            JOIN modulos ON historial_actividades_admin.id_modulo = modulos.id_modulo
             WHERE usuarios.id_usuario = :user_id
+            ORDER BY historial_actividades_admin.fecha DESC
         """)
         params = {"user_id": user_id}
+        
+        # Ejecutar la consulta
         result = db.execute(sql, params).fetchall()
+
+        # Si no hay resultados, lanzar un error 404
         if not result:
-            raise HTTPException(status_code=404, detail="No se encontraron actividades para este administrador")
+            raise HTTPException(status_code=404, detail="No se encontraron actividades para este administrador/delegado")
+        
+        # Retornar el resultado
         return result
+
     except SQLAlchemyError as e:
+        # Manejo de errores de SQLAlchemy
         print(f"Error al buscar el historial de actividades: {e}")
         raise HTTPException(status_code=500, detail="Error al buscar el historial de actividades")
+

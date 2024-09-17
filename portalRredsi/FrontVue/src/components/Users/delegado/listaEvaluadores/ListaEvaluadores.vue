@@ -1,7 +1,7 @@
 <template>
     <div>
-        <div class="container pt-5">
-            <div class="row mb-5 mt-2">
+        <div class="container">
+            <div class="row mb-5">
                 <div class="col">
                     <div class="section_title text-center">
                         <h1>Evaluadores Registrados</h1>
@@ -10,13 +10,13 @@
             </div>
             <!-- buscador -->
             <div class="row mb-4 justify-content-end">
-                <div class="col-8 col-sm-6 justify-content-end">
+                <div class="col-10 col-sm-6 justify-content-end">
                     <div class="row justify-content-end">
-                        <div class="col-8">
-                            <input type="text" id="busqueda" class="form-control" placeholder="Buscar...">
+                        <div class="col-7">
+                            <input v-model="documento_evaluador" type="text" id="busqueda" class="form-control text-dark" placeholder="Buscar...">
                         </div>
-                        <div class="col-4">
-                            <button class="btn btn-buscar w-100 font-weight-bold">Buscar</button>
+                        <div class="col-5">
+                            <button class="btn btn-buscar w-100 font-weight-bold" @click="buscarEvaluador">Buscar</button>
                         </div>
                     </div>
                 </div>
@@ -43,7 +43,7 @@
                             <td class="pl-4">
                                 <div class="custom-control custom-switch d-flex">
                                     <input type="checkbox" class="custom-control-input" :id="index"
-                                        :checked="evaluador.estado == 'activo' ? true : false">
+                                        :checked="evaluador.estado == 'activo' ? true : false" @click="actualizarEvaluador(evaluador.id_usuario,evaluador.estado)">
                                     <label class="custom-control-label" :for="index"></label>
                                 </div>
                             </td>
@@ -135,13 +135,16 @@
 
 <script>
 import { reactive } from 'vue';
-import { obtenerListaEvaluadores } from '@/services/listaEvaluadoresService';
+import { obtenerListaEvaluadores, actualizarEstadoEvaluador } from '@/services/listaEvaluadoresService';
+import { obtenerIdEvaluador } from '@/services/delegadoService';
+
 export default {
     data() {
         return {
             evaluadores: [],
             current_page: 1,
-            totalPages: 0
+            totalPages: 0,
+            documento_evaluador:""
         }
     },
     setup() {
@@ -185,6 +188,42 @@ export default {
                 alert("Aún no hay Evaluadores registrados");
             }
         },
+        async actualizarEvaluador(id_evaluador,estado) {
+            try {
+                let nuevoEstado = "inactivo";
+
+                if(estado === "activo"){
+                    nuevoEstado = "inactivo";
+                }else{
+                    nuevoEstado = "activo";
+                }
+
+                await actualizarEstadoEvaluador(id_evaluador, nuevoEstado);
+                alert("Actualizado con exito");
+                this.fecthEvaluadores();
+            } catch (error) {
+                alert("Error al actualizar el estado del evaluador");
+            }
+        },
+        async buscarEvaluador(){
+            try {
+                if(this.documento_evaluador.trim() != ""){
+                    const evaluador = await obtenerIdEvaluador(this.documento_evaluador);
+                    this.obtenerEvaluadorActual(evaluador.data);
+                    this.evaluadores = [evaluador.data];
+
+                    console.log(this.evaluadores)
+                    $('#delegateInformation').modal('show');
+                }
+                if(this.documento_evaluador.trim() == ""){
+                    this.fecthEvaluadores();
+                }
+                
+            } catch (error) {
+                alert("El evaluador no se ha podido encontrar");
+                this.fecthEvaluadores();
+            }
+        },
         nextPage() {
             if (this.current_page < this.totalPages) {
                 this.current_page++;
@@ -213,7 +252,6 @@ export default {
     display: block;
     color: #1a1a1a;
     font-weight: 500;
-    padding-top: 60px;
 }
 
 .section_title h1::before {

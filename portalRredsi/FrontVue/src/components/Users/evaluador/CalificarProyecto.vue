@@ -132,39 +132,39 @@ export default {
 
 <style scoped>
 
-.tr_rubrica{
-	border-bottom: 1px solid black;
-}
+    .tr_rubrica{
+        border-bottom: 1px solid black;
+    }
 
-.td_rubrica{
-	border-right: 1px solid black;
-}
+    .td_rubrica{
+        border-right: 1px solid black;
+    }
 
-.titulo_rubrica{
-	font-size: 18px; font-weight: bold;
-}
+    .titulo_rubrica{
+        font-size: 18px; font-weight: bold;
+    }
 
-.form-control{
-	height: 35px;
-	border: 1px solid black;
-}
+    .form-control{
+        height: 35px;
+        border: 1px solid black;
+    }
 
-.text-area-full-width {
-    width: 100%;
-    box-sizing: border-box;
-    overflow-y: auto;
-    resize: none;
-    max-height: 70px;   
-}
+    .text-area-full-width {
+        width: 100%;
+        box-sizing: border-box;
+        overflow-y: auto;
+        resize: none;
+        max-height: 70px;   
+    }
 
-.text-center-vertical {
-    text-align: center;
-    vertical-align: middle; 
-    height: 100%; 
-}
+    .text-center-vertical {
+        text-align: center;
+        vertical-align: middle; 
+        height: 100%; 
+    }
 
-.btn-warning {
-    width: 300px;
-}
+    .btn-warning {
+        width: 300px;
+    }
 
 </style>

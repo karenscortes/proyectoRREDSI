@@ -233,8 +233,29 @@ def delete_item(
    
 # Crear sala
 @router_admin.post("/crear-sala")
-def create_sala_admin(sala: CreateSala, db: Session = Depends(get_db)):
-    return create_sala(db, sala.id_usuario, sala.area_conocimento, sala.numero_sala, sala.nombre_sala)
+def create_sala_admin(
+    sala: CreateSala, 
+    db: Session = Depends(get_db),
+    current_user: UserResponse = Depends(get_current_user),   
+):
+    MODULE = 15
+    permisos = get_permissions(db, current_user.id_rol, MODULE)
+
+    if permisos is None or not permisos.p_insertar:
+        raise HTTPException(status_code=401, detail="Usuario no autorizado")
+
+    new_sala = create_sala(db, sala.id_usuario, sala.area_conocimento, sala.numero_sala, sala.nombre_sala)
+    if new_sala:
+        return{
+            'success': True,
+            'message': 'Se agregó sala con éxito',
+        }
+    else: 
+        return{
+            'success': False,
+            'message': 'Error al crear sala',
+        }
+
 
 # Editar sala
 @router_admin.put("/salas/{id_sala}")
