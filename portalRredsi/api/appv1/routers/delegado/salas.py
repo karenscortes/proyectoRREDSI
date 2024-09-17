@@ -14,15 +14,25 @@ router_sala = APIRouter()
 MODULE_SALAS = 15
 MODULE_DETALLE_SALA = 16
 
+# RUTA PARA ASIGNAR PROYETCO ETAPA PRESENCIAL 
 @router_sala.post("/asignar-proyecto-etapa-presencial/")
-async def asignar_proyecto(asignacion: AsignarProyectoSala, db: Session = Depends(get_db)):
+async def asignar_proyecto(
+    asignacion: AsignarProyectoSala,
+    current_user: UserResponse = Depends(get_current_user),
+    db: Session = Depends(get_db)
+):
+    permisos = get_permissions(db, current_user.id_rol, MODULE_DETALLE_SALA)
+    
+    if not permisos.p_insertar:
+        raise HTTPException(status_code=401, detail="No está autorizado a utilizar este modulo")
+    
     respuesta = asignar_proyecto_a_sala(db, asignacion)
     if respuesta:
         return {"mensaje":f"Proyecto asignado a sala {asignacion.id_sala} "}
     else:
         return {"mensaje":"El proyecto no se ha podido asignar"}
 
-
+# RURA PARA OBTENER TODAS LAS SALAS QUE SE ENCUENTREN REGISTRADAS EN UNA CONVOCATORIA ACTIVA 
 @router_sala.get("/get-salas-por-convocatoria/", response_model=dict)
 async def read_all_salas_por_convocatoria(
     page: int = 1,
@@ -53,7 +63,7 @@ async def read_all_salas_por_convocatoria(
         "page_size": page_size
     }
 
-
+# RUTA PARA OBTENER EL DETALLE DE UNA SALA 
 @router_sala.get("/get-detalle-sala/", response_model=DetalleSala)
 async def read_detalle_sala(
     id_sala: str,
@@ -71,4 +81,3 @@ async def read_detalle_sala(
     
     return sala_detalle
 
-# RUTAS SALAS />
