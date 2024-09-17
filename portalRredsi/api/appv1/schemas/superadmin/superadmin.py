@@ -46,9 +46,11 @@ class UserRoleUpdateSchema(BaseModel):
 class ActivityHistoryResponse(BaseModel):
     id_actividad: int
     id_usuario: int
-    accion: str  # Cambiado de 'descripcion' a 'accion' para coincidir con el CRUD
+    accion: str  
     fecha: datetime
     correo: Optional[EmailStr] = None
+    modulo_nombre: Optional[str] = None 
 
     class Config:
         orm_mode = True
+

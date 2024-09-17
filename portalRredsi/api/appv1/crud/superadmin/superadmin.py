@@ -94,10 +94,13 @@ def get_activity_history_by_admin(db: Session, user_id: int):
                 historial_actividades_admin.accion,
                 historial_actividades_admin.fecha,
                 historial_actividades_admin.id_modulo,   
+                modulos.nombre AS modulo_nombre,
+                historial_actividades_admin.id_registro,
                 usuarios.id_usuario, 
                 usuarios.correo 
             FROM historial_actividades_admin
             JOIN usuarios ON historial_actividades_admin.id_usuario = usuarios.id_usuario 
+            JOIN modulos ON historial_actividades_admin.id_modulo = modulos.id_modulo
             WHERE usuarios.id_usuario = :user_id
             ORDER BY historial_actividades_admin.fecha DESC
         """)
@@ -117,3 +120,4 @@ def get_activity_history_by_admin(db: Session, user_id: int):
         # Manejo de errores de SQLAlchemy
         print(f"Error al buscar el historial de actividades: {e}")
         raise HTTPException(status_code=500, detail="Error al buscar el historial de actividades")
+

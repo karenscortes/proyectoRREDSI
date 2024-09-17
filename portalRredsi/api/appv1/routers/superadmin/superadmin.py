@@ -51,3 +51,4 @@ async def get_activity_history(
 ):
     # Obtener historial de actividades
     return get_activity_history_by_admin(db, user_id=user_id)
+
