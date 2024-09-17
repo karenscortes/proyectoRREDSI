@@ -9,7 +9,7 @@
                                 <i class="far fa-file-alt h3"></i>
                             </button>
                         </a>
-                        <button type="button" class="btn btn-warning rounded-circle border border-dark mx-2" @click="selectComponent('CalificarProyectoEvaluadorView')">
+                        <button type="button" class="btn btn-warning rounded-circle border border-dark mx-2" @click="selectComponent('CalificarProyectoEvaluadorView', proyecto)">
                             <i class="fa-solid fa-list-check fa-xl"></i>
                         </button>
                     </div>
@@ -51,8 +51,8 @@
         },
         emits: ['component-selected'],
         methods: {
-            selectComponent(componentName) {
-                this.$emit('component-selected', componentName);
+            selectComponent(componentName, proyecto) {
+                this.$emit('component-selected', { componentName, proyecto });
             }
         }
     });

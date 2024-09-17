@@ -91,18 +91,22 @@ const total_pages = ref(0);
 const busqueda = ref("");
 const estadoActualDelegado = ref("");
 
+const configPagination = reactive({}); 
+
 const cambiarEstadoCheckboxDelegado = (index) => {
-  estadoActualDelegado.value =
-    ArrayDelegados[index].p_estado == "activo" ? "inactivo" : "activo";
+  estadoActualDelegado.value = ArrayDelegados[index].p_estado == "activo" ? "inactivo" : "activo";
   ArrayDelegados[index].p_estado = estadoActualDelegado.value;
 };
+
 const handlePaginate = async(pagina) => {
   page.value = pagina;
   const newPage = await fetchAllDelegates(page.value);
-  console.log("Soy respuesta desde rubrica paginador")
   total_pages.value = newPage.data.total_pages;
-  console.log(total_pages.value);
-  console.log(newPage.data.users);
+  configPagination.value = await newPage.data; 
+
+  console.log("Soy respuesta desde rubrica (paginador)")
+  console.log(configPagination.value.users);
+  modificarArrayDelegados();
 };
 
 const ArrayDelegados = reactive([
@@ -117,32 +121,26 @@ const ArrayDelegados = reactive([
     p_areaConocimiento: "Sistemas",
     p_telefono: "12332456",
     p_correo: "Ema@gmail.com",
-  },
-  {
-    p_idDelegado: 2,
-    p_nombres: "Luis",
-    p_apellidos: "Duarte",
-    p_institucion: "SENA",
-    p_estado: "activo",
-    p_tipoDocumento: "Cédula",
-    p_documento: "234567",
-    p_areaConocimiento: "Artes visuales",
-    p_telefono: "12332456",
-    p_correo: "Luis@gmail.com",
-  },
-  {
-    p_idDelegado: 1,
-    p_nombres: "Nicol",
-    p_apellidos: "Martinez",
-    p_institucion: "SENA",
-    p_estado: "activo",
-    p_tipoDocumento: "Cédula",
-    p_documento: "123456",
-    p_areaConocimiento: "Contabilidad",
-    p_telefono: "12332456",
-    p_correo: "Nicol@gmail.com",
-  },
+  }
 ]);
+
+const modificarArrayDelegados = () => {
+  const users = configPagination.value.users;
+  console.log("Hola desde array")
+  console.log(users)
+  users.forEach(function (delegado,i) {
+    console.log(delegado.id_usuario);
+    console.log(delegado.nombres);
+    console.log(delegado.apellidos);
+    console.log(delegado.detalles_institucionales[0].id_institucion);
+    console.log(delegado.estado);
+    console.log(delegado.tipo_documento.nombre);
+    console.log(delegado.detalles_institucionales[0].id_primera_area_conocimiento);
+    console.log(delegado.detalles_institucionales[0].id_segunda_area_conocimiento);
+    console.log(delegado.celular);
+    console.log(delegado.correo);
+  });
+}
 
 const infoModalDetail = reactive({
   p_idDelegado: null,
@@ -184,8 +182,9 @@ const fetchAllDelegates = async () => {
   try {
     const response = await getDelegatesAll(page.value);
     total_pages.value = response.data.total_pages;
-    console.log(response)
+    configPagination.value = response.data; 
     return response
+
   } catch (error) {
     console.error("Error al obtener los delegados: ", error);
     alert("Error al obtener los delegados");

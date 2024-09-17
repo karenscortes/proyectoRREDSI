@@ -74,7 +74,7 @@ async def consult_rubrics(
     return existing_rubrics
 
 #Obtener delegados activos(paginado)
-@router_admin.get("/all-active-delegates/", response_model=PaginatedDelegadoResponse)
+@router_admin.get("/all-delegates/", response_model=PaginatedDelegadoResponse)
 async def consult_delegates(
     db: Session = Depends(get_db),
     page: int = 1,
@@ -90,7 +90,7 @@ async def consult_delegates(
     users, total_pages = get_delegados_activos_paginated(db, page, page_size)
 
     if len(users) == 0:
-        raise HTTPException(status_code=404, detail="No hay delegados activos")
+        raise HTTPException(status_code=404, detail="No hay delegados")
 
     return {
         "users": users,
@@ -121,7 +121,7 @@ def consult_by_document(
 
 #Crear delegado 
 @router_admin.post("/create-delegates/")
-def consult_by_document(
+def create_delegates(
     user: UserCreate, 
     db: Session = Depends(get_db),
     current_user: UserResponse = Depends(get_current_user),
@@ -129,6 +129,9 @@ def consult_by_document(
     MODULE = 3
     permisos = get_permissions(db, current_user.id_rol, MODULE)
 
+    if(user.id_rol != 2):
+        raise HTTPException(status_code=400, detail="El rol del usuario es incorrecto")
+    
     if permisos is None or not permisos.p_insertar:
         raise HTTPException(status_code=401, detail="Usuario no autorizado")
     

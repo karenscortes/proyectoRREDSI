@@ -1,6 +1,6 @@
 <template>
     <!-- Contenido principal -->
-    <div class="container pt-5">
+    <div class="container">
         <div class="row mb-5 mt-2">
             <div class="col">
                 <div class="section_title text-center">
@@ -10,24 +10,28 @@
             </div>
         </div>
 
-        <CalificarProyecto/> <!-- Botón de volver -->
-        <div class="text-center mb-3 ">
-            <button @click="$emit('volver')" class="btn btn-warning  font-weight-bold text-dark">Volver a Proyectos Asignados</button>
+        <!-- Pasar el proyecto seleccionado al componente CalificarProyecto -->
+        <CalificarProyecto :proyecto="proyectoSeleccionado"/>
+        <div class="text-center mb-3">
+            <button @click="$emit('volver')" class="btn btn-warning font-weight-bold text-dark">Volver a Proyectos Asignados</button>
         </div>
-
-        
     </div>
     <!-- Fin contenido principal -->
 </template>
 
 <script>
-import CalificarProyecto from '../components/Users/evaluador/CalificarProyecto.vue';
-export default {
-    components: {
-        CalificarProyecto
-    },
-    
-};
+    import CalificarProyecto from '../components/Users/evaluador/CalificarProyecto.vue';
+    export default {
+        components: {
+            CalificarProyecto
+        },
+        props: {
+            proyectoSeleccionado: {
+                type: Object,
+                required: true
+            }
+        }
+    };
 </script>
 
 <style scoped>
