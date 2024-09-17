@@ -4,7 +4,7 @@ from appv1.routers.login import get_current_user
 from appv1.schemas.evaluador.evaluador import CalificarProyectoRespuesta, PaginatedResponse, PaginatedResponseHorario, PostulacionEvaluadorCreate, RespuestaRubricaCreate
 from appv1.schemas.usuario import UserResponse
 from db.database import get_db
-from appv1.crud.evaluador.proyectos import convertir_timedelta_a_hora, create_postulacion_evaluador, get_current_convocatoria, get_datos_calificar_proyecto, get_datos_rubrica_proyecto, get_proyectos_asignados, get_proyectos_etapa_presencial_con_horario, get_proyectos_por_estado, get_proyectos_por_etapa, insert_respuesta_rubrica
+from appv1.crud.evaluador.proyectos import convertir_timedelta_a_hora, create_postulacion_evaluador, get_current_convocatoria, get_datos_calificar_proyecto_completo, get_proyectos_asignados, get_proyectos_etapa_presencial_con_horario, get_proyectos_por_estado, get_proyectos_por_etapa, insert_respuesta_rubrica
 from appv1.crud.permissions import get_permissions
 
 routerObtenerProyectos = APIRouter()
@@ -167,27 +167,8 @@ async def obtener_datos_para_calificar_proyecto(
     if not permisos.p_consultar:
         raise HTTPException(status_code=401, detail="No está autorizado a utilizar este módulo")
     
-    proyecto = get_datos_calificar_proyecto(db, id_proyecto, id_usuario)
+    proyecto = get_datos_calificar_proyecto_completo(db, id_proyecto, id_usuario)
     return proyecto
 
-# Ruta para obtener el detalle del proyecto y evaluador para calificar un proyecto
-@routerObtenerProyectos.get("/obtener-items-rubricas-proyecto/", response_model=dict)
-async def obtener_items_rubricas_proyecto(
-    id_proyecto: int,
-    id_usuario: int,
-    current_user: UserResponse = Depends(get_current_user),
-    db: Session = Depends(get_db),
-):
-    permisos = get_permissions(db, current_user.id_rol, MODULE_RESPUESTAS_RUBRICAS)
-    if not permisos.p_consultar:
-        raise HTTPException(status_code=401, detail="No está autorizado a utilizar este módulo")
-    
-    items_rubrica_proyecto = get_datos_rubrica_proyecto(db, id_proyecto, id_usuario)
-
-    items_rubrica = [dict(item) for item in items_rubrica_proyecto]
-
-    return {
-        "items_rubrica": items_rubrica,
-    }
 
 

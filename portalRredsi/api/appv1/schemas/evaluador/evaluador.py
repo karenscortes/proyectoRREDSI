@@ -83,3 +83,5 @@ class CalificarProyectoRespuesta(BaseModel):
     universidad_evaluador: str
     email_evaluador: str
     celular_evaluador: str
+    nombres_ponentes: Optional[str] = None
+    componentes: List[Componente]
