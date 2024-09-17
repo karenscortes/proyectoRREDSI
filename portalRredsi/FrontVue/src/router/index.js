@@ -12,6 +12,7 @@ import AsignarProyecto from '../components/Users/delegado/AsignarProyectos/Asign
 import PaginaInicioEvaluadorView from '../views/PaginaInicioEvaluadorView.vue';
 import AdminView from '../views/AdminView.vue';
 import SalasAdminView from '../views/SalasAdminView.vue';
+import DelegadosAdminView from '../views/DelegadosAdminView.vue';
 
 const routes = [
   
@@ -33,7 +34,9 @@ const routes = [
   // RUTAS ADMIN
   { path: '/rubrica-admin', name: 'RubricaAdminView', component: RubricaAdminView, meta: { requiresAuth: true, allowedRoles: [3] }},
   {path: '/pagina-inicio-admin', name: 'PaginaInicioAdminView', component: AdminView, meta: { requiresAuth: true, allowedRoles: [3]}}, 
-  {path: '/gest-salas', name: 'SalasView', component: SalasAdminView, meta: { requiresAuth: true, allowedRoles: [3]}}, 
+  {path: '/gest-salas', name: 'SalasView', component: SalasAdminView, meta: { requiresAuth: true, allowedRoles: [3]}},
+  {path: '/gest-delegados', name: 'DelegadosView', component: DelegadosAdminView, meta: { requiresAuth: true, allowedRoles: [3]}},  
+  
 
   // RUTAS SUPERADMIN
   { path: '/principal-superadmin', name: 'SuperAdminView', component: SuperAdminView},

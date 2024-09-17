@@ -119,7 +119,7 @@ export default defineComponent({
         left_tabs: [
           { nombre: "Inicio", ruta: "InicioAdminView" },
           { nombre: "Perfil", ruta: "#" },
-          { nombre: "Cuentas", ruta: "#" },
+          { nombre: "Cuentas", ruta: "DelegadosAdminView"},
           { nombre: "Rubricas", ruta: "RubricaAdminView" },
         ],
         mid_tabs: [
