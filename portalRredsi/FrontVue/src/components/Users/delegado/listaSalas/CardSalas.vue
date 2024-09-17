@@ -3,15 +3,15 @@
         <div class="card">
             <div class="card-header d-flex align-items-center justify-content-between text-dark"
                 style="background: rgb(255, 182, 6); box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);">
-                <strong class="mb-0 text-white h4">{{ numeroSala }}</strong>
+                <strong class="mb-0 text-white h4">{{ sala.numero_sala }}</strong>
             </div>
             <div class="card-img">
                 <div class="card_plus trans_200 text-center"><a href="detalle_sala.html">+</a></div>
                 <img class="card-img-top trans_200" src="@/assets/img/tiempo.png" alt="imagen_tiempo">
             </div>
             <div class="card-body text-center">
-                <div class="card-title">{{ nombreDelegado }}</div>
-                <div class="card-text">{{ areaConocimiento }}</div>
+                <div class="card-title">{{ sala.nombres_delegado }} {{ sala.apellidos_delegado }}</div>
+                <div class="card-text">{{ sala.nombre_area_conocimiento }} </div>
             </div>
         </div>
     </div>
@@ -21,18 +21,16 @@
 export default {
     name: "CardSalas",
     props: {
-        numeroSala: String,
-        nombreDelegado: String,
-        areaConocimiento: String,
+        sala: Object,
         index: Number 
     }
 };
 </script>
 
 
-<style>
+<style scoped>
 .teacher {
-    margin-bottom: 50px;
+    margin-bottom: 20px;
 }
 
 .card {
@@ -102,7 +100,7 @@ export default {
 }
 
 .card-body {
-    padding: 10px; 
+    padding: 5px; 
     border-radius: 10px;
     box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
     margin: 10px 0; 

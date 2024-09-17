@@ -8,85 +8,74 @@
             </div>
         </div>
 
-        <!--Buscador-->
-        <div class="row justify-content-end align-items-center">
+        <!-- Buscador -->
+        <div class="row justify-content-end align-items-center mr-4">
             <div class="col-8 col-sm-4">
-                <input type="text" id="busqueda" class="form-control  w-100" style="height: 100%; padding: 0.5rem;"
-                    placeholder="Buscar">
+                <input v-model="valorBusqueda" type="text" id="busqueda" class="form-control text-dark w-100" 
+                       style="height: 100%; padding: 0.5rem;" placeholder="Ingresa numero de sala">
             </div>
-            <div class="col-4 col-sm-2">
-                <button class="btn w-90 font-weight-bold"
-                    style="background-color: #000000; color: #ffffff">Buscar</button>
+            <div class="col-4 col-sm-3">
+                <button class="btn w-100 font-weight-bold" 
+                        style="background: rgb(255, 182, 6); color: #000000" 
+                        @click="buscarSala">Buscar</button>
             </div>
         </div>
 
-        <!--Cards Salas-->
-        <div class="teachers my-4 ">
+        <!-- Cards Salas -->
+        <div class="teachers my-4">
             <div class="row">
-                <CardSalas v-for="(sala, index) in salas" :key="index" :numeroSala="sala.numero_sala"
-                    :nombreDelegado="sala.nombreDelegado" :areaConocimiento="sala.areaConocimiento" />   
+                <CardSalas v-for="(sala, index) in salasFiltradas" :key="index" :sala="sala"/>
             </div>
-        </div>
-    </div>
-
-    <!-- Paginador -->
-    <div class="mt-2">
-        <div aria-label="Page navigation example mb-5">
-            <ul class="pagination justify-content-center">
-                <li class="page-item  m-1">
-                    <a class="page-link" href="#" tabindex="-1" style="border-radius: 20px; color: black;">Previous</a>
-                </li>
-                <li class="page-item rounded m-1">
-                    <a class="page-link rounded-circle" href="#" style="color: black;">1</a>
-                </li>
-                <li class="page-item m-1">
-                    <a class="page-link rounded-circle" href="#" style="color: black;">2</a>
-                </li>
-                <li class="page-item m-1">
-                    <a class="page-link rounded-circle" href="#" style="color: black;">3</a>
-                </li>
-                <li class="page-item m-1">
-                    <a class="page-link" href="#" style="border-radius: 20px; color: black;">Next</a>
-                </li>
-            </ul>
         </div>
     </div>
 </template>
 
 <script>
 import CardSalas from "./CardSalas.vue";
-import { obtenerSalas} from '@/services/delegadoService';
+import { obtenerSalas } from '@/services/delegadoService';
+
 export default {
+    name: "ListaSalasDelegado",
     components: {
         CardSalas,
     },
     data() {
         return {
-            salas: []
+            salas: [], // Almacena todas las salas originales
+            salasFiltradas: [], // Almacena las salas filtradas
+            valorBusqueda: ""
         }
     },
-    methods:{
-        async listarSalas(){
+    methods: {
+        async listarSalas() {
             try {
                 const response = await obtenerSalas();
                 this.salas = response.data.salas;
-                console.log(this.salas)
+                this.salasFiltradas = [...this.salas]; // Inicialmente muestra todas las salas
             } catch (error) {
-                alert("Error al consultar salas")
+                alert("Error al consultar salas");
             }
         },
-        async obtenerDatosDelegado(){
-            
+        buscarSala() {
+            if (this.valorBusqueda.trim() != "") {
+                // Buscar salas espeficicas 
+                this.salasFiltradas = this.salas.filter(sala => 
+                    sala.numero_sala.toLowerCase().includes(this.valorBusqueda.toLowerCase()) ||
+                    sala.nombre_area_conocimiento.toLowerCase().includes(this.valorBusqueda.toLowerCase()) ||
+                    sala.nombres_delegado.toLowerCase().includes(this.valorBusqueda.toLowerCase())
+                );
+            } else {
+                this.salasFiltradas = [...this.salas]; // Si no hay búsqueda, muestra todas las salas
+            }
         }
     },
-    mounted(){
-        this.listarSalas()
+    mounted() {
+        this.listarSalas();
     }
 }
 </script>
 
-<style>
-
+<style scoped>
 .section_title h1 {
     display: block;
     color: #1a1a1a;
@@ -99,10 +88,6 @@ export default {
     position: absolute;
     top: 0;
     left: 50%;
-    -webkit-transform: translateX(-50%);
-    -moz-transform: translateX(-50%);
-    -ms-transform: translateX(-50%);
-    -o-transform: translateX(-50%);
     transform: translateX(-50%);
     width: 55px;
     height: 4px;
@@ -110,7 +95,6 @@ export default {
     background: #ffb606;
 }
 
-/* Estilos para el paginador */
 .pagination .page-item .page-link {
     font-size: 18px;
     padding: 10px 20px;
