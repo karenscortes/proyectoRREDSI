@@ -18,10 +18,8 @@ def get_unassigned_projects(db: Session, page: int = 1, page_size: int = 10):
                                 INNER JOIN modalidades ON (proyectos.id_modalidad = modalidades.id_modalidad)
                                 INNER JOIN instituciones ON (proyectos.id_institucion = instituciones.id_institucion)
                                 INNER JOIN areas_conocimiento ON (proyectos.id_area_conocimiento = areas_conocimiento.id_area_conocimiento)
-                                INNER JOIN proyectos_convocatoria ON (proyectos.id_proyecto = proyectos_convocatoria.id_proyecto)
-                                INNER JOIN participantes_proyecto ON (proyectos_convocatoria.id_proyecto_convocatoria = participantes_proyecto.id_proyectos_convocatoria)              
+                                INNER JOIN proyectos_convocatoria ON (proyectos.id_proyecto = proyectos_convocatoria.id_proyecto)              
                         WHERE proyectos.estado = 'pendiente'
-                        AND participantes_proyecto.id_etapa != 2 
                         AND proyectos_convocatoria.id_convocatoria IN (
                                 SELECT id_convocatoria
                                 FROM convocatorias
