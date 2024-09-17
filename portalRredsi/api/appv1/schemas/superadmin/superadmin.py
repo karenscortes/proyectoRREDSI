@@ -16,7 +16,7 @@ class AdminResponse(BaseModel):
     nombres: str  
     apellidos: str  
     correo: EmailStr
-    estado: str
+    estado: EstadoEnum  # Cambiado para usar el Enum
     telefono: Optional[str] = None
     direccion: Optional[str] = None 
     rol_nombre: str
@@ -46,9 +46,11 @@ class UserRoleUpdateSchema(BaseModel):
 class ActivityHistoryResponse(BaseModel):
     id_actividad: int
     id_usuario: int
-    descripcion: str
+    accion: str  
     fecha: datetime
-    correo: Optional[EmailStr] = None  # Incluyo el correo, ya que se devuelve en la consulta SQL
+    correo: Optional[EmailStr] = None
+    modulo_nombre: Optional[str] = None 
 
     class Config:
         orm_mode = True
+

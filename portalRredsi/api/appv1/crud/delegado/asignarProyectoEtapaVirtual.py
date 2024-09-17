@@ -7,7 +7,7 @@ from appv1.schemas.delegado.asignacionProyectoEtapaVirtual import AsignarProyect
 
 def asignar_proyecto_etapa_virtual(db: Session, asignacion: AsignarProyectoEtapaUno ):
     try:
-        sql = text("""INSERT INTO participantes_proyecto (id_usuario, id_proyecto, id_etapa, id_proyecto_convocatoria) 
+        sql = text("""INSERT INTO participantes_proyecto (id_usuario, id_proyecto, id_etapa, id_proyectos_convocatoria) 
                         VALUES (:id_us, :id_p, :id_etp, :id_pc)""")
         
         params={
@@ -93,3 +93,12 @@ def get_institucion_por_nombre(db: Session, nombre_institucion: str):
     except SQLAlchemyError as e:
         print(f"Area de conocimiento no se ha encontrado")
         raise HTTPException(status_code=204, detail="Area de conocimiento no se ha encontrado")
+    
+def update_estado_proyecto(db: Session, id_proyecto:int):
+    sql = text("UPDATE proyectos SET estado = 'asignado' WHERE id_proyecto = :id_proyecto")
+    params = {
+        "id_proyecto": id_proyecto
+    }
+    db.execute(sql, params)
+    db.commit()
+    return True

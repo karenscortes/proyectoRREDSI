@@ -24,6 +24,7 @@ import SalasAdminView from './SalasAdminView.vue';
 import MenuUsuarios from '../components/Menus/MenuUsuarios.vue';
 import ComponenteDinamicoAdmin from '../components/Users/administrador/ComponenteDinamicoAdmin.vue';
 import InicioAdminView from './InicioAdminView.vue';
+import DelegadosAdminView from './DelegadosAdminView.vue';
 
 export default {
     components: {
@@ -34,6 +35,7 @@ export default {
         InicioAdminView: markRaw(InicioAdminView),
         RubricaAdminView: markRaw(RubricaAdminView),
         SalasAdminView: markRaw(SalasAdminView),
+        DelegadosAdminView: markRaw(DelegadosAdminView),
     },
     data() {
         //El componente por defecto que se mostrará
@@ -56,6 +58,7 @@ export default {
                 RubricaAdminView: RubricaAdminView,
                 SalasAdminView: SalasAdminView, 
                 InicioAdmin: InicioAdminView,
+                DelegadosAdminView: DelegadosAdminView,
             };
             this.currentComponent = componentMap[componentName] || InicioAdminView;
         }

@@ -40,7 +40,6 @@ def update_user_by_id(
     db: Session = Depends(get_db)
 ):
     permisos = get_permissions(db, current_user.id_rol, MODULE)
-    print(f"AQUIIIII AAAA{permisos}")
     if not permisos.p_actualizar:
         raise HTTPException(status_code=401, detail="Usuario no autorizado")
         

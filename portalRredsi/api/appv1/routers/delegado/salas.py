@@ -5,32 +5,34 @@ from appv1.routers.login import get_current_user
 from appv1.schemas.delegado.salas import AsignarProyectoSala, DetalleSala, SalaResponse
 from appv1.schemas.usuario import UserResponse
 from db.database import get_db
-from appv1.crud.delegado.salas import asignar_proyecto_a_sala, get_detalle_sala, get_salas, get_salas_por_convocatoria
+from appv1.crud.delegado.salas import asignar_proyecto_a_sala, get_detalle_sala, get_salas_por_convocatoria
 from appv1.crud.permissions import get_permissions
 
 router_sala = APIRouter()
 
 # ID del modulo el cual quieren probar / validen en workbench los id en la tabla permisos
-MODULE = 15
+MODULE_SALAS = 15
+MODULE_DETALLE_SALA = 16
 
+# RUTA PARA ASIGNAR PROYETCO ETAPA PRESENCIAL 
 @router_sala.post("/asignar-proyecto-etapa-presencial/")
-async def asignar_proyecto(asignacion: AsignarProyectoSala, db: Session = Depends(get_db)):
+async def asignar_proyecto(
+    asignacion: AsignarProyectoSala,
+    current_user: UserResponse = Depends(get_current_user),
+    db: Session = Depends(get_db)
+):
+    permisos = get_permissions(db, current_user.id_rol, MODULE_DETALLE_SALA)
+    
+    if not permisos.p_insertar:
+        raise HTTPException(status_code=401, detail="No está autorizado a utilizar este modulo")
+    
     respuesta = asignar_proyecto_a_sala(db, asignacion)
     if respuesta:
         return {"mensaje":f"Proyecto asignado a sala {asignacion.id_sala} "}
     else:
         return {"mensaje":"El proyecto no se ha podido asignar"}
 
-
-@router_sala.get("/get-all-salas/", response_model=List[SalaResponse])
-async def read_all_salas(
-    db: Session = Depends(get_db)
-):
-    salas = get_salas(db)
-    if len(salas) == 0:
-        raise HTTPException(status_code=404, detail="Salas no encontradas")
-    return salas
-
+# RURA PARA OBTENER TODAS LAS SALAS QUE SE ENCUENTREN REGISTRADAS EN UNA CONVOCATORIA ACTIVA 
 @router_sala.get("/get-salas-por-convocatoria/", response_model=dict)
 async def read_all_salas_por_convocatoria(
     page: int = 1,
@@ -40,7 +42,7 @@ async def read_all_salas_por_convocatoria(
     
 ):
     # Aqui tienen que consultar que permisos tiene asignados por rol :)
-    permisos = get_permissions(db, current_user.id_rol, MODULE)
+    permisos = get_permissions(db, current_user.id_rol, MODULE_SALAS)
     
     # Si no tiene permiso que necesita tira el mensaje de error
     if not permisos.p_consultar:
@@ -61,16 +63,21 @@ async def read_all_salas_por_convocatoria(
         "page_size": page_size
     }
 
-
+# RUTA PARA OBTENER EL DETALLE DE UNA SALA 
 @router_sala.get("/get-detalle-sala/", response_model=DetalleSala)
 async def read_detalle_sala(
     id_sala: str,
+    current_user: UserResponse = Depends(get_current_user),
     db: Session = Depends(get_db),
 ):
+    permisos = get_permissions(db, current_user.id_rol, MODULE_DETALLE_SALA)
+    
+    if not permisos.p_consultar:
+        raise HTTPException(status_code=401, detail="No está autorizado a utilizar este modulo")
+    
     sala_detalle = get_detalle_sala(db,id_sala)
     if len(sala_detalle) == 0:
         raise HTTPException(status_code=404, detail="Sala no encontrada")
     
     return sala_detalle
 
-# RUTAS SALAS />

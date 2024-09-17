@@ -37,22 +37,13 @@ def asignar_proyecto_a_sala(db: Session, asignacion: AsignarProyectoSala ):
         print(f"Error al asignar proyecto: {e}")
         raise HTTPException(status_code=500, detail="Error al asignar proyecto")
     
-    
-def get_salas(db: Session):
-    try:
-        sql = text("SELECT * FROM salas")
-        result = db.execute(sql).fetchall()
-        return result
-    except SQLAlchemyError as e:
-        print(f"Error al buscar salas: {e}")
-        raise HTTPException(status_code=500, detail="Error al buscar salas")
-    
-    
 def get_salas_por_convocatoria(db: Session, page: int = 1, page_size: int = 10):
     try:
         offset = (page - 1) * page_size
         
-        sql = text("""SELECT * FROM salas 
+        sql = text("""SELECT salas.*,areas_conocimiento.nombre AS nombre_area_conocimiento, usuarios.nombres AS nombres_delegado,usuarios.apellidos AS apellidos_delegado FROM salas
+                        JOIN areas_conocimiento ON salas.id_area_conocimiento = areas_conocimiento.id_area_conocimiento
+                        JOIN usuarios ON salas.id_usuario = usuarios.id_usuario
                         JOIN convocatorias ON salas.id_convocatoria = convocatorias.id_convocatoria 
                         WHERE convocatorias.estado = 'en curso' 
                         LIMIT :page_size OFFSET :offset 
