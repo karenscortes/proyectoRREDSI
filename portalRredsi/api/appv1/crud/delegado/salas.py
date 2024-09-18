@@ -81,7 +81,6 @@ def get_detalle_sala(db: Session, id_sala: str):
         raise HTTPException(status_code=500, detail="La sala no se ha encontrado")
 
 # VERIFICAR SI UNA SALA UN DELEGADO TIENE ASIGNADA UNA SALA
-
 def verificar_sala_asignada(db: Session, id_usuario: int):
     try:
         sql = text("SELECT * FROM salas WHERE salas.id_usuario = :id_usuario")
@@ -89,4 +88,17 @@ def verificar_sala_asignada(db: Session, id_usuario: int):
         return result
     except SQLAlchemyError as e:
         raise HTTPException(status_code=500, detail="Delegado sin sala asignada")
-    
+
+# Consultar los ponentes de un proyecto
+def get_ponentes_proyecto(db: Session, id_proyecto: int):
+    try:
+        sql = text("""SELECT usuarios.id_usuario, usuarios.nombres, usuarios.apellidos 
+                        FROM participantes_proyecto 
+                        JOIN usuarios ON participantes_proyecto.id_usuario = usuarios.id_usuario  
+                        WHERE participantes_proyecto.id_proyecto = :id_p
+                        AND usuarios.id_rol NOT IN(1,2,3,4,6,7)
+                    """)
+        result = db.execute(sql, {"id_p": id_proyecto}).mappings().all()
+        return result
+    except SQLAlchemyError as e:
+        raise HTTPException(status_code=500, detail="La sala no se ha encontrado")

@@ -19,12 +19,10 @@
                 <div class="row mb-4 justify-content-center">
                     <div class="col-12 col-md-6 text-center">
                         <label for="proyecto_codigo" class="fw-bold text-dark">Proyecto:</label>
-                        <select id="id_proyecto" v-model="proyectoSeleccionado.codigo" class="form-select text-dark"
+                        <select id="id_proyecto" v-model="proyectoSeleccionado.codigo" @change="consultarPonentesProyecto(proyectoSeleccionado.codigo)" class="form-select text-dark"
                             required>
                             <option value="" disabled selected>Seleccione una opción</option>
-                            <option value="A001">A001</option>
-                            <option value="A002">A002</option>
-                            <option value="A003">A003</option>
+                            <option v-for="(proyecto,index) in listaProyectosSinAsignar" :key="index" :value="proyecto.id_proyecto">{{ proyecto.titulo}}</option>
                         </select>
                     </div>
                 </div>
@@ -33,11 +31,11 @@
                     <div class="row mb-3">
                         <div class="col-12 col-md-6">
                             <label for="ponente_1" class="form-label text-black">Ponente 1:</label>
-                            <input type="text" class="form-control" id="ponente_1" v-model="ponente1">
+                            <input type="text" class="form-control" id="ponente_1" :value="ponente1" disabled>
                         </div>
                         <div class="col-12 col-md-6">
                             <label for="ponente_2" class="form-label text-black">Ponente 2 (Opcional):</label>
-                            <input type="text" class="form-control" id="ponente_2" v-model="ponente2">
+                            <input type="text" class="form-control" id="ponente_2" :value="ponente2" disabled>
                         </div>
                     </div>
                     <!-- Evaluadores -->
@@ -119,6 +117,9 @@
 
 <script>
 import { defineComponent } from 'vue';
+import { obtenerPonentesProyecto } from '@/services/salasDelegadoService';
+import { proyectosSinAsignar } from '@/services/delegadoService'
+
 export default defineComponent({
     props: {
         sala: Object,
@@ -140,6 +141,7 @@ export default defineComponent({
                 hora_fin: "",
             },
             evaluadores: [],
+            listaProyectosSinAsignar: [],
             timeSlots: [
                 "6:00am", "6:30am", "7:00am", "7:30am", "8:00am", "8:30am",
                 "9:00am", "9:30am", "10:00am", "10:30am", "11:00am", "11:30am",
@@ -203,7 +205,38 @@ export default defineComponent({
                 };
             }
             return {};
-        }
+        },
+        async fetchProyectosSinAsignar() {
+            try {
+                const response = await proyectosSinAsignar();
+                this.listaProyectosSinAsignar = response.data.projects;
+
+            } catch (error) {
+                alert("Error al obtener proyectos: ", error);
+            }
+        },
+        async consultarPonentesProyecto(id_proyecto) {
+            try {
+                const ponentes = await obtenerPonentesProyecto(id_proyecto);
+                let listaPonentes = ponentes.data.ponentes;
+
+                // Con esta condición valido cuantos ponentes tiene el proyecto y si impresión
+                if(listaPonentes.length == 1) {
+                    this.ponente1 = `${listaPonentes[0].nombres} ${listaPonentes[0].apellidos}`;
+                    this.ponente2 = "";
+                }else if(listaPonentes.length == 2){
+                    this.ponente1 = `${listaPonentes[0].nombres} ${listaPonentes[0].apellidos}`;
+                    this.ponente2 = `${listaPonentes[1].nombres} ${listaPonentes[1].apellidos}`;
+                }
+            } catch (error) {
+                this.ponente1 = "Sin ponente registrado";
+                this.ponente2 = "Sin ponente registrado";
+            }
+            
+        },
+    },
+    mounted(){
+        this.fetchProyectosSinAsignar();
     }
 });
 </script>

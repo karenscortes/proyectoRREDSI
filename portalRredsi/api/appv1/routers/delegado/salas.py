@@ -5,12 +5,13 @@ from appv1.routers.login import get_current_user
 from appv1.schemas.delegado.salas import AsignarProyectoSala, DetalleSala, SalaBase, SalaResponse
 from appv1.schemas.usuario import UserResponse
 from db.database import get_db
-from appv1.crud.delegado.salas import asignar_proyecto_a_sala, get_detalle_sala, get_salas_por_convocatoria, verificar_sala_asignada
+from appv1.crud.delegado.salas import asignar_proyecto_a_sala, get_detalle_sala, get_ponentes_proyecto, get_salas_por_convocatoria, verificar_sala_asignada
 from appv1.crud.permissions import get_permissions
 
 router_sala = APIRouter()
 
 # ID del modulo el cual quieren probar / validen en workbench los id en la tabla permisos
+MODULE_USUARIOS= 3
 MODULE_SALAS = 15
 MODULE_DETALLE_SALA = 16
 
@@ -98,3 +99,23 @@ async def read_sala_asignada(
         raise HTTPException(status_code=404, detail="Sin sala asignada")
 
     return sala_detalle
+
+# RUTA PARA OBTENER LOS PONENTES DE UN PROYECTO
+@router_sala.get("/get-ponentes-proyecto/", response_model=dict)
+async def read_sala_asignada(
+    id_proyecto: int,
+    current_user: UserResponse = Depends(get_current_user),
+    db: Session = Depends(get_db),
+):
+    permisos = get_permissions(db, current_user.id_rol, MODULE_USUARIOS)
+    
+    if not permisos.p_consultar:
+        raise HTTPException(status_code=401, detail="No está autorizado a utilizar este modulo")
+    
+    ponentes = get_ponentes_proyecto(db,id_proyecto)
+    if len(ponentes) == 0:
+        raise HTTPException(status_code=404, detail="Sin ponentes asignados")
+
+    ponentes_proyecto = [dict(ponente) for ponente in ponentes]
+    
+    return {"ponentes": ponentes_proyecto}

@@ -131,8 +131,8 @@ async def update_estado_proyecto(
     if not permisos.p_actualizar:
         raise HTTPException(status_code=401, detail="No está autorizado a utilizar este modulo")
     
-    estado_actulizado = update_estado_proyecto(db,id_proyecto)
-    if estado_actulizado != True:
+    estado_actualizado = update_estado_proyecto(db,id_proyecto)
+    if estado_actualizado != True:
         raise HTTPException(status_code=404, detail="Institucion no encontrada")
     
     return {"Mensaje: Estado de proyetco actulizado correctamente"}

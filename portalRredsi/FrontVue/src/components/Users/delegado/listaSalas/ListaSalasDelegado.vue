@@ -1,6 +1,6 @@
 <template>
     <div class="container mt-5">
-
+        
         <component 
             v-if="habilitarComponente"
             :is="selectedComponent" 
