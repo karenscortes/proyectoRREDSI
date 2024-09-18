@@ -82,7 +82,7 @@ async def read_detalle_sala(
     return sala_detalle
 
 # RUTA PARA COMPROBAR SI UN DELEGADO TIENE ASIGNADA UNA SALA
-@router_sala.get("/verifica-sala-asignada/", response_model=SalaBase)
+@router_sala.get("/verificar-sala-asignada/", response_model=SalaBase)
 async def read_sala_asignada(
     id_usuario: int,
     current_user: UserResponse = Depends(get_current_user),

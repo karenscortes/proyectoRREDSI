@@ -9,7 +9,7 @@
         <div class="row mb-3">
             <div class="col">
                 <div class="section_title text-center">
-                    <h1>Sala</h1>
+                    <h1>Sala {{ sala.numero_sala }}</h1>
                 </div>
             </div>
         </div>
