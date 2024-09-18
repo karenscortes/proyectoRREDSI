@@ -1,12 +1,12 @@
 <template>
   <tr class="text-center">
-    <td>{{ infoDelegado.p_nombres}} {{ infoDelegado.p_apellidos }}</td>
-    <td>{{ infoDelegado.p_institucion }}</td>
+    <td>{{ infoDelegado.nombres}} {{ infoDelegado.apellidos }}</td>
+    <td>{{ infoDelegado.nombre_institucion }}</td>
     <td>
       <div class="form-check form-switch">
         <input
           class="form-check-input td_check"
-          :checked="infoDelegado.p_estado == 'activo'"
+          :checked="infoDelegado.estado == 'activo'"
           @change="cambiarEstado()"
           type="checkbox"
           id="estado"
@@ -25,24 +25,25 @@
     </td>
   </tr>
 </template>
-<script>
-export default {
-  props: {
+<script setup>
+  const props = defineProps({
     infoDelegado: {
       type: Object,
       required: true,
       validator(value) {
         return (
-          typeof value.p_idDelegado === "number",
-          typeof value.p_nombres === "string" &&
-          typeof value.p_apellidos === "string" &&
-          typeof value.p_institucion === "string" &&
-          typeof value.p_estado === "string" &&
-          typeof value.p_tipoDocumento === "string" &&
-          typeof value.p_documento === "string" &&
-          typeof value.p_areaConocimiento === "string" &&
-          typeof value.p_telefono == "string" &&
-          typeof value.p_correo === "string" 
+          typeof value.id_usuario === 'number' &&
+          typeof value.nombres === 'string' &&
+          typeof value.apellidos === 'string' &&
+          typeof value.tipo_documento === 'string' &&
+          typeof value.documento === 'string' &&
+          typeof value.nombre_institucion === 'number' &&
+          typeof value.primer_area === 'string' &&
+          typeof value.segunda_area === 'string' &&
+          typeof value?.url_titulo === 'string' &&
+          typeof value.estado  === 'string' &&
+          typeof value.celular === 'string' &&
+          typeof value.correo === 'string' 
         );
       },
     },
@@ -50,16 +51,12 @@ export default {
       type: Number,
       required: true
     }
-  },
-  emits: ["open", "check"],
-  setup(props, { emit }){
-    const openModal = () => emit("open", props.infoDelegado);
-    const cambiarEstado = () => emit("check", props.index);
-    return {openModal, cambiarEstado};
-  },
-};
+})
+//Definiendo los eventos que emitiran a el componente padre. 
+const emit = defineEmits(["open", "check"]);
+const openModal = () => emit("open", props.infoDelegado);
+const cambiarEstado = () => emit("check", props.index);
 </script>
-
 <style>
 .form-check{
   padding-left: 2.5rem;
