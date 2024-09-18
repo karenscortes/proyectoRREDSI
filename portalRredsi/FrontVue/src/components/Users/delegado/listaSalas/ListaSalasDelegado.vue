@@ -2,11 +2,12 @@
     <div class="container mt-5">
 
         <component 
-            v-show="habilitarComponente"
+            v-if="habilitarComponente"
             :is="selectedComponent" 
             :sala="SalaSeleccionada"
+            @volver="volverListaSalas"
         />
-        <div v-show="!habilitarComponente">
+        <div v-else>
             <div class="row mb-3">
                 <div class="col">
                     <div class="section_title text-center">
@@ -94,6 +95,9 @@ export default {
             this.selectedComponent = componentName;
             this.habilitarComponente = true;
             this.SalaSeleccionada = p_sala_seleccionada;
+        },
+        volverListaSalas() {
+            this.habilitarComponente = false;
         }
 
     },

@@ -1,6 +1,10 @@
 <template>
     <div>
+        <div class="col-4">
+            <a class="btn_regresar text-dark fw-bold" @click="$emit('volver')"><svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#00000"><path d="m313-440 224 224-57 56-320-320 320-320 57 56-224 224h487v80H313Z"/></svg> Lista de salas</a>
+        </div>
         <div class="container mt-4">
+            
             <div class="my-3 row">
                 <div class="col-4">
                     <h2 class="text-dark fs-3">SALA {{ sala.numero_sala }}</h2>
@@ -63,3 +67,9 @@ export default {
     },
 }
 </script>
+
+<style scoped>
+.btn_regresar:hover{
+    cursor: pointer;
+}
+</style>

@@ -2,10 +2,10 @@ from typing import List
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 from appv1.routers.login import get_current_user
-from appv1.schemas.delegado.salas import AsignarProyectoSala, DetalleSala, SalaResponse
+from appv1.schemas.delegado.salas import AsignarProyectoSala, DetalleSala, SalaBase, SalaResponse
 from appv1.schemas.usuario import UserResponse
 from db.database import get_db
-from appv1.crud.delegado.salas import asignar_proyecto_a_sala, get_detalle_sala, get_salas_por_convocatoria
+from appv1.crud.delegado.salas import asignar_proyecto_a_sala, get_detalle_sala, get_salas_por_convocatoria, verificar_sala_asignada
 from appv1.crud.permissions import get_permissions
 
 router_sala = APIRouter()
@@ -81,3 +81,20 @@ async def read_detalle_sala(
     
     return sala_detalle
 
+# RUTA PARA COMPROBAR SI UN DELEGADO TIENE ASIGNADA UNA SALA
+@router_sala.get("/verifica-sala-asignada/", response_model=SalaBase)
+async def read_sala_asignada(
+    id_usuario: int,
+    current_user: UserResponse = Depends(get_current_user),
+    db: Session = Depends(get_db),
+):
+    permisos = get_permissions(db, current_user.id_rol, MODULE_DETALLE_SALA)
+    
+    if not permisos.p_consultar:
+        raise HTTPException(status_code=401, detail="No está autorizado a utilizar este modulo")
+    
+    sala_detalle = verificar_sala_asignada(db,id_usuario)
+    if len(sala_detalle) == 0:
+        raise HTTPException(status_code=404, detail="Sin sala asignada")
+
+    return sala_detalle
