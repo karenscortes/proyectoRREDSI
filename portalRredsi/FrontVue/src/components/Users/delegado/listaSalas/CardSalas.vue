@@ -6,7 +6,7 @@
                 <strong class="mb-0 text-white h4">{{ sala.numero_sala }}</strong>
             </div>
             <div class="card-img">
-                <div class="card_plus trans_200 text-center"><a href="detalle_sala.html">+</a></div>
+                <div class="card_plus trans_200 text-center"><a @click="selectComponent('DetalleSala',sala)">+</a></div>
                 <img class="card-img-top trans_200" src="@/assets/img/tiempo.png" alt="imagen_tiempo">
             </div>
             <div class="card-body text-center">
@@ -18,13 +18,20 @@
 </template>
 
 <script>
-export default {
-    name: "CardSalas",
+import { defineComponent } from 'vue';
+
+export default defineComponent({
     props: {
         sala: Object,
-        index: Number 
-    }
-};
+        index: Number
+    },
+    emits: ['component-selected'],
+    methods: {
+            selectComponent(componentName,sala) {
+                this.$emit('component-selected', componentName,sala);
+            }
+        }
+});
 </script>
 
 
@@ -54,7 +61,7 @@ export default {
 }
 
 .card-img {
-    padding: 10px; 
+    padding: 10px;
     position: relative;
     text-align: center;
 }
@@ -100,25 +107,25 @@ export default {
 }
 
 .card-body {
-    padding: 5px; 
+    padding: 5px;
     border-radius: 10px;
     box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
-    margin: 10px 0; 
+    margin: 10px 0;
 }
 
 .card-title {
-    margin-top: 5px; 
-    font-size: 22px; 
+    margin-top: 5px;
+    font-size: 22px;
     font-weight: 500;
-    color:#1a1a1a;
+    color: #1a1a1a;
     line-height: 1.4;
 }
 
 .card-text {
-    font-size: 14px; 
+    font-size: 14px;
     font-weight: 500;
     color: #a5a5a5;
-    margin-top: 5px; 
+    margin-top: 5px;
 }
 
 .teacher_social {
