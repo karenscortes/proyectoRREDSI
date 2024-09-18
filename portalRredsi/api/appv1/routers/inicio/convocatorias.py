@@ -1,10 +1,9 @@
 from typing import List
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
-from appv1.schemas.valeria_schemas.convocatorias import ConvocatoriaResponse
+from appv1.schemas.inicio.convocatorias import ConvocatoriaResponse
 from db.database import get_db
-from appv1.crud.permissions import get_permissions
-from appv1.crud.valeria_crud.convocatorias import leer_convocatorias
+from appv1.crud.inicio.convocatorias import leer_convocatorias
 
 
 router = APIRouter()

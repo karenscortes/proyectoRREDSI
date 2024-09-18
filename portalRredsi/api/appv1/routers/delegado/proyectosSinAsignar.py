@@ -19,10 +19,10 @@ async def read_all_unassignedProjects(
     current_user: UserResponse = Depends(get_current_user)
 ):
     permisos = get_permissions(db, current_user.id_rol, MODULE)
-    if not permisos.p_consultar:
+    if current_user.id_rol !=2 or not permisos.p_consultar:
         raise HTTPException(status_code=401, detail="Usuario no autorizado")
-    projects,total_pages = get_unassigned_projects(db, page, page_size)
     
+    projects,total_pages = get_unassigned_projects(db, page, page_size)
     return {
         "projects": projects,
         "total_pages": total_pages,

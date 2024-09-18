@@ -5,9 +5,8 @@ from appv1.routers.login import get_current_user
 from appv1.schemas.delegado.listaEvaluadores import EvaluatorsResponse, PaginatedUnassignedEvaluators
 from appv1.schemas.usuario import UserResponse
 from db.database import get_db
-from appv1.crud.delegado.listaEvaluadores import get_all_evaluators, get_evaluator_by_document, update_evaluator_status
+from appv1.crud.delegado.listaEvaluadores import get_all_evaluators, get_evaluator_by_document, get_evaluator_by_id, update_evaluator_status
 from appv1.crud.permissions import get_permissions
-from appv1.crud.usuarios import get_user_by_id
 
 router_evaluadores = APIRouter()
 MODULE = 3
@@ -36,18 +35,18 @@ async def read_all_evaluators(
 
 
 @router_evaluadores.put("/update-evaluator-status/", response_model=dict)
-def update_application_status(
+def update_status(
     id_evaluador:int,
     estado: str,
     db: Session = Depends(get_db),
     current_user: UserResponse = Depends(get_current_user)
 ):
     permisos = get_permissions(db, current_user.id_rol, MODULE)
-    if id_evaluador != current_user.id_usuario:
-        if not permisos.p_actualizar:
-            raise HTTPException(status_code=401, detail="Usuario no autorizado")
 
-    verify_evaluator = get_user_by_id(db, id_evaluador)
+    if current_user.id_rol != 2 or not permisos.p_actualizar: 
+        raise HTTPException(status_code=401, detail="Usuario no autorizado")
+
+    verify_evaluator = get_evaluator_by_id(db, id_evaluador)
     if verify_evaluator is None:
         raise HTTPException(status_code=404, detail="Evaluador no encontrado")     
     updated= update_evaluator_status(db,id_evaluador,estado)

@@ -9,11 +9,11 @@ def get_unassigned_projects(db: Session, page: int = 1, page_size: int = 10):
 
                 sql = text(
                 """
-                        SELECT  proyectos.id_proyecto,
-                                proyectos.titulo,
-                                modalidades.nombre        AS modalidad,
-                                instituciones.nombre      AS institucion,
-                                areas_conocimiento.nombre AS area_conocimiento
+                        SELECT  DISTINCT proyectos.id_proyecto,
+                                         proyectos.titulo,
+                                         modalidades.nombre        AS modalidad,
+                                         instituciones.nombre      AS institucion,
+                                         areas_conocimiento.nombre AS area_conocimiento
                         FROM proyectos
                                 INNER JOIN modalidades ON (proyectos.id_modalidad = modalidades.id_modalidad)
                                 INNER JOIN instituciones ON (proyectos.id_institucion = instituciones.id_institucion)
