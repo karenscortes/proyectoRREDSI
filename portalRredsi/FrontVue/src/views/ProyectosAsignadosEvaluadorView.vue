@@ -1,100 +1,98 @@
 <template>
-    <div class="container pt-5">
-        <!-- Mostrar el componente seleccionado si 'showCalificarProyecto' es verdadero -->
-        <component 
-            v-if="showCalificarProyecto && selectedComponent" 
-            :is="selectedComponent" 
-            :proyectoSeleccionado="selectedProyecto" 
-            @volver="handleVolver" 
-        />
-        
-        <!-- Mostrar la lista de proyectos si 'showCalificarProyecto' es falso -->
-        <div v-else>
-            <!-- Sección de botones y proyectos -->
-            <div class="row mb-5 mt-2">
-                <div class="col">
-                    <div class="section_title text-center">
-                        <h1>Proyectos Asignados</h1>
-                        <h2 class="text-muted">Primera Etapa</h2>
+    <!-- Mostrar el componente seleccionado si 'showCalificarProyecto' es verdadero -->
+    <component 
+        v-if="showCalificarProyecto && selectedComponent" 
+        :is="selectedComponent" 
+        :proyectoSeleccionado="selectedProyecto" 
+        @volver="handleVolver" 
+    />
+    
+    <!-- Mostrar la lista de proyectos si 'showCalificarProyecto' es falso -->
+    <div v-else>
+        <!-- Sección de botones y proyectos -->
+        <div class="row mb-5 mt-2">
+            <div class="col">
+                <div class="section_title text-center">
+                    <h1>Proyectos Asignados</h1>
+                    <h2 class="text-muted">Primera Etapa</h2>
+                </div>
+            </div>
+        </div>
+
+        <!-- Contenedor para los proyectos -->
+        <div class="row justify-content-center mt-3">
+            <div class="col-xl-10 col-lg-8 col-md-8">
+                <div class="row text-center">
+                    <!-- Botones de navegación -->
+                    <div class="col-2 d-flex justify-content-center align-items-center">
+                        <button 
+                            class="btn cards__buttons w-100"
+                            @click="prevPage"
+                            :disabled="currentPage === 1"
+                        >
+                            <i class="fa-solid fa-circle-arrow-left fa-2xl"></i>
+                        </button>
                     </div>
-                </div>
-            </div>
 
-            <!-- Contenedor para los proyectos -->
-            <div class="row justify-content-center mt-3">
-                <div class="col-xl-10 col-lg-8 col-md-8">
-                    <div class="row text-center">
-                        <!-- Botones de navegación -->
-                        <div class="col-2 d-flex justify-content-center align-items-center">
-                            <button 
-                                class="btn cards__buttons w-100"
-                                @click="prevPage"
-                                :disabled="currentPage === 1"
+                    <div class="col-8">
+                        <div class="d-flex justify-content-around">
+                            <button
+                                class="btn cards__buttons border"
+                                :class="{ 'active-button': selectedState === '' }"
+                                @click="fetchProyectos(1)"
+                                :disabled="selectedState === ''"
                             >
-                                <i class="fa-solid fa-circle-arrow-left fa-2xl"></i>
+                                Todos
+                            </button>
+                            <button
+                                class="btn cards__buttons border"
+                                :class="{ 'active-button': selectedState === 'Calificado' }"
+                                @click="fetchProyectosPorEstado('Calificado')"
+                                :disabled="selectedState === 'Calificado'"
+                            >
+                                Calificados
+                            </button>
+                            <button
+                                class="btn cards__buttons border"
+                                :class="{ 'active-button': selectedState === 'Pendiente' }"
+                                @click="fetchProyectosPorEstado('Pendiente')"
+                                :disabled="selectedState === 'Pendiente'"
+                            >
+                                Pendientes
                             </button>
                         </div>
+                    </div>
 
-                        <div class="col-8">
-                            <div class="d-flex justify-content-around">
-                                <button
-                                    class="btn cards__buttons border"
-                                    :class="{ 'active-button': selectedState === '' }"
-                                    @click="fetchProyectos(1)"
-                                    :disabled="selectedState === ''"
-                                >
-                                    Todos
-                                </button>
-                                <button
-                                    class="btn cards__buttons border"
-                                    :class="{ 'active-button': selectedState === 'Calificado' }"
-                                    @click="fetchProyectosPorEstado('Calificado')"
-                                    :disabled="selectedState === 'Calificado'"
-                                >
-                                    Calificados
-                                </button>
-                                <button
-                                    class="btn cards__buttons border"
-                                    :class="{ 'active-button': selectedState === 'Pendiente' }"
-                                    @click="fetchProyectosPorEstado('Pendiente')"
-                                    :disabled="selectedState === 'Pendiente'"
-                                >
-                                    Pendientes
-                                </button>
-                            </div>
-                        </div>
-
-                        <!-- Botón de navegación derecha -->
-                        <div class="col-2 d-flex justify-content-center align-items-center">
-                            <button 
-                                class="btn cards__buttons w-100"
-                                @click="nextPage"
-                                :disabled="currentPage === totalPages"
-                            >
-                                <i class="fa-solid fa-circle-arrow-right fa-2xl"></i>
-                            </button>
-                        </div>
-                    </div>     
-                </div>
+                    <!-- Botón de navegación derecha -->
+                    <div class="col-2 d-flex justify-content-center align-items-center">
+                        <button 
+                            class="btn cards__buttons w-100"
+                            @click="nextPage"
+                            :disabled="currentPage === totalPages"
+                        >
+                            <i class="fa-solid fa-circle-arrow-right fa-2xl"></i>
+                        </button>
+                    </div>
+                </div>     
             </div>
+        </div>
 
-            <!-- Creación de cards con el proyecto -->
-            <p v-if="hasProyectos" class="text-center mt-4 fs-5">
-                Página {{ currentPage }} de {{ totalPages }}
-            </p>
+        <!-- Creación de cards con el proyecto -->
+        <p v-if="hasProyectos" class="text-center mt-4 fs-5">
+            Página {{ currentPage }} de {{ totalPages }}
+        </p>
 
-            <div v-if="!hasProyectos" class="row justify-content-center mt-5">
-                <p class="text-muted text-center fs-4">{{ mensajeSinProyectos }}</p>
-            </div>
+        <div v-if="!hasProyectos" class="row justify-content-center mt-5">
+            <p class="text-muted text-center fs-4">{{ mensajeSinProyectos }}</p>
+        </div>
 
-            <div v-else class="row justify-content-center mt-3">
-                <ProyectosAsignados 
-                    v-for="(proyecto, index) in proyectos" 
-                    :key="index" 
-                    :proyecto="proyecto" 
-                    @component-selected="changeComponent" 
-                />
-            </div>
+        <div v-else class="row justify-content-center mt-3">
+            <ProyectosAsignados 
+                v-for="(proyecto, index) in proyectos" 
+                :key="index" 
+                :proyecto="proyecto" 
+                @component-selected="changeComponent" 
+            />
         </div>
     </div>
 </template>
@@ -255,6 +253,15 @@
 
         .d-flex.justify-content-center {
             margin-bottom: 0.5rem; 
+        }
+    }
+
+    
+    /* Media query para pantallas entre 998px y 766px */
+    @media (min-width: 766px) and (max-width: 998px) {
+        .cards__buttons {
+            font-size: 0.9rem;
+            padding: 0.5rem; 
         }
     }
 </style>
