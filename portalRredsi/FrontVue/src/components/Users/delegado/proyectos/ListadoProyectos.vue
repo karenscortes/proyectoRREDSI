@@ -8,11 +8,11 @@
     <div class="container">
         <div class="row justify-content-between">
             <div class="col-7 col-sm-3 mb-3 ">
-                <!-- <select class="form-select" aria-label="Default select example">
+                <select class="form-select" aria-label="Default select example">
                     <option selected>Etapas</option>
                     <option value="1">Primera Etapa</option>
                     <option value="2">Segunda Etapa</option>
-                </select> -->
+                </select>
             </div>
             <div class=" col-12 col-sm-7 row justify-content-end align-items-center">
                 <div class="col-8 col-sm-7">

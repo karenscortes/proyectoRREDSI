@@ -238,7 +238,7 @@ export const obtenerAsistentesPorRol = async (rol, page = 1, page_size = 10) => 
     try {
         const response = await api.get(`asistencia/get-asistentes-por-rol/${rol}?page=${page}&page_size=${page_size}`, {
             headers: {
-                'Authorization': `Bearer`
+                'Authorization': `Bearer ${localStorage.getItem('access_token')}`
             }
         });
         return response;
@@ -256,7 +256,7 @@ export const obtenerAsistentePorDocumento = async (documento) => {
     try {
         const response = await api.get(`asistencia/get-asistente-por-cedula/${documento}`, {
             headers: {
-                'Authorization': `Bearer`
+                'Authorization': `Bearer ${localStorage.getItem('access_token')}`
             }
         });
         return response;
