@@ -27,8 +27,10 @@ import ProyectosAsignadosEvaluadorView from './ProyectosAsignadosEvaluadorView.v
 import CalificarProyecto from "../components/Users/evaluador/CalificarProyecto.vue";
 import ListaAdministradores from '../components/Users/superadmin/ListaAdministradores.vue';
 import HistorialActividades from "../components/Users/superadmin/HistorialActividades.vue";
+import EditarPerfilSuperAdmin from "../components/Users/superadmin/EditarPerfilSuperAdmin.vue";
 import NotAvailable from "./NotAvailable.vue";
 import ListaSalasDelegado from "../components/Users/delegado/listaSalas/ListaSalasDelegado.vue";
+
 
 import InicioAdminView from "./InicioAdminView.vue";
 
@@ -62,6 +64,7 @@ export default {
         InicioSuperAdminView: markRaw(InicioSuperAdminView),
         ListaAdministradores: markRaw(ListaAdministradores),
         HistorialActividades: markRaw(HistorialActividades),
+        EditarPerfilSuperAdmin: markRaw (EditarPerfilSuperAdmin),
 
         //Componente Por defecto
         NotAvailable: markRaw(NotAvailable),
@@ -101,6 +104,7 @@ export default {
                 InicioSuperAdminView: InicioSuperAdminView ,
                 ListaAdministradores: ListaAdministradores,
                 HistorialActividades: HistorialActividades,
+                EditarPerfilSuperAdmin: EditarPerfilSuperAdmin,
 
             };
 
