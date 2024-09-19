@@ -16,7 +16,7 @@
             </div>
             <div class="card-footer">
                 <div class="d-flex flex-column text-center">
-                    <strong class="text-muted mb-1" style="line-height: 1;">{{ proyecto.estado }}</strong>
+                    <strong class="text-muted mb-1" style="line-height: 1;">{{ proyecto.estado_calificacion }}</strong>
                 </div>
             </div>
         </div>
