@@ -29,7 +29,7 @@
                         <div class="card__footer text-center">
                             <div>
                                 <p class="card__description"><strong>Modalidad:</strong> {{ proyecto.modalidad }}</p>
-                                <p class="card__description"><strong>Estado:</strong> {{ proyecto.estado_evaluacion }}</p>
+                                <p class="card__description"><strong>Estado:</strong> {{ estadoEvaluacionFormatted }}</p>
                             </div>
                         </div>
                     </div>
@@ -47,6 +47,17 @@
             proyecto: {
                 type: Object,
                 required: true
+            }
+        },
+        computed: {
+            estadoEvaluacionFormatted() {
+                const status = this.proyecto.estado_evaluacion;
+                if (status === 'P_presencial' || status === 'P_virtual') {
+                    return 'Pendiente';
+                } else if (status === 'C_presencial' || status === 'C_virtual') {
+                    return 'Calificado';
+                }
+                return 'Desconocido'; 
             }
         },
         emits: ['component-selected'],
@@ -67,6 +78,7 @@
 </style>
 
 <style scoped> 
+
     .texto-recortado {
         width: 200px; 
         overflow: hidden;
@@ -88,6 +100,7 @@
     ul {
         list-style: none;
         margin-bottom: 0px;
+        
     }
 
     p {
@@ -150,12 +163,12 @@
     }
   
     .card {
+        
         border-radius: 30px; 
         height: auto; 
         cursor: default;
     }
 
-   
     .card-img-top {
         border-top-left-radius: 0px;
         border-top-right-radius: 0px;
@@ -182,11 +195,12 @@
     }
 
     .card-text {
-        font-size: 13px;
+        font-size: 12px;
         font-weight: 500;
         color: #4e4e4e;
         margin-top: -12px;
     }
+
 </style>
   
 <style src="../../../assets/Styles/listaProyectos_evaluadorEtapa2_styles.css" scoped></style>

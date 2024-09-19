@@ -9,12 +9,11 @@
                 </div>
             </div>
         </div>
-
-        <!-- Pasar el proyecto seleccionado al componente CalificarProyecto -->
-        <CalificarProyecto :proyecto="proyectoSeleccionado"/>
-        <div class="text-center mb-3">
-            <button @click="$emit('volver')" class="btn btn-warning font-weight-bold text-dark">Volver a Proyectos Asignados</button>
-        </div>
+    </div>
+    <!-- Pasar el proyecto seleccionado al componente CalificarProyecto -->
+    <CalificarProyecto :proyecto="proyectoSeleccionado"/>
+    <div class="text-center mb-3">
+        <button @click="$emit('volver')" class="btn btn-warning font-weight-bold text-dark">Volver a Proyectos Asignados</button>
     </div>
     <!-- Fin contenido principal -->
 </template>
@@ -30,7 +29,8 @@
                 type: Object,
                 required: true
             }
-        }
+        },
+        emits: ['volver'], 
     };
 </script>
 
