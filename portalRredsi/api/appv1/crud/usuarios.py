@@ -20,7 +20,7 @@ def create_user_sql(db: Session, usuario: UserCreate):
             "documento": usuario.documento,
             "nombres": usuario.nombres,
             "apellidos": usuario.apellidos,
-            "celular": usuario.nombres,
+            "celular": usuario.celular,
             "correo": usuario.correo,
             "passhash": get_hashed_password(usuario.clave),
             "estado":usuario.estado
