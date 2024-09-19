@@ -78,15 +78,18 @@ export default {
       default: null,
       validator(value){
         return(
-          typeof value.p_idDelegado === 'number' &&
-          typeof value.p_tipoDocumento === 'string' &&
-          typeof value.p_documento === 'string' &&
-          typeof value.p_nombres === 'string' &&
-          typeof value.p_apellidos === 'string' &&
-          typeof value.p_areaConocimiento === 'string' &&
-          typeof value.p_institucion === 'string' &&
-          typeof value.p_telefono === 'string' &&
-          typeof value.p_correo === 'string'
+          typeof id_delegado === 'number' &&
+          typeof value.nombres === 'string' &&
+          typeof value.apellidos === 'string' &&
+          typeof tipo_documento === 'string' &&
+          typeof value.documento === 'string' &&
+          typeof (value.id_institucion === 'string' || value.id_institucion === null) &&
+          typeof (value.id_primera_area_conocimiento === 'string' || value.id_primera_area_conocimiento === null) &&
+          typeof (value.id_segunda_area_conocimiento === 'string' || value.id_segunda_area_conocimiento === null) &&
+          typeof (value.url_titulo === 'string'|| value.url_titulo === null) &&
+          typeof value.estado  === 'string' &&
+          typeof value.celular === 'string' &&
+          typeof value.correo === 'string' 
         );
       }
     }

@@ -79,9 +79,7 @@ export const deleteItems = async (id_item_rubrica) => {
 // Función consultar delegados paginados
 export const getDelegatesAll = async (page) => {
   try {
-    console.log("Soy page en service")
-    console.log(page)
-      const url = `/admin/all-active-delegates?page=${page}&page_size=1`;
+      const url = `/admin/all-delegates?page=${page}&page_size=3`;
       const response = await api.get(url, {
       headers: {
         'Authorization': `Bearer ${localStorage.getItem('access_token')}` 

@@ -37,7 +37,7 @@
 
 <script>
 import AcordeonProyecto from './AcordeonProyecto.vue';
-import { proyectosSinAsignar } from '../../../../services/delegadoService'
+import { proyectosSinAsignar } from '@/services/delegadoService'
 
 export default {
     data() {
