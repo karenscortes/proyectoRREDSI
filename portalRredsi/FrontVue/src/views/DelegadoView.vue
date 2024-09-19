@@ -22,6 +22,7 @@ import { useRouter } from 'vue-router';
 import MenuPrincipal from '../components/Menus/MenuPrincipal.vue';
 import FooterSecundario from '../components/Footers/FooterSecundario.vue';
 import AsignarProyectos from '../components/Users/delegado/AsignarProyectos/AsignarProyectos.vue';
+import ListaProyectosDelegado from '../components/Users/delegado/listaProyectos/ListaProyectosDelegado.vue';
 import AsistenciaEvento from '../components/Users/delegado/asistencia/AsistenciaEvento.vue';
 import PostulacionesEvaluadores from '../components/Users/delegado/postulaciones/PostulacionesEvaluadores.vue';
 import ListaEvaluadores from '../components/Users/delegado/listaEvaluadores/ListaEvaluadores.vue';
@@ -38,12 +39,13 @@ export default {
         AsignarProyectos: markRaw(AsignarProyectos),
         PostulacionesEvaluadores: markRaw(PostulacionesEvaluadores),
         AsistenciaEvento: markRaw(AsistenciaEvento),
-        ListaEvaluadores: markRaw(ListaEvaluadores)
+        ListaEvaluadores: markRaw(ListaEvaluadores),
+        ListaProyectosDelegado: markRaw(ListaProyectosDelegado)
 
     },
     data() {
         return {
-            currentComponent: AsistenciaEvento
+            currentComponent: ListaProyectosDelegado
         };
     },
     computed: {
@@ -61,7 +63,8 @@ export default {
                 AsignarProyectos: AsignarProyectos,
                 PostulacionesEvaluadores: PostulacionesEvaluadores,
                 AsistenciaEvento: AsistenciaEvento,
-                ListaEvaluadores: ListaEvaluadores
+                ListaEvaluadores: ListaEvaluadores,
+                ListaProyectosDelegado: ListaProyectosDelegado
             };
             this.currentComponent = componentMap[componentName] || AsignarProyectos;
         }

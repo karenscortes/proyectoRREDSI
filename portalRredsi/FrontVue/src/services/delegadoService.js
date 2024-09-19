@@ -294,6 +294,25 @@ export const actualizarAsistencia = async (id_asistente, id_usuario, asistencia)
 };
 
 
+// Proyectos 
+export const obtenerProyectos = async (page= 1, page_size=10) => {
+    try {
+        const response = await api.get(`/listaProyectos/get-lista-proyectos/?page=${page}&page_size=${page_size}`,{
+            headers: {
+                'Authorization': `Bearer` 
+            }  
+        });
+        return response;
+    } catch (error) {
+        if(error.response){
+            throw error;
+        }else {
+            throw new Error('Error al obtener los proyectos');
+        }
+    }
+};
+
+
 
 
 

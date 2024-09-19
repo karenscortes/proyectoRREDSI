@@ -29,7 +29,8 @@ import ListaAdministradores from '../components/Users/superadmin/ListaAdministra
 import HistorialActividades from "../components/Users/superadmin/HistorialActividades.vue";
 import NotAvailable from "./NotAvailable.vue";
 import ListaSalasDelegado from "../components/Users/delegado/listaSalas/ListaSalasDelegado.vue";
-import GestionSala from "../components/Users/delegado/listaSalas/GestionSala.vue";
+import ListaProyectosDelegado from "../components/Users/delegado/listaProyectos/ListaProyectosDelegado.vue";
+
 import InicioAdminView from "./InicioAdminView.vue";
 
 // Styles
@@ -53,8 +54,7 @@ export default {
         ListaEvaluadores: markRaw(ListaEvaluadores),
         PostulacionesEvaluadores: markRaw(PostulacionesEvaluadores),
         ListaSalasDelegado: markRaw(ListaSalasDelegado),
-        GestionSala: markRaw(GestionSala),
-
+        ListaProyectosDelegado: markRaw(ListaProyectosDelegado),
 
         //Componentes Evaluador
         PaginaInicioEvaluadorView: markRaw(PaginaInicioEvaluadorView),
@@ -93,8 +93,7 @@ export default {
                 ListaEvaluadores: ListaEvaluadores,
                 PostulacionesEvaluadores: PostulacionesEvaluadores,
                 ListaSalasDelegado: ListaSalasDelegado,
-                GestionSala: GestionSala,
-
+                ListaProyectosDelegado: ListaProyectosDelegado,
 
 
                 //Evaluador
