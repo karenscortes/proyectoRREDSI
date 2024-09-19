@@ -88,7 +88,7 @@
             <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content border border-dark border-5 rounded-5 text-dark">
                     <div class="modal-header text-center">
-                        <h3 class="modal-title mt-5 w-100" id="modalLabel">{{ evaluadorActual.nombres }}</h3>
+                        <h3 class="modal-title mt-4 w-100" id="modalLabel">{{ evaluadorActual.nombres }}</h3>
                         <button type="button" class="btn-close mr-3 mt-3" data-bs-dismiss="modal"
                             aria-label="Close"></button>
                     </div>
@@ -281,5 +281,10 @@ export default {
 th,
 .btn-buscar {
     background: rgb(255, 182, 6) !important;
+}
+
+.btn-close {
+    width: 8px;
+    height: 8px;
 }
 </style>
