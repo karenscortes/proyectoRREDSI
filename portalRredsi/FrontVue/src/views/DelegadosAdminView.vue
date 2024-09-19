@@ -76,72 +76,31 @@
   </div>
 </template>
 <script setup>
-import { onMounted, ref, reactive } from 'vue';
+import { onMounted, ref, reactive } from "vue";
 import RowTableDelegado from "../components/Users/administrador/gest_delegado/RowTableDelegado.vue";
 import ModalAdd from "../components/Users/administrador/gest_delegado/ModalAdd.vue";
 import ModalDetalle from "../components/Users/administrador/gest_delegado/ModalDetalle.vue";
 import PaginatorBody from "../components/UI/PaginatorBody.vue";
 import { getDelegatesAll } from "@/services/administradorService";
 
+//Propiedades para manejar la apertura del modal
 const isModalOpenEdit = ref(false);
 const isModalOpenAdd = ref(false);
+
+//Propiedad para definir la pagina actual, para el servicio y el total de paginas para enviar al paginador
 const page = ref(1);
 const total_pages = ref(0);
 
+//Propiedad para guardar la busqueda
 const busqueda = ref("");
+
+//Popriedad para guardar el estado del delegado, esta se llenara cuando el td de la tabla emita el evento(saber si esta activo o inactivo)
 const estadoActualDelegado = ref("");
 
-const configPagination = reactive({}); 
+//Array que almacena la info que necesitamos en cada td, para recorrerla e irla enviando
+const ArrayDelegados = reactive([]);
 
-const cambiarEstadoCheckboxDelegado = (index) => {
-  estadoActualDelegado.value = ArrayDelegados[index].p_estado == "activo" ? "inactivo" : "activo";
-  ArrayDelegados[index].p_estado = estadoActualDelegado.value;
-};
-
-const handlePaginate = async(pagina) => {
-  page.value = pagina;
-  const newPage = await fetchAllDelegates(page.value);
-  total_pages.value = newPage.data.total_pages;
-  configPagination.value = await newPage.data; 
-
-  console.log("Soy respuesta desde rubrica (paginador)")
-  console.log(configPagination.value.users);
-  modificarArrayDelegados();
-};
-
-const ArrayDelegados = reactive([
-  {
-    p_idDelegado: 1,
-    p_nombres: "Emanuel",
-    p_apellidos: "Echeverri",
-    p_institucion: "SENA",
-    p_estado: "inactivo",
-    p_tipoDocumento: "Cédula",
-    p_documento: "123456",
-    p_areaConocimiento: "Sistemas",
-    p_telefono: "12332456",
-    p_correo: "Ema@gmail.com",
-  }
-]);
-
-const modificarArrayDelegados = () => {
-  const users = configPagination.value.users;
-  console.log("Hola desde array")
-  console.log(users)
-  users.forEach(function (delegado,i) {
-    console.log(delegado.id_usuario);
-    console.log(delegado.nombres);
-    console.log(delegado.apellidos);
-    console.log(delegado.detalles_institucionales[0].id_institucion);
-    console.log(delegado.estado);
-    console.log(delegado.tipo_documento.nombre);
-    console.log(delegado.detalles_institucionales[0].id_primera_area_conocimiento);
-    console.log(delegado.detalles_institucionales[0].id_segunda_area_conocimiento);
-    console.log(delegado.celular);
-    console.log(delegado.correo);
-  });
-}
-
+//Objeto de prueba, para enviarle la informacion del delegado al modal de detalle
 const infoModalDetail = reactive({
   p_idDelegado: null,
   p_tipoDocumento: "",
@@ -154,17 +113,69 @@ const infoModalDetail = reactive({
   p_correo: "",
 });
 
+//Objeto que almacena la configuracion del paginador, es decir, la respuesta que nos da el endPoint,
+//el array de usuarios, la pagina actual, la cantidad de paginas, etc... 
+//esto con el fin de ir actualizando la información para que el array funcione de manera adecuada. 
+//Se llena cada que el paginador emita el evento de cambio de pagina, ya sea previous o next
+const configPagination = reactive({});
+
+//Funcion que se ejecuta cuando se emite un evento desde el td, recibe el nuevo estado, cada que se hace algún cambio. 
+//Se encarga de actualizar ese estado en el array 
+const cambiarEstadoCheckboxDelegado = (index) => {
+  estadoActualDelegado.value = ArrayDelegados[index].p_estado == "activo" ? "inactivo" : "activo";
+  ArrayDelegados[index].p_estado = estadoActualDelegado.value;
+};
+
+//Función que se ejecuta cuando se cambia la pagina desde el paginador, es decir, cuando el paginador nos emite por medio del evento
+//Su funcionalidad es recibir la pagina actual, para poder actualizar nuestra propiedad page, hacer la petición, para que el 
+//endPoint nos devuelva el data con los respectivos campos(la misma respuesta de siempre) 
+const handlePaginate = async (pagina) => {
+  page.value = pagina;
+  const newPage = await fetchAllDelegates(page.value);
+  total_pages.value = newPage.data.total_pages;
+  configPagination.value = await newPage.data;
+  modificarArrayDelegados();
+};
+
+//Función que se ejecutara cada que el paginador emita un cambio de pagina, se encarga de actualizar el array con la nueva información
+const modificarArrayDelegados = () => {
+  const users = configPagination.value.users;
+  users.forEach(function (delegado, i) {
+    const infoDelegado = {
+      id_usuario: delegado.id_usuario,
+      nombres: delegado.nombres,
+      apellidos: delegado.apellidos,
+      nombre_institucion: delegado.detalles_institucionales[0].id_institucion,
+      primer_area: delegado.detalles_institucionales[0].primer_area.nombre,
+      segunda_area: delegado.detalles_institucionales[0].segunda_area.nombre,
+      url_titulo: delegado.titulos_academicos[0].url_titulo,
+      estado: delegado.estado,
+      tipo_documento: delegado.tipo_documento.nombre,
+      documento: delegado.documento,
+      celular: delegado.celular,
+      correo: delegado.correo,
+    }
+    ArrayDelegados[i] = infoDelegado;
+  });
+};
+
+//Función que cambia el valor de la propiedad para que el modal de agregar se pueda abrir
 const showModalAdd = () => {
   isModalOpenAdd.value = true;
 };
+
+//Función que cambia el valor de la propiedad para que el modal de agregar se cierre
 const closeModalAdd = () => {
   isModalOpenAdd.value = false;
 };
 
+//Función que se ejecutara cuando el td emita que le dieron click al btn de abrir modal detalle, 
+//esta modifica el objeto con la info que se enviara al modal detalle(también era prueba)
+//el td puede devolver toda la info completa(ya que la tiene), se instancia un objeto global vacio y se llena con la info recibida.
 const showModalDetail = (infoDelegado) => {
   infoModalDetail.p_idDelegado = infoDelegado.p_idDelegado;
   infoModalDetail.p_tipoDocumento = infoDelegado.p_tipoDocumento;
-  infoModalDetail.p_documento = infoDelegado.p_documento
+  infoModalDetail.p_documento = infoDelegado.p_documento;
   infoModalDetail.p_nombres = infoDelegado.p_nombres;
   infoModalDetail.p_apellidos = infoDelegado.p_apellidos;
   infoModalDetail.p_areaConocimiento = infoDelegado.p_areaConocimiento;
@@ -174,17 +185,19 @@ const showModalDetail = (infoDelegado) => {
   isModalOpenEdit.value = true;
 };
 
+//Función para cerrar modal detalle 
 const closeModalDetail = () => {
   isModalOpenEdit.value = false;
 };
 
+//Función para utilizar el servicio, hacer la petición y actualizar las respectivas propiedades.
 const fetchAllDelegates = async () => {
   try {
     const response = await getDelegatesAll(page.value);
     total_pages.value = response.data.total_pages;
-    configPagination.value = response.data; 
-    return response
-
+    configPagination.value = response.data;
+    modificarArrayDelegados();
+    return response;
   } catch (error) {
     console.error("Error al obtener los delegados: ", error);
     alert("Error al obtener los delegados");

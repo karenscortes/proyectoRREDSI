@@ -14,15 +14,11 @@ def get_asistentes_por_convocatoria(db: Session, page: int = 1, page_size: int =
                 usuarios.id_usuario,
                 usuarios.nombres, 
                 usuarios.apellidos, 
-                usuarios.documento, 
-                instituciones.nombre AS institucion
+                usuarios.documento 
             FROM asistentes
             JOIN usuarios ON asistentes.id_usuario = usuarios.id_usuario
-            JOIN participantes_proyecto ON usuarios.id_usuario = participantes_proyecto.id_usuario
-            JOIN proyectos_convocatoria ON participantes_proyecto.id_proyectos_convocatoria = proyectos_convocatoria.id_proyecto_convocatoria
-            JOIN convocatorias ON proyectos_convocatoria.id_convocatoria = convocatorias.id_convocatoria
-            JOIN detalles_institucionales ON usuarios.id_usuario = detalles_institucionales.id_usuario
-            JOIN instituciones ON detalles_institucionales.id_institucion = instituciones.id_institucion
+            JOIN salas ON salas.id_usuario = usuarios.id_usuario    
+            JOIN convocatorias ON salas.id_convocatoria = convocatorias.id_convocatoria 
             WHERE convocatorias.estado = 'en curso'
             LIMIT :page_size OFFSET :offset;
         """)
@@ -37,11 +33,8 @@ def get_asistentes_por_convocatoria(db: Session, page: int = 1, page_size: int =
         count_sql = text("""SELECT COUNT(*)
             FROM asistentes
             JOIN usuarios ON asistentes.id_usuario = usuarios.id_usuario
-            JOIN participantes_proyecto ON usuarios.id_usuario = participantes_proyecto.id_usuario
-            JOIN proyectos_convocatoria ON participantes_proyecto.id_proyectos_convocatoria = proyectos_convocatoria.id_proyecto_convocatoria
-            JOIN convocatorias ON proyectos_convocatoria.id_convocatoria = convocatorias.id_convocatoria
-            JOIN detalles_institucionales ON usuarios.id_usuario = detalles_institucionales.id_usuario
-            JOIN instituciones ON detalles_institucionales.id_institucion = instituciones.id_institucion
+            JOIN salas ON salas.id_usuario = usuarios.id_usuario      
+            JOIN convocatorias ON salas.id_convocatoria = convocatorias.id_convocatoria 
             WHERE convocatorias.estado = 'en curso'
             """)
         
@@ -59,13 +52,23 @@ def get_asistentes_por_sala(db: Session, numero_sala: str, page: int = 1, page_s
     try:
         offset = (page - 1) * page_size
         sql = text("""
-            SELECT  *
+            SELECT  
+                asistentes.id_asistente, 
+                asistentes.asistencia,
+                usuarios.id_usuario,
+                usuarios.nombres, 
+                usuarios.apellidos, 
+                usuarios.documento
             FROM asistentes
             JOIN usuarios ON asistentes.id_usuario = usuarios.id_usuario
             JOIN salas ON salas.id_usuario = usuarios.id_usuario
             JOIN detalles_institucionales ON asistentes.id_usuario = detalles_institucionales.id_usuario
-            JOIN instituciones ON detalles_institucionales.id_institucion = instituciones.id_institucion       
-            JOIN convocatorias ON salas.id_convocatoria = convocatorias.id_convocatoria        
+            JOIN instituciones ON detalles_institucionales.id_institucion = instituciones.id_institucion
+            JOIN convocatorias ON salas.id_convocatoria = convocatorias.id_convocatoria
+            JOIN detalle_sala ON detalle_sala.id_sala = salas.id_sala
+            JOIN proyectos_convocatoria ON detalle_sala.id_proyecto_convocatoria = proyectos_convocatoria.id_proyecto_convocatoria
+            JOIN participantes_proyecto ON proyectos_convocatoria.id_proyecto_convocatoria = participantes_proyecto.id_proyectos_convocatoria
+            JOIN usuarios participantes ON participantes_proyecto.id_usuario = participantes.id_usuario  -- Hacemos un alias para evitar ambigüedades en la tabla usuarios
             WHERE salas.numero_sala = :numero_sala
             AND convocatorias.estado = 'en curso'
             LIMIT :page_size OFFSET :offset;
@@ -83,8 +86,12 @@ def get_asistentes_por_sala(db: Session, numero_sala: str, page: int = 1, page_s
             JOIN usuarios ON asistentes.id_usuario = usuarios.id_usuario
             JOIN salas ON salas.id_usuario = usuarios.id_usuario
             JOIN detalles_institucionales ON asistentes.id_usuario = detalles_institucionales.id_usuario
-            JOIN instituciones ON detalles_institucionales.id_institucion = instituciones.id_institucion       
-            JOIN convocatorias ON salas.id_convocatoria = convocatorias.id_convocatoria        
+            JOIN instituciones ON detalles_institucionales.id_institucion = instituciones.id_institucion
+            JOIN convocatorias ON salas.id_convocatoria = convocatorias.id_convocatoria
+            JOIN detalle_sala ON detalle_sala.id_sala = salas.id_sala
+            JOIN proyectos_convocatoria ON detalle_sala.id_proyecto_convocatoria = proyectos_convocatoria.id_proyecto_convocatoria
+            JOIN participantes_proyecto ON proyectos_convocatoria.id_proyecto_convocatoria = participantes_proyecto.id_proyectos_convocatoria
+            JOIN usuarios participantes ON participantes_proyecto.id_usuario = participantes.id_usuario  -- Hacemos un alias para evitar ambigüedades en la tabla usuarios
             WHERE salas.numero_sala = :numero_sala
             AND convocatorias.estado = 'en curso'""")
 
@@ -104,16 +111,14 @@ def get_asistentes_por_rol(db: Session, rol: str, page: int = 1, page_size: int 
             SELECT 
                 asistentes.id_asistente, 
                 asistentes.asistencia,
+                usuarios.id_usuario,
                 usuarios.nombres, 
                 usuarios.apellidos, 
                 usuarios.documento, 
-                instituciones.nombre AS institucion,
                 roles.nombre AS rol
             FROM asistentes
             JOIN usuarios ON asistentes.id_usuario = usuarios.id_usuario
             JOIN roles ON usuarios.id_rol = roles.id_rol
-            JOIN detalles_institucionales ON usuarios.id_usuario = detalles_institucionales.id_usuario
-            JOIN instituciones ON detalles_institucionales.id_institucion = instituciones.id_institucion
             WHERE roles.nombre = :rol
             LIMIT :page_size OFFSET :offset;
         """)

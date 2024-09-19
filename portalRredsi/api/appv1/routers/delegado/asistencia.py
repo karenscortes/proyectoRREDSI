@@ -10,7 +10,7 @@ from appv1.crud.permissions import get_permissions
 
 router_asistencia = APIRouter()
 
-MODULE = 12
+MODULE_ASISTENCIA = 12
 
 #Ruta para traer todos los asistentes de una convocatoria en curso
 @router_asistencia.get("/get-all-asistentes/", response_model=dict)
@@ -20,7 +20,7 @@ async def read_all_asistentes(
     current_user: UserResponse = Depends(get_current_user),
     db: Session = Depends(get_db)
 ):
-    permisos = get_permissions(db, current_user.id_rol, MODULE)
+    permisos = get_permissions(db, current_user.id_rol, MODULE_ASISTENCIA)
     if not permisos.p_consultar:
         raise HTTPException(status_code=401, detail="No está autorizado a utilizar este modulo")
     
@@ -45,7 +45,7 @@ async def read_asistentes_por_sala(
     current_user: UserResponse = Depends(get_current_user),
     db: Session = Depends(get_db)
 ):
-    permisos = get_permissions(db, current_user.id_rol, MODULE)
+    permisos = get_permissions(db, current_user.id_rol, MODULE_ASISTENCIA)
     if not permisos.p_consultar:
         raise HTTPException(status_code=401, detail="No está autorizado a utilizar este modulo")
     
@@ -61,16 +61,20 @@ async def read_asistentes_por_sala(
         "page_size": page_size
     }
 
-
+#Ruta para consultar asistentes por rol (ponentes, evaluadores)
 @router_asistencia.get("/get-asistentes-por-rol/{rol}", response_model=dict)
 async def read_asistentes_por_rol(
     rol: str, 
     page: int = 1, 
     page_size: int = 10, 
+    current_user: UserResponse = Depends(get_current_user),
     db: Session = Depends(get_db)
 ):
-    asistentes, total_pages = get_asistentes_por_rol(db, rol, page, page_size)
+    permisos = get_permissions(db, current_user.id_rol, MODULE_ASISTENCIA)
+    if not permisos.p_consultar:
+        raise HTTPException(status_code=401, detail="No está autorizado a utilizar este modulo")
     
+    asistentes, total_pages = get_asistentes_por_rol(db, rol, page, page_size)
     if len(asistentes) == 0:
         raise HTTPException(status_code=404, detail="Asistentes no encontrados para el rol especificado")
         
@@ -83,10 +87,17 @@ async def read_asistentes_por_rol(
         "page_size": page_size
     }
 
+#Ruta para consultar asistentes por cedula 
 @router_asistencia.get("/get-asistente-por-cedula/{documento}", response_model=dict)
-async def read_asistente_por_cedula(documento: str, db: Session = Depends(get_db)):
+async def read_asistente_por_cedula(
+        documento: str, 
+        current_user: UserResponse = Depends(get_current_user),
+        db: Session = Depends(get_db)
+    ):
+    permisos = get_permissions(db, current_user.id_rol, MODULE_ASISTENCIA)
+    if not permisos.p_consultar:
+        raise HTTPException(status_code=401, detail="No está autorizado a utilizar este modulo")
     asistente = get_asistente_por_cedula(db, documento)
-    
     if not asistente:
         raise HTTPException(status_code=404, detail="Asistente no encontrado con el documento especificado")
     
@@ -101,7 +112,7 @@ def update_asistencia_evento(
     current_user: UserResponse = Depends(get_current_user),
     db: Session = Depends(get_db),
 ):
-    permisos = get_permissions(db, current_user.id_rol, MODULE)
+    permisos = get_permissions(db, current_user.id_rol, MODULE_ASISTENCIA)
     if not permisos.p_actualizar:
         raise HTTPException(status_code=401, detail="No está autorizado a utilizar este modulo")
     try:

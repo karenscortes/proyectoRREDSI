@@ -66,15 +66,15 @@
                         <tr>
                             <th>N° de documento</th>
                             <th>Nombres</th>
-                            <th>Institución</th>
+                            <th>Apellidos</th>
                             <th>CHECK</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr v-for="(asistente, index) in asistentes" :key="index">
                             <td>{{ asistente.documento }}</td>
-                            <td>{{ asistente.nombres }} {{ asistente.apellidos }}</td>
-                            <td>{{ asistente.institucion }}</td>
+                            <td>{{ asistente.nombres }}</td>
+                            <td>{{ asistente.apellidos }}</td>
                             <td colspan="1">
                                 <input type="checkbox" class="form-check-input ml-4" :checked="asistente.asistencia"
                                     @change="toggleActualizarAsistencia(asistente)">
@@ -127,7 +127,7 @@ export default {
             try {
                 const response = await asistenciaEvento(this.currentPage);
                 this.asistentes = response.data.asistentes;
-                this.totalPages = response.data.totalPages || 1;
+                this.totalPages = response.data.total_pages;
                 console.log('Total Pages:', this.totalPages);
                 console.log('current pages:', this.currentPage);
                 this.filtroActivo = 'Todos'; // Restablecer a 'Todos'
@@ -213,7 +213,6 @@ export default {
         selectedPage(pagina) {
             this.currentPage = pagina;
             this.fetchAsistentes();
-            this.fetchAsistentesSalas();
         },
     },
     // Final de los metodos

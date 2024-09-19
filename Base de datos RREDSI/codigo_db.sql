@@ -94,6 +94,7 @@ INSERT INTO roles (nombre) VALUES
 ('Tutor'),
 ('Ponente'),
 ('SuperAdmin');
+('Externo');
 
 CREATE TABLE permisos (
     id_modulo INT AUTO_INCREMENT,
