@@ -7,7 +7,7 @@ from appv1.crud.admin.gest_rubricas import create_items, delete_items, get_all_r
 from appv1.crud.admin.gest_rubricas import get_all_rubricas
 from appv1.crud.admin.admin import create_convocatoria, create_etapa, create_fase, create_sala, get_fases_by_etapa, update_etapa, update_fase, update_sala
 from appv1.routers.login import get_current_user
-from appv1.schemas.admin.admin import ConvocatoriaCreate, CreateSala, FaseUpdate
+from appv1.schemas.admin.admin import ConvocatoriaCreate, CreateSala, FaseUpdate, UpdateSala
 from appv1.crud.admin.admin import create_convocatoria, create_etapa, create_fase, get_fases_by_etapa, update_etapa, update_fase
 from appv1.schemas.admin.delegado import DelegadoResponse, PaginatedDelegadoResponse
 from appv1.schemas.admin.items_rubrica import ItemCreate, ItemUpdate
@@ -74,7 +74,7 @@ async def consult_rubrics(
     return existing_rubrics
 
 #Obtener delegados activos(paginado)
-@router_admin.get("/all-active-delegates/", response_model=PaginatedDelegadoResponse)
+@router_admin.get("/all-delegates/", response_model=PaginatedDelegadoResponse)
 async def consult_delegates(
     db: Session = Depends(get_db),
     page: int = 1,
@@ -90,7 +90,7 @@ async def consult_delegates(
     users, total_pages = get_delegados_activos_paginated(db, page, page_size)
 
     if len(users) == 0:
-        raise HTTPException(status_code=404, detail="No hay delegados activos")
+        raise HTTPException(status_code=404, detail="No hay delegados")
 
     return {
         "users": users,
@@ -121,7 +121,7 @@ def consult_by_document(
 
 #Crear delegado 
 @router_admin.post("/create-delegates/")
-def consult_by_document(
+def create_delegates(
     user: UserCreate, 
     db: Session = Depends(get_db),
     current_user: UserResponse = Depends(get_current_user),
@@ -129,6 +129,9 @@ def consult_by_document(
     MODULE = 3
     permisos = get_permissions(db, current_user.id_rol, MODULE)
 
+    if(user.id_rol != 2):
+        raise HTTPException(status_code=400, detail="El rol del usuario es incorrecto")
+    
     if permisos is None or not permisos.p_insertar:
         raise HTTPException(status_code=401, detail="Usuario no autorizado")
     
@@ -258,6 +261,13 @@ def create_sala_admin(
 
 
 # Editar sala
-@router_admin.put("/salas/{id_sala}")
-def update_sala_admin(id_sala: int, id_usuario: Optional[int] = None, area_conocimiento: Optional[int] = None, nombre_sala: Optional[str] = None, numero_sala: Optional[str] = None, db: Session = Depends(get_db)):
-    return update_sala(db, id_sala, id_usuario, area_conocimiento,nombre_sala,numero_sala)
+# @router_admin.put("/salas/{id_sala}")
+# def update_sala_admin(
+    
+#     id_sala:int,
+#     sala: UpdateSala
+#     db: Session = Depends(get_db),
+#     current_user: UserResponse = Depends(get_current_user),
+# ):
+
+    

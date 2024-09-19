@@ -240,7 +240,7 @@ export const obtenerAsistentesPorRol = async (rol, page = 1, page_size = 10) => 
     try {
         const response = await api.get(`asistencia/get-asistentes-por-rol/${rol}?page=${page}&page_size=${page_size}`, {
             headers: {
-                'Authorization': `Bearer`
+                'Authorization': `Bearer ${localStorage.getItem('access_token')}`
             }
         });
         return response;
@@ -258,7 +258,7 @@ export const obtenerAsistentePorDocumento = async (documento) => {
     try {
         const response = await api.get(`asistencia/get-asistente-por-cedula/${documento}`, {
             headers: {
-                'Authorization': `Bearer`
+                'Authorization': `Bearer ${localStorage.getItem('access_token')}`
             }
         });
         return response;
@@ -289,6 +289,25 @@ export const actualizarAsistencia = async (id_asistente, id_usuario, asistencia)
             throw error;
         } else {
             throw new Error('Error de red o de servidor');
+        }
+    }
+};
+
+
+// Proyectos 
+export const obtenerProyectos = async (page= 1, page_size=10) => {
+    try {
+        const response = await api.get(`/listaProyectos/get-lista-proyectos/?page=${page}&page_size=${page_size}`,{
+            headers: {
+                'Authorization': `Bearer` 
+            }  
+        });
+        return response;
+    } catch (error) {
+        if(error.response){
+            throw error;
+        }else {
+            throw new Error('Error al obtener los proyectos');
         }
     }
 };

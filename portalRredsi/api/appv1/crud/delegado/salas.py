@@ -5,7 +5,7 @@ from sqlalchemy.orm import Session
 from sqlalchemy.exc import SQLAlchemyError, IntegrityError
 from appv1.schemas.delegado.salas import AsignarProyectoSala
 
-
+# ASIGNAR PROYECTO A SALA EN LA ETAPA PRESENCIAL 
 def asignar_proyecto_a_sala(db: Session, asignacion: AsignarProyectoSala ):
     try:
         sql = text("""INSERT INTO detalle_sala (id_sala, id_proyecto_convocatoria, fecha, hora_inicio, hora_fin) 
@@ -37,6 +37,7 @@ def asignar_proyecto_a_sala(db: Session, asignacion: AsignarProyectoSala ):
         print(f"Error al asignar proyecto: {e}")
         raise HTTPException(status_code=500, detail="Error al asignar proyecto")
     
+# OBTIENE LAS SALS QUE ESTEN REGISTRADAS EN UNA CONVOCATORIA ACTIVA 
 def get_salas_por_convocatoria(db: Session, page: int = 1, page_size: int = 10):
     try:
         offset = (page - 1) * page_size
@@ -70,12 +71,34 @@ def get_salas_por_convocatoria(db: Session, page: int = 1, page_size: int = 10):
         print(f"Error al buscar salas: {e}")
         raise HTTPException(status_code=500, detail="Error al buscar salas")
     
-    
+# DETALLE DE UNA SALA POR ID
 def get_detalle_sala(db: Session, id_sala: str):
     try:
         sql = text("SELECT * FROM detalle_sala WHERE id_sala = :id_sala")
         result = db.execute(sql, {"id_sala": id_sala}).fetchone()
         return result
     except SQLAlchemyError as e:
-        print(f"La sala no se ha encontrado")
+        raise HTTPException(status_code=500, detail="La sala no se ha encontrado")
+
+# VERIFICAR SI UNA SALA UN DELEGADO TIENE ASIGNADA UNA SALA
+def verificar_sala_asignada(db: Session, id_usuario: int):
+    try:
+        sql = text("SELECT * FROM salas WHERE salas.id_usuario = :id_usuario")
+        result = db.execute(sql, {"id_usuario": id_usuario}).fetchone()
+        return result
+    except SQLAlchemyError as e:
+        raise HTTPException(status_code=500, detail="Delegado sin sala asignada")
+
+# Consultar los ponentes de un proyecto
+def get_ponentes_proyecto(db: Session, id_proyecto: int):
+    try:
+        sql = text("""SELECT usuarios.id_usuario, usuarios.nombres, usuarios.apellidos 
+                        FROM participantes_proyecto 
+                        JOIN usuarios ON participantes_proyecto.id_usuario = usuarios.id_usuario  
+                        WHERE participantes_proyecto.id_proyecto = :id_p
+                        AND usuarios.id_rol NOT IN(1,2,3,4,6,7)
+                    """)
+        result = db.execute(sql, {"id_p": id_proyecto}).mappings().all()
+        return result
+    except SQLAlchemyError as e:
         raise HTTPException(status_code=500, detail="La sala no se ha encontrado")

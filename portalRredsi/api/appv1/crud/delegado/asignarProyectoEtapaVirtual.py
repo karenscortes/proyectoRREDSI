@@ -64,7 +64,7 @@ def get_posibles_evaluadores_para_proyecto(db: Session, id_area_conocimiento: in
         
         # Preparar los parámetros con comodines para LIKE
         params = {
-            "id_ac": id_area_conocimiento,  # Incluir los comodines % aquí
+            "id_ac": id_area_conocimiento, 
             "id_i": id_institucion
         }
         result = db.execute(sql, params).fetchall()

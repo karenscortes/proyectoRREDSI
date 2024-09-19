@@ -2,7 +2,7 @@ from sys import prefix
 from fastapi import FastAPI
 from appv1.routers import eventos, login, proyectos, rol, usuarios 
 from appv1.routers.admin import admin
-from appv1.routers.delegado import asignarProyectoEtapaVirtual, asistencia, listaEvaluadores, postulaciones, proyectosSinAsignar, salas
+from appv1.routers.delegado import asignarProyectoEtapaVirtual, asistencia, listaEvaluadores, listaProyectos, postulaciones, proyectosSinAsignar, salas
 from appv1.routers.evaluador import evaluadores
 from appv1.routers.inicio import convocatorias
 from appv1.routers.superadmin import superadmin
@@ -42,6 +42,7 @@ app.include_router(postulaciones.router_postulaciones, prefix="/postulaciones", 
 app.include_router(listaEvaluadores.router_evaluadores, prefix="/listaEvaluadores", tags=["Delegado"])
 app.include_router(proyectosSinAsignar.router_proyectosSinAsignar, prefix="/proyectosSinAsignar", tags=["Delegado"])
 app.include_router(asistencia.router_asistencia,prefix="/asistencia", tags=["Delegado"])
+app.include_router(listaProyectos.router_proyectos,prefix="/listaProyectos", tags=["Delegado"])
 
 # ADMIN 
 app.include_router(admin.router_admin, prefix="/admin", tags=["Administrador"])

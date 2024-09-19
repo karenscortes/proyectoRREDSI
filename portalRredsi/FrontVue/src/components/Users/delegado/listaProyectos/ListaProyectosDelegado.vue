@@ -45,8 +45,7 @@
 
         <!--Cards-->
         <div class="row">
-            <CardProyecto v-for="(proyecto, index) in proyectos" :key="index" :cod_proyecto="proyecto.cod_proyecto"
-            :titulo="proyecto.titulo" :institucion="proyecto.institucion" :estado="proyecto.estado"/>
+            <CardProyecto v-for="(proyecto, index) in proyectosFiltrados" :key="index" :proyecto="proyecto" />
         </div>
     </div>
     <!-- Paginador -->
@@ -74,53 +73,32 @@
 </template>
 
 <script>
-import CardProyecto from '../CardProyecto.vue';
+import CardProyecto from "./CardProyecto.vue";
+import { obtenerProyectos } from '@/services/delegadoService';
+
 export default{
     components: {
         CardProyecto,
     },
     data(){
         return{
-            proyectos:[
-                { 
-                    cod_proyecto: "A001",
-                    titulo: "BidDataIA",
-                    institucion: "UTP",
-                    estado:"Calificado"
-                },
-                { 
-                    cod_proyecto: "A034",
-                    titulo: "AguaLimpia",
-                    institucion: "SENA",
-                    estado:"Calificado"
-                },
-                { 
-                    cod_proyecto: "A011",
-                    titulo: "CienciaDatos",
-                    institucion: "SENA",
-                    estado:"Pendiente"
-                },
-                { 
-                    cod_proyecto: "A001",
-                    titulo: "BidDataIA",
-                    institucion: "UTP",
-                    estado:"Calificado"
-                },
-                { 
-                    cod_proyecto: "A001",
-                    titulo: "BidDataIA",
-                    institucion: "UTP",
-                    estado:"Calificado"
-                },
-                { 
-                    cod_proyecto: "A001",
-                    titulo: "BidDataIA",
-                    institucion: "UTP",
-                    estado:"Calificado"
-                },
-        
-            ]
+            proyectos:[], 
+            proyectosFiltrados: []
         }
+    },
+    methods: {
+        async listarProyectos() {
+            try {
+                const response = await obtenerProyectos();
+                this.proyectos = response.data.proyectos;
+                this.proyectosFiltrados = [...this.proyectos]; // Inicialmente muestra todas las salas
+            } catch (error) {
+                alert("Error al consultar proyectos");
+            }
+        },
+    },
+    mounted() {
+        this.listarProyectos();
     }
 }
 </script>
