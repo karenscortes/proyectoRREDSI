@@ -261,13 +261,30 @@ def create_sala_admin(
 
 
 # Editar sala
-# @router_admin.put("/salas/{id_sala}")
-# def update_sala_admin(
-    
-#     id_sala:int,
-#     sala: UpdateSala
-#     db: Session = Depends(get_db),
-#     current_user: UserResponse = Depends(get_current_user),
-# ):
+@router_admin.put("/salas/{id_sala}")
+def update_sala_admin(
+    id_sala: int,
+    sala: UpdateSala,
+    db: Session = Depends(get_db),
+    current_user: UserResponse = Depends(get_current_user)
+):
+    MODULE = 15
+    permisos = get_permissions(db, current_user.id_rol, MODULE)
 
+    if permisos is None or not permisos.p_actualizar:
+        raise HTTPException(status_code=401, detail="Usuario no autorizado")
+
+    # Asumiendo que tienes una función para actualizar la sala en lugar de crearla
+    updated_sala = update_sala(id_sala, sala,db )
+
+    if updated_sala:
+        return {
+            'success': True,
+            'message': 'Se actualizó la sala con éxito',
+        }
+    else:
+        return {
+            'success': False,
+            'message': 'Error al actualizar la sala',
+        }
     
