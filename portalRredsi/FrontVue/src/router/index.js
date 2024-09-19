@@ -3,7 +3,6 @@ import { useAuthStore } from '@/store';
 
 import MainLayout from '../views/MainLayout.vue';
 import UsersLayout from '../views/UsersLayout.vue';
-import NotAvailable from '../views/NotAvailable.vue';
 import NotFound from '../views/NotFound.vue';
 
 
@@ -17,9 +16,6 @@ const routes = [
   
   // RUTA A NOTFOUND
   { path: '/not-found', name: 'NotFound', component: NotFound },
-
-  //RUTA A NOTAVAILABLE
-  { path: '/seccionNoDisponible', name: 'NotAvailable', component: NotAvailable },
 
   // REDIRECCIONA SI UNA RUTA NO ES ENCONTRADA
   { path: '/:pathMatch(.*)*', redirect: '/not-found' },

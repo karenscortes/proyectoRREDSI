@@ -2,8 +2,8 @@ from typing import List
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 from appv1.routers.login import get_current_user
-from appv1.schemas.area_conocimiento import AreaConocimientoBase
-from appv1.schemas.delegado.asignacionProyectoEtapaVirtual import AsignarProyectoEtapaUno, PosibleEvaluadorEtapaVirtual
+from appv1.schemas.area_conocimiento import AreaConocimientoResponse
+from appv1.schemas.delegado.asignacionProyectoEtapaVirtual import AsignarProyectoEtapaUno
 from appv1.schemas.institucion import InstitucionBase
 from appv1.schemas.usuario import UserResponse
 from db.database import get_db
@@ -87,8 +87,8 @@ async def read_posibles_evaluadores(
     }
 
 # RUTA PARA OBTENER EL NOMBRE UNA AREA DE CONOCIMIENTO POR MEDIO DE SU ID 
-@router_proyecto_etapa_uno.get("/get-id-area-conocimiento/", response_model=AreaConocimientoBase)
-async def read_detalle_sala(
+@router_proyecto_etapa_uno.get("/get-id-area-conocimiento/", response_model=AreaConocimientoResponse)
+async def read_datos_area_conocimiento(
     nombre_area: str,
     current_user: UserResponse = Depends(get_current_user),
     db: Session = Depends(get_db),
@@ -105,7 +105,7 @@ async def read_detalle_sala(
 
 # RUTA PARA OBTENER EL NOMBRE UNA INSTITUCION POR MEDIO DE SU ID 
 @router_proyecto_etapa_uno.get("/get-id-institucion/", response_model=InstitucionBase)
-async def read_detalle_sala(
+async def read_datos_institucion(
     nombre_institucion: str,
     current_user: UserResponse = Depends(get_current_user),
     db: Session = Depends(get_db),
@@ -122,7 +122,7 @@ async def read_detalle_sala(
 
 # RUTA PARA ACTUALIZAR EL ESTADO DE UN PROYECTO CUANDO ES ASIGNADO 
 @router_proyecto_etapa_uno.put("/update-estado-proyecto/")
-async def read_detalle_sala(
+async def update_estado_proyecto(
     id_proyecto: int,
     current_user: UserResponse = Depends(get_current_user),
     db: Session = Depends(get_db),
@@ -131,8 +131,8 @@ async def read_detalle_sala(
     if not permisos.p_actualizar:
         raise HTTPException(status_code=401, detail="No está autorizado a utilizar este modulo")
     
-    estado_actulizado = update_estado_proyecto(db,id_proyecto)
-    if estado_actulizado != True:
+    estado_actualizado = update_estado_proyecto(db,id_proyecto)
+    if estado_actualizado != True:
         raise HTTPException(status_code=404, detail="Institucion no encontrada")
     
     return {"Mensaje: Estado de proyetco actulizado correctamente"}

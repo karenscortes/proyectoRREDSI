@@ -89,7 +89,7 @@
 </template>
 
 <script>
-import { obtenerAutoresProyecto, obtenerIdAreaConocimiento, obtenerPosiblesEvaluadores, obtenerIdInstitucion, obtenerListaEvaluadores, obtenerProyectoConvocatoria, asignarProyectoEtapaVirtual, obtenerIdEvaluador, actualizarEstadoProyecto } from '../../../../services/delegadoService'
+import { obtenerAutoresProyecto, obtenerIdAreaConocimiento, obtenerPosiblesEvaluadores, obtenerIdInstitucion, obtenerListaEvaluadores, obtenerProyectoConvocatoria, asignarProyectoEtapaVirtual, obtenerIdEvaluador, actualizarEstadoProyecto } from '@/services/delegadoService'
 import { ref } from 'vue'
 
 export default {

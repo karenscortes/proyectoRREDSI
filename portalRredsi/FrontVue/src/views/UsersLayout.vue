@@ -30,12 +30,14 @@ import HistorialActividades from "../components/Users/superadmin/HistorialActivi
 import EditarPerfilSuperAdmin from "../components/Users/superadmin/EditarPerfilSuperAdmin.vue";
 import NotAvailable from "./NotAvailable.vue";
 import ListaSalasDelegado from "../components/Users/delegado/listaSalas/ListaSalasDelegado.vue";
+import ListaProyectosDelegado from "../components/Users/delegado/listaProyectos/ListaProyectosDelegado.vue";
 
 
 import InicioAdminView from "./InicioAdminView.vue";
 
 // Styles
 import '../assets/plugins/fontawesome-free-5.0.1/css/fontawesome-all.css';
+
 
 export default {
     components: {
@@ -54,6 +56,7 @@ export default {
         ListaEvaluadores: markRaw(ListaEvaluadores),
         PostulacionesEvaluadores: markRaw(PostulacionesEvaluadores),
         ListaSalasDelegado: markRaw(ListaSalasDelegado),
+        ListaProyectosDelegado: markRaw(ListaProyectosDelegado),
 
         //Componentes Evaluador
         PaginaInicioEvaluadorView: markRaw(PaginaInicioEvaluadorView),
@@ -93,6 +96,7 @@ export default {
                 ListaEvaluadores: ListaEvaluadores,
                 PostulacionesEvaluadores: PostulacionesEvaluadores,
                 ListaSalasDelegado: ListaSalasDelegado,
+                ListaProyectosDelegado: ListaProyectosDelegado,
 
 
                 //Evaluador
