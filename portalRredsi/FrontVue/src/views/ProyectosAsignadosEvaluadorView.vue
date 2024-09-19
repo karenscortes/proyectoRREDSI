@@ -182,7 +182,12 @@
                 try {
                     const authStore = useAuthStore();
                     const user = authStore.user;
-                    
+
+    
+                    if (this.selectedState !== estado) {
+                        this.currentPage = 1; 
+                    } 
+                                
                     this.selectedState = estado;
 
                     // Mapear estado según la etapa actual
@@ -191,7 +196,6 @@
                         'Pendiente': this.currentEtapa === 'Virtual' ? 'P_virtual' : 'P_presencial'
                     };
 
-                    this.currentPage = 1;
                     const estadoEnvio = estadoMap[estado] || ''; 
 
                     const response = await obtenerProyectosPorEstado(this.currentEtapa, estadoEnvio, user.id_usuario, this.currentPage, this.itemsPerPage);
@@ -207,19 +211,22 @@
 
             nextPage() {
                 if (this.currentPage < this.totalPages) {
+                    this.currentPage++; // Aumentar el número de página
                     if (this.selectedState) {
                         this.fetchProyectosPorEstado(this.selectedState);
                     } else {
-                        this.fetchProyectos(this.currentPage + 1);
+                        this.fetchProyectos(this.currentPage);
                     }
                 }
             },
+
             prevPage() {
                 if (this.currentPage > 1) {
+                    this.currentPage--; // Disminuir el número de página
                     if (this.selectedState) {
                         this.fetchProyectosPorEstado(this.selectedState);
                     } else {
-                        this.fetchProyectos(this.currentPage - 1);
+                        this.fetchProyectos(this.currentPage);
                     }
                 }
             },
