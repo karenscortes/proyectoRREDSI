@@ -178,7 +178,9 @@ CREATE TABLE programacion_fases (
     id_convocatoria INT,
     fecha_inicio DATE,
     fecha_fin DATE,
+    id_etspa INT,
     FOREIGN KEY (id_fase) REFERENCES fases(id_fase),
+    FOREIGN KEY (id_etapa) REFERENCES etapas(id_etapa),
     FOREIGN KEY (id_convocatoria) REFERENCES convocatorias(id_convocatoria)
 );
 
@@ -258,7 +260,8 @@ CREATE TABLE proyectos (
     id_modalidad INT,
     id_area_conocimiento INT,
     titulo VARCHAR(200),
-    estado ENUM('pendiente', 'asignado') NOT NULL,
+    estado_asignacion ENUM('pendiente', 'asignado') NOT NULL,
+    estado_calificacion ENUM('P_virtual', 'C_virtual','P_presencial','C_presencial') NOT NULL,
     programa_academico VARCHAR(50),
     grupo_investigacion VARCHAR(50),
     linea_investigacion VARCHAR(50),
@@ -269,6 +272,8 @@ CREATE TABLE proyectos (
     FOREIGN KEY (id_modalidad) REFERENCES modalidades(id_modalidad),
     FOREIGN KEY (id_area_conocimiento) REFERENCES areas_conocimiento(id_area_conocimiento)
 );
+
+-- triger que inserte los participantes proyectos de tutor y ponente proeycto convocatoria registar autores
 
 INSERT INTO proyectos (id_proyecto, id_institucion, id_modalidad, id_area_conocimiento, titulo, estado, programa_academico, grupo_investigacion, linea_investigacion, nombre_semillero, url_propuesta_escrita, url_aval)
 VALUES
@@ -306,7 +311,7 @@ VALUES
 
 CREATE TABLE detalles_institucionales (
     id_detalle_institucional INT AUTO_INCREMENT,
-    id_usuario INT,
+    id_usuario INT UNIQUE,
     id_institucion INT,
     semillero VARCHAR(35),
     grupo_investigacion VARCHAR(35),
@@ -378,8 +383,7 @@ VALUES
 
 CREATE TABLE rubricas_resultados (
     id_rubrica_resultado INT PRIMARY KEY AUTO_INCREMENT,
-    estado_proyecto ENUM('pendiente', 'calificado'),
-    puntaje_aprobacion FLOAT(3, 1)
+    puntaje_aprobacion FLOAT(10, 1)
 );
 
 INSERT INTO rubricas_resultados (estado_proyecto, puntaje_aprobacion)

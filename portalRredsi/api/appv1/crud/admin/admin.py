@@ -9,7 +9,7 @@ from appv1.models.fase import Fase
 from appv1.models.programacion_fase import Programacion_fase
 from appv1.models.sala import Sala
 from appv1.models.usuario import Usuario
-from appv1.schemas.admin.admin import EstadoDeConvocatoria
+from appv1.schemas.admin.admin import EstadoDeConvocatoria, EtapaUpdate, UpdateSala
 from sqlalchemy.exc import SQLAlchemyError, IntegrityError
 
 # Crear una nueva convocatoria
@@ -122,30 +122,41 @@ def create_sala(db: Session, id_usuario: int, area_conocimiento: int,  numero: s
     
 
 # Editar una sala
-def update_sala(db: Session, id_sala: int, id_usuario: Optional[int] = None, area_conocimiento: Optional[int] = None, nombre_sala: Optional[str] = None, numero_sala: Optional[str] = None):
-    # Verifica que la sala exista
-    sala = db.query(Sala).get(id_sala)
-    if not sala:
-        raise HTTPException(status_code=404, detail="Sala no encontrada")
+def update_sala( id_sala: int, new_sala: UpdateSala,db: Session):
 
-    # Si se proporciona un área de conocimiento, obtén el objeto correspondiente
-    if area_conocimiento:
-        area = db.query(Area_conocimiento).get(area_conocimiento)
+    try:
+        # Verifica que la sala exista
+        sala = db.query(Sala).get(id_sala)
+        if not sala:
+            raise HTTPException(status_code=404, detail="Sala no encontrada")
+
+        # Si se proporciona un área de conocimiento, obtén el objeto correspondiente
+        if new_sala.area_conocimiento:
+            area = db.query(Area_conocimiento).get(new_sala.area_conocimiento)
         if not area:
-            raise HTTPException(status_code=404, detail="Área de conocimiento no encontrada")
-        sala.area_conocimiento = area
+            raise HTTPException(status_code=404, detail="area de conocimiento no encontrada")
+            sala.area_conocimiento = area
 
-    # Actualiza otros campos si se proporcionan
-    if nombre_sala:
-        sala.nombre_sala = nombre_sala
-    if numero_sala:
-        sala.numero_sala = numero_sala
-    if id_usuario:
-        sala.id_usuario = id_usuario
+            # Actualiza otros campos si se proporcionan
+        if new_sala.nombre_sala:
+            sala.nombre_sala = new_sala.nombre_sala
+        if new_sala.numero_sala:
+            sala.numero_sala = new_sala.numero_sala
+        if new_sala.id_usuario:
+            sala.id_usuario = new_sala.id_usuario
 
-    # Guarda los cambios en la base de datos
-    db.commit()
-    db.refresh(sala)
-    return sala
+        try:
+            # Guarda los cambios en la base de datos
+            db.commit()
+            db.refresh(sala)
+            return sala
+        except Exception as e:
+            db.rollback()
+            raise HTTPException(status_code=500, detail="Error al actualizar sala")
+ 
+    except SQLAlchemyError as e:
+        print(f"Error al actualizar sala: {e}")
+        raise HTTPException(status_code=500, detail=f"Error. No hay Integridad de datos",)
+    
 
 

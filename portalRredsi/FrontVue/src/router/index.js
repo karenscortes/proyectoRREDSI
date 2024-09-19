@@ -26,6 +26,7 @@ const routes = [
   //RUTA A USERSLAYOUT
   { path: '/pagina-usuario', name: 'UsersLayout', component: UsersLayout },
   
+  
   // RUTAS EVALUADOR
   { path: '/principal-evaluador', name: 'EvaluadorView', component: EvaluadorView, meta: { requiresAuth: true, allowedRoles: [1] }   },
   { path: '/proyectos-asignados', name: 'ProyectosAsignadosEvaluadorView', component: ProyectosAsignadosEvaluadorView, meta: { requiresAuth: true, allowedRoles: [1] }  },
