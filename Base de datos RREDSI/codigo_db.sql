@@ -384,14 +384,15 @@ VALUES
 
 CREATE TABLE rubricas_resultados (
     id_rubrica_resultado INT PRIMARY KEY AUTO_INCREMENT,
+    estado_proyecto ENUM('aprobado','reprobado') NOT NULL, 
     puntaje_aprobacion FLOAT(10, 1)
 );
 
 INSERT INTO rubricas_resultados (estado_proyecto, puntaje_aprobacion)
 VALUES
-('pendiente', 7.5),  -- Resultado pendiente con un puntaje de aprobación de 7.5
-('calificado', 8.0),  -- Proyecto calificado con un puntaje de aprobación de 8.0
-('pendiente', 6.5);   -- Resultado pendiente con un puntaje de aprobación de 6.5
+('reprobado', 7.5),  -- Resultado pendiente con un puntaje de aprobación de 7.5
+('aprobado', 8.0),  -- Proyecto calificado con un puntaje de aprobación de 8.0
+('reprobado', 6.5);   -- Resultado pendiente con un puntaje de aprobación de 6.5
 
 
 CREATE TABLE respuestas_rubricas (
