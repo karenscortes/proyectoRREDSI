@@ -1,6 +1,6 @@
 <template>
     <!-- Contenido principal -->
-    <div class="become mt-5">
+    <div class="become">
         <div class="container">
             <div class="row row-eq-height">
                 <div class="col-lg-6 order-2 order-lg-1">
@@ -144,7 +144,6 @@ export default {
     .become
     {
         width: 100%;
-        padding-top: 60px;
         padding-bottom: 60px;
     }
     .become_title h1
@@ -168,7 +167,7 @@ export default {
     .become_text
     {
         font-weight: 500;
-        font-size: 16px;
+        font-size: 14px;
         color: #a5a5a1;
         margin-top: 48px;
         margin-bottom: 0px;
