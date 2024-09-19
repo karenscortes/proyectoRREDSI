@@ -1,16 +1,32 @@
 import api from './api'; 
 
-// Función para obtener los proyectos asignados
-export const obtenerProyectosAsignados = async (idUsuario, page = 1, pageSize = 10) => {
+
+// Función para obtener la etapa actual con la convocatoria del momento
+export const obtenerEtapaActual = async () => {
   try {
-    const response = await api.get('/obtenerProyectosEvaluador/obtener-proyectos-asignados-paginados/', {
+    const response = await api.get('/obtenerEtapaActual/obtener-etapa-actual/');
+    return response.data;
+  } catch (error) {
+    if (error.response) {
+      throw error; // Lanza el error para que lo maneje el store
+    } else {
+      throw new Error('Error de red o de servidor'); // Manejar errores de red
+    }
+  }
+};
+
+
+export const obtenerProyectosAsignados = async (nombreEtapa, idUsuario, page = 1, pageSize = 10) => {
+  try {
+    const response = await api.get('/obtenerProyectosEvaluador/obtener-proyectos-por-etapa-paginados/', {
       params: {
+        nombre_etapa: nombreEtapa,
         id_usuario: idUsuario,
         page: page,
         page_size: pageSize
       }
     });
-    return response;
+    return response.data;
   } catch (error) {
     if (error.response) {
       throw error; // Lanza el error para que lo maneje el store
@@ -22,13 +38,14 @@ export const obtenerProyectosAsignados = async (idUsuario, page = 1, pageSize = 
 
 
 // Función para obtener los proyectos asignados
-export const obtenerProyectosPorEstado = async (estado_evaluacion, idUsuario, page = 1, pageSize = 10) => {
+export const obtenerProyectosPorEstado = async (nombreEtapa, estado_evaluacion, idUsuario, page = 1, pageSize = 10) => {
   try {
-    const response = await api.get('/obtenerProyectosEvaluador/obtener-proyectos-por-estado-paginados/', {
+    const response = await api.get('/obtenerProyectosEvaluador/obtener-proyectos-por-etapa-y-estado/', {
       headers: {
         'Authorization': `Bearer` // Incluye el token de autenticación
       },
       params: {
+        nombre_etapa: nombreEtapa,
         estado_evaluacion: estado_evaluacion,
         id_usuario: idUsuario,
         page: page,

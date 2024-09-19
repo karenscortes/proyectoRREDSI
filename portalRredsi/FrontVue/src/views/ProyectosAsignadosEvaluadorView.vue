@@ -1,4 +1,5 @@
 <template>
+
     <!-- Mostrar el componente seleccionado si 'showCalificarProyecto' es verdadero -->
     <component 
         v-if="showCalificarProyecto && selectedComponent" 
@@ -14,7 +15,7 @@
             <div class="col">
                 <div class="section_title text-center">
                     <h1>Proyectos Asignados</h1>
-                    <h2 class="text-muted">Primera Etapa</h2>
+                    <h2 class="text-muted">{{ tituloEtapa }}</h2> 
                 </div>
             </div>
         </div>
@@ -95,10 +96,11 @@
             />
         </div>
     </div>
+
 </template>
 
 <script>
-    import { obtenerProyectosAsignados, obtenerProyectosPorEstado } from '../services/evaluadorService';
+    import { obtenerProyectosAsignados, obtenerProyectosPorEstado, obtenerEtapaActual } from '../services/evaluadorService';
     import ProyectosAsignados from '../components/Users/evaluador/ProyectosAsignados.vue';
     import CalificarProyectoEvaluadorView from './CalificarProyectoEvaluadorView.vue'; 
     import { useAuthStore } from '@/store';     
@@ -117,12 +119,13 @@
                 selectedState: '',
                 selectedComponent: '',
                 selectedProyecto: null, 
-                showCalificarProyecto: false
+                showCalificarProyecto: false,
+                currentEtapa: '' 
             };
         },
         computed: {
             hasProyectos() {
-                return this.proyectos.length > 0;
+                return this.proyectos.length > 0; 
             },
 
             mensajeSinProyectos() {
@@ -134,9 +137,28 @@
                     return "No tienes proyectos pendientes...";
                 }
                 return "No hay proyectos disponibles.";
+            },
+
+            tituloEtapa() {
+                return this.currentEtapa === 'Virtual' ? 'Primera Etapa' : 'Segunda Etapa';
             }
         },
         methods: {
+            async obtenerEtapa() {
+                try {
+                    const authStore = useAuthStore();
+                    const user = authStore.user;
+
+                    const response = await obtenerEtapaActual(user.id_usuario);
+                    this.currentEtapa = response.nombre_etapa;
+
+                    this.fetchProyectos();
+                } catch (error) {
+                    console.error("Error al obtener la etapa actual: ", error);
+                    alert("Error al obtener la etapa actual");
+                }
+            },
+
             async fetchProyectos(page = 1) {
                 try {
                     this.selectedState = ''; 
@@ -144,10 +166,10 @@
                     const authStore = useAuthStore();
                     const user = authStore.user;
 
-                    const response = await obtenerProyectosAsignados(user.id_usuario, page, this.itemsPerPage);
+                    const response = await obtenerProyectosAsignados(this.currentEtapa, user.id_usuario, page, this.itemsPerPage);
 
-                    this.proyectos = response.data.data; 
-                    this.totalPages = response.data.total_pages; 
+                    this.proyectos = response.data; 
+                    this.totalPages = response.total_pages; 
                     this.currentPage = page;
 
                 } catch (error) {
@@ -163,7 +185,16 @@
                     
                     this.selectedState = estado;
 
-                    const response = await obtenerProyectosPorEstado(estado, user.id_usuario, this.currentPage, this.itemsPerPage);
+                    // Mapear estado según la etapa actual
+                    const estadoMap = {
+                        'Calificado': this.currentEtapa === 'Virtual' ? 'C_virtual' : 'C_presencial',
+                        'Pendiente': this.currentEtapa === 'Virtual' ? 'P_virtual' : 'P_presencial'
+                    };
+
+                    this.currentPage = 1;
+                    const estadoEnvio = estadoMap[estado] || ''; 
+
+                    const response = await obtenerProyectosPorEstado(this.currentEtapa, estadoEnvio, user.id_usuario, this.currentPage, this.itemsPerPage);
 
                     this.proyectos = response.data.data;
                     this.totalPages = response.data.total_pages;
@@ -204,7 +235,7 @@
             }
         },
         mounted() {
-            this.fetchProyectos();
+            this.obtenerEtapa();
         }
     };
 </script>
