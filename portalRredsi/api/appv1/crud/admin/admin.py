@@ -131,13 +131,13 @@ def update_sala( id_sala: int, new_sala: UpdateSala,db: Session):
             raise HTTPException(status_code=404, detail="Sala no encontrada")
 
         # Si se proporciona un área de conocimiento, obtén el objeto correspondiente
-        if new_sala.area_conocimiento:
-            area = db.query(Area_conocimiento).get(new_sala.area_conocimiento)
-        if not area:
-            raise HTTPException(status_code=404, detail="area de conocimiento no encontrada")
-            sala.area_conocimiento = area
+        if new_sala.area_conocimento:  # Corregido
+            area = db.query(Area_conocimiento).get(new_sala.area_conocimento)
+            if not area:
+                raise HTTPException(status_code=404, detail="Área de conocimiento no encontrada")
+                sala.area_conocimiento = area
 
-            # Actualiza otros campos si se proporcionan
+        # Actualiza otros campos si se proporcionan
         if new_sala.nombre_sala:
             sala.nombre_sala = new_sala.nombre_sala
         if new_sala.numero_sala:
