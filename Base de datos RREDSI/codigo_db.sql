@@ -237,6 +237,10 @@ INSERT INTO rubricas (titulo, id_etapa, id_modalidad)
 VALUES
 ('Presencial-Poster', 1, 1),
 ('Virtual-Finalizado', 2, 2);
+('Virtual-Poster', 2, 1);
+('Virtual-En-Curso', 2, 3);
+('Presencial-En-Curso', 1, 3),
+('Presencial-Finalizado', 1, 2),
 
 
 CREATE TABLE items_rubrica (
@@ -250,10 +254,28 @@ CREATE TABLE items_rubrica (
 
 INSERT INTO items_rubrica (id_rubrica, titulo ,componente, valor_max)
 VALUES
-(1, 'titulo','Originalidad del proyecto', 10.0),
-(1, 'redaccion','Claridad de la presentación', 9.5),
-(2, 'originalidad','Innovación tecnológica', 10.0),
-(2, 'Social','Impacto social', 9.0);
+(1,'Título','Nombre del proyecto e imagen alusiva.',5.0),
+(1,'Resumen','Debe contener una exposición clara y concisa de la propuesta de investigación (mo 120 palabras) y Palabras Claves. ',5.0),
+(1,'Problema y Justificación','Planteamiento, formulación de la pregunta, justificación del problema.',10.0),
+(2, 'Coherencia','Claridad y coherencia entre los diferentes puntos de la propuesta.', 10.0),
+(2, 'Título','Es coherente con el contenido desarrollado.', 5.0),
+(2,'Resumen y Palabras Claves','',5.0),
+(1,'Referente Teórico','Mínimo dos autores con una pequeña contextualización del aporte teórico a la propuesta de investigación.',10.0),
+(1,'Objetivos','Precisos y coherentes con el problema.',10.0),
+(1,'Metodología','Tipo de investigación e instrumentos de recolección.',15.0),
+(1,'Resultados esperados','productos de investigación o pertinencia de los resultados esperados con los objetivos propuestos.',15.0),
+(1,'Impactos','Social, económico y ambiental',10.0),
+(1,'Diseño','Calidad y pertinencia.',10.0),
+(1,'Bibliografía','Coherencia con marco teórico y referencial. Deben estar todas las referencias en el texto.',10.0)
+(2, 'Problema y Justificación','Planteamiento, formulación de la pregunta, justificación del problema.', 10.0),
+(2, 'Objetivos','Precisos y coherentes con el problema.', 10.0),
+(2, 'Referente teórico','Acorde con la temática y está construido de acuerdo a documentos de referencia en la materia.', 10.0),
+(2, 'Metodología','Especifica el Tipo de investigación, presenta de manera clara la metodología utilizada para lograr los objetivos planteados.', 10.0),
+(2, 'Resultados y discusión','Coherencia. Presenta de manera clara el análisis de los hallazgos obtenidos. El desarrollo del trabajo y sus resultados responden a los objetivos planteados.', 10.0),
+(2, 'Impactos','Social, económico y ambiental.', 10.0),
+(2, 'Conclusiones','Descripción precisa de los aspectos más relevantes obtenidos en la investigación.', 10.0),
+(2, 'Bibliografía','Se presentan referencias bibliográficas pertinentes y actualizadas relacionadas directamente con la temática de investigación.', 10.0),
+;
 
 CREATE TABLE proyectos (
     id_proyecto INT PRIMARY KEY AUTO_INCREMENT,
