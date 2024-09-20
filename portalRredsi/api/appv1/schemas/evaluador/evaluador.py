@@ -9,7 +9,6 @@ class ProyectoSchema(BaseModel):
     modalidad: str
     area_conocimiento: str
     titulo: str
-    estado: str
     programa_academico: str
     grupo_investigacion: str
     linea_investigacion: str

@@ -1,6 +1,6 @@
 <template>
   <form action="#" class="row justify-content-center">
-    <div class="col-lg-8 col-md-11 col-sm-12 mb-3 table-responsive">
+    <div class="col-lg-12 col-md-12 col-sm-12 mb-3 table-responsive">
       <table class="table display text-dark border border-dark">
         <thead class="text-center">
           <tr class="titulo_rubrica">
@@ -30,7 +30,7 @@
         </thead>
         <tbody>
           <tr v-for="(componente, index) in componentes" :key="index">
-            <td class="border border-dark">
+            <td class="border border-dark componente">
               <span class="text-dark font-weight-bold">{{ componente.titulo }}:</span> {{ componente.descripcion }}
             </td>
             <td class="text-center-vertical border border-dark">{{ componente.valor_maximo }}</td>
@@ -202,8 +202,12 @@
     height: 100%; 
   }
 
+
+
   .btn-warning {
     width: 300px;
   }
+
+
 
 </style>
