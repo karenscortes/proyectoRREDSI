@@ -1,23 +1,26 @@
+from typing import Dict
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 from appv1.routers.login import get_current_user
 from appv1.schemas.evaluador.evaluador import CalificarProyectoRespuesta, PaginatedResponse, PaginatedResponseHorario, PostulacionEvaluadorCreate, RespuestaRubricaCreate
 from appv1.schemas.usuario import UserResponse
 from db.database import get_db
-from appv1.crud.evaluador.proyectos import convertir_timedelta_a_hora, create_postulacion_evaluador, get_current_convocatoria, get_datos_calificar_proyecto_completo, get_proyectos_asignados, get_proyectos_etapa_presencial_con_horario, get_proyectos_por_estado, get_proyectos_por_etapa, insert_respuesta_rubrica
+from appv1.crud.evaluador.proyectos import convertir_timedelta_a_hora, create_postulacion_evaluador, get_current_convocatoria, get_datos_calificar_proyecto_completo, get_etapa_actual, get_proyectos_etapa_presencial_con_horario, get_proyectos_por_etapa, get_proyectos_por_etapa_y_estado, insert_respuesta_rubrica
 from appv1.crud.permissions import get_permissions
 
 routerObtenerProyectos = APIRouter()
 routerInsertarPostulacionEvaluador = APIRouter()
 routerInsetarCalificacionRubrica = APIRouter()
 routerObtenerHorarioEvaluador = APIRouter()
+routerObtenerEtapaActual = APIRouter()
 
 # ID del modulo
 MODULE_PROYECTOS = 11
 MODULE_POSTULACIONES = 8
 MODULE_RESPUESTAS_RUBRICAS = 14
+MODULE_ETAPAS = 4
 
-#Ruta para obtener los proyectos asignados por etapa (Presencial/Virtual) paginados
+# Ruta para obtener los proyectos asignados por etapa (Presencial/Virtual) paginados
 @routerObtenerProyectos.get("/obtener-proyectos-por-etapa-paginados/", response_model=PaginatedResponse)
 async def obtener_proyectos_por_etapa(
     nombre_etapa: str,
@@ -34,9 +37,10 @@ async def obtener_proyectos_por_etapa(
     response = get_proyectos_por_etapa(db, nombre_etapa, id_usuario, page, page_size)
     return response
 
-#Ruta para obtener los proyectos asignados por estado (calificado/pendiente) paginados
-@routerObtenerProyectos.get("/obtener-proyectos-por-estado-paginados/", response_model=PaginatedResponse)
-async def obtener_proyectos_por_estado(
+# Ruta para obtener los proyectos asignados por estado (calificado/pendiente) y dependiendo de la etapa (Presencial/Virtual) paginados
+@routerObtenerProyectos.get("/obtener-proyectos-por-etapa-y-estado/", response_model=PaginatedResponse)
+async def obtener_proyectos_por_etapa_y_estado(
+    nombre_etapa: str,
     estado_evaluacion: str,
     id_usuario: int,
     page: int = 1,
@@ -46,28 +50,12 @@ async def obtener_proyectos_por_estado(
 ):
     permisos = get_permissions(db, current_user.id_rol, MODULE_PROYECTOS)
     if not permisos.p_consultar:
-        raise HTTPException(status_code=401, detail="No está autorizado a utilizar este modulo")
+        raise HTTPException(status_code=401, detail="No está autorizado a utilizar este módulo")
 
-    response = get_proyectos_por_estado(db, estado_evaluacion, id_usuario, page, page_size)
+    response = get_proyectos_por_etapa_y_estado(db, nombre_etapa, estado_evaluacion, id_usuario, page, page_size)
     return response
 
-#Ruta para obtener los proyectos asignados (Tanto virtuales como presenciales)
-@routerObtenerProyectos.get("/obtener-proyectos-asignados-paginados/", response_model=PaginatedResponse)
-async def obtener_proyectos_asignados(
-    id_usuario: int,
-    page: int = 1,
-    page_size: int = 10,
-    current_user: UserResponse = Depends(get_current_user),
-    db: Session = Depends(get_db),
-):
-    permisos = get_permissions(db, current_user.id_rol, MODULE_PROYECTOS)
-    if not permisos.p_consultar:
-        raise HTTPException(status_code=401, detail="No está autorizado a utilizar este modulo")
-    
-    response = get_proyectos_asignados(db, id_usuario, page, page_size)
-    return response
-
-#Ruta para insertar la postulacion del evaluador
+# Ruta para insertar la postulacion del evaluador
 @routerInsertarPostulacionEvaluador.post("/insertar-postulacion-evaluador/")
 async def insertar_postulacion_evaluador(
     postulacion: PostulacionEvaluadorCreate,
@@ -99,7 +87,7 @@ async def insertar_postulacion_evaluador(
     else:
         raise HTTPException(status_code=500, detail="Error al registrar la postulación.")
     
-#Ruta para insertar la calificacion de la rúbrica
+# Ruta para insertar la calificacion de la rúbrica
 @routerInsetarCalificacionRubrica.post("/insertar-calificacion-rubrica/")
 async def insertar_calificacion_proyecto(
     respuesta: RespuestaRubricaCreate,
@@ -170,5 +158,17 @@ async def obtener_datos_para_calificar_proyecto(
     proyecto = get_datos_calificar_proyecto_completo(db, id_proyecto, id_usuario)
     return proyecto
 
-
+# Ruta para obtener la etapa actual de la convocotaria en curso
+@routerObtenerEtapaActual.get("/obtener-etapa-actual/", response_model=Dict[str, str])
+async def obtener_etapa_actual(
+    current_user: UserResponse = Depends(get_current_user),
+    db: Session = Depends(get_db),
+):
+    # Verificar permisos (opcional)
+    permisos = get_permissions(db, current_user.id_rol, MODULE_ETAPAS)  
+    if not permisos.p_consultar:
+        raise HTTPException(status_code=401, detail="No está autorizado a utilizar este módulo")
+    
+    etapa_actual = get_etapa_actual(db)
+    return etapa_actual
 

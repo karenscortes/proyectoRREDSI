@@ -11,7 +11,7 @@ def get_all_projects(db: Session, page: int = 1, page_size: int = 10):
                 """
                         SELECT  proyectos.id_proyecto,
                                 proyectos.titulo,
-                                proyectos.estado,
+                                proyectos.estado_calificacion,
                                 instituciones.nombre  AS institucion       
                         FROM proyectos
                                 JOIN instituciones ON (proyectos.id_institucion = instituciones.id_institucion)             
