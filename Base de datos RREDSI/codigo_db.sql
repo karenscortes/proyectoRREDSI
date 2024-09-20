@@ -284,7 +284,7 @@ CREATE TABLE proyectos (
     id_area_conocimiento INT,
     titulo VARCHAR(200),
     estado_asignacion ENUM('pendiente', 'asignado') NOT NULL,
-    estado_calificacion ENUM('P_virtual', 'C_virtual','P_presencial','C_presencial') NOT NULL,
+    estado_calificacion ENUM('P_virtual', 'C_virtual','P_presencial','C_presencial') NOT NULL DEFAULT 'P_virtual',
     programa_academico VARCHAR(50),
     grupo_investigacion VARCHAR(50),
     linea_investigacion VARCHAR(50),
