@@ -15,8 +15,12 @@ Base = declarative_base()
 def get_db():
     db = SessionLocal()
     try:
+        # Deshabilitar el modo seguro
+        db.execute("SET SQL_SAFE_UPDATES = 0")
         yield db
     finally:
+        # Habilitar el modo seguro si es necesario
+        db.execute("SET SQL_SAFE_UPDATES = 1")
         db.close()
 
 # solo para prueba
