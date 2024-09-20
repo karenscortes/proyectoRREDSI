@@ -15,6 +15,7 @@ import MenuUsuarios from '../components/Menus/MenuUsuarios.vue';
 import FooterSecundario from '../components/Footers/FooterSecundario.vue';
 import ComponenteDinamico from '../components/ComponenteDinamico.vue';
 import InicioSuperAdminView from "./InicioSuperAdminView.vue";
+import EditarPerfil from "../components/Users/EditarPerfil.vue";
 import RubricaAdminView from "./RubricaAdminView.vue";
 import SalasAdminView from "./SalasAdminView.vue";
 import DelegadosAdminView from "./DelegadosAdminView.vue";
@@ -27,7 +28,6 @@ import ProyectosAsignadosEvaluadorView from './ProyectosAsignadosEvaluadorView.v
 import CalificarProyecto from "../components/Users/evaluador/CalificarProyecto.vue";
 import ListaAdministradores from '../components/Users/superadmin/ListaAdministradores.vue';
 import HistorialActividades from "../components/Users/superadmin/HistorialActividades.vue";
-import EditarPerfilSuperAdmin from "../components/Users/superadmin/EditarPerfilSuperAdmin.vue";
 import NotAvailable from "./NotAvailable.vue";
 import ListaSalasDelegado from "../components/Users/delegado/listaSalas/ListaSalasDelegado.vue";
 import ListaProyectosDelegado from "../components/Users/delegado/listaProyectos/ListaProyectosDelegado.vue";
@@ -67,7 +67,7 @@ export default {
         InicioSuperAdminView: markRaw(InicioSuperAdminView),
         ListaAdministradores: markRaw(ListaAdministradores),
         HistorialActividades: markRaw(HistorialActividades),
-        EditarPerfilSuperAdmin: markRaw (EditarPerfilSuperAdmin),
+        EditarPerfil: markRaw (EditarPerfil),
 
         //Componente Por defecto
         NotAvailable: markRaw(NotAvailable),
@@ -108,7 +108,7 @@ export default {
                 InicioSuperAdminView: InicioSuperAdminView ,
                 ListaAdministradores: ListaAdministradores,
                 HistorialActividades: HistorialActividades,
-                EditarPerfilSuperAdmin: EditarPerfilSuperAdmin,
+                EditarPerfil: EditarPerfil,
 
             };
 
