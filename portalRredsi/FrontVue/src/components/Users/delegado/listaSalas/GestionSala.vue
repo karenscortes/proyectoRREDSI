@@ -68,12 +68,12 @@
                         <div class="col-12 col-md-4">
                             <label>Hora de Inicio:</label>
                             <input id="horario_inicio" type="time" v-model="horario.hora_inicio"
-                                class="form-control text-dark">
+                                class="form-control text-dark" min="06:00" max="18:30" step="1800">
                         </div>
                         <div class="col-12 col-md-4">
                             <label>Hora de Fin:</label>
                             <input id="horario_fin" type="time" v-model="horario.hora_fin"
-                                class="form-control text-dark">
+                                class="form-control text-dark" min="06:00" max="18:30" step="1800">
                         </div>
                     </div>
                     <!-- Botón para agregar horario -->
