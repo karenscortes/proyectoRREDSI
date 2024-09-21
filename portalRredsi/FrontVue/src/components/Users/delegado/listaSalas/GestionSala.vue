@@ -19,10 +19,10 @@
                 <div class="row mb-4 justify-content-center">
                     <div class="col-12 col-md-6 text-center">
                         <label for="proyecto_codigo" class="fw-bold text-dark">Proyecto:</label>
-                        <select id="id_proyecto" v-model="proyectoSeleccionado.codigo" @change="consultarPonentesProyecto(proyectoSeleccionado.codigo)" class="form-select text-dark"
+                        <select id="id_proyecto" v-model="proyectoSeleccionado" @change="seleccionarProyecto(proyectoSeleccionado.id_proyecto,proyectoSeleccionado.id_area_conocimiento,proyectoSeleccionado.id_institucion)" class="form-select text-dark"
                             required>
                             <option value="" disabled selected>Seleccione una opción</option>
-                            <option v-for="(proyecto,index) in listaProyectosSinAsignar" :key="index" :value="proyecto.id_proyecto">{{ proyecto.titulo}}</option>
+                            <option v-for="(proyecto,index) in listaProyectosSinAsignar" :key="index" :value="proyecto">{{ proyecto.titulo}}</option>
                         </select>
                     </div>
                 </div>
@@ -44,18 +44,18 @@
                             <label for="evaluador_1" class="fw-bold text-dark">Evaluador 1:</label>
                             <select id="id_evaluador_1" v-model="evaluador1" class="form-select text-dark" required>
                                 <option value="" disabled selected>Seleccione una opción</option>
-                                <option value="Christian Arce">Christian Arce</option>
-                                <option value="Maribel Obando">Maribel Obando</option>
-                                <option value="Diego Legarda">Diego Legarda</option>
+                                <option v-for="(evaluador, index) in posiblesEvaluadores" :key="index">
+                                    {{ evaluador.nombre_evaluador }} {{ evaluador.apellidos_evaluador }}
+                                </option>
                             </select>
                         </div>
                         <div class="col-12 col-md-6">
                             <label for="evaluador_2" class="fw-bold text-dark">Evaluador 2:</label>
                             <select id="id_evaluador_2" v-model="evaluador2" class="form-select text-dark" required>
                                 <option value="" disabled selected>Seleccione una opción</option>
-                                <option value="Christian Arce">Christian Arce</option>
-                                <option value="Maribel Obando">Maribel Obando</option>
-                                <option value="Diego Legarda">Diego Legarda</option>
+                                <option v-for="(evaluador, index) in posiblesEvaluadores" :key="index">
+                                    {{ evaluador.nombre_evaluador }} {{ evaluador.apellidos_evaluador }}
+                                </option>
                             </select>
                         </div>
                     </div>
@@ -117,8 +117,7 @@
 
 <script>
 import { defineComponent } from 'vue';
-import { obtenerPonentesProyecto } from '@/services/salasDelegadoService';
-import { proyectosSinAsignar } from '@/services/delegadoService'
+import { obtenerPonentesProyecto, obetnerProyectosSinAsignarEtapaPresencial, obtenerPosiblesEvaluadoresEtapaPresencial} from '@/services/salasDelegadoService';
 
 export default defineComponent({
     props: {
@@ -128,11 +127,14 @@ export default defineComponent({
     data() {
         return {
             proyectoSeleccionado: {
-                codigo: "",
+                id_proyecto: "",
                 titulo: "",
+                id_institucion: "",
+                id_area_conocimiento: ""
             },
             ponente1: "",
             ponente2: "",
+            posiblesEvaluadores : [],
             evaluador1: "",
             evaluador2: "",
             horario: {
@@ -159,7 +161,7 @@ export default defineComponent({
             const newEvaluador1 = {
                 nombreEvaluador: this.evaluador1,
                 proyecto: {
-                    titulo: this.proyectoSeleccionado.codigo,
+                    titulo: this.proyectoSeleccionado.id_proyecto,
                     inicio: this.calcularPosicion(this.horario.hora_inicio),
                     fin: this.calcularPosicion(this.horario.hora_fin)
                 }
@@ -168,7 +170,7 @@ export default defineComponent({
             const newEvaluador2 = {
                 nombreEvaluador: this.evaluador2,
                 proyecto: {
-                    titulo: this.proyectoSeleccionado.codigo,
+                    titulo: this.proyectoSeleccionado.id_proyecto,
                     inicio: this.calcularPosicion(this.horario.hora_inicio),
                     fin: this.calcularPosicion(this.horario.hora_fin)
                 }
@@ -176,7 +178,7 @@ export default defineComponent({
 
             this.evaluadores.push(newEvaluador1, newEvaluador2);
 
-            this.proyectoSeleccionado.codigo = "";
+            this.proyectoSeleccionado.id_proyecto = "";
             this.ponente1 = "";
             this.ponente2 = "";
             this.evaluador1 = "";
@@ -208,8 +210,8 @@ export default defineComponent({
         },
         async fetchProyectosSinAsignar() {
             try {
-                const response = await proyectosSinAsignar();
-                this.listaProyectosSinAsignar = response.data.projects;
+                const response = await obetnerProyectosSinAsignarEtapaPresencial();
+                this.listaProyectosSinAsignar = response.data.proyectos;
 
             } catch (error) {
                 alert("Error al obtener proyectos: ", error);
@@ -217,6 +219,7 @@ export default defineComponent({
         },
         async consultarPonentesProyecto(id_proyecto) {
             try {
+                // Obtengo los ponentes del proyecto seleccionado
                 const ponentes = await obtenerPonentesProyecto(id_proyecto);
                 let listaPonentes = ponentes.data.ponentes;
 
@@ -228,12 +231,29 @@ export default defineComponent({
                     this.ponente1 = `${listaPonentes[0].nombres} ${listaPonentes[0].apellidos}`;
                     this.ponente2 = `${listaPonentes[1].nombres} ${listaPonentes[1].apellidos}`;
                 }
+
+                
             } catch (error) {
                 this.ponente1 = "Sin ponente registrado";
                 this.ponente2 = "Sin ponente registrado";
             }
             
         },
+        async fetchPosiblesEvaluadores(p_id_area_conocimiento, p_id_institucion) {
+            try{
+                // Consulta los posibles evaluadores del proyecto seleccionado
+                const response = await obtenerPosiblesEvaluadoresEtapaPresencial(p_id_area_conocimiento, p_id_institucion);
+                this.posiblesEvaluadores = response.data.evaluadores;
+                console.log(this.posiblesEvaluadores)
+            } catch (error) {
+                console.error(error)
+            }
+        },
+        async seleccionarProyecto(p_id_proyecto,p_id_area_conocimiento, p_id_institucion) {
+            // this.proyectoSeleccionado = proyecto;
+            await this.consultarPonentesProyecto(p_id_proyecto);
+            await this.fetchPosiblesEvaluadores(p_id_area_conocimiento, p_id_institucion);
+        }
     },
     mounted(){
         this.fetchProyectosSinAsignar();
