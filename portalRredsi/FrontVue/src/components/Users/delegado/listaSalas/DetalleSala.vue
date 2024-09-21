@@ -34,138 +34,23 @@
         </div>
 
         <!-- Tabla de horarios -->
-        <div class="container mt-4">
-            <div>
-                <!-- <h3 class="text-center m-0">{{ horario.fecha }}</h3> -->
-            </div>
-            <table class="table table-hover border table-responsive">
-                <thead>
-                    <tr>
-                        <th class="text-center">Evaluadores</th>
-                        <th v-for="time in timeSlots" :key="time" class="text-center time-slot">{{ time }}</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr v-for="(evaluador, index) in evaluadores" :key="index">
-                        <td class="text-center">{{ evaluador.nombreEvaluador }}</td>
-                        <td v-for="(slot, i) in 24" :key="i"
-                            :style="getStyle(i, evaluador.proyecto.inicio, evaluador.proyecto.fin)">
-                            <span v-if="isProjectTime(i, evaluador.proyecto.inicio, evaluador.proyecto.fin)">
-                                {{ evaluador.proyecto.titulo }}
-                            </span>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
+        <ComponenteHorario :sala="sala" />
+
     </div>
 </template>
 
 <script>
-import { obtenerDetalleSala } from "@/services/salasDelegadoService";
+import ComponenteHorario from "./ComponenteHorario.vue";
+
 export default {
     props: {
         sala: Object,
         index: Number
     },
-    data() {
-        return {
-            timeSlots: [
-                "6:00am", "6:30am", "7:00am", "7:30am", "8:00am", "8:30am", "9:00am", "9:30am",
-                "10:00am", "10:30am", "11:00am", "11:30am", "12:00pm", "12:30pm", "1:00pm", "1:30pm",
-                "2:00pm", "2:30pm", "3:00pm", "3:30pm", "4:00pm", "4:30pm", "5:00pm", "5:30pm", "6:00pm", "6:30pm"
-            ],
-            detalleSala: [],
-            evaluador1: "",
-            evaluador2: "",
-            horario: {
-                fecha: "",
-                hora_inicio: "",
-                hora_fin: "",
-            },
-            listaPresentaciones: [],
-            evaluadores: [],
-        }
-        
+    components:{
+        ComponenteHorario
     },
-    methods: {
-        imprimirHorario() {
-            const newEvaluador1 = {
-                nombreEvaluador: this.evaluador1,
-                proyecto: {
-                    titulo: this.proyectoSeleccionado.id_proyecto,
-                    inicio: this.calcularPosicion(this.horario.hora_inicio),
-                    fin: this.calcularPosicion(this.horario.hora_fin)
-                }
-            };
-
-            this.evaluadores.push(newEvaluador1);
-
-            this.proyectoSeleccionado.id_proyecto = "";
-            this.evaluador1 = "";
-            this.evaluador2 = "";
-            this.horario.fecha = "";
-            this.horario.hora_inicio = "";
-            this.horario.hora_fin = "";
-        },
-        calcularPosicion(hora) {
-            let [horas, minutos] = hora.split(":").map(Number);
-            let posicion = (horas - 6) * 2;
-            if (minutos >= 30) {
-                posicion += 1;
-            }
-            return posicion;
-        },
-        isProjectTime(i, inicio, fin) {
-            return i >= inicio && i <= fin;
-        },
-        getStyle(i, inicio, fin) {
-            if (this.isProjectTime(i, inicio, fin)) {
-                return {
-                    backgroundColor: 'rgb(255, 182, 6)',
-                    textAlign: 'center',
-                    color: 'black'
-                };
-            }
-            return {};
-        },
-        async obtenerDatosSala() {
-            const datosSala = await obtenerDetalleSala(this.sala.id_sala);
-            this.detalleSala = datosSala.data;
-            console.log(this.detalleSala)
-        },
-        
-        obtenerHoraMinutos(duracion) {
-            // Remover "PT" del inicio de la cadena
-            duracion = duracion.replace('PT', '');
-
-            // Inicializar valores de horas y minutos
-            let horas = 0;
-            let minutos = 0;
-
-            // Dividir la cadena por la letra 'H' para obtener horas y el resto
-            const partesHoras = duracion.split('H');
-
-            if (partesHoras.length > 1) {
-                // Si hay una parte con 'H', extraer las horas
-                horas = parseInt(partesHoras[0]);
-                duracion = partesHoras[1];  // El resto contiene minutos
-            } else {
-                // Si no hay 'H', significa que no hay horas y todo es minutos
-                duracion = partesHoras[0];
-            }
-
-            // Dividir la parte restante por la letra 'M' para obtener los minutos
-            if (duracion.includes('M')) {
-                minutos = parseInt(duracion.split('M')[0]);
-            }
-
-            return { horas, minutos };
-        }
-    },
-    mounted() {
-        this.obtenerDatosSala()
-    }
+    
 }
 </script>
 

@@ -74,8 +74,13 @@ def get_salas_por_convocatoria(db: Session, page: int = 1, page_size: int = 10):
 # DETALLE DE UNA SALA POR ID
 def get_detalle_sala(db: Session, id_sala: str):
     try:
-        sql = text("SELECT * FROM detalle_sala WHERE id_sala = :id_sala")
-        result = db.execute(sql, {"id_sala": id_sala}).fetchall()
+        sql = text("""SELECT detalle_sala.*,participantes_proyecto.id_proyecto,CONCAT(usuarios.nombres,' ',usuarios.apellidos) AS nombre_evaluador  FROM detalle_sala 
+                        JOIN participantes_proyecto ON detalle_sala.id_proyecto_convocatoria = participantes_proyecto.id_proyectos_convocatoria
+                        JOIN usuarios ON participantes_proyecto.id_usuario = usuarios.id_usuario
+                    WHERE id_sala = :id_sala
+                    AND usuarios.id_rol = 1
+                """)
+        result = db.execute(sql, {"id_sala": id_sala}).mappings().all()
         return result
     except SQLAlchemyError as e:
         raise HTTPException(status_code=500, detail="La sala no se ha encontrado")

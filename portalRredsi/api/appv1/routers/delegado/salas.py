@@ -67,7 +67,7 @@ async def read_all_salas_por_convocatoria(
     }
 
 # RUTA PARA OBTENER EL DETALLE DE UNA SALA 
-@router_sala.get("/get-detalle-sala/", response_model=List[DetalleSala])
+@router_sala.get("/get-detalle-sala/", response_model=dict)
 async def read_detalle_sala(
     id_sala: str,
     current_user: UserResponse = Depends(get_current_user),
@@ -82,7 +82,8 @@ async def read_detalle_sala(
     if len(sala_detalle) == 0:
         raise HTTPException(status_code=404, detail="Sala no encontrada")
     
-    return sala_detalle
+    datos_sala = [dict(sala) for sala in sala_detalle]
+    return {'detalle_sala': datos_sala}
 
 # RUTA PARA COMPROBAR SI UN DELEGADO TIENE ASIGNADA UNA SALA
 @router_sala.get("/verificar-sala-asignada/", response_model=SalaBase)
