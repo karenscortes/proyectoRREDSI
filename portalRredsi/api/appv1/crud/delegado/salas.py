@@ -147,13 +147,15 @@ def get_posibles_evaluadores_para_proyecto_etapa_presencial(db: Session, id_area
             SELECT postulaciones_evaluadores.*, usuarios.nombres AS nombre_evaluador, usuarios.apellidos AS apellidos_evaluador
             FROM postulaciones_evaluadores
             JOIN detalles_institucionales ON (postulaciones_evaluadores.id_evaluador = detalles_institucionales.id_usuario)
-            JOIN usuarios ON detalles_institucionales.id_usuario = usuarios.id_usuario
+            JOIN usuarios ON (detalles_institucionales.id_usuario = usuarios.id_usuario)
+            JOIN convocatorias ON (postulaciones_evaluadores.id_convocatoria = convocatorias.id_convocatoria)
             WHERE detalles_institucionales.id_institucion != :id_i 
             AND (detalles_institucionales.id_primera_area_conocimiento = :id_ac OR detalles_institucionales.id_segunda_area_conocimiento = :id_ac)
             AND (usuarios.id_rol = 1 OR usuarios.id_rol = 2)
             AND usuarios.estado = 'activo'
             AND postulaciones_evaluadores.estado_postulacion = 'aceptada'
             AND postulaciones_evaluadores.etapa_presencial = true
+            AND convocatorias.estado = 'en curso'
         """)
         
         params = {
@@ -168,12 +170,15 @@ def get_posibles_evaluadores_para_proyecto_etapa_presencial(db: Session, id_area
                 SELECT postulaciones_evaluadores.*, usuarios.nombres AS nombre_evaluador, usuarios.apellidos AS apellidos_evaluador
                 FROM postulaciones_evaluadores
                 JOIN detalles_institucionales ON (postulaciones_evaluadores.id_evaluador = detalles_institucionales.id_usuario)
+                JOIN convocatorias ON (postulaciones_evaluadores.id_convocatoria = convocatorias.id_convocatoria)
                 JOIN usuarios ON detalles_institucionales.id_usuario = usuarios.id_usuario
                 WHERE detalles_institucionales.id_institucion != :id_i
-                AND (usuarios.id_rol = 1 OR usuarios.id_rol = 2)
+                AND usuarios.id_rol = 1
                 AND usuarios.estado = 'activo'
                 AND postulaciones_evaluadores.estado_postulacion = 'aceptada'
                 AND postulaciones_evaluadores.etapa_presencial = true
+                AND convocatorias.estado = 'en curso'
+                
             """)
             # Ejecutar consulta secundaria sin filtrar por áreas de conocimiento
             result = db.execute(sql_secundaria, {"id_i": id_institucion}).mappings().all()

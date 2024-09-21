@@ -13,9 +13,9 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr v-for="(detalle, index) in detalleSala" :key="index">
-                        <td class="text-center">{{ detalle.nombre_evaluador }}</td>
-                        <td v-for="(slot, i) in 24" :key="i"
+                    <tr class="fila_tabla" v-for="(detalle, index) in detalleSala" :key="index">
+                        <td class="nombre_evaluador" >{{ detalle.nombre_evaluador }}</td>
+                        <td class="align-middle"v-for="(slot, i) in 24" :key="i"
                             :style="getStyle(i, detalle.hora_inicio, detalle.hora_fin)">
                             <span v-if="isProjectTime(i, detalle.hora_inicio, detalle.hora_fin)">
                                 {{ detalle.id_proyecto }}
@@ -64,7 +64,7 @@ export default{
                 return {
                     backgroundColor: 'rgb(255, 182, 6)',
                     textAlign: 'center',
-                    color: 'black'
+                    color: 'black',
                 };
             }
             return {};
@@ -120,3 +120,10 @@ export default{
     }
 }
 </script>
+
+<style scoped>
+.nombre_evaluador{
+    font-weight: bold !important;
+    font-size: 15px !important;
+}
+</style>
