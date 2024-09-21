@@ -35,7 +35,7 @@ async def insert_user(
 
 
 # Ruta para obtener un usuario por su ID
-@router_user.get("/users/{user_id}", response_model=UserResponse)
+@router_user.get("/get-user/{user_id}", response_model=UserResponse)
 def read_user(
     user_id: int, 
     db: Session = Depends(get_db), 
