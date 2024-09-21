@@ -8,10 +8,10 @@ FOR EACH ROW
     BEGIN
         DECLARE publication_dueDate DATE;
         DECLARE total_results INT;
-        -- Se obtiene la fecha fin de publicación en etapa 1
+        -- Se obtiene la fecha fin de publicación en etapa virtual
         SET publication_dueDate  = (SELECT programacion_fases.fecha_fin FROM programacion_fases JOIN fases ON (programacion_fases.id_fase = fases.id_fase) WHERE fases.nombre = 'publicacion de resultados' AND fases.id_etapa = 2);
 
-        -- Si continuamos en etapa 1, se actualzará el estado dependiendo de si el proyecto fué abrobado o no
+        -- Si continuamos en etapa virtual, se actualzará el estado dependiendo de si el proyecto fué abrobado o no
         IF ( CURDATE() <= publication_dueDate ) THEN
 
             IF(NEW.estado_proyecto = 'aprobado') THEN
@@ -77,7 +77,7 @@ FOR EACH ROW
         SET id_rol = (SELECT id_rol FROM usuarios WHERE id_usuario = NEW.id_usuario);
 
         --Si la etapa es la presencial y el rol es Evaluador, se cuenta cuantos evaluadores tiene el proyecto vinculado.
-        --Si ya tiene 2, el estado calidificación del proyecto pasa a pendiente presencial
+        --Si ya tiene 2 evaluadores, el estado calidificación del proyecto pasa a pendiente presencial
         IF(NEW.id_etapa = 1 AND id_rol = 1) THEN
 
             SET total_evaluators =  (SELECT COUNT(id_usuario) FROM participantes_proyecto 
