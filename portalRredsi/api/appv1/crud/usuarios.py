@@ -1,13 +1,19 @@
 # Crear un usuario
-from fastapi import HTTPException
+from fastapi import Depends, HTTPException
+from fastapi.security import OAuth2PasswordBearer
 from sqlalchemy import text
 from sqlalchemy.orm import Session
 from appv1.models.usuario import Usuario
-from appv1.schemas.usuario import UserCreate, UserUpdate
-from core.security import get_hashed_password
+from appv1.schemas.usuario import UserCreate, UserResponse, UserUpdate
+from core.security import get_hashed_password, verify_token
 from core.utils import generate_user_id_int
 from sqlalchemy.exc import SQLAlchemyError, IntegrityError
 
+from db.database import get_db
+
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
+
+# Crear un usuario
 def create_user_sql(db: Session, usuario: UserCreate):
 
     try:
@@ -67,11 +73,52 @@ def get_user_by_documento(db: Session, p_documento: str):
         raise HTTPException(status_code=500, detail="Error al buscar usuario por email")
 
 
-# Consultar un usuario por su ID
-def get_user_by_id(db: Session, user_id: int):
-    sql = text("SELECT * FROM usuarios WHERE id_usuario = :user_id")
-    result = db.execute(sql, {"user_id": user_id}).fetchone()
-    return result
+from appv1.schemas.usuario import UserResponse
+
+def get_user_by_id(db: Session, user_id: int) -> UserResponse:
+    try:
+        sql = text("SELECT * FROM usuarios WHERE id_usuario = :user_id")
+        result = db.execute(sql, {"user_id": user_id}).fetchone()
+
+        if result is None:
+            return None
+        
+        # Crear el objeto UserResponse basado en el resultado de la consulta
+        user_data = {
+            "id_usuario": result.id_usuario,
+            "id_rol": result.id_rol,
+            "id_tipo_documento": result.id_tipo_documento,
+            "documento": result.documento,
+            "nombres": result.nombres,
+            "apellidos": result.apellidos,
+            "celular": result.celular,
+            "correo": result.correo,
+            "estado": result.estado
+        }
+        return UserResponse(**user_data)
+
+    except SQLAlchemyError as e:
+        print(f"Error al buscar usuario por ID: {e}")
+        raise HTTPException(status_code=500, detail="Error al buscar usuario por ID")
+
+
+# Obtener info actual de la persona logueada
+async def get_current_user(
+    token: str = Depends(oauth2_scheme), 
+    db: Session = Depends(get_db)
+) -> UserResponse:
+    # Verificar el token
+    user_id = await verify_token(token)  # verify_token ahora verifica y decodifica el token
+ 
+    if user_id is None:
+        raise HTTPException(status_code=401, detail="Token inválido o expirado")
+
+    user = get_user_by_id(db, user_id)
+    if user is None:
+        raise HTTPException(status_code=401, detail="Usuario no encontrado")
+ 
+    return user
+
 
 def update_password(db: Session, email: str, new_password: str):
     try:
