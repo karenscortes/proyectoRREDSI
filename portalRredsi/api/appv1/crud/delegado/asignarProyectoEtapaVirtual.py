@@ -95,7 +95,7 @@ def get_institucion_por_nombre(db: Session, nombre_institucion: str):
         raise HTTPException(status_code=204, detail="Area de conocimiento no se ha encontrado")
     
 def update_estado_proyecto(db: Session, id_proyecto:int):
-    sql = text("UPDATE proyectos SET estado = 'asignado' WHERE id_proyecto = :id_proyecto")
+    sql = text("UPDATE proyectos SET estado_asignacion = 'asignado' WHERE id_proyecto = :id_proyecto")
     params = {
         "id_proyecto": id_proyecto
     }

@@ -20,6 +20,7 @@ import DynamicComponentSuperAdmin from '../components/Users/superadmin/DynamicCo
 import FooterSecundario from '../components/Footers/FooterSecundario.vue';
 import InicioSuperAdminView from './InicioSuperAdminView.vue';
 import ListaAdministradores from '../components/Users/superadmin/ListaAdministradores.vue';
+import { updateUserProfile } from '../services/superadminService';
 import { useAuthStore } from '@/store';
 import { useRouter } from 'vue-router';
 
@@ -30,6 +31,7 @@ export default {
     FooterSecundario: markRaw(FooterSecundario),
     InicioSuperAdminView: markRaw(InicioSuperAdminView),
     ListaAdministradores: markRaw(ListaAdministradores),
+    updateUserProfile: markRaw(updateUserProfile), // Registramos el nuevo componente
   },
   data() {
     return {
@@ -37,11 +39,11 @@ export default {
     };
   },
   methods: {
-    
     changeComponent(componentName) {
       const componentMap = {
-          InicioSuperAdminView: InicioSuperAdminView,
-          ListaAdministradores: ListaAdministradores,
+        InicioSuperAdminView: InicioSuperAdminView,
+        ListaAdministradores: ListaAdministradores,
+        updateUserProfile: updateUserProfile, // Añadimos el nuevo componente al mapeo
       };
       
       this.currentComponent = componentMap[componentName] || InicioSuperAdminView;

@@ -19,10 +19,10 @@
                 <div class="row mb-4 justify-content-center">
                     <div class="col-12 col-md-6 text-center">
                         <label for="proyecto_codigo" class="fw-bold text-dark">Proyecto:</label>
-                        <select id="id_proyecto" v-model="proyectoSeleccionado.codigo" @change="consultarPonentesProyecto(proyectoSeleccionado.codigo)" class="form-select text-dark"
+                        <select id="id_proyecto" v-model="proyectoSeleccionado" @change="seleccionarProyecto(proyectoSeleccionado.id_proyecto,proyectoSeleccionado.id_area_conocimiento,proyectoSeleccionado.id_institucion)" class="form-select text-dark"
                             required>
                             <option value="" disabled selected>Seleccione una opción</option>
-                            <option v-for="(proyecto,index) in listaProyectosSinAsignar" :key="index" :value="proyecto.id_proyecto">{{ proyecto.titulo}}</option>
+                            <option v-for="(proyecto,index) in listaProyectosSinAsignar" :key="index" :value="proyecto">{{ proyecto.titulo}}</option>
                         </select>
                     </div>
                 </div>
@@ -44,18 +44,18 @@
                             <label for="evaluador_1" class="fw-bold text-dark">Evaluador 1:</label>
                             <select id="id_evaluador_1" v-model="evaluador1" class="form-select text-dark" required>
                                 <option value="" disabled selected>Seleccione una opción</option>
-                                <option value="Christian Arce">Christian Arce</option>
-                                <option value="Maribel Obando">Maribel Obando</option>
-                                <option value="Diego Legarda">Diego Legarda</option>
+                                <option v-for="(evaluador, index) in posiblesEvaluadores" :key="index">
+                                    {{ evaluador.nombre_evaluador }} {{ evaluador.apellidos_evaluador }}
+                                </option>
                             </select>
                         </div>
                         <div class="col-12 col-md-6">
                             <label for="evaluador_2" class="fw-bold text-dark">Evaluador 2:</label>
                             <select id="id_evaluador_2" v-model="evaluador2" class="form-select text-dark" required>
                                 <option value="" disabled selected>Seleccione una opción</option>
-                                <option value="Christian Arce">Christian Arce</option>
-                                <option value="Maribel Obando">Maribel Obando</option>
-                                <option value="Diego Legarda">Diego Legarda</option>
+                                <option v-for="(evaluador, index) in posiblesEvaluadores" :key="index">
+                                    {{ evaluador.nombre_evaluador }} {{ evaluador.apellidos_evaluador }}
+                                </option>
                             </select>
                         </div>
                     </div>
@@ -68,12 +68,12 @@
                         <div class="col-12 col-md-4">
                             <label>Hora de Inicio:</label>
                             <input id="horario_inicio" type="time" v-model="horario.hora_inicio"
-                                class="form-control text-dark">
+                                class="form-control text-dark" min="06:00" max="18:30" step="1800">
                         </div>
                         <div class="col-12 col-md-4">
                             <label>Hora de Fin:</label>
                             <input id="horario_fin" type="time" v-model="horario.hora_fin"
-                                class="form-control text-dark">
+                                class="form-control text-dark" min="06:00" max="18:30" step="1800">
                         </div>
                     </div>
                     <!-- Botón para agregar horario -->
@@ -84,31 +84,9 @@
                 </form>
                 <div class="title-line mt-3"></div>
                 <!-- Línea debajo del título -->
-                <!-- Tabla de horarios -->
-                <div class="container mt-4">
-                    <div>
-                        <h3 class="text-center m-0">{{ horario.fecha }}</h3>
-                    </div>
-                    <table class="table table-hover border table-responsive">
-                        <thead>
-                            <tr>
-                                <th class="text-center">Evaluadores</th>
-                                <th v-for="time in timeSlots" :key="time" class="text-center time-slot">{{ time }}</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr v-for="(evaluador, index) in evaluadores" :key="index">
-                                <td class="text-center">{{ evaluador.nombreEvaluador }}</td>
-                                <td v-for="(slot, i) in 24" :key="i"
-                                    :style="getStyle(i, evaluador.proyecto.inicio, evaluador.proyecto.fin)">
-                                    <span v-if="isProjectTime(i, evaluador.proyecto.inicio, evaluador.proyecto.fin)">
-                                        {{ evaluador.proyecto.titulo }}
-                                    </span>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
+                
+                <!-- Tabla Horarios agregados -->
+                <ComponenteHorario :sala="sala" />
             </div>
         </div>
 
@@ -117,22 +95,28 @@
 
 <script>
 import { defineComponent } from 'vue';
-import { obtenerPonentesProyecto } from '@/services/salasDelegadoService';
-import { proyectosSinAsignar } from '@/services/delegadoService'
+import { obtenerPonentesProyecto, obetnerProyectosSinAsignarEtapaPresencial, obtenerPosiblesEvaluadoresEtapaPresencial} from '@/services/salasDelegadoService';
+import ComponenteHorario from './ComponenteHorario.vue';
 
 export default defineComponent({
     props: {
         sala: Object,
         index: Number
     },
+    components:{
+        ComponenteHorario
+    },
     data() {
         return {
             proyectoSeleccionado: {
-                codigo: "",
+                id_proyecto: "",
                 titulo: "",
+                id_institucion: "",
+                id_area_conocimiento: ""
             },
             ponente1: "",
             ponente2: "",
+            posiblesEvaluadores : [],
             evaluador1: "",
             evaluador2: "",
             horario: {
@@ -142,12 +126,6 @@ export default defineComponent({
             },
             evaluadores: [],
             listaProyectosSinAsignar: [],
-            timeSlots: [
-                "6:00am", "6:30am", "7:00am", "7:30am", "8:00am", "8:30am",
-                "9:00am", "9:30am", "10:00am", "10:30am", "11:00am", "11:30am",
-                "12:00pm", "12:30pm", "1:00pm", "1:30pm", "2:00pm", "2:30pm",
-                "3:00pm", "3:30pm", "4:00pm", "4:30pm", "5:00pm", "5:30pm", "6:00pm", "6:30pm"
-            ],
         };
     },
     emits: ['component-selected'],
@@ -156,27 +134,8 @@ export default defineComponent({
             this.$emit('component-selected', componentName);
         },
         asignarHorario() {
-            const newEvaluador1 = {
-                nombreEvaluador: this.evaluador1,
-                proyecto: {
-                    titulo: this.proyectoSeleccionado.codigo,
-                    inicio: this.calcularPosicion(this.horario.hora_inicio),
-                    fin: this.calcularPosicion(this.horario.hora_fin)
-                }
-            };
 
-            const newEvaluador2 = {
-                nombreEvaluador: this.evaluador2,
-                proyecto: {
-                    titulo: this.proyectoSeleccionado.codigo,
-                    inicio: this.calcularPosicion(this.horario.hora_inicio),
-                    fin: this.calcularPosicion(this.horario.hora_fin)
-                }
-            };
-
-            this.evaluadores.push(newEvaluador1, newEvaluador2);
-
-            this.proyectoSeleccionado.codigo = "";
+            this.proyectoSeleccionado.id_proyecto = "";
             this.ponente1 = "";
             this.ponente2 = "";
             this.evaluador1 = "";
@@ -185,31 +144,10 @@ export default defineComponent({
             this.horario.hora_inicio = "";
             this.horario.hora_fin = "";
         },
-        calcularPosicion(hora) {
-            let [horas, minutos] = hora.split(":").map(Number);
-            let posicion = (horas - 6) * 2;
-            if (minutos >= 30) {
-                posicion += 1;
-            }
-            return posicion;
-        },
-        isProjectTime(i, inicio, fin) {
-            return i >= inicio && i <= fin;
-        },
-        getStyle(i, inicio, fin) {
-            if (this.isProjectTime(i, inicio, fin)) {
-                return {
-                    backgroundColor: 'rgb(255, 182, 6)',
-                    textAlign: 'center',
-                    color: 'black'
-                };
-            }
-            return {};
-        },
         async fetchProyectosSinAsignar() {
             try {
-                const response = await proyectosSinAsignar();
-                this.listaProyectosSinAsignar = response.data.projects;
+                const response = await obetnerProyectosSinAsignarEtapaPresencial();
+                this.listaProyectosSinAsignar = response.data.proyectos;
 
             } catch (error) {
                 alert("Error al obtener proyectos: ", error);
@@ -217,6 +155,7 @@ export default defineComponent({
         },
         async consultarPonentesProyecto(id_proyecto) {
             try {
+                // Obtengo los ponentes del proyecto seleccionado
                 const ponentes = await obtenerPonentesProyecto(id_proyecto);
                 let listaPonentes = ponentes.data.ponentes;
 
@@ -228,12 +167,29 @@ export default defineComponent({
                     this.ponente1 = `${listaPonentes[0].nombres} ${listaPonentes[0].apellidos}`;
                     this.ponente2 = `${listaPonentes[1].nombres} ${listaPonentes[1].apellidos}`;
                 }
+
+                
             } catch (error) {
                 this.ponente1 = "Sin ponente registrado";
                 this.ponente2 = "Sin ponente registrado";
             }
             
         },
+        async fetchPosiblesEvaluadores(p_id_area_conocimiento, p_id_institucion) {
+            try{
+                // Consulta los posibles evaluadores del proyecto seleccionado
+                const response = await obtenerPosiblesEvaluadoresEtapaPresencial(p_id_area_conocimiento, p_id_institucion);
+                this.posiblesEvaluadores = response.data.evaluadores;
+                console.log(this.posiblesEvaluadores)
+            } catch (error) {
+                console.error(error)
+            }
+        },
+        async seleccionarProyecto(p_id_proyecto,p_id_area_conocimiento, p_id_institucion) {
+            // this.proyectoSeleccionado = proyecto;
+            await this.consultarPonentesProyecto(p_id_proyecto);
+            await this.fetchPosiblesEvaluadores(p_id_area_conocimiento, p_id_institucion);
+        }
     },
     mounted(){
         this.fetchProyectosSinAsignar();

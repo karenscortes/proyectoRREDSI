@@ -1,75 +1,72 @@
 <template>
-    <div>
-        <div class="col-4">
-            <a class="btn_regresar text-dark fw-bold" @click="$emit('volver')"><svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#00000"><path d="m313-440 224 224-57 56-320-320 320-320 57 56-224 224h487v80H313Z"/></svg> Lista de salas</a>
+    <div class="container mt-4">
+        <!-- Botón de regresar -->
+        <div class="d-flex justify-content-start mb-4">
+            <a class="btn_regresar text-dark fw-bold d-flex align-items-center" @click="$emit('volver')">
+                <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px"
+                    fill="#00000">
+                    <path d="m313-440 224 224-57 56-320-320 320-320 57 56-224 224h487v80H313Z" />
+                </svg>
+                <span class="ms-2">Lista de salas</span>
+            </a>
         </div>
-        <div class="container mt-4">
-            
-            <div class="my-3 row">
-                <div class="col-4">
+
+        <!-- Información de sala y delegado -->
+        <div class="text-center mb-4">
+            <div class="row">
+                <div class="col">
                     <h2 class="text-dark fs-3">SALA {{ sala.numero_sala }}</h2>
                 </div>
-                <div class="col-4">
-                    <h2 class="text-dark fs-3 text-center">{{ sala.nombre_sala }}</h2>
+                <div class="col">
+                    <h2 class="text-dark fs-3">{{ sala.nombre_sala }}</h2>
                 </div>
             </div>
-            <div>
-                <strong class="fs-5">Delegado: </strong><span class="fs-5">{{ sala.nombres_delegado }} {{ sala.apellidos_delegado }}</span>
+            <div class="mt-2">
+                <strong class="fs-5">Delegado: </strong>
+                <span class="fs-5">{{ sala.nombres_delegado }} {{ sala.apellidos_delegado }}</span>
             </div>
-            <div class="mt-3">
-                <h3 class="text-center mb-3">Sep 6 de 2024</h3>
-            </div>
-            <table class="table table-hover border table-responsive">
-                <thead>
-                    <tr id="headerRow">
-                        <th class="text-center">Evaluadores</th>
-                        <th class="text-center time-slot" data-time="6am">6:00am</th>
-                        <th class="text-center time-slot" data-time="6am">6:30am</th>
-                        <th class="text-center time-slot" data-time="7am">7:00am</th>
-                        <th class="text-center time-slot" data-time="7am">7:30am</th>
-                        <th class="text-center time-slot" data-time="8am">8:00am</th>
-                        <th class="text-center time-slot" data-time="8am">8:30am</th>
-                        <th class="text-center time-slot" data-time="9am">9:00am</th>
-                        <th class="text-center time-slot" data-time="9am">9:30am</th>
-                        <th class="text-center time-slot" data-time="10am">10:00am</th>
-                        <th class="text-center time-slot" data-time="10am">10:30am</th>
-                        <th class="text-center time-slot" data-time="11am">11:00am</th>
-                        <th class="text-center time-slot" data-time="11am">11:30am</th>
-                        <th class="text-center time-slot" data-time="12pm">12:00pm</th>
-                        <th class="text-center time-slot" data-time="12pm">12:30pm</th>
-                        <th class="text-center time-slot" data-time="1pm">1:00pm</th>
-                        <th class="text-center time-slot" data-time="1pm">1:30pm</th>
-                        <th class="text-center time-slot" data-time="2pm">2:00pm</th>
-                        <th class="text-center time-slot" data-time="2pm">2:30pm</th>
-                        <th class="text-center time-slot" data-time="3pm">3:00pm</th>
-                        <th class="text-center time-slot" data-time="3pm">3:30pm</th>
-                        <th class="text-center time-slot" data-time="4pm">4:00pm</th>
-                        <th class="text-center time-slot" data-time="4pm">4:30pm</th>
-                        <th class="text-center time-slot" data-time="5pm">5:00pm</th>
-                        <th class="text-center time-slot" data-time="5pm">5:30pm</th>
-                        <th class="text-center time-slot" data-time="6pm">6:00pm</th>
-                        <th class="text-center time-slot" data-time="6pm">6:30pm</th>
-                    </tr>
-                </thead>
-                <tbody id="scheduleBody">
-
-                </tbody>
-            </table>
         </div>
+        <!-- Linea que divide el horario  -->
+        <!-- <div class="title-line my-3"></div> -->
+        <!-- Fecha -->
+        <div class="text-center mb-4">
+            <h3 class="text-muted mb-3">Sep 6 de 2024</h3>
+        </div>
+
+        <!-- Tabla de horarios -->
+        <ComponenteHorario :sala="sala" />
+
     </div>
 </template>
 
 <script>
+import ComponenteHorario from "./ComponenteHorario.vue";
+
 export default {
     props: {
         sala: Object,
         index: Number
     },
+    components:{
+        ComponenteHorario
+    },
+    
 }
 </script>
 
 <style scoped>
-.btn_regresar:hover{
+.btn_regresar:hover {
     cursor: pointer;
+    color: #007bff;
+}
+
+.table {
+    background-color: #f9f9f9;
+    border: 1px solid #dee2e6;
+}
+
+.table th,
+.table td {
+    vertical-align: middle;
 }
 </style>
