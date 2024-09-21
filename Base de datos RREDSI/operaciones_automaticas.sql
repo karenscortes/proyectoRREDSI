@@ -1,3 +1,5 @@
+--1.TRIGGERS
+
 -- ACTUALIZAR ESTADO_ASIGNACIÓN Y CALIFICACIÓN 
 
 DELIMITER //
@@ -88,6 +90,20 @@ FOR EACH ROW
 //
 DELIMITER ;
 
--- INSERTAR A HISTORIAL_ACTIVIDADES_ADMIN
+--2. PROCEDIMIENTO ALMACENADO
 
+-- PARA INSERTAR REGISTROS EN HISTORIAL ADMIN
+DELIMITER //
+    CREATE PROCEDURE insertar_acciones_admin(
+        servicio VARCHAR(10),
+        modulo INT,
+        registro INT,
+        administrador INT
+    )
 
+    INSERT INTO historial_actividades_admin (accion, id_modulo, id_registro, id_usuario, fecha)
+    VALUES (
+        servicio, modulo, registro, administrador, NOW()   
+    );
+//
+DELIMITER ;
