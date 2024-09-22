@@ -1,5 +1,5 @@
 <template> 
-    <dic class="container">
+    <div class="container">
         <div class="head ">
             
             <span class="style"></span>
@@ -7,7 +7,7 @@
         <div class="body">
 
         </div>
-    </dic>
+    </div>
 
 </template>
 <style scoped>
@@ -94,7 +94,6 @@
     }
   
     .container::after {
-        content: '';
         line-height: 0;
         height: 0;
         transform: translatex(1rem);
@@ -135,19 +134,35 @@
     }
   
     .body::after {
-        content: 'La Página a la que esta tratando de acceder no existe.';
-        font-family: 'Roboto', sans-serif;
+        content: 'La Página a la que está tratando de acceder no existe.';
+        font-family: 'Roboto', 'sans-serif';
         color: #222;
         font-size: 1rem;
-        line-height: 0;
-        height: 0;
-        transform: translatey(14rem);
         position: absolute;
-        top: 0;
-        left: 0;
-        bottom: 0;
-        right: 0;
-        margin: auto;
+        top: 36rem;
+        transform: translatex(23rem); 
+        text-align: center;
+ 
+    }
+
+    @media screen and (min-width:992px) and (max-width:1199px){
+        .body::after {
+            transform: translatex(18rem); 
+        }
+    }
+
+    @media screen and (min-width:768px) and (max-width:991px){
+        .body::after {
+            transform: translatex(10rem); 
+        }
+    }
+
+    @media screen and (max-width:767px){
+        .body::after {
+            transform: translatex(0); 
+            margin-right: 6rem;
+            margin-left: 4rem;
+        }
     }
 
 </style>

@@ -99,6 +99,7 @@ import { useRouter } from "vue-router";
 import { useAuthStore } from "@/store";
 
 export default defineComponent({
+    emits: ['component-selected'],
     setup(_,{emit}) {
         const authStore = useAuthStore(); 
         const router = useRouter(); 
