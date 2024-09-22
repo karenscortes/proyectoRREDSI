@@ -33,7 +33,7 @@ import { obtenerDetalleSala } from "@/services/salasDelegadoService";
 
 export default{
     props:{
-        sala: Object
+        sala: Object,
     },
     data() {
         return {
@@ -115,8 +115,7 @@ export default{
         }
     },
     mounted() {
-        console.log(this.sala)
-        this.obtenerDatosSala()
+        this.obtenerDatosSala();
     }
 }
 </script>

@@ -1,4 +1,5 @@
 # Crear un usuario
+from datetime import date, datetime, time
 from fastapi import HTTPException
 from sqlalchemy import text
 from sqlalchemy.orm import Session
@@ -188,3 +189,56 @@ def get_posibles_evaluadores_para_proyecto_etapa_presencial(db: Session, id_area
         db.rollback()
         print(f"Error al buscar evaluadores")
         raise HTTPException(status_code=204, detail="Error al buscar evaluadores")
+
+
+# ASIGNAR EVALUADORES PARA UN PROYECTO EN ETAPA PRESENCIAL EN PARTICIPANTES_PROYECTO
+def asignar_evaluadores_para_proyecto_etapa_presencial(db: Session, id_evaluador_1: int,id_evaluador_2, id_proyecto: int, id_proyecto_convocatoria: int,id_sala: int, fecha:date, hora_inicio:time, hora_fin:time):
+    try:
+        # Primer INSERT
+        sql1 = text("""
+            INSERT INTO participantes_proyecto (id_usuario, id_proyecto, id_etapa, id_proyectos_convocatoria) 
+            VALUES (:id_us, :id_p, :id_etp, :id_pc)
+        """)
+        params1 = {
+            "id_us": id_evaluador_1,
+            "id_p": id_proyecto,
+            "id_etp": 1,
+            "id_pc": id_proyecto_convocatoria
+        }
+        db.execute(sql1, params1)
+        db.commit()
+
+        # Segundo INSERT si el primer commit fue exitoso
+        sql2 = text("""
+            INSERT INTO participantes_proyecto (id_usuario, id_proyecto, id_etapa, id_proyectos_convocatoria) 
+            VALUES (:id_us, :id_p, :id_etp, :id_pc)
+        """)
+        params2 = {
+            "id_us": id_evaluador_2,
+            "id_p": id_proyecto,
+            "id_etp": 1,
+            "id_pc": id_proyecto_convocatoria
+        }
+        db.execute(sql2, params2)
+        db.commit()
+        
+        # Tercer INSERT si el segundo commit fue exitoso
+        sql3= text("""
+            INSERT INTO detalle_sala (id_sala, id_proyecto_convocatoria, fecha, hora_inicio, hora_fin) 
+            VALUES (:id_sala, :id_pc, :fecha, :hora_inicio, :hora_fin)
+        """)
+        params3= {
+            "id_sala": id_sala,
+            "id_pc": id_proyecto_convocatoria,
+            "fecha": fecha,
+            "hora_inicio": hora_inicio,
+            "hora_fin": hora_fin
+        }
+        db.execute(sql3, params3)
+        db.commit()
+
+        return True
+    except SQLAlchemyError as e:
+        db.rollback()
+        print(f"Error al asignar evaluadores")
+        raise HTTPException(status_code=204, detail="Error al asignar evaluadores")

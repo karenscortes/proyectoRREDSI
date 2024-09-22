@@ -91,3 +91,22 @@ export const obtenerDetalleSala = async (id_sala) => {
         }
     }
 };
+
+// FUNCION PARA ASIGNAR EVALUADORES PARA QUE EVALUEN UN PROYECTO EN UNA SALA ESPECIFICA
+export const asignarEvaluadoresEtapaPresencial = async (id_evaluador_1,id_evaluador_2,id_proyecto,id_proyecto_convocatoria,id_sala,fecha,hora_inicio,hora_fin) => {
+    try {
+        const response = await api.post(`/salas/asignar-evaluadores-etapa-presencial/?id_evaluador_1=${id_evaluador_1}&id_evaluador_2=${id_evaluador_2}&id_proyecto=${id_proyecto}&id_proyecto_convocatoria=${id_proyecto_convocatoria}&id_sala=${id_sala}&fecha=${fecha}&hora_inicio=${hora_inicio}&hora_fin=${hora_fin}
+`, {
+            headers: {
+                'Authorization': `Bearer ${localStorage.getItem('access_token')}`
+            }
+        });
+        return response;
+    } catch (error) {
+        if (error.response) {
+            throw error;
+        } else {
+            throw new Error('Error de red o de servidor');
+        }
+    }
+};
