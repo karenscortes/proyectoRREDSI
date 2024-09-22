@@ -147,7 +147,7 @@
 </template>
 
 <script>
-import { getUserById } from '../../services/UsuarioService';
+import { getCurrentUser } from '../../services/UsuarioService';
 
 export default {
   data() {
@@ -170,7 +170,6 @@ export default {
           pregrado: '',
           especializacion: '',
           maestria: '',
-          doctorado: '',
         },
       },
     };
@@ -181,15 +180,7 @@ export default {
     },
     async loadUserProfile() {
       try {
-        const userId = localStorage.getItem('userId');
-        if (!userId) {
-          alert('Por favor, inicia sesión nuevamente.');
-          this.$router.push({ name: 'Login' });
-          return;
-        }
-        
-        const userData = await getUserById(userId);
-        
+        const userData = await getCurrentUser();
         // Asignar los datos recibidos al formData
         this.formData.personal.nombres = userData.nombres || '';
         this.formData.personal.apellidos = userData.apellidos || '';
@@ -212,16 +203,11 @@ export default {
     handleSubmit(section) {
       // Lógica para manejar el envío del formulario por sección (personal, institucional, académico)
       console.log(`Datos enviados de la sección: ${section}`, this.formData[section]);
-      // Aquí podrías llamar un servicio para actualizar los datos del usuario según la sección modificada
     },
-    showChangePasswordModal() {
-      // Lógica para mostrar el modal de cambio de contraseña
-      console.log('Mostrar modal de cambio de contraseña');
-    },
+    
   },
   mounted() {
     this.loadUserProfile();
   },
 };
 </script>
-

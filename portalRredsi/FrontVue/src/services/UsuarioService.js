@@ -1,39 +1,34 @@
 import api from './api'; // Asegúrate de que `api.js` esté configurado adecuadamente
 
-// Servicio para obtener un usuario por su ID (incluyendo token para autenticación)
-export const getUserById = async (userId) => {
+export const getCurrentUser = async () => {
     try {
-        // Obtenemos el token desde el localStorage
-        const token = localStorage.getItem('token');
-
-        if (!token) {
-            throw new Error('Token de autenticación no encontrado. Inicia sesión nuevamente.');
-        }
-
-        const response = await fetch(`/users/get-user/${userId}`, {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${token}` // Enviamos el token en la cabecera
-            }
-        });
-
-        if (!response.ok) {
-            if (response.status === 404) {
-                throw new Error('Usuario no encontrado');
-            } else {
-                throw new Error('Error al obtener el usuario');
-            }
-        }
-
-        const data = await response.json();
-        return data;
+      const token = localStorage.getItem('token');
+      if (!token) {
+        throw new Error('Token de autenticación no encontrado. Inicia sesión nuevamente.');
+      }
+  
+      console.log('Token:', token);
+  
+      const response = await api.get('/users/me', {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+  
+      console.log('Respuesta de la API:', response); // Agrega este console.log
+  
+      return response.data;
     } catch (error) {
-        console.error('Error al obtener el usuario:', error);
-        throw new Error('Error de red o de servidor');
+      if (error.response) {
+        console.error('Error en la respuesta de la API:', error.response.status, error.response.data);
+      } else if (error.request) {
+        console.error('No se recibió respuesta del servidor:', error.request);
+      } else {
+        console.error('Error durante la solicitud:', error.message);
+      }
+      throw error;
     }
 };
-
 
 // Nueva función para actualizar el perfil 
 export const updateUserProfile = async (userId, userData) => {

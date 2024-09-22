@@ -8,6 +8,7 @@ from appv1.schemas.usuario import UserCreate, UserResponse, UserUpdate
 from core.security import get_hashed_password, verify_token
 from core.utils import generate_user_id_int
 from sqlalchemy.exc import SQLAlchemyError, IntegrityError
+from appv1.schemas.usuario import UserResponse
 
 from db.database import get_db
 
@@ -71,9 +72,6 @@ def get_user_by_documento(db: Session, p_documento: str):
     except SQLAlchemyError as e:
         print(f"Error al buscar usuario por email: {e}")
         raise HTTPException(status_code=500, detail="Error al buscar usuario por email")
-
-
-from appv1.schemas.usuario import UserResponse
 
 def get_user_by_id(db: Session, user_id: int) -> UserResponse:
     try:
