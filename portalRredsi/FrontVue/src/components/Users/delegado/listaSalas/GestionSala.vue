@@ -18,25 +18,27 @@
         </div>
         <div class=" container mt-5">
             <div class="container">
-                <!-- Proyecto -->
                 <div class="container">
-                    <div class="row mb-4 justify-content-center">
-                        <div class="col-12 col-md-6">
-                            <label for="proyecto_codigo" class="fw-bold text-dark text-center">Proyecto:</label>
-                            <select id="id_proyecto" v-model="proyectoSeleccionado"
-                                @change="seleccionarProyecto(proyectoSeleccionado.id_proyecto, proyectoSeleccionado.id_area_conocimiento, proyectoSeleccionado.id_institucion)"
-                                class="form-select text-dark" required>
-                                <option value="" disabled selected>Seleccione una opción</option>
-                                <option v-for="(proyecto, index) in listaProyectosSinAsignar" :key="index"
-                                    :value="proyecto">
-                                    {{ proyecto.titulo }}
-                                </option>
-                            </select>
-                        </div>
-                    </div>
 
-                    <!-- Ponentes -->
+
+
                     <form class="mt-4" @submit.prevent="asignarHorario">
+                        <!-- Proyecto -->
+                        <div class="row mb-4 justify-content-center">
+                            <div class="col-12 col-md-6">
+                                <label for="proyecto_codigo" class="fw-bold text-dark text-center">Proyecto:</label>
+                                <select id="id_proyecto" v-model="proyectoSeleccionado"
+                                    @change="seleccionarProyecto(proyectoSeleccionado.id_proyecto, proyectoSeleccionado.id_area_conocimiento, proyectoSeleccionado.id_institucion)"
+                                    class="form-select text-dark" required>
+                                    <option value="" disabled selected>Seleccione una opción</option>
+                                    <option v-for="(proyecto, index) in listaProyectosSinAsignar" :key="index"
+                                        :value="proyecto">
+                                        {{ proyecto.titulo }}
+                                    </option>
+                                </select>
+                            </div>
+                        </div>
+                        <!-- Ponentes -->
                         <div class="row mb-4">
                             <div class="col-md-6">
                                 <label for="ponente_1" class="form-label text-black">Ponente 1:</label>
@@ -109,7 +111,7 @@
                 <!-- Línea debajo del título -->
 
                 <!-- Tabla Horarios agregados -->
-                <ComponenteHorario :sala="sala" />
+                <ComponenteHorario ref="horario" :sala="sala" />
             </div>
         </div>
 
@@ -151,6 +153,7 @@ export default defineComponent({
             id_proyecto_convocatoria: "",
             evaluadores: [],
             listaProyectosSinAsignar: [],
+            actualizarHorario: true,
         };
     },
     emits: ['component-selected'],
@@ -164,6 +167,9 @@ export default defineComponent({
 
                 alert("La asignación del horario ha sido exitosa");
                 this.fetchProyectosSinAsignar();
+
+                // actualiza la tabla de horario 
+                this.$refs.horario.obtenerDatosSala();
             } catch (error) {
                 alert("No se ha podido asignar el proyecto a esta sala");
             }

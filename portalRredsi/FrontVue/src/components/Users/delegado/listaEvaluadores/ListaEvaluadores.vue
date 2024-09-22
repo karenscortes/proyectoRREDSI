@@ -64,24 +64,7 @@
             </div>
         </div>
         <!-- Paginador -->
-        <div v-if="totalPages > 1" class="mt-5">
-            <div aria-label="Page navigation example mb-5">
-                <ul class="pagination justify-content-center">
-                    <li class="page-item m-1">
-                        <button @click="prevPage" :disabled="current_page == 1" class="page-link"
-                            style="border-radius: 20px; color: black;">Previous</button>
-                    </li>
-                    <li v-for="i in totalPages" class="page-item rounded m-1">
-                        <button @click="paginaSeleted(i)" class="page-link rounded-circle" style="color: black;">{{ i
-                            }}</button>
-                    </li>
-                    <li class="page-item m-1">
-                        <button @click="nextPage" :disabled="current_page == totalPages" class="page-link"
-                            style="border-radius: 20px; color: black;">Next</button>
-                    </li>
-                </ul>
-            </div>
-        </div>
+        <PaginatorBody :totalPages="totalPages" @page-changed="cambiarPagina" v-if="totalPages > 1" />
 
         <!-- Modal datos -->
         <div class="modal fade" id="delegateInformation" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
@@ -137,13 +120,14 @@
 import { reactive } from 'vue';
 import { obtenerListaEvaluadores, actualizarEstadoEvaluador } from '@/services/listaEvaluadoresService';
 import { obtenerIdEvaluador } from '@/services/delegadoService';
+import PaginatorBody from '../../../UI/PaginatorBody.vue';
 
 export default {
     data() {
         return {
             evaluadores: [],
-            current_page: 1,
             totalPages: 0,
+            current_page: 0,
             documento_evaluador:""
         }
     },
@@ -177,10 +161,13 @@ export default {
             obtenerEvaluadorActual
         }
     },
+    components:{
+        PaginatorBody
+    },
     methods:{
-        async fecthEvaluadores() {
+        async fecthEvaluadores(pagina_actual) {
             try {
-                const respuesta = await obtenerListaEvaluadores(this.current_page);
+                const respuesta = await obtenerListaEvaluadores(pagina_actual);
                 this.evaluadores = respuesta.data.evaluators;
                 this.totalPages = respuesta.data.total_pages;
 
@@ -200,7 +187,7 @@ export default {
 
                 await actualizarEstadoEvaluador(id_evaluador, nuevoEstado);
                 alert("Actualizado con exito");
-                this.fecthEvaluadores();
+                this.fecthEvaluadores(this.current_page);
             } catch (error) {
                 alert("Error al actualizar el estado del evaluador");
             }
@@ -224,21 +211,9 @@ export default {
                 this.fecthEvaluadores();
             }
         },
-        nextPage() {
-            if (this.current_page < this.totalPages) {
-                this.current_page++;
-                this.fecthEvaluadores();
-            }
-        },
-        prevPage() {
-            if (this.current_page > 1) {
-                this.current_page--;
-                this.fecthEvaluadores();
-            }
-        },
-        paginaSeleted(pagina) {
+        cambiarPagina(pagina){
             this.current_page = pagina;
-            this.fecthEvaluadores();
+            this.fecthEvaluadores(pagina);
         }
     },
     mounted() {

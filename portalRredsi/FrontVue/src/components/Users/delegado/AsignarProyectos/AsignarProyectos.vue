@@ -7,35 +7,20 @@
                 </div>
             </div>
         </div>
-        <div class="accordion accordion-flush border-bottom" id="accordionFlushExample">
+        <div class="accordion accordion-flush border-bottom mb-4" id="accordionFlushExample">
 
             <AcordeonProyecto v-for="(proyecto, index) in proyectos" :key="index" :proyecto="proyecto" :index="index" />
 
         </div>
         <!-- Paginador -->
-        <div v-if="totalPages > 1" class="mt-5">
-            <div aria-label="Page navigation example mb-5">
-                <ul class="pagination justify-content-center">
-                    <li class="page-item m-1">
-                        <button @click="prevPage" :disabled="current_page == 1" class="page-link"
-                            style="border-radius: 20px; color: black;">Previous</button>
-                    </li>
-                    <li v-for="i in totalPages" class="page-item rounded m-1">
-                        <button @click="paginaSeleted(i)" class="page-link rounded-circle" style="color: black;">{{ i
-                            }}</button>
-                    </li>
-                    <li class="page-item m-1">
-                        <button @click="nextPage" :disabled="current_page == totalPages" class="page-link"
-                            style="border-radius: 20px; color: black;">Next</button>
-                    </li>
-                </ul>
-            </div>
-        </div>
+        <PaginatorBody :totalPages="totalPages" @page-changed="cambiarPagina" v-if="totalPages > 1" />
+
 
     </div>
 </template>
 
 <script>
+import PaginatorBody from '../../../UI/PaginatorBody.vue';
 import AcordeonProyecto from './AcordeonProyecto.vue';
 import { proyectosSinAsignar } from '@/services/delegadoService'
 
@@ -43,14 +28,13 @@ export default {
     data() {
         return {
             proyectos: [],
-            current_page: 1,
             totalPages: 0
         }
     },
     methods: {
-        async fetchProyectos() {
+        async fetchProyectos(pagina_actual) {
             try {
-                const response = await proyectosSinAsignar(this.current_page);
+                const response = await proyectosSinAsignar(pagina_actual);
                 this.proyectos = response.data.projects;
                 this.totalPages = response.data.total_pages;
 
@@ -58,26 +42,14 @@ export default {
                 alert("Error al obtener proyectos: ", error);
             }
         },
-        nextPage() {
-            if (this.current_page < this.totalPages) {
-                this.current_page++;
-                this.fetchProyectos();
-            }
-        },
-        prevPage() {
-            if (this.current_page > 1) {
-                this.current_page--;
-                this.fetchProyectos();
-            }
-        },
-        paginaSeleted(pagina) {
-            this.current_page = pagina;
-            this.fetchProyectos();
+        cambiarPagina(pagina){
+            this.fetchProyectos(pagina);
         }
-    },
+    },// Final de los metodos
     components: {
-        AcordeonProyecto
-    }, // Final de los metodos
+        AcordeonProyecto,
+        PaginatorBody
+    }, 
     mounted() {
         this.fetchProyectos();
     }
