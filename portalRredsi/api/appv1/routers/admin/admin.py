@@ -19,40 +19,121 @@ from appv1.crud.usuarios import get_user_by_documento, get_user_by_email
 
 router_admin = APIRouter()
 
-# Crear convocatoria
+# Crear convocatoria 
 @router_admin.post("/crear-convocatoria")
-def create_new_convocatoria(convocatoria: ConvocatoriaCreate, db: Session = Depends(get_db)):
+def create_new_convocatoria(
+    convocatoria: ConvocatoriaCreate, 
+    db: Session = Depends(get_db), 
+    current_user: UserResponse = Depends(get_current_user)
+):
+    MODULE = 6  # Módulo para convocatorias
+    permisos = get_permissions(db, current_user.id_rol, MODULE)
+
+    if permisos is None or not permisos.p_insertar:  
+        raise HTTPException(status_code=401, detail="Usuario no autorizado")
+
     return create_convocatoria(db, convocatoria.nombre, convocatoria.fecha_inicio, convocatoria.fecha_fin, convocatoria.estado)
 
-# Endpoint para crear una nueva etapa
+# Crear una nueva etapa 
 @router_admin.post("/convocatoria/{id_convocatoria}/etapas")
-def add_etapa(id_convocatoria: int, nombre: str, db: Session = Depends(get_db)):
+def add_etapa(
+    id_convocatoria: int, 
+    nombre: str, 
+    db: Session = Depends(get_db), 
+    current_user: UserResponse = Depends(get_current_user)
+):
+    MODULE = 4  # Módulo para etapas
+    permisos = get_permissions(db, current_user.id_rol, MODULE)
+
+    if permisos is None or not permisos.p_insertar:  
+        raise HTTPException(status_code=401, detail="Usuario no autorizado")
+
     return create_etapa(db, nombre, id_convocatoria)
 
-# Endpoint para crear una nueva fase
+
+# Crear una nueva fase 
 @router_admin.post("/etapas/{id_etapa}/fases")
-def add_fase(id_etapa: int, nombre: str, db: Session = Depends(get_db)):
+def add_fase(
+    id_etapa: int, 
+    nombre: str, 
+    db: Session = Depends(get_db), 
+    current_user: UserResponse = Depends(get_current_user)
+):
+    MODULE = 5  # Módulo para fases
+    permisos = get_permissions(db, current_user.id_rol, MODULE)
+
+    if permisos is None or not permisos.p_insertar:  
+        raise HTTPException(status_code=401, detail="Usuario no autorizado")
+
     return create_fase(db, nombre, id_etapa)
 
-# Endpoint para obtener fases por etapa
+
+# Obtener fases por etapa (Módulo 5: fases)
 @router_admin.get("/etapas/{id_etapa}/fases")
-def get_fases(id_etapa: int, db: Session = Depends(get_db)):
+def get_fases(
+    id_etapa: int, 
+    db: Session = Depends(get_db), 
+    current_user: UserResponse = Depends(get_current_user)
+):
+    MODULE = 5  # Módulo para fases
+    permisos = get_permissions(db, current_user.id_rol, MODULE)
+
+    if permisos is None or not permisos.p_consultar:  # Verificar permiso de consulta
+        raise HTTPException(status_code=401, detail="Usuario no autorizado")
+
     return get_fases_by_etapa(db, id_etapa)
 
-# Endpoint para editar una etapa
+
+# Editar una etapa (Módulo 4: etapas)
 @router_admin.put("/etapas/{id_etapa}")
-def modify_etapa(id_etapa: int, nombre: Optional[str] = None, db: Session = Depends(get_db)):
+def modify_etapa(
+    id_etapa: int, 
+    nombre: Optional[str] = None, 
+    db: Session = Depends(get_db), 
+    current_user: UserResponse = Depends(get_current_user)
+):
+    MODULE = 4  # Módulo para etapas
+    permisos = get_permissions(db, current_user.id_rol, MODULE)
+
+    if permisos is None or not permisos.p_actualizar:  # Verificar permiso de actualización
+        raise HTTPException(status_code=401, detail="Usuario no autorizado")
+
     return update_etapa(db, id_etapa, nombre)
 
-# Editar fase
+
+# Editar una fase (Módulo 5: fases)
 @router_admin.put("/edit-fase/{id_fase}/")
-async def update_existing_fase(id_fase: int, fase_update: FaseUpdate, db: Session = Depends(get_db)):
+async def update_existing_fase(
+    id_fase: int, 
+    fase_update: FaseUpdate, 
+    db: Session = Depends(get_db), 
+    current_user: UserResponse = Depends(get_current_user)
+):
+    MODULE = 5  # Módulo para fases
+    permisos = get_permissions(db, current_user.id_rol, MODULE)
+
+    if permisos is None or not permisos.p_actualizar:  # Verificar permiso de actualización
+        raise HTTPException(status_code=401, detail="Usuario no autorizado")
+
     return update_fase(db, id_fase, fase_update)
 
-# Endpoint para editar una fase
+
+# Modificar una fase (Módulo 5: fases)
 @router_admin.put("/fases/{id_fase}")
-def modify_fase(id_fase: int, nombre: Optional[str] = None, db: Session = Depends(get_db)):
+def modify_fase(
+    id_fase: int, 
+    nombre: Optional[str] = None, 
+    db: Session = Depends(get_db), 
+    current_user: UserResponse = Depends(get_current_user)
+):
+    MODULE = 5  # Módulo para fases
+    permisos = get_permissions(db, current_user.id_rol, MODULE)
+
+    if permisos is None or not permisos.p_actualizar:  # Verificar permiso de actualización
+        raise HTTPException(status_code=401, detail="Usuario no autorizado")
+
     return update_fase(db, id_fase, nombre)
+
 
 #Obtener todas las rubricas
 @router_admin.get("/all-rubrics/", response_model=List[RubricaResponse])

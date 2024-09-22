@@ -33,29 +33,13 @@ async def insert_user(
     if respuesta:
         return {"mensaje":"usuario registrado con éxito"}
 
-
-# Ruta para obtener un usuario por su ID
-@router_user.get("/get-user/{user_id}", response_model=UserResponse)
-def read_user(
-    user_id: int, 
-    db: Session = Depends(get_db), 
-    current_user: UserResponse = Depends(get_current_user)  # Usuario autenticado
+# Obtener info actual de la persona logueada
+@router_user.get("/me", response_model=UserResponse)
+def read_current_user(
+    current_user: UserResponse = Depends(get_current_user)  # Obtener el usuario autenticado desde el token
 ):
-    # Verificar si el usuario está intentando consultar su propio perfil
-    if user_id != current_user.id_usuario:
-        # Obtener los permisos del rol del usuario autenticado
-        permisos = get_permissions(db, current_user.id_rol, MODULE)
-        
-        # Verificar si tiene permiso para consultar
-        if not permisos.p_consultar:
-            raise HTTPException(status_code=401, detail="No está autorizado para consultar este usuario")
+    return current_user
 
-    # Si tiene permiso o es su propio perfil, obtener el usuario
-    user = get_user_by_id(db, user_id)
-    if user is None:
-        raise HTTPException(status_code=404, detail="Usuario no encontrado")
-    
-    return user
 
     
 @router_user.put("/update/", response_model=dict)
