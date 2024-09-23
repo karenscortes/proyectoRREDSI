@@ -63,7 +63,7 @@
                                 {{ tab.nombre }}
                             </a>
                             <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                <li v-for="(opcion, index) in tab.opciones" :key="index"><a href="#"  class="dropdown-item" @click="selectComponent(opcion.ruta)">{{ opcion.nombre }}</a></li>
+                                <li v-for="(opcion, index) in tab.opciones" :key="index"><a href="#"  :class="`dropdown-item ${opcion.uso}`" @click="selectComponent(opcion.ruta)">{{ opcion.nombre }}</a></li>
                             </ul>
                         </div>
                     </li>
@@ -94,6 +94,8 @@
 </template>
 
 <script>
+import { obtenerFechasAsignaciones} from '@/services/delegadoService'
+import { ref } from "vue";
 import { defineComponent,reactive } from "vue";
 import { useRouter } from "vue-router";
 import { useAuthStore } from "@/store";
@@ -101,6 +103,9 @@ import { useAuthStore } from "@/store";
 export default defineComponent({
     emits: ['component-selected'],
     setup(_,{emit}) {
+        const asignacion1 = ref('');
+        const asignacion2 = ref('');
+        const currentDate = ref(new Date().toLocaleDateString());
         const authStore = useAuthStore(); 
         const router = useRouter(); 
         const user = authStore.user;
@@ -110,6 +115,20 @@ export default defineComponent({
             mid_tabs: [],
             visibilidad: "d-none",
         });
+
+        const getAssignmentDates = async () => {
+            try {
+                const fechas = await obtenerFechasAsignaciones();
+                if(currentDate < fechas.data.virtual_stage.inicio_virtual || currentDate > fechas.data.virtual_stage.fin_virtual){
+                    asignacion1.value='disabled';
+                }
+                if(currentDate < fechas.data.in_person_stage.inicio_presencial || currentDate > fechas.data.in_person_stage.fin_presencial){
+                    asignacion2.value='disabled';
+                }
+            } catch (error) {
+                alert(error.data.detail || 'Error al obtener fechas');
+            }
+        };
 
 
 
@@ -125,23 +144,25 @@ export default defineComponent({
 
             });
         } else if (user?.id_rol === 2) {
+            // getAssignmentDates();
             Object.assign(state, {
                 left_tabs: [{nombre:'Inicio', ruta:'PaginaInicioDelegado'}, {nombre:'Perfil', ruta:'PerfilDelegados'}],
                 mid_tabs:[
                     {   nombre:"Evaluadores", 
-                        opciones:[{nombre:'Postulaciones', ruta:'PostulacionesEvaluadores'}, {nombre:'Lista de Evaluadores',ruta:'ListaEvaluadores'}]
+                        opciones:[{nombre:'Postulaciones', ruta:'PostulacionesEvaluadores', uso: ''}, {nombre:'Lista de Evaluadores',ruta:'ListaEvaluadores', uso: ''}]
                     },
                     {
                         nombre:"Proyectos", 
-                        opciones:[{nombre:'Asignacion de Proyectos', ruta:'AsignarProyectos'}, {nombre:'Lista de Proyectos',ruta:'ListaProyectosDelegado'}]
+                        opciones:[{nombre:'Asignacion de Proyectos', ruta:'AsignarProyectos',uso: asignacion1 }, {nombre:'Lista de Proyectos',ruta:'ListaProyectosDelegado', uso: ''}]
                     },
                     {
                         nombre:"Evento", 
-                        opciones:[{nombre:'Salas', ruta:'ListaSalasDelegado'}, {nombre:'Asistencia',ruta:'AsistenciaEvento'}]
+                        opciones:[{nombre:'Salas', ruta:'ListaSalasDelegado',uso: asignacion2}, {nombre:'Asistencia',ruta:'AsistenciaEvento',uso: ''}]
                     }
                 ],
                 visibilidad:"d-inline-block"
             });
+            
         } else if (user?.id_rol === 1) {
             Object.assign(state, {
                 left_tabs: [{nombre:'Inicio', ruta:'PaginaInicioEvaluadorView'}, {nombre:'Perfil', ruta:'PerfilEvaluador'}, {nombre:'Proyectos', ruta:'ProyectosAsignadosEvaluadorView'}],
