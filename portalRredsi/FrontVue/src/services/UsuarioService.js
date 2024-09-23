@@ -2,12 +2,12 @@ import api from './api'; // Asegúrate de que `api.js` esté configurado adecuad
 
 export const getCurrentUser = async () => {
     try {
-      const token = localStorage.getItem('token');
-      if (!token) {
+      const user = localStorage.getItem('user');
+      if (!user) {
         throw new Error('Token de autenticación no encontrado. Inicia sesión nuevamente.');
       }
   
-      console.log('Token:', token);
+      console.log('Usuario:', user);
   
       const response = await api.get('/users/me', {
         headers: {
