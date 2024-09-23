@@ -30,7 +30,7 @@
         </thead>
         <tbody>
           <tr v-for="(componente, index) in componentes" :key="index">
-            <td class="border border-dark componente">
+            <td class="border border-dark componente texto">
               <span class="text-dark font-weight-bold">{{ componente.titulo }}:</span> {{ componente.descripcion }}
             </td>
             <td class="text-center-vertical border border-dark">{{ componente.valor_maximo }}</td>
@@ -202,7 +202,10 @@
     height: 100%; 
   }
 
+  .texto{
 
+    font-size: 14px;
+  }
 
   .btn-warning {
     width: 300px;
