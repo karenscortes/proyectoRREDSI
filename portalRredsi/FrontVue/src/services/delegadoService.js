@@ -312,7 +312,19 @@ export const obtenerProyectos = async (page= 1, page_size=10) => {
     }
 };
 
-
+//Función para obtener las fechas de las fases en las que se hacen las Asignaciones
+export const obtenerFechasAsignaciones = async () => {
+    try {
+      const response = await api.get(`/proyectosSinAsignar/get-assignment-dates/`);
+      return response;
+    } catch (error) {
+      if (error.response) {
+        throw error.response; 
+      } else {
+        throw new Error('Error de red o de servidor'); 
+      }
+    }
+};
 
 
 

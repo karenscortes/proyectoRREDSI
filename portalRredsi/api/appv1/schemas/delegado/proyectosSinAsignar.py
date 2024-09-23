@@ -1,3 +1,4 @@
+from datetime import date
 from typing import List
 from pydantic import BaseModel
 
@@ -16,3 +17,15 @@ class PaginatedUnassignedProjects(BaseModel):
 
 class AuthorsResponse(BaseModel):
     nombre:str
+
+class AssignmentVirtualStage(BaseModel):
+    inicio_virtual: date
+    fin_virtual: date
+
+class AssignmentInPesonStage(BaseModel):
+    inicio_presencial: date
+    fin_presencial: date
+
+class AssignmentDates(BaseModel):
+    virtual_stage: AssignmentVirtualStage
+    in_person_stage: AssignmentInPesonStage
