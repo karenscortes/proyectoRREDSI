@@ -47,6 +47,8 @@
                     <CardSalas v-for="(sala, index) in salasFiltradas" :key="index" :sala="sala"
                         @component-selected="changeComponent" />
                 </div>
+
+                <PaginatorBody :totalPages="totalPages" @page-changed="cambiarPagina" v-if="totalPages > 1" />
             </div>
         </div>
     </div>
@@ -59,12 +61,14 @@ import { obtenerDatosSalaAsignada } from '@/services/salasDelegadoService';
 import { useAuthStore } from '@/store';
 import GestionSala from "./GestionSala.vue";
 import DetalleSala from "./DetalleSala.vue";
+import PaginatorBody from "../../../UI/PaginatorBody.vue";
 
 export default {
     components: {
         CardSalas,
         GestionSala,
-        DetalleSala
+        DetalleSala,
+        PaginatorBody
     },
     data() {
         return {
@@ -76,7 +80,8 @@ export default {
             salaDetalle: [],
             salaAsignada: false,
             miSala: {},
-            SalaSeleccionada: ""
+            SalaSeleccionada: "",
+            totalPages: 0
         }
     },
     setup() {
@@ -89,10 +94,11 @@ export default {
         };
     },
     methods: {
-        async listarSalas() {
+        async listarSalas(pagina) {
             try {
-                const response = await obtenerSalas();
+                const response = await obtenerSalas(pagina);
                 this.salas = response.data.salas;
+                this.totalPages = response.data.total_pages;
                 this.salasFiltradas = [...this.salas]; // Inicialmente muestra todas las salas
             } catch (error) {
                 alert("Error al consultar salas");
@@ -128,6 +134,9 @@ export default {
                 this.salaAsignada = false;
             }
 
+        },
+        cambiarPagina(pagina){
+            this.listarSalas(pagina);
         }
 
     },

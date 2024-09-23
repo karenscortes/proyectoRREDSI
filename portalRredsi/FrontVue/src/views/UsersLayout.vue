@@ -17,6 +17,7 @@ import ComponenteDinamico from '../components/ComponenteDinamico.vue';
 import InicioSuperAdminView from "./InicioSuperAdminView.vue";
 import EditarPerfil from "../components/Users/EditarPerfil.vue";
 import RubricaAdminView from "./RubricaAdminView.vue";
+import CrearConvocatoria from "../components/Users/administrador/convocatorias/CrearConvocatoria.vue";
 import SalasAdminView from "./SalasAdminView.vue";
 import DelegadosAdminView from "./DelegadosAdminView.vue";
 import AsignarProyectos from "../components/Users/delegado/AsignarProyectos/AsignarProyectos.vue";
@@ -49,6 +50,7 @@ export default {
         RubricaAdminView: markRaw(RubricaAdminView),
         SalasAdminView: markRaw(SalasAdminView),
         DelegadosAdmin: markRaw(DelegadosAdminView),
+        CrearConvocatoria: markRaw(CrearConvocatoria),
 
         //Componentes Delegado
         AsignarProyectos: markRaw(AsignarProyectos),
@@ -102,6 +104,7 @@ export default {
                 RubricaAdminView: RubricaAdminView,
                 SalasAdminView: SalasAdminView,
                 DelegadosAdminView: DelegadosAdminView,
+                CrearConvocatoria: CrearConvocatoria,
 
                 //Delegado
                 AsignarProyectos: AsignarProyectos,
