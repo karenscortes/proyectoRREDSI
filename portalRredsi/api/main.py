@@ -1,6 +1,6 @@
 from sys import prefix
 from fastapi import FastAPI
-from appv1.routers import eventos, login, proyectos, rol, usuarios 
+from appv1.routers import autores, eventos, login, ponentes, proyectos, rol, tutores, usuarios 
 from appv1.routers.admin import admin
 from appv1.routers.delegado import asignarProyectoEtapaVirtual, asistencia, listaEvaluadores, listaProyectos, postulaciones, proyectosSinAsignar, salas
 from appv1.routers.evaluador import evaluadores
@@ -17,6 +17,10 @@ app.include_router(usuarios.router_user, prefix="/users", tags=["Usuarios"])
 
 #PROYECTOS
 app.include_router(proyectos.router_project, prefix="/projects", tags=["Proyectos"])
+app.include_router(tutores.router_userTutor, prefix="/tutores", tags=["Proyectos"])
+app.include_router(ponentes.router_userPonente, prefix="/ponentes", tags=["Proyectos"])
+app.include_router(autores.router_autor, prefix="/autor", tags=["Proyectos"])
+
 
 
 
