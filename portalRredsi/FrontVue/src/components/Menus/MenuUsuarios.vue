@@ -144,7 +144,7 @@ export default defineComponent({
 
             });
         } else if (user?.id_rol === 2) {
-            getAssignmentDates();
+            // getAssignmentDates();
             Object.assign(state, {
                 left_tabs: [{nombre:'Inicio', ruta:'PaginaInicioDelegado'}, {nombre:'Perfil', ruta:'PerfilDelegados'}],
                 mid_tabs:[
