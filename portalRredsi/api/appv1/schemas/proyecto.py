@@ -19,8 +19,7 @@ class ProyectoBase(BaseModel):
     grupo_investigacion:Annotated[str, constr(max_length=50)]
     linea_investigacion:Annotated[str, constr(max_length=50)]
     nombre_semillero:Annotated[str, constr(max_length=50)]
-    url_propuesta_escrita: Annotated[str, constr(max_length=255)]
-    url_aval: Annotated[str, constr(max_length=255)]
+  
 
 
 class ProyectoCreate(ProyectoBase):
@@ -29,8 +28,7 @@ class ProyectoCreate(ProyectoBase):
 class ProyectoResponse(ProyectoBase):
     id_proyecto: int
     
-class ProyectoUpdate(ProyectoBase):
-    pass
+
 class PaginatedProyectosResponse(BaseModel):
     proyectos: List[ProyectoResponse]
     total_pages: int

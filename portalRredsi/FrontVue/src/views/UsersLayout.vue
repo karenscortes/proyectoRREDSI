@@ -15,7 +15,9 @@ import MenuUsuarios from '../components/Menus/MenuUsuarios.vue';
 import FooterSecundario from '../components/Footers/FooterSecundario.vue';
 import ComponenteDinamico from '../components/ComponenteDinamico.vue';
 import InicioSuperAdminView from "./InicioSuperAdminView.vue";
+import EditarPerfil from "../components/Users/EditarPerfil.vue";
 import RubricaAdminView from "./RubricaAdminView.vue";
+import CrearConvocatoria from "../components/Users/administrador/convocatorias/CrearConvocatoria.vue";
 import SalasAdminView from "./SalasAdminView.vue";
 import DelegadosAdminView from "./DelegadosAdminView.vue";
 import AsignarProyectos from "../components/Users/delegado/AsignarProyectos/AsignarProyectos.vue";
@@ -30,6 +32,7 @@ import HistorialActividades from "../components/Users/superadmin/HistorialActivi
 import NotAvailable from "./NotAvailable.vue";
 import ListaSalasDelegado from "../components/Users/delegado/listaSalas/ListaSalasDelegado.vue";
 import ListaProyectosDelegado from "../components/Users/delegado/listaProyectos/ListaProyectosDelegado.vue";
+import PaginaInicioDelegado from "../components/Users/delegado/PaginaInicioDelegado.vue";
 
 import InicioAdminView from "./InicioAdminView.vue";
 
@@ -47,6 +50,7 @@ export default {
         RubricaAdminView: markRaw(RubricaAdminView),
         SalasAdminView: markRaw(SalasAdminView),
         DelegadosAdmin: markRaw(DelegadosAdminView),
+        CrearConvocatoria: markRaw(CrearConvocatoria),
 
         //Componentes Delegado
         AsignarProyectos: markRaw(AsignarProyectos),
@@ -55,6 +59,7 @@ export default {
         PostulacionesEvaluadores: markRaw(PostulacionesEvaluadores),
         ListaSalasDelegado: markRaw(ListaSalasDelegado),
         ListaProyectosDelegado: markRaw(ListaProyectosDelegado),
+        PaginaInicioDelegado: markRaw(PaginaInicioDelegado),
 
         //Componentes Evaluador
         PaginaInicioEvaluadorView: markRaw(PaginaInicioEvaluadorView),
@@ -65,6 +70,7 @@ export default {
         InicioSuperAdminView: markRaw(InicioSuperAdminView),
         ListaAdministradores: markRaw(ListaAdministradores),
         HistorialActividades: markRaw(HistorialActividades),
+        EditarPerfil: markRaw (EditarPerfil),
 
         //Componente Por defecto
         NotAvailable: markRaw(NotAvailable),
@@ -86,6 +92,7 @@ export default {
                 RubricaAdminView: RubricaAdminView,
                 SalasAdminView: SalasAdminView,
                 DelegadosAdminView: DelegadosAdminView,
+                CrearConvocatoria: CrearConvocatoria,
 
                 //Delegado
                 AsignarProyectos: AsignarProyectos,
@@ -94,6 +101,7 @@ export default {
                 PostulacionesEvaluadores: PostulacionesEvaluadores,
                 ListaSalasDelegado: ListaSalasDelegado,
                 ListaProyectosDelegado: ListaProyectosDelegado,
+                PaginaInicioDelegado: PaginaInicioDelegado,
 
 
                 //Evaluador
@@ -105,6 +113,7 @@ export default {
                 InicioSuperAdminView: InicioSuperAdminView ,
                 ListaAdministradores: ListaAdministradores,
                 HistorialActividades: HistorialActividades,
+                EditarPerfil: EditarPerfil,
 
             };
 

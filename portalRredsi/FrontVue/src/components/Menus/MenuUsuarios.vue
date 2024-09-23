@@ -99,6 +99,7 @@ import { useRouter } from "vue-router";
 import { useAuthStore } from "@/store";
 
 export default defineComponent({
+    emits: ['component-selected'],
     setup(_,{emit}) {
         const authStore = useAuthStore(); 
         const router = useRouter(); 
@@ -117,7 +118,7 @@ export default defineComponent({
                 left_tabs: [{nombre:'Inicio', ruta:'InicioAdminView'}, {nombre:'Perfil', ruta:'PerfilAdmin'}, {nombre:'Cuentas', ruta:'DelegadosAdminView'},{nombre:'Rubricas', ruta:'RubricaAdminView'}],
                 mid_tabs:[
                     {   nombre:"Eventos", 
-                        opciones:[{nombre:'Salas', ruta:'SalasAdminView'}, {nombre:'Asistencia',ruta:'GestionarAsistentes'}, {nombre:'Convocatoria', ruta:'GestionarConvocatorias'}]
+                        opciones:[{nombre:'Salas', ruta:'SalasAdminView'}, {nombre:'Asistencia',ruta:'GestionarAsistentes'}, {nombre:'Convocatoria', ruta:'CrearConvocatoria'}]
                     }
                 ],
                 visibilidad:"d-inline-block"
@@ -125,7 +126,7 @@ export default defineComponent({
             });
         } else if (user?.id_rol === 2) {
             Object.assign(state, {
-                left_tabs: [{nombre:'Inicio', ruta:'InicioDelegados'}, {nombre:'Perfil', ruta:'PerfilDelegados'}],
+                left_tabs: [{nombre:'Inicio', ruta:'PaginaInicioDelegado'}, {nombre:'Perfil', ruta:'PerfilDelegados'}],
                 mid_tabs:[
                     {   nombre:"Evaluadores", 
                         opciones:[{nombre:'Postulaciones', ruta:'PostulacionesEvaluadores'}, {nombre:'Lista de Evaluadores',ruta:'ListaEvaluadores'}]
@@ -148,7 +149,7 @@ export default defineComponent({
             });
         } else if(user?.id_rol == 6) {
             Object.assign(state, {
-                left_tabs: [{nombre: "Inicio", ruta: "InicioSuperAdminView" }, {nombre: "Gestionar Administradores", ruta: "ListaAdministradores" }],
+                left_tabs: [{nombre: "Inicio", ruta: "InicioSuperAdminView" }, {nombre: "Editar perfil", ruta: "EditarPerfil" },{nombre: "Gestionar Administradores", ruta: "ListaAdministradores" }],
                 visibilidad: "d-none",
             });
         }

@@ -1,7 +1,5 @@
 from typing import Annotated, List, Optional
 from pydantic import BaseModel, EmailStr, StringConstraints
-import enum
-
 
 
 class UserTutorBase(BaseModel):

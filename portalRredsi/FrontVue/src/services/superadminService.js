@@ -46,4 +46,5 @@ export const getActivityHistoryByAdmin = async (userId) => {
             throw new Error('Error de red o de servidor');
         }       
     }
-};        
+};
+
