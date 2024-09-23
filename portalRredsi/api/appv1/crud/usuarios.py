@@ -1,12 +1,20 @@
 # Crear un usuario
-from fastapi import HTTPException
+from fastapi import Depends, HTTPException
+from fastapi.security import OAuth2PasswordBearer
 from sqlalchemy import text
 from sqlalchemy.orm import Session
-from appv1.schemas.usuario import UserCreate, UserUpdate
-from core.security import get_hashed_password
+from appv1.models.usuario import Usuario
+from appv1.schemas.usuario import UserCreate, UserResponse, UserUpdate
+from core.security import get_hashed_password, verify_token
 from core.utils import generate_user_id_int
 from sqlalchemy.exc import SQLAlchemyError, IntegrityError
+from appv1.schemas.usuario import UserResponse
 
+from db.database import get_db
+
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
+
+# Crear un usuario
 def create_user_sql(db: Session, usuario: UserCreate):
 
     try:
@@ -65,12 +73,50 @@ def get_user_by_documento(db: Session, p_documento: str):
         print(f"Error al buscar usuario por email: {e}")
         raise HTTPException(status_code=500, detail="Error al buscar usuario por email")
 
+def get_user_by_id(db: Session, user_id: int) -> UserResponse:
+    try:
+        sql = text("SELECT * FROM usuarios WHERE id_usuario = :user_id")
+        result = db.execute(sql, {"user_id": user_id}).fetchone()
 
-# Consultar un usuario por su ID
-def get_user_by_id(db: Session, user_id: int):
-    sql = text("SELECT * FROM usuarios WHERE id_usuario = :user_id")
-    result = db.execute(sql, {"user_id": user_id}).fetchone()
-    return result
+        if result is None:
+            return None
+        
+        # Crear el objeto UserResponse basado en el resultado de la consulta
+        user_data = {
+            "id_usuario": result.id_usuario,
+            "id_rol": result.id_rol,
+            "id_tipo_documento": result.id_tipo_documento,
+            "documento": result.documento,
+            "nombres": result.nombres,
+            "apellidos": result.apellidos,
+            "celular": result.celular,
+            "correo": result.correo,
+            "estado": result.estado
+        }
+        return UserResponse(**user_data)
+
+    except SQLAlchemyError as e:
+        print(f"Error al buscar usuario por ID: {e}")
+        raise HTTPException(status_code=500, detail="Error al buscar usuario por ID")
+
+
+# Obtener info actual de la persona logueada
+async def get_current_user(
+    token: str = Depends(oauth2_scheme), 
+    db: Session = Depends(get_db)
+) -> UserResponse:
+    # Verificar el token
+    user_id = await verify_token(token)  # verify_token ahora verifica y decodifica el token
+ 
+    if user_id is None:
+        raise HTTPException(status_code=401, detail="Token inválido o expirado")
+
+    user = get_user_by_id(db, user_id)
+    if user is None:
+        raise HTTPException(status_code=401, detail="Usuario no encontrado")
+ 
+    return user
+
 
 def update_password(db: Session, email: str, new_password: str):
     try:
@@ -90,46 +136,42 @@ def update_password(db: Session, email: str, new_password: str):
         print(f"Error al actualizar password: {e}")
         raise HTTPException(status_code=500, detail="Error al actualizar password")
     
-
-def update_user_profile(db: Session, id_usuario: int, usuario: UserUpdate):
+def update_user(db: Session, id_usuario: int, usuario: UserUpdate):
     try:
-        # Inicia la consulta SQL para actualizar los datos del usuario
-        sql = "UPDATE usuarios SET "
-        params = {"id_usuario": id_usuario}
-        updates = []
+        # Crear un diccionario con solo los campos que se proporcionan para la actualización
+        update_data = {}
         
-        # Actualización de la tabla usuarios
-        if usuario.id_tipo_documento:
-            updates.append("id_tipo_documento = :id_tipo_documento")
-            params["id_tipo_documento"] = usuario.id_tipo_documento
-        if usuario.nombres:
-            updates.append("nombres = :nombres")
-            params["nombres"] = usuario.nombres
-        if usuario.apellidos:
-            updates.append("apellidos = :apellidos")
-            params["apellidos"] = usuario.apellidos
-        if usuario.celular:
-            updates.append("celular = :celular")
-            params["celular"] = usuario.celular
-        if usuario.correo:
-            updates.append("correo = :correo")
-            params["correo"] =usuario.correo
-        sql += ", ".join(updates) + " WHERE id_usuario = :id_usuario"
-        
-        sql = text(sql)
-        
-        db.execute(sql, params)
+        if usuario.id_tipo_documento is not None:
+            update_data["id_tipo_documento"] = usuario.id_tipo_documento
+        if usuario.nombres is not None:
+            update_data["nombres"] = usuario.nombres
+        if usuario.apellidos is not None:
+            update_data["apellidos"] = usuario.apellidos
+        if usuario.celular is not None:
+            update_data["celular"] = usuario.celular
+        if usuario.correo is not None:
+            update_data["correo"] = usuario.correo
+        if usuario.clave is not None:  # Actualizar contraseña si se proporciona
+            hashed_password = get_hashed_password(usuario.clave) 
+            update_data["clave"] = hashed_password
+
+        # Verifica si hay datos para actualizar
+        if not update_data:
+            raise HTTPException(status_code=400, detail="No se proporcionaron datos para actualizar")
+
+        # Ejecuta la actualización con SQLAlchemy ORM
+        db.query(Usuario).filter(Usuario.id_usuario == id_usuario).update(update_data)
         db.commit()
 
         return True
+
     except IntegrityError as e:
         db.rollback()
-        print(f"Error al actualizar usuario: {e}")
-        if 'for key' in str(e.orig):
-            raise HTTPException(status_code=400, detail="Error. El dato ya está registrado.")
-        else:
-            raise HTTPException(status_code=400, detail="Error de integridad de datos al actualizar usuario.")
+        print(f"Error de integridad de datos al actualizar usuario: {e}")
+        raise HTTPException(status_code=400, detail="Error de integridad de datos al actualizar usuario.")
+
     except SQLAlchemyError as e:
         db.rollback()
         print(f"Error al actualizar usuario: {e}")
-        raise HTTPException(status_code=500, detail="Error al actualizar usuario")
+        raise HTTPException(status_code=500, detail="Error interno al actualizar usuario.")
+
