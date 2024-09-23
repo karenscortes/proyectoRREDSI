@@ -3,7 +3,7 @@
         <h2 class="accordion-header">
             <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
                 :data-bs-target="`#flush-collapseProyecto${index}`" aria-expanded="false"
-                aria-controls="flush-collapseProyecto1" @click="ProyectoSelecionado()">
+                aria-controls="flush-collapseProyecto1" @click="abrirAcordeon">
                 <h4 class="h5">{{ proyecto.titulo }}</h4>
             </button>
         </h2>
@@ -103,6 +103,7 @@ export default {
             evaluadoresEspecificos: true,
             evaluadorSeleccionado: ref(null),
             evaluadorBuscado: ref(""),
+            desplegarAcordeon: false,
             autores : [] 
         }
     },
@@ -192,12 +193,18 @@ export default {
                 alert("Error al asignar proyecto");
             }
         },
-        ProyectoSelecionado(){
-            this.obtenerIdProyectoConvocatoria();
-            this.fetchPosiblesEvaluadores(this.proyecto.area_conocimiento,this.proyecto.institucion);
-            this.asignarAutoresAProyectos(this.proyecto.id_proyecto);
+        async ProyectoSelecionado(){
+            await this.obtenerIdProyectoConvocatoria();
+            await this.fetchPosiblesEvaluadores(this.proyecto.area_conocimiento,this.proyecto.institucion);
+            await this.asignarAutoresAProyectos(this.proyecto.id_proyecto);
+        },
+        abrirAcordeon(){
+            this.desplegarAcordeon = !this.desplegarAcordeon;
+            if(this.desplegarAcordeon){
+                this.ProyectoSelecionado();
+            }
         }
-    }
+    },
 }
 </script>
 

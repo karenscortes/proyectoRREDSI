@@ -56,10 +56,15 @@ def get_posibles_evaluadores_para_proyecto(db: Session, id_area_conocimiento: in
             SELECT usuarios.id_usuario, usuarios.documento, usuarios.nombres, usuarios.apellidos, usuarios.celular, usuarios.correo 
             FROM detalles_institucionales 
             JOIN usuarios ON detalles_institucionales.id_usuario = usuarios.id_usuario
+            JOIN postulaciones_evaluadores ON usuarios.id_usuario = postulaciones_evaluadores.id_evaluador
+            JOIN convocatorias ON postulaciones_evaluadores.id_convocatoria = convocatorias.id_convocatoria
             WHERE detalles_institucionales.id_institucion != :id_i 
             AND (detalles_institucionales.id_primera_area_conocimiento = :id_ac OR detalles_institucionales.id_segunda_area_conocimiento = :id_ac)
             AND (usuarios.id_rol = 1 OR usuarios.id_rol = 2)
             AND usuarios.estado = 'activo'
+            AND postulaciones_evaluadores.estado_postulacion = 'aceptada'
+            AND postulaciones_evaluadores.etapa_virtual = true
+            AND convocatorias.estado = 'en curso'
         """)
         
         # Preparar los parámetros con comodines para LIKE
@@ -68,6 +73,25 @@ def get_posibles_evaluadores_para_proyecto(db: Session, id_area_conocimiento: in
             "id_i": id_institucion
         }
         result = db.execute(sql, params).fetchall()
+        
+        # Si la primera consulta no devuelve resultados, ejecutar la segunda sin áreas de conocimiento
+        if not result:
+            sql_secundaria = text("""
+                SELECT usuarios.id_usuario, usuarios.documento, usuarios.nombres, usuarios.apellidos, usuarios.celular, usuarios.correo 
+                    FROM detalles_institucionales 
+                    JOIN usuarios ON detalles_institucionales.id_usuario = usuarios.id_usuario
+                    JOIN postulaciones_evaluadores ON usuarios.id_usuario = postulaciones_evaluadores.id_evaluador
+                    JOIN convocatorias ON postulaciones_evaluadores.id_convocatoria = convocatorias.id_convocatoria
+                WHERE detalles_institucionales.id_institucion != :id_i 
+                AND usuarios.id_rol = 1
+                AND usuarios.estado = 'activo'
+                AND postulaciones_evaluadores.estado_postulacion = 'aceptada'
+                AND postulaciones_evaluadores.etapa_virtual = true
+                AND convocatorias.estado = 'en curso'
+                
+            """)
+            # Ejecutar consulta secundaria sin filtrar por áreas de conocimiento
+            result = db.execute(sql_secundaria, {"id_i": id_institucion}).fetchall()
         
         return result
     
@@ -95,7 +119,7 @@ def get_institucion_por_nombre(db: Session, nombre_institucion: str):
         raise HTTPException(status_code=204, detail="Area de conocimiento no se ha encontrado")
     
 def update_estado_proyecto(db: Session, id_proyecto:int):
-    sql = text("UPDATE proyectos SET estado = 'asignado' WHERE id_proyecto = :id_proyecto")
+    sql = text("UPDATE proyectos SET estado_asignacion = 'asignado' WHERE id_proyecto = :id_proyecto")
     params = {
         "id_proyecto": id_proyecto
     }

@@ -23,12 +23,14 @@ class UserResponse(UserBase):
     id_usuario: int
 
 class UserUpdate(BaseModel):
-    id_tipo_documento: int 
+    id_tipo_documento: Optional[int] = None  # Ahora es opcional
     documento: Optional[Annotated[str, StringConstraints(max_length=55)]] = None
-    nombres: Optional[Annotated[str, StringConstraints(max_length=25)]] = None
-    apellidos: Optional[Annotated[str, StringConstraints(max_length=25)]]= None
-    celular: Optional[Annotated[str, StringConstraints(max_length=12)]]= None
-    correo: Optional[EmailStr]= None 
+    nombres: Optional[Annotated[str, StringConstraints(max_length=50)]] = None
+    apellidos: Optional[Annotated[str, StringConstraints(max_length=50)]] = None
+    celular: Optional[Annotated[str, StringConstraints(max_length=25)]] = None
+    correo: Optional[EmailStr] = None
+    clave: Optional[str] = None  # Campo opcional para la contraseña
+
             
 class UserCreate(UserBase):
     id_tipo_documento: int

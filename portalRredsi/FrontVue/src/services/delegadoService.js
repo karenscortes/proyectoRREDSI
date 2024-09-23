@@ -218,7 +218,7 @@ export const obtenerAsistentesPorSala = async (numero_sala, page = 1, page_size 
 };
 
 // Salas por convocatoria en curso
-export const obtenerSalas = async (page= 1, page_size=10) => {
+export const obtenerSalas = async (page= 1, page_size=9) => {
     try {
         const response = await api.get(`/salas/get-salas-por-convocatoria/?page=${page}&page_size=${page_size}`,{
             headers: {

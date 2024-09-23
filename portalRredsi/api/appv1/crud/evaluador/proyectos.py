@@ -3,10 +3,39 @@ from sqlalchemy import text
 from sqlalchemy.exc import SQLAlchemyError, IntegrityError
 from fastapi import HTTPException
 from datetime import timedelta
-
 from appv1.schemas.evaluador.evaluador import CalificarProyectoRespuesta, Componente
 
-#Consulta para sacar los proyectos asignados a un evaluador por etapa (paginado)
+
+# Consulta para obtener la etapa actual basada en la convocatoria en curso
+def get_etapa_actual(db: Session):
+    try:
+        sql_query = text(
+            """
+            SELECT etapas.id_etapa, etapas.nombre
+            FROM etapas
+            JOIN fases ON etapas.id_etapa = fases.id_etapa
+            JOIN programacion_fases ON fases.id_fase = programacion_fases.id_fase
+            JOIN convocatorias ON programacion_fases.id_convocatoria = convocatorias.id_convocatoria
+            WHERE convocatorias.estado = 'en curso'
+            AND CURRENT_DATE BETWEEN programacion_fases.fecha_inicio AND programacion_fases.fecha_fin
+            ORDER BY programacion_fases.fecha_inicio ASC
+            LIMIT 1
+            """
+        )
+        result = db.execute(sql_query).fetchone()
+        if result:
+            return {
+                "id_etapa": str(result[0]),
+                "nombre_etapa": result[1]
+            }
+        else:
+            raise HTTPException(status_code=404, detail="No se encontró una etapa actual para la convocatoria en curso.")
+    except SQLAlchemyError as e:
+        db.rollback()
+        print(f"Error al consultar la etapa actual: {e}")
+        raise HTTPException(status_code=500, detail="Error al consultar la etapa actual")
+
+# Consulta para sacar los proyectos asignados a un evaluador por etapa (paginado)
 def get_proyectos_por_etapa(db: Session, nombre_etapa: str, id_usuario: int, page: int = 1, page_size: int = 10):
     try:
         offset = (page - 1) * page_size
@@ -18,14 +47,13 @@ def get_proyectos_por_etapa(db: Session, nombre_etapa: str, id_usuario: int, pag
                 modalidades.nombre AS modalidad,
                 areas_conocimiento.nombre AS area_conocimiento,
                 proyectos.titulo,
-                proyectos.estado,
+                proyectos.estado_calificacion AS estado_evaluacion,
                 proyectos.programa_academico,
                 proyectos.grupo_investigacion,
                 proyectos.linea_investigacion,
                 proyectos.nombre_semillero,
                 proyectos.url_propuesta_escrita,
-                proyectos.url_aval,
-                rubricas_resultados.estado_proyecto AS estado_evaluacion
+                proyectos.url_aval
             FROM proyectos
             JOIN participantes_proyecto 
                 ON proyectos.id_proyecto = participantes_proyecto.id_proyecto  
@@ -38,8 +66,6 @@ def get_proyectos_por_etapa(db: Session, nombre_etapa: str, id_usuario: int, pag
             LEFT JOIN respuestas_rubricas 
                 ON proyectos_convocatoria.id_proyecto_convocatoria = respuestas_rubricas.id_proyecto_convocatoria
                 AND respuestas_rubricas.id_usuario = :id_usuario
-            LEFT JOIN rubricas_resultados 
-                ON respuestas_rubricas.id_rubrica_resultado = rubricas_resultados.id_rubrica_resultado
             JOIN instituciones 
                 ON proyectos.id_institucion = instituciones.id_institucion
             JOIN modalidades 
@@ -75,8 +101,6 @@ def get_proyectos_por_etapa(db: Session, nombre_etapa: str, id_usuario: int, pag
             LEFT JOIN respuestas_rubricas 
                 ON proyectos_convocatoria.id_proyecto_convocatoria = respuestas_rubricas.id_proyecto_convocatoria
                 AND respuestas_rubricas.id_usuario = :id_usuario
-            LEFT JOIN rubricas_resultados 
-                ON respuestas_rubricas.id_rubrica_resultado = rubricas_resultados.id_rubrica_resultado
             WHERE etapas.nombre = :nombre_etapa 
               AND participantes_proyecto.id_usuario = :id_usuario
               AND convocatorias.estado = 'en curso'
@@ -94,8 +118,8 @@ def get_proyectos_por_etapa(db: Session, nombre_etapa: str, id_usuario: int, pag
         print(f"Error al buscar proyectos por etapa: {e}")
         raise HTTPException(status_code=500, detail="Error al buscar proyectos por etapa")
 
-#Consulta para sacar los proyectos asignados a un evaluador por estado (paginado)
-def get_proyectos_por_estado(db: Session, estado_evaluacion: str, id_usuario: int, page: int = 1, page_size: int = 10):
+# Consulta para sacar los proyectos asignados a un evaluador por estado (paginado)
+def get_proyectos_por_etapa_y_estado(db: Session, nombre_etapa: str, estado_calificacion: str, id_usuario: int, page: int = 1, page_size: int = 10):
     try:
         offset = (page - 1) * page_size
         
@@ -106,17 +130,18 @@ def get_proyectos_por_estado(db: Session, estado_evaluacion: str, id_usuario: in
                 modalidades.nombre AS modalidad,
                 areas_conocimiento.nombre AS area_conocimiento,
                 proyectos.titulo,
-                proyectos.estado,
+                proyectos.estado_calificacion AS estado_evaluacion,
                 proyectos.programa_academico,
                 proyectos.grupo_investigacion,
                 proyectos.linea_investigacion,
                 proyectos.nombre_semillero,
                 proyectos.url_propuesta_escrita,
-                proyectos.url_aval,
-                rubricas_resultados.estado_proyecto AS estado_evaluacion
+                proyectos.url_aval
             FROM proyectos
             JOIN participantes_proyecto 
                 ON proyectos.id_proyecto = participantes_proyecto.id_proyecto  
+            JOIN etapas 
+                ON participantes_proyecto.id_etapa = etapas.id_etapa 
             JOIN proyectos_convocatoria 
                 ON proyectos.id_proyecto = proyectos_convocatoria.id_proyecto 
             JOIN convocatorias 
@@ -124,23 +149,23 @@ def get_proyectos_por_estado(db: Session, estado_evaluacion: str, id_usuario: in
             LEFT JOIN respuestas_rubricas 
                 ON proyectos_convocatoria.id_proyecto_convocatoria = respuestas_rubricas.id_proyecto_convocatoria
                 AND respuestas_rubricas.id_usuario = :id_usuario
-            LEFT JOIN rubricas_resultados 
-                ON respuestas_rubricas.id_rubrica_resultado = rubricas_resultados.id_rubrica_resultado
             JOIN instituciones 
                 ON proyectos.id_institucion = instituciones.id_institucion
             JOIN modalidades 
                 ON proyectos.id_modalidad = modalidades.id_modalidad
             JOIN areas_conocimiento 
                 ON proyectos.id_area_conocimiento = areas_conocimiento.id_area_conocimiento
-            WHERE participantes_proyecto.id_usuario = :id_usuario
-              AND rubricas_resultados.estado_proyecto = :estado_evaluacion
+            WHERE etapas.nombre = :nombre_etapa 
+              AND participantes_proyecto.id_usuario = :id_usuario
               AND convocatorias.estado = 'en curso'
+              AND proyectos.estado_calificacion = :estado_calificacion
             LIMIT :page_size OFFSET :offset
         """)
         
         params = {
-            "estado_evaluacion": estado_evaluacion,
+            "nombre_etapa": nombre_etapa,
             "id_usuario": id_usuario,
+            "estado_calificacion": estado_calificacion,
             "page_size": page_size,
             "offset": offset
         }
@@ -152,6 +177,8 @@ def get_proyectos_por_estado(db: Session, estado_evaluacion: str, id_usuario: in
             FROM proyectos
             JOIN participantes_proyecto 
                 ON proyectos.id_proyecto = participantes_proyecto.id_proyecto  
+            JOIN etapas 
+                ON participantes_proyecto.id_etapa = etapas.id_etapa 
             JOIN proyectos_convocatoria 
                 ON proyectos.id_proyecto = proyectos_convocatoria.id_proyecto 
             JOIN convocatorias 
@@ -159,14 +186,13 @@ def get_proyectos_por_estado(db: Session, estado_evaluacion: str, id_usuario: in
             LEFT JOIN respuestas_rubricas 
                 ON proyectos_convocatoria.id_proyecto_convocatoria = respuestas_rubricas.id_proyecto_convocatoria
                 AND respuestas_rubricas.id_usuario = :id_usuario
-            LEFT JOIN rubricas_resultados 
-                ON respuestas_rubricas.id_rubrica_resultado = rubricas_resultados.id_rubrica_resultado
-            WHERE participantes_proyecto.id_usuario = :id_usuario
-              AND rubricas_resultados.estado_proyecto = :estado_evaluacion
+            WHERE etapas.nombre = :nombre_etapa 
+              AND participantes_proyecto.id_usuario = :id_usuario
               AND convocatorias.estado = 'en curso'
+              AND proyectos.estado_calificacion = :estado_calificacion
         """)
         
-        total_proyectos = db.execute(count_sql, {"estado_evaluacion": estado_evaluacion, "id_usuario": id_usuario}).scalar()
+        total_proyectos = db.execute(count_sql, {"nombre_etapa": nombre_etapa, "id_usuario": id_usuario, "estado_calificacion": estado_calificacion}).scalar()
         
         total_pages = (total_proyectos + page_size - 1) // page_size
         
@@ -175,84 +201,8 @@ def get_proyectos_por_estado(db: Session, estado_evaluacion: str, id_usuario: in
             "total_pages": total_pages
         }
     except SQLAlchemyError as e:
-        print(f"Error al buscar proyectos por estado de evaluación: {e}")
-        raise HTTPException(status_code=500, detail="Error al buscar proyectos por estado de evaluación")
-
-#Consulta para sacar los proyectos asignados a un evaluador (paginado)
-def get_proyectos_asignados(db: Session, id_usuario: int, page: int = 1, page_size: int = 10):
-    try:
-        offset = (page - 1) * page_size
-        
-        sql = text("""
-            SELECT DISTINCT 
-                proyectos.id_proyecto,
-                instituciones.nombre AS institucion,
-                modalidades.nombre AS modalidad,
-                areas_conocimiento.nombre AS area_conocimiento,
-                proyectos.titulo,
-                proyectos.estado,
-                proyectos.programa_academico,
-                proyectos.grupo_investigacion,
-                proyectos.linea_investigacion,
-                proyectos.nombre_semillero,
-                proyectos.url_propuesta_escrita,
-                proyectos.url_aval,
-                rubricas_resultados.estado_proyecto AS estado_evaluacion
-            FROM proyectos
-            JOIN participantes_proyecto 
-                ON proyectos.id_proyecto = participantes_proyecto.id_proyecto  
-            JOIN proyectos_convocatoria 
-                ON proyectos.id_proyecto = proyectos_convocatoria.id_proyecto 
-            JOIN convocatorias 
-                ON proyectos_convocatoria.id_convocatoria = convocatorias.id_convocatoria
-            LEFT JOIN respuestas_rubricas 
-                ON proyectos_convocatoria.id_proyecto_convocatoria = respuestas_rubricas.id_proyecto_convocatoria
-                AND respuestas_rubricas.id_usuario = :id_usuario
-            LEFT JOIN rubricas_resultados 
-                ON respuestas_rubricas.id_rubrica_resultado = rubricas_resultados.id_rubrica_resultado
-            JOIN instituciones 
-                ON proyectos.id_institucion = instituciones.id_institucion
-            JOIN modalidades 
-                ON proyectos.id_modalidad = modalidades.id_modalidad
-            JOIN areas_conocimiento 
-                ON proyectos.id_area_conocimiento = areas_conocimiento.id_area_conocimiento
-            WHERE participantes_proyecto.id_usuario = :id_usuario
-              AND convocatorias.estado = 'en curso'
-            LIMIT :page_size OFFSET :offset
-        """)
-        
-        params = {
-            "id_usuario": id_usuario,
-            "page_size": page_size,
-            "offset": offset
-        }
-        
-        result = db.execute(sql, params).mappings().all()
-        
-        count_sql = text("""
-            SELECT COUNT(DISTINCT proyectos.id_proyecto)
-            FROM proyectos
-            JOIN participantes_proyecto 
-                ON proyectos.id_proyecto = participantes_proyecto.id_proyecto  
-            JOIN proyectos_convocatoria 
-                ON proyectos.id_proyecto = proyectos_convocatoria.id_proyecto 
-            JOIN convocatorias 
-                ON proyectos_convocatoria.id_convocatoria = convocatorias.id_convocatoria
-            WHERE participantes_proyecto.id_usuario = :id_usuario
-              AND convocatorias.estado = 'en curso'
-        """)
-        
-        total_proyectos = db.execute(count_sql, {"id_usuario": id_usuario}).scalar()
-        
-        total_pages = (total_proyectos + page_size - 1) // page_size
-        
-        return {
-            "data": result,
-            "total_pages": total_pages
-        }
-    except SQLAlchemyError as e:
-        print(f"Error al buscar proyectos asignados: {e}")
-        raise HTTPException(status_code=500, detail="Error al buscar proyectos asignados")
+        print(f"Error al buscar proyectos por etapa y estado: {e}")
+        raise HTTPException(status_code=500, detail="Error al buscar proyectos por etapa y estado")
 
 # Consulta para obtener la convocatoria actual con estado 'en curso'
 def get_current_convocatoria(db: Session):
