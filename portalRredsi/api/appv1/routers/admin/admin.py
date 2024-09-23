@@ -68,7 +68,7 @@ def add_fase(
     return create_fase(db, nombre, id_etapa)
 
 
-# Obtener fases por etapa (Módulo 5: fases)
+# Obtener fases por etapa
 @router_admin.get("/etapas/{id_etapa}/fases")
 def get_fases(
     id_etapa: int, 
@@ -84,7 +84,7 @@ def get_fases(
     return get_fases_by_etapa(db, id_etapa)
 
 
-# Editar una etapa (Módulo 4: etapas)
+# Editar una etapa
 @router_admin.put("/etapas/{id_etapa}")
 def modify_etapa(
     id_etapa: int, 
@@ -101,7 +101,7 @@ def modify_etapa(
     return update_etapa(db, id_etapa, nombre)
 
 
-# Editar una fase (Módulo 5: fases)
+# Editar una fase
 @router_admin.put("/edit-fase/{id_fase}/")
 async def update_existing_fase(
     id_fase: int, 
@@ -118,7 +118,7 @@ async def update_existing_fase(
     return update_fase(db, id_fase, fase_update)
 
 
-# Modificar una fase (Módulo 5: fases)
+# Modificar una fase
 @router_admin.put("/fases/{id_fase}")
 def modify_fase(
     id_fase: int, 

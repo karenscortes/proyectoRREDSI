@@ -1,5 +1,120 @@
 import api from './api';
 
+// Función para crear una nueva convocatoria
+export const createConvocatoria = async (convocatoria) => {
+  try {
+    const url = `/admin/crear-convocatoria`;
+    const response = await api.post(url, convocatoria, {
+      headers: {
+        'Authorization': `Bearer ${localStorage.getItem('access_token')}`
+      }
+    });
+    return response;
+  } catch (error) {
+    if (error.response) {
+      throw error;
+    } else {
+      throw new Error('Error de red o de servidor');
+    }
+  }
+};
+
+// Función para agregar una nueva etapa
+export const addEtapa = async (idConvocatoria, nombre) => {
+  try {
+    const url = `/admin/convocatoria/${idConvocatoria}/etapas`;
+    const response = await api.post(url, { nombre }, {
+      headers: {
+        'Authorization': `Bearer ${localStorage.getItem('access_token')}`
+      }
+    });
+    return response;
+  } catch (error) {
+    if (error.response) {
+      throw error;
+    } else {
+      throw new Error('Error de red o de servidor');
+    }
+  }
+};
+
+// Función para agregar una nueva fase
+export const addFase = async (idEtapa, nombre) => {
+  try {
+    const url = `/admin/etapas/${idEtapa}/fases`;
+    const response = await api.post(url, { nombre }, {
+      headers: {
+        'Authorization': `Bearer ${localStorage.getItem('access_token')}`
+      }
+    });
+    return response;
+  } catch (error) {
+    if (error.response) {
+      throw error;
+    } else {
+      throw new Error('Error de red o de servidor');
+    }
+  }
+};
+
+// Función para obtener fases por etapa
+export const getFases = async (idEtapa) => {
+  try {
+    const url = `/admin/etapas/${idEtapa}/fases`;
+    const response = await api.get(url, {
+      headers: {
+        'Authorization': `Bearer ${localStorage.getItem('access_token')}`
+      }
+    });
+    return response;
+  } catch (error) {
+    if (error.response) {
+      throw error;
+    } else {
+      throw new Error('Error de red o de servidor');
+    }
+  }
+};
+
+// Función para editar una etapa
+export const modifyEtapa = async (idEtapa, nombre) => {
+  try {
+    const url = `/admin/etapas/${idEtapa}`;
+    const response = await api.put(url, { nombre }, {
+      headers: {
+        'Authorization': `Bearer ${localStorage.getItem('access_token')}`
+      }
+    });
+    return response;
+  } catch (error) {
+    if (error.response) {
+      throw error;
+    } else {
+      throw new Error('Error de red o de servidor');
+    }
+  }
+};
+
+// Función para editar una fase
+export const modifyFase = async (idFase, nombre) => {
+  try {
+    const url = `/admin/fases/${idFase}`;
+    const response = await api.put(url, { nombre }, {
+      headers: {
+        'Authorization': `Bearer ${localStorage.getItem('access_token')}`
+      }
+    });
+    return response;
+  } catch (error) {
+    if (error.response) {
+      throw error;
+    } else {
+      throw new Error('Error de red o de servidor');
+    }
+  }
+};
+
+
 // Función para obtener todas las rubricas
 export const getRubricsAll = async () => {
     try {
