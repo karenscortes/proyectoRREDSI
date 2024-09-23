@@ -117,7 +117,7 @@ export default defineComponent({
                 left_tabs: [{nombre:'Inicio', ruta:'InicioAdminView'}, {nombre:'Perfil', ruta:'PerfilAdmin'}, {nombre:'Cuentas', ruta:'DelegadosAdminView'},{nombre:'Rubricas', ruta:'RubricaAdminView'}],
                 mid_tabs:[
                     {   nombre:"Eventos", 
-                        opciones:[{nombre:'Salas', ruta:'SalasAdminView'}, {nombre:'Asistencia',ruta:'GestionarAsistentes'}, {nombre:'Convocatoria', ruta:'GestionarConvocatorias'}]
+                        opciones:[{nombre:'Salas', ruta:'SalasAdminView'}, {nombre:'Asistencia',ruta:'GestionarAsistentes'}, {nombre:'Convocatoria', ruta:'CrearConvocatoria'}]
                     }
                 ],
                 visibilidad:"d-inline-block"
