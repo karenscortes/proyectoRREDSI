@@ -10,3 +10,9 @@ class AsistentesBase(BaseModel):
 class AsistenciaResponse(AsistentesBase):
     fecha: datetime
     url_comprobante_pago: str
+
+class ConvocatoriaActual(BaseModel):
+    id_convocatoria: int
+    nombre:str
+    fecha_inicio: datetime
+    fecha_fin: datetime

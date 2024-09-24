@@ -1,7 +1,7 @@
 <template>
     <div>
-        <div class="container pt-5">
-            <div class="row mb-5 mt-2">
+        <div class="container pt-3">
+            <div class="row mb-3 mt-2">
                 <div class="col">
                     <div class="section_title text-center">
                         <h1>Asistencia</h1>
@@ -15,7 +15,7 @@
                     <div class="row">
                         <div class="col-8">
                             <input type="text" v-model="busqueda" id="busqueda" class="form-control"
-                                placeholder="Buscar...">
+                                placeholder="Ingresa número de documento">
                         </div>
                         <div class="col-4">
                             <button class="btn w-100 font-weight-bold" @click="buscarPorDocumento">Buscar</button>
@@ -56,6 +56,10 @@
                         style="border-radius: 20px;">
                         Evaluadores
                     </a>
+                </div>
+                <div v-if="asistentes.length > 0" class="col-auto ml-auto d-flex align-items-center">
+                    <span class="text-dark fs-8">Fecha: </span>
+                    <span class="text-muted ml-3">{{asistentes[0].fecha }}</span>
                 </div>
             </div>
 
@@ -108,7 +112,7 @@
 </template>
 
 <script>
-import { asistenciaEvento, actualizarAsistencia, obtenerAsistentesPorSala, obtenerAsistentesPorRol, obtenerAsistentePorDocumento, obtenerSalas } from '@/services/delegadoService';
+import { asistenciaEvento, actualizarAsistencia, obtenerAsistentesPorSala, obtenerAsistentesPorRol, obtenerAsistentePorDocumento, obtenerSalas, obtenerConvocatoria } from '@/services/delegadoService';
 
 export default {
     data() {
@@ -119,20 +123,18 @@ export default {
             opciones: [], // Lista de salas
             currentPage: 1,
             totalPages: 0,
-            filtroActivo: 'Todos' // filtro
+            filtroActivo: 'Todos', // filtro
         };
     },
     methods: {
         async fetchAsistentes() {
             try {
-                const response = await asistenciaEvento(this.currentPage);
+                const response = await asistenciaEvento(this.currentPage, this.fechaInicio, this.fechaFin);
                 this.asistentes = response.data.asistentes;
                 this.totalPages = response.data.total_pages;
-                console.log('Total Pages:', this.totalPages);
-                console.log('current pages:', this.currentPage);
-                this.filtroActivo = 'Todos'; // Restablecer a 'Todos'
-                this.busqueda = ''; //lipio buscador
-                this.salaSeleccionada = ''; //lipio select
+                this.filtroActivo = 'Todos';
+                this.busqueda = '';
+                this.salaSeleccionada = '';
             } catch (error) {
                 alert("Error al obtener asistentes: " + error);
             }
@@ -151,7 +153,8 @@ export default {
             try {
                 const response = await obtenerAsistentesPorRol('Ponente', this.currentPage);
                 this.asistentes = response.data.asistentes;
-                this.filtroActivo = 'Ponentes'; // Cambiar filtro a 'Ponentes'
+                this.totalPages= response.data.total_pages;
+                this.filtroActivo = 'Ponentes';
             } catch (error) {
                 alert("Error al filtrar ponentes: " + error);
             }
@@ -161,7 +164,8 @@ export default {
             try {
                 const response = await obtenerAsistentesPorRol('Evaluador', this.currentPage);
                 this.asistentes = response.data.asistentes;
-                this.filtroActivo = 'Evaluadores'; // Cambiar filtro a 'Evaluadores'
+                this.totalPages= response.data.total_pages;
+                this.filtroActivo = 'Evaluadores';
             } catch (error) {
                 alert("Error al filtrar evaluadores: " + error);
             }
@@ -178,10 +182,15 @@ export default {
 
         async buscarPorDocumento() {
             try {
-                const response = await obtenerAsistentePorDocumento(this.busqueda);
-                this.asistentes = [response.data];
+                if (this.busqueda.trim() == ""){
+                    alert("Debes ingresar un valor")
+                }else {
+                    const response = await obtenerAsistentePorDocumento(this.busqueda);
+                    this.asistentes = [response.data];
+                }
+                
             } catch (error) {
-                alert("Error al buscar asistente: " + error);
+                this.fetchAsistentes();
             }
         },
 
@@ -196,9 +205,9 @@ export default {
         },
         nextPage() {
             if (this.currentPage < this.totalPages) {
-                this.currentPage++; 
+                this.currentPage++;
                 this.fetchAsistentes();
-                this.fetchAsistentesSalas(); 
+                this.fetchAsistentesSalas();
             }
         },
 
@@ -214,14 +223,33 @@ export default {
             this.currentPage = pagina;
             this.fetchAsistentes();
         },
+
+
+        async fetchConvocatoriaActual() {
+            try {
+                const response = await obtenerConvocatoria();
+                const convocatoria = response.convocatoria;
+                if (!convocatoria) {
+                    throw new Error("No se encontró la convocatoria.");
+                }
+                this.fechaInicio = convocatoria.fecha_inicio;
+                this.fechaFin = convocatoria.fecha_fin;
+                this.fetchAsistentes();
+            } catch (error) {
+                alert("Error al obtener la convocatoria actual: " + error.message);
+            }
+        },
+
     },
     // Final de los metodos
     mounted() {
-        this.fetchAsistentes();
-        this.fetchAsistentesSalas(); // Cargar salas disponibles
-
+        const obtenerDatos = async () => {
+            await this.fetchConvocatoriaActual();
+            await this.fetchAsistentesSalas();
+        }
+        obtenerDatos();
     }
-};
+}
 </script>
 
 

@@ -142,5 +142,5 @@ def get_projects_by_state(db: Session, nombre_etapa: str, estado_calificacion: s
         }
     except SQLAlchemyError as e:
         print(f"Error al buscar proyectos por estado: {e}")
-        raise HTTPException(status_code=500, detail=f"Error al buscar proyectos por estado {e}")
+        raise HTTPException(status_code=500, detail=f"Error al buscar proyectos por estado")
     

@@ -4,14 +4,11 @@
             <li>
                 <a class="card">
                     <div class="text-center pt-5 card__image">
-                        <a :href="proyecto.url_propuesta_escrita" class="d-inline-flex" target="_blank">
+                        <a @click="selectComponent('DetalleProyecto', proyecto)" class="d-inline-flex" target="_blank">
                             <button type="button" class="btn btn-warning rounded-circle border border-dark mx-2">
                                 <i class="far fa-file-alt h3"></i>
                             </button>
                         </a>
-                        <!-- <button type="button" class="btn btn-warning rounded-circle border border-dark mx-2" @click="selectComponent('CalificarProyectoEvaluadorView', proyecto)">
-                            <i class="fa-solid fa-list-check fa-xl"></i>
-                        </button> -->
                     </div>
                     <div class="card__overlay">
                         <div class="card__header">
@@ -51,7 +48,8 @@
         },
         computed: {
             estadoEvaluacionFormatted() {
-                const status = this.proyecto.estado_evaluacion;
+                const status = this.proyecto.estado_calificacion;
+                console.log(status);
                 if (status === 'P_presencial' || status === 'P_virtual') {
                     return 'Pendiente';
                 } else if (status === 'C_presencial' || status === 'C_virtual') {
