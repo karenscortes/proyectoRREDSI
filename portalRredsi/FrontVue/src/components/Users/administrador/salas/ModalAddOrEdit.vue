@@ -24,7 +24,7 @@
           </h3>
         </div>
         <div class="modal-body mt-3">
-          <form>
+          <form @submit.prevent="AddOrEdit">
             <!--Select Área-->
             <div class="form-group row justify-content-center">
               <label
@@ -82,6 +82,7 @@
                   type="text"
                   class="form-control form-control-sm w-100"
                   id="asignarNumSala"
+                  v-model="num_sala"
                 />
               </div>
             </div>
@@ -99,6 +100,8 @@
 <script>
 import { reactive } from "vue";
 import { ref } from "vue";
+import { getDelegatesAll } from '@/services/administradorService';
+
 export default {
   props: {
     //Objeto que se recibe para cuando se va a editar
@@ -152,11 +155,29 @@ export default {
         nombre: "Milena",
       },
     ]);
+
+    // const obtenerDelegados = async ()=>{
+    //   const delegados = await getDelegatesAll();
+    //   console.log(delegados.data);
+    // }
     
     //Propiedades en las que se guardara la info(v-model)
     const idAreaConocimiento = ref(props.infoEditar.p_idAreaConocimiento);
     const idDelegado = ref(props.infoEditar.p_idDelegado);
     const idSala = ref(props.infoEditar.p_idSala);
+    const num_sala = ref("");
+
+    const AddOrEdit = ()=>{
+      if(props.infoEditar.p_idSala != null){
+        console.log('editar sala');
+      }else{
+        console.log("area "+idAreaConocimiento.value)
+        console.log("delegado "+idDelegado.value)
+        console.log("num_sala "+num_sala.value)
+
+        console.log('crear sala');
+      }
+    }
 
     return { 
       arrayAreasConocimiento,
@@ -165,8 +186,14 @@ export default {
       idDelegado,
       idSala,
       closeModal,
+      num_sala,
+      AddOrEdit
+      // obtenerDelegados
     };
-  }
+  },
+  // mounted(){
+  //   this.obtenerDelegados();
+  // }
 };
 </script>
 <style scoped>

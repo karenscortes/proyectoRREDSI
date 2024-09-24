@@ -20,7 +20,7 @@ def get_unassigned_projects(db: Session, page: int = 1, page_size: int = 10):
                                 INNER JOIN areas_conocimiento ON (proyectos.id_area_conocimiento = areas_conocimiento.id_area_conocimiento)
                                 INNER JOIN proyectos_convocatoria ON (proyectos.id_proyecto = proyectos_convocatoria.id_proyecto)              
                         WHERE proyectos.estado_asignacion= 'pendiente'
-                        AND proyectos_convocatoria.id_convocatoria IN (
+                        AND proyectos_convocatoria.id_convocatoria = (
                                 SELECT id_convocatoria
                                 FROM convocatorias
                                 WHERE estado = 'en curso'
@@ -54,4 +54,36 @@ def get_all_authors(db: Session,  id_proyecto:int):
         return result
     except SQLAlchemyError as e:
         print(f"Error al obtener autores del proyecto: {e}")
-        raise HTTPException(status_code=500, detail="al obtener autores del proyecto")
+        raise HTTPException(status_code=500, detail="Error al obtener autores del proyecto")
+    
+def get_assignment_dates(db: Session):
+    try:    
+        first_sql = text(
+             """SELECT programacion_fases.fecha_inicio, programacion_fases.fecha_fin 
+                FROM programacion_fases JOIN fases ON (programacion_fases.id_fase = fases.id_fase) 
+                WHERE fases.id_etapa = 2 
+                AND fases.nombre = 'Asignaciones' 
+                AND programacion_fases.id_convocatoria = (
+                                SELECT id_convocatoria
+                                FROM convocatorias
+                                WHERE estado = 'en curso'
+                )"""
+        )
+        first_dates = db.execute(first_sql).fetchone()
+
+        second_sql = text(
+             """SELECT programacion_fases.fecha_inicio, programacion_fases.fecha_fin, convocatorias.fecha_inicio, convocatorias.fecha_fin 
+                FROM programacion_fases JOIN fases ON (programacion_fases.id_fase = fases.id_fase)
+                        JOIN convocatorias ON (programacion_fases.id_convocatoria = convocatorias.id_convocatoria) 
+                WHERE fases.id_etapa = 1 
+                AND fases.nombre = 'Asignaciones' 
+                AND convocatorias.estado = 'en curso'
+               """
+        )
+
+        second_dates = db.execute(second_sql).fetchone()
+
+        return first_dates,second_dates
+    except SQLAlchemyError as e:
+        print(f"Error al obtener las fechas de asignación: {e}")
+        raise HTTPException(status_code=500, detail="Error al obtener las fechas")
