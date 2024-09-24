@@ -26,6 +26,11 @@ class AssignmentInPesonStage(BaseModel):
     inicio_presencial: date
     fin_presencial: date
 
+class call_dates(BaseModel):
+    fecha_inicio: date
+    fecha_fin: date
+
 class AssignmentDates(BaseModel):
     virtual_stage: AssignmentVirtualStage
     in_person_stage: AssignmentInPesonStage
+    call_period: call_dates

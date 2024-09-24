@@ -56,5 +56,9 @@ async def read_dates(
         "in_person_stage": {
            "inicio_presencial": second_dates[0],
             "fin_presencial": second_dates[1]
+        },
+        "call_period": {
+           "fecha_inicio": second_dates[2],
+            "fecha_fin": second_dates[3]
         }
     }

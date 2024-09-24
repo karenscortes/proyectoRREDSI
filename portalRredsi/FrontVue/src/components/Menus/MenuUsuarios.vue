@@ -103,8 +103,11 @@ import { useAuthStore } from "@/store";
 export default defineComponent({
     emits: ['component-selected'],
     setup(_,{emit}) {
+        //propiedades para las opciones  del menú que se habilitan dependiendo dde la convocatoria en curso y sus fases 
         const asignacion1 = ref('disabled');
         const asignacion2 = ref('disabled');
+        const otras_opciones = ref('');
+
         const currentDate = ref(new Date().toISOString().split('T')[0]);
         const authStore = useAuthStore(); 
         const router = useRouter(); 
@@ -119,11 +122,16 @@ export default defineComponent({
         const getAssignmentDates = async () => {
             try {
                 const fechas = await obtenerFechasAsignaciones();
-                if(currentDate.value >= fechas.data.virtual_stage.inicio_virtual && currentDate.value <= fechas.data.virtual_stage.fin_virtual){
-                    asignacion1.value='';
-                }
-                if(currentDate.value >= fechas.data.in_person_stage.inicio_presencial && currentDate.value <= fechas.data.in_person_stage.fin_presencial){
-                    asignacion2.value='';
+                if(currentDate >= fechas.data.call_period.fecha_inicio && currentDate <= fechas.data.call_period.fecha_fin)
+                {
+                    if(currentDate.value >= fechas.data.virtual_stage.inicio_virtual && currentDate.value <= fechas.data.virtual_stage.fin_virtual){
+                        asignacion1.value='';
+                    }
+                    if(currentDate.value >= fechas.data.in_person_stage.inicio_presencial){
+                        asignacion2.value='';
+                    }
+                }else{
+                    otras_opciones.value = 'disabled';
                 }
             } catch (error) {
                 alert(error.data.detail || 'Error al obtener fechas');
@@ -147,15 +155,15 @@ export default defineComponent({
                 left_tabs: [{nombre:'Inicio', ruta:'PaginaInicioDelegado', uso: ''}, {nombre:'Perfil', ruta:'PerfilDelegados', uso: ''}],
                 mid_tabs:[
                     {   nombre:"Evaluadores", 
-                        opciones:[{nombre:'Postulaciones', ruta:'PostulacionesEvaluadores', uso: ''}, {nombre:'Lista de Evaluadores',ruta:'ListaEvaluadores', uso: ''}]
+                        opciones:[{nombre:'Postulaciones', ruta:'PostulacionesEvaluadores', uso: otras_opciones}, {nombre:'Lista de Evaluadores',ruta:'ListaEvaluadores', uso: ''}]
                     },
                     {
                         nombre:"Proyectos", 
-                        opciones:[{nombre:'Asignacion de Proyectos', ruta:'AsignarProyectos',uso: asignacion1 }, {nombre:'Lista de Proyectos',ruta:'ListaProyectosDelegado', uso: ''}]
+                        opciones:[{nombre:'Asignacion de Proyectos', ruta:'AsignarProyectos',uso: asignacion1 }, {nombre:'Lista de Proyectos',ruta:'ListaProyectosDelegado', uso: otras_opciones}]
                     },
                     {
                         nombre:"Evento", 
-                        opciones:[{nombre:'Salas', ruta:'ListaSalasDelegado',uso: asignacion2}, {nombre:'Asistencia',ruta:'AsistenciaEvento',uso: ''}]
+                        opciones:[{nombre:'Salas', ruta:'ListaSalasDelegado',uso: asignacion2}, {nombre:'Asistencia',ruta:'AsistenciaEvento',uso: asignacion2}]
                     }
                 ],
                 visibilidad:"d-inline-block"
