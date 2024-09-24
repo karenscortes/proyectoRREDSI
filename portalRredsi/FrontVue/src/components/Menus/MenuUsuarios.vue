@@ -19,7 +19,7 @@
                                     {{ tab.nombre }}
                                 </a>
                                 <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                <li v-for="(opcion, index) in tab.opciones" :key="index"><a href="#"  class="dropdown-item" @click="selectComponent(opcion.ruta)">{{ opcion.nombre }}</a></li>
+                                <li v-for="(opcion, index) in tab.opciones" :key="index"><a href="#"  :class="['dropdown-item', opcion.uso]" aria-disabled="true" @click="selectComponent(opcion.ruta)">{{ opcion.nombre }}</a></li>
                                 </ul>
                             </div>
                         </li>
@@ -63,7 +63,7 @@
                                 {{ tab.nombre }}
                             </a>
                             <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                <li v-for="(opcion, index) in tab.opciones" :key="index"><a href="#"  :class="`dropdown-item ${opcion.uso}`" @click="selectComponent(opcion.ruta)">{{ opcion.nombre }}</a></li>
+                                <li v-for="(opcion, index) in tab.opciones" :key="index"><a href="#" :class="['dropdown-item', opcion.uso]" aria-disabled="true" @click="selectComponent(opcion.ruta)">{{ opcion.nombre }}</a></li>
                             </ul>
                         </div>
                     </li>
@@ -95,7 +95,7 @@
 
 <script>
 import { obtenerFechasAsignaciones} from '@/services/delegadoService'
-import { ref } from "vue";
+import { ref, onMounted } from "vue";
 import { defineComponent,reactive } from "vue";
 import { useRouter } from "vue-router";
 import { useAuthStore } from "@/store";
@@ -103,9 +103,9 @@ import { useAuthStore } from "@/store";
 export default defineComponent({
     emits: ['component-selected'],
     setup(_,{emit}) {
-        const asignacion1 = ref('');
-        const asignacion2 = ref('');
-        const currentDate = ref(new Date().toLocaleDateString());
+        const asignacion1 = ref('disabled');
+        const asignacion2 = ref('disabled');
+        const currentDate = ref(new Date().toISOString().split('T')[0]);
         const authStore = useAuthStore(); 
         const router = useRouter(); 
         const user = authStore.user;
@@ -119,18 +119,16 @@ export default defineComponent({
         const getAssignmentDates = async () => {
             try {
                 const fechas = await obtenerFechasAsignaciones();
-                if(currentDate < fechas.data.virtual_stage.inicio_virtual || currentDate > fechas.data.virtual_stage.fin_virtual){
-                    asignacion1.value='disabled';
+                if(currentDate.value >= fechas.data.virtual_stage.inicio_virtual && currentDate.value <= fechas.data.virtual_stage.fin_virtual){
+                    asignacion1.value='';
                 }
-                if(currentDate < fechas.data.in_person_stage.inicio_presencial || currentDate > fechas.data.in_person_stage.fin_presencial){
-                    asignacion2.value='disabled';
+                if(currentDate.value >= fechas.data.in_person_stage.inicio_presencial && currentDate.value <= fechas.data.in_person_stage.fin_presencial){
+                    asignacion2.value='';
                 }
             } catch (error) {
                 alert(error.data.detail || 'Error al obtener fechas');
             }
         };
-
-
 
         if (user?.id_rol === 3) {
             Object.assign(state, {
@@ -144,9 +142,9 @@ export default defineComponent({
 
             });
         } else if (user?.id_rol === 2) {
-            // getAssignmentDates();
+            
             Object.assign(state, {
-                left_tabs: [{nombre:'Inicio', ruta:'PaginaInicioDelegado'}, {nombre:'Perfil', ruta:'PerfilDelegados'}],
+                left_tabs: [{nombre:'Inicio', ruta:'PaginaInicioDelegado', uso: ''}, {nombre:'Perfil', ruta:'PerfilDelegados', uso: ''}],
                 mid_tabs:[
                     {   nombre:"Evaluadores", 
                         opciones:[{nombre:'Postulaciones', ruta:'PostulacionesEvaluadores', uso: ''}, {nombre:'Lista de Evaluadores',ruta:'ListaEvaluadores', uso: ''}]
@@ -185,9 +183,15 @@ export default defineComponent({
             router.push('/'); 
         };
 
+        onMounted(() => {
+            getAssignmentDates();
+        });
+        
+        
         return {
             user,
             ...state,
+            getAssignmentDates,
             selectComponent,
             logout
         };
@@ -252,6 +256,12 @@ export default defineComponent({
         -webkit-text-shadow: rgba(0,0,0,.01) 0 0 1px;
         text-shadow: rgba(0,0,0,.01) 0 0 1px;
     }
+    a.disabled {
+        pointer-events: none;  
+        opacity: 0.5;          
+        color:#a5a5a5;        
+    }
+
     p a:active
     {
         position: relative;
