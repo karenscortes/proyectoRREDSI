@@ -122,7 +122,7 @@ export default defineComponent({
         const getAssignmentDates = async () => {
             try {
                 const fechas = await obtenerFechasAsignaciones();
-                if(currentDate >= fechas.data.call_period.fecha_inicio && currentDate <= fechas.data.call_period.fecha_fin)
+                if(currentDate.value >= fechas.data.call_period.fecha_inicio && currentDate.value <= fechas.data.call_period.fecha_fin)
                 {
                     if(currentDate.value >= fechas.data.virtual_stage.inicio_virtual && currentDate.value <= fechas.data.virtual_stage.fin_virtual){
                         asignacion1.value='';
