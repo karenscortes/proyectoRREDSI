@@ -28,7 +28,7 @@
                   </div>
                 </div>
               </li>
-              <li class="main_nav_item text-dark"><a href="#" @click="selectComponent('RegistroEvaluadores')">Evaluadores</a></li>
+              <li class="main_nav_item text-dark"><a href="#" @click="selectComponent('RegistroUsuario')">Evaluadores</a></li>
               <li class="main_nav_item"><a href="#" type="button" data-toggle="modal" data-target="#LoginModal">Login</a></li>
             </ul>
           </div>

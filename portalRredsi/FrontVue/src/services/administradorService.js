@@ -209,3 +209,22 @@ export const getDelegatesAll = async (page = 1, page_size = 10) => {
     }
   }
 };
+
+// Función consultar las reas de conocimiento
+export const getAreasConocimiento = async () => {
+  try {
+      const url = `/generales/get_areas_conocimiento/`;
+      const response = await api.get(url, {
+      headers: {
+        'Authorization': `Bearer ${localStorage.getItem('access_token')}` 
+      }
+    });
+    return response;
+  } catch (error) {
+    if (error.response) {
+      throw error;
+    } else {
+      throw new Error('Error de red o de servidor'); 
+    }
+  }
+};
