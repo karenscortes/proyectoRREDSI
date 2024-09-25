@@ -484,7 +484,7 @@ def convertir_timedelta_a_hora(timedelta_obj: timedelta) -> str:
 def get_datos_rubrica_proyecto(db: Session, id_proyecto: int, id_usuario: int):
     try:
         sql_query = text("""
-            SELECT items_rubrica.* FROM items_rubrica
+            SELECT DISTINCT items_rubrica.* FROM items_rubrica
             JOIN rubricas ON items_rubrica.id_rubrica = rubricas.id_rubrica 
             JOIN participantes_proyecto ON rubricas.id_etapa = participantes_proyecto.id_etapa
             JOIN proyectos_convocatoria ON participantes_proyecto.id_proyecto = proyectos_convocatoria.id_proyecto         
