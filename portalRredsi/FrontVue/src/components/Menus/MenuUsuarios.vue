@@ -162,13 +162,10 @@ export default defineComponent({
                 }else{
                     otras_opciones.value = 'disabled';
                 }
-
-                otras_opciones.value = 'disabled'
-                titulo.value = 'Importante!'
-                mensaje.value='Convocatoria activa';
-                openModal();
             } catch (error) {
                 otras_opciones.value = 'disabled'
+
+                //Ejemplo Modal Informativo
                 titulo.value = 'Importante!'
                 mensaje.value='En estos momentos no hay ninguna convocatoria bien definida';
                 openModal();
