@@ -1,4 +1,3 @@
-from typing import List
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 from appv1.routers.login import get_current_user
@@ -32,8 +31,8 @@ async def obtener_proyectos_por_etapa(
 # Ruta para obtener los proyectos estados (Pendientes/Calificados) paginados
 @router_proyectos.get("/obtener-proyectos-por-estado/", response_model=PaginatedResponse)
 async def obtener_proyectos_por_estado(
-    estado_calificacion: str,
     nombre_etapa: str,
+    estado_calificacion: str,
     page: int = 1,
     page_size: int = 10,
     current_user: UserResponse = Depends(get_current_user),
