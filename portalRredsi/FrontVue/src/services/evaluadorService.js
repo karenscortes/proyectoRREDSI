@@ -100,3 +100,22 @@ export const insertarPostulacionEvaluador = async (postulacionData) => {
     }
   }
 };
+
+// Función para insertar una respuesta de rúbrica
+export const insertarRespuestaRubrica = async (respuestaData) => {
+  try {
+    const response = await api.post('/calificacionRubrica/insertar-calificacion-rubrica/', respuestaData, {
+      headers: {
+        'Authorization': `Bearer`, // Incluye el token de autenticación
+        'Content-Type': 'application/json'
+      }
+    });
+    return response;
+  } catch (error) {
+    if (error.response) {
+      throw error; // Lanza el error para que lo maneje el store o componente
+    } else {
+      throw new Error('Error de red o de servidor'); // Manejar errores de red
+    }
+  }
+};
