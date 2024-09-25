@@ -91,34 +91,63 @@
         </div>
 
     </div>
+
+    <!-- Modal para Mensajes informativos -->
+    <FlashMessage v-if="isOpen" @close="closeModal" :titulo="titulo" :mensaje="mensaje" :tipo="tipo"/>
 </template>
 
 <script>
 import { obtenerFechasAsignaciones} from '@/services/delegadoService'
-import { ref, onMounted } from "vue";
+import { ref, onMounted} from "vue";
 import { defineComponent,reactive } from "vue";
 import { useRouter } from "vue-router";
 import { useAuthStore } from "@/store";
+import FlashMessage from '../FlashMessage.vue';
 
 export default defineComponent({
     emits: ['component-selected'],
+    components: {
+        FlashMessage, // Registra el componente FlashMessage
+    },
     setup(_,{emit}) {
         //propiedades para las opciones  del menú que se habilitan dependiendo dde la convocatoria en curso y sus fases 
         const asignacion1 = ref('disabled');
         const asignacion2 = ref('disabled');
         const otras_opciones = ref('');
-
+        
+        //obteniendo fecha actual
         const currentDate = ref(new Date().toISOString().split('T')[0]);
-        const authStore = useAuthStore(); 
-        const router = useRouter(); 
-        const user = authStore.user;
 
+        //variable reactivas que se enviarán a modal informativo
+        const titulo  = ref({});
+        const mensaje  = ref({});
+        const tipo  = ref(1);
+        const isOpen = ref(false); 
+
+        //objeto reactivo que obtendrán las opciones del menú según el usuario logueado        
         const state = reactive({
             left_tabs: [],
             mid_tabs: [],
             visibilidad: "d-none",
         });
 
+        //Se obtiene la info del usuario logueado
+        const authStore = useAuthStore(); 
+        const router = useRouter(); 
+        const user = authStore.user;
+
+        //Metodos para abrir y cerrar el Modal Informativo
+        const openModal = () => {
+        
+            isOpen.value = true; 
+        };
+
+        const closeModal = () =>{
+
+            isOpen.value = false; 
+        }
+
+        //Se obtiene y compara fechas de asignaciones y convocatoria con fecha actual
         const getAssignmentDates = async () => {
             try {
                 const fechas = await obtenerFechasAsignaciones();
@@ -133,8 +162,16 @@ export default defineComponent({
                 }else{
                     otras_opciones.value = 'disabled';
                 }
+
+                otras_opciones.value = 'disabled'
+                titulo.value = 'Importante!'
+                mensaje.value='Convocatoria activa';
+                openModal();
             } catch (error) {
-                alert(error.data.detail || 'Error al obtener fechas');
+                otras_opciones.value = 'disabled'
+                titulo.value = 'Importante!'
+                mensaje.value='En estos momentos no hay ninguna convocatoria bien definida';
+                openModal();
             }
         };
 
@@ -185,22 +222,27 @@ export default defineComponent({
             emit('component-selected', componentName); // Emite un evento para seleccionar el componente
         };
 
+        onMounted(() => {
+            getAssignmentDates();
+        });
+
         // Acción para cerrar sesión
         const logout = () => {
             authStore.logout(); 
             router.push('/'); 
-        };
-
-        onMounted(() => {
-            getAssignmentDates();
-        });
-        
+        };      
         
         return {
             user,
             ...state,
+            isOpen,
+            titulo,
+            mensaje,
+            tipo,
             getAssignmentDates,
             selectComponent,
+            closeModal,
+            openModal,
             logout
         };
     },
