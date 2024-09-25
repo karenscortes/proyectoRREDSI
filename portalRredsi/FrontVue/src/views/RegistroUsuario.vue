@@ -142,6 +142,9 @@
                         <input type="password" v-model="form.confirmarContrasena" class="form-control"
                             id="confirmarContrasena">
                     </div>
+                    <div v-if="form.contrasena != form.confirmarContrasena ">
+                        <p>Las contraseñas no coinciden</p>
+                    </div>
                 </div>
                 <div class="text-center my-3 mb-5">
                     <button type="submit" class="btn" :style="{ background: 'rgb(255, 182, 6)' }">Registrar</button>
