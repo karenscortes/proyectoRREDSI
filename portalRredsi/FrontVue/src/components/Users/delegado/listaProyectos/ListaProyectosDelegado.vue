@@ -104,12 +104,14 @@
     import CalificarProyectoEvaluadorView from '../../../../views/CalificarProyectoEvaluadorView.vue'; 
     import { useAuthStore } from '@/store';     
     import CardListaProyectos from './CardListaProyectos.vue';
+    import DetalleProyecto from './componentsDetalleProyecto/DetalleProyecto.vue';
 
 
     export default {
         components: {
             CardListaProyectos,
-            CalificarProyectoEvaluadorView 
+            CalificarProyectoEvaluadorView,
+            DetalleProyecto
         },
         data() {
             return {
@@ -192,7 +194,7 @@
                     // Mapear estado según la etapa actual
                     const estadoMap = {
                         'Calificado': this.currentEtapa === 'Virtual' ? 'C_virtual' : 'C_presencial',
-                        'Pendiente': this.currentEtapa === 'Virtual' ? 'P_virtual' : 'P_presencial'
+                        'Pendiente': this.currentEtapa === 'Presencial' ? 'P_virtual' : 'P_presencial'
                     };
 
                     this.currentPage = 1;

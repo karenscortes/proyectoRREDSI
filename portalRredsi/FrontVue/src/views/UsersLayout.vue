@@ -33,7 +33,6 @@ import NotAvailable from "./NotAvailable.vue";
 import ListaSalasDelegado from "../components/Users/delegado/listaSalas/ListaSalasDelegado.vue";
 import ListaProyectosDelegado from "../components/Users/delegado/listaProyectos/ListaProyectosDelegado.vue";
 import PaginaInicioDelegado from "../components/Users/delegado/PaginaInicioDelegado.vue";
-
 import InicioAdminView from "./InicioAdminView.vue";
 
 // Styles

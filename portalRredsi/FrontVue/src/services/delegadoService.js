@@ -181,6 +181,24 @@ export const actualizarEstadoProyecto = async (id_proyecto) => {
 };
 
 
+export const obtenerConvocatoria = async () => {
+    try {
+        const response = await api.get('/asistencia/get-convocatoria-actual/', {
+            headers: {
+                'Authorization': `Bearer ${localStorage.getItem('access_token')}`
+            }
+        });
+        return response.data; 
+    } catch (error) {
+        if (error.response) {
+            throw error.response.data; 
+        } else {
+            throw new Error('Error de red o de servidor'); 
+        }
+    }
+};
+
+
 //Asistencia
 export const asistenciaEvento = async (page= 1, page_size = 10) => {
     try {
@@ -315,15 +333,15 @@ export const obtenerListaProyectos = async (nombreEtapa, page = 1, pageSize = 10
 };
 
 //Filtros proyectos por estado (pendientes / calificados)
-export const obtenerProyectosPorEstado = async (nombreEtapa, estado_evaluacion, page = 1, pageSize = 10) => {
+export const obtenerProyectosPorEstado = async (nombreEtapa, estado_calificacion, page = 1, pageSize = 10) => {
     try {
-        const response = await api.get('/listaProyectos/obtener-proyectos-por-estado/', {
+        const response = await api.get(`/listaProyectos/obtener-proyectos-por-estado/?nombre_etapa=${nombreEtapa}&estado_calificacion=${estado_calificacion}&page=${page}&page_size=${pageSize}`, {
             headers: {
             'Authorization': `Bearer` // Incluye el token de autenticación
             },
         params: {
             nombre_etapa: nombreEtapa,
-            estado_evaluacion: estado_evaluacion,
+            estado_calificacion: estado_calificacion,
             page: page,
             page_size: pageSize
         }

@@ -1,7 +1,22 @@
+from datetime import date
 from fastapi import HTTPException
 from sqlalchemy import text
 from sqlalchemy.orm import Session
 from sqlalchemy.exc import SQLAlchemyError
+
+from appv1.schemas.delegado.asistencia import ConvocatoriaActual
+
+
+def get_convocatoria_actual(db: Session):
+    try:
+        sql = text("SELECT * FROM convocatorias WHERE estado = 'en curso'")
+        result = db.execute(sql).mappings().all()
+
+        return [ConvocatoriaActual(**row) for row in result]
+    except SQLAlchemyError as e:
+        print(f"Error al obtener convocatorias: {e}")
+        raise HTTPException(status_code=500, detail="Error al obtener convocatorias")
+
 
 # Todos los asistentes
 def get_asistentes_por_convocatoria(db: Session, page: int = 1, page_size: int = 10):
@@ -11,15 +26,13 @@ def get_asistentes_por_convocatoria(db: Session, page: int = 1, page_size: int =
             SELECT 
                 asistentes.id_asistente, 
                 asistentes.asistencia,
+                asistentes.fecha,
                 usuarios.id_usuario,
                 usuarios.nombres, 
                 usuarios.apellidos, 
                 usuarios.documento 
             FROM asistentes
             JOIN usuarios ON asistentes.id_usuario = usuarios.id_usuario
-            JOIN salas ON salas.id_usuario = usuarios.id_usuario    
-            JOIN convocatorias ON salas.id_convocatoria = convocatorias.id_convocatoria 
-            WHERE convocatorias.estado = 'en curso'
             LIMIT :page_size OFFSET :offset;
         """)
         
@@ -33,9 +46,6 @@ def get_asistentes_por_convocatoria(db: Session, page: int = 1, page_size: int =
         count_sql = text("""SELECT COUNT(*)
             FROM asistentes
             JOIN usuarios ON asistentes.id_usuario = usuarios.id_usuario
-            JOIN salas ON salas.id_usuario = usuarios.id_usuario      
-            JOIN convocatorias ON salas.id_convocatoria = convocatorias.id_convocatoria 
-            WHERE convocatorias.estado = 'en curso'
             """)
         
         total_asistentes = db.execute(count_sql).scalar()
@@ -52,7 +62,7 @@ def get_asistentes_por_sala(db: Session, numero_sala: str, page: int = 1, page_s
     try:
         offset = (page - 1) * page_size
         sql = text("""
-            SELECT  
+            SELECT  DISTINCT
                 asistentes.id_asistente, 
                 asistentes.asistencia,
                 usuarios.id_usuario,
@@ -68,7 +78,6 @@ def get_asistentes_por_sala(db: Session, numero_sala: str, page: int = 1, page_s
             JOIN detalle_sala ON detalle_sala.id_sala = salas.id_sala
             JOIN proyectos_convocatoria ON detalle_sala.id_proyecto_convocatoria = proyectos_convocatoria.id_proyecto_convocatoria
             JOIN participantes_proyecto ON proyectos_convocatoria.id_proyecto_convocatoria = participantes_proyecto.id_proyectos_convocatoria
-            JOIN usuarios participantes ON participantes_proyecto.id_usuario = participantes.id_usuario  -- Hacemos un alias para evitar ambigüedades en la tabla usuarios
             WHERE salas.numero_sala = :numero_sala
             AND convocatorias.estado = 'en curso'
             LIMIT :page_size OFFSET :offset;
@@ -91,8 +100,6 @@ def get_asistentes_por_sala(db: Session, numero_sala: str, page: int = 1, page_s
             JOIN detalle_sala ON detalle_sala.id_sala = salas.id_sala
             JOIN proyectos_convocatoria ON detalle_sala.id_proyecto_convocatoria = proyectos_convocatoria.id_proyecto_convocatoria
             JOIN participantes_proyecto ON proyectos_convocatoria.id_proyecto_convocatoria = participantes_proyecto.id_proyectos_convocatoria
-            JOIN usuarios participantes ON participantes_proyecto.id_usuario = participantes.id_usuario  -- Hacemos un alias para evitar ambigüedades en la tabla usuarios
-            WHERE salas.numero_sala = :numero_sala
             AND convocatorias.estado = 'en curso'""")
 
         total_asistentes = db.execute(count_sql, {"numero_sala": numero_sala}).scalar()
@@ -137,7 +144,6 @@ def get_asistentes_por_rol(db: Session, rol: str, page: int = 1, page_size: int 
         """)
         
         total_asistentes = db.execute(count_sql, {"rol": rol}).scalar()
-        # Calcular el número total de páginas
         total_pages = (total_asistentes + page_size - 1) // page_size
 
         return result, total_pages

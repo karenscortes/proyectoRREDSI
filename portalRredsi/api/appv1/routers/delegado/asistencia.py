@@ -1,3 +1,4 @@
+from datetime import date
 from typing import List
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
@@ -5,12 +6,32 @@ from appv1.routers.login import get_current_user
 from appv1.schemas.delegado.asistencia import AsistenciaResponse
 from appv1.schemas.usuario import UserResponse
 from db.database import get_db
-from appv1.crud.delegado.asistencia import actualizar_asistencia, get_asistente_por_cedula, get_asistentes_por_convocatoria, get_asistentes_por_rol, get_asistentes_por_sala
+from appv1.crud.delegado.asistencia import actualizar_asistencia, get_asistente_por_cedula, get_asistentes_por_convocatoria, get_asistentes_por_rol, get_asistentes_por_sala, get_convocatoria_actual
 from appv1.crud.permissions import get_permissions
 
 router_asistencia = APIRouter()
 
 MODULE_ASISTENCIA = 12
+MODULE_CONVOCATORIAS = 6
+
+@router_asistencia.get("/get-convocatoria-actual/")
+async def read_convocatoria_actual(
+    current_user: UserResponse = Depends(get_current_user),  
+    db: Session = Depends(get_db)
+):
+    permisos = get_permissions(db, current_user.id_rol, MODULE_CONVOCATORIAS)
+    if not permisos.p_consultar:
+        raise HTTPException(status_code=401, detail="No está autorizado a utilizar este módulo")
+    
+    try:
+        convocatoria_actual = get_convocatoria_actual(db)
+    except HTTPException as e:
+        raise HTTPException(status_code=e.status_code, detail=e.detail)
+    if not convocatoria_actual:
+        raise HTTPException(status_code=404, detail="No se encontró ninguna convocatoria en curso")
+    return {
+        "convocatoria": convocatoria_actual  
+    }
 
 #Ruta para traer todos los asistentes de una convocatoria en curso
 @router_asistencia.get("/get-all-asistentes/", response_model=dict)

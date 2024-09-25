@@ -72,21 +72,16 @@ def get_assignment_dates(db: Session):
         first_dates = db.execute(first_sql).fetchone()
 
         second_sql = text(
-             """SELECT programacion_fases.fecha_inicio, programacion_fases.fecha_fin 
-                FROM programacion_fases JOIN fases ON (programacion_fases.id_fase = fases.id_fase) 
+             """SELECT programacion_fases.fecha_inicio, programacion_fases.fecha_fin, convocatorias.fecha_inicio, convocatorias.fecha_fin 
+                FROM programacion_fases JOIN fases ON (programacion_fases.id_fase = fases.id_fase)
+                        JOIN convocatorias ON (programacion_fases.id_convocatoria = convocatorias.id_convocatoria) 
                 WHERE fases.id_etapa = 1 
                 AND fases.nombre = 'Asignaciones' 
-                AND programacion_fases.id_convocatoria = (
-                                SELECT id_convocatoria
-                                FROM convocatorias
-                                WHERE estado = 'en curso'
-                )"""
+                AND convocatorias.estado = 'en curso'
+               """
         )
 
         second_dates = db.execute(second_sql).fetchone()
-
-        if not first_dates or not second_dates:
-            raise HTTPException(status_code=404, detail="No se encontraron fechas para las fases de asignaciones")
 
         return first_dates,second_dates
     except SQLAlchemyError as e:
