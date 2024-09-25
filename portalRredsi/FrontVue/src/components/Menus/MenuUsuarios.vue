@@ -19,7 +19,7 @@
                                     {{ tab.nombre }}
                                 </a>
                                 <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                <li v-for="(opcion, index) in tab.opciones" :key="index"><a href="#"  class="dropdown-item" @click="selectComponent(opcion.ruta)">{{ opcion.nombre }}</a></li>
+                                <li v-for="(opcion, index) in tab.opciones" :key="index"><a href="#"  :class="['dropdown-item', opcion.uso]" aria-disabled="true" @click="selectComponent(opcion.ruta)">{{ opcion.nombre }}</a></li>
                                 </ul>
                             </div>
                         </li>
@@ -63,7 +63,7 @@
                                 {{ tab.nombre }}
                             </a>
                             <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                <li v-for="(opcion, index) in tab.opciones" :key="index"><a href="#"  class="dropdown-item" @click="selectComponent(opcion.ruta)">{{ opcion.nombre }}</a></li>
+                                <li v-for="(opcion, index) in tab.opciones" :key="index"><a href="#" :class="['dropdown-item', opcion.uso]" aria-disabled="true" @click="selectComponent(opcion.ruta)">{{ opcion.nombre }}</a></li>
                             </ul>
                         </div>
                     </li>
@@ -91,27 +91,89 @@
         </div>
 
     </div>
+
+    <!-- Modal para Mensajes informativos -->
+    <FlashMessage v-if="isOpen" @close="closeModal" :titulo="titulo" :mensaje="mensaje" :tipo="tipo"/>
 </template>
 
 <script>
+import { obtenerFechasAsignaciones} from '@/services/delegadoService'
+import { ref, onMounted} from "vue";
 import { defineComponent,reactive } from "vue";
 import { useRouter } from "vue-router";
 import { useAuthStore } from "@/store";
+import FlashMessage from '../FlashMessage.vue';
 
 export default defineComponent({
     emits: ['component-selected'],
+    components: {
+        FlashMessage, // Registra el componente FlashMessage
+    },
     setup(_,{emit}) {
-        const authStore = useAuthStore(); 
-        const router = useRouter(); 
-        const user = authStore.user;
+        //propiedades para las opciones  del menú que se habilitan dependiendo dde la convocatoria en curso y sus fases 
+        const asignacion1 = ref('disabled');
+        const asignacion2 = ref('disabled');
+        const otras_opciones = ref('');
+        
+        //obteniendo fecha actual
+        const currentDate = ref(new Date().toISOString().split('T')[0]);
 
+        //variable reactivas que se enviarán a modal informativo
+        const titulo  = ref({});
+        const mensaje  = ref({});
+        const tipo  = ref(1);
+        const isOpen = ref(false); 
+
+        //objeto reactivo que obtendrán las opciones del menú según el usuario logueado        
         const state = reactive({
             left_tabs: [],
             mid_tabs: [],
             visibilidad: "d-none",
         });
 
+        //Se obtiene la info del usuario logueado
+        const authStore = useAuthStore(); 
+        const router = useRouter(); 
+        const user = authStore.user;
 
+        //Metodos para abrir y cerrar el Modal Informativo
+        const openModal = () => {
+        
+            isOpen.value = true; 
+        };
+
+        const closeModal = () =>{
+
+            isOpen.value = false; 
+        }
+
+        //Se obtiene y compara fechas de asignaciones y convocatoria con fecha actual
+        const getAssignmentDates = async () => {
+            try {
+                const fechas = await obtenerFechasAsignaciones();
+                if(currentDate.value >= fechas.data.call_period.fecha_inicio && currentDate.value <= fechas.data.call_period.fecha_fin)
+                {
+                    if(currentDate.value >= fechas.data.virtual_stage.inicio_virtual && currentDate.value <= fechas.data.virtual_stage.fin_virtual){
+                        asignacion1.value='';
+                    }
+                    if(currentDate.value >= fechas.data.in_person_stage.inicio_presencial){
+                        asignacion2.value='';
+                    }
+                }else{
+                    otras_opciones.value = 'disabled';
+                }
+
+                otras_opciones.value = 'disabled'
+                titulo.value = 'Importante!'
+                mensaje.value='Convocatoria activa';
+                openModal();
+            } catch (error) {
+                otras_opciones.value = 'disabled'
+                titulo.value = 'Importante!'
+                mensaje.value='En estos momentos no hay ninguna convocatoria bien definida';
+                openModal();
+            }
+        };
 
         if (user?.id_rol === 3) {
             Object.assign(state, {
@@ -125,23 +187,25 @@ export default defineComponent({
 
             });
         } else if (user?.id_rol === 2) {
+            
             Object.assign(state, {
-                left_tabs: [{nombre:'Inicio', ruta:'PaginaInicioDelegado'}, {nombre:'Perfil', ruta:'PerfilDelegados'}],
+                left_tabs: [{nombre:'Inicio', ruta:'PaginaInicioDelegado', uso: ''}, {nombre:'Perfil', ruta:'PerfilDelegados', uso: ''}],
                 mid_tabs:[
                     {   nombre:"Evaluadores", 
-                        opciones:[{nombre:'Postulaciones', ruta:'PostulacionesEvaluadores'}, {nombre:'Lista de Evaluadores',ruta:'ListaEvaluadores'}]
+                        opciones:[{nombre:'Postulaciones', ruta:'PostulacionesEvaluadores', uso: otras_opciones}, {nombre:'Lista de Evaluadores',ruta:'ListaEvaluadores', uso: ''}]
                     },
                     {
                         nombre:"Proyectos", 
-                        opciones:[{nombre:'Asignacion de Proyectos', ruta:'AsignarProyectos'}, {nombre:'Lista de Proyectos',ruta:'ListaProyectosDelegado'}]
+                        opciones:[{nombre:'Asignacion de Proyectos', ruta:'AsignarProyectos',uso: asignacion1 }, {nombre:'Lista de Proyectos',ruta:'ListaProyectosDelegado', uso: otras_opciones}]
                     },
                     {
                         nombre:"Evento", 
-                        opciones:[{nombre:'Salas', ruta:'ListaSalasDelegado'}, {nombre:'Asistencia',ruta:'AsistenciaEvento'}]
+                        opciones:[{nombre:'Salas', ruta:'ListaSalasDelegado',uso: asignacion2}, {nombre:'Asistencia',ruta:'AsistenciaEvento',uso: asignacion2}]
                     }
                 ],
                 visibilidad:"d-inline-block"
             });
+            
         } else if (user?.id_rol === 1) {
             Object.assign(state, {
                 left_tabs: [{nombre:'Inicio', ruta:'PaginaInicioEvaluadorView'}, {nombre:'Perfil', ruta:'PerfilEvaluador'}, {nombre:'Proyectos', ruta:'ProyectosAsignadosEvaluadorView'}],
@@ -158,16 +222,27 @@ export default defineComponent({
             emit('component-selected', componentName); // Emite un evento para seleccionar el componente
         };
 
+        onMounted(() => {
+            getAssignmentDates();
+        });
+
         // Acción para cerrar sesión
         const logout = () => {
             authStore.logout(); 
             router.push('/'); 
-        };
-
+        };      
+        
         return {
             user,
             ...state,
+            isOpen,
+            titulo,
+            mensaje,
+            tipo,
+            getAssignmentDates,
             selectComponent,
+            closeModal,
+            openModal,
             logout
         };
     },
@@ -231,6 +306,12 @@ export default defineComponent({
         -webkit-text-shadow: rgba(0,0,0,.01) 0 0 1px;
         text-shadow: rgba(0,0,0,.01) 0 0 1px;
     }
+    a.disabled {
+        pointer-events: none;  
+        opacity: 0.5;          
+        color:#a5a5a5;        
+    }
+
     p a:active
     {
         position: relative;

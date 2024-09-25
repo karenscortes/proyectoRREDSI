@@ -181,6 +181,24 @@ export const actualizarEstadoProyecto = async (id_proyecto) => {
 };
 
 
+export const obtenerConvocatoria = async () => {
+    try {
+        const response = await api.get('/asistencia/get-convocatoria-actual/', {
+            headers: {
+                'Authorization': `Bearer ${localStorage.getItem('access_token')}`
+            }
+        });
+        return response.data; 
+    } catch (error) {
+        if (error.response) {
+            throw error.response.data; 
+        } else {
+            throw new Error('Error de red o de servidor'); 
+        }
+    }
+};
+
+
 //Asistencia
 export const asistenciaEvento = async (page= 1, page_size = 10) => {
     try {
@@ -294,24 +312,63 @@ export const actualizarAsistencia = async (id_asistente, id_usuario, asistencia)
 };
 
 
-// Proyectos 
-export const obtenerProyectos = async (page= 1, page_size=10) => {
+// Todos los Proyectos 
+export const obtenerListaProyectos = async (nombreEtapa, page = 1, pageSize = 10) => {
     try {
-        const response = await api.get(`/listaProyectos/get-lista-proyectos/?page=${page}&page_size=${page_size}`,{
-            headers: {
-                'Authorization': `Bearer` 
-            }  
+        const response = await api.get('/listaProyectos/obtener-proyectos-por-etapa-paginados/', {
+            params: {
+                nombre_etapa: nombreEtapa,
+                page: page,
+                page_size: pageSize
+            }
         });
-        return response;
+        return response.data;
     } catch (error) {
-        if(error.response){
-            throw error;
-        }else {
-            throw new Error('Error al obtener los proyectos');
+        if (error.response) {
+            throw error; // Lanza el error para que lo maneje el store
+        } else {
+            throw new Error('Error de red o de servidor'); // Manejar errores de red
         }
     }
 };
 
+//Filtros proyectos por estado (pendientes / calificados)
+export const obtenerProyectosPorEstado = async (nombreEtapa, estado_calificacion, page = 1, pageSize = 10) => {
+    try {
+        const response = await api.get(`/listaProyectos/obtener-proyectos-por-estado/?nombre_etapa=${nombreEtapa}&estado_calificacion=${estado_calificacion}&page=${page}&page_size=${pageSize}`, {
+            headers: {
+            'Authorization': `Bearer` // Incluye el token de autenticación
+            },
+        params: {
+            nombre_etapa: nombreEtapa,
+            estado_calificacion: estado_calificacion,
+            page: page,
+            page_size: pageSize
+        }
+        });
+        return response;
+    } catch (error) {
+        if (error.response) {
+            throw error; // Lanza el error para que lo maneje el store
+        } else {
+            throw new Error('Error de red o de servidor'); // Manejar errores de red
+        }
+    }
+};
+
+//Función para obtener las fechas de las fases en las que se hacen las Asignaciones
+export const obtenerFechasAsignaciones = async () => {
+    try {
+      const response = await api.get(`/proyectosSinAsignar/get-assignment-dates/`);
+      return response;
+    } catch (error) {
+      if (error.response) {
+        throw error.response; 
+      } else {
+        throw new Error('Error de red o de servidor'); 
+      }
+    }
+};
 
 
 

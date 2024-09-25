@@ -25,7 +25,8 @@ export default{
           typeof value.p_idSala === 'number' &&
           typeof value.p_numSala === 'string' &&
           typeof value.p_idAreaConocimiento === 'number' &&
-          typeof value.p_areaConocimiento === 'string'
+          typeof value.p_areaConocimiento === 'string' &&
+          Array.isArray(value.p_posiblesAreasConocimiento)
         );
       }
     }

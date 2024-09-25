@@ -33,7 +33,6 @@ import NotAvailable from "./NotAvailable.vue";
 import ListaSalasDelegado from "../components/Users/delegado/listaSalas/ListaSalasDelegado.vue";
 import ListaProyectosDelegado from "../components/Users/delegado/listaProyectos/ListaProyectosDelegado.vue";
 import PaginaInicioDelegado from "../components/Users/delegado/PaginaInicioDelegado.vue";
-
 import InicioAdminView from "./InicioAdminView.vue";
 
 // Styles
@@ -81,7 +80,19 @@ export default {
 
         const authStore = useAuthStore();
         const user = authStore.user;
+
+        //Componente que se mostrará al iniciar sesión
         const currentComponent = ref(NotAvailable);
+
+        if (user?.id_rol === 1) { //Evaluador
+            currentComponent.value = PaginaInicioEvaluadorView;
+        }else if (user?.id_rol === 2){ //Delegado
+            currentComponent.value = PaginaInicioDelegado;
+        }else if (user?.id_rol === 3){ //Admin
+            currentComponent.value = InicioAdminView;
+        }else if(user?.id_rol === 6){ //SuperAdmin
+            currentComponent.value = InicioSuperAdminView;
+        }
 
         const changeComponent = (componentName) => {
             const componentMap = {

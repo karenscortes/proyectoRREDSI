@@ -1,32 +1,46 @@
-from typing import List
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 from appv1.routers.login import get_current_user
+from appv1.schemas.delegado.listaProyectos import PaginatedResponse
 from appv1.schemas.usuario import UserResponse
 from db.database import get_db
-from appv1.crud.delegado.listaProyectos import get_all_projects
 from appv1.crud.permissions import get_permissions
+from appv1.crud.delegado.listaProyectos import get_all_projects, get_projects_by_state
+
 
 router_proyectos = APIRouter()
 
+MODULE_PROYECTOS = 11
 
-@router_proyectos.get("/get-lista-proyectos/", response_model=dict)
-async def read_all_projects(
+# Ruta para obtener los proyectos asignados por etapa (Presencial/Virtual) paginados
+@router_proyectos.get("/obtener-proyectos-por-etapa-paginados/", response_model=PaginatedResponse)
+async def obtener_proyectos_por_etapa(
+    nombre_etapa: str,
     page: int = 1,
     page_size: int = 10,
-    db: Session = Depends(get_db)
+    current_user: UserResponse = Depends(get_current_user),
+    db: Session = Depends(get_db),
 ):
-
-    proyectos, total_pages = get_all_projects(db, page=page, page_size=page_size)
-
-    if len(proyectos) == 0:
-        raise HTTPException(status_code=404, detail="Proyectos no encontrados")
+    permisos = get_permissions(db, current_user.id_rol, MODULE_PROYECTOS)
+    if not permisos.p_consultar:
+        raise HTTPException(status_code=401, detail="No está autorizado a utilizar este modulo")
     
-    lista_proyectos = [dict(proyecto) for proyecto in proyectos]
+    response = get_all_projects(db, nombre_etapa, page, page_size)
+    return response
 
-    return {
-        "proyectos": lista_proyectos,
-        "total_pages": total_pages,
-        "current_page": page,
-        "page_size": page_size
-    }
+# Ruta para obtener los proyectos estados (Pendientes/Calificados) paginados
+@router_proyectos.get("/obtener-proyectos-por-estado/", response_model=PaginatedResponse)
+async def obtener_proyectos_por_estado(
+    nombre_etapa: str,
+    estado_calificacion: str,
+    page: int = 1,
+    page_size: int = 10,
+    current_user: UserResponse = Depends(get_current_user),
+    db: Session = Depends(get_db),   
+):
+    permisos = get_permissions(db, current_user.id_rol, MODULE_PROYECTOS)
+    if not permisos.p_consultar:
+        raise HTTPException(status_code=401, detail="No está autorizado para utilizar este modulo")
+    
+    response = get_projects_by_state(db, nombre_etapa, estado_calificacion, page, page_size)
+    return response

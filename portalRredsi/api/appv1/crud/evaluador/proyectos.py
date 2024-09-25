@@ -280,13 +280,28 @@ def get_proyecto_convocatoria(db: Session, id_proyecto: int):
         raise HTTPException(status_code=500, detail="Error al consultar el proyecto convocatoria")
     
 # Inserción de las respuestas de un proyecto
-def insert_respuesta_rubrica(db: Session, id_item_rubrica: int, id_usuario: int, id_proyecto: int, observacion: str, calificacion: float, calificacion_final: float):
+def insert_respuesta_rubrica(db: Session, id_item_rubrica: int, id_usuario: int, id_proyecto: int, observacion: str, calificacion: float, calificacion_final: float, etapa_actual: str):
     try:
         # Obtener id_proyecto_convocatoria
         id_proyecto_convocatoria = get_proyecto_convocatoria(db, id_proyecto)
         
         if not id_proyecto_convocatoria:
             raise HTTPException(status_code=404, detail="No se encontró una convocatoria en curso para el proyecto.")
+        
+        # Verificar la modalidad del proyecto para determinar el puntaje mínimo de aprobación
+        sql_get_modalidad = text(
+            """
+            SELECT id_modalidad
+            FROM proyectos
+            WHERE id_proyecto = :id_proyecto
+            """
+        )
+        modalidad = db.execute(sql_get_modalidad, {"id_proyecto": id_proyecto}).scalar()
+        
+        if modalidad == '2':
+            puntaje_minimo_aprobacion = 80
+        else:
+            puntaje_minimo_aprobacion = 75
         
         # Verificar si ya existe un id_rubrica_resultado para este proyecto y usuario
         sql_check_rubrica_resultado = text(
@@ -305,11 +320,11 @@ def insert_respuesta_rubrica(db: Session, id_item_rubrica: int, id_usuario: int,
         if rubrica_resultado:
             id_rubrica_resultado = rubrica_resultado[0]
         else:
-            # Inserción en rubricas_resultados
+            # Inserción en rubricas_resultados con estado 'reprobado' inicialmente
             sql_insert_rubrica_resultado = text(
                 """
                 INSERT INTO rubricas_resultados (estado_proyecto, puntaje_aprobacion)
-                VALUES ('calificado', 0.0);
+                VALUES ('reprobado', 0.0);
                 """
             )
             db.execute(sql_insert_rubrica_resultado)
@@ -317,7 +332,7 @@ def insert_respuesta_rubrica(db: Session, id_item_rubrica: int, id_usuario: int,
             # Obtener el último id insertado usando scalar()
             id_rubrica_resultado = db.execute(text("SELECT LAST_INSERT_ID();")).scalar()
         
-    
+        # Inserción de la respuesta de rúbrica
         sql_insert_respuesta_rubrica = text(
             """
             INSERT INTO respuestas_rubricas (
@@ -338,17 +353,37 @@ def insert_respuesta_rubrica(db: Session, id_item_rubrica: int, id_usuario: int,
         }
         db.execute(sql_insert_respuesta_rubrica, params)
 
+        # Determinar si el proyecto aprueba o reprueba en función del puntaje final y modalidad
+        estado_rubrica = 'aprobado' if calificacion_final >= puntaje_minimo_aprobacion else 'reprobado'
+
+        # Actualización de rubricas_resultados con el estado final y el puntaje
         sql_update_rubrica_resultado = text(
             """
             UPDATE rubricas_resultados
             SET puntaje_aprobacion = :calificacion_final,
-            estado_proyecto = 'calificado'
+                estado_proyecto = :estado_rubrica
             WHERE id_rubrica_resultado = :id_rubrica_resultado;
             """
         )
         db.execute(sql_update_rubrica_resultado, {
             "calificacion_final": calificacion_final,
+            "estado_rubrica": estado_rubrica,
             "id_rubrica_resultado": id_rubrica_resultado
+        })
+
+        # Actualización del estado_calificacion en la tabla proyectos según la etapa actual
+        nuevo_estado_calificacion = 'C_virtual' if etapa_actual == 'Virtual' else 'C_presencial'
+        
+        sql_update_proyecto = text(
+            """
+            UPDATE proyectos
+            SET estado_calificacion = :nuevo_estado_calificacion
+            WHERE id_proyecto = :id_proyecto;
+            """
+        )
+        db.execute(sql_update_proyecto, {
+            "nuevo_estado_calificacion": nuevo_estado_calificacion,
+            "id_proyecto": id_proyecto
         })
 
         db.commit()
@@ -551,6 +586,7 @@ def get_datos_calificar_proyecto_completo(db: Session, id_proyecto: int, id_usua
         
         componentes_rubrica = [
             Componente(
+                id_item_rubrica=item['id_item_rubrica'],
                 titulo=item['titulo'],
                 descripcion=item['componente'],
                 valor_maximo=item['valor_max']

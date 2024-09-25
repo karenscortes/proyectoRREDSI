@@ -1,16 +1,17 @@
-from typing import  Optional
+from typing import  List, Optional
 from pydantic import BaseModel
 from sqlalchemy import Enum
 
 
-class ProyectoEstado(str, Enum):
-    pendiente = 'pendiente'
-    asignado = 'asignado'
-
-class ProyectoBase(BaseModel):
+# Esquema para la respuesta de un proyecto
+class ProyectoSchema(BaseModel):
     id_proyecto: int
+    institucion: str 
+    modalidad: str 
     titulo: str
-    estado: ProyectoEstado
-
-class ProyectoResponse(ProyectoBase):
-    nombre_institucion: str 
+    estado_calificacion: Optional[str] = None
+    
+# Esquema para la respuesta paginada de varios proyectos
+class PaginatedResponse(BaseModel):
+    data: List[ProyectoSchema]
+    total_pages: int
