@@ -5,7 +5,7 @@
             <div class="col">
                 <div class="section_title text-center">
                     <h1>Calificar Proyecto</h1>
-                    <h2 class="text-muted">{{ tituloEtapa }}</h2>
+                    <h2 class="text-muted">Primera etapa</h2>
                 </div>
             </div>
         </div>
@@ -20,41 +20,15 @@
 
 <script>
     import CalificarProyecto from '../components/Users/evaluador/CalificarProyecto.vue';
-    import obtenerEtapaActual from '../services/evaluadorService';
-    
     export default {
         components: {
             CalificarProyecto
-        },
-        data() {
-            return {
-                currentEtapa: '' 
-            };
         },
         props: {
             proyectoSeleccionado: {
                 type: Object,
                 required: true
             }
-        },
-        computed: {
-            tituloEtapa() {
-                return this.currentEtapa === 'Virtual' ? 'Primera Etapa' : 'Segunda Etapa';
-            }
-        },
-        methods: {
-            async obtenerEtapa() {
-                try {
-                    const response = await obtenerEtapaActual();
-                    this.currentEtapa = response.nombre_etapa;
-                } catch (error) {
-                    console.error("Error al obtener la etapa actual: ", error);
-                    alert("Error al obtener la etapa actual");
-                }
-            },
-        },
-        mounted() {
-            this.obtenerEtapa();
         },
         emits: ['volver'], 
     };
