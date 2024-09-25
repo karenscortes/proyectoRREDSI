@@ -106,7 +106,8 @@ async def insertar_calificacion_proyecto(
         id_proyecto=respuesta.id_proyecto,
         observacion=respuesta.observacion,
         calificacion=respuesta.calificacion,
-        calificacion_final=respuesta.calificacion_final
+        calificacion_final=respuesta.calificacion_final,
+        etapa_actual=respuesta.etapa_actual
     )
         
     if response:

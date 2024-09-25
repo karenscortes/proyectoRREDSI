@@ -79,94 +79,131 @@
       </table>
     </div>
     <div class="col-8 text-center py-5">
-      <button class="btn btn-warning font-weight-bold text-dark">Calificar</button>
+      <button @click.prevent="enviarCalificaciones" class="btn btn-warning font-weight-bold text-dark" >Calificar</button>
     </div>
   </form>
 </template>
   
 <script>
-  import { ref, computed, watch, onMounted } from 'vue';
-  import { obtenerDatosParaCalificarProyecto } from '../../../services/evaluadorService'
-  import { useAuthStore } from '@/store'; 
-  
-  export default {
-      props: {
-          proyecto: {
-              type: Object,
-              required: true
-          }
-      },
-      setup(props) {
-        const tituloProyecto = ref('');
-        const universidadProyecto = ref('');
-        const nombreEvaluador = ref('');
-        const cedulaEvaluador = ref('');
-        const universidadEvaluador = ref('');
-        const emailEvaluador = ref('');
-        const celularEvaluador = ref('');
-        const ponentesProyecto = ref('');
-        const componentes = ref([]);
-        const puntajeTotal = ref(0);
-    
-        const obtenerDatos = async () => {
-            const authStore = useAuthStore();
-            const user = authStore.user;
+import { ref, computed, watch, onMounted } from 'vue';
+import { obtenerDatosParaCalificarProyecto, insertarRespuestaRubrica, obtenerEtapaActual } from '../../../services/evaluadorService';
+import { useAuthStore } from '@/store';
 
-            try {
-                const data = await obtenerDatosParaCalificarProyecto(props.proyecto.id_proyecto, user.id_usuario);
-                tituloProyecto.value = data.titulo_proyecto;
-                universidadProyecto.value = data.universidad_proyecto;
-                nombreEvaluador.value = data.nombre_evaluador;
-                cedulaEvaluador.value = data.cedula_evaluador;
-                universidadEvaluador.value = data.universidad_evaluador;
-                emailEvaluador.value = data.email_evaluador;
-                celularEvaluador.value = data.celular_evaluador;
-                ponentesProyecto.value = data.nombres_ponentes;
-                componentes.value = data.componentes;
-            } catch (error) {
-                console.error('Error al obtener los datos del proyecto:', error);
-            }
-        };
-    
-        const actualizarPuntajeTotal = () => {
-            puntajeTotal.value = componentes.value.reduce((total, componente) => {
-            return total + (componente.calificacion || 0);
-            }, 0);
-        };
-    
-        const actualizarCaracteres = (event) => {
-            const textarea = event.target;
-            textarea.style.height = 'auto';
-            textarea.style.height = textarea.scrollHeight + 'px';
-        };
-    
-        const formateadoPuntajeTotal = computed(() => {
-            return puntajeTotal.value.toFixed(1);
-        });
-    
-        watch(() => componentes.value, actualizarPuntajeTotal, { deep: true });
-    
-        onMounted(() => {
-            obtenerDatos();
-        });
-  
-      return {
-          tituloProyecto,
-          universidadProyecto,
-          nombreEvaluador,
-          cedulaEvaluador,
-          universidadEvaluador,
-          emailEvaluador,
-          celularEvaluador,
-          ponentesProyecto,
-          componentes,
-          puntajeTotal,
-          formateadoPuntajeTotal,
-          actualizarPuntajeTotal,
-          actualizarCaracteres
-      };
+export default {
+  props: {
+    proyecto: {
+      type: Object,
+      required: true
+    }
+  },
+  setup(props) {
+    const tituloProyecto = ref('');
+    const universidadProyecto = ref('');
+    const nombreEvaluador = ref('');
+    const cedulaEvaluador = ref('');
+    const universidadEvaluador = ref('');
+    const emailEvaluador = ref('');
+    const celularEvaluador = ref('');
+    const ponentesProyecto = ref('');
+    const componentes = ref([]);
+    const puntajeTotal = ref(0);
+    const currentEtapa = ref('');
+
+    const obtenerDatos = async () => {
+      const authStore = useAuthStore();
+      const user = authStore.user;
+
+      try {
+        // Obtener datos del proyecto
+        const data = await obtenerDatosParaCalificarProyecto(props.proyecto.id_proyecto, user.id_usuario);
+        tituloProyecto.value = data.titulo_proyecto;
+        universidadProyecto.value = data.universidad_proyecto;
+        nombreEvaluador.value = data.nombre_evaluador;
+        cedulaEvaluador.value = data.cedula_evaluador;
+        universidadEvaluador.value = data.universidad_evaluador;
+        emailEvaluador.value = data.email_evaluador;
+        celularEvaluador.value = data.celular_evaluador;
+        ponentesProyecto.value = data.nombres_ponentes;
+        componentes.value = data.componentes;
+
+        console.log(componentes);
+
+        // Obtener etapa actual
+        const response = await obtenerEtapaActual();
+        currentEtapa.value = response.nombre_etapa;
+
+      } catch (error) {
+        console.error('Error al obtener los datos del proyecto o la etapa:', error);
       }
-  };
+    };
+
+    const actualizarPuntajeTotal = () => {
+      puntajeTotal.value = componentes.value.reduce((total, componente) => {
+        return total + (componente.calificacion || 0);
+      }, 0);
+    };
+
+    const actualizarCaracteres = (event) => {
+      const textarea = event.target;
+      textarea.style.height = 'auto';
+      textarea.style.height = textarea.scrollHeight + 'px';
+    };
+
+    const formateadoPuntajeTotal = computed(() => {
+      return puntajeTotal.value.toFixed(1);
+    });
+
+    const enviarCalificaciones = async () => {
+      try {
+        const authStore = useAuthStore();
+        const user = authStore.user;
+
+        // Iterar sobre los componentes y enviar la calificación de cada uno
+        for (let componente of componentes.value) {
+          const respuestaData = {
+            id_item_rubrica: componente.id_item_rubrica,
+            id_usuario: user.id_usuario,
+            id_proyecto: props.proyecto.id_proyecto,
+            observacion: componente.observaciones,
+            calificacion: componente.calificacion,
+            calificacion_final: puntajeTotal.value,
+            etapa_actual: currentEtapa.value,  // Etapa actual
+          };
+
+          await insertarRespuestaRubrica(respuestaData);
+        }
+
+        alert('Calificaciones enviadas exitosamente');
+      } catch (error) {
+        console.error('Error al enviar las calificaciones:', error);
+        alert('Ocurrió un error al enviar las calificaciones');
+      }
+    };
+
+    watch(() => componentes.value, actualizarPuntajeTotal, { deep: true });
+
+    onMounted(() => {
+      obtenerDatos();
+    });
+
+    return {
+      tituloProyecto,
+      universidadProyecto,
+      nombreEvaluador,
+      cedulaEvaluador,
+      universidadEvaluador,
+      emailEvaluador,
+      celularEvaluador,
+      ponentesProyecto,
+      componentes,
+      puntajeTotal,
+      formateadoPuntajeTotal,
+      actualizarPuntajeTotal,
+      actualizarCaracteres,
+      enviarCalificaciones,
+    };
+  }
+};
 </script>
 
 <style scoped>
