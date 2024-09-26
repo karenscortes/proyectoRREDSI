@@ -41,15 +41,14 @@
                 </select>
               </div>
             </div>
-            <!--input asignar num sala(cuando es crear)-->
-            <div class="form-group row justify-content-center mb-3" v-if="!idSala">
+            <div class="form-group row justify-content-center mb-3">
               <label for="asignarNumSala" class="col-6 col-form-label text-right font-weight-bold">Asignar Nº de
                 sala:</label>
               <div class="col-6">
                 <input type="text" class="form-control form-control-sm w-100" id="asignarNumSala" v-model="num_sala" />
               </div>
             </div>
-            <div class="form-group row justify-content-center mb-5" v-if="!idSala">
+            <div class="form-group row justify-content-center mb-5">
               <label for="asignarNombreSala" class="col-6 col-form-label text-right font-weight-bold">Asignar nombre de
                 sala:</label>
               <div class="col-6">
@@ -70,7 +69,7 @@
 <script>
 import { reactive, watch } from "vue";
 import { ref } from "vue";
-
+import { addSala, updateSala } from "@/services/administradorService"
 export default {
   props: {
     //Objeto que se recibe para cuando se va a editar
@@ -81,6 +80,8 @@ export default {
         return (
           (typeof value.p_idDelegado === "number" || value.p_idDelegado === null) &&
           (typeof value.p_idSala === "number" || value.p_idSala === null) &&
+          (typeof value.p_numSala === "string" || value.p_numSala === null) &&
+          (typeof value.p_nombre_sala === "string" || value.p_nombre_sala === null) &&
           (typeof value.p_idAreaConocimiento === "number" || value.p_idAreaConocimiento === null) &&
           Array.isArray(value.p_posiblesAreasConocimiento) &&
           Array.isArray(value.arrayDelegados)
@@ -125,21 +126,35 @@ export default {
     const idAreaConocimiento = ref(props.infoEditar.p_idAreaConocimiento);
     const idDelegado = ref(props.infoEditar.p_idDelegado);
     const idSala = ref(props.infoEditar.p_idSala);
-    const num_sala = ref("");
-    const nombre_sala = ref("");
+    const num_sala = ref(props.infoEditar.p_numSala);
+    const nombre_sala = ref(props.infoEditar.p_nombre_sala);
 
+    //Funcion para crear sala
+    const crearSala = async (p_id_delegado,p_id_area_conocimiento,p_numero_sala,p_nombre_sala)=>{
+      try {
+        await addSala(p_id_delegado,p_id_area_conocimiento,p_numero_sala,p_nombre_sala);
+        alert("Sala creada exitosamente");
+      } catch (error) {
+        console.log(error.response.data);
+      }
+    }
+
+    //Funcion para crear sala
+    const actualizarSala = async (idSala,p_id_delegado,p_id_area_conocimiento,p_numero_sala,p_nombre_sala)=>{
+      try {
+        await updateSala(idSala,p_id_delegado,p_id_area_conocimiento,p_numero_sala,p_nombre_sala);
+        alert("Sala actualizada exitosamente");
+      } catch (error) {
+        console.log(error.response.data);
+      }
+    }
+
+    // Funcion para editar o crear la sala seleccionada una vez se envie el formulario
     const AddOrEdit = () => {
       if (props.infoEditar.p_idSala != null) {
-        console.log("area " + idAreaConocimiento.value)
-        console.log("delegado " + idDelegado.value)
-        console.log('editar sala');
+        actualizarSala(idSala.value, idDelegado.value, idAreaConocimiento.value, num_sala.value, nombre_sala.value );
       } else {
-        console.log("area " + idAreaConocimiento.value)
-        console.log("delegado " + idDelegado.value)
-        console.log("num_sala " + num_sala.value)
-        console.log("nombre_sala " + nombre_sala.value)
-
-        console.log('crear sala');
+        crearSala(idDelegado.value, idAreaConocimiento.value, num_sala.value, nombre_sala.value );
       }
     }
 
