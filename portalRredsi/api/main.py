@@ -1,10 +1,7 @@
 from sys import prefix
 from fastapi import FastAPI
-<<<<<<< HEAD
-from appv1.routers import autores, eventos, login, ponentes, proyectos, rol, tutores, usuarios, UsuarioEvaluador
-=======
+from appv1.routers import autores, eventos, login, ponentes, proyectos, rol, tutores, usuarios, UsuarioEvaluador,tipo_identificacion
 from appv1.routers import autores, eventos, generales, login, ponentes, proyectos, rol, tutores, usuarios 
->>>>>>> b19c11dad56114aecf977a080138d8830b7a98b2
 from appv1.routers.admin import admin
 from appv1.routers.delegado import asignarProyectoEtapaVirtual, asistencia, listaEvaluadores, listaProyectos, postulaciones, proyectosSinAsignar, salas
 from appv1.routers.evaluador import evaluadores
@@ -19,6 +16,7 @@ app = FastAPI()
 # USUARIOS
 app.include_router(usuarios.router_user, prefix="/users", tags=["Usuarios"])
 app.include_router(UsuarioEvaluador.router_evaluador, prefix="/evaluadores", tags=["Usuarios"])
+app.include_router(tipo_identificacion.router_identificacion, prefix="/tipo_identificacion", tags=["Usuarios"])
 
 #PROYECTOS
 app.include_router(proyectos.router_project, prefix="/projects", tags=["Proyectos"])
