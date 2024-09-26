@@ -148,14 +148,17 @@ export default {
       try {
         await addSala(p_id_delegado,p_id_area_conocimiento,p_numero_sala,p_nombre_sala);
 
-        // alert("Sala creada exitosamente");
+        // ALERTA DE CREACION DE SALA EXITOSA
         titulo_alerta.value= "Sala creada";
         mensaje_alerta.value= "La sala se ha creado exitosamente";
         tipo_alerta.value= 2;
-        isOpen.value= true;
         mostrarAlerta();
       } catch (error) {
-        console.log(error.response.data);
+        // ALERTA SI FALLA LA CREACION DE SALA EXITOSA
+        titulo_alerta.value= "Error creación de sala";
+        mensaje_alerta.value= "La sala no se ha podido crear, intenta de nuevo más tarde...";
+        tipo_alerta.value= 3;
+        mostrarAlerta();
       }
     }
 
@@ -163,9 +166,18 @@ export default {
     const actualizarSala = async (idSala,p_id_delegado,p_id_area_conocimiento,p_numero_sala,p_nombre_sala)=>{
       try {
         await updateSala(idSala,p_id_delegado,p_id_area_conocimiento,p_numero_sala,p_nombre_sala);
-        alert("Sala actualizada exitosamente");
+        
+        // ALERTA PARA LA ACTUALIZACION DE SALA EXITOSA
+        titulo_alerta.value= "Actualización de sala";
+        mensaje_alerta.value= "La sala se ha actualizado con exito";
+        tipo_alerta.value= 2;
+        mostrarAlerta();
       } catch (error) {
-        console.log(error.response.data);
+        // ALERTA SI FALLA LA ACTUALIZACION DE SALA
+        titulo_alerta.value= "Error actualización de sala";
+        mensaje_alerta.value= "La sala no se ha podido actualizar, intenta de nuevo más tarde...";
+        tipo_alerta.value= 3;
+        mostrarAlerta();
       }
     }
 
