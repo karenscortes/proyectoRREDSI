@@ -2,6 +2,7 @@ from sys import prefix
 from fastapi import FastAPI
 from appv1.routers import autores, eventos, login, ponentes, proyectos, rol, tutores, usuarios, UsuarioEvaluador,tipo_identificacion
 from appv1.routers import autores, eventos, generales, login, ponentes, proyectos, rol, tutores, usuarios 
+from appv1.routers import autores, eventos, generales, login, ponentes, proyectos, rol, tutores, usuarios, UsuarioEvaluador
 from appv1.routers.admin import admin
 from appv1.routers.delegado import asignarProyectoEtapaVirtual, asistencia, listaEvaluadores, listaProyectos, postulaciones, proyectosSinAsignar, salas
 from appv1.routers.evaluador import evaluadores
