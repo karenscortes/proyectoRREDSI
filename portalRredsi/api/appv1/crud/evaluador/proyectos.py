@@ -612,4 +612,104 @@ def get_datos_calificar_proyecto_completo(db: Session, id_proyecto: int, id_usua
         db.rollback()
         raise HTTPException(status_code=500, detail=f"Error al consultar los datos del proyecto:{e}")
 
+# Obtener los datos calificados de la rúbrica para un proyecto
+def get_datos_calificados_rubrica(db: Session, id_proyecto: int, id_usuario: int):
+    try:
+        # Obtener el id_proyecto_convocatoria para el proyecto en curso
+        sql_query = text("""
+            SELECT DISTINCT respuestas_rubricas.*, items_rubrica.titulo, items_rubrica.componente, items_rubrica.valor_max
+            FROM respuestas_rubricas
+            JOIN items_rubrica ON respuestas_rubricas.id_item_rubrica = items_rubrica.id_item_rubrica
+            JOIN proyectos_convocatoria ON respuestas_rubricas.id_proyecto_convocatoria = proyectos_convocatoria.id_proyecto_convocatoria
+            JOIN convocatorias ON proyectos_convocatoria.id_convocatoria = convocatorias.id_convocatoria
+            WHERE 
+                proyectos_convocatoria.id_proyecto = :id_proyecto
+                AND respuestas_rubricas.id_usuario = :id_usuario
+                AND convocatorias.estado = 'en curso'
+        """)
+        
+        params = {
+            "id_proyecto": id_proyecto,
+            "id_usuario": id_usuario
+        }
 
+        result = db.execute(sql_query, params).mappings().all()
+
+        if len(result) == 0:
+            raise HTTPException(status_code=404, detail="Datos calificados no encontrados")
+
+        return result
+    
+    except Exception as e:
+        db.rollback()
+        raise HTTPException(status_code=500, detail=f"Error al consultar los datos calificados del proyecto: {e}")
+
+# Obtener los datos para calificar un proyecto
+def get_datos_proyecto_calificado_completo(db: Session, id_proyecto: int, id_usuario: int):
+    try:
+        # Obtener los datos básicos del proyecto y del evaluador
+        sql_query = text("""
+            SELECT 
+                proyectos.titulo AS titulo_proyecto,
+                inst_proyecto.nombre AS universidad_proyecto,
+                usuarios.nombres AS nombre_evaluador,
+                usuarios.documento AS cedula_evaluador,
+                inst_evaluador.nombre AS universidad_evaluador,
+                usuarios.correo AS email_evaluador,
+                usuarios.celular AS celular_evaluador
+            FROM 
+                proyectos
+            JOIN 
+                participantes_proyecto ON proyectos.id_proyecto = participantes_proyecto.id_proyecto
+            JOIN 
+                usuarios ON usuarios.id_usuario = participantes_proyecto.id_usuario
+            JOIN 
+                detalles_institucionales ON usuarios.id_usuario = detalles_institucionales.id_usuario
+            JOIN 
+                instituciones AS inst_proyecto ON proyectos.id_institucion = inst_proyecto.id_institucion
+            JOIN 
+                instituciones AS inst_evaluador ON detalles_institucionales.id_institucion = inst_evaluador.id_institucion
+            WHERE 
+                proyectos.id_proyecto = :id_proyecto
+                AND usuarios.id_usuario = :id_usuario
+        """)
+        result = db.execute(sql_query, {"id_proyecto": id_proyecto, "id_usuario": id_usuario}).fetchone()
+
+        if not result:
+            raise HTTPException(status_code=404, detail="Datos no encontrados")
+
+        # Obtener los nombres de los ponentes asociados al proyecto
+        nombres_ponentes = get_nombres_ponentes_proyecto(db, id_proyecto)
+
+        # Obtener los datos de la rúbrica asociados al proyecto
+        rubrica_result = get_datos_calificados_rubrica(db, id_proyecto, id_usuario)
+        
+        componentes_rubrica = [
+            Componente(
+                id_item_rubrica=item['id_item_rubrica'],
+                titulo=item['titulo'],
+                descripcion=item['componente'],
+                observaciones=item['observacion'],
+                calificacion=item['calificacion'],
+                valor_maximo=item['valor_max']
+            ) for item in rubrica_result
+        ]
+
+        # Crear la respuesta final incluyendo los datos del proyecto y la rúbrica
+        proyecto_respuesta = CalificarProyectoRespuesta(
+            titulo_proyecto=result.titulo_proyecto,
+            universidad_proyecto=result.universidad_proyecto,
+            nombre_evaluador=result.nombre_evaluador,
+            cedula_evaluador=result.cedula_evaluador,
+            universidad_evaluador=result.universidad_evaluador,
+            email_evaluador=result.email_evaluador,
+            celular_evaluador=result.celular_evaluador,
+            nombres_ponentes=nombres_ponentes,  
+            componentes=componentes_rubrica  
+        )
+
+        return proyecto_respuesta
+
+    except Exception as e:
+        db.rollback()
+        raise HTTPException(status_code=500, detail=f"Error al consultar los datos del proyecto:{e}")
