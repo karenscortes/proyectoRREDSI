@@ -78,6 +78,7 @@
   
   <script>
   import TipoDocumentoSelect from './TipoDocumentoSelect.vue';
+  import { registerUser } from '@/services/UsuarioService'; // Asegúrate de que el path es correcto
   
   export default {
     components: {
@@ -86,7 +87,7 @@
     data() {
       return {
         form: {
-          tipoDocumento: '',
+          tipoDocumento: '', // Almacena el ID del tipo de documento
           numeroDocumento: '',
           nombres: '',
           apellidos: '',
@@ -98,15 +99,47 @@
       };
     },
     methods: {
-      handleSubmit() {
+      async handleSubmit() {
         // Validar si las contraseñas coinciden
         if (this.form.contrasena !== this.form.confirmarContrasena) {
           alert('Las contraseñas no coinciden.');
           return;
         }
   
-        // Lógica para enviar el formulario
-        console.log('Formulario enviado:', this.form);
+        try {
+          // Llamar al servicio para registrar el usuario
+          const response = await registerUser(
+            this.form.tipoDocumento,   // ID del tipo de documento
+            this.form.numeroDocumento,
+            this.form.nombres,
+            this.form.apellidos,
+            this.form.telefono,
+            this.form.correo,
+            this.form.contrasena
+          );
+  
+          alert('Usuario registrado exitosamente');
+  
+          // Restablecer los campos del formulario después del registro exitoso
+          this.form = {
+            tipoDocumento: '', // Restablecer a los valores iniciales
+            numeroDocumento: '',
+            nombres: '',
+            apellidos: '',
+            correo: '',
+            telefono: '',
+            contrasena: '',
+            confirmarContrasena: '',
+          };
+        } catch (error) {
+          if (error.response) {
+            console.error('Error al registrar el usuario:', error.response.data);
+            alert(`Error al registrar el usuario: ${error.response.data}`);
+          } else {
+            console.error('Error de red o de servidor:', error);
+            alert('Hubo un error de red o de servidor.');
+          }
+        }
       },
     },
   };

@@ -1,8 +1,8 @@
 <template>
   <div class="form-group">
-    <label for="tipoDocumentoSelect">Seleccione un tipo de documento</label>
     <select class="form-control" id="tipoDocumentoSelect" v-model="selectedTipoDocumento" @change="updateTipoDocumento">
-      <option v-for="tipo in tiposDocumento" :key="tipo.id_tipo_documento" :value="tipo.nombre">
+      <!-- Mostrar el nombre, pero el value es el ID -->
+      <option v-for="tipo in tiposDocumento" :key="tipo.id_tipo_documento" :value="tipo.id_tipo_documento">
         {{ tipo.nombre }}
       </option>
     </select>
@@ -10,13 +10,13 @@
 </template>
 
 <script>
-import { ref, onMounted, watch } from 'vue';
+import { ref, onMounted } from 'vue';
 import { getAllTiposDocumento } from '@/services/tipoDocumentoService';
 
 export default {
   props: {
     modelValue: {
-      type: String,
+      type: Number, // Usamos Number porque el ID es un número
       default: null,
     },
   },
@@ -28,29 +28,19 @@ export default {
     const fetchTiposDocumento = async () => {
       try {
         const response = await getAllTiposDocumento();
-        tiposDocumento.value = response.data;
-        console.log('Tipos de documento cargados:', tiposDocumento.value); // Depuración: Verifica si los tipos de documento están cargando
+        tiposDocumento.value = response.data; // Cargar los tipos de documento
       } catch (error) {
         console.error('Error al obtener los tipos de documento:', error);
       }
     };
 
-    // Emitir el evento cuando cambie el tipo de documento
+    // Emitir el ID del tipo de documento cuando cambia la selección
     const updateTipoDocumento = () => {
-      emit('update:modelValue', selectedTipoDocumento.value);
+      emit('update:modelValue', selectedTipoDocumento.value); // Emitir el ID seleccionado
     };
 
-    // Obtener tipos de documento cuando el componente se monta
+    // Cargar los tipos de documento cuando se monta el componente
     onMounted(fetchTiposDocumento);
-
-    // Usar watch para observar cambios en props.modelValue
-    watch(
-      () => props.modelValue,
-      (newTipo) => {
-        selectedTipoDocumento.value = newTipo;
-      },
-      { immediate: true }
-    );
 
     return {
       tiposDocumento,
@@ -62,5 +52,5 @@ export default {
 </script>
 
 <style scoped>
-/* Estilos opcionales */
+/* Puedes agregar estilos aquí */
 </style>
