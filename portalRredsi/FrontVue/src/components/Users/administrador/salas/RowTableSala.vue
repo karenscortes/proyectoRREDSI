@@ -24,6 +24,7 @@ export default{
           typeof value.p_delegado === 'string' &&
           typeof value.p_idSala === 'number' &&
           typeof value.p_numSala === 'string' &&
+          typeof value.p_nombre_sala === 'string' &&
           typeof value.p_idAreaConocimiento === 'number' &&
           typeof value.p_areaConocimiento === 'string' &&
           Array.isArray(value.p_posiblesAreasConocimiento)
