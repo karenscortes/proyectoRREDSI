@@ -19,7 +19,7 @@
               <label for="areaSelect" class="col-6 col-form-label text-right font-weight-bold">Asignar nueva
                 área:</label>
               <div class="col-6">
-                <select v-model="idAreaConocimiento" class="form-select text-dark p-1 w-100" id="areaSelect">
+                <select v-model="idAreaConocimiento" class="form-select text-dark p-1 w-100" id="areaSelect" required>
                   <option :value="null" disabled>Seleccionar el área</option>
                   <option v-for="(area, index) in arrayAreasConocimiento" :key="index"
                     :value="area.p_id_area_conocimiento">
@@ -33,7 +33,7 @@
               <label for="delegadoSelect" class="col-6 col-form-label text-right font-weight-bold">Asignar nuevo
                 delegado:</label>
               <div class="col-6">
-                <select v-model="idDelegado" class="form-select text-dark p-1 w-100" id="delegadoSelect">
+                <select v-model="idDelegado" class="form-select text-dark p-1 w-100" id="delegadoSelect" required>
                   <option :value="null" selected>Seleccionar delegado</option>
                   <option class="option" v-for="(delegado, index) in arrayDelegados" :key="index" :value="delegado.id_delegado">
                     {{ delegado.nombres }} {{ delegado.apellidos }}
@@ -45,14 +45,14 @@
               <label for="asignarNumSala" class="col-6 col-form-label text-right font-weight-bold">Asignar Nº de
                 sala:</label>
               <div class="col-6">
-                <input type="text" class="form-control form-control-sm w-100" id="asignarNumSala" v-model="num_sala" />
+                <input type="text" class="form-control form-control-sm w-100" id="asignarNumSala" v-model="num_sala" required/>
               </div>
             </div>
             <div class="form-group row justify-content-center mb-5">
               <label for="asignarNombreSala" class="col-6 col-form-label text-right font-weight-bold">Asignar nombre de
                 sala:</label>
               <div class="col-6">
-                <input type="text" class="form-control form-control-sm w-100" id="asignarNumSala" v-model="nombre_sala" />
+                <input type="text" class="form-control form-control-sm w-100" id="asignarNumSala" v-model="nombre_sala" required />
               </div>
             </div>
             <div class="text-center">
@@ -64,12 +64,16 @@
         </div>
       </div>
     </div>
+    <!-- ALERTA DE CONFIRMACION  -->
+    <FlashMessage v-if="isOpen" @close="closeModal" :titulo="titulo_alerta" :mensaje="mensaje_alerta" :tipo="tipo_alerta"/>
   </div>
 </template>
 <script>
 import { reactive, watch } from "vue";
 import { ref } from "vue";
 import { addSala, updateSala } from "@/services/administradorService"
+import FlashMessage from "../../../FlashMessage.vue";
+
 export default {
   props: {
     //Objeto que se recibe para cuando se va a editar
@@ -94,6 +98,16 @@ export default {
   setup(props, { emit }) {
     const closeModal = () => {
       emit('close');
+    }
+
+    //Propiedades para la alerta
+    const titulo_alerta= ref("");
+    const mensaje_alerta= ref("");
+    const tipo_alerta= ref("");
+    const isOpen= ref(false);
+
+    const mostrarAlerta = () =>{
+      isOpen.value = true;
     }
 
     //Lista de areas de conocimiento
@@ -133,7 +147,13 @@ export default {
     const crearSala = async (p_id_delegado,p_id_area_conocimiento,p_numero_sala,p_nombre_sala)=>{
       try {
         await addSala(p_id_delegado,p_id_area_conocimiento,p_numero_sala,p_nombre_sala);
-        alert("Sala creada exitosamente");
+
+        // alert("Sala creada exitosamente");
+        titulo_alerta.value= "Sala creada";
+        mensaje_alerta.value= "La sala se ha creado exitosamente";
+        tipo_alerta.value= 2;
+        isOpen.value= true;
+        mostrarAlerta();
       } catch (error) {
         console.log(error.response.data);
       }
@@ -167,13 +187,17 @@ export default {
       closeModal,
       num_sala,
       AddOrEdit,
-      nombre_sala
-      // obtenerDelegados
+      nombre_sala,
+      titulo_alerta,
+      mensaje_alerta,
+      tipo_alerta,
+      isOpen,
+      mostrarAlerta
     };
   },
-  // mounted(){
-  //   this.obtenerDelegados();
-  // }
+  components: {
+    FlashMessage
+  },
 };
 </script>
 <style scoped>
