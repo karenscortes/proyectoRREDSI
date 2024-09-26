@@ -23,7 +23,7 @@
                       Proyectos
                   </a>
                   <div class="dropdown-menu text-center">
-                    <a href="#" class="dropdown-item" @click="selectComponent('RegistroProyecto')">Registrar proyecto</a>
+                    <a href="#" class="dropdown-item" @click="selectComponent('RegistrarProyecto')">Registrar proyecto</a>
                     <a href="#" class="dropdown-item" @click="selectComponent('ConsultarProyecto')">Consultar proyecto</a>
                   </div>
                 </div>
