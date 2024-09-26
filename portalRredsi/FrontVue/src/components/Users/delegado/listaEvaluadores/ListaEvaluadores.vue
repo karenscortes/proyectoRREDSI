@@ -78,27 +78,27 @@
                     <div class="modal-body mt-3">
                         <div class="row justify-content-center text-start">
                             <div class="col-5 text-dark font-weight-bold px-3">Nombre Completo:</div>
-                            <div class="col-5 border mb-3 px-3">
+                            <div class="col-5 mb-3 px-3">
                                 <span class="text-dark">{{ evaluadorActual.nombres }}</span>
                             </div>
                             <div class="col-5 text-dark font-weight-bold px-3">Institución:</div>
-                            <div class="col-5 border mb-3 px-3">
+                            <div class="col-5 mb-3 px-3">
                                 <span class="text-dark">{{ evaluadorActual.institucion }}</span>
                             </div>
                             <div class="col-5 text-dark font-weight-bold px-3">Teléfono:</div>
-                            <div class="col-5 border mb-3 px-3">
+                            <div class="col-5 mb-3 px-3">
                                 <span class="text-dark">{{ evaluadorActual.telefono }}</span>
                             </div>
                             <div class="col-5 text-dark font-weight-bold px-3">Correo:</div>
-                            <div class="col-5 border mb-3 px-3">
+                            <div class="col-5 mb-3 px-3">
                                 <span class="text-dark">{{ evaluadorActual.correo }}</span>
                             </div>
                             <div class="col-5 text-dark font-weight-bold px-3">Área de conocimiento:</div>
-                            <div class="col-5 border mb-3 px-3">
+                            <div class="col-5 mb-3 px-3">
                                 <span class="text-dark">{{ evaluadorActual.areaConocimiento }}</span>
                             </div>
                             <div class="col-5 text-dark font-weight-bold px-3">Otra área de conocimiento:</div>
-                            <div class="col-5 border mb-3 px-3">
+                            <div class="col-5 mb-3 px-3">
                                 <span class="text-dark">{{ evaluadorActual.otraAreaConocimiento }}</span>
                             </div>
                             <div class="text-center mt-3">

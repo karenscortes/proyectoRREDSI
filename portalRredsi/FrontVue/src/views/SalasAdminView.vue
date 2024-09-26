@@ -55,7 +55,8 @@ import RowTableSala from '../components/Users/administrador/salas/RowTableSala.v
 import ModalAddOrEdit from '../components/Users/administrador/salas/ModalAddOrEdit.vue';
 import { obtenerSalas } from '@/services/delegadoService';
 import PaginatorBody from "../components/UI/PaginatorBody.vue";
-import { getAreasConocimiento } from '@/services/administradorService'
+import { getAreasConocimiento } from '@/services/administradorService';
+import { getDelegatesAll } from '@/services/administradorService';
 
 export default {
   setup() {
@@ -64,8 +65,9 @@ export default {
 
     //Propiedad para guardar la busqueda
     const busqueda = ref("");
-    const infoSalas = reactive([])
-    let posiblesAreasConocimiento = reactive([])
+    const infoSalas = reactive([]);
+    let arrayDelegados = reactive([]);
+    let posiblesAreasConocimiento = reactive([]);
     let totalPages = ref(0);
 
     // Funcion para obtener las salas
@@ -86,6 +88,16 @@ export default {
         });
       });
 
+      const delegadosObtenidos = await getDelegatesAll();
+      delegadosObtenidos.data.users.forEach((delegado) => {
+        arrayDelegados.push({
+          id_delegado: delegado.id_usuario,
+          nombres: delegado.nombres,
+          apellidos: delegado.apellidos
+        });
+      });
+    
+
       // Obtiene el total de paginas
       totalPages.value = salasObtenidas.data.total_pages;
 
@@ -93,7 +105,7 @@ export default {
       salasObtenidas.data.salas.forEach((sala) => {
         infoSalas.push({
           p_idDelegado: sala.id_usuario,
-          p_delegado: sala.nombres_delegado,
+          p_delegado: `${sala.nombres_delegado} ${sala.apellidos_delegado}`,
           p_idSala: sala.id_sala,
           p_numSala: sala.numero_sala,
           p_idAreaConocimiento: sala.id_area_conocimiento,
@@ -110,7 +122,8 @@ export default {
       p_idDelegado: null,
       p_idSala: null,
       p_idAreaConocimiento: null,
-      p_posiblesAreasConocimiento: posiblesAreasConocimiento
+      p_posiblesAreasConocimiento: posiblesAreasConocimiento,
+      p_lista_delegados: arrayDelegados
     });
 
     //Evento para limpiar los campos y cerrrar el modal
