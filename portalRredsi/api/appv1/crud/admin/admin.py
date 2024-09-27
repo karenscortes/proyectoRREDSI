@@ -102,6 +102,22 @@ def update_fase(db: Session, id_fase: int, nombre: Optional[str] = None):
     db.refresh(fase)
     return fase
 
+# Traer todas las fases
+def update_fase(db: Session, id_fase: int, nombre: Optional[str] = None):
+    # Verifica que la fase exista
+    fase = db.query(Fase).get(id_fase)
+    if not fase:
+        raise HTTPException(status_code=404, detail="Fase no encontrada")
+
+    # Actualiza los campos que sean provistos
+    if nombre:
+        fase.nombre = nombre
+
+    # Guarda los cambios en la base de datos
+    db.commit()
+    db.refresh(fase)
+    return fase
+
 # Crear una nueva programación de fase
 def create_programacion_fase(db: Session, id_fase: int, id_convocatoria: int, fecha_inicio: date, fecha_fin: date):
     programacion_fase = Programacion_fase(id_fase=id_fase, id_convocatoria=id_convocatoria, fecha_inicio=fecha_inicio, fecha_fin=fecha_fin)

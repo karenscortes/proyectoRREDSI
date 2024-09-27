@@ -62,7 +62,7 @@
         </table>
       </div>
 
-      <PaginatorBody :totalPages="totalPaginas" @page-changed="cambiarPagina" />
+      <PaginatorBody :totalPages="totalPaginas" @page-changed="cambiarPagina" v-if="totalPaginas > 1" />
 
       <!-- Modal detalle administrador -->
       <div class="modal fade" id="detalleAdminModal" tabindex="-1" aria-labelledby="detalleModalLabel" aria-hidden="true">
@@ -164,6 +164,8 @@
 
 <script>
 import { getAdminsByPage, updateUserRole, getActivityHistoryByAdmin } from '../../../services/superadminService';
+import { useToastUtils } from '@/utils/toast';
+const { showSuccessToast, showErrorToast, showWarningToast} = useToastUtils();
 import PaginatorBody from '../../UI/PaginatorBody.vue';
 
 export default {
@@ -196,7 +198,7 @@ export default {
         this.administradores = response.admins;  // Asignar los administradores
         this.totalPaginas = response.total_pages;  // Total de páginas para la paginación
       } catch (error) {
-        alert(error.detail || 'Error al obtener administradores');
+        showWarningToast('Error al obtener administradores');
       }
     },
     // Mostrar el detalle del administrador en el modal
@@ -213,10 +215,10 @@ export default {
         if (actualizado) {
           // Actualizar la lista de administradores después de guardar el nuevo rol
           await this.fetchAdmins();
-          alert('Rol actualizado exitosamente');
+          showSuccessToast('Rol actualizado exitosamente');
         }
       } catch (error) {
-        alert(error.detail || 'Error al actualizar el rol');
+        showWarningToast(error.detail || 'Error al actualizar el rol');
       }
     },
 
@@ -232,21 +234,9 @@ export default {
       }
     },
     // Paginación
-    paginaAnterior() {
-      if (this.paginaActual > 1) {
-        this.paginaActual--;
-        this.fetchAdmins();
-      }
-    },
-    paginaSiguiente() {
-      if (this.paginaActual < this.totalPaginas) {
-        this.paginaActual++;
-        this.fetchAdmins();
-      }
-    },
-    irAPagina(pagina) {
-      this.paginaActual = pagina;
-      this.fetchAdmins();
+    cambiarPagina(pagina){
+        this.paginaActual = pagina;
+        this.fetchAdmins(pagina);
     },
   },
   mounted() {
