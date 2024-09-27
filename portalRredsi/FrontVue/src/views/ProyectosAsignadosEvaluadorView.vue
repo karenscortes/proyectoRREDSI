@@ -248,7 +248,6 @@
 </script>
 
 
-
 <style scoped>
     .cards__buttons {
         background-color: #fff;
