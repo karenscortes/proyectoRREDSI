@@ -65,6 +65,8 @@ import { useAuthStore } from "@/store";
 import FooterPrincipal from "../components/Footers/FooterPrincipal.vue";
 import MenuPrincipal from "../components/Menus/MenuPrincipal.vue";
 import ComponenteDinamico from "../components/ComponenteDinamico.vue";
+import RegistroUsuario from "../components/Users/inicio/RegistroUsuario.vue";
+import RegistroProyecto from '../components/Users/inicio/RegistroProyecto.vue';
 import NotAvailable from "./NotAvailable.vue";
 
 // Styles
@@ -73,10 +75,14 @@ import '../assets/Styles/responsive_main.css';
 import '../assets/plugins/fontawesome-free-5.0.1/css/fontawesome-all.css';
 
 
+
+
 export default {
     components: {
         MenuPrincipal: markRaw(MenuPrincipal),
         FooterPrincipal: markRaw(FooterPrincipal),
+        RegistroUsuario: markRaw(RegistroUsuario),
+        RegistroProyecto: markRaw(RegistroProyecto),
         
         //Componente Por defecto
         NotAvailable: markRaw(NotAvailable),
@@ -89,6 +95,8 @@ export default {
         const changeComponent = (componentName) => {
             const componentMap = {
                 NotAvailable: NotAvailable,
+                RegistroUsuario: RegistroUsuario,
+                RegistroProyecto:RegistroProyecto,
             };
 
             currentComponent.value = componentMap[componentName] || NotAvailable;

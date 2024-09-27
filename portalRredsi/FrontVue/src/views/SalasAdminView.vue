@@ -55,7 +55,8 @@ import RowTableSala from '../components/Users/administrador/salas/RowTableSala.v
 import ModalAddOrEdit from '../components/Users/administrador/salas/ModalAddOrEdit.vue';
 import { obtenerSalas } from '@/services/delegadoService';
 import PaginatorBody from "../components/UI/PaginatorBody.vue";
-import { getAreasConocimiento } from '@/services/administradorService'
+import { getAreasConocimiento } from '@/services/administradorService';
+import { getDelegatesAll } from '@/services/administradorService';
 
 export default {
   setup() {
@@ -64,8 +65,9 @@ export default {
 
     //Propiedad para guardar la busqueda
     const busqueda = ref("");
-    const infoSalas = reactive([])
-    let posiblesAreasConocimiento = reactive([])
+    const infoSalas = reactive([]);
+    let arrayDelegados = reactive([]);
+    let posiblesAreasConocimiento = reactive([]);
     let totalPages = ref(0);
 
     // Funcion para obtener las salas
@@ -86,6 +88,16 @@ export default {
         });
       });
 
+      const delegadosObtenidos = await getDelegatesAll();
+      delegadosObtenidos.data.users.forEach((delegado) => {
+        arrayDelegados.push({
+          id_delegado: delegado.id_usuario,
+          nombres: delegado.nombres,
+          apellidos: delegado.apellidos
+        });
+      });
+    
+
       // Obtiene el total de paginas
       totalPages.value = salasObtenidas.data.total_pages;
 
@@ -93,15 +105,15 @@ export default {
       salasObtenidas.data.salas.forEach((sala) => {
         infoSalas.push({
           p_idDelegado: sala.id_usuario,
-          p_delegado: sala.nombres_delegado,
+          p_delegado: `${sala.nombres_delegado} ${sala.apellidos_delegado}`,
           p_idSala: sala.id_sala,
           p_numSala: sala.numero_sala,
+          p_nombre_sala: sala.nombre_sala,
           p_idAreaConocimiento: sala.id_area_conocimiento,
           p_areaConocimiento: sala.nombre_area_conocimiento,
           p_posiblesAreasConocimiento: posiblesAreasConocimiento
         });
       });
-
       return infoSalas;
     }
 
@@ -109,14 +121,19 @@ export default {
     const infoModal = reactive({
       p_idDelegado: null,
       p_idSala: null,
+      p_numSala:null,
+      p_nombre_sala: null,
       p_idAreaConocimiento: null,
-      p_posiblesAreasConocimiento: posiblesAreasConocimiento
+      p_posiblesAreasConocimiento: posiblesAreasConocimiento,
+      p_lista_delegados: arrayDelegados
     });
 
     //Evento para limpiar los campos y cerrrar el modal
     const closeModal = () => {
       infoModal.p_idDelegado = null;
       infoModal.p_idSala = null;
+      infoModal.p_numSala = null;
+      infoModal.p_nombre_sala= null;
       infoModal.p_idAreaConocimiento = null;
       isModalOpen.value = false;
     }
@@ -130,6 +147,8 @@ export default {
     const onModal = infoSala => {
       infoModal.p_idDelegado = infoSala.p_idDelegado;
       infoModal.p_idSala = infoSala.p_idSala;
+      infoModal.p_numSala= infoSala.p_numSala,
+      infoModal.p_nombre_sala= infoSala.p_nombre_sala,
       infoModal.p_idAreaConocimiento = infoSala.p_idAreaConocimiento;
       showModal();
     }

@@ -35,10 +35,27 @@
             </td>
             <td class="text-center-vertical border border-dark">{{ componente.valor_maximo }}</td>
             <td class="border border-dark text-center">
-              <input type="number" v-model.number="componente.calificacion" class="w-100 text-center" step="0.1" min="0" :max="componente.valor_maximo" @input="actualizarPuntajeTotal" />
+              <input 
+                type="number" 
+                v-model.number="componente.calificacion" 
+                class="w-100 text-center" 
+                step="0.1" 
+                min="0" 
+                :max="componente.valor_maximo" 
+                @input="validarCalificacion(componente, index)" 
+                :disabled="disabledCalificacionObservacion"
+                required
+              />
             </td>
             <td class="border border-dark">
-              <textarea v-model="componente.observaciones" class="text-area-full-width" rows="1" @input="actualizarCaracteres"></textarea>
+              <textarea 
+                v-model="componente.observaciones" 
+                class="text-area-full-width" 
+                rows="1" 
+                @input="actualizarCaracteres"
+                :disabled="disabledCalificacionObservacion"
+                required
+              ></textarea>
             </td>
           </tr>
         </tbody>
@@ -56,7 +73,7 @@
             </td>
             <th class="border border-dark" scope="row">Cédula:</th>
             <td class="border border-dark">
-              <input type="text" class="form-control  text-dark fs-6 form-control-sm rounded-5" readonly v-bind:value="cedulaEvaluador" />
+              <input type="text" class="form-control text-dark fs-6 form-control-sm rounded-5" readonly v-bind:value="cedulaEvaluador" />
             </td>
           </tr>
           <tr class="titulo_rubrica text-center">
@@ -78,16 +95,19 @@
         </tfoot>
       </table>
     </div>
-    <div class="col-8 text-center py-5">
-      <button @click.prevent="enviarCalificaciones" class="btn btn-warning font-weight-bold text-dark" >Calificar</button>
+    <div class="col-8 text-center py-5" v-if="puedeCalificar">
+      <button @click.prevent="enviarCalificaciones" class="btn btn-warning font-weight-bold text-dark">
+        Calificar
+      </button>
     </div>
   </form>
 </template>
   
 <script>
 import { ref, computed, watch, onMounted } from 'vue';
-import { obtenerDatosParaCalificarProyecto, insertarRespuestaRubrica, obtenerEtapaActual } from '../../../services/evaluadorService';
+import { obtenerDatosParaCalificarProyecto, insertarRespuestaRubrica, obtenerEtapaActual, obtenerRubricasCalificadas } from '../../../services/evaluadorService';
 import { useAuthStore } from '@/store';
+import { useToastUtils } from '@/utils/toast'; // Importar aquí directamente
 
 export default {
   props: {
@@ -96,7 +116,7 @@ export default {
       required: true
     }
   },
-  setup(props) {
+  setup(props,  { emit }) {
     const tituloProyecto = ref('');
     const universidadProyecto = ref('');
     const nombreEvaluador = ref('');
@@ -109,38 +129,79 @@ export default {
     const puntajeTotal = ref(0);
     const currentEtapa = ref('');
 
+
+    const { showSuccessToast, showErrorToast, showWarningToast} = useToastUtils();
+
+    const puedeCalificar = computed(() => {
+      // Verificar si el estado es pendiente en alguna de las fases (P_virtual o P_presencial)
+      return props.proyecto.estado_evaluacion === 'P_virtual' || props.proyecto.estado_evaluacion === 'P_presencial';
+    });
+
+    const disabledCalificacionObservacion = computed(() => {
+      return props.proyecto.estado_evaluacion === 'C_presencial' || props.proyecto.estado_evaluacion === 'C_virtual';
+    });
+
     const obtenerDatos = async () => {
       const authStore = useAuthStore();
       const user = authStore.user;
 
       try {
-        // Obtener datos del proyecto
-        const data = await obtenerDatosParaCalificarProyecto(props.proyecto.id_proyecto, user.id_usuario);
-        tituloProyecto.value = data.titulo_proyecto;
-        universidadProyecto.value = data.universidad_proyecto;
-        nombreEvaluador.value = data.nombre_evaluador;
-        cedulaEvaluador.value = data.cedula_evaluador;
-        universidadEvaluador.value = data.universidad_evaluador;
-        emailEvaluador.value = data.email_evaluador;
-        celularEvaluador.value = data.celular_evaluador;
-        ponentesProyecto.value = data.nombres_ponentes;
-        componentes.value = data.componentes;
+        // Verificar si el proyecto está calificado
+        if (props.proyecto.estado_evaluacion === 'C_presencial' || props.proyecto.estado_evaluacion === 'C_virtual' ) {
+          // Obtener datos del proyecto cuando esta calificado
+          const data = await obtenerRubricasCalificadas(props.proyecto.id_proyecto, user.id_usuario);
+          tituloProyecto.value = data.titulo_proyecto;
+          universidadProyecto.value = data.universidad_proyecto;
+          nombreEvaluador.value = data.nombre_evaluador;
+          cedulaEvaluador.value = data.cedula_evaluador;
+          universidadEvaluador.value = data.universidad_evaluador;
+          emailEvaluador.value = data.email_evaluador;
+          celularEvaluador.value = data.celular_evaluador;
+          ponentesProyecto.value = data.nombres_ponentes;
+          componentes.value = data.componentes;
 
-        console.log(componentes);
+        } else {  
+          //Si no esta calificado, se pondra nulo la observacion y calificacion
+          const data = await obtenerDatosParaCalificarProyecto(props.proyecto.id_proyecto, user.id_usuario);
+          tituloProyecto.value = data.titulo_proyecto;
+          universidadProyecto.value = data.universidad_proyecto;
+          nombreEvaluador.value = data.nombre_evaluador;
+          cedulaEvaluador.value = data.cedula_evaluador;
+          universidadEvaluador.value = data.universidad_evaluador;
+          emailEvaluador.value = data.email_evaluador;
+          celularEvaluador.value = data.celular_evaluador;
+          ponentesProyecto.value = data.nombres_ponentes;
+          componentes.value = data.componentes;
+        }
 
         // Obtener etapa actual
         const response = await obtenerEtapaActual();
         currentEtapa.value = response.nombre_etapa;
 
       } catch (error) {
-        console.error('Error al obtener los datos del proyecto o la etapa:', error);
+        showErrorToast('Error al obtener los datos del proyecto o la etapa:', error);
       }
+
     };
 
     const actualizarPuntajeTotal = () => {
       puntajeTotal.value = componentes.value.reduce((total, componente) => {
         return total + (componente.calificacion || 0);
       }, 0);
+    };
+
+    const validarCalificacion = (componente, index) => {
+      //Si la calificacion que va a insertar es mayor al valor maximo, se pondrá el valor maximo y manda una alerta
+      if (componente.calificacion > componente.valor_maximo) {
+        showWarningToast(`La calificación para "${componente.titulo}" no puede exceder el valor de ${componente.valor_maximo}.`);
+        componente.calificacion = componente.valor_maximo;
+      }
+
+      if (componente.calificacion < 0) {
+        showWarningToast(`La calificación para "${componente.titulo}" no puede ser menor de 0.`);
+        componente.calificacion = 0;
+      }
+      actualizarPuntajeTotal();
     };
 
     const actualizarCaracteres = (event) => {
@@ -153,7 +214,28 @@ export default {
       return puntajeTotal.value.toFixed(1);
     });
 
+    const validarCalificacionesYObservaciones = () => {
+      //Verificamos si hay algún campo vacío
+      for (let componente of componentes.value) {
+        const calificacionValida = componente.calificacion !== null && componente.calificacion !== undefined && componente.calificacion !== '';
+        const observacionValida = componente.observaciones !== null && componente.observaciones !== undefined && componente.observaciones.trim() !== '';
+
+        if (!calificacionValida || !observacionValida) {
+          showWarningToast('Hay campos vacíos en las calificaciones o observaciones.');
+          return false; // Si algún campo está vacío, retornamos false para indicar que la validación ha fallado
+        }
+      }
+      return true; // Si todos los campos están completos, retornamos true
+    };
+
+
     const enviarCalificaciones = async () => {
+
+      // Validar antes campos de enviar la calificacion
+      if (!validarCalificacionesYObservaciones()) {
+        return;  // Si la validación falla, no se envían las calificaciones
+      }
+
       try {
         const authStore = useAuthStore();
         const user = authStore.user;
@@ -173,10 +255,11 @@ export default {
           await insertarRespuestaRubrica(respuestaData);
         }
 
-        alert('Calificaciones enviadas exitosamente');
+        showSuccessToast('Calificación enviada exitosamente'); 
+        emit('volver'); // Emite el evento también en caso de error
+       
       } catch (error) {
-        console.error('Error al enviar las calificaciones:', error);
-        alert('Ocurrió un error al enviar las calificaciones');
+        showErrorToast('Ocurrió un error al enviar las calificaciones'+error);
       }
     };
 
@@ -185,6 +268,7 @@ export default {
     onMounted(() => {
       obtenerDatos();
     });
+    
 
     return {
       tituloProyecto,
@@ -201,8 +285,12 @@ export default {
       actualizarPuntajeTotal,
       actualizarCaracteres,
       enviarCalificaciones,
+      puedeCalificar,
+      disabledCalificacionObservacion,
+      validarCalificacion,
     };
-  }
+  },
+    emits: ['volver'], 
 };
 </script>
 

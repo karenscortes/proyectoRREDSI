@@ -68,10 +68,11 @@
                 <input type="email" v-model="formData.personal.correo" class="form-control" id="inputEmail" placeholder="usuario@gmail.com" />
               </div>
               <div class="text-center">
-                <button type="button" class="btn btn-warning font-weight-bold text-dark" @click="showChangePasswordModal">Cambiar Contraseña</button>
+                <button type="button" class="btn btn-warning font-weight-bold text-white" @click="showChangePasswordModal">Cambiar Contraseña</button>
               </div>
             </form>
           </div>
+
 
           <!-- Sección de datos institucionales -->
           <div v-if="activeSection === 'datos_institucionales'" class="form-section mt-5" id="datos_institucionales">
@@ -137,6 +138,36 @@
                     </label>
                   </div>
                 </div>
+                <div class="form-group col-md-4">
+                  <label for="inputMasterDegree">Título de doctorado:</label>
+                  <div class="d-inline-flex">
+                    <input type="text" v-model="formData.academico.maestria" class="form-control" id="inputMasterDegree" />
+                    <label class="items-center p-1 text-black">
+                      <i class="fas fa-plus-circle h4"></i>
+                      <input type="file" class="d-none d-print-block" />
+                    </label>
+                  </div>
+                </div>
+                <div class="form-group col-md-4">
+                  <label for="inputMasterDegree">Area de conocimiento:</label>
+                  <div class="d-inline-flex">
+                    <input type="text" v-model="formData.academico.maestria" class="form-control" id="inputMasterDegree" />
+                    <label class="items-center p-1 text-black">
+                      <i class="fas fa-plus-circle h4"></i>
+                      <input type="file" class="d-none d-print-block" />
+                    </label>
+                  </div>
+                </div>
+                <div class="form-group col-md-4">
+                  <label for="inputMasterDegree">Otra área:</label>
+                  <div class="d-inline-flex">
+                    <input type="text" v-model="formData.academico.maestria" class="form-control" id="inputMasterDegree" />
+                    <label class="items-center p-1 text-black">
+                      <i class="fas fa-plus-circle h4"></i>
+                      <input type="file" class="d-none d-print-block" />
+                    </label>
+                  </div>
+                </div>
               </div>
             </form>
           </div>
@@ -144,22 +175,26 @@
       </div>
     </div>
   </div>
+
+  <div class="text-center">
+                <button type="button" class="btn btn-warning font-weight-bold text-white" @click="showChangePasswordModal">Guardar cambios</button>
+  </div>
 </template>
 
 <script>
 import { getCurrentUser } from '../../services/UsuarioService';
-
+import { useAuthStore } from '@/store';
 export default {
   data() {
     return {
       activeSection: 'datos_personales',
       formData: {
         personal: {
-          nombres: '',
-          apellidos: '',
+          nombres: this.user.nombres,
+          apellidos: this.user.apellidos,
           tipoDocumento: '',
-          numeroDocumento: '',
-          correo: '',
+          numeroDocumento: this.user.documento,
+          correo: this.user.correo,
         },
         institucional: {
           institucion: '',
@@ -173,6 +208,15 @@ export default {
         },
       },
     };
+  },
+  setup() {
+        const authStore = useAuthStore();
+
+        const user = authStore.user;
+
+        return {
+            user,
+        };
   },
   methods: {
     setActiveSection(section) {
@@ -196,8 +240,7 @@ export default {
         this.formData.academico.especializacion = userData.especializacion || '';
         this.formData.academico.maestria = userData.maestria || '';
       } catch (error) {
-        console.error('Error al cargar el perfil del usuario:', error);
-        alert('Hubo un problema al cargar los datos del usuario. Por favor, intenta nuevamente.');
+  
       }
     },
     handleSubmit(section) {

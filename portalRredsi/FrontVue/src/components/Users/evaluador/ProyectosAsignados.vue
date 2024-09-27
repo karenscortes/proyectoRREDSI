@@ -1,5 +1,5 @@
 <template>
-    <div class="col-xl-4 col-md-6 col-sm-12 align-items-center">
+    <div class="col-xl-4 col-md-6 col-sm-12 align-items-center mb-4">
         <ul class="cards justify-content-center">
             <li>
                 <a class="card">
