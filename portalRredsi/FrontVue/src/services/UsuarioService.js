@@ -49,30 +49,31 @@ export const updateUserProfile = async (userId, userData) => {
     }
 };
 
-export const createUser = async (id_tipo_documento, nombres, apellidos, celular, correo, passhash) => {
+export const registerUser = async (idTipoDocumento, documento, nombres, apellidos, celular, correo, clave) => {
   try {
-    // Crea un objeto FormData para manejar multipart/form-data
-    const formData = new FormData();
-    formData.append('id_tipo_documento', id_tipo_documento);
-    formData.append('nombres', nombres);
-    formData.append('apellidos', apellidos);
-    formData.append('celular', celular);
-    formData.append('correo', correo);
-    formData.append('passhash', passhash);
-
-    // No necesitas pasar el token, ya que el interceptor lo añade automáticamente
-    const response = await api.post('/evaluadores/create', formData, {
+    // Enviar solicitud de registro a la API
+    const response = await api.post('/evaluadores/create', {
+      id_tipo_documento: idTipoDocumento, // ID del tipo de documento
+      documento: documento,
+      nombres: nombres,
+      apellidos: apellidos,
+      celular: celular,
+      correo: correo,
+      clave: clave
+    }, {
       headers: {
-        'Content-Type': 'multipart/form-data', // Asegúrate de que el encabezado es multipart/form-data
-      },
+        'Content-Type': 'application/json'
+      }
     });
 
+    // Retornar la respuesta de la API
     return response;
   } catch (error) {
+    // Manejar errores de la solicitud
     if (error.response) {
-      throw error.response; // Devuelve el error original de la API
+      throw error; // Lanza el error de la API
     } else {
-      throw new Error('Error de red o de servidor');
+      throw new Error('Error de red o de servidor'); // Manejar errores de red
     }
   }
 };
