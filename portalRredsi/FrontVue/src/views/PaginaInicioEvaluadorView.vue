@@ -89,6 +89,9 @@
 <script>
 import { insertarPostulacionEvaluador } from '../services/evaluadorService'; 
 import { useAuthStore } from '@/store';
+import { useToastUtils } from '@/utils/toast'; 
+
+const { showSuccessToast, showErrorToast, showWarningToast} = useToastUtils();
 
 export default {
     data() {
@@ -119,13 +122,13 @@ export default {
         async enviarPostulacion() {
             // Verificamos que los campos obligatorios estén completos
             if (this.etapa_virtual === '' || this.etapa_presencial === '') {
-                alert('Por favor, complete todos los campos antes de enviar.');
+                showWarningToast('Por favor, complete todos los campos antes de enviar.');
                 return;
             }
 
             // Si se selecciona la etapa presencial, validamos que los campos de jornada estén completos
             if (this.etapa_presencial === '1' && (this.jornada_manana === '' || this.jornada_tarde === '')) {
-                alert('Por favor, complete los campos de disponibilidad para la jornada presencial.');
+                showWarningToast('Por favor, complete los campos de disponibilidad para la jornada presencial.');
                 return;
             }
             
@@ -146,17 +149,20 @@ export default {
                 console.log('Postulación exitosa', response.data);
 
                 this.postulacionExitosa = true;  
-                alert('Postulación enviada exitosamente.');
+                showSuccessToast('Postulación enviada exitosamente. Espera una respuesta en los proximos días...');
+                $('#postulacionEvaluador').modal('hide'); // Cierra el modal
 
              
             } catch (error) {
                 // Si el error es "Ya existe una postulación para este evaluador y convocatoria"
                 if (error.response && error.response.data && error.response.data.detail === "Ya existe una postulación para este evaluador y convocatoria") {
-                    alert('Ya te postulaste para esta convocatoria, espera una respuesta en los próximos días...');
+                    showErrorToast('Ya te postulaste para esta convocatoria, espera una respuesta en los próximos días...');
+                    $('#postulacionEvaluador').modal('hide'); // Cierra el modal
                 } else {
                     // Manejo de otros errores
                     console.error('Error al insertar postulación:', error.message);
-                    alert('Error al insertar postulación');
+                    showErrorToast('Error al insertar postulación');
+                    $('#postulacionEvaluador').modal('hide'); // Cierra el modal
                 }
             }
         },
@@ -173,7 +179,7 @@ export default {
     .become
     {
         width: 100%;
-        padding-bottom: 60px;
+        padding-bottom: 163px;
     }
     .become_title h1
     {

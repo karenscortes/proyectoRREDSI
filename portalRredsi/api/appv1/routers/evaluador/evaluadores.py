@@ -5,7 +5,7 @@ from appv1.routers.login import get_current_user
 from appv1.schemas.evaluador.evaluador import CalificarProyectoRespuesta, PaginatedResponse, PaginatedResponseHorario, PostulacionEvaluadorCreate, RespuestaRubricaCreate
 from appv1.schemas.usuario import UserResponse
 from db.database import get_db
-from appv1.crud.evaluador.proyectos import convertir_timedelta_a_hora, create_postulacion_evaluador, get_current_convocatoria, get_datos_calificar_proyecto_completo, get_etapa_actual, get_proyectos_etapa_presencial_con_horario, get_proyectos_por_etapa, get_proyectos_por_etapa_y_estado, insert_respuesta_rubrica
+from appv1.crud.evaluador.proyectos import convertir_timedelta_a_hora, create_postulacion_evaluador, get_current_convocatoria, get_datos_calificar_proyecto_completo, get_datos_proyecto_calificado_completo, get_etapa_actual, get_proyectos_etapa_presencial_con_horario, get_proyectos_por_etapa, get_proyectos_por_etapa_y_estado, insert_respuesta_rubrica
 from appv1.crud.permissions import get_permissions
 
 routerObtenerProyectos = APIRouter()
@@ -173,3 +173,17 @@ async def obtener_etapa_actual(
     etapa_actual = get_etapa_actual(db)
     return etapa_actual
 
+# Ruta para obtener el detalle del proyecto calificado
+@routerObtenerProyectos.get("/obtener-datos-del-proyecto-calificado/", response_model=CalificarProyectoRespuesta)
+async def obtener_datos_del_proyecto_calificado(
+    id_proyecto: int,
+    id_usuario: int,
+    current_user: UserResponse = Depends(get_current_user),
+    db: Session = Depends(get_db),
+):
+    permisos = get_permissions(db, current_user.id_rol, MODULE_PROYECTOS)
+    if not permisos.p_consultar:
+        raise HTTPException(status_code=401, detail="No está autorizado a utilizar este módulo")
+    
+    proyecto = get_datos_proyecto_calificado_completo(db, id_proyecto, id_usuario)
+    return proyecto

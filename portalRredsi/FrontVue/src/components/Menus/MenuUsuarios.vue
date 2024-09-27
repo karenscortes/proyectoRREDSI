@@ -187,7 +187,7 @@ export default defineComponent({
         } else if (user?.id_rol === 2) {
             
             Object.assign(state, {
-                left_tabs: [{nombre:'Inicio', ruta:'PaginaInicioDelegado', uso: ''}, {nombre:'Perfil', ruta:'PerfilDelegados', uso: ''}],
+                left_tabs: [{nombre:'Inicio', ruta:'PaginaInicioDelegado', uso: ''}, {nombre:'Perfil', ruta:'EditarPerfil', uso: ''}],
                 mid_tabs:[
                     {   nombre:"Evaluadores", 
                         opciones:[{nombre:'Postulaciones', ruta:'PostulacionesEvaluadores', uso: otras_opciones}, {nombre:'Lista de Evaluadores',ruta:'ListaEvaluadores', uso: ''}]
