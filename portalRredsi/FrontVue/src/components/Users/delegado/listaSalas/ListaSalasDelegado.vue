@@ -32,7 +32,7 @@
                             <div class="col-8 col-sm-6">
                                 <input v-model="valorBusqueda" type="text" id="busqueda"
                                     class="form-control text-dark w-100" style="height: 100%; padding: 0.5rem;"
-                                    placeholder="Ingresa numero de sala">
+                                    placeholder="Ingresa numero de sala" @input="buscarSala">
                             </div>
                             <div class="col-4 col-sm-3">
                                 <button class="btn w-100 font-weight-bold"

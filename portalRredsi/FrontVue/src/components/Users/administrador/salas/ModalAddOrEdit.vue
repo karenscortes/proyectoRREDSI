@@ -64,15 +64,13 @@
         </div>
       </div>
     </div>
-    <!-- ALERTA DE CONFIRMACION  -->
-    <FlashMessage v-if="isOpen" @close="closeModal" :titulo="titulo_alerta" :mensaje="mensaje_alerta" :tipo="tipo_alerta"/>
   </div>
 </template>
 <script>
 import { reactive, watch } from "vue";
 import { ref } from "vue";
 import { addSala, updateSala } from "@/services/administradorService"
-import FlashMessage from "../../../FlashMessage.vue";
+import { useToastUtils } from '@/utils/toast';
 
 export default {
   props: {
@@ -101,10 +99,8 @@ export default {
     }
 
     //Propiedades para la alerta
-    const titulo_alerta= ref("");
-    const mensaje_alerta= ref("");
-    const tipo_alerta= ref("");
-    const isOpen= ref(false);
+    const { showSuccessToast, showErrorToast } = useToastUtils();
+
 
     const mostrarAlerta = () =>{
       isOpen.value = true;
@@ -149,16 +145,10 @@ export default {
         await addSala(p_id_delegado,p_id_area_conocimiento,p_numero_sala,p_nombre_sala);
 
         // ALERTA DE CREACION DE SALA EXITOSA
-        titulo_alerta.value= "Sala creada";
-        mensaje_alerta.value= "La sala se ha creado exitosamente";
-        tipo_alerta.value= 2;
-        mostrarAlerta();
+        showSuccessToast("La sala se ha creado exitosamente");
       } catch (error) {
         // ALERTA SI FALLA LA CREACION DE SALA EXITOSA
-        titulo_alerta.value= "Error creación de sala";
-        mensaje_alerta.value= "La sala no se ha podido crear, intenta de nuevo más tarde...";
-        tipo_alerta.value= 3;
-        mostrarAlerta();
+        showErrorToast("La sala no se ha podido crear, intenta de nuevo más tarde...");
       }
     }
 
@@ -168,16 +158,10 @@ export default {
         await updateSala(idSala,p_id_delegado,p_id_area_conocimiento,p_numero_sala,p_nombre_sala);
         
         // ALERTA PARA LA ACTUALIZACION DE SALA EXITOSA
-        titulo_alerta.value= "Actualización de sala";
-        mensaje_alerta.value= "La sala se ha actualizado con exito";
-        tipo_alerta.value= 2;
-        mostrarAlerta();
+        showSuccessToast("La sala se ha actualizado con exito");
       } catch (error) {
         // ALERTA SI FALLA LA ACTUALIZACION DE SALA
-        titulo_alerta.value= "Error actualización de sala";
-        mensaje_alerta.value= "La sala no se ha podido actualizar, intenta de nuevo más tarde...";
-        tipo_alerta.value= 3;
-        mostrarAlerta();
+        showErrorToast("La sala no se ha podido actualizar, intenta de nuevo más tarde...");
       }
     }
 
@@ -200,15 +184,8 @@ export default {
       num_sala,
       AddOrEdit,
       nombre_sala,
-      titulo_alerta,
-      mensaje_alerta,
-      tipo_alerta,
-      isOpen,
       mostrarAlerta
     };
-  },
-  components: {
-    FlashMessage
   },
 };
 </script>
