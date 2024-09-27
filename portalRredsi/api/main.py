@@ -26,7 +26,7 @@ app.include_router(ponentes.router_userPonente, prefix="/ponentes", tags=["Proye
 app.include_router(autores.router_autor, prefix="/autor", tags=["Proyectos"])
 
 # CONSULTAS GENERALES
-app.include_router(generales.router_areas_conocimiento, prefix="/generales", tags=["Consultas generales"])
+app.include_router(generales.router_consultas_generales, prefix="/generales", tags=["Consultas generales"])
 
 
 #EVENTOS

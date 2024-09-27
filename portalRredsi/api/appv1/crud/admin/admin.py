@@ -15,10 +15,17 @@ from appv1.crud.evaluador.proyectos import get_current_convocatoria
 
 # Crear una nueva convocatoria
 def create_convocatoria(db: Session, nombre: str, fecha_inicio: date, fecha_fin: date, estado: EstadoDeConvocatoria):
-    convocatoria = Convocatoria(nombre=nombre, fecha_inicio=fecha_inicio, fecha_fin=fecha_fin, estado=estado)
+    convocatoria = Convocatoria(
+        nombre=nombre, 
+        fecha_inicio=fecha_inicio, 
+        fecha_fin=fecha_fin, 
+        estado=estado
+    )
     db.add(convocatoria)
     db.commit()
-    return {"message": "Convocatoria creada exitosamente"}
+    db.refresh(convocatoria)  # Refresca para obtener el ID generado
+    return convocatoria  # Retorna la convocatoria creada
+
 
 # Crear una nueva etapa dentro de una convocatoria
 def create_etapa(db: Session, nombre: str, id_convocatoria: int):

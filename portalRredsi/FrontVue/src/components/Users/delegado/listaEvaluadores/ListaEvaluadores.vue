@@ -111,8 +111,6 @@
                 </div>
             </div>
         </div>
-        <!-- alerta  -->
-        <FlashMessage v-if="isOpen" @close="closeModal" :titulo="titulo_alerta" :mensaje="mensaje_alerta" :tipo="tipo_alerta"/>
     </div>
 
 </template>
@@ -122,7 +120,7 @@ import { reactive } from 'vue';
 import { obtenerListaEvaluadores, actualizarEstadoEvaluador } from '@/services/listaEvaluadoresService';
 import { obtenerIdEvaluador } from '@/services/delegadoService';
 import PaginatorBody from '../../../UI/PaginatorBody.vue';
-import FlashMessage from '../../../FlashMessage.vue';
+import { useToastUtils } from '@/utils/toast';
 
 export default {
     data() {
@@ -131,10 +129,6 @@ export default {
             totalPages: 0,
             current_page: 1,
             documento_evaluador:"",
-            titulo_alerta: "",
-            mensaje_alerta: "",
-            tipo_alerta: "",
-            isOpen: false,
         }
     },
     setup() {
@@ -148,6 +142,7 @@ export default {
             correo: "",
             otraAreaConocimiento: "",
         });
+        const { showSuccessToast, showErrorToast, showWarningToast, showDefaultToast, showInfoToast } = useToastUtils();
 
         const obtenerEvaluadorActual = (evaluador) => {
             evaluadorActual.id_usuario = evaluador.id_usuario;
@@ -159,17 +154,19 @@ export default {
             evaluadorActual.correo = evaluador.correo;
             evaluadorActual.otraAreaConocimiento = evaluador.otra_area;
 
-            console.log(evaluadorActual);
         };
 
         return {
             evaluadorActual,
-            obtenerEvaluadorActual
+            obtenerEvaluadorActual,
+            showSuccessToast,
+            showErrorToast,
+            showInfoToast,
+            showWarningToast
         }
     },
     components:{
-        PaginatorBody,
-        FlashMessage
+        PaginatorBody
     },
     methods:{
         async fecthEvaluadores(pagina_actual) {
@@ -179,10 +176,7 @@ export default {
                 this.totalPages = respuesta.data.total_pages;
             } catch (error) {
                 // Configuración de la alerta 
-                this.titulo_alerta= "Lista de evaluadores";
-                this.mensaje_alerta="Aún no hay Evaluadores registrados";
-                this.tipo_alerta= 1;
-                this.openModal();
+                this.showInfoToast("Aún no hay Evaluadores registrados");
             }
         },
         async actualizarEvaluador(id_evaluador,estado) {
@@ -198,17 +192,12 @@ export default {
                 await actualizarEstadoEvaluador(id_evaluador, nuevoEstado);
                 
                 // Configuración de la alerta 
-                this.titulo_alerta= "Estado actualizado";
-                this.mensaje_alerta="El estado del evaluador se ha cambiado con exito";
-                this.tipo_alerta= 2;
+                this.showSuccessToast("El estado del evaluador se ha cambiado con exito");
+
                 this.fecthEvaluadores(this.current_page);
-                this.openModal();
             } catch (error) {
-                // Configuración de la alerta 
-                this.titulo_alerta= "Estado de la actualización";
-                this.mensaje_alerta="El estado del evaluador no se ha podido cambiar";
-                this.tipo_alerta= 3;
-                this.openModal();
+                // Configuración de la alerta
+                showErrorToast("El estado del evaluador no se ha podido cambiar");
             }
         },
         async buscarEvaluador(){
@@ -226,7 +215,7 @@ export default {
                 }
                 
             } catch (error) {
-                alert("El evaluador no se ha podido encontrar");
+                this.showWarningToast("El evaluador no se ha encontrado");
                 this.fecthEvaluadores();
             }
         },

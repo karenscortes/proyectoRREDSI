@@ -110,3 +110,22 @@ export const asignarEvaluadoresEtapaPresencial = async (id_evaluador_1,id_evalua
         }
     }
 };
+
+// FUNCION PARA OBETNER DATOS DE UN PROYECTO POR ID
+export const obtenerDatosProyecto = async (id_proyecto) => {
+    try {
+        const response = await api.get(`/generales/get_proyecto_by_id/?id_proyecto=${id_proyecto}
+`, {
+            headers: {
+                'Authorization': `Bearer ${localStorage.getItem('access_token')}`
+            }
+        });
+        return response;
+    } catch (error) {
+        if (error.response) {
+            throw error;
+        } else {
+            throw new Error('Error de red o de servidor');
+        }
+    }
+};

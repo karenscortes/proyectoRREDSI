@@ -1,23 +1,46 @@
 import api from './api';
 
-// Función para crear una nueva convocatoria
-export const createConvocatoria = async (convocatoria) => {
+// Funcion para crear convocatoria
+export const createConvocatoria = async (nombre, fecha_inicio, fecha_fin, estado) => {
   try {
     const url = `/admin/crear-convocatoria`;
-    const response = await api.post(url, convocatoria, {
+    const payload = { nombre, fecha_inicio, fecha_fin, estado };
+    console.log('Enviando payload:', payload); // Verifica qué se está enviando
+    const response = await api.post(url, payload, {
       headers: {
         'Authorization': `Bearer ${localStorage.getItem('access_token')}`
       }
     });
     return response;
   } catch (error) {
+    console.error('Error en el servicio createConvocatoria:', error);
     if (error.response) {
-      throw error;
+      throw error.response.data; // Enviar el mensaje de error exacto si el servidor lo provee
     } else {
       throw new Error('Error de red o de servidor');
     }
   }
 };
+
+// Función para obtener convocatorias
+export const getConvocatorias = async () => {
+  try {
+    const url = `/convocatorias/verconvocatorias`;
+    const response = await api.get(url, {
+      headers: {
+        'Authorization': `Bearer ${localStorage.getItem('access_token')}`
+      }
+    });
+    return response; // Asegúrate de retornar los datos directamente
+  } catch (error) {
+    if (error.response) {
+      throw error.response; // Manejar error correctamente
+    } else {
+      throw new Error('Error de red o de servidor');
+    }
+  }
+};
+
 
 // Función para agregar una nueva etapa
 export const addEtapa = async (idConvocatoria, nombre) => {
@@ -194,7 +217,7 @@ export const deleteItems = async (id_item_rubrica) => {
 // Función consultar delegados paginados
 export const getDelegatesAll = async (page = 1, page_size = 10) => {
   try {
-      const url = `/admin/all-delegates?page=${page}&page_size=${page_size}`;
+      const url = `/admin/all-delegates/?page=${page}&page_size=${page_size}`;
       const response = await api.get(url, {
       headers: {
         'Authorization': `Bearer ${localStorage.getItem('access_token')}` 

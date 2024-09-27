@@ -7,26 +7,26 @@
               <div class="row text-center">
                 <div class="col-4 text-white">
                   <a href="#convocatorias" class="btn btn-outline-dark w-100">
-                    <strong class="font-weight-bold">
                       <i class="fa fa-window-maximize"></i>
+                    <strong class="font-weight-bold text-white">
+                      1. Convocatorias
                     </strong>
-                    1. Convocatorias
                   </a>
                 </div>
                 <div class="col-4">
                   <a href="#etapas" class="btn btn-outline-dark w-100">
-                    <strong class="font-weight-bold">
                       <i class="fa fa-window-restore" aria-hidden="true"></i>
+                    <strong class="font-weight-bold text-white">
+                      2. Etapas
                     </strong>
-                    2. Etapas
                   </a>
                 </div>
                 <div class="col-4">
                   <a href="#gestionar_fases" class="btn btn-outline-dark w-100">
-                    <strong class="font-weight-bold">
                       <i class="fa fa-retweet" aria-hidden="true"></i>
+                    <strong class="font-weight-bold text-white">
+                      3. Fases
                     </strong>
-                    3. Fases
                   </a>
                 </div>
               </div>
@@ -39,7 +39,7 @@
                 </div>
                 <div class="title-line"></div>
                 <div class="text-left mt-3">
-                  <button type="button" class="btn btn-warning fw-bold text-dark w-25" @click="showCreateConvocatoriaModal">
+                  <button type="button" class="btn btn-warning fw-bold text-white w-25" @click="showCreateConvocatoriaModal">
                     Crear convocatoria
                   </button>
                 </div>
@@ -52,23 +52,14 @@
                           <th>Fecha de inicio</th>
                           <th>Fecha de fin</th>
                           <th>Estado</th>
-                          <th>Acciones</th>
                         </tr>
                       </thead>
                       <tbody>
                         <tr v-for="convocatoria in convocatorias" :key="convocatoria.id">
                           <td>{{ convocatoria.nombre }}</td>
-                          <td>{{ convocatoria.fechaInicio }}</td>
-                          <td>{{ convocatoria.fechaFin }}</td>
+                          <td>{{ convocatoria.fecha_inicio }}</td>
+                          <td>{{ convocatoria.fecha_fin }}</td>
                           <td>{{ convocatoria.estado }}</td>
-                          <td>
-                            <button type="button" class="btn btn-primary" @click="editConvocatoria(convocatoria)">
-                              Editar
-                            </button>
-                            <button type="button" class="btn btn-danger" @click="deleteConvocatoria(convocatoria)">
-                              Eliminar
-                            </button>
-                          </td>
                         </tr>
                       </tbody>
                     </table>
@@ -83,12 +74,7 @@
                   <h2>Etapas</h2>
                 </div>
                 <div class="title-line mb-4"></div>
-                <div class="text-center mb-4">
-                  <button type="button" class="btn btn-warning" @click="showCreateEtapaModal">
-                    Crear etapa
-                  </button>
-                </div>
-  
+            
                 <!-- Contenido de Etapas -->
                 <div class="container">
                   <div class="row">
@@ -100,17 +86,17 @@
                         <div class="modal-body">
                           <div class="row justify-content-center">
                             <div class="col-sm-8 m-4">
-                              <label class="text-dark"><strong>Fecha Inicio:</strong></label>
+                              <h3 class="text-dark"><strong>Fecha Inicio:</strong></h3>
                               <input type="date" class="form-control text-dark" v-model="etapaVirtual.fechaInicio">
                             </div>
                             <div class="col-sm-8 m-4">
-                              <label class="text-dark"><strong>Fecha Fin:</strong></label>
+                              <h3 class="text-dark"><strong>Fecha Fin:</strong></h3>
                               <input type="date" class="form-control text-dark" v-model="etapaVirtual.fechaFin">
                             </div>
                           </div>
                         </div>
                         <div class="modal-footer justify-content-center">
-                          <button class="btn btn-warning" @click="createEtapa('virtual')">Guardar</button>
+                          <button class="btn btn-warning text-white" @click="createEtapa('virtual')">Guardar</button>
                         </div>
                       </div>
                     </div>
@@ -123,17 +109,17 @@
                         <div class="modal-body">
                           <div class="row justify-content-center">
                             <div class="col-sm-8 m-4">
-                              <label class="text-dark"><strong>Fecha Inicio:</strong></label>
+                              <h3 class="text-dark"><strong>Fecha Inicio:</strong></h3>
                               <input type="date" class="form-control text-dark" v-model="etapaPresencial.fechaInicio">
                             </div>
                             <div class="col-sm-8 m-4">
-                              <label class="text-dark"><strong>Fecha Fin:</strong></label>
+                              <h3 class="text-dark"><strong>Fecha Fin:</strong></h3>
                               <input type="date" class="form-control text-dark" v-model="etapaPresencial.fechaFin">
                             </div>
                           </div>
                         </div>
                         <div class="modal-footer justify-content-center">
-                          <button class="btn btn-warning" @click="createEtapa('presencial')">Guardar</button>
+                          <button class="btn btn-warning text-white" @click="createEtapa('presencial')">Guardar</button>
                         </div>
                       </div>
                     </div>
@@ -151,19 +137,29 @@
                 <div class="container">
                   <div class="row mb-4">
                     <div class="col-sm-4">
-                      <label><strong>Nombre:</strong></label>
+                      <label><strong class="text-dark">Nombre:</strong></label>
                       <select class="form-select border border-dark" v-model="selectedFase">
-                        <option value="" disabled>Seleccionar</option>
-                        <option v-for="fase in fases" :key="fase.nombre" :value="fase.nombre">{{ fase.nombre }}</option>
+                        <option class="text-dark" value="" disabled>Seleccionar</option>
+                        <option value="Inscripciones abiertas">Inscripciones abiertas</option>
+                        <option value="Asignaciones">Asignaciones</option>
+                        <option value="Ponencias">Ponencias</option>
+                        <option value="Evaluaciones">Evaluaciones</option>
+                        <option value="Publicación de resultados">Publicación de resultados</option>
                       </select>
                     </div>
                     <div class="col-sm-4">
-                      <label><strong>Fecha Inicio:</strong></label>
+                      <label><strong class="text-dark">Fecha Inicio:</strong></label>
                       <input type="date" class="form-control text-dark" v-model="fechaInicioFase">
                     </div>
                     <div class="col-sm-4">
-                      <label><strong>Fecha Fin:</strong></label>
+                      <label><strong class="text-dark">Fecha Fin:</strong></label>
                       <input type="date" class="form-control text-dark" v-model="fechaFinFase">
+                    </div>
+                    <div class="col-sm-11 mt-3">
+                      <button class="btn btn-outline-warning col-sm-4 text-white">
+                      <i class="fas fa-plus"></i> 
+                      Agregar
+                    </button>
                     </div>
                   </div>
   
@@ -171,7 +167,8 @@
                   <table class="table table-bordered border border-dark text-center">
                     <thead>
                       <tr>
-                        <th class="bg-warning">Fases</th>
+                        <th class="bg-warning">Fase</th>
+                        <th class="bg-warning">Nombre</th>
                         <th class="bg-warning">Fecha Inicio</th>
                         <th class="bg-warning">Fecha Fin</th>
                         <th class="bg-warning">Editar</th>
@@ -195,7 +192,7 @@
   
               <!-- Botón de Guardar -->
               <div class="text-center mt-4">
-                <button type="button" class="btn btn-primary text-dark" @click="saveData">Guardar</button>
+                <button type="button" class="btn btn-primary text-white" @click="saveData">Guardar</button>
               </div>
   
               <!-- Modal de Crear Convocatoria -->
@@ -203,7 +200,7 @@
                 <div class="modal-dialog" role="document">
                   <div class="modal-content">
                     <div class="modal-header">
-                      <h5 class="modal-title">Crear Convocatoria</h5>
+                      <h2 class="modal-title">Crear Convocatoria</h2>
                       <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                       </button>
@@ -221,6 +218,15 @@
                         <label>Fecha Fin:</label>
                         <input type="date" class="form-control" v-model="newConvocatoria.fechaFin" />
                       </div>
+                      <div class="form-group">
+                        <label>Estado:</label>
+                        <select class="form-select" aria-label="Default select example" v-model="newConvocatoria.estado">
+                          <option selected disabled="disabled">Selecciona un estado</option>
+                          <option value="en curso">En curso</option>
+                          <option value="concluida">Concluida</option>
+                          <option value="por publicar">Por publicar</option>
+                        </select>
+                      </div>
                     </div>
                     <div class="modal-footer">
                       <button type="button" class="btn btn-primary" @click="createConvocatoria">Crear</button>
@@ -235,7 +241,8 @@
     </div>
   </template>
   
-  <script>
+<script>
+  import { createConvocatoria, getConvocatorias } from '../../../../services/administradorService';
   export default {
     data() {
       return {
@@ -243,7 +250,8 @@
         newConvocatoria: {
           nombre: '',
           fechaInicio: '',
-          fechaFin: ''
+          fechaFin: '',
+          estado: '',
         },
         etapas: [], // Array para etapas
         etapaVirtual: {
@@ -263,20 +271,39 @@
     methods: {
       // Mostrar modal para crear convocatoria
       showCreateConvocatoriaModal() {
+        // Inicializar campos vacios
+        this.newConvocatoria.nombre = '';
+        this.newConvocatoria.fechaInicio = '';
+        this.newConvocatoria.fechaFin = '';
+        this.newConvocatoria.estado = '';
         $('#crearConvocatoria').modal('show');
       },
-  
+
       // Crear nueva convocatoria
-      createConvocatoria() {
-        this.convocatorias.push({ ...this.newConvocatoria });
-        this.newConvocatoria = { nombre: '', fechaInicio: '', fechaFin: '' };
-        $('#crearConvocatoria').modal('hide');
+      async createConvocatoria() {
+        try {
+          console.log(this.newConvocatoria); 
+          await createConvocatoria(this.newConvocatoria.nombre, this.newConvocatoria.fechaInicio, this.newConvocatoria.fechaFin, this.newConvocatoria.estado);
+          alert('Convocatoria registrada exitosamente');
+          this.fetchConvocatorias();
+          $('#crearConvocatoria').modal('hide');
+        } catch (error) {
+          console.error('Error de creación de convocatoria:', error); // Log completo del error
+          alert(error?.detail || 'Ocurrió un error al crear la convocatoria'); // Muestra mensaje más adecuado
+        }
       },
+
+      async fetchConvocatorias() {
+        try {
+          const response = await getConvocatorias();
+          this.convocatorias = response.data; 
+        } catch (error) {
+          alert(error.data.detail);
+          
+        }
+      },
+ 
   
-      // Editar convocatoria
-      editConvocatoria(convocatoria) {
-        // Lógica para editar convocatoria
-      },
   
       // Eliminar convocatoria
       deleteConvocatoria(convocatoria) {
@@ -303,7 +330,10 @@
       saveData() {
         // Lógica para guardar todos los datos
       }
-    }
+    }, // Fin de los metodos
+    mounted() {
+      this.fetchConvocatorias();
+    },
   };
   </script>
   
