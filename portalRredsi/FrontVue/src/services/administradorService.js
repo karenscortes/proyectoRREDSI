@@ -251,3 +251,57 @@ export const getAreasConocimiento = async () => {
     }
   }
 };
+
+// Función para crear sala
+export const addSala = async (p_id_usuario,p_area_conocimento,p_numero_sala,p_nombre_sala) => {
+  try {
+      const url = `/admin/crear-sala/`;
+      const response = await api.post(url, {
+          id_usuario: p_id_usuario,
+          area_conocimento: p_area_conocimento,
+          numero_sala: p_numero_sala,
+          nombre_sala: p_nombre_sala
+        },
+        {
+          headers: {
+            'Authorization': `Bearer ${localStorage.getItem('access_token')}`,
+          },
+        }
+      
+    );
+    return response;
+  } catch (error) {
+    if (error.response) {
+      throw error;
+    } else {
+      throw new Error('Error de red o de servidor'); 
+    }
+  }
+};
+
+// Función para actualizar sala
+export const updateSala = async (p_id_sala,p_id_usuario,p_area_conocimento,p_numero_sala,p_nombre_sala) => {
+  try {
+      const url = `/admin/salas/${p_id_sala}`;
+      const response = await api.put(url, {
+          id_usuario: p_id_usuario,
+          area_conocimento: p_area_conocimento,
+          numero_sala: p_numero_sala,
+          nombre_sala: p_nombre_sala
+        },
+        {
+          headers: {
+            'Authorization': `Bearer ${localStorage.getItem('access_token')}`,
+          },
+        }
+      
+    );
+    return response;
+  } catch (error) {
+    if (error.response) {
+      throw error;
+    } else {
+      throw new Error('Error de red o de servidor'); 
+    }
+  }
+};

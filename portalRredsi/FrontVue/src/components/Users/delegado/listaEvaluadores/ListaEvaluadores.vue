@@ -78,27 +78,27 @@
                     <div class="modal-body mt-3">
                         <div class="row justify-content-center text-start">
                             <div class="col-5 text-dark font-weight-bold px-3">Nombre Completo:</div>
-                            <div class="col-5 border mb-3 px-3">
+                            <div class="col-5 mb-3 px-3">
                                 <span class="text-dark">{{ evaluadorActual.nombres }}</span>
                             </div>
                             <div class="col-5 text-dark font-weight-bold px-3">Institución:</div>
-                            <div class="col-5 border mb-3 px-3">
+                            <div class="col-5 mb-3 px-3">
                                 <span class="text-dark">{{ evaluadorActual.institucion }}</span>
                             </div>
                             <div class="col-5 text-dark font-weight-bold px-3">Teléfono:</div>
-                            <div class="col-5 border mb-3 px-3">
+                            <div class="col-5 mb-3 px-3">
                                 <span class="text-dark">{{ evaluadorActual.telefono }}</span>
                             </div>
                             <div class="col-5 text-dark font-weight-bold px-3">Correo:</div>
-                            <div class="col-5 border mb-3 px-3">
+                            <div class="col-5 mb-3 px-3">
                                 <span class="text-dark">{{ evaluadorActual.correo }}</span>
                             </div>
                             <div class="col-5 text-dark font-weight-bold px-3">Área de conocimiento:</div>
-                            <div class="col-5 border mb-3 px-3">
+                            <div class="col-5 mb-3 px-3">
                                 <span class="text-dark">{{ evaluadorActual.areaConocimiento }}</span>
                             </div>
                             <div class="col-5 text-dark font-weight-bold px-3">Otra área de conocimiento:</div>
-                            <div class="col-5 border mb-3 px-3">
+                            <div class="col-5 mb-3 px-3">
                                 <span class="text-dark">{{ evaluadorActual.otraAreaConocimiento }}</span>
                             </div>
                             <div class="text-center mt-3">
@@ -111,7 +111,8 @@
                 </div>
             </div>
         </div>
-
+        <!-- alerta  -->
+        <FlashMessage v-if="isOpen" @close="closeModal" :titulo="titulo_alerta" :mensaje="mensaje_alerta" :tipo="tipo_alerta"/>
     </div>
 
 </template>
@@ -121,14 +122,19 @@ import { reactive } from 'vue';
 import { obtenerListaEvaluadores, actualizarEstadoEvaluador } from '@/services/listaEvaluadoresService';
 import { obtenerIdEvaluador } from '@/services/delegadoService';
 import PaginatorBody from '../../../UI/PaginatorBody.vue';
+import FlashMessage from '../../../FlashMessage.vue';
 
 export default {
     data() {
         return {
             evaluadores: [],
             totalPages: 0,
-            current_page: 0,
-            documento_evaluador:""
+            current_page: 1,
+            documento_evaluador:"",
+            titulo_alerta: "",
+            mensaje_alerta: "",
+            tipo_alerta: "",
+            isOpen: false,
         }
     },
     setup() {
@@ -162,7 +168,8 @@ export default {
         }
     },
     components:{
-        PaginatorBody
+        PaginatorBody,
+        FlashMessage
     },
     methods:{
         async fecthEvaluadores(pagina_actual) {
@@ -170,9 +177,12 @@ export default {
                 const respuesta = await obtenerListaEvaluadores(pagina_actual);
                 this.evaluadores = respuesta.data.evaluators;
                 this.totalPages = respuesta.data.total_pages;
-
             } catch (error) {
-                alert("Aún no hay Evaluadores registrados");
+                // Configuración de la alerta 
+                this.titulo_alerta= "Lista de evaluadores";
+                this.mensaje_alerta="Aún no hay Evaluadores registrados";
+                this.tipo_alerta= 1;
+                this.openModal();
             }
         },
         async actualizarEvaluador(id_evaluador,estado) {
@@ -186,10 +196,19 @@ export default {
                 }
 
                 await actualizarEstadoEvaluador(id_evaluador, nuevoEstado);
-                alert("Actualizado con exito");
+                
+                // Configuración de la alerta 
+                this.titulo_alerta= "Estado actualizado";
+                this.mensaje_alerta="El estado del evaluador se ha cambiado con exito";
+                this.tipo_alerta= 2;
                 this.fecthEvaluadores(this.current_page);
+                this.openModal();
             } catch (error) {
-                alert("Error al actualizar el estado del evaluador");
+                // Configuración de la alerta 
+                this.titulo_alerta= "Estado de la actualización";
+                this.mensaje_alerta="El estado del evaluador no se ha podido cambiar";
+                this.tipo_alerta= 3;
+                this.openModal();
             }
         },
         async buscarEvaluador(){
@@ -214,6 +233,13 @@ export default {
         cambiarPagina(pagina){
             this.current_page = pagina;
             this.fecthEvaluadores(pagina);
+        },
+        //Metodos para abrir y cerrar el Modal Informativo
+        openModal(){
+            this.isOpen = true; 
+        },
+        closeModal(){
+            this.isOpen = false; 
         }
     },
     mounted() {

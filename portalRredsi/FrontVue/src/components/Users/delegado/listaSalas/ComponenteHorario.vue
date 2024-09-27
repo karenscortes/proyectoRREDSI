@@ -25,11 +25,14 @@
                 </tbody>
             </table>
         </div>
+        <!-- alerta  -->
+        <FlashMessage v-if="isOpen" @close="closeModal" :titulo="titulo_alerta" :mensaje="mensaje_alerta" :tipo="tipo_alerta"/>
     </div>
 </template>
 
 <script>
 import { obtenerDetalleSala } from "@/services/salasDelegadoService";
+import FlashMessage from "../../../FlashMessage.vue";
 
 export default{
     props:{
@@ -44,8 +47,15 @@ export default{
             ],
             detalleSala: [],
             evaluadores: [],
+            titulo_alerta: "",
+            mensaje_alerta: "",
+            tipo_alerta: "",
+            isOpen: false,
         }
         
+    },
+    components:{
+        FlashMessage
     },
     methods: {
         calcularPosicion(hora) {
@@ -85,7 +95,10 @@ export default{
                     this.detalleSala[i].hora_fin = this.calcularPosicion(this.detalleSala[i].hora_fin);
                 }
             } catch (error) {
-                alert("Aún no se han asignado proyectos a esta sala")
+                this.titulo_alerta= "Sala sin detalle";
+                this.mensaje_alerta="Aún no se han asignado proyectos a esta sala";
+                this.tipo_alerta= 1;
+                this.openModal();
             }
         },
         
@@ -112,6 +125,13 @@ export default{
             }
 
             return  horas+":"+minutos
+        },
+        //Metodos para abrir y cerrar el Modal Informativo
+        openModal(){
+            this.isOpen = true; 
+        },
+        closeModal(){
+            this.isOpen = false; 
         }
     },
     mounted() {

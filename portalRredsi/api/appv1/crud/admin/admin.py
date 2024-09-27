@@ -11,6 +11,7 @@ from appv1.models.sala import Sala
 from appv1.models.usuario import Usuario
 from appv1.schemas.admin.admin import EstadoDeConvocatoria, EtapaUpdate, UpdateSala
 from sqlalchemy.exc import SQLAlchemyError, IntegrityError
+from appv1.crud.evaluador.proyectos import get_current_convocatoria
 
 # Crear una nueva convocatoria
 def create_convocatoria(db: Session, nombre: str, fecha_inicio: date, fecha_fin: date, estado: EstadoDeConvocatoria):
@@ -114,6 +115,7 @@ def create_sala(db: Session, id_usuario: int, area_conocimiento: int,  numero: s
         sala = Sala(
             id_usuario=id_usuario, 
             id_area_conocimiento=area_conocimiento, 
+            id_convocatoria=get_current_convocatoria(db),
             numero_sala=numero, 
             nombre_sala=nombre
         )

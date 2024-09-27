@@ -2,48 +2,19 @@
 <div class="modal fade show" id="modalMensaje"  data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content border border-0 bg-transparent">
-            <div class="modal-body" id="container">  
+            <div class="modal-body">  
               <!-- para mensajes informativos             -->
-                <div id="info-box" v-if="tipo == 1">
+                <div id="info-box" class="border border-5 border-dark">
                     <div class="face">
-                    <div class="eye"></div>
-                    <div class="eye right"></div>
-                    <div class="mouth surprised"></div>
+                        <i class="fa-solid fa-circle-info blue" v-if="tipo == 1"></i>
+                        <i class="fa-solid fa-triangle-exclamation green" v-else-if="tipo == 2"></i>
+                        <i class="fa-solid fa-circle-xmark red" v-else-if="tipo == 3"></i>
                     </div>
-                    <div class="shadow scale"></div>
                     <div class="message ">
-                        <h1 class="alert mb-3">{{ titulo }}</h1>
+                        <h1 :class="`${tittle} mb-3`">{{ titulo }}</h1>
                         <p>{{ mensaje }}</p>
                     </div>
-                    <button type="button" class="button-box mt-2 pt-2" @click="closeModal()"><h1 class="blue fw-bold">okay</h1></button>
-                </div>
-                <!-- para mensajes de exito -->
-                <div id="success-box" v-else-if="tipo == 2">
-                  <div class="face2">
-                  <div class="eye"></div>
-                  <div class="eye right"></div>
-                  <div class="mouth happy"></div>
-                  </div>
-                  <div class="shadow scale"></div>
-                  <div class="message ">
-                      <h1 class="alert mb-3">{{ titulo }}</h1>
-                      <p>{{ mensaje }}</p>
-                  </div>
-                  <button type="button" class="button-box mt-2 pt-2" @click="closeModal()"><h1 class="green fw-bold">okay</h1></button>
-                </div>
-                <!-- para mensajes de error -->
-                <div id="error-box" v-else-if="tipo == 3">
-                    <div class="face3">
-                        <div class="eye"></div>
-                        <div class="eye right"></div>
-                        <div class="mouth sad"></div>
-                    </div>
-                    <div class="shadow move"></div>
-                    <div class="message">
-                        <h1 class="alert mb-3">{{ titulo }}</h1>
-                        <p>{{ mensaje }}</p>
-                    </div>
-                    <button class="button-box mt-2 pt-2"  @click="closeModal()"><h1 class="red fw-bold">okay</h1></button>
+                    <button type="button" :class="`${boton} mt-2 pt-2`" @click="closeModal()"><h1 class="text-white fw-bold">okay</h1></button>
                 </div>
             </div>
         </div>
@@ -52,7 +23,7 @@
     
 </template>
 <script setup>
-
+import { ref } from "vue";
 const props = defineProps({
     tipo: {
         type: Number,
@@ -68,6 +39,18 @@ const props = defineProps({
       default: 'Contenido del modal'
     }
 });
+
+const boton = ref('button-info');
+const title = ref('alert-info');
+
+if(props.tipo == 2){
+  boton.value = 'button-success';
+  title.value ='alert-success';
+
+}else if(props.tipo == 3){
+  boton.value = 'button-error';
+  title.value ='alert-error';
+}
 
 const emit = defineEmits(['close', 'actualizarRubrica']);
 const closeModal = () => {
@@ -96,11 +79,25 @@ const closeModal = () => {
 
 
 .modal-dialog {
-  max-width: 300px; 
-  min-width: 300px;
+  max-width: 315px; 
+  min-width: 315px;
   margin: 0 auto; 
 }
 
+.blue{
+  font-size: 3rem;
+  color: #233bf0;
+}
+
+.green{
+  font-size: 3rem;
+  color: #99DBB4;
+}
+
+.red{
+  font-size: 3rem;
+  color: #e02e49;
+}
 
 h1 {
   font-size: 15px;
@@ -112,22 +109,24 @@ h1 {
   text-transform: uppercase;
 }
 
-.blue{
-  color:#5460bc;
-}
-
-.green {
-  color: #99DBB4;
-}
-
-.red {
-  color:#EF8D9C;
-}
-
-.alert {
+.alert-info {
   font-weight: 700;
   letter-spacing: 5px;
+  color:#233bf0;
 }
+
+.alert-success {
+  font-weight: 700;
+  letter-spacing: 5px;
+  color:#99DBB4;
+}
+
+.alert-error {
+  font-weight: 700;
+  letter-spacing: 5px;
+  color:#e02e49;
+}
+
 
 p {
   
@@ -143,161 +142,34 @@ button, .dot {
 
 #info-box {
   min-width: 100%;
-  min-height: 300px;
-  background: linear-gradient(to bottom right, #86c1f2 40%, #5460bc 100%);
+  min-height: 315px;
+  background: white;
   border-radius: 40px;
   box-shadow: 5px 5px 20px rgba(#CBCDD3, 10%);
 
-}
-
-#success-box {
-  min-width: 100%;
-  min-height: 300px;
-  background: linear-gradient(to bottom right, #B0DB7D 40%, #99DBB4 100%);
-  border-radius: 40px;
-  box-shadow: 5px 5px 20px rgba(#CBCDD3, 10%);
-
-}
-
-#error-box {
-  min-width: 100%;
-  min-height: 300px;
-  background: linear-gradient(to bottom left, #EF8D9C 40%,  #e02e49 100%);
-  border-radius: 40px;
-  box-shadow: 5px 5px 20px rgba(#CBCDD3, 10%);
-}
-
-.dot {
-  width: 8px;
-  height: 8px;
-  background: var(--white);
-  border-radius: 50%;
-  position: absolute;
-  top: 4%;
-  right: 6%;
-}
-
-.dot:hover {
-    background: darken(var(--white, 20%));
-}
-
-.two {
-  right: 12%;
-  opacity: .5;
 }
 
 .face {
   position: absolute;
   width: 22%;
   height: 22%;
-  background: var(--white);
-  border-radius: 50%;
-  border: 1px solid var(--dark);
+  background: white;
   top: 10%;
   left: 37.5%;
   z-index: 2;
-  animation: shake 3s ease-in-out infinite;
 }
-
-.face2 {
-  position: absolute;
-  width: 22%;
-  height: 22%;
-  background: var(--white);
-  border-radius: 50%;
-  border: 1px solid var(--dark);
-  top: 10%;
-  left: 37.5%;
-  z-index: 2;
-  animation: bounce 1s ease-in infinite;
-}
-
-.face3 {
-  position: absolute;
-  width: 22%;
-  height: 22%;
-  background: var(--white);
-  border-radius: 50%;
-  border: 1px solid var(--dark);
-  top: 10%;
-  left: 37.5%;
-  z-index: 2;
-  animation: roll 3s ease-in-out infinite;
-}
-
-.eye {
-  position: absolute;
-  width: 5px;
-  height: 5px;
-  background: var(--dark);
-  border-radius: 50%;
-  top: 40%;
-  left: 20%;
-}
-
-.right {
-  left: 68%;
-}
-
-.mouth {
-  position:absolute;
-  top: 43%;
-  left: 41%;
-  width: 7px;
-  height: 7px;
-  border-radius: 50%;
-}
-
-.happy {
-  border: 2px solid;
-  border-color: transparent black black transparent;
-  transform: rotate(45deg);
-}
-
-.surprised {
-  border: 2px solid;
-  border-color: black;
-  transform: rotate(45deg);
-}
-
-.sad {
-  top: 49%;
-  border: 2px solid;
-  border-color: black transparent transparent black;
-  transform: rotate(45deg);
-}
-
-.shadow {
-  position: absolute;
-  width: 21%;
-  height: 3%;
-  opacity: .5;
-  background: black;
-  left: 40%;
-  top: 33%;
-  border-radius: 50%;
-  z-index: 1;
-}
-
-.scale {
-  animation: scale 1s ease-in infinite;
-}
-.move {
-  animation: move 3s ease-in-out infinite;
-}
-
 
 .message {
   position: absolute;
   width: 100%;
   text-align: center;
   height: 40%;
-  top: 40%;
+  top: 30%;
 }
 
-.button-box {
+.button-info {
   position: absolute;
-  background: var(--white);
+  background: #233bf0;
   width: 50%;
   height: 15%;
   border-radius: 20px;
@@ -309,58 +181,39 @@ button, .dot {
   transition: all .5s ease-in-out;
 }
 
+.button-success {
+  position: absolute;
+  background: #99DBB4;
+  width: 50%;
+  height: 15%;
+  border-radius: 20px;
+  top: 73%;
+  left: 25%;
+  outline: 0;
+  border: none;
+  box-shadow: 2px 2px 10px rgba(black, .5);
+  transition: all .5s ease-in-out;
+}
+
+.button-error {
+  position: absolute;
+  background: #e02e49;
+  width: 50%;
+  height: 15%;
+  border-radius: 20px;
+  top: 73%;
+  left: 25%;
+  outline: 0;
+  border: none;
+  box-shadow: 2px 2px 10px rgba(black, .5);
+  transition: all .5s ease-in-out;
+}
+
+
 .button-box:hover {
     background: darken(var(--white, 5%));
     transform: scale(1.05);
     transition: all .3s ease-in-out;
 }
 
-@keyframes bounce {
-  50% {
-     transform: translateY(-10px);
-  }
-}
-
-@keyframes scale {
-  50% {
-    transform: scale(0.9);
-  }
-}
-
-@keyframes roll {
-  0% {
-    transform: rotate(0deg);
-    left: 25%;
-  }
-  50% {
-    left: 60%;
-    transform: rotate(168deg);
-  }
-  100% {
-    transform: rotate(0deg);
-    left: 25%;
-  }
-}
-
-@keyframes move {
-  0% {
-    left: 25%;
-  }
-  50% {
-    left: 60%;
-  }
-  100% {
-    left: 25%;
-  }
-}
-
-@keyframes shake{
-  0% {
-    transform: rotate(-50deg);
-    right: 70%;
-  }
-  50% {
-    transform: rotate(50deg);
-  }  
-}
 </style>

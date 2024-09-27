@@ -64,7 +64,7 @@
                 <a class="dropdown-item" href="#" @click="selectComponent('ConsultarProyecto')">Consultar proyecto</a>
               </div>
             </li>
-            <li class="menu_item menu_mm"><a href="#" @click="selectComponent('CrearCuentaEvaluador')">Evaluadores</a></li>
+            <li class="menu_item menu_mm"><a href="#" @click="selectComponent('RegistroUsuario')">Evaluadores</a></li>
             <li class="menu_item menu_mm"><a href="#" type="button" data-toggle="modal" data-target="#LoginModal">Login</a></li>
             <li class="menu_item menu_mm"><a href="#" @click="selectComponent('ContactInfoPage')">Contáctanos</a></li>
           </ul>
@@ -97,6 +97,7 @@
 import { defineComponent} from "vue";
 
 export default defineComponent({
+
   setup(_,{ emit }) { 
     const selectComponent = (componentName) => {
       emit('component-selected', componentName); // Emite un evento para seleccionar el componente

@@ -1,16 +1,27 @@
-import { createApp } from 'vue'
+import { createApp } from 'vue';
 import './style.css'
-import App from './App.vue'
+import App from './App.vue';
+import Toast from 'vue-toastification';
+import 'vue-toastification/dist/index.css';
 import router from './router';
-
 import { createPinia } from 'pinia';
 
 const app = createApp(App);
 
-// Crear la instancia de Pinia
-const pinia = createPinia();
+// Configurar Toast
+app.use(Toast, {
+  transition: "Vue-Toastification__bounce",
+  maxToasts: 20,
+  newestOnTop: true,
+});
 
-// Usar Pinia en la aplicación
-app.use(pinia);
-app.use(router); // Asegúrate de que esté registrado con la aplicación
+app.use(createPinia());
+app.use(router);
+
 app.mount('#app');
+
+
+
+
+
+

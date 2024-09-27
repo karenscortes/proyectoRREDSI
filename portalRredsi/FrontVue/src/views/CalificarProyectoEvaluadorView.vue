@@ -5,7 +5,7 @@
             <div class="col">
                 <div class="section_title text-center">
                     <h1>Calificar Proyecto</h1>
-                    <h2 class="text-muted">Primera Etapa</h2>
+                    <h2 class="text-muted">Primera etapa</h2>
                 </div>
             </div>
         </div>

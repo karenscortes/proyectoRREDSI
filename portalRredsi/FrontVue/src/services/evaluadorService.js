@@ -62,6 +62,25 @@ export const obtenerProyectosPorEstado = async (nombreEtapa, estado_evaluacion, 
   }
 };
 
+// Servicio para obtener las rúbricas calificadas de un proyecto
+export const obtenerRubricasCalificadas = async (idProyecto, idUsuario) => {
+  try {
+    const response = await api.get(`/obtenerProyectosEvaluador/obtener-datos-del-proyecto-calificado`, {
+      params: {
+        id_proyecto: idProyecto,
+        id_usuario: idUsuario
+      }
+    });
+    return response.data; // Devuelve los datos de las rúbricas calificadas
+  } catch (error) {
+    if (error.response) {
+      throw error; // Lanza el error para que lo maneje el componente
+    } else {
+      throw new Error('Error de red o de servidor'); // Manejar errores de red
+    }
+  }
+};
+
 // Servicio para obtener los datos para calificar un proyecto
 export const obtenerDatosParaCalificarProyecto = async (idProyecto, idUsuario) => {
   try {
