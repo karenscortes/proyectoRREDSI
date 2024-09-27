@@ -22,6 +22,25 @@ export const createConvocatoria = async (nombre, fecha_inicio, fecha_fin, estado
   }
 };
 
+// Función para obtener convocatorias
+export const getConvocatorias = async () => {
+  try {
+    const url = `/convocatorias/verconvocatorias`;
+    const response = await api.get(url, {
+      headers: {
+        'Authorization': `Bearer ${localStorage.getItem('access_token')}`
+      }
+    });
+    return response; // Asegúrate de retornar los datos directamente
+  } catch (error) {
+    if (error.response) {
+      throw error.response; // Manejar error correctamente
+    } else {
+      throw new Error('Error de red o de servidor');
+    }
+  }
+};
+
 
 // Función para agregar una nueva etapa
 export const addEtapa = async (idConvocatoria, nombre) => {

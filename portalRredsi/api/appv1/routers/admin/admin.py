@@ -19,7 +19,7 @@ from appv1.crud.usuarios import get_user_by_documento, get_user_by_email
 
 router_admin = APIRouter()
 
-# Crear convocatoria 
+# Crear convocatoria
 @router_admin.post("/crear-convocatoria")
 def create_new_convocatoria(
     convocatoria: ConvocatoriaCreate, 
@@ -32,7 +32,16 @@ def create_new_convocatoria(
     if permisos is None or not permisos.p_insertar:  
         raise HTTPException(status_code=401, detail="Usuario no autorizado")
 
-    return create_convocatoria(db, convocatoria.nombre, convocatoria.fecha_inicio, convocatoria.fecha_fin, convocatoria.estado)
+    convocatoria_created = create_convocatoria(
+        db, convocatoria.nombre, convocatoria.fecha_inicio, 
+        convocatoria.fecha_fin, convocatoria.estado
+    )
+
+    return {
+        "message": "Convocatoria creada exitosamente", 
+        "id_convocatoria": convocatoria_created.id_convocatoria
+    }
+
 
 # Crear una nueva etapa 
 @router_admin.post("/convocatoria/{id_convocatoria}/etapas")

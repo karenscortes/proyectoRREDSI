@@ -57,8 +57,8 @@
                       <tbody>
                         <tr v-for="convocatoria in convocatorias" :key="convocatoria.id">
                           <td>{{ convocatoria.nombre }}</td>
-                          <td>{{ convocatoria.fechaInicio }}</td>
-                          <td>{{ convocatoria.fechaFin }}</td>
+                          <td>{{ convocatoria.fecha_inicio }}</td>
+                          <td>{{ convocatoria.fecha_fin }}</td>
                           <td>{{ convocatoria.estado }}</td>
                         </tr>
                       </tbody>
@@ -74,12 +74,7 @@
                   <h2>Etapas</h2>
                 </div>
                 <div class="title-line mb-4"></div>
-                <div class="text-center mb-4">
-                  <button type="button" class="btn btn-warning text-white" @click="showCreateEtapaModal">
-                    Crear etapa
-                  </button>
-                </div>
-  
+            
                 <!-- Contenido de Etapas -->
                 <div class="container">
                   <div class="row">
@@ -145,7 +140,11 @@
                       <label><strong class="text-dark">Nombre:</strong></label>
                       <select class="form-select border border-dark" v-model="selectedFase">
                         <option class="text-dark" value="" disabled>Seleccionar</option>
-                        <option v-for="fase in fases" :key="fase.nombre" :value="fase.nombre">{{ fase.nombre }}</option>
+                        <option value="Inscripciones abiertas">Inscripciones abiertas</option>
+                        <option value="Asignaciones">Asignaciones</option>
+                        <option value="Ponencias">Ponencias</option>
+                        <option value="Evaluaciones">Evaluaciones</option>
+                        <option value="Publicación de resultados">Publicación de resultados</option>
                       </select>
                     </div>
                     <div class="col-sm-4">
@@ -243,7 +242,7 @@
   </template>
   
 <script>
-  import { createConvocatoria } from '../../../../services/administradorService';
+  import { createConvocatoria, getConvocatorias } from '../../../../services/administradorService';
   export default {
     data() {
       return {
@@ -283,22 +282,28 @@
       // Crear nueva convocatoria
       async createConvocatoria() {
         try {
-          console.log(this.newConvocatoria); // Asegúrate de que los datos están correctos antes de enviar
+          console.log(this.newConvocatoria); 
           await createConvocatoria(this.newConvocatoria.nombre, this.newConvocatoria.fechaInicio, this.newConvocatoria.fechaFin, this.newConvocatoria.estado);
           alert('Convocatoria registrada exitosamente');
+          this.fetchConvocatorias();
           $('#crearConvocatoria').modal('hide');
-          //this.fetchConvocatorias(); // Refresca la lista de convocatorias
         } catch (error) {
           console.error('Error de creación de convocatoria:', error); // Log completo del error
           alert(error?.detail || 'Ocurrió un error al crear la convocatoria'); // Muestra mensaje más adecuado
         }
       },
 
-  
-      // Editar convocatoria
-      editConvocatoria(convocatoria) {
-        // Lógica para editar convocatoria
+      async fetchConvocatorias() {
+        try {
+          const response = await getConvocatorias();
+          this.convocatorias = response.data; 
+        } catch (error) {
+          alert(error.data.detail);
+          
+        }
       },
+ 
+  
   
       // Eliminar convocatoria
       deleteConvocatoria(convocatoria) {
@@ -325,7 +330,10 @@
       saveData() {
         // Lógica para guardar todos los datos
       }
-    }
+    }, // Fin de los metodos
+    mounted() {
+      this.fetchConvocatorias();
+    },
   };
   </script>
   
