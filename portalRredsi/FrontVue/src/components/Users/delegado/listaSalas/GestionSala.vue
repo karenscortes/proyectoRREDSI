@@ -59,7 +59,7 @@
                                 <select id="id_evaluador_1" v-model="id_evaluador1" class="form-select text-dark"
                                     required>
                                     <option value="" disabled selected>Seleccione una opción</option>
-                                    <option v-for="(evaluador, index) in posiblesEvaluadores" :key="index"
+                                    <option v-for="(evaluador, index) in evaluadoresFiltrados1" :key="index"
                                         :value="evaluador.id_evaluador">
                                         {{ evaluador.nombre_evaluador }} {{ evaluador.apellidos_evaluador }}
                                     </option>
@@ -70,7 +70,7 @@
                                 <select id="id_evaluador_2" v-model="id_evaluador2" class="form-select text-dark"
                                     required>
                                     <option value="" disabled selected>Seleccione una opción</option>
-                                    <option v-for="(evaluador, index) in posiblesEvaluadores" :key="index"
+                                    <option v-for="(evaluador, index) in evaluadoresFiltrados2" :key="index"
                                         :value="evaluador.id_evaluador">
                                         {{ evaluador.nombre_evaluador }} {{ evaluador.apellidos_evaluador }}
                                     </option>
@@ -88,12 +88,12 @@
                             <div class="col-md-4">
                                 <label for="horario_inicio" class="form-label text-black">Hora de Inicio:</label>
                                 <input id="horario_inicio" type="time" v-model="horario.hora_inicio"
-                                    class="form-control text-dark" min="06:00" max="18:30" step="1800">
+                                    class="form-control text-dark" min="06:00" max="18:30" step="1800" required>
                             </div>
                             <div class="col-md-4">
                                 <label for="horario_fin" class="form-label text-black">Hora de Fin:</label>
                                 <input id="horario_fin" type="time" v-model="horario.hora_fin"
-                                    class="form-control text-dark" min="06:00" max="18:30" step="1800">
+                                    class="form-control text-dark" min="06:00" max="18:30" step="1800" required>
                             </div>
                         </div>
 
@@ -163,16 +163,34 @@ export default defineComponent({
         },
         async asignarHorario() {
             try {
-                await asignarEvaluadoresEtapaPresencial(this.id_evaluador1, this.id_evaluador2, this.proyectoSeleccionado.id_proyecto, this.id_proyecto_convocatoria, this.sala.id_sala, this.horario.fecha, this.horario.hora_inicio, this.horario.hora_fin);
+                if (this.horario.hora_inicio < this.horario.hora_fin) {
+                    await asignarEvaluadoresEtapaPresencial(this.id_evaluador1, this.id_evaluador2, this.proyectoSeleccionado.id_proyecto, this.id_proyecto_convocatoria, this.sala.id_sala, this.horario.fecha, this.horario.hora_inicio, this.horario.hora_fin);
 
-                alert("La asignación del horario ha sido exitosa");
-                this.fetchProyectosSinAsignar();
+                    alert("La asignación del horario ha sido exitosa");
+                    this.fetchProyectosSinAsignar();
+                    this.limpiarFormulario();
 
-                // actualiza la tabla de horario 
-                this.$refs.horario.obtenerDatosSala();
+                    // actualiza la tabla de horario 
+                    this.$refs.horario.obtenerDatosSala();
+                } else {
+                    alert("Debes ingresar una hora de finalización mayor a la de inicio")
+                }
+
             } catch (error) {
                 alert("No se ha podido asignar el proyecto a esta sala");
             }
+        },
+        limpiarFormulario() {
+            this.id_evaluador1 = "";
+            this.id_evaluador2 = "";
+            this.proyectoSeleccionado = "";
+            this.id_proyecto_convocatoria = "";
+            this.sala.id_sala = "";
+            this.horario.fecha = "";
+            this.horario.hora_inicio = "";
+            this.horario.hora_fin = "";
+            this.ponente1 = "";
+            this.ponente2 = "";
         },
         async fetchProyectosSinAsignar() {
             try {
@@ -223,6 +241,16 @@ export default defineComponent({
             this.id_proyecto_convocatoria = proyecto_convocatoria.data.proyecto_convocatoria.id_proyecto_convocatoria;
         },
 
+    },
+    computed: {
+        evaluadoresFiltrados1() {
+            // Filtra los evaluadores para el primer select
+            return this.posiblesEvaluadores.filter(evaluador => evaluador.id_evaluador !== this.id_evaluador2);
+        },
+        evaluadoresFiltrados2() {
+            // Filtra los evaluadores para el segundo select
+            return this.posiblesEvaluadores.filter(evaluador => evaluador.id_evaluador !== this.id_evaluador1);
+        }
     },
     mounted() {
         this.fetchProyectosSinAsignar();
