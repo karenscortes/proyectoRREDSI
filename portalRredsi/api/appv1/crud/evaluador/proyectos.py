@@ -401,7 +401,6 @@ def get_proyectos_etapa_presencial_con_horario(db: Session, id_usuario: int, pag
         
         sql = text("""
             SELECT DISTINCT proyectos.*, 
-                   rubricas_resultados.estado_proyecto AS estado_evaluacion, 
                    salas.numero_sala, 
                    salas.nombre_sala, 
                    detalle_sala.fecha, 
@@ -416,11 +415,6 @@ def get_proyectos_etapa_presencial_con_horario(db: Session, id_usuario: int, pag
                 ON proyectos.id_proyecto = proyectos_convocatoria.id_proyecto 
             JOIN convocatorias 
                 ON proyectos_convocatoria.id_convocatoria = convocatorias.id_convocatoria
-            LEFT JOIN respuestas_rubricas 
-                ON proyectos_convocatoria.id_proyecto_convocatoria = respuestas_rubricas.id_proyecto_convocatoria
-                AND respuestas_rubricas.id_usuario = :id_usuario
-            LEFT JOIN rubricas_resultados 
-                ON respuestas_rubricas.id_rubrica_resultado = rubricas_resultados.id_rubrica_resultado
             LEFT JOIN detalle_sala 
                 ON proyectos_convocatoria.id_proyecto_convocatoria = detalle_sala.id_proyecto_convocatoria
             LEFT JOIN salas 
@@ -450,11 +444,6 @@ def get_proyectos_etapa_presencial_con_horario(db: Session, id_usuario: int, pag
                 ON proyectos.id_proyecto = proyectos_convocatoria.id_proyecto 
             JOIN convocatorias 
                 ON proyectos_convocatoria.id_convocatoria = convocatorias.id_convocatoria
-            LEFT JOIN respuestas_rubricas 
-                ON proyectos_convocatoria.id_proyecto_convocatoria = respuestas_rubricas.id_proyecto_convocatoria
-                AND respuestas_rubricas.id_usuario = :id_usuario
-            LEFT JOIN rubricas_resultados 
-                ON respuestas_rubricas.id_rubrica_resultado = rubricas_resultados.id_rubrica_resultado
             LEFT JOIN detalle_sala 
                 ON proyectos_convocatoria.id_proyecto_convocatoria = detalle_sala.id_proyecto_convocatoria
             WHERE etapas.nombre = 'Presencial'

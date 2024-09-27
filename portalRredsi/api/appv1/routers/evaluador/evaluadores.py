@@ -135,8 +135,14 @@ async def obtener_horario_evaluador(
         proyectos = []
         for proyecto in response["data"]:
             proyecto_dict = dict(proyecto)  # Convertir RowMapping a dict
-            proyecto_dict['hora_inicio'] = convertir_timedelta_a_hora(proyecto_dict['hora_inicio'])
-            proyecto_dict['hora_fin'] = convertir_timedelta_a_hora(proyecto_dict['hora_fin'])
+            proyecto_dict['hora_inicio'] = (
+                convertir_timedelta_a_hora(proyecto_dict['hora_inicio'])
+                if proyecto_dict['hora_inicio'] is not None else None
+            )
+            proyecto_dict['hora_fin'] = (
+                convertir_timedelta_a_hora(proyecto_dict['hora_fin'])
+                if proyecto_dict['hora_fin'] is not None else None
+            )
             proyectos.append(proyecto_dict)
         
         # Devolver el resultado con los proyectos actualizados
