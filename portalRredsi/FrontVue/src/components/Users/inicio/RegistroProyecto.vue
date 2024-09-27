@@ -163,7 +163,7 @@
                         <div class="col-md-6">
                             <label for="tipo_documento_opcional" class="form-label text-black">Tipo de
                                 Documento:</label>
-                            <TipoDocumentoSelect v-model="ponenteOpcional.tipo_documento" />
+                            <TipoDocumentoSelect v-model="ponenteOpcional.tipo_documento"/>
                         </div>
                         <div class="col-md-6">
                             <label for="numero_documento_opcional" class="form-label text-black">Número de
@@ -223,14 +223,10 @@
 
 <script>
 import TipoDocumentoSelect from './TipoDocumentoSelect.vue';
-import ModalidadesSelect from './ModalidadesSelect.vue';
-import AreasConocimientoSelect from './AreasConocimientoSelect.vue';
 import { ref } from 'vue';
 
 export default {
     components: {
-        ModalidadesSelect,
-        AreasConocimientoSelect,
         TipoDocumentoSelect,
     },
     setup() {

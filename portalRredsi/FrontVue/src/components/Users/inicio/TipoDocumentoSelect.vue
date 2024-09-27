@@ -1,6 +1,5 @@
 <template>
   <div class="form-group">
-    <label for="tipoDocumentoSelect">Seleccione un tipo de documento</label>
     <select class="form-control" id="tipoDocumentoSelect" v-model="selectedTipoDocumento" @change="updateTipoDocumento">
       <option v-for="tipo in tiposDocumento" :key="tipo.id_tipo_documento" :value="tipo.nombre">
         {{ tipo.nombre }}
