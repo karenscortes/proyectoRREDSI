@@ -42,7 +42,7 @@
                 step="0.1" 
                 min="0" 
                 :max="componente.valor_maximo" 
-                @input="actualizarPuntajeTotal" 
+                @input="validarCalificacion(componente, index)" 
                 :disabled="disabledCalificacionObservacion"
                 required
               />
@@ -116,7 +116,7 @@ export default {
       required: true
     }
   },
-  setup(props) {
+  setup(props,  { emit }) {
     const tituloProyecto = ref('');
     const universidadProyecto = ref('');
     const nombreEvaluador = ref('');
@@ -130,7 +130,7 @@ export default {
     const currentEtapa = ref('');
 
 
-    const { showSuccessToast, showErrorToast, showWarningToast, showDefaultToast, showInfoToast } = useToastUtils();
+    const { showSuccessToast, showErrorToast, showWarningToast} = useToastUtils();
 
     const puedeCalificar = computed(() => {
       // Verificar si el estado es pendiente en alguna de las fases (P_virtual o P_presencial)
@@ -179,7 +179,7 @@ export default {
         currentEtapa.value = response.nombre_etapa;
 
       } catch (error) {
-        console.error('Error al obtener los datos del proyecto o la etapa:', error);
+        showErrorToast('Error al obtener los datos del proyecto o la etapa:', error);
       }
 
     };
@@ -188,6 +188,20 @@ export default {
       puntajeTotal.value = componentes.value.reduce((total, componente) => {
         return total + (componente.calificacion || 0);
       }, 0);
+    };
+
+    const validarCalificacion = (componente, index) => {
+      //Si la calificacion que va a insertar es mayor al valor maximo, se pondrá el valor maximo y manda una alerta
+      if (componente.calificacion > componente.valor_maximo) {
+        showWarningToast(`La calificación para "${componente.titulo}" no puede exceder el valor de ${componente.valor_maximo}.`);
+        componente.calificacion = componente.valor_maximo;
+      }
+
+      if (componente.calificacion < 0) {
+        showWarningToast(`La calificación para "${componente.titulo}" no puede ser menor de 0.`);
+        componente.calificacion = 0;
+      }
+      actualizarPuntajeTotal();
     };
 
     const actualizarCaracteres = (event) => {
@@ -200,7 +214,28 @@ export default {
       return puntajeTotal.value.toFixed(1);
     });
 
+    const validarCalificacionesYObservaciones = () => {
+      //Verificamos si hay algún campo vacío
+      for (let componente of componentes.value) {
+        const calificacionValida = componente.calificacion !== null && componente.calificacion !== undefined && componente.calificacion !== '';
+        const observacionValida = componente.observaciones !== null && componente.observaciones !== undefined && componente.observaciones.trim() !== '';
+
+        if (!calificacionValida || !observacionValida) {
+          showWarningToast('Hay campos vacíos en las calificaciones o observaciones.');
+          return false; // Si algún campo está vacío, retornamos false para indicar que la validación ha fallado
+        }
+      }
+      return true; // Si todos los campos están completos, retornamos true
+    };
+
+
     const enviarCalificaciones = async () => {
+
+      // Validar antes campos de enviar la calificacion
+      if (!validarCalificacionesYObservaciones()) {
+        return;  // Si la validación falla, no se envían las calificaciones
+      }
+
       try {
         const authStore = useAuthStore();
         const user = authStore.user;
@@ -221,13 +256,10 @@ export default {
         }
 
         showSuccessToast('Calificación enviada exitosamente'); 
+        emit('volver'); // Emite el evento también en caso de error
+       
       } catch (error) {
-        console.error('Error al enviar las calificaciones:', error);
-        showSuccessToast('Ocurrió un error al enviar las calificaciones');
-        showErrorToast('Ocurrió un error al enviar las calificaciones');
-        showDefaultToast('Ocurrió un error al enviar las calificaciones');
-        showInfoToast('Ocurrió un error al enviar las calificaciones');
-        showWarningToast('Ocurrió un error al enviar las calificaciones');
+        showErrorToast('Ocurrió un error al enviar las calificaciones'+error);
       }
     };
 
@@ -236,6 +268,7 @@ export default {
     onMounted(() => {
       obtenerDatos();
     });
+    
 
     return {
       tituloProyecto,
@@ -254,8 +287,10 @@ export default {
       enviarCalificaciones,
       puedeCalificar,
       disabledCalificacionObservacion,
+      validarCalificacion,
     };
-  }
+  },
+    emits: ['volver'], 
 };
 </script>
 

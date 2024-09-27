@@ -104,8 +104,12 @@
     import ProyectosAsignados from '../components/Users/evaluador/ProyectosAsignados.vue';
     import CalificarProyectoEvaluadorView from './CalificarProyectoEvaluadorView.vue'; 
     import { useAuthStore } from '@/store';     
+    import { useToastUtils } from '@/utils/toast'; 
+
+    const { showErrorToast } = useToastUtils();
 
     export default {
+        
         components: {
             ProyectosAsignados,
             CalificarProyectoEvaluadorView 
@@ -144,6 +148,7 @@
             }
         },
         methods: {
+       
             async obtenerEtapa() {
                 try {
                     const authStore = useAuthStore();
@@ -154,14 +159,14 @@
 
                     this.fetchProyectos();
                 } catch (error) {
-                    console.error("Error al obtener la etapa actual: ", error);
-                    alert("Error al obtener la etapa actual");
+                    showErrorToast("Error al obtener la etapa actual");
                 }
             },
 
             async fetchProyectos(page = 1) {
                 try {
                     this.selectedState = ''; 
+    
 
                     const authStore = useAuthStore();
                     const user = authStore.user;
@@ -173,8 +178,7 @@
                     this.currentPage = page;
 
                 } catch (error) {
-                    console.error("Error al obtener proyectos: ", error);
-                    alert("Error al obtener proyectos");
+                    showErrorToast("Error al obtener proyectos");
                 }
             },
 
@@ -204,8 +208,7 @@
                     this.totalPages = response.data.total_pages;
 
                 } catch (error) {
-                    console.error("Error al obtener proyectos por estado: ", error);
-                    alert("Error al obtener proyectos por estado");
+                    showErrorToast("Error al obtener proyectos por estado");
                 }
             },
 
@@ -239,6 +242,7 @@
 
             handleVolver() {
                 this.showCalificarProyecto = false;
+                this.fetchProyectos(1);
             }
         },
         mounted() {
