@@ -44,6 +44,7 @@
                 :max="componente.valor_maximo" 
                 @input="actualizarPuntajeTotal" 
                 :disabled="disabledCalificacionObservacion"
+                required
               />
             </td>
             <td class="border border-dark">
@@ -53,7 +54,7 @@
                 rows="1" 
                 @input="actualizarCaracteres"
                 :disabled="disabledCalificacionObservacion"
-                
+                required
               ></textarea>
             </td>
           </tr>
@@ -106,6 +107,7 @@
 import { ref, computed, watch, onMounted } from 'vue';
 import { obtenerDatosParaCalificarProyecto, insertarRespuestaRubrica, obtenerEtapaActual, obtenerRubricasCalificadas } from '../../../services/evaluadorService';
 import { useAuthStore } from '@/store';
+import { useToastUtils } from '@/utils/toast'; // Importar aquí directamente
 
 export default {
   props: {
@@ -126,6 +128,9 @@ export default {
     const componentes = ref([]);
     const puntajeTotal = ref(0);
     const currentEtapa = ref('');
+
+
+    const { showSuccessToast, showErrorToast, showWarningToast, showDefaultToast, showInfoToast } = useToastUtils();
 
     const puedeCalificar = computed(() => {
       // Verificar si el estado es pendiente en alguna de las fases (P_virtual o P_presencial)
@@ -215,10 +220,14 @@ export default {
           await insertarRespuestaRubrica(respuestaData);
         }
 
-        alert('Calificaciones enviadas exitosamente');
+        showSuccessToast('Calificación enviada exitosamente'); 
       } catch (error) {
         console.error('Error al enviar las calificaciones:', error);
-        alert('Ocurrió un error al enviar las calificaciones');
+        showSuccessToast('Ocurrió un error al enviar las calificaciones');
+        showErrorToast('Ocurrió un error al enviar las calificaciones');
+        showDefaultToast('Ocurrió un error al enviar las calificaciones');
+        showInfoToast('Ocurrió un error al enviar las calificaciones');
+        showWarningToast('Ocurrió un error al enviar las calificaciones');
       }
     };
 
