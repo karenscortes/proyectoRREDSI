@@ -1,4 +1,5 @@
 import datetime
+from sqlalchemy.exc import SQLAlchemyError
 from fastapi import HTTPException
 from sqlalchemy.orm import Session
 from appv1.models.asistente import Asistente
@@ -51,4 +52,20 @@ def get_id_document_type(db:Session, nombre:str):
     if result is None:
          raise HTTPException(status_code=404, detail="No se ese tipo de documento")
     return result 
+
+def get_paginated_attendees(db: Session, page, page_size):
+    try:
+        offset = (page - 1) * page_size
+        attendees = db.query(Asistente.url_comprobante_pago, Usuario.id_usuario, Usuario.documento, Usuario.nombres, Usuario.apellidos, Usuario.celular, Usuario.correo).join(Usuario).limit(page_size).offset(offset).all()
+        if attendees is None:
+            raise HTTPException(status_code=404, detail="No hay asistentes")
+        
+        total_attendees = db.query(Asistente).count()
+
+        # Calcular el número total de páginas
+        total_pages = (total_attendees + page_size - 1) // page_size
+        return attendees, total_pages
+    except SQLAlchemyError as e:
+        print(f"Error al buscar los asistentes: {e}")
+        raise HTTPException(status_code=500, detail="Error. No hay integridad de datos")
 

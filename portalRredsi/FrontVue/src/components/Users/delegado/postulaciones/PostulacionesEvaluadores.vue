@@ -78,7 +78,6 @@ export default {
         },
         async fetchEvaluators() {
             try {
-                console.log(this.currentPage)
                 const response = await getApplicationsByPage(this.currentPage);
                 this.evaluators = response.data.applications; 
                 this.totalPages = response.data.total_pages;

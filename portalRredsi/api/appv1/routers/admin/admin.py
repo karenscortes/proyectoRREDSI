@@ -2,7 +2,7 @@ import json
 from typing import List, Optional
 from fastapi import APIRouter, Depends, File, HTTPException, UploadFile
 from sqlalchemy.orm import Session
-from appv1.crud.admin.gest_asistentes_externos import generate_code, get_id_document_type, insert_attendee, insert_user
+from appv1.crud.admin.gest_asistentes_externos import generate_code, get_id_document_type, get_paginated_attendees, insert_attendee, insert_user
 from appv1.crud.admin.gest_delegado import create_delegado,get_delegados_activos_paginated, get_delegados_by_document
 from appv1.crud.admin.gest_rubricas import create_items, delete_items, get_all_rubricas, update_items
 from appv1.crud.admin.gest_rubricas import get_all_rubricas
@@ -10,6 +10,7 @@ from appv1.crud.admin.admin import create_convocatoria, create_etapa, create_fas
 from appv1.routers.login import get_current_user
 from appv1.schemas.admin.admin import ConvocatoriaCreate, CreateSala, FaseUpdate, UpdateSala
 from appv1.crud.admin.admin import create_convocatoria, create_etapa, create_fase, get_fases_by_etapa, update_etapa, update_fase
+from appv1.schemas.admin.attendees import PaginatedAttendees
 from appv1.schemas.admin.delegado import DelegadoResponse, PaginatedDelegadoResponse
 from appv1.schemas.admin.items_rubrica import ItemCreate, ItemUpdate
 from appv1.schemas.admin.rubrica import RubricaResponse
@@ -431,3 +432,30 @@ async def upload_file(file: UploadFile = File(...), db: Session = Depends(get_db
         )
     
     return {"message": "File processed and data stored successfully.", "file_location": file_location}
+
+
+#Obtener asistentes paginados
+@router_admin.get("/get-all-attendees/", response_model=PaginatedAttendees)
+async def get_all_attendees(
+    db: Session = Depends(get_db),
+    page: int = 1,
+    page_size: int = 10,
+    current_user: UserResponse = Depends(get_current_user),
+):  
+    MODULE = 12
+    permisos = get_permissions(db, current_user.id_rol, MODULE)
+
+    if permisos is None or not permisos.p_consultar:
+        raise HTTPException(status_code=401, detail="Usuario no autorizado")
+    
+    attendees, total_pages = get_paginated_attendees(db, page, page_size)
+
+    if len(attendees) == 0:
+        raise HTTPException(status_code=404, detail="No hay asistentes")
+
+    return {
+        "attendees": attendees,
+        "total_pages": total_pages,
+        "current_page": page,
+        "page_size": page_size
+    }
