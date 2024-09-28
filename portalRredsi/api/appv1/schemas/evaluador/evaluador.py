@@ -38,6 +38,7 @@ class RespuestaRubricaCreate(BaseModel):
     observacion: str
     calificacion: float
     calificacion_final: float
+    etapa_actual: str
 
 # Esquema para la respuesta de los proyectos que traen el horario de sala
 class ProyectoConSalaSchema(BaseModel):
@@ -67,6 +68,7 @@ class PaginatedResponseHorario(BaseModel):
 
 # Esquema para la respuesta de un componente de rubrica entero
 class Componente(BaseModel):
+    id_item_rubrica: int
     titulo: str
     descripcion: str
     valor_maximo: float

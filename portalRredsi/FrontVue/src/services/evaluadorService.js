@@ -62,6 +62,25 @@ export const obtenerProyectosPorEstado = async (nombreEtapa, estado_evaluacion, 
   }
 };
 
+// Servicio para obtener las rúbricas calificadas de un proyecto
+export const obtenerRubricasCalificadas = async (idProyecto, idUsuario) => {
+  try {
+    const response = await api.get(`/obtenerProyectosEvaluador/obtener-datos-del-proyecto-calificado`, {
+      params: {
+        id_proyecto: idProyecto,
+        id_usuario: idUsuario
+      }
+    });
+    return response.data; // Devuelve los datos de las rúbricas calificadas
+  } catch (error) {
+    if (error.response) {
+      throw error; // Lanza el error para que lo maneje el componente
+    } else {
+      throw new Error('Error de red o de servidor'); // Manejar errores de red
+    }
+  }
+};
+
 // Servicio para obtener los datos para calificar un proyecto
 export const obtenerDatosParaCalificarProyecto = async (idProyecto, idUsuario) => {
   try {
@@ -86,6 +105,25 @@ export const obtenerDatosParaCalificarProyecto = async (idProyecto, idUsuario) =
 export const insertarPostulacionEvaluador = async (postulacionData) => {
   try {
     const response = await api.post('/postulacionEvaluador/insertar-postulacion-evaluador/', postulacionData, {
+      headers: {
+        'Authorization': `Bearer`, // Incluye el token de autenticación
+        'Content-Type': 'application/json'
+      }
+    });
+    return response;
+  } catch (error) {
+    if (error.response) {
+      throw error; // Lanza el error para que lo maneje el store o componente
+    } else {
+      throw new Error('Error de red o de servidor'); // Manejar errores de red
+    }
+  }
+};
+
+// Función para insertar una respuesta de rúbrica
+export const insertarRespuestaRubrica = async (respuestaData) => {
+  try {
+    const response = await api.post('/calificacionRubrica/insertar-calificacion-rubrica/', respuestaData, {
       headers: {
         'Authorization': `Bearer`, // Incluye el token de autenticación
         'Content-Type': 'application/json'

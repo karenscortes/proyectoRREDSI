@@ -1,7 +1,8 @@
 import json
 from typing import List, Optional
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, File, HTTPException, UploadFile
 from sqlalchemy.orm import Session
+from appv1.crud.admin.gest_asistentes_externos import generate_code, get_id_document_type, insert_attendee, insert_user
 from appv1.crud.admin.gest_delegado import create_delegado,get_delegados_activos_paginated, get_delegados_by_document
 from appv1.crud.admin.gest_rubricas import create_items, delete_items, get_all_rubricas, update_items
 from appv1.crud.admin.gest_rubricas import get_all_rubricas
@@ -13,13 +14,15 @@ from appv1.schemas.admin.delegado import DelegadoResponse, PaginatedDelegadoResp
 from appv1.schemas.admin.items_rubrica import ItemCreate, ItemUpdate
 from appv1.schemas.admin.rubrica import RubricaResponse
 from appv1.schemas.usuario import UserCreate, UserResponse
+from core.utils import save_file
 from db.database import get_db
 from appv1.crud.permissions import get_permissions
 from appv1.crud.usuarios import get_user_by_documento, get_user_by_email
+import pandas as pd
 
 router_admin = APIRouter()
 
-# Crear convocatoria 
+# Crear convocatoria
 @router_admin.post("/crear-convocatoria")
 def create_new_convocatoria(
     convocatoria: ConvocatoriaCreate, 
@@ -32,7 +35,16 @@ def create_new_convocatoria(
     if permisos is None or not permisos.p_insertar:  
         raise HTTPException(status_code=401, detail="Usuario no autorizado")
 
-    return create_convocatoria(db, convocatoria.nombre, convocatoria.fecha_inicio, convocatoria.fecha_fin, convocatoria.estado)
+    convocatoria_created = create_convocatoria(
+        db, convocatoria.nombre, convocatoria.fecha_inicio, 
+        convocatoria.fecha_fin, convocatoria.estado
+    )
+
+    return {
+        "message": "Convocatoria creada exitosamente", 
+        "id_convocatoria": convocatoria_created.id_convocatoria
+    }
+
 
 # Crear una nueva etapa 
 @router_admin.post("/convocatoria/{id_convocatoria}/etapas")
@@ -368,4 +380,54 @@ def update_sala_admin(
             'success': False,
             'message': 'Error al actualizar la sala',
         }
+
+# Subir el archivo excel y procesar los datos
+@router_admin.post("/upload-excel/")
+async def upload_file(file: UploadFile = File(...), db: Session = Depends(get_db)):
+
+    # Guardar el archivo
+    file_location = save_file(file)
     
+    # Leer el archivo Excel
+    df = pd.read_excel(file_location)
+
+    # Se itera por cada fila del excel
+    for index, row in df.iterrows():
+        
+        #Se comprueba que el asistente no se encuentre en la tabla usuarios
+        existing_user_email = get_user_by_email(db,row['correo'])
+        existing_user_doc = get_user_by_documento(db,row['documento'])
+
+        id_asistente=None
+
+        #Si no se encontró
+        if existing_user_email is None and existing_user_doc is None:
+            
+            password = generate_code()
+            id_tipo_doc = get_id_document_type(db,row['tipo_documento'])
+
+            # se obtiene los datos de los campos indicados y se Insertan en la tabla 'usuarios'
+            asistente_externo = insert_user(
+                db=db,
+                tipo_doc=id_tipo_doc.id_tipo_documento, 
+                num_doc=row['documento'], 
+                nombres=row['nombres'],
+                apellidos=row['apellidos'],
+                correo=row['correo'], 
+                clave=password,
+                telefono=row.get('celular', None)
+            )
+
+            id_asistente=asistente_externo.id_usuario
+        else:
+            #de lo contrario, se obtiene el id_usuario
+            id_asistente=existing_user_doc[0]
+
+        # Insertar comprobante_pago y demás datos en la tabala asistencia 
+        insert_attendee(
+            db=db, 
+            usuario_id=id_asistente, 
+            url_comprobante_pago=row['url_comprobante_pago']
+        )
+    
+    return {"message": "File processed and data stored successfully.", "file_location": file_location}

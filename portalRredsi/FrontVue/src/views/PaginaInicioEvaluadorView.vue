@@ -1,6 +1,6 @@
 <template>
     <!-- Contenido principal -->
-    <div class="become mt-5">
+    <div class="become">
         <div class="container">
             <div class="row row-eq-height">
                 <div class="col-lg-6 order-2 order-lg-1">
@@ -77,7 +77,7 @@
 
                         <!-- Botón para enviar -->
                         <div class="col-12 text-center mt-4 mb-2">
-                            <button @click="enviarPostulacion" class="btn btn-warning text-white">Enviar Postulación</button>
+                            <button @click="enviarPostulacion"  class="btn btn-warning text-white">Enviar Postulación</button>
                         </div>
                     </div>
                 </div>
@@ -89,26 +89,49 @@
 <script>
 import { insertarPostulacionEvaluador } from '../services/evaluadorService'; 
 import { useAuthStore } from '@/store';
+import { useToastUtils } from '@/utils/toast'; 
+
+const { showSuccessToast, showErrorToast, showWarningToast} = useToastUtils();
 
 export default {
     data() {
         return {
             id_evaluador: null,
-            etapa_virtual: '',  // Asumimos valor como cadena para verificar si está vacío
+            etapa_virtual: '',
             etapa_presencial: '',
             jornada_manana: '',
             jornada_tarde: '',
             postulacionExitosa: false 
         };
     },
+    watch: {
+        // Observamos cambios en etapa_presencial para actualizar los campos de jornada
+        etapa_presencial(newVal) {
+            if (newVal === '1') {
+                // Si selecciona asistencia presencial, restablecemos los valores de jornada a vacíos
+                this.jornada_manana = '';
+                this.jornada_tarde = '';
+            } else {
+                // Si selecciona no presencial, asignamos 0 a los campos de jornada
+                this.jornada_manana = '0';
+                this.jornada_tarde = '0';
+            }
+        }
+    },
     methods: {
         async enviarPostulacion() {
-            if (this.etapa_virtual === '' || this.etapa_presencial === '' || 
-                this.jornada_manana === '' || this.jornada_tarde === '') {
-                alert('Por favor, complete todos los campos antes de enviar.');
+            // Verificamos que los campos obligatorios estén completos
+            if (this.etapa_virtual === '' || this.etapa_presencial === '') {
+                showWarningToast('Por favor, complete todos los campos antes de enviar.');
                 return;
             }
 
+            // Si se selecciona la etapa presencial, validamos que los campos de jornada estén completos
+            if (this.etapa_presencial === '1' && (this.jornada_manana === '' || this.jornada_tarde === '')) {
+                showWarningToast('Por favor, complete los campos de disponibilidad para la jornada presencial.');
+                return;
+            }
+            
             try {
                 const authStore = useAuthStore();
                 const user = authStore.user;
@@ -121,14 +144,26 @@ export default {
                     jornada_tarde: parseInt(this.jornada_tarde)
                 };
 
+                // Intentar enviar la postulación
                 const response = await insertarPostulacionEvaluador(postulacionData);
                 console.log('Postulación exitosa', response.data);
 
                 this.postulacionExitosa = true;  
-                alert('Postulación enviada exitosamente.');
+                showSuccessToast('Postulación enviada exitosamente. Espera una respuesta en los proximos días...');
+                $('#postulacionEvaluador').modal('hide'); // Cierra el modal
+
+             
             } catch (error) {
-                console.error('Error al insertar postulación:', error.message);
-                alert('Error al insertar postulación');
+                // Si el error es "Ya existe una postulación para este evaluador y convocatoria"
+                if (error.response && error.response.data && error.response.data.detail === "Ya existe una postulación para este evaluador y convocatoria") {
+                    showErrorToast('Ya te postulaste para esta convocatoria, espera una respuesta en los próximos días...');
+                    $('#postulacionEvaluador').modal('hide'); // Cierra el modal
+                } else {
+                    // Manejo de otros errores
+                    console.error('Error al insertar postulación:', error.message);
+                    showErrorToast('Error al insertar postulación');
+                    $('#postulacionEvaluador').modal('hide'); // Cierra el modal
+                }
             }
         },
     },
@@ -144,8 +179,7 @@ export default {
     .become
     {
         width: 100%;
-        padding-top: 60px;
-        padding-bottom: 60px;
+        padding-bottom: 163px;
     }
     .become_title h1
     {
@@ -168,7 +202,7 @@ export default {
     .become_text
     {
         font-weight: 500;
-        font-size: 16px;
+        font-size: 14px;
         color: #a5a5a1;
         margin-top: 48px;
         margin-bottom: 0px;

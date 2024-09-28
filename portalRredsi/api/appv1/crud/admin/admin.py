@@ -11,13 +11,21 @@ from appv1.models.sala import Sala
 from appv1.models.usuario import Usuario
 from appv1.schemas.admin.admin import EstadoDeConvocatoria, EtapaUpdate, UpdateSala
 from sqlalchemy.exc import SQLAlchemyError, IntegrityError
+from appv1.crud.evaluador.proyectos import get_current_convocatoria
 
 # Crear una nueva convocatoria
 def create_convocatoria(db: Session, nombre: str, fecha_inicio: date, fecha_fin: date, estado: EstadoDeConvocatoria):
-    convocatoria = Convocatoria(nombre=nombre, fecha_inicio=fecha_inicio, fecha_fin=fecha_fin, estado=estado)
+    convocatoria = Convocatoria(
+        nombre=nombre, 
+        fecha_inicio=fecha_inicio, 
+        fecha_fin=fecha_fin, 
+        estado=estado
+    )
     db.add(convocatoria)
     db.commit()
-    return {"message": "Convocatoria creada exitosamente"}
+    db.refresh(convocatoria)  # Refresca para obtener el ID generado
+    return convocatoria  # Retorna la convocatoria creada
+
 
 # Crear una nueva etapa dentro de una convocatoria
 def create_etapa(db: Session, nombre: str, id_convocatoria: int):
@@ -94,6 +102,22 @@ def update_fase(db: Session, id_fase: int, nombre: Optional[str] = None):
     db.refresh(fase)
     return fase
 
+# Traer todas las fases
+def update_fase(db: Session, id_fase: int, nombre: Optional[str] = None):
+    # Verifica que la fase exista
+    fase = db.query(Fase).get(id_fase)
+    if not fase:
+        raise HTTPException(status_code=404, detail="Fase no encontrada")
+
+    # Actualiza los campos que sean provistos
+    if nombre:
+        fase.nombre = nombre
+
+    # Guarda los cambios en la base de datos
+    db.commit()
+    db.refresh(fase)
+    return fase
+
 # Crear una nueva programación de fase
 def create_programacion_fase(db: Session, id_fase: int, id_convocatoria: int, fecha_inicio: date, fecha_fin: date):
     programacion_fase = Programacion_fase(id_fase=id_fase, id_convocatoria=id_convocatoria, fecha_inicio=fecha_inicio, fecha_fin=fecha_fin)
@@ -107,6 +131,7 @@ def create_sala(db: Session, id_usuario: int, area_conocimiento: int,  numero: s
         sala = Sala(
             id_usuario=id_usuario, 
             id_area_conocimiento=area_conocimiento, 
+            id_convocatoria=get_current_convocatoria(db),
             numero_sala=numero, 
             nombre_sala=nombre
         )

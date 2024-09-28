@@ -2,6 +2,8 @@ import axios from 'axios';
 import { useAuthStore } from '@/store';
 import router from '@/router';
 import { useSpinnerStore } from '@/store/spinner';
+import { useToastUtils } from '@/utils/toast'; 
+const { showInfoToast } = useToastUtils();
 
 const api = axios.create({
   baseURL: import.meta.env.VITE_API_API,
@@ -41,6 +43,7 @@ api.interceptors.response.use(response => {
     authStore.logout();
 
     router.push('/'); 
+    showInfoToast('Su sesíon ha expirado...');
   }
   const spinnerStore = useSpinnerStore(); // Obtener el store del spinner
   spinnerStore.hideSpinner();

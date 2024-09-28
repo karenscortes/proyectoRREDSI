@@ -2,12 +2,12 @@ import api from './api'; // Asegúrate de que `api.js` esté configurado adecuad
 
 export const getCurrentUser = async () => {
     try {
-      const token = localStorage.getItem('token');
-      if (!token) {
+      const user = localStorage.getItem('user');
+      if (!user) {
         throw new Error('Token de autenticación no encontrado. Inicia sesión nuevamente.');
       }
   
-      console.log('Token:', token);
+      console.log('Usuario:', user);
   
       const response = await api.get('/users/me', {
         headers: {
@@ -47,4 +47,32 @@ export const updateUserProfile = async (userId, userData) => {
             throw new Error('Error de red o de servidor');
         }
     }
+};
+
+export const createUser = async (id_tipo_documento, nombres, apellidos, celular, correo, passhash) => {
+  try {
+    // Crea un objeto FormData para manejar multipart/form-data
+    const formData = new FormData();
+    formData.append('id_tipo_documento', id_tipo_documento);
+    formData.append('nombres', nombres);
+    formData.append('apellidos', apellidos);
+    formData.append('celular', celular);
+    formData.append('correo', correo);
+    formData.append('passhash', passhash);
+
+    // No necesitas pasar el token, ya que el interceptor lo añade automáticamente
+    const response = await api.post('/evaluadores/create', formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data', // Asegúrate de que el encabezado es multipart/form-data
+      },
+    });
+
+    return response;
+  } catch (error) {
+    if (error.response) {
+      throw error.response; // Devuelve el error original de la API
+    } else {
+      throw new Error('Error de red o de servidor');
+    }
+  }
 };

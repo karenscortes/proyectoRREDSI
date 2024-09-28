@@ -104,8 +104,12 @@
     import ProyectosAsignados from '../components/Users/evaluador/ProyectosAsignados.vue';
     import CalificarProyectoEvaluadorView from './CalificarProyectoEvaluadorView.vue'; 
     import { useAuthStore } from '@/store';     
+    import { useToastUtils } from '@/utils/toast'; 
+
+    const { showErrorToast } = useToastUtils();
 
     export default {
+        
         components: {
             ProyectosAsignados,
             CalificarProyectoEvaluadorView 
@@ -144,6 +148,7 @@
             }
         },
         methods: {
+       
             async obtenerEtapa() {
                 try {
                     const authStore = useAuthStore();
@@ -154,14 +159,14 @@
 
                     this.fetchProyectos();
                 } catch (error) {
-                    console.error("Error al obtener la etapa actual: ", error);
-                    alert("Error al obtener la etapa actual");
+                    showErrorToast("Error al obtener la etapa actual");
                 }
             },
 
             async fetchProyectos(page = 1) {
                 try {
                     this.selectedState = ''; 
+    
 
                     const authStore = useAuthStore();
                     const user = authStore.user;
@@ -173,8 +178,7 @@
                     this.currentPage = page;
 
                 } catch (error) {
-                    console.error("Error al obtener proyectos: ", error);
-                    alert("Error al obtener proyectos");
+                    showErrorToast("Error al obtener proyectos");
                 }
             },
 
@@ -182,7 +186,12 @@
                 try {
                     const authStore = useAuthStore();
                     const user = authStore.user;
-                    
+
+    
+                    if (this.selectedState !== estado) {
+                        this.currentPage = 1; 
+                    } 
+                                
                     this.selectedState = estado;
 
                     // Mapear estado según la etapa actual
@@ -191,7 +200,6 @@
                         'Pendiente': this.currentEtapa === 'Virtual' ? 'P_virtual' : 'P_presencial'
                     };
 
-                    this.currentPage = 1;
                     const estadoEnvio = estadoMap[estado] || ''; 
 
                     const response = await obtenerProyectosPorEstado(this.currentEtapa, estadoEnvio, user.id_usuario, this.currentPage, this.itemsPerPage);
@@ -200,26 +208,28 @@
                     this.totalPages = response.data.total_pages;
 
                 } catch (error) {
-                    console.error("Error al obtener proyectos por estado: ", error);
-                    alert("Error al obtener proyectos por estado");
+                    showErrorToast("Error al obtener proyectos por estado");
                 }
             },
 
             nextPage() {
                 if (this.currentPage < this.totalPages) {
+                    this.currentPage++; // Aumentar el número de página
                     if (this.selectedState) {
                         this.fetchProyectosPorEstado(this.selectedState);
                     } else {
-                        this.fetchProyectos(this.currentPage + 1);
+                        this.fetchProyectos(this.currentPage);
                     }
                 }
             },
+
             prevPage() {
                 if (this.currentPage > 1) {
+                    this.currentPage--; // Disminuir el número de página
                     if (this.selectedState) {
                         this.fetchProyectosPorEstado(this.selectedState);
                     } else {
-                        this.fetchProyectos(this.currentPage - 1);
+                        this.fetchProyectos(this.currentPage);
                     }
                 }
             },
@@ -232,6 +242,7 @@
 
             handleVolver() {
                 this.showCalificarProyecto = false;
+                this.fetchProyectos(1);
             }
         },
         mounted() {
@@ -239,7 +250,6 @@
         }
     };
 </script>
-
 
 
 <style scoped>

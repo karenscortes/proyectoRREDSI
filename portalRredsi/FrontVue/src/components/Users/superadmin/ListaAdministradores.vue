@@ -62,33 +62,7 @@
         </table>
       </div>
 
-      <!-- Paginación -->
-      <div class="mt-2 text-dark">
-        <nav aria-label="Page navigation example mb-5">
-          <ul class="pagination justify-content-center">
-            <li class="page-item m-1" :class="{ disabled: paginaActual === 1 }">
-              <a class="page-link text-dark" href="#" @click.prevent="paginaAnterior" style="border-radius: 20px;">
-                Anterior
-              </a>
-            </li>
-            <li
-              class="page-item m-1"
-              v-for="pagina in totalPaginas"
-              :key="pagina"
-              :class="{ active: pagina === paginaActual }"
-            >
-              <a class="page-link rounded-circle text-dark" href="#" @click.prevent="irAPagina(pagina)">
-                {{ pagina }}
-              </a>
-            </li>
-            <li class="page-item m-1" :class="{ disabled: paginaActual === totalPaginas }">
-              <a class="page-link text-dark" href="#" @click.prevent="paginaSiguiente" style="border-radius: 20px;">
-                Siguiente
-              </a>
-            </li>
-          </ul>
-        </nav>
-      </div>
+      <PaginatorBody :totalPages="totalPaginas" @page-changed="cambiarPagina" v-if="totalPaginas > 1" />
 
       <!-- Modal detalle administrador -->
       <div class="modal fade" id="detalleAdminModal" tabindex="-1" aria-labelledby="detalleModalLabel" aria-hidden="true">
@@ -126,8 +100,8 @@
                 <div class="col-6">
                   <strong>Rol:</strong>
                   <select class="form-select" v-model="nuevoRolSeleccionado">
-                    <option value="2">Administrador</option>
-                    <option value="3">Delegado</option>
+                    <option value="3">Administrador</option>
+                    <option value="2">Delegado</option>
                   </select>
                 </div>
               </div>
@@ -190,6 +164,9 @@
 
 <script>
 import { getAdminsByPage, updateUserRole, getActivityHistoryByAdmin } from '../../../services/superadminService';
+import { useToastUtils } from '@/utils/toast';
+const { showSuccessToast, showErrorToast, showWarningToast} = useToastUtils();
+import PaginatorBody from '../../UI/PaginatorBody.vue';
 
 export default {
   data() {
@@ -200,6 +177,7 @@ export default {
       paginaActual: 1,  // Página actual de la paginación
       totalPaginas: 0,  // Total de páginas disponibles
       historialAdmin: [],
+
     };
   },
   computed: {
@@ -207,6 +185,10 @@ export default {
       return this.administradores;
        
     },
+  },
+
+  components: {
+    PaginatorBody
   },
   methods: {
     // Obtener los administradores de la API
@@ -216,7 +198,7 @@ export default {
         this.administradores = response.admins;  // Asignar los administradores
         this.totalPaginas = response.total_pages;  // Total de páginas para la paginación
       } catch (error) {
-        alert(error.detail || 'Error al obtener administradores');
+        showWarningToast('Error al obtener administradores');
       }
     },
     // Mostrar el detalle del administrador en el modal
@@ -233,10 +215,10 @@ export default {
         if (actualizado) {
           // Actualizar la lista de administradores después de guardar el nuevo rol
           await this.fetchAdmins();
-          alert('Rol actualizado exitosamente');
+          showSuccessToast('Rol actualizado exitosamente');
         }
       } catch (error) {
-        alert(error.detail || 'Error al actualizar el rol');
+        showWarningToast(error.detail || 'Error al actualizar el rol');
       }
     },
 
@@ -252,21 +234,9 @@ export default {
       }
     },
     // Paginación
-    paginaAnterior() {
-      if (this.paginaActual > 1) {
-        this.paginaActual--;
-        this.fetchAdmins();
-      }
-    },
-    paginaSiguiente() {
-      if (this.paginaActual < this.totalPaginas) {
-        this.paginaActual++;
-        this.fetchAdmins();
-      }
-    },
-    irAPagina(pagina) {
-      this.paginaActual = pagina;
-      this.fetchAdmins();
+    cambiarPagina(pagina){
+        this.paginaActual = pagina;
+        this.fetchAdmins(pagina);
     },
   },
   mounted() {

@@ -280,13 +280,28 @@ def get_proyecto_convocatoria(db: Session, id_proyecto: int):
         raise HTTPException(status_code=500, detail="Error al consultar el proyecto convocatoria")
     
 # Inserción de las respuestas de un proyecto
-def insert_respuesta_rubrica(db: Session, id_item_rubrica: int, id_usuario: int, id_proyecto: int, observacion: str, calificacion: float, calificacion_final: float):
+def insert_respuesta_rubrica(db: Session, id_item_rubrica: int, id_usuario: int, id_proyecto: int, observacion: str, calificacion: float, calificacion_final: float, etapa_actual: str):
     try:
         # Obtener id_proyecto_convocatoria
         id_proyecto_convocatoria = get_proyecto_convocatoria(db, id_proyecto)
         
         if not id_proyecto_convocatoria:
             raise HTTPException(status_code=404, detail="No se encontró una convocatoria en curso para el proyecto.")
+        
+        # Verificar la modalidad del proyecto para determinar el puntaje mínimo de aprobación
+        sql_get_modalidad = text(
+            """
+            SELECT id_modalidad
+            FROM proyectos
+            WHERE id_proyecto = :id_proyecto
+            """
+        )
+        modalidad = db.execute(sql_get_modalidad, {"id_proyecto": id_proyecto}).scalar()
+        
+        if modalidad == '2':
+            puntaje_minimo_aprobacion = 80
+        else:
+            puntaje_minimo_aprobacion = 75
         
         # Verificar si ya existe un id_rubrica_resultado para este proyecto y usuario
         sql_check_rubrica_resultado = text(
@@ -305,11 +320,11 @@ def insert_respuesta_rubrica(db: Session, id_item_rubrica: int, id_usuario: int,
         if rubrica_resultado:
             id_rubrica_resultado = rubrica_resultado[0]
         else:
-            # Inserción en rubricas_resultados
+            # Inserción en rubricas_resultados con estado 'reprobado' inicialmente
             sql_insert_rubrica_resultado = text(
                 """
                 INSERT INTO rubricas_resultados (estado_proyecto, puntaje_aprobacion)
-                VALUES ('calificado', 0.0);
+                VALUES ('reprobado', 0.0);
                 """
             )
             db.execute(sql_insert_rubrica_resultado)
@@ -317,7 +332,7 @@ def insert_respuesta_rubrica(db: Session, id_item_rubrica: int, id_usuario: int,
             # Obtener el último id insertado usando scalar()
             id_rubrica_resultado = db.execute(text("SELECT LAST_INSERT_ID();")).scalar()
         
-    
+        # Inserción de la respuesta de rúbrica
         sql_insert_respuesta_rubrica = text(
             """
             INSERT INTO respuestas_rubricas (
@@ -338,17 +353,37 @@ def insert_respuesta_rubrica(db: Session, id_item_rubrica: int, id_usuario: int,
         }
         db.execute(sql_insert_respuesta_rubrica, params)
 
+        # Determinar si el proyecto aprueba o reprueba en función del puntaje final y modalidad
+        estado_rubrica = 'aprobado' if calificacion_final >= puntaje_minimo_aprobacion else 'reprobado'
+
+        # Actualización de rubricas_resultados con el estado final y el puntaje
         sql_update_rubrica_resultado = text(
             """
             UPDATE rubricas_resultados
             SET puntaje_aprobacion = :calificacion_final,
-            estado_proyecto = 'calificado'
+                estado_proyecto = :estado_rubrica
             WHERE id_rubrica_resultado = :id_rubrica_resultado;
             """
         )
         db.execute(sql_update_rubrica_resultado, {
             "calificacion_final": calificacion_final,
+            "estado_rubrica": estado_rubrica,
             "id_rubrica_resultado": id_rubrica_resultado
+        })
+
+        # Actualización del estado_calificacion en la tabla proyectos según la etapa actual
+        nuevo_estado_calificacion = 'C_virtual' if etapa_actual == 'Virtual' else 'C_presencial'
+        
+        sql_update_proyecto = text(
+            """
+            UPDATE proyectos
+            SET estado_calificacion = :nuevo_estado_calificacion
+            WHERE id_proyecto = :id_proyecto;
+            """
+        )
+        db.execute(sql_update_proyecto, {
+            "nuevo_estado_calificacion": nuevo_estado_calificacion,
+            "id_proyecto": id_proyecto
         })
 
         db.commit()
@@ -449,7 +484,7 @@ def convertir_timedelta_a_hora(timedelta_obj: timedelta) -> str:
 def get_datos_rubrica_proyecto(db: Session, id_proyecto: int, id_usuario: int):
     try:
         sql_query = text("""
-            SELECT items_rubrica.* FROM items_rubrica
+            SELECT DISTINCT items_rubrica.* FROM items_rubrica
             JOIN rubricas ON items_rubrica.id_rubrica = rubricas.id_rubrica 
             JOIN participantes_proyecto ON rubricas.id_etapa = participantes_proyecto.id_etapa
             JOIN proyectos_convocatoria ON participantes_proyecto.id_proyecto = proyectos_convocatoria.id_proyecto         
@@ -551,6 +586,7 @@ def get_datos_calificar_proyecto_completo(db: Session, id_proyecto: int, id_usua
         
         componentes_rubrica = [
             Componente(
+                id_item_rubrica=item['id_item_rubrica'],
                 titulo=item['titulo'],
                 descripcion=item['componente'],
                 valor_maximo=item['valor_max']
@@ -576,4 +612,104 @@ def get_datos_calificar_proyecto_completo(db: Session, id_proyecto: int, id_usua
         db.rollback()
         raise HTTPException(status_code=500, detail=f"Error al consultar los datos del proyecto:{e}")
 
+# Obtener los datos calificados de la rúbrica para un proyecto
+def get_datos_calificados_rubrica(db: Session, id_proyecto: int, id_usuario: int):
+    try:
+        # Obtener el id_proyecto_convocatoria para el proyecto en curso
+        sql_query = text("""
+            SELECT DISTINCT respuestas_rubricas.*, items_rubrica.titulo, items_rubrica.componente, items_rubrica.valor_max
+            FROM respuestas_rubricas
+            JOIN items_rubrica ON respuestas_rubricas.id_item_rubrica = items_rubrica.id_item_rubrica
+            JOIN proyectos_convocatoria ON respuestas_rubricas.id_proyecto_convocatoria = proyectos_convocatoria.id_proyecto_convocatoria
+            JOIN convocatorias ON proyectos_convocatoria.id_convocatoria = convocatorias.id_convocatoria
+            WHERE 
+                proyectos_convocatoria.id_proyecto = :id_proyecto
+                AND respuestas_rubricas.id_usuario = :id_usuario
+                AND convocatorias.estado = 'en curso'
+        """)
+        
+        params = {
+            "id_proyecto": id_proyecto,
+            "id_usuario": id_usuario
+        }
 
+        result = db.execute(sql_query, params).mappings().all()
+
+        if len(result) == 0:
+            raise HTTPException(status_code=404, detail="Datos calificados no encontrados")
+
+        return result
+    
+    except Exception as e:
+        db.rollback()
+        raise HTTPException(status_code=500, detail=f"Error al consultar los datos calificados del proyecto: {e}")
+
+# Obtener los datos para calificar un proyecto
+def get_datos_proyecto_calificado_completo(db: Session, id_proyecto: int, id_usuario: int):
+    try:
+        # Obtener los datos básicos del proyecto y del evaluador
+        sql_query = text("""
+            SELECT 
+                proyectos.titulo AS titulo_proyecto,
+                inst_proyecto.nombre AS universidad_proyecto,
+                usuarios.nombres AS nombre_evaluador,
+                usuarios.documento AS cedula_evaluador,
+                inst_evaluador.nombre AS universidad_evaluador,
+                usuarios.correo AS email_evaluador,
+                usuarios.celular AS celular_evaluador
+            FROM 
+                proyectos
+            JOIN 
+                participantes_proyecto ON proyectos.id_proyecto = participantes_proyecto.id_proyecto
+            JOIN 
+                usuarios ON usuarios.id_usuario = participantes_proyecto.id_usuario
+            JOIN 
+                detalles_institucionales ON usuarios.id_usuario = detalles_institucionales.id_usuario
+            JOIN 
+                instituciones AS inst_proyecto ON proyectos.id_institucion = inst_proyecto.id_institucion
+            JOIN 
+                instituciones AS inst_evaluador ON detalles_institucionales.id_institucion = inst_evaluador.id_institucion
+            WHERE 
+                proyectos.id_proyecto = :id_proyecto
+                AND usuarios.id_usuario = :id_usuario
+        """)
+        result = db.execute(sql_query, {"id_proyecto": id_proyecto, "id_usuario": id_usuario}).fetchone()
+
+        if not result:
+            raise HTTPException(status_code=404, detail="Datos no encontrados")
+
+        # Obtener los nombres de los ponentes asociados al proyecto
+        nombres_ponentes = get_nombres_ponentes_proyecto(db, id_proyecto)
+
+        # Obtener los datos de la rúbrica asociados al proyecto
+        rubrica_result = get_datos_calificados_rubrica(db, id_proyecto, id_usuario)
+        
+        componentes_rubrica = [
+            Componente(
+                id_item_rubrica=item['id_item_rubrica'],
+                titulo=item['titulo'],
+                descripcion=item['componente'],
+                observaciones=item['observacion'],
+                calificacion=item['calificacion'],
+                valor_maximo=item['valor_max']
+            ) for item in rubrica_result
+        ]
+
+        # Crear la respuesta final incluyendo los datos del proyecto y la rúbrica
+        proyecto_respuesta = CalificarProyectoRespuesta(
+            titulo_proyecto=result.titulo_proyecto,
+            universidad_proyecto=result.universidad_proyecto,
+            nombre_evaluador=result.nombre_evaluador,
+            cedula_evaluador=result.cedula_evaluador,
+            universidad_evaluador=result.universidad_evaluador,
+            email_evaluador=result.email_evaluador,
+            celular_evaluador=result.celular_evaluador,
+            nombres_ponentes=nombres_ponentes,  
+            componentes=componentes_rubrica  
+        )
+
+        return proyecto_respuesta
+
+    except Exception as e:
+        db.rollback()
+        raise HTTPException(status_code=500, detail=f"Error al consultar los datos del proyecto:{e}")
