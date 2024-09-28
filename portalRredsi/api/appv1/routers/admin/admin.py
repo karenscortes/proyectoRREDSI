@@ -2,7 +2,7 @@ import json
 from typing import List, Optional
 from fastapi import APIRouter, Depends, File, HTTPException, UploadFile
 from sqlalchemy.orm import Session
-from appv1.crud.admin.gest_asistentes_externos import generate_code, get_id_document_type, get_paginated_attendees, insert_attendee, insert_user
+from appv1.crud.admin.gest_asistentes_externos import generate_code, get_id_document_type, get_paginated_attendees, insert_attendee, insert_user, update_external_attendees
 from appv1.crud.admin.gest_delegado import create_delegado,get_delegados_activos_paginated, get_delegados_by_document
 from appv1.crud.admin.gest_rubricas import create_items, delete_items, get_all_rubricas, update_items
 from appv1.crud.admin.gest_rubricas import get_all_rubricas
@@ -10,7 +10,7 @@ from appv1.crud.admin.admin import create_convocatoria, create_etapa, create_fas
 from appv1.routers.login import get_current_user
 from appv1.schemas.admin.admin import ConvocatoriaCreate, CreateSala, FaseUpdate, UpdateSala
 from appv1.crud.admin.admin import create_convocatoria, create_etapa, create_fase, get_fases_by_etapa, update_etapa, update_fase
-from appv1.schemas.admin.attendees import PaginatedAttendees
+from appv1.schemas.admin.attendees import PaginatedAttendees, UpdatedAttendee
 from appv1.schemas.admin.delegado import DelegadoResponse, PaginatedDelegadoResponse
 from appv1.schemas.admin.items_rubrica import ItemCreate, ItemUpdate
 from appv1.schemas.admin.rubrica import RubricaResponse
@@ -459,3 +459,32 @@ async def get_all_attendees(
         "current_page": page,
         "page_size": page_size
     }
+
+#Editar items
+@router_admin.put("/update-attendee/{id_usuario}/")
+def update_attendee(
+    id_usuario:int, 
+    newData: UpdatedAttendee, 
+    db: Session = Depends(get_db), 
+    current_user: UserResponse = Depends(get_current_user),
+):
+    MODULE = 12
+    permisos = get_permissions(db, current_user.id_rol, MODULE)
+    
+    if permisos is None or not permisos.p_actualizar:
+        raise HTTPException(status_code=401, detail="Usuario no autorizado")
+    
+    user,attendee = update_external_attendees(db,id_usuario,newData)
+    if user or attendee:
+        return{
+            'success': True,
+            'message': 'Se actualizo con éxito',
+            'usuario': user,
+            'asistente': attendee,
+
+        }
+    else: 
+        return{
+            'success': False,
+            'message': 'Error al actualizar',
+        }

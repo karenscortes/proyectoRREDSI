@@ -1,12 +1,14 @@
 <template>
-    <div class="modal fade" id="modalEditar" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    <div class="modal fade  show" id="modalEditar" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
     aria-labelledby="staticBackdropLabel" aria-hidden="true">
-        <div class="modal-dialog" style="max-width: 50%;">
-            <div class="modal-content rounded-st-1 shadow-lg modal-responsive">
-                <div class="modal-header p-4 shadow w-100" style="border: 1px solid yellow;">
+        <div class="modal-dialog modal-dialog-centered bg-transparent" style="max-width: 50%;">
+            <div class="modal-content border border-dark border-5 rounded-5 text-dark shadow-lg modal-responsive">
+                <div class="modal-header px-4 shadow w-100 rounded-5 rounded-bottom" >
                     <i class="fas fa-edit icon"></i>
                     <h1 class="modal-title fs-5" id="staticBackdropLabel">Editar asistente</h1>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <button type="button" class="close fs-2" @click="closeModal()">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
                 </div>
                 <div class="modal-body">
                     <form @submit.prevent="updateInfo()">
@@ -16,42 +18,37 @@
                                     Nombres
                                     <span class="text-danger fw-bold">*</span>
                                 </label>
-                                <input type="text" id="nombres" v-model="infoModal.nombres" class="form_modal form-control" required>
+                                <input type="text" id="nombres" v-model="editableData.nombres" class="form_modal form-control" required>
                             </div>
                             <div class="col-md-6 mb-3">
                                 <label for="apellidos" class="form-label">
                                     Apellidos
                                     <span class="text-danger fw-bold">*</span>
                                 </label>
-                                <input type="text" id="apellidos" v-model="infoModal.apellidos" class="form_modal form-control" required>
+                                <input type="text" id="apellidos" v-model="editableData.apellidos" class="form_modal form-control" required>
                             </div>
                             <div class="col-md-6 mb-3">
                                 <label for="celular" class="form-label">
                                     Celular
                                     <span class="text-danger fw-bold">*</span>
                                 </label>
-                                <input type="text" id="celular" v-model="infoModal.celular" class="form_modal form-control" required>
+                                <input type="text" id="celular" v-model="editableData.celular" class="form_modal form-control" required>
                             </div>
                             <div class="col-md-6 mb-3">
                                 <label for="correo" class="form-label">
                                     correo
                                     <span class="text-danger fw-bold">*</span>
                                 </label>
-                                <input type="email" id="correo" v-model="infoModal.correo" class="form_modal form-control" required>
+                                <input type="email" id="correo" v-model="editableData.correo" class="form_modal form-control" required>
                             </div>
                             <div class=" col-md-12  mb-2">
-                                <label for="comprobante_pago" class="form-label d-flex justify-content-center">
-                                    Lista de Asistentes: 
+                                <label for="correo" class="form-label">
+                                    Comprobate Pago (Url):
+                                    <span class="text-danger fw-bold">*</span>
                                 </label>
-                                <div class="custom-file-upload mx-auto">
-                                    <label for="comprobante_pago" class="upload-label">
-                                        <input type="file" id="comprobante_pago" name="comprobante_pago" class="d-none d-print-block" @change="onFileChange"/>
-                                        <i class="fas fa-cloud-upload-alt"></i>
-                                        Selecciona un archivo
-                                    </label>
-                                </div> 
+                                <input type="text" id="correo" v-model="editableData.url_comprobante_pago" class="form_modal form-control" required>
                             </div>
-                            <div class="d-flex justify-content-center" style="border: 1px solid yellow;">
+                            <div class="d-flex justify-content-center">
                                 <button class="btn boton pl-5 pr-5 mx-auto" type="submit">Actualizar Datos</button>
                             </div>
                         </div>
@@ -62,7 +59,8 @@
     </div>
 </template>
 <script>
-
+import { updateAttendees } from '@/services/asistenciaService';
+import { reactive } from "vue";
 export default {
   props:{
     infoModal: {
@@ -70,7 +68,7 @@ export default {
       default: null,
       validator(value){
         return(
-          typeof id_usuario === 'number' &&
+          typeof value.id_usuario === 'number' &&
           typeof value.documento === 'string' &&
           typeof value.nombres === 'string' &&
           typeof value.apellidos === 'string' &&
@@ -81,19 +79,40 @@ export default {
       }
     }
   },
-  emits: ["closeModalDetail"],
+  emits: ["closeEditModal"],
   setup(props, { emit }) {
 
-    const closeModal = () => {
-      emit("closeModalDetail");
-    };
+    const editableData = reactive({
+        nombres: props.infoModal.nombres,
+        apellidos: props.infoModal.apellidos,
+        celular: props.infoModal.celular,
+        correo: props.infoModal.correo,
+        url_comprobante_pago: props.infoModal.url_comprobante_pago,
+    });
 
-    const updateInfo = () => {
-      
+    const closeModal = () => {
+      emit("closeEditModal");
+    };
+    
+    const updateInfo = async() => {
+        try {
+            if (editableData.nombres !== props.infoModal.nombres || editableData.apellidos !== props.infoModal.apellidos ||
+                editableData.celular !== props.infoModal.celular || editableData.correo !== props.infoModal.correo ||
+                editableData.url_comprobante_pago !== props.infoModal.url_comprobante_pago) 
+            {
+                const response = await updateAttendees(infoModal.id_usuario, editableData);
+
+            }else{
+
+            }
+        } catch (error) {
+            console.error('Error al subir el archivo:', error);
+        }
     };
     return { 
         closeModal,
-        updateInfo
+        updateInfo,
+        editableData,
     };
   },
 };
@@ -107,5 +126,29 @@ export default {
 
 .form_modal{
 	border: 1px solid rgb(190, 190, 190);
+}
+
+#modalEditar {
+  display: block;
+  /*max-width: 50%;*/
+}
+
+
+.modal-header .icon {
+	color:rgb(255, 182, 6);
+	font-size: 2rem;
+	margin-right: 10px;
+}
+
+.modal-header{
+	color: #000000;
+	font-size: 2rem;
+	margin-right: 10px;
+}
+
+label{
+	font-size: 15px;
+	font-weight: bold;
+	color: black;
 }
 </style>

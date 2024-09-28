@@ -5,7 +5,7 @@
         <td>{{ infoAsistente.celular }}</td>
         <td>{{ infoAsistente.correo }}</td>
         <td style="vertical-align: middle;">
-            <a :href="infoAsistente.url_comprobrante_pago" target="_blank" style="color: black;">
+            <a :href="infoAsistente.url_comprobante_pago" target="_blank" style="color: black;">
                 <i class="fas fa-eye fa-2x"></i>
             </a>
         </td>   
@@ -29,7 +29,7 @@
             typeof value.apellidos === 'string' &&
             typeof value.celular === 'string' &&
             typeof value.correo === 'string' && 
-            typeof value.url_comprobrante_pago === 'string'
+            typeof value.url_comprobante_pago === 'string'
           );
         },
       },
@@ -43,7 +43,7 @@
     const openModal = () => emit("open", props.infoAsistente);
   
   </script>
-  <style>
+  <style scoped>
   .form-check{
     padding-left: 2.5rem;
   }

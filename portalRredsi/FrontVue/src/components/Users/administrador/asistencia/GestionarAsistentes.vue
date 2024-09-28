@@ -85,17 +85,18 @@
     </div>
       
     <!-- Modales -->
-    <!-- <AddAttendeesModal @close="closeAddModal()" v-if="isAddModalOpen"></AddAttendeesModal>
-    <EditAttendeeModal v-if="isEditModalOpen" @closeEditModal="closeEditModal()" :infoModal="EditModalInfo"></EditAttendeeModal> -->
+    <AddAttendeesModal @close="closeAddModal()" v-if="isAddModalOpen"></AddAttendeesModal>
+    <EditAttendeeModal v-if="isEditModalOpen" @closeEditModal="closeEditModal()" :infoModal="EditModalInfo"></EditAttendeeModal>
     
 
 </template>
 <script>
 import { getAttendeesByPage } from '@/services/asistenciaService';
-import AddAttendeesModal from './AddAttendeesModal.vue';
-import AttendeesTableRow from './attendeesTableRow.vue';
-import EditAttendeeModal from './EditAttendeeModal.vue';
 import { onMounted, ref, reactive } from "vue";
+import AddAttendeesModal from './AddAttendeesModal.vue';
+import EditAttendeeModal from './EditAttendeeModal.vue';
+import AttendeesTableRow from './AttendeesTableRow.vue';
+
 
 
 export default {
@@ -127,7 +128,7 @@ export default {
             try {
 
                 const response = await getAttendeesByPage(currentPage.value);
-                attendees = response.data.attendees; 
+                attendees.value = response.data.attendees; 
                 totalPages.value = response.data.total_pages;
 
                 // attendees.forEach(function (asistente, i) {
@@ -207,6 +208,7 @@ export default {
             isAddModalOpen,
             isEditModalOpen,
             AttendeesArray,
+            EditModalInfo,
             fetchAttendees,
             showAddModal,
             closeAddModal,
