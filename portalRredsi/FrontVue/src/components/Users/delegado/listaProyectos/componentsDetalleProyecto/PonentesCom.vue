@@ -6,7 +6,7 @@
         <h3 class="text-dark text-left">Ponentes</h3>
         <p class="text-dark text-left">
             <span v-for="(ponente, index) in ponentes" :key="index">
-                {{ ponente }}<br>
+                {{ ponente.nombres }} {{ ponente.apellidos }}<br>
             </span>
         </p>
     </div>

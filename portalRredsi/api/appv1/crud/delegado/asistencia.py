@@ -3,7 +3,6 @@ from fastapi import HTTPException
 from sqlalchemy import text
 from sqlalchemy.orm import Session
 from sqlalchemy.exc import SQLAlchemyError
-
 from appv1.schemas.delegado.asistencia import ConvocatoriaActual
 
 
