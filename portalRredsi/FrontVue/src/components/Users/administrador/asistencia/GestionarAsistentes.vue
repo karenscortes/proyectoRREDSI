@@ -31,30 +31,30 @@
 import { ref } from "vue";
 import { uploadFileData } from "@/services/asistenciaService";
 export default {
-    setup() {
-        const file = ref(null);
+    // setup() {
+    //     const file = ref(null);
 
-        const onFileChange = (event) => {
-            file = event.target.files[0];
-        };
+    //     const onFileChange = (event) => {
+    //         file = event.target.files[0];
+    //     };
 
-        const bulkUpload = async () => {
-            try {
-                if (file) {
-                    await uploadFileData(file); // Llama al servicio para subir los datos del excel
-                    alert('Archivo subido exitosamente');
-                }
-            } catch (error) {
-                console.error('Error al subir el archivo:', error);
-            }
-        };
+    //     const bulkUpload = async () => {
+    //         try {
+    //             if (file) {
+    //                 await uploadFileData(file); // Llama al servicio para subir los datos del excel
+    //                 alert('Archivo subido exitosamente');
+    //             }
+    //         } catch (error) {
+    //             console.error('Error al subir el archivo:', error);
+    //         }
+    //     };
 
 
-        return {
-            onFileChange,
-            bulkUpload,
-        }
-    },
+    //     return {
+    //         onFileChange,
+    //         bulkUpload,
+    //     }
+    // },
 }
 
 </script>
