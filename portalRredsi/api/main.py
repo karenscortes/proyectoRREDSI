@@ -4,7 +4,7 @@ from appv1.routers import areas_conocimiento, autores, eventos, login, modalidad
 from appv1.routers import autores, eventos, generales, login, ponentes, proyectos, rol, tutores, usuarios 
 from appv1.routers import autores, eventos, generales, login, ponentes, proyectos, rol, tutores, usuarios, UsuarioEvaluador
 from appv1.routers.admin import admin
-from appv1.routers.delegado import asignarProyectoEtapaVirtual, asistencia, listaEvaluadores, listaProyectos, postulaciones, proyectosSinAsignar, salas
+from appv1.routers.delegado import asignarProyectoEtapaVirtual, asistencia, listaEvaluadores, listaProyectos, detalleProyecto, postulaciones, proyectosSinAsignar, salas
 from appv1.routers.evaluador import evaluadores
 from appv1.routers.inicio import convocatorias
 from appv1.routers.superadmin import superadmin
@@ -57,6 +57,7 @@ app.include_router(listaEvaluadores.router_evaluadores, prefix="/listaEvaluadore
 app.include_router(proyectosSinAsignar.router_proyectosSinAsignar, prefix="/proyectosSinAsignar", tags=["Delegado"])
 app.include_router(asistencia.router_asistencia,prefix="/asistencia", tags=["Delegado"])
 app.include_router(listaProyectos.router_proyectos,prefix="/listaProyectos", tags=["Delegado"])
+app.include_router(detalleProyecto.router_detalle_proyecto,prefix="/detalleProyecto", tags=["Delegado"])
 
 # ADMIN 
 app.include_router(admin.router_admin, prefix="/admin", tags=["Administrador"])

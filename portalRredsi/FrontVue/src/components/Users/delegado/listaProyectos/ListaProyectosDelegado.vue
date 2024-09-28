@@ -3,7 +3,7 @@
     <component 
         v-if="showCalificarProyecto && selectedComponent" 
         :is="selectedComponent" 
-        :proyectoSeleccionado="selectedProyecto" 
+        :proyecto="selectedProyecto" 
         @volver="handleVolver" 
     />
     
@@ -233,6 +233,7 @@
             changeComponent({ componentName, proyecto }) {
                 this.selectedComponent = componentName;
                 this.selectedProyecto = proyecto; 
+                console.log(this.selectedProyecto);
                 this.showCalificarProyecto = true; 
             },
 
