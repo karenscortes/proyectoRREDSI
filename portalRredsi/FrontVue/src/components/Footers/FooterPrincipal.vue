@@ -18,7 +18,7 @@
                             </div>
                         </div>
 
-                        <p class="footer_about_text">In aliquam, augue a gravida rutrum, ante nisl fermentum nulla.</p>
+                        <p class="footer_about_text">Red Regional de Semilleros de Investigación</p>
 
                     </div>
 
@@ -90,19 +90,18 @@
             <div class="footer_bar d-flex flex-column flex-sm-row align-items-center">
                 <div class="footer_copyright">
                     <span><!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-                        Copyright &copy; {{ currentYear }} All rights reserved | This template is made with by
-                        <a href="#" target="_blank">ADSO 2670586</a>
+                        &copy; {{ currentYear }} Desarrollado por ADSO 2670586 para la Red Regional de Semilleros de Investigación – RREDSI.
                         <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
                     </span>
                 </div>
                 <div class="footer_social ml-sm-auto">
                     <ul class="menu_social">
 
-                        <li class="menu_social_item"><a href="https://www.instagram.com/rredsiquindio/"><i
+                        <li class="menu_social_item"><a href="https://www.instagram.com/rredsiquindio/" target="_blank"><i
                                     class="fab fa-instagram"></i></a></li>
-                        <li class="menu_social_item"><a href="https://www.facebook.com/rredsi?mibextid=ZbWKwL"><i
+                        <li class="menu_social_item"><a href="https://www.facebook.com/rredsi?mibextid=ZbWKwL" target="_blank"><i
                                     class="fab fa-facebook-f"></i></a></li>
-                        <li class="menu_social_item"><a href="https://x.com/Rredsi"><i class="fab fa-twitter"></i></a>
+                        <li class="menu_social_item"><a href="https://x.com/Rredsi" target="_blank"><i class="fab fa-twitter"></i></a>
                         </li>
                     </ul>
                 </div>

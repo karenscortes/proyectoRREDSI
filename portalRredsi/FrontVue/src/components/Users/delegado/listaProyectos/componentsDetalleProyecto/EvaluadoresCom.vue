@@ -6,7 +6,7 @@
         <h3 class="text-dark text-left">Evaluadores</h3>
         <p class="text-dark text-left">
             <span v-for="(evaluador, index) in evaluadores" :key="index">
-                {{ evaluador }}<br>
+                {{ evaluador.nombres }} {{ evaluador.apellidos }}<br>
             </span>
         </p>
     </div>
@@ -25,7 +25,6 @@ export default {
 </script>
 
 <style scoped>
-
 h3,
 p {
     font-size: 0.9rem;

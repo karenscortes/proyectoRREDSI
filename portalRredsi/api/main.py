@@ -1,10 +1,10 @@
 from sys import prefix
 from fastapi import FastAPI
-from appv1.routers import autores, eventos, login, ponentes, proyectos, rol, tutores, usuarios, UsuarioEvaluador,tipo_identificacion
+from appv1.routers import areas_conocimiento, autores, eventos, login, modalidades, participantes_proyecto, ponentes, proyectos, proyectos_convocatorias, rol, tutores, usuarios, UsuarioEvaluador,tipo_identificacion
 from appv1.routers import autores, eventos, generales, login, ponentes, proyectos, rol, tutores, usuarios 
 from appv1.routers import autores, eventos, generales, login, ponentes, proyectos, rol, tutores, usuarios, UsuarioEvaluador
 from appv1.routers.admin import admin
-from appv1.routers.delegado import asignarProyectoEtapaVirtual, asistencia, listaEvaluadores, listaProyectos, postulaciones, proyectosSinAsignar, salas
+from appv1.routers.delegado import asignarProyectoEtapaVirtual, asistencia, listaEvaluadores, listaProyectos, detalleProyecto, postulaciones, proyectosSinAsignar, salas
 from appv1.routers.evaluador import evaluadores
 from appv1.routers.inicio import convocatorias
 from appv1.routers.superadmin import superadmin
@@ -24,6 +24,10 @@ app.include_router(proyectos.router_project, prefix="/projects", tags=["Proyecto
 app.include_router(tutores.router_userTutor, prefix="/tutores", tags=["Proyectos"])
 app.include_router(ponentes.router_userPonente, prefix="/ponentes", tags=["Proyectos"])
 app.include_router(autores.router_autor, prefix="/autor", tags=["Proyectos"])
+app.include_router(modalidades.router_modalidades, prefix="/modalidades", tags=["Proyectos"])
+app.include_router(areas_conocimiento.router_areasConocimiento, prefix="/areasConocimientos", tags=["Proyectos"])
+app.include_router(proyectos_convocatorias.router_proyectoConvocatoria, prefix="/proyectosConvocatorias", tags=["Proyectos"])
+app.include_router(participantes_proyecto.router_participante_proyecto, prefix="/participanteProyecto", tags=["Proyectos"])
 
 # CONSULTAS GENERALES
 app.include_router(generales.router_consultas_generales, prefix="/generales", tags=["Consultas generales"])
@@ -53,6 +57,7 @@ app.include_router(listaEvaluadores.router_evaluadores, prefix="/listaEvaluadore
 app.include_router(proyectosSinAsignar.router_proyectosSinAsignar, prefix="/proyectosSinAsignar", tags=["Delegado"])
 app.include_router(asistencia.router_asistencia,prefix="/asistencia", tags=["Delegado"])
 app.include_router(listaProyectos.router_proyectos,prefix="/listaProyectos", tags=["Delegado"])
+app.include_router(detalleProyecto.router_detalle_proyecto,prefix="/detalleProyecto", tags=["Delegado"])
 
 # ADMIN 
 app.include_router(admin.router_admin, prefix="/admin", tags=["Administrador"])

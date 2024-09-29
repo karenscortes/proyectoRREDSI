@@ -41,26 +41,6 @@ export const getConvocatorias = async () => {
   }
 };
 
-
-// Función para agregar una nueva etapa
-export const addEtapa = async (idConvocatoria, nombre) => {
-  try {
-    const url = `/admin/convocatoria/${idConvocatoria}/etapas`;
-    const response = await api.post(url, { nombre }, {
-      headers: {
-        'Authorization': `Bearer ${localStorage.getItem('access_token')}`
-      }
-    });
-    return response;
-  } catch (error) {
-    if (error.response) {
-      throw error;
-    } else {
-      throw new Error('Error de red o de servidor');
-    }
-  }
-};
-
 // Función para agregar una nueva fase
 export const addFase = async (idEtapa, nombre) => {
   try {

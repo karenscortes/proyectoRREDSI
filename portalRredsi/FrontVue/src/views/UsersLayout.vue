@@ -33,10 +33,12 @@ import NotAvailable from "./NotAvailable.vue";
 import ListaSalasDelegado from "../components/Users/delegado/listaSalas/ListaSalasDelegado.vue";
 import ListaProyectosDelegado from "../components/Users/delegado/listaProyectos/ListaProyectosDelegado.vue";
 import PaginaInicioDelegado from "../components/Users/delegado/PaginaInicioDelegado.vue";
+import GestionarAsistentes from "../components/Users/administrador/asistencia/GestionarAsistentes.vue";
 import InicioAdminView from "./InicioAdminView.vue";
 
 // Styles
 import '../assets/plugins/fontawesome-free-5.0.1/css/fontawesome-all.css';
+
 
 
 export default {
@@ -50,6 +52,7 @@ export default {
         SalasAdminView: markRaw(SalasAdminView),
         DelegadosAdmin: markRaw(DelegadosAdminView),
         CrearConvocatoria: markRaw(CrearConvocatoria),
+        GestionarAsistentes: markRaw(GestionarAsistentes),
 
         //Componentes Delegado
         AsignarProyectos: markRaw(AsignarProyectos),
@@ -104,6 +107,7 @@ export default {
                 SalasAdminView: SalasAdminView,
                 DelegadosAdminView: DelegadosAdminView,
                 CrearConvocatoria: CrearConvocatoria,
+                GestionarAsistentes: GestionarAsistentes,
 
                 //Delegado
                 AsignarProyectos: AsignarProyectos,

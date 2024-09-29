@@ -1,7 +1,8 @@
 import json
 from typing import List, Optional
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, File, HTTPException, UploadFile
 from sqlalchemy.orm import Session
+from appv1.crud.admin.gest_asistentes_externos import generate_code, get_id_document_type, get_paginated_attendees, insert_attendee, insert_user, update_external_attendees
 from appv1.crud.admin.gest_delegado import create_delegado,get_delegados_activos_paginated, get_delegados_by_document
 from appv1.crud.admin.gest_rubricas import create_items, delete_items, get_all_rubricas, update_items
 from appv1.crud.admin.gest_rubricas import get_all_rubricas
@@ -9,13 +10,16 @@ from appv1.crud.admin.admin import create_convocatoria, create_etapa, create_fas
 from appv1.routers.login import get_current_user
 from appv1.schemas.admin.admin import ConvocatoriaCreate, CreateSala, FaseUpdate, UpdateSala
 from appv1.crud.admin.admin import create_convocatoria, create_etapa, create_fase, get_fases_by_etapa, update_etapa, update_fase
+from appv1.schemas.admin.attendees import PaginatedAttendees, UpdatedAttendee
 from appv1.schemas.admin.delegado import DelegadoResponse, PaginatedDelegadoResponse
 from appv1.schemas.admin.items_rubrica import ItemCreate, ItemUpdate
 from appv1.schemas.admin.rubrica import RubricaResponse
 from appv1.schemas.usuario import UserCreate, UserResponse
+from core.utils import save_file
 from db.database import get_db
 from appv1.crud.permissions import get_permissions
 from appv1.crud.usuarios import get_user_by_documento, get_user_by_email
+import pandas as pd
 
 router_admin = APIRouter()
 
@@ -377,4 +381,110 @@ def update_sala_admin(
             'success': False,
             'message': 'Error al actualizar la sala',
         }
+
+# Subir el archivo excel y procesar los datos
+@router_admin.post("/upload-excel/")
+async def upload_file(file: UploadFile = File(...), db: Session = Depends(get_db)):
+
+    # Guardar el archivo
+    file_location = save_file(file)
     
+    # Leer el archivo Excel
+    df = pd.read_excel(file_location)
+
+    # Se itera por cada fila del excel
+    for index, row in df.iterrows():
+        
+        #Se comprueba que el asistente no se encuentre en la tabla usuarios
+        existing_user_email = get_user_by_email(db,row['correo'])
+        existing_user_doc = get_user_by_documento(db,row['documento'])
+
+        id_asistente=None
+
+        #Si no se encontró
+        if existing_user_email is None and existing_user_doc is None:
+            
+            password = generate_code()
+            id_tipo_doc = get_id_document_type(db,row['tipo_documento'])
+
+            # se obtiene los datos de los campos indicados y se Insertan en la tabla 'usuarios'
+            asistente_externo = insert_user(
+                db=db,
+                tipo_doc=id_tipo_doc.id_tipo_documento, 
+                num_doc=row['documento'], 
+                nombres=row['nombres'],
+                apellidos=row['apellidos'],
+                correo=row['correo'], 
+                clave=password,
+                telefono=row.get('celular', None)
+            )
+
+            id_asistente=asistente_externo.id_usuario
+        else:
+            #de lo contrario, se obtiene el id_usuario
+            id_asistente=existing_user_doc[0]
+
+        # Insertar comprobante_pago y demás datos en la tabala asistencia 
+        insert_attendee(
+            db=db, 
+            usuario_id=id_asistente, 
+            url_comprobante_pago=row['url_comprobante_pago']
+        )
+    
+    return {"message": "File processed and data stored successfully.", "file_location": file_location}
+
+
+#Obtener asistentes paginados
+@router_admin.get("/get-all-attendees/", response_model=PaginatedAttendees)
+async def get_all_attendees(
+    db: Session = Depends(get_db),
+    page: int = 1,
+    page_size: int = 10,
+    current_user: UserResponse = Depends(get_current_user),
+):  
+    MODULE = 12
+    permisos = get_permissions(db, current_user.id_rol, MODULE)
+
+    if permisos is None or not permisos.p_consultar:
+        raise HTTPException(status_code=401, detail="Usuario no autorizado")
+    
+    attendees, total_pages = get_paginated_attendees(db, page, page_size)
+
+    if len(attendees) == 0:
+        raise HTTPException(status_code=404, detail="No hay asistentes")
+
+    return {
+        "attendees": attendees,
+        "total_pages": total_pages,
+        "current_page": page,
+        "page_size": page_size
+    }
+
+#Editar items
+@router_admin.put("/update-attendee/{id_usuario}/")
+def update_attendee(
+    id_usuario:int, 
+    newData: UpdatedAttendee, 
+    db: Session = Depends(get_db), 
+    current_user: UserResponse = Depends(get_current_user),
+):
+    MODULE = 12
+    permisos = get_permissions(db, current_user.id_rol, MODULE)
+    
+    if permisos is None or not permisos.p_actualizar:
+        raise HTTPException(status_code=401, detail="Usuario no autorizado")
+    
+    user,attendee = update_external_attendees(db,id_usuario,newData)
+    if user or attendee:
+        return{
+            'success': True,
+            'message': 'Se actualizo con éxito',
+            'usuario': user,
+            'asistente': attendee,
+
+        }
+    else: 
+        return{
+            'success': False,
+            'message': 'Error al actualizar',
+        }
