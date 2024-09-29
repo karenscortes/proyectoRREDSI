@@ -13,3 +13,21 @@ def get_proyecto_by_id(db: Session,id_proyecto : int):
             """)
     result = db.execute(sql,{"id_p": id_proyecto}).fetchone()
     return result
+
+def get_cantidad_postulaciones(db: Session):
+    sql = text("""SELECT COUNT(*) FROM postulaciones_evaluadores 
+                JOIN convocatorias ON postulaciones_evaluadores.id_convocatoria = convocatorias.id_convocatoria
+                WHERE convocatorias.estado = 'en curso'
+                AND postulaciones_evaluadores.estado_postulacion = 'pendiente'
+            """)
+    result = db.execute(sql).scalar()
+    return result
+
+def get_cantidad_proyectos_asignados(db: Session):
+    sql = text("""SELECT COUNT(*) FROM proyectos
+                JOIN proyectos_convocatoria ON proyectos_convocatoria.id_proyecto = proyectos.id_proyecto
+                JOIN convocatorias ON proyectos_convocatoria.id_convocatoria = convocatorias.id_convocatoria
+                WHERE proyectos.estado_asignacion = 'asignado'
+            """)
+    result = db.execute(sql).scalar()
+    return result
