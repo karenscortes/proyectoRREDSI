@@ -2,6 +2,9 @@ from fastapi import HTTPException
 from sqlalchemy.orm import Session
 from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy import text
+from appv1.models import Usuario
+
+from appv1.schemas.superadmin.superadmin import EstadoEnum
 
 # Consultar administradores con paginación
 def get_all_admins(db: Session, page: int = 1, page_size: int = 10):
@@ -82,35 +85,25 @@ def update_user_role(db: Session, user_id: int, new_role_id: int):
         print(f"Error al actualizar rol de usuario: {e}")
         raise HTTPException(status_code=500, detail="Error al actualizar rol de usuario")
 
-# Cambiar el estado de un administrador/delegado
-def toggle_admin_status(db: Session, user_id: int):
+def cambiar_estado_usuario(db: Session, user_id: int):
     try:
-        # Verificar si el usuario es un administrador o delegado
-        sql_check = text("""
-            SELECT id_usuario, estado 
-            FROM usuarios 
-            WHERE id_usuario = :user_id AND (id_rol = 2 OR id_rol = 3)
-        """)
-        params_check = {"user_id": user_id}
-        user_to_update = db.execute(sql_check, params_check).fetchone()
+        # Obtener el usuario por ID
+        usuario = db.query(Usuario).filter(Usuario.id_usuario == user_id).first()
 
-        if not user_to_update:
-            raise HTTPException(status_code=404, detail="Administrador o delegado no encontrado")
+        if not usuario:
+            raise HTTPException(status_code=404, detail="Usuario no encontrado")
 
-        current_status = user_to_update[1]
-        new_status = "inactivo" if current_status == "activo" else "activo"
+        # Cambiar el estado de activo a inactivo o viceversa
+        nuevo_estado = EstadoEnum.inactivo if usuario.estado == EstadoEnum.activo else EstadoEnum.activo
+        usuario.estado = nuevo_estado
 
-        # Actualizar el estado del usuario
-        sql_update = text("""
-            UPDATE usuarios 
-            SET estado = :new_status 
-            WHERE id_usuario = :user_id
-        """)
-        params_update = {"new_status": new_status, "user_id": user_id}
-
-        db.execute(sql_update, params_update)
+        # Guardar los cambios
         db.commit()
-        return {"message": f"El estado del usuario ha sido cambiado a {new_status}"}
+        db.refresh(usuario)  # Refrescar el objeto para reflejar los nuevos valores
+
+        return {
+            "message": f"El estado del usuario ha sido cambiado a {nuevo_estado.value}"
+        }
 
     except SQLAlchemyError as e:
         db.rollback()
