@@ -82,6 +82,42 @@ def update_user_role(db: Session, user_id: int, new_role_id: int):
         print(f"Error al actualizar rol de usuario: {e}")
         raise HTTPException(status_code=500, detail="Error al actualizar rol de usuario")
 
+# Cambiar el estado de un administrador/delegado
+def toggle_admin_status(db: Session, user_id: int):
+    try:
+        # Verificar si el usuario es un administrador o delegado
+        sql_check = text("""
+            SELECT id_usuario, estado 
+            FROM usuarios 
+            WHERE id_usuario = :user_id AND (id_rol = 2 OR id_rol = 3)
+        """)
+        params_check = {"user_id": user_id}
+        user_to_update = db.execute(sql_check, params_check).fetchone()
+
+        if not user_to_update:
+            raise HTTPException(status_code=404, detail="Administrador o delegado no encontrado")
+
+        current_status = user_to_update[1]
+        new_status = "inactivo" if current_status == "activo" else "activo"
+
+        # Actualizar el estado del usuario
+        sql_update = text("""
+            UPDATE usuarios 
+            SET estado = :new_status 
+            WHERE id_usuario = :user_id
+        """)
+        params_update = {"new_status": new_status, "user_id": user_id}
+
+        db.execute(sql_update, params_update)
+        db.commit()
+        return {"message": f"El estado del usuario ha sido cambiado a {new_status}"}
+
+    except SQLAlchemyError as e:
+        db.rollback()
+        print(f"Error al cambiar el estado del usuario: {e}")
+        raise HTTPException(status_code=500, detail="Error al cambiar el estado del usuario")
+
+
 # Obtener historial de actividades por administrador/delegado
 def get_activity_history_by_admin(db: Session, user_id: int):
     try:

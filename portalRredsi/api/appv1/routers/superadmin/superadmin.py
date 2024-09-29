@@ -8,7 +8,8 @@ from appv1.schemas.superadmin.superadmin import (
     ActivityHistoryResponse
 )
 from appv1.crud.superadmin.superadmin import (
-    get_all_admins, 
+    get_all_admins,
+    toggle_admin_status, 
     update_user_role, 
     get_activity_history_by_admin
 )
@@ -42,6 +43,20 @@ async def read_all_admins_by_page(
         "current_page": page,
         "page_size": page_size
     }
+
+# Cambiar el estado de un administrador entre activo e inactivo
+@router_superadmin.put("/toggle-admin-status/{user_id}/", response_model=bool)
+async def toggle_admin_status_route(
+    user_id: int, 
+    current_user: UserResponse = Depends(get_current_user),
+    db: Session = Depends(get_db)
+):
+    permisos = get_permissions(db, current_user.id_rol, MODULE_ADMINISTRADORES)
+    if not permisos.p_actualizar:
+        raise HTTPException(status_code=401, detail="No está autorizado a utilizar este módulo")
+    
+    updated = toggle_admin_status(db, user_id)
+    return updated
 
 # Modificar el rol de un usuario
 @router_superadmin.put("/update-role/", response_model=bool)
