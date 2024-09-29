@@ -68,7 +68,6 @@
             </div>
         </div>
 
-        Accordion
         <div class="accordion pt-5 mt-3" id="accordionExample">
             <div class="card p-2">
                 <div id="headingOne">
@@ -78,14 +77,10 @@
                         Respuesta rúbrica 1
                     </button>
                 </div>
-                <!-- <div id="collapseOne" class="collapse mt-5" aria-labelledby="headingOne"
+                <div id="collapseOne" class="collapse mt-5" aria-labelledby="headingOne"
                     data-bs-parent="#accordionExample">
-                    <RubricaCom :tituloProyecto="tituloProyecto" :ponentesProyecto="ponentesProyecto"
-                        :universidadProyecto="universidadProyecto" :puntajeTotal="puntajeTotal"
-                        :nombreEvaluador="nombreEvaluador" :cedulaEvaluador="cedulaEvaluador"
-                        :universidadEvaluador="universidadEvaluador" :emailEvaluador="emailEvaluador"
-                        :celularEvaluador="celularEvaluador" />
-                </div> -->
+                    <RubricaCom :proyecto="proyecto" />
+                </div>
             </div>
             <div class="card p-2">
                 <div id="headingTwo">
@@ -144,19 +139,18 @@ import { obtenerEvaluadoresProyecto, obtenerPonentesProyecto, obtenerInfoSalaPro
 
 export default {
     name: 'DetalleProyecto',
-
     props: {
         proyecto: {
             type: Object,
             required: true
-        }
+        },
     },
     components: {
         EvaluadoresCom,
         PonentesCom,
         EventoCom,
         // SuplentesCom,
-        // RubricaCom,
+        RubricaCom,
     },
     data() {
         return {
