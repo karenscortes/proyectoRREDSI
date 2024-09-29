@@ -138,3 +138,24 @@ export const insertarRespuestaRubrica = async (respuestaData) => {
     }
   }
 };
+
+
+// Servicio para obtener el horario de los proyectos en segunda fase
+export const obtenerHorarios= async (idUsuario, page = 1, pageSize = 5) => {
+  try {
+    const response = await api.get(`/obtenerHorarioEvaluador/obtener-horario-evaluador`, {
+      params: {
+        id_usuario: idUsuario,
+        page: page,
+        page_size: pageSize
+      }
+    });
+    return response.data; s
+  } catch (error) {
+    if (error.response) {
+      throw error; // Lanza el error para que lo maneje el componente
+    } else {
+      throw new Error('Error de red o de servidor'); // Manejar errores de red
+    }
+  }
+};

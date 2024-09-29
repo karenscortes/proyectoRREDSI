@@ -394,7 +394,6 @@ def insert_respuesta_rubrica(db: Session, id_item_rubrica: int, id_usuario: int,
         print(f"Error al insertar respuesta de rúbrica: {e}")
         raise HTTPException(status_code=500, detail="Error al insertar respuesta de rúbrica")
     
-#  Consultar los detalles del proyecto con horario 
 def get_proyectos_etapa_presencial_con_horario(db: Session, id_usuario: int, page: int = 1, page_size: int = 10):
     try:
         offset = (page - 1) * page_size
@@ -422,6 +421,7 @@ def get_proyectos_etapa_presencial_con_horario(db: Session, id_usuario: int, pag
             WHERE etapas.nombre = 'Presencial'
               AND participantes_proyecto.id_usuario = :id_usuario
               AND convocatorias.estado = 'en curso'
+            ORDER BY detalle_sala.fecha ASC, detalle_sala.hora_inicio ASC
             LIMIT :page_size OFFSET :offset
         """)
         
@@ -460,8 +460,8 @@ def get_proyectos_etapa_presencial_con_horario(db: Session, id_usuario: int, pag
             "total_pages": total_pages
         }
     except SQLAlchemyError as e:
-        print(f"Error al buscar proyectos por etapa: {e}")
-        raise HTTPException(status_code=500, detail="Error al buscar proyectos por etapa")
+        print(f"Error al buscar el horario de los proyectos {e}")
+        raise HTTPException(status_code=500, detail="Error al buscar el horario de los proyectos")
     
 # Funcion para convetir la hora de la db a tiempo real
 def convertir_timedelta_a_hora(timedelta_obj: timedelta) -> str:

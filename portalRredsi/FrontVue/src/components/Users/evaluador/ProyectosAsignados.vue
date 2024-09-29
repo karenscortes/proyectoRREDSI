@@ -19,7 +19,7 @@
                                 <path d="M 40 80 c 22 0 40 -22 40 -40 v 40 Z"/>
                             </svg>
                             <div class="border border-white text-white card__thumb text-center pt-3">
-                                <h2>{{ proyecto.id_proyecto }}</h2>
+                                <h2>{{ index }} </h2>
                             </div>
                             <div class="card__header-text text-justify">
                                 <h3 class="text-left texto-recortado">{{ proyecto.titulo }}</h3>
@@ -47,8 +47,13 @@
             proyecto: {
                 type: Object,
                 required: true
+            },
+            index: { 
+                type: Number,
+                required: true
             }
         },
+        
         computed: {
             estadoEvaluacionFormatted() {
                 const status = this.proyecto.estado_evaluacion;
@@ -88,6 +93,7 @@
         line-clamp: 2;
         text-overflow: ellipsis;
     }
+
   
     div {
         display: block;
@@ -200,6 +206,8 @@
         color: #4e4e4e;
         margin-top: -12px;
     }
+
+
 
 </style>
   
