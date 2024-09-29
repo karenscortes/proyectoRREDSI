@@ -34,3 +34,9 @@ def get_datos_sala(db: Session, id_proyecto:int):
         return result
     except SQLAlchemyError as e:
         raise HTTPException(status_code=500, detail="Datos de sala no encontrados")
+    
+def get_suplentes_sala(db:Session):
+    try:
+        sql = text("""SELECT """)
+    except SQLAlchemyError as e:
+        raise HTTPException(status_code=500, detail="Datos de sala no encontrados")

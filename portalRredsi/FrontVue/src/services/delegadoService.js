@@ -423,6 +423,23 @@ export const obtenerInfoSalaProyecto = async (id_proyecto) => {
     }
 };
 
+export const obtenerRubricaCalificada = async (id_proyecto, id_usuario) => {
+    try {
+        const response = await api.get(`/obtenerProyectosEvaluador/obtener-datos-del-proyecto-calificado/?id_proyecto=${id_proyecto}&id_usuario=${id_usuario}` , {
+            headers: {
+                'Authorization': `Bearer` 
+            },
+        });
+        return response.data
+    }catch (error) {
+        if (error.response) {
+            throw error; 
+        } else {
+            throw new Error('Error de red o de servidor');
+        }
+    }
+};
+
 
 
 

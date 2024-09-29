@@ -12,7 +12,7 @@
                 <div class="row justify-content-between">
                     <div class="col-lg-6 order-2 order-lg-1">
                         <div class="section-title mt-4 text-left">
-                            <h4>Información del proyecto</h4>
+                            <h2>Información del proyecto</h2>
                         </div>
                         <div class="row my-5 gy-4">
                             <!-- Ponentes -->
@@ -24,14 +24,14 @@
                                 <EvaluadoresCom :evaluadores="evaluadores" />
                             </div>
                             <!-- Evento -->
-                            <div class="col-6 col-md-6 mt-3" v-if="infoSala.fecha">
+                            <div class="col-6 col-md-6 mt-3">
                                 <EventoCom :fecha="infoSala.fecha" :horaInicio="infoSala.hora_inicio"
                                     :horaFin="infoSala.hora_fin" :sala="infoSala.numero_sala" />
                             </div>
                             <!-- Suplentes -->
                             <!-- <div class="col-6 col-md-6 mt-3">
                                 <SuplentesCom :tipo="tipo" :suplente="suplente" />
-                            </div> -->
+                            </div>  -->
                         </div>
                         <!-- Botones -->
                         <div class="col-10 d-flex justify-content-between">
@@ -68,7 +68,7 @@
             </div>
         </div>
 
-        Accordion
+        <!--Acordeon-->
         <div class="accordion pt-5 mt-3" id="accordionExample">
             <div class="card p-2">
                 <div id="headingOne">
@@ -78,14 +78,14 @@
                         Respuesta rúbrica 1
                     </button>
                 </div>
-                <!-- <div id="collapseOne" class="collapse mt-5" aria-labelledby="headingOne"
+                <div id="collapseOne" class="collapse mt-5" aria-labelledby="headingOne"
                     data-bs-parent="#accordionExample">
-                    <RubricaCom :tituloProyecto="tituloProyecto" :ponentesProyecto="ponentesProyecto"
-                        :universidadProyecto="universidadProyecto" :puntajeTotal="puntajeTotal"
-                        :nombreEvaluador="nombreEvaluador" :cedulaEvaluador="cedulaEvaluador"
-                        :universidadEvaluador="universidadEvaluador" :emailEvaluador="emailEvaluador"
-                        :celularEvaluador="celularEvaluador" />
-                </div> -->
+                    <RubricaCom v-if="evaluadores.length > 0" :tituloProyecto="tituloProyecto"
+                        :ponentesProyecto="ponentesProyecto" :universidadProyecto="universidadProyecto"
+                        :puntajeTotal="puntajeTotal" :nombreEvaluador="evaluadores[0]?.nombre"
+                        :cedulaEvaluador="evaluadores[0]?.cedula" :universidadEvaluador="evaluadores[0]?.universidad"
+                        :emailEvaluador="evaluadores[0]?.email" :celularEvaluador="evaluadores[0]?.celular" />
+                </div>
             </div>
             <div class="card p-2">
                 <div id="headingTwo">
@@ -95,14 +95,14 @@
                         Respuesta rúbrica 2
                     </button>
                 </div>
-                <!-- <div id="collapseTwo" class="collapse mt-5" aria-labelledby="headingTwo"
+                <div id="collapseTwo" class="collapse mt-5" aria-labelledby="headingTwo"
                     data-bs-parent="#accordionExample">
                     <RubricaCom :tituloProyecto="tituloProyecto" :ponentesProyecto="ponentesProyecto"
                         :universidadProyecto="universidadProyecto" :puntajeTotal="puntajeTotal"
-                        :nombreEvaluador="nombreEvaluador" :cedulaEvaluador="cedulaEvaluador"
-                        :universidadEvaluador="universidadEvaluador" :emailEvaluador="emailEvaluador"
-                        :celularEvaluador="celularEvaluador" />
-                </div> -->
+                        :nombreEvaluador="evaluadores[1]?.nombre" :cedulaEvaluador="evaluadores[1]?.cedula"
+                        :universidadEvaluador="evaluadores[1]?.universidad" :emailEvaluador="evaluadores[1]?.email"
+                        :celularEvaluador="evaluadores[1]?.celular" />
+                </div>
             </div>
             <div class="card p-2">
                 <div id="headingThree">
@@ -129,6 +129,9 @@
                         </label>
                     </div>
                 </div>
+                 <button
+                    @click="fetchRubricaCalificada(proyecto.id_proyecto, evaluadores[0].id_usuario)">RUBRICA1</button>
+                <!-- <button @click="fetchRubricaCalificada(proyecto.id_proyecto, evaluadores[1].id_usuario)">RUBRICA2</button> -->
             </div>
         </div>
     </div>
@@ -140,7 +143,7 @@ import EventoCom from './EventoCom.vue';
 import PonentesCom from './PonentesCom.vue';
 import SuplentesCom from './SuplentesCom.vue';
 import RubricaCom from './RubricaCom.vue';
-import { obtenerEvaluadoresProyecto, obtenerPonentesProyecto, obtenerInfoSalaProyecto } from '../../../../../services/delegadoService';
+import { obtenerEvaluadoresProyecto, obtenerPonentesProyecto, obtenerInfoSalaProyecto, obtenerRubricaCalificada } from '../../../../../services/delegadoService';
 
 export default {
     name: 'DetalleProyecto',
@@ -156,7 +159,7 @@ export default {
         PonentesCom,
         EventoCom,
         // SuplentesCom,
-        // RubricaCom,
+        RubricaCom,
     },
     data() {
         return {
@@ -167,14 +170,19 @@ export default {
                 hora_inicio: '',
                 hora_fin: '',
                 numero_sala: ''
-            }
+            },
+            rubricas: [],
+            tituloProyecto: '', 
+            ponentesProyecto: '',
+            universidadProyecto: '',
+            puntajeTotal: 0,
+
         };
     },
     methods: {
         // Función para obtener los evaluadores del proyecto
         async fetchEvaluadores(id_proyecto) {
             try {
-                console.log("ID Proyecto:", id_proyecto);
                 const data = await obtenerEvaluadoresProyecto(id_proyecto);
                 console.log('Evaluadores obtenidos:', data);
                 this.evaluadores = data;
@@ -185,9 +193,7 @@ export default {
         // Función para obtener los ponentes del proyecto
         async fetchPonentes(id_proyecto) {
             try {
-                console.log("ID Proyecto:", id_proyecto);
                 const data = await obtenerPonentesProyecto(id_proyecto);
-                console.log('ponentes obtenidos:', data);
                 this.ponentes = data;
             } catch (error) {
                 console.error('Error al obtener ponentes:', error);
@@ -203,11 +209,34 @@ export default {
                 console.error('Error al obtener la información de la sala:', error);
             }
         },
+
+        async fetchRubricaCalificada(p_id_proyecto, p_id_usuario) {
+            try {
+                const data = await obtenerRubricaCalificada(p_id_proyecto, p_id_usuario);
+                console.log("DATOS DE RUBRICA :", data);
+                this.rubricas = data;
+            }
+            catch (error) {
+                console.error('Error al obtener la información de rúbrica:', error);
+            }
+        },
+
+        async fetchAllData() {
+            try {
+                
+                if (this.evaluadores.length > 0) {
+                    await this.fetchRubricaCalificada(this.proyecto.id_proyecto, this.evaluadores[0].id_usuario);
+                }
+                await this.fetchEvaluadores(this.proyecto.id_proyecto);
+                await this.fetchPonentes(this.proyecto.id_proyecto);
+                await this.fetchInfoSala(this.proyecto.id_proyecto);
+            } catch (error) {
+                console.error('Error al cargar los datos del proyecto:', error);
+            }
+        }
     },
     mounted() {
-        this.fetchEvaluadores(this.proyecto.id_proyecto);
-        this.fetchPonentes(this.proyecto.id_proyecto);
-        this.fetchInfoSala(this.proyecto.id_proyecto);
+        this.fetchAllData()
     }
 };
 </script>
