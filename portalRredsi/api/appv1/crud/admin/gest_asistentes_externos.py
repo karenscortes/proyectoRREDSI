@@ -1,9 +1,11 @@
 import datetime
+from sqlalchemy.exc import SQLAlchemyError
 from fastapi import HTTPException
 from sqlalchemy.orm import Session
 from appv1.models.asistente import Asistente
 from appv1.models.tipo_documento import Tipo_documento
 from appv1.models.usuario import Usuario
+from appv1.schemas.admin.attendees import UpdatedAttendee
 from core.security import get_hashed_password
 import random
 import string
@@ -51,4 +53,53 @@ def get_id_document_type(db:Session, nombre:str):
     if result is None:
          raise HTTPException(status_code=404, detail="No se ese tipo de documento")
     return result 
+
+def get_paginated_attendees(db: Session, page, page_size):
+    try:
+        offset = (page - 1) * page_size
+        attendees = db.query(Asistente.url_comprobante_pago, Usuario.id_usuario, Usuario.documento, Usuario.nombres, Usuario.apellidos, Usuario.celular, Usuario.correo).join(Usuario).limit(page_size).offset(offset).all()
+        if attendees is None:
+            raise HTTPException(status_code=404, detail="No hay asistentes")
+        
+        total_attendees = db.query(Asistente).count()
+
+        # Calcular el número total de páginas
+        total_pages = (total_attendees + page_size - 1) // page_size
+        return attendees, total_pages
+    except SQLAlchemyError as e:
+        print(f"Error al buscar los asistentes: {e}")
+        raise HTTPException(status_code=500, detail="Error. No hay integridad de datos")
+    
+#Actualizar asistentes externos
+def update_external_attendees(db: Session, usuario_id: int, newData: UpdatedAttendee):
+    try:
+        user = db.query(Usuario).filter(Usuario.id_usuario == usuario_id).first()
+        attendee = db.query(Asistente).filter(Asistente.id_usuario == usuario_id).first()
+
+        if user is None or attendee is None:
+            raise HTTPException(status_code=404, detail="Item no encontrado")
+        
+        if(newData.nombres): 
+            user.nombres = newData.nombres
+
+        if(newData.apellidos):
+            user.apellidos = newData.apellidos
+
+        if(newData.correo):
+            user.correo = newData.correo
+
+        if(newData.url_comprobante_pago ): 
+            attendee.url_comprobante_pago = newData.url_comprobante_pago
+
+
+        db.commit() 
+        db.refresh(user)
+        db.refresh(attendee)
+        return user, attendee
+
+        
+    except SQLAlchemyError as e:
+        print(f"Error al actualizar asistente: {e}")
+        raise HTTPException(status_code=500, detail=f"Error. No hay Integridad de datos",)
+    
 

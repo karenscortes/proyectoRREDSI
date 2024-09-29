@@ -394,14 +394,12 @@ def insert_respuesta_rubrica(db: Session, id_item_rubrica: int, id_usuario: int,
         print(f"Error al insertar respuesta de rúbrica: {e}")
         raise HTTPException(status_code=500, detail="Error al insertar respuesta de rúbrica")
     
-#  Consultar los detalles del proyecto con horario 
 def get_proyectos_etapa_presencial_con_horario(db: Session, id_usuario: int, page: int = 1, page_size: int = 10):
     try:
         offset = (page - 1) * page_size
         
         sql = text("""
             SELECT DISTINCT proyectos.*, 
-                   rubricas_resultados.estado_proyecto AS estado_evaluacion, 
                    salas.numero_sala, 
                    salas.nombre_sala, 
                    detalle_sala.fecha, 
@@ -416,11 +414,6 @@ def get_proyectos_etapa_presencial_con_horario(db: Session, id_usuario: int, pag
                 ON proyectos.id_proyecto = proyectos_convocatoria.id_proyecto 
             JOIN convocatorias 
                 ON proyectos_convocatoria.id_convocatoria = convocatorias.id_convocatoria
-            LEFT JOIN respuestas_rubricas 
-                ON proyectos_convocatoria.id_proyecto_convocatoria = respuestas_rubricas.id_proyecto_convocatoria
-                AND respuestas_rubricas.id_usuario = :id_usuario
-            LEFT JOIN rubricas_resultados 
-                ON respuestas_rubricas.id_rubrica_resultado = rubricas_resultados.id_rubrica_resultado
             LEFT JOIN detalle_sala 
                 ON proyectos_convocatoria.id_proyecto_convocatoria = detalle_sala.id_proyecto_convocatoria
             LEFT JOIN salas 
@@ -428,6 +421,7 @@ def get_proyectos_etapa_presencial_con_horario(db: Session, id_usuario: int, pag
             WHERE etapas.nombre = 'Presencial'
               AND participantes_proyecto.id_usuario = :id_usuario
               AND convocatorias.estado = 'en curso'
+            ORDER BY detalle_sala.fecha ASC, detalle_sala.hora_inicio ASC
             LIMIT :page_size OFFSET :offset
         """)
         
@@ -450,11 +444,6 @@ def get_proyectos_etapa_presencial_con_horario(db: Session, id_usuario: int, pag
                 ON proyectos.id_proyecto = proyectos_convocatoria.id_proyecto 
             JOIN convocatorias 
                 ON proyectos_convocatoria.id_convocatoria = convocatorias.id_convocatoria
-            LEFT JOIN respuestas_rubricas 
-                ON proyectos_convocatoria.id_proyecto_convocatoria = respuestas_rubricas.id_proyecto_convocatoria
-                AND respuestas_rubricas.id_usuario = :id_usuario
-            LEFT JOIN rubricas_resultados 
-                ON respuestas_rubricas.id_rubrica_resultado = rubricas_resultados.id_rubrica_resultado
             LEFT JOIN detalle_sala 
                 ON proyectos_convocatoria.id_proyecto_convocatoria = detalle_sala.id_proyecto_convocatoria
             WHERE etapas.nombre = 'Presencial'
@@ -471,8 +460,8 @@ def get_proyectos_etapa_presencial_con_horario(db: Session, id_usuario: int, pag
             "total_pages": total_pages
         }
     except SQLAlchemyError as e:
-        print(f"Error al buscar proyectos por etapa: {e}")
-        raise HTTPException(status_code=500, detail="Error al buscar proyectos por etapa")
+        print(f"Error al buscar el horario de los proyectos {e}")
+        raise HTTPException(status_code=500, detail="Error al buscar el horario de los proyectos")
     
 # Funcion para convetir la hora de la db a tiempo real
 def convertir_timedelta_a_hora(timedelta_obj: timedelta) -> str:
@@ -645,6 +634,80 @@ def get_datos_calificados_rubrica(db: Session, id_proyecto: int, id_usuario: int
         raise HTTPException(status_code=500, detail=f"Error al consultar los datos calificados del proyecto: {e}")
 
 # Obtener los datos para calificar un proyecto
+def get_datos_proyecto_calificado_completo(db: Session, id_proyecto: int, id_usuario: int):
+    try:
+        # Obtener los datos básicos del proyecto y del evaluador
+        sql_query = text("""
+            SELECT 
+                proyectos.titulo AS titulo_proyecto,
+                inst_proyecto.nombre AS universidad_proyecto,
+                usuarios.nombres AS nombre_evaluador,
+                usuarios.documento AS cedula_evaluador,
+                inst_evaluador.nombre AS universidad_evaluador,
+                usuarios.correo AS email_evaluador,
+                usuarios.celular AS celular_evaluador
+            FROM 
+                proyectos
+            JOIN 
+                participantes_proyecto ON proyectos.id_proyecto = participantes_proyecto.id_proyecto
+            JOIN 
+                usuarios ON usuarios.id_usuario = participantes_proyecto.id_usuario
+            JOIN 
+                detalles_institucionales ON usuarios.id_usuario = detalles_institucionales.id_usuario
+            JOIN 
+                instituciones AS inst_proyecto ON proyectos.id_institucion = inst_proyecto.id_institucion
+            JOIN 
+                instituciones AS inst_evaluador ON detalles_institucionales.id_institucion = inst_evaluador.id_institucion
+            WHERE 
+                proyectos.id_proyecto = :id_proyecto
+                AND usuarios.id_usuario = :id_usuario
+        """)
+        result = db.execute(sql_query, {"id_proyecto": id_proyecto, "id_usuario": id_usuario}).fetchone()
+
+        if not result:
+            raise HTTPException(status_code=404, detail="Datos no encontrados")
+
+        # Obtener los nombres de los ponentes asociados al proyecto
+        nombres_ponentes = get_nombres_ponentes_proyecto(db, id_proyecto)
+
+        # Obtener los datos de la rúbrica asociados al proyecto
+        rubrica_result = get_datos_calificados_rubrica(db, id_proyecto, id_usuario)
+        
+        componentes_rubrica = [
+            Componente(
+                id_item_rubrica=item['id_item_rubrica'],
+                titulo=item['titulo'],
+                descripcion=item['componente'],
+                observaciones=item['observacion'],
+                calificacion=item['calificacion'],
+                valor_maximo=item['valor_max']
+            ) for item in rubrica_result
+        ]
+
+        # Crear la respuesta final incluyendo los datos del proyecto y la rúbrica
+        proyecto_respuesta = CalificarProyectoRespuesta(
+            titulo_proyecto=result.titulo_proyecto,
+            universidad_proyecto=result.universidad_proyecto,
+            nombre_evaluador=result.nombre_evaluador,
+            cedula_evaluador=result.cedula_evaluador,
+            universidad_evaluador=result.universidad_evaluador,
+            email_evaluador=result.email_evaluador,
+            celular_evaluador=result.celular_evaluador,
+            nombres_ponentes=nombres_ponentes,  
+            componentes=componentes_rubrica  
+        )
+
+        return proyecto_respuesta
+
+    except Exception as e:
+        db.rollback()
+        raise HTTPException(status_code=500, detail=f"Error al consultar los datos del proyecto:{e}")
+
+
+        # Obtener los datos para calificar un proyecto
+
+
+
 def get_datos_proyecto_calificado_completo(db: Session, id_proyecto: int, id_usuario: int):
     try:
         # Obtener los datos básicos del proyecto y del evaluador

@@ -6,15 +6,9 @@
 
                     <div class="col-lg-6 order-2 order-lg-1">
                         <div class="become_title">
-                            <h1>Bienvenido al portal RREDSI</h1>
+                            <h1>Bienvenido {{ user?.nombres }}</h1>
                         </div>
-                        <p class="become_text">In aliquam, augue a gravida rutrum, ante nisl fermentum nulla, vitae
-                            tempor nisl ligula vel nunc. Proin quis mi malesuada, finibus tortor fermentum. Etiam eu
-                            purus nec eros varius luctus. Praesent finibus risus facilisis ultricies venenatis.
-                            Suspendisse fermentum sodales lacus, lacinia gravida elit dapibus sed. Cras in lectus elit.
-                            Maecenas tempus nunc vitae mi egestas venenatis. Aliquam rhoncus, purus in vehicula
-                            porttitor, lacus ante consequat purus, id elementum enim purus nec enim. In sed odio
-                            rhoncus, tristique ipsum id, pharetra neque.</p>
+                        <p class="become_text">La Red Regional de Semilleros de Investigación – RREDSI ha sido clave en el desarrollo académico y científico de la región. Nuestros delegados, con su dedicación y habilidades organizativas, han asegurado el éxito de cada evento, creando espacios de crecimiento para jóvenes investigadores. Su esfuerzo ha consolidado a RREDSI como un referente en la promoción de la ciencia y la innovación en Colombia.</p>
                         <div class="become_button text-center trans_200">
                             <a href="#">Explorar</a>
                         </div>
@@ -44,7 +38,7 @@
                             <div class="milestone text-center">
                                 <div class="milestone_icon"><img src="@/assets/img/milestone_1.svg"
                                         alt="https://www.flaticon.com/authors/zlatko-najdenovski"></div>
-                                <div class="milestone_counter" data-end-value="750">0</div>
+                                <div class="milestone_counter" data-end-value="750">{{ postulaciones }}</div>
                                 <div class="milestone_text">Postulaciones</div>
                             </div>
                         </div>
@@ -64,7 +58,7 @@
                             <div class="milestone text-center">
                                 <div class="milestone_icon"><img src="@/assets/img/milestone_3.svg"
                                         alt="https://www.flaticon.com/authors/zlatko-najdenovski"></div>
-                                <div class="milestone_counter" data-end-value="39">0</div>
+                                <div class="milestone_counter" data-end-value="39">{{ proyectosAsignados }}</div>
                                 <div class="milestone_text">Proyectos asignados</div>
                             </div>
                         </div>
@@ -85,7 +79,47 @@
 
     </div>
 </template>
+<script>
+import { ref, onMounted } from 'vue';
+import { useAuthStore } from '@/store';
+import { obtenerCantidadPostulaciones, obtenerCantidadProyectosAsignados } from '@/services/delegadoService'
 
+export default {
+    setup() {
+        const authStore = useAuthStore();
+        const user = authStore.user;
+
+        const postulaciones = ref(0);
+        const proyectosAsignados = ref(0);
+
+        // Función para obtener las postulaciones y proyectos asignados en paralelo
+        const obtenerDatos = async () => {
+            try {
+                const [postulacionesResp, proyectosResp] = await Promise.all([
+                    obtenerCantidadPostulaciones(),
+                    obtenerCantidadProyectosAsignados()
+                ]);
+
+                postulaciones.value = postulacionesResp.data;
+                proyectosAsignados.value = proyectosResp.data;
+            } catch (error) {
+                console.error('Error al obtener datos:', error);
+            }
+        };
+
+        // Cargar los datos al montar el componente
+        onMounted(() => {
+            obtenerDatos();
+        });
+
+        return {
+            user,
+            postulaciones,
+            proyectosAsignados
+        };
+    }
+};
+</script>
 <style scoped>
 /*********************************
 10. Milestones
@@ -166,13 +200,14 @@
     background: #ffb606;
 }
 
-.become_text {
-    font-weight: 500;
-    font-size: 16px;
-    color: #a5a5a1;
-    margin-top: 48px;
-    margin-bottom: 0px;
-}
+.become_text
+    {
+        font-weight: 500;
+        font-size: 14px;
+        color: #a5a5a1;
+        margin-top: 48px;
+        margin-bottom: 0px;
+    }
 
 .become_button {
     width: 188px;

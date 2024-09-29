@@ -91,9 +91,6 @@
         </div>
 
     </div>
-
-    <!-- Modal para Mensajes informativos -->
-    <FlashMessage v-if="isOpen" @close="closeModal" :titulo="titulo" :mensaje="mensaje" :tipo="tipo"/>
 </template>
 
 <script>
@@ -118,12 +115,6 @@ export default defineComponent({
         //obteniendo fecha actual
         const currentDate = ref(new Date().toISOString().split('T')[0]);
 
-        //variable reactivas que se enviarán a modal informativo
-        const titulo  = ref({});
-        const mensaje  = ref({});
-        const tipo  = ref(1);
-        const isOpen = ref(false); 
-
         //objeto reactivo que obtendrán las opciones del menú según el usuario logueado        
         const state = reactive({
             left_tabs: [],
@@ -135,17 +126,6 @@ export default defineComponent({
         const authStore = useAuthStore(); 
         const router = useRouter(); 
         const user = authStore.user;
-
-        //Metodos para abrir y cerrar el Modal Informativo
-        const openModal = () => {
-        
-            isOpen.value = true; 
-        };
-
-        const closeModal = () =>{
-
-            isOpen.value = false; 
-        }
 
         //Se obtiene y compara fechas de asignaciones y convocatoria con fecha actual
         const getAssignmentDates = async () => {
@@ -165,11 +145,6 @@ export default defineComponent({
 
             } catch (error) {
                 otras_opciones.value = 'disabled'
-
-                //Ejemplo Modal Informativo
-                titulo.value = 'Importante!'
-                mensaje.value='No hay ninguna convocatoria bien definida, por ende se desactivarán algunos servicios';
-                openModal();
             }
         };
 
@@ -233,14 +208,8 @@ export default defineComponent({
         return {
             user,
             ...state,
-            isOpen,
-            titulo,
-            mensaje,
-            tipo,
             getAssignmentDates,
             selectComponent,
-            closeModal,
-            openModal,
             logout
         };
     },

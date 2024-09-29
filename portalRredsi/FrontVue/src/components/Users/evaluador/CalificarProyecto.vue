@@ -179,7 +179,7 @@ export default {
         currentEtapa.value = response.nombre_etapa;
 
       } catch (error) {
-        showErrorToast('Error al obtener los datos del proyecto o la etapa:', error);
+        showErrorToast('Error al obtener los datos del proyecto o la etapa:');
       }
 
     };
@@ -259,7 +259,7 @@ export default {
         emit('volver'); // Emite el evento también en caso de error
        
       } catch (error) {
-        showErrorToast('Ocurrió un error al enviar las calificaciones'+error);
+        showErrorToast('Ocurrió un error al enviar las calificaciones');
       }
     };
 

@@ -68,7 +68,6 @@
             </div>
         </div>
 
-        <!--Acordeon-->
         <div class="accordion pt-5 mt-3" id="accordionExample">
             <div class="card p-2">
                 <div id="headingOne">
@@ -80,11 +79,7 @@
                 </div>
                 <div id="collapseOne" class="collapse mt-5" aria-labelledby="headingOne"
                     data-bs-parent="#accordionExample">
-                    <RubricaCom v-if="evaluadores.length > 0" :tituloProyecto="tituloProyecto"
-                        :ponentesProyecto="ponentesProyecto" :universidadProyecto="universidadProyecto"
-                        :puntajeTotal="puntajeTotal" :nombreEvaluador="evaluadores[0]?.nombre"
-                        :cedulaEvaluador="evaluadores[0]?.cedula" :universidadEvaluador="evaluadores[0]?.universidad"
-                        :emailEvaluador="evaluadores[0]?.email" :celularEvaluador="evaluadores[0]?.celular" />
+                    <RubricaCom :proyecto="proyecto" />
                 </div>
             </div>
             <div class="card p-2">
@@ -147,12 +142,11 @@ import { obtenerEvaluadoresProyecto, obtenerPonentesProyecto, obtenerInfoSalaPro
 
 export default {
     name: 'DetalleProyecto',
-
     props: {
         proyecto: {
             type: Object,
             required: true
-        }
+        },
     },
     components: {
         EvaluadoresCom,

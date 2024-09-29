@@ -44,7 +44,7 @@
             proyecto: {
                 type: Object,
                 required: true
-            }
+            },
         },
         computed: {
             estadoEvaluacionFormatted() {

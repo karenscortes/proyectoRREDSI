@@ -91,6 +91,7 @@
                 v-for="(proyecto, index) in proyectos" 
                 :key="index" 
                 :proyecto="proyecto" 
+                :currentEtapa="currentEtapa"
                 @component-selected="changeComponent" 
             />
         </div>
