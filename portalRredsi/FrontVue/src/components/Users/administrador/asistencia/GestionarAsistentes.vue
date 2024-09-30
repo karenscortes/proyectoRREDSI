@@ -24,7 +24,7 @@
                                 v-model="busqueda"
                                 class="form-control"
                                 placeholder="Buscar..."
-                                @keydown="keyboardActions"
+                                @keyup="keyboardActions"
                             />
                             </div>
                             <div class="col-md-2 col-4">
@@ -52,7 +52,7 @@
                         <th>Editar</th>
                     </tr>
                 </thead>
-                <tbody class="text-center" v-if="attendees !== null">
+                <tbody class="text-center">
                     <AttendeesTableRow
                         v-for="(asistente, index) in attendees"
                         :key="index"
@@ -138,10 +138,10 @@ export default {
 
         const searchAttendee = async() => {
             try {
-
+                console.log(busqueda.value)
                 const response = await getAttendeeByDocument(busqueda.value);
-
-                if(response.data){
+                console.log(`logitud coincidencias: ${response.data.attendees.length}`);
+                if(response.data.attendees.length > 0){
                     attendees.value = response.data.attendees;
                     totalPages.value = response.data.total_pages;
                 }else{
@@ -155,13 +155,14 @@ export default {
 
         const keyboardActions = (event) => {
             if (event.key === 'Backspace') {
-                if (busqueda.value.length == 1) {
+                if (busqueda.value.length == 0) {
                     fetchAttendees();
                     
-                }else if(busqueda.value.length > 1){
+                }else{
                     searchAttendee();
                 }
             }else{
+                console.log("entró")
                 searchAttendee();
             }
         }

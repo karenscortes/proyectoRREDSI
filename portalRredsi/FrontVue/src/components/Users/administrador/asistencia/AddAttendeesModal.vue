@@ -21,7 +21,7 @@
                         Selecciona un archivo
                     </label>
                 </div> 
-                <p>Archivo Excel con los campos requeridos. <a href="#">Descargar Formato</a></p>
+                <p>Archivo Excel con los campos requeridos. <a href="/files/formato.xlsx" download="formato.xlsx">Descargar Formato</a></p>
                 <div class="d-flex justify-content-center ">
                     <button class="btn boton pl-5 pr-5 mx-auto" type="submit">Agregar</button>
                 </div>
