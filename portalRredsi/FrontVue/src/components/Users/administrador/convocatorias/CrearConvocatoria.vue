@@ -55,7 +55,7 @@
                         </tr>
                       </tbody>
                     </table>
-                    <PaginatorBody :totalPages="totalPaginas" @page-changed="cambiarPagina" />
+                    <PaginatorBody :totalPages="totalPaginas" @page-changed="cambiarPagina" v-if="totalPaginas > 1" />
                   </div>
                 </div>
               </div>
@@ -64,7 +64,7 @@
               <div class="form-section mt-5" id="gestionar_fases">
                 <div class="d-flex align-items-center justify-content-center mb-3">
                   <i class="fa fa-retweet title-icon"></i>
-                  <h2>Gestionar fases</h2>
+                  <h2>Gestionar fases y etapas</h2>
                 </div>
                 <div class="title-line mb-4"></div>
                 <div class="container">
@@ -175,7 +175,7 @@
   </template>
   
 <script>
-  import { createConvocatoria, getConvocatorias } from '../../../../services/administradorService';
+  import { createConvocatoria, getConvocatoriasByPage } from '../../../../services/administradorService';
   import { useToastUtils } from '@/utils/toast';
   import PaginatorBody from '../../../UI/PaginatorBody.vue';
 
@@ -271,13 +271,14 @@
         }
       },
 
-      // Obtener convocatorias desde el backend
+      // Obtener las convocatorias de la API
       async fetchConvocatorias() {
         try {
-          const response = await getConvocatorias();
-          this.convocatorias = response.data; 
+          const response = await getConvocatoriasByPage(this.paginaActual);
+          this.convocatorias = response.convocatorias;  // Asignar los administradores
+          this.totalPaginas = response.total_pages;  // Total de páginas para la paginación
         } catch (error) {
-          showErrorToast(error.data.detail);
+          showWarningToast('Error al obtener convocatorias');
         }
       },
 
@@ -309,21 +310,9 @@
       },
 
       // Paginación
-      paginaAnterior() {
-        if (this.paginaActual > 1) {
-          this.paginaActual--;
-          this.fetchConvocatorias();
-        }
-      },
-      paginaSiguiente() {
-        if (this.paginaActual < this.totalPaginas) {
-          this.paginaActual++;
-          this.fetchConvocatorias();
-        }
-      },
-      irAPagina(pagina) {
-        this.paginaActual = pagina;
-        this.fetchConvocatorias();
+      cambiarPagina(pagina){
+          this.paginaActual = pagina;
+          this.fetchConvocatorias(pagina);
       },
 
       // Guardar todos los datos

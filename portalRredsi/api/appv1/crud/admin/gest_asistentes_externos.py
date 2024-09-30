@@ -101,12 +101,20 @@ def update_external_attendees(db: Session, usuario_id: int, newData: UpdatedAtte
         print(f"Error al actualizar asistente: {e}")
         raise HTTPException(status_code=500, detail=f"Error. No hay Integridad de datos",)
     
-def get_attendee_by_document(db: Session, documento:str):
+def get_attendee_by_document(db: Session, documento:str, page, page_size):
     try:
-        attendee = db.query(Asistente.url_comprobante_pago, Usuario.id_usuario, Usuario.documento, Usuario.nombres, Usuario.apellidos, Usuario.celular, Usuario.correo).join(Usuario).filter(Usuario.documento == documento).first()
-        if attendee is None:
+        offset = (page - 1) * page_size
+
+        attendees = db.query(Asistente.url_comprobante_pago, Usuario.id_usuario, Usuario.documento, Usuario.nombres, Usuario.apellidos, Usuario.celular, Usuario.correo).join(Usuario).filter(Usuario.documento.like(f'{documento}%')).limit(page_size).offset(offset).all()
+
+        
+        if attendees is None:
             raise HTTPException(status_code=404, detail="No hay asistentes con ese documeto")
-        return attendee
+        
+        total_coincidences = db.query(Usuario).join(Asistente).filter(Usuario.documento.like(f'{documento}%')).count()
+
+        total_pages = (total_coincidences + page_size - 1) // page_size
+        return attendees, total_pages
     except SQLAlchemyError as e:
         print(f"Error al buscar el asistente por documento: {e}")
         raise HTTPException(status_code=500, detail="Error. No hay integridad de datos")
