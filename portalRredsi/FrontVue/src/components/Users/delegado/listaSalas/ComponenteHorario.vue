@@ -41,11 +41,11 @@
                         <div class="row align-items-center text-center">
                             <div class="col-md-6">
                                 <h4 class="fs-5 text-dark">Ponentes</h4>
-                                <p class="fs-6 text-muted mb-0">{{ detalle_proyecto.programa_academico }}</p>
+                                <p class="fs-6 text-muted mb-0">Pendiente...</p>
                             </div>
                             <div class="col-md-6 border-start">
                                 <h4 class="fs-5 text-dark">Evaluadores</h4>
-                                <p class="fs-6 text-muted mb-0">{{ detalle_proyecto.grupo_investigacion }}</p>
+                                <p class="fs-6 text-muted mb-0">Pendiente...</p>
                             </div>
                         </div>
 
@@ -55,10 +55,8 @@
                         <div class="row align-items-center text-center">
                             <div class="col-md-6">
                                 <h4 class="fs-5 text-dark">Horarios</h4>
-                                <p class="fs-6">
-                                    <a :href="detalle_proyecto.url_propuesta_escrita" target="_blank"
-                                        class="text-primary">Ver Propuesta</a>
-                                </p>
+                                <p class="fs-6 text-muted mb-0">Pendiente...</p>
+
                             </div>
                             <div class="col-md-6 border-start">
                                 <h4 class="fs-5 text-dark">URL Propuesta Escrita</h4>
