@@ -42,9 +42,9 @@ export const getAttendeesByPage = async (page = 1, pageSize = 10) => {
 
 
   // Función para obtener un asistente por documento
-  export const getAttendeeByDocument= async (document) => {
+  export const getAttendeeByDocument= async (document, page = 1, pageSize = 10) => {
     try {
-      const response = await api.get(`/admin/get-attendee-by-document/?documento=${encodeURIComponent(document)}`, {
+      const response = await api.get(`/admin/get-attendee-by-document/?documento=${encodeURIComponent(document)}&page=${page}&page_size=${pageSize}`, {
         headers: {
           'Authorization': `Bearer ${localStorage.getItem('access_token')}` 
         }

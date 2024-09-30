@@ -490,9 +490,11 @@ def update_attendee(
         }
     
 #Obtener asistente por documento
-@router_admin.get("/get-attendee-by-document/", response_model=AttendeesBase)
+@router_admin.get("/get-attendee-by-document/", response_model=PaginatedAttendees)
 async def get_attendee(
     documento: str,
+    page: int = 1,
+    page_size: int = 10,
     db: Session = Depends(get_db), 
     current_user: UserResponse = Depends(get_current_user),
 ):  
@@ -502,9 +504,14 @@ async def get_attendee(
     if permisos is None or not permisos.p_consultar:
         raise HTTPException(status_code=401, detail="Usuario no autorizado")
     
-    attendee = get_attendee_by_document(db, documento)
+    attendees, total_pages = get_attendee_by_document(db, documento,page, page_size)
 
-    if attendee is None:
-        raise HTTPException(status_code=404, detail="No hay asistente con ese documento")
+    if len(attendees) == 0:
+        raise HTTPException(status_code=404, detail="No hay asistentes con ese documento")
 
-    return attendee
+    return {
+        "attendees": attendees,
+        "total_pages": total_pages,
+        "current_page": page,
+        "page_size": page_size
+    }
