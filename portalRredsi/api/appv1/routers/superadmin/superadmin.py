@@ -47,9 +47,7 @@ async def read_all_admins_by_page(
 
 @router_superadmin.put("/usuarios/{user_id}/estado", response_model=UserStatusUpdateResponse)
 def cambiar_estado(user_id: int, db: Session = Depends(get_db)):
-    """
-    Cambia el estado de un usuario entre activo e inactivo
-    """
+    
     resultado = cambiar_estado_usuario(db, user_id)
 
     if not resultado:

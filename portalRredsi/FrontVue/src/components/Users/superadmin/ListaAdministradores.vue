@@ -37,8 +37,9 @@
                     type="checkbox"
                     role="switch"
                     :id="'estado' + index"
-                    v-model="administrador.estado"
-                    disabled
+                    :checked="administrador.estado === 'activo'"
+                    @change="cambiarEstadoUsuario(administrador)"
+
                   >
                   <label class="form-check-label" :for="'estado' + index"></label>
                 </div>
@@ -163,7 +164,7 @@
 
 
 <script>
-import { getAdminsByPage, updateUserRole, getActivityHistoryByAdmin } from '../../../services/superadminService';
+import { getAdminsByPage, updateUserRole, getActivityHistoryByAdmin, toggleUserStatus } from '../../../services/superadminService';
 import { useToastUtils } from '@/utils/toast';
 const { showSuccessToast, showErrorToast, showWarningToast} = useToastUtils();
 import PaginatorBody from '../../UI/PaginatorBody.vue';
@@ -222,6 +223,19 @@ export default {
       }
     },
 
+    // Cambiar el estado del usuario
+    async cambiarEstadoUsuario(admin) {
+      try {
+        const actualizado = await toggleUserStatus(admin.id_usuario);  // Usar el servicio toggleUserStatus
+        const nuevoEstado = admin.estado ? 'activo' : 'inactivo';  // Verificar estado
+        if (actualizado) {
+          showSuccessToast(`Estado del usuario cambiado a ${nuevoEstado}`);
+        }
+      } catch (error) {
+        showWarningToast(error.detail || 'Error al cambiar el estado del usuario');
+      }
+    },
+    
     // Mostrar las acciones del administrador en el modal
     async mostrarAcciones(admin) {
         this.adminSeleccionado = admin;
