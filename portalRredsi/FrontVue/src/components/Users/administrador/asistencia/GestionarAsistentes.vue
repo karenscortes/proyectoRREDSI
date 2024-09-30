@@ -24,7 +24,7 @@
                                 v-model="busqueda"
                                 class="form-control"
                                 placeholder="Buscar..."
-                                @keydown="keyboardActions"
+                                @keyup="keyboardActions"
                             />
                             </div>
                             <div class="col-md-2 col-4">
@@ -54,18 +54,11 @@
                 </thead>
                 <tbody class="text-center">
                     <AttendeesTableRow
-                        v-if="!isAList && attendees !== null"
-                        :infoAsistente="attendees" 
-                        @open="showEditModal($event)"
-                    />
-                    <AttendeesTableRow
-                        v-else
                         v-for="(asistente, index) in attendees"
                         :key="index"
                         :index="index"
                         :infoAsistente="asistente"
                         @open="showEditModal($event)"
-
                     />
                 </tbody>
             </table>
@@ -115,7 +108,6 @@ export default {
     setup() {
         const isEditModalOpen = ref(false);
         const isAddModalOpen = ref(false);
-        const isAList = ref(true);
         const currentPage = ref(1);
         const totalPages = ref(0);
         const busqueda = ref("");
@@ -138,7 +130,6 @@ export default {
                 const response = await getAttendeesByPage(currentPage.value);
                 attendees.value = response.data.attendees; 
                 totalPages.value = response.data.total_pages;
-                isAList.value=true;
 
             } catch (error) {
                 console.log(error);
@@ -147,13 +138,12 @@ export default {
 
         const searchAttendee = async() => {
             try {
-
+                console.log(busqueda.value)
                 const response = await getAttendeeByDocument(busqueda.value);
-
-                if(response.data){
-                    isAList.value=false;
-                    attendees.value = response.data;
-                    totalPages.value = 0;
+                console.log(`logitud coincidencias: ${response.data.attendees.length}`);
+                if(response.data.attendees.length > 0){
+                    attendees.value = response.data.attendees;
+                    totalPages.value = response.data.total_pages;
                 }else{
 
                 }  
@@ -165,14 +155,14 @@ export default {
 
         const keyboardActions = (event) => {
             if (event.key === 'Backspace') {
-                if (busqueda.value.length == 1) {
+                if (busqueda.value.length == 0) {
                     fetchAttendees();
                     
+                }else{
+                    searchAttendee();
                 }
-            }
-
-            // Detectar si se presionó la tecla Enter
-            if (event.key === 'Enter') {
+            }else{
+                console.log("entró")
                 searchAttendee();
             }
         }
@@ -233,7 +223,6 @@ export default {
             nextPage,
             prevPage,
             selectedPage,
-            isAList,
             busqueda,
             attendees,
             isAddModalOpen,

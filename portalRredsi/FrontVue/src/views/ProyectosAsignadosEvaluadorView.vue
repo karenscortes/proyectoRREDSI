@@ -80,12 +80,12 @@
 
         <div class="row">
             <div class="col-12">   
-                <p v-if="hasProyectos" class="text-center mt-3 fs-5">
+                <p v-if="hasProyectos" class="text-center text-dark mt-3 fs-5">
                     Página {{ currentPage }} de {{ totalPages }}
                 </p>
             </div>
-            <div class="col-12 text-center"> 
-                <a href="#" v-if="currentEtapa == 'Presencial'"  class="textohorario btn text-dark border" type="button" data-bs-toggle="modal"
+            <div v-if="hasProyectos" class="col-12 text-center"> 
+                <a  href="#" v-if="currentEtapa == 'Presencial'"  class="textohorario btn fw-semibold border" type="button" data-bs-toggle="modal"
                 data-bs-target="#modalHorario">Ver horario</a>
             </div>
           
@@ -272,6 +272,7 @@
                     }
 
                     this.selectedState = estado;
+                    console.log(this.selectedState);
 
                     // Mapear estado según la etapa actual
                     const estadoMap = {
@@ -363,7 +364,7 @@
 
     .textohorario{
         background-color: #ffffff;
-        width: 10%;
+        width: 30%;
         text-decoration: none;
         transition: background-color 0.3s ease, transform 0.2s ease;
     }
@@ -434,8 +435,25 @@
         color: #999;
     }
 
+        
+    /* Media query para pantallas entre 998px y 766px */
+    @media (min-width: 766px) and (max-width: 1920px) {
+        .textohorario{
+            width: 12%;
+        }
+
+        
+    }
+
     /* Media query para pantallas pequeñas */
     @media (max-width: 576px) {
+        
+        .textohorario{
+            font-size: 0.8rem;
+            padding: 0.5rem; 
+            
+        }
+
         .cards__buttons {
             font-size: 0.8rem;
             padding: 0.5rem; 
@@ -453,9 +471,15 @@
     
     /* Media query para pantallas entre 998px y 766px */
     @media (min-width: 766px) and (max-width: 998px) {
+        .textohorario{
+            font-size: 0.8rem;
+            padding: 0.5rem; 
+        }
+
         .cards__buttons {
             font-size: 0.9rem;
             padding: 0.5rem; 
         }
+        
     }
 </style>

@@ -1,15 +1,14 @@
-import json
-from typing import List, Optional
+from typing import List
 from fastapi import APIRouter, Depends, File, HTTPException, UploadFile
 from sqlalchemy.orm import Session
 from appv1.crud.admin.gest_asistentes_externos import generate_code, get_attendee_by_document, get_id_document_type, get_paginated_attendees, insert_attendee, insert_user, update_external_attendees
 from appv1.crud.admin.gest_delegado import create_delegado,get_delegados_activos_paginated, get_delegados_by_document
 from appv1.crud.admin.gest_rubricas import create_items, delete_items, get_all_rubricas, update_items
 from appv1.crud.admin.gest_rubricas import get_all_rubricas
-from appv1.crud.admin.admin import create_convocatoria, create_etapa, create_fase, create_sala, get_fases_by_etapa, update_etapa, update_fase, update_sala
+from appv1.crud.admin.admin import create_convocatoria, create_programacion_fase, create_sala, update_sala
 from appv1.routers.login import get_current_user
-from appv1.schemas.admin.admin import ConvocatoriaCreate, CreateSala, FaseUpdate, UpdateSala
-from appv1.crud.admin.admin import create_convocatoria, create_etapa, create_fase, get_fases_by_etapa, update_etapa, update_fase
+from appv1.schemas.admin.admin import ConvocatoriaCreate, CreateSala, ProgramacionFaseCreate, UpdateSala
+from appv1.crud.admin.admin import create_convocatoria
 from appv1.schemas.admin.attendees import AttendeesBase, PaginatedAttendees, UpdatedAttendee
 from appv1.schemas.admin.delegado import DelegadoResponse, PaginatedDelegadoResponse
 from appv1.schemas.admin.items_rubrica import ItemCreate, ItemUpdate
@@ -46,109 +45,35 @@ def create_new_convocatoria(
         "id_convocatoria": convocatoria_created.id_convocatoria
     }
 
-
-# Crear una nueva etapa 
-@router_admin.post("/convocatoria/{id_convocatoria}/etapas")
-def add_etapa(
-    id_convocatoria: int, 
-    nombre: str, 
+# Crear programación de fase
+@router_admin.post("/crear-programacion-fase")
+def create_new_programacion_fase(
+    programacion_fase: ProgramacionFaseCreate, 
     db: Session = Depends(get_db), 
     current_user: UserResponse = Depends(get_current_user)
 ):
-    MODULE = 4  # Módulo para etapas
+    MODULE = 7  # Módulo para programación de fases
     permisos = get_permissions(db, current_user.id_rol, MODULE)
 
     if permisos is None or not permisos.p_insertar:  
         raise HTTPException(status_code=401, detail="Usuario no autorizado")
 
-    return create_etapa(db, nombre, id_convocatoria)
+    # Crear la programación de fase
+    programacion_fase_created = create_programacion_fase(
+        db, 
+        programacion_fase.id_fase, 
+        programacion_fase.id_convocatoria, 
+        programacion_fase.fecha_inicio, 
+        programacion_fase.fecha_fin
+    )
+
+    return {
+        "message": "Programación de fase creada exitosamente", 
+        "id_programacion_fase": programacion_fase_created.id_programacion_fase
+    }
 
 
-# Crear una nueva fase 
-@router_admin.post("/etapas/{id_etapa}/fases")
-def add_fase(
-    id_etapa: int, 
-    nombre: str, 
-    db: Session = Depends(get_db), 
-    current_user: UserResponse = Depends(get_current_user)
-):
-    MODULE = 5  # Módulo para fases
-    permisos = get_permissions(db, current_user.id_rol, MODULE)
-
-    if permisos is None or not permisos.p_insertar:  
-        raise HTTPException(status_code=401, detail="Usuario no autorizado")
-
-    return create_fase(db, nombre, id_etapa)
-
-
-# Obtener fases por etapa
-@router_admin.get("/etapas/{id_etapa}/fases")
-def get_fases(
-    id_etapa: int, 
-    db: Session = Depends(get_db), 
-    current_user: UserResponse = Depends(get_current_user)
-):
-    MODULE = 5  # Módulo para fases
-    permisos = get_permissions(db, current_user.id_rol, MODULE)
-
-    if permisos is None or not permisos.p_consultar:  # Verificar permiso de consulta
-        raise HTTPException(status_code=401, detail="Usuario no autorizado")
-
-    return get_fases_by_etapa(db, id_etapa)
-
-
-# Editar una etapa
-@router_admin.put("/etapas/{id_etapa}")
-def modify_etapa(
-    id_etapa: int, 
-    nombre: Optional[str] = None, 
-    db: Session = Depends(get_db), 
-    current_user: UserResponse = Depends(get_current_user)
-):
-    MODULE = 4  # Módulo para etapas
-    permisos = get_permissions(db, current_user.id_rol, MODULE)
-
-    if permisos is None or not permisos.p_actualizar:  # Verificar permiso de actualización
-        raise HTTPException(status_code=401, detail="Usuario no autorizado")
-
-    return update_etapa(db, id_etapa, nombre)
-
-
-# Editar una fase
-@router_admin.put("/edit-fase/{id_fase}/")
-async def update_existing_fase(
-    id_fase: int, 
-    fase_update: FaseUpdate, 
-    db: Session = Depends(get_db), 
-    current_user: UserResponse = Depends(get_current_user)
-):
-    MODULE = 5  # Módulo para fases
-    permisos = get_permissions(db, current_user.id_rol, MODULE)
-
-    if permisos is None or not permisos.p_actualizar:  # Verificar permiso de actualización
-        raise HTTPException(status_code=401, detail="Usuario no autorizado")
-
-    return update_fase(db, id_fase, fase_update)
-
-
-# Modificar una fase
-@router_admin.put("/fases/{id_fase}")
-def modify_fase(
-    id_fase: int, 
-    nombre: Optional[str] = None, 
-    db: Session = Depends(get_db), 
-    current_user: UserResponse = Depends(get_current_user)
-):
-    MODULE = 5  # Módulo para fases
-    permisos = get_permissions(db, current_user.id_rol, MODULE)
-
-    if permisos is None or not permisos.p_actualizar:  # Verificar permiso de actualización
-        raise HTTPException(status_code=401, detail="Usuario no autorizado")
-
-    return update_fase(db, id_fase, nombre)
-
-
-#Obtener todas las rubricas
+# Obtener todas las rubricas
 @router_admin.get("/all-rubrics/", response_model=List[RubricaResponse])
 async def consult_rubrics(
     db: Session = Depends(get_db), 
@@ -167,7 +92,7 @@ async def consult_rubrics(
     
     return existing_rubrics
 
-#Obtener delegados activos(paginado)
+# Obtener delegados activos(paginado)
 @router_admin.get("/all-delegates/", response_model=PaginatedDelegadoResponse)
 async def consult_delegates(
     db: Session = Depends(get_db),
@@ -193,7 +118,7 @@ async def consult_delegates(
         "page_size": page_size
     }
 
-#Obtener delegado por documento
+# Obtener delegado por documento
 @router_admin.get("/delegates/{doc}/", response_model= DelegadoResponse)
 def consult_by_document(
     document: str, 
@@ -213,7 +138,7 @@ def consult_by_document(
 
     return delegate
 
-#Crear delegado 
+# Crear delegado 
 @router_admin.post("/create-delegates/")
 def create_delegates(
     user: UserCreate, 
@@ -249,7 +174,7 @@ def create_delegates(
             'message': 'Error, no se pudo registrar con éxito',
         }
 
-#Crear items
+# Crear items
 @router_admin.post("/create-items/")
 def create_item_rubric(
     item: ItemCreate, 
@@ -275,7 +200,7 @@ def create_item_rubric(
             'message': 'Error, no se pudo registrar con éxito',
         }
     
-#Editar items
+# Editar items
 @router_admin.put("/update-items/{id_item}/")
 def update_item(
     id_item:int, 
@@ -302,7 +227,7 @@ def update_item(
             'message': 'Error al actualizar',
         }
     
-#Eliminar items
+# Eliminar items
 @router_admin.post("/delete-items/{id_item}/")
 def delete_item(
     id_item:int, 
@@ -434,7 +359,7 @@ async def upload_file(file: UploadFile = File(...), db: Session = Depends(get_db
     return {"message": "File processed and data stored successfully.", "file_location": file_location}
 
 
-#Obtener asistentes paginados
+# Obtener asistentes paginados
 @router_admin.get("/get-all-attendees/", response_model=PaginatedAttendees)
 async def get_all_attendees(
     db: Session = Depends(get_db),
@@ -460,7 +385,7 @@ async def get_all_attendees(
         "page_size": page_size
     }
 
-#Editar items
+# Editar items
 @router_admin.put("/update-attendee/{id_usuario}/")
 def update_attendee(
     id_usuario:int, 
@@ -490,9 +415,11 @@ def update_attendee(
         }
     
 #Obtener asistente por documento
-@router_admin.get("/get-attendee-by-document/", response_model=AttendeesBase)
+@router_admin.get("/get-attendee-by-document/", response_model=PaginatedAttendees)
 async def get_attendee(
     documento: str,
+    page: int = 1,
+    page_size: int = 10,
     db: Session = Depends(get_db), 
     current_user: UserResponse = Depends(get_current_user),
 ):  
@@ -502,9 +429,14 @@ async def get_attendee(
     if permisos is None or not permisos.p_consultar:
         raise HTTPException(status_code=401, detail="Usuario no autorizado")
     
-    attendee = get_attendee_by_document(db, documento)
+    attendees, total_pages = get_attendee_by_document(db, documento,page, page_size)
 
-    if attendee is None:
-        raise HTTPException(status_code=404, detail="No hay asistente con ese documento")
+    if len(attendees) == 0:
+        raise HTTPException(status_code=404, detail="No hay asistentes con ese documento")
 
-    return attendee
+    return {
+        "attendees": attendees,
+        "total_pages": total_pages,
+        "current_page": page,
+        "page_size": page_size
+    }

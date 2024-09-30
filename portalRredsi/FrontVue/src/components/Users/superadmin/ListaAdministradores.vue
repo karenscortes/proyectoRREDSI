@@ -252,16 +252,6 @@ export default {
       }
     },
 
-
-
-
-
-
-
-
-
-
-    
     // Mostrar las acciones del administrador en el modal
     async mostrarAcciones(admin) {
         this.adminSeleccionado = admin;
