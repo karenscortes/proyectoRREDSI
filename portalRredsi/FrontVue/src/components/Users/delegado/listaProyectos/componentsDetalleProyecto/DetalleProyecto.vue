@@ -92,11 +92,11 @@
                 </div>
                 <div id="collapseTwo" class="collapse mt-5" aria-labelledby="headingTwo"
                     data-bs-parent="#accordionExample">
-                    <RubricaCom :tituloProyecto="tituloProyecto" :ponentesProyecto="ponentesProyecto"
+                    <!-- <RubricaCom :tituloProyecto="tituloProyecto" :ponentesProyecto="ponentesProyecto"
                         :universidadProyecto="universidadProyecto" :puntajeTotal="puntajeTotal"
                         :nombreEvaluador="evaluadores[1]?.nombre" :cedulaEvaluador="evaluadores[1]?.cedula"
                         :universidadEvaluador="evaluadores[1]?.universidad" :emailEvaluador="evaluadores[1]?.email"
-                        :celularEvaluador="evaluadores[1]?.celular" />
+                        :celularEvaluador="evaluadores[1]?.celular" /> -->
                 </div>
             </div>
             <div class="card p-2">
@@ -124,8 +124,8 @@
                         </label>
                     </div>
                 </div>
-                 <button
-                    @click="fetchRubricaCalificada(proyecto.id_proyecto, evaluadores[0].id_usuario)">RUBRICA1</button>
+                <!-- <button
+                    @click="fetchRubricaCalificada(proyecto.id_proyecto, evaluadores[0].id_usuario)">RUBRICA1</button> -->
                 <!-- <button @click="fetchRubricaCalificada(proyecto.id_proyecto, evaluadores[1].id_usuario)">RUBRICA2</button> -->
             </div>
         </div>
@@ -166,7 +166,7 @@ export default {
                 numero_sala: ''
             },
             rubricas: [],
-            tituloProyecto: '', 
+            tituloProyecto: '',
             ponentesProyecto: '',
             universidadProyecto: '',
             puntajeTotal: 0,
@@ -217,7 +217,7 @@ export default {
 
         async fetchAllData() {
             try {
-                
+
                 if (this.evaluadores.length > 0) {
                     await this.fetchRubricaCalificada(this.proyecto.id_proyecto, this.evaluadores[0].id_usuario);
                 }
