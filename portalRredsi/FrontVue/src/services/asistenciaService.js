@@ -40,10 +40,31 @@ export const getAttendeesByPage = async (page = 1, pageSize = 10) => {
   }
 };
 
+
+  // Función para obtener un asistente por documento
+  export const getAttendeeByDocument= async (document) => {
+    try {
+      const response = await api.get(`/admin/get-attendee-by-document/?documento=${encodeURIComponent(document)}`, {
+        headers: {
+          'Authorization': `Bearer ${localStorage.getItem('access_token')}` 
+        }
+      });
+      return response;
+    } catch (error) {
+      if (error.response) {
+        throw error;
+      } else {
+        throw new Error('Error de red o de servidor'); 
+      }
+    }
+  };
+  
+
+
 // Función para editar asistente
 export const updateAttendees = async (id_usuario, newData) => {
   try {
-      const url = `/admin/update-attendee/${id_usuario}/`;
+      const url = `/admin/update-attendee/${encodeURIComponent(id_usuario)}/`;
       const response = await api.put(url, newData,{
       headers: {
         'Authorization': `Bearer ${localStorage.getItem('access_token')}` 

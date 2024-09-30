@@ -24,10 +24,11 @@
                             v-model="busqueda"
                             class="form-control"
                             placeholder="Buscar..."
+                            @keydown="keyboardActions"
                         />
                         </div>
                         <div class="col-md-2 col-4">
-                        <button class="btn btn-dark w-100 font-weight-bold">
+                        <button class="btn btn-dark w-100 font-weight-bold"  @click="searchAttendee()">
                             Buscar
                         </button>
                         </div>
@@ -69,7 +70,7 @@
                 <ul class="pagination justify-content-center">
                     <li class="page-item m-1">
                         <button @click="prevPage" :disabled="currentPage == 1" class="page-link"
-                            style="border-radius: 20px; color: black;">Previous</button>
+                            style="border-radius: 20px; color: black;">Anterior</button>
                     </li>
                     <li v-for="i in totalPages"  :key="i" class="page-item rounded m-1">
                         <button @click="selectedPage(i)" class="page-link rounded-circle" style="color: black;">{{ i
@@ -77,7 +78,7 @@
                     </li>
                     <li class="page-item m-1">
                         <button @click="nextPage" :disabled="currentPage == totalPages" class="page-link"
-                            style="border-radius: 20px; color: black;">Next</button>
+                            style="border-radius: 20px; color: black;">Siguiente</button>
                     </li>
                 </ul>
             </div>
@@ -91,7 +92,7 @@
 
 </template>
 <script>
-import { getAttendeesByPage } from '@/services/asistenciaService';
+import { getAttendeesByPage, getAttendeeByDocument } from '@/services/asistenciaService';
 import { onMounted, ref, reactive } from "vue";
 import AddAttendeesModal from './AddAttendeesModal.vue';
 import EditAttendeeModal from './EditAttendeeModal.vue';
@@ -131,22 +132,38 @@ export default {
                 attendees.value = response.data.attendees; 
                 totalPages.value = response.data.total_pages;
 
-                // attendees.forEach(function (asistente, i) {
-                //     const infoAsistente = {
-                //         id_usuario: asistente.id_usuario,
-                //         documento: asistente.documento,
-                //         nombres: asistente.nombres,
-                //         apellidos: asistente.apellidos,
-                //         celular: asistente.celular,
-                //         correo: asistente.correo,
-                //         url_comprobante: asistente.url_comprobante_pago
-                //     }
-                //     AttendeesArray[i] = infoAsistente;
-                // });
             } catch (error) {
                 console.log(error);
             }
         }
+
+        const searchAttendee = async() => {
+            try {
+
+                const response = await getAttendeeByDocument(busqueda.value);
+                attendees.value = response.data;
+                totalPages.value = 0;
+            } catch (error) {
+                console.log(error);
+            }
+        }
+
+        const keyboardActions = (event) => {
+        
+            // Detectar si se presionó la tecla de borrar (Backspace)
+            if (event.key === 'Backspace') {
+                console.log('Se presionó la tecla Backspace');
+                if (busqueda === '') {
+                    fetchAttendees();
+                }
+            }
+
+            // Detectar si se presionó la tecla Enter
+            if (event.key === 'Enter') {
+                searchAttendee();
+            }
+        }
+
 
         //Todo lo del páginador
         const nextPage = () => {
@@ -210,6 +227,8 @@ export default {
             AttendeesArray,
             EditModalInfo,
             fetchAttendees,
+            searchAttendee,
+            keyboardActions,
             showAddModal,
             closeAddModal,
             showEditModal,
