@@ -42,6 +42,13 @@ class UserRoleUpdateSchema(BaseModel):
     class Config:
         orm_mode = True
 
+# Esquema para la respuesta de cambio de estado del usuario
+class UserStatusUpdateResponse(BaseModel):
+    message: str
+
+    class Config:
+        orm_mode = True
+
 # Esquema de respuesta para el historial de actividades
 class ActivityHistoryResponse(BaseModel):
     id_actividad: int

@@ -13,53 +13,60 @@
         <div class="table-responsive row d-flex justify-content-center">
             <table class="display table table-striped table-hover text-dark">
                 <thead class="text-center">
-                <tr class="cabecero">
-                    <th class="thTable" colspan="5">
-                    <!-- Buscador -->
-                    <div class="row justify-content-start">
-                        <div class="col-md-5 col-6">
-                        <input
-                            type="text"
-                            id="busqueda"
-                            v-model="busqueda"
-                            class="form-control"
-                            placeholder="Buscar..."
-                        />
+                    <tr class="cabecero">
+                        <th class="thTable" colspan="5">
+                        <!-- Buscador -->
+                        <div class="row justify-content-start">
+                            <div class="col-md-5 col-6">
+                            <input
+                                type="text"
+                                id="busqueda"
+                                v-model="busqueda"
+                                class="form-control"
+                                placeholder="Buscar..."
+                                @keydown="keyboardActions"
+                            />
+                            </div>
+                            <div class="col-md-2 col-4">
+                            <button class="btn btn-dark w-100 font-weight-bold"  @click="searchAttendee()">
+                                Buscar
+                            </button>
+                            </div>
                         </div>
-                        <div class="col-md-2 col-4">
-                        <button class="btn btn-dark w-100 font-weight-bold">
-                            Buscar
-                        </button>
-                        </div>
-                    </div>
-                    </th>
-                    <th class="thTable">
-                    <a
-                        class="btn-sm font-weight-bold text-dark"
-                        @click="showAddModal()"
-                        type="button"
-                        ><i class="fas fa-plus extra-bold-icon"></i>
-                    </a>
-                    </th>
-                </tr>
-                <tr>
-                    <th>Documento</th>
-                    <th>Nombre</th>
-                    <th>celular</th>
-                    <th>Correo</th>
-                    <th>Pago</th>
-                    <th>Editar</th>
-                </tr>
+                        </th>
+                        <th class="thTable">
+                        <a
+                            class="btn-sm font-weight-bold text-dark"
+                            @click="showAddModal()"
+                            type="button"
+                            ><i class="fas fa-plus extra-bold-icon"></i>
+                        </a>
+                        </th>
+                    </tr>
+                    <tr>
+                        <th>Documento</th>
+                        <th>Nombre</th>
+                        <th>celular</th>
+                        <th>Correo</th>
+                        <th>Pago</th>
+                        <th>Editar</th>
+                    </tr>
                 </thead>
                 <tbody class="text-center">
-                <AttendeesTableRow
-                    v-for="(asistente, index) in attendees"
-                    :key="index"
-                    :index="index"
-                    :infoAsistente="asistente"
-                    @open="showEditModal($event)"
-                >
-                </AttendeesTableRow>
+                    <AttendeesTableRow
+                        v-if="!isAList && attendees !== null"
+                        :infoAsistente="attendees" 
+                        @open="showEditModal($event)"
+                    />
+                    <AttendeesTableRow
+                        v-else
+                        v-for="(asistente, index) in attendees"
+                        :key="index"
+                        :index="index"
+                        :infoAsistente="asistente"
+                        @open="showEditModal($event)"
+
+                    />
                 </tbody>
             </table>
         </div>
@@ -69,7 +76,7 @@
                 <ul class="pagination justify-content-center">
                     <li class="page-item m-1">
                         <button @click="prevPage" :disabled="currentPage == 1" class="page-link"
-                            style="border-radius: 20px; color: black;">Previous</button>
+                            style="border-radius: 20px; color: black;">Anterior</button>
                     </li>
                     <li v-for="i in totalPages"  :key="i" class="page-item rounded m-1">
                         <button @click="selectedPage(i)" class="page-link rounded-circle" style="color: black;">{{ i
@@ -77,7 +84,7 @@
                     </li>
                     <li class="page-item m-1">
                         <button @click="nextPage" :disabled="currentPage == totalPages" class="page-link"
-                            style="border-radius: 20px; color: black;">Next</button>
+                            style="border-radius: 20px; color: black;">Siguiente</button>
                     </li>
                 </ul>
             </div>
@@ -91,7 +98,7 @@
 
 </template>
 <script>
-import { getAttendeesByPage } from '@/services/asistenciaService';
+import { getAttendeesByPage, getAttendeeByDocument } from '@/services/asistenciaService';
 import { onMounted, ref, reactive } from "vue";
 import AddAttendeesModal from './AddAttendeesModal.vue';
 import EditAttendeeModal from './EditAttendeeModal.vue';
@@ -108,10 +115,11 @@ export default {
     setup() {
         const isEditModalOpen = ref(false);
         const isAddModalOpen = ref(false);
+        const isAList = ref(true);
         const currentPage = ref(1);
         const totalPages = ref(0);
         const busqueda = ref("");
-        const attendees = ref("");
+        const attendees = ref(null);
         const AttendeesArray= reactive([]);
 
         const EditModalInfo = reactive({
@@ -130,23 +138,45 @@ export default {
                 const response = await getAttendeesByPage(currentPage.value);
                 attendees.value = response.data.attendees; 
                 totalPages.value = response.data.total_pages;
+                isAList.value=true;
 
-                // attendees.forEach(function (asistente, i) {
-                //     const infoAsistente = {
-                //         id_usuario: asistente.id_usuario,
-                //         documento: asistente.documento,
-                //         nombres: asistente.nombres,
-                //         apellidos: asistente.apellidos,
-                //         celular: asistente.celular,
-                //         correo: asistente.correo,
-                //         url_comprobante: asistente.url_comprobante_pago
-                //     }
-                //     AttendeesArray[i] = infoAsistente;
-                // });
             } catch (error) {
                 console.log(error);
             }
         }
+
+        const searchAttendee = async() => {
+            try {
+
+                const response = await getAttendeeByDocument(busqueda.value);
+
+                if(response.data){
+                    isAList.value=false;
+                    attendees.value = response.data;
+                    totalPages.value = 0;
+                }else{
+
+                }  
+                
+            } catch (error) {
+                console.log(error);
+            }
+        }
+
+        const keyboardActions = (event) => {
+            if (event.key === 'Backspace') {
+                if (busqueda.value.length == 1) {
+                    fetchAttendees();
+                    
+                }
+            }
+
+            // Detectar si se presionó la tecla Enter
+            if (event.key === 'Enter') {
+                searchAttendee();
+            }
+        }
+
 
         //Todo lo del páginador
         const nextPage = () => {
@@ -203,6 +233,7 @@ export default {
             nextPage,
             prevPage,
             selectedPage,
+            isAList,
             busqueda,
             attendees,
             isAddModalOpen,
@@ -210,6 +241,8 @@ export default {
             AttendeesArray,
             EditModalInfo,
             fetchAttendees,
+            searchAttendee,
+            keyboardActions,
             showAddModal,
             closeAddModal,
             showEditModal,

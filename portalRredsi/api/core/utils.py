@@ -44,7 +44,7 @@ def generate_user_id_int(length=6):
 
 # Configuración del directorio de subida se asigna en .env
 # UPLOAD_FOLDER = "static/files"
-os.makedirs(settings.UPLOAD_FOLDER, exist_ok=True)
+#os.makedirs(settings.UPLOAD_FOLDER, exist_ok=True)
 
 # Tipos de archivos permitidos
 ALLOWED_EXTENSIONS = {"pdf", "doc", "docx", "xls", "xlsx"}
