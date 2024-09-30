@@ -22,22 +22,17 @@ export const createConvocatoria = async (nombre, fecha_inicio, fecha_fin, estado
   }
 };
 
-// Función para obtener convocatorias
-export const getConvocatorias = async () => {
+// Función para obtener todos los admins con paginación
+export const getConvocatoriasByPage = async (page = 1, pageSize = 5) => {
   try {
-    const url = `/convocatorias/verconvocatorias`;
-    const response = await api.get(url, {
-      headers: {
-        'Authorization': `Bearer ${localStorage.getItem('access_token')}`
-      }
-    });
-    return response; // Asegúrate de retornar los datos directamente
+      const response = await api.get(`/convocatorias/verconvocatorias/?page=${page}&page_size=${pageSize}`);
+      return response.data;  // Acceder a los datos de la respuesta
   } catch (error) {
-    if (error.response) {
-      throw error.response; // Manejar error correctamente
-    } else {
-      throw new Error('Error de red o de servidor');
-    }
+      if (error.response) {
+          throw error.response.data;  // Devuelve el error original de la API
+      } else {
+          throw new Error('Error de red o de servidor');
+      }
   }
 };
 
