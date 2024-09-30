@@ -219,22 +219,48 @@ export default {
           showSuccessToast('Rol actualizado exitosamente');
         }
       } catch (error) {
-        showWarningToast(error.detail || 'Error al actualizar el rol');
+        showErrorToast(error.detail || 'Error al actualizar el rol');
       }
     },
 
     // Cambiar el estado del usuario
     async cambiarEstadoUsuario(admin) {
       try {
+        // Guardar el estado actual del usuario
+        const estadoActual = admin.estado;  // true si está activo, false si está inactivo
+
+        // Cambiar el estado en el backend
         const actualizado = await toggleUserStatus(admin.id_usuario);  // Usar el servicio toggleUserStatus
-        const nuevoEstado = admin.estado ? 'activo' : 'inactivo';  // Verificar estado
+
         if (actualizado) {
-          showSuccessToast(`Estado del usuario cambiado a ${nuevoEstado}`);
+          // Invertir el estado local en el objeto admin
+          admin.estado = !estadoActual;  // Esto actualiza el estado después de que ha cambiado en el backend
+
+          // Mostrar el mensaje basado en el nuevo estado
+          if (admin.estado) {
+            // Ahora está activo
+            showSuccessToast('El estado del usuario ha sido cambiado.');
+          } else {
+            // Ahora está inactivo
+            showSuccessToast('El estado del usuario ha sido cambiado.');
+          }
+
+          await this.fetchAdmins();  // Refrescar la lista de administradores
         }
       } catch (error) {
         showWarningToast(error.detail || 'Error al cambiar el estado del usuario');
       }
     },
+
+
+
+
+
+
+
+
+
+
     
     // Mostrar las acciones del administrador en el modal
     async mostrarAcciones(admin) {
