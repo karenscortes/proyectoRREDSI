@@ -50,7 +50,7 @@
                             <td>
                                 <a href="#" @click="obtenerEvaluadorActual(evaluador)"
                                     class="btn-sm font-weight-bold text-dark" type="button" data-bs-toggle="modal"
-                                    data-bs-target="#delegateInformation">
+                                    data-bs-target="#evaluatorInformation">
                                     <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960"
                                         width="24px" fill="#00000">
                                         <path
@@ -67,7 +67,7 @@
         <PaginatorBody :totalPages="totalPages" @page-changed="cambiarPagina" v-if="totalPages > 1" />
 
         <!-- Modal datos -->
-        <div class="modal fade" id="delegateInformation" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
+        <div class="modal fade" id="evaluatorInformation" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content border border-dark border-5 rounded-5 text-dark">
                     <div class="modal-header text-center">
@@ -102,11 +102,36 @@
                                 <span class="text-dark">{{ evaluadorActual.otraAreaConocimiento }}</span>
                             </div>
                             <div class="text-center mt-3">
-                                <button :href="evaluadorActual.urlArchivo" class="btn text-dark fw-semibold" target="_blank">
+                                <button @click="modalTitulos" class="btn text-dark fw-semibold" target="_blank">
                                     Ver Títulos
                                 </button>
                             </div>
                         </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal titulos -->
+        <div class="modal fade" id="modal_titulos" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="row text-center justify-content-end mt-2">
+                        <div class="col-2">
+                            <button type="button" class="btn-close justify-contet-end" data-bs-dismiss="modal"
+                                aria-label="Close"></button>
+                        </div>
+                        <div class="col-12">
+                            <h1 class="modal-title fs-5 text-dark" id="exampleModalLabel">Programas Académicos<svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#00000"><path d="M480-120 200-272v-240L40-600l440-240 440 240v320h-80v-276l-80 44v240L480-120Zm0-332 274-148-274-148-274 148 274 148Zm0 241 200-108v-151L480-360 280-470v151l200 108Zm0-241Zm0 90Zm0 0Z"/></svg></h1>
+                        </div>
+                    </div>
+                    <div class="modal-body">
+                        <div class="list-group">
+                            <a v-for="(certificate,index) in certificates"  :key="index" :href="certificate.url_titulo" class="list-group-item list-group-item-action" target="_blank">{{certificate.nivel}}</a>
+                        </div>
+                    </div>
+                    <div class="row justify-content-center mb-2">
+                        <button type="button" class="btn btn-dark fw-bold col-4 text-center" data-bs-dismiss="modal">Cerrar</button>
                     </div>
                 </div>
             </div>
@@ -121,6 +146,7 @@ import { obtenerListaEvaluadores, actualizarEstadoEvaluador } from '@/services/l
 import { obtenerIdEvaluador } from '@/services/delegadoService';
 import PaginatorBody from '../../../UI/PaginatorBody.vue';
 import { useToastUtils } from '@/utils/toast';
+import { getCertificatesById } from '@/services/postulacionService';
 
 export default {
     data() {
@@ -129,6 +155,7 @@ export default {
             totalPages: 0,
             current_page: 1,
             documento_evaluador:"",
+            certificates : []
         }
     },
     setup() {
@@ -223,12 +250,15 @@ export default {
             this.current_page = pagina;
             this.fecthEvaluadores(pagina);
         },
-        //Metodos para abrir y cerrar el Modal Informativo
-        openModal(){
-            this.isOpen = true; 
-        },
-        closeModal(){
-            this.isOpen = false; 
+        async modalTitulos(){
+            try {
+                const response = await getCertificatesById(this.evaluadorActual.id_usuario);
+                console.log(response.data);
+                this.certificates = response.data;
+                $('#modal_titulos').modal('show');
+            } catch (error) {
+                this.showInfoToast("No se registraron títulos académicos");
+            }
         }
     },
     mounted() {

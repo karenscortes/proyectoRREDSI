@@ -19,7 +19,7 @@
                             :style="getStyle(i, detalle.hora_inicio, detalle.hora_fin)">
                             <span
                                 v-if="isProjectTime(i, detalle.hora_inicio, detalle.hora_fin) && i === getMiddleSlot(detalle.hora_inicio, detalle.hora_fin)">
-                                <a class="text-dark fw-semibold" type="button" data-bs-toggle="modal"
+                                <a class="text-dark fw-semibold text-center" type="button" data-bs-toggle="modal"
                                     data-bs-target="#detalle_proyecto"
                                     @click="proyectoSeleccionado(detalle.id_proyecto)">Ver Detalle</a>
                             </span>
@@ -29,74 +29,51 @@
             </table>
         </div>
         <!-- Modal con detalles del proyecto  -->
-
         <div class="modal fade" id="detalle_proyecto" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content border border-dark border-5 rounded-5 text-dark">
-            <div class="modal-header text-center">
-                <h3 class="modal-title mt-4 w-100" id="modalLabel">{{ detalle_proyecto.titulo }}</h3>
-                <button type="button" class="btn-close mr-3 mt-3" data-bs-dismiss="modal" aria-label="Close"
-                    @click="limpiarModalDetalleProyecto"></button>
-            </div>
-            <div class="modal-body mt-3">
-                <div class="row mb-3">
-                    <div class="col-md-6">
-                        <div class="mb-2">
-                            <strong>Programa Académico:</strong>
-                            <p class="text-muted">{{ detalle_proyecto.programa_academico }}</p>
-                        </div>
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content bg-light shadow-sm border border-dark border-5 rounded-5 text-dark">
+                    <div class="modal-header text-center">
+                        <h3 class="modal-title w-100 fs-4 text-dark" id="modalLabel">{{ detalle_proyecto.titulo }}</h3>
+                        <button type="button" class="btn-close mr-1 mt-1" data-bs-dismiss="modal" aria-label="Close"
+                            @click="limpiarModalDetalleProyecto"></button>
                     </div>
-                    <div class="col-md-6">
-                        <div class="mb-2">
-                            <strong>Grupo de Investigación:</strong>
-                            <p class="text-muted">{{ detalle_proyecto.grupo_investigacion }}</p>
+                    <div class="modal-body text-center mt-3">
+                        <div class="row align-items-center text-center">
+                            <div class="col-md-6">
+                                <h4 class="fs-5 text-dark">Ponentes</h4>
+                                <p class="fs-6 text-muted mb-0">{{ detalle_proyecto.programa_academico }}</p>
+                            </div>
+                            <div class="col-md-6 border-start">
+                                <h4 class="fs-5 text-dark">Evaluadores</h4>
+                                <p class="fs-6 text-muted mb-0">{{ detalle_proyecto.grupo_investigacion }}</p>
+                            </div>
                         </div>
-                    </div>
-                </div>
-                <div class="row mb-3">
-                    <div class="col-md-6">
-                        <div class="mb-2">
-                            <strong>Línea de Investigación:</strong>
-                            <p class="text-muted">{{ detalle_proyecto.linea_investigacion }}</p>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="mb-2">
-                            <strong>Nombre del Semillero:</strong>
-                            <p class="text-muted">{{ detalle_proyecto.nombre_semillero }}</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="row mb-3">
-                    <div class="col-md-6">
-                        <div class="mb-2">
-                            <strong>URL Propuesta Escrita:</strong>
-                            <p>
-                                <a :href="detalle_proyecto.url_propuesta_escrita" target="_blank" class="text-primary">Ver Propuesta</a>
-                            </p>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="mb-2">
-                            <strong>URL Aval:</strong>
-                            <p>
-                                <a :href="detalle_proyecto.url_aval" target="_blank" class="text-primary">Ver Aval</a>
-                            </p>
-                        </div>
-                    </div>
-                </div>
-                <div class="row mb-3">
-                    <div class="col-md-12">
-                        <div class="mb-2">
-                            <strong>Estado de Calificación:</strong>
-                            <p class="text-muted">{{ detalle_proyecto.estado_calificacion }}</p>
+
+                        <!-- Línea de separación superior para la siguiente fila -->
+                        <hr class="border-dark my-4">
+
+                        <div class="row align-items-center text-center">
+                            <div class="col-md-6">
+                                <h4 class="fs-5 text-dark">Horarios</h4>
+                                <p class="fs-6">
+                                    <a :href="detalle_proyecto.url_propuesta_escrita" target="_blank"
+                                        class="text-primary">Ver Propuesta</a>
+                                </p>
+                            </div>
+                            <div class="col-md-6 border-start">
+                                <h4 class="fs-5 text-dark">URL Propuesta Escrita</h4>
+                                <p class="fs-6">
+                                    <a :href="detalle_proyecto.url_propuesta_escrita" target="_blank"
+                                        class="text-primary">Ver Propuesta</a>
+                                </p>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-</div>
+
+
 
 
 
