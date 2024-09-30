@@ -2,7 +2,7 @@ import json
 from typing import List, Optional
 from fastapi import APIRouter, Depends, File, HTTPException, UploadFile
 from sqlalchemy.orm import Session
-from appv1.crud.admin.gest_asistentes_externos import generate_code, get_id_document_type, get_paginated_attendees, insert_attendee, insert_user, update_external_attendees
+from appv1.crud.admin.gest_asistentes_externos import generate_code, get_attendee_by_document, get_id_document_type, get_paginated_attendees, insert_attendee, insert_user, update_external_attendees
 from appv1.crud.admin.gest_delegado import create_delegado,get_delegados_activos_paginated, get_delegados_by_document
 from appv1.crud.admin.gest_rubricas import create_items, delete_items, get_all_rubricas, update_items
 from appv1.crud.admin.gest_rubricas import get_all_rubricas
@@ -10,7 +10,7 @@ from appv1.crud.admin.admin import create_convocatoria, create_etapa, create_fas
 from appv1.routers.login import get_current_user
 from appv1.schemas.admin.admin import ConvocatoriaCreate, CreateSala, FaseUpdate, UpdateSala
 from appv1.crud.admin.admin import create_convocatoria, create_etapa, create_fase, get_fases_by_etapa, update_etapa, update_fase
-from appv1.schemas.admin.attendees import PaginatedAttendees, UpdatedAttendee
+from appv1.schemas.admin.attendees import AttendeesBase, PaginatedAttendees, UpdatedAttendee
 from appv1.schemas.admin.delegado import DelegadoResponse, PaginatedDelegadoResponse
 from appv1.schemas.admin.items_rubrica import ItemCreate, ItemUpdate
 from appv1.schemas.admin.rubrica import RubricaResponse
@@ -488,3 +488,23 @@ def update_attendee(
             'success': False,
             'message': 'Error al actualizar',
         }
+    
+#Obtener asistente por documento
+@router_admin.get("/get-attendee-by-document/", response_model=AttendeesBase)
+async def get_attendee(
+    documento: str,
+    db: Session = Depends(get_db), 
+    current_user: UserResponse = Depends(get_current_user),
+):  
+    MODULE = 12
+    permisos = get_permissions(db, current_user.id_rol, MODULE)
+
+    if permisos is None or not permisos.p_consultar:
+        raise HTTPException(status_code=401, detail="Usuario no autorizado")
+    
+    attendee = get_attendee_by_document(db, documento)
+
+    if attendee is None:
+        raise HTTPException(status_code=404, detail="No hay asistente con ese documento")
+
+    return attendee

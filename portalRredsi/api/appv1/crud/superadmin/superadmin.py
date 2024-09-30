@@ -2,6 +2,10 @@ from fastapi import HTTPException
 from sqlalchemy.orm import Session
 from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy import text
+from appv1.models import Usuario
+from appv1.models.usuario import Estados
+
+from appv1.schemas.superadmin.superadmin import EstadoEnum
 
 # Consultar administradores con paginación
 def get_all_admins(db: Session, page: int = 1, page_size: int = 10):
@@ -81,6 +85,49 @@ def update_user_role(db: Session, user_id: int, new_role_id: int):
         db.rollback()  # Revertir la transacción en caso de error
         print(f"Error al actualizar rol de usuario: {e}")
         raise HTTPException(status_code=500, detail="Error al actualizar rol de usuario")
+
+
+def cambiar_estado_usuario(db: Session, user_id: int):
+    try:
+        # Obtener el usuario por ID
+        usuario = db.query(Usuario).filter(Usuario.id_usuario == user_id).first()
+
+        if not usuario:
+            raise HTTPException(status_code=404, detail="Usuario no encontrado")
+
+        # Cambiar el estado de activo a inactivo o viceversa
+        if usuario.estado == Estados.activo:
+            nuevo_estado = Estados.inactivo
+        elif usuario.estado == Estados.inactivo:
+            nuevo_estado = Estados.activo
+        else:
+            raise HTTPException(status_code=400, detail="Estado del usuario inválido")
+
+        # Asignar el nuevo estado al usuario
+        usuario.estado = nuevo_estado
+
+        # Guardar los cambios en la base de datos
+        db.commit()
+        db.refresh(usuario)  # Refrescar el objeto para reflejar los nuevos valores
+
+        # Debug: Mostrar el nuevo estado para asegurarse de que se cambió
+        print(f"Nuevo estado del usuario: {usuario.estado}")
+
+        return {
+            "message": f"El estado del usuario ha sido cambiado a {nuevo_estado.value}"
+        }
+
+    except Exception as e:
+        # Manejo de excepciones en caso de error en la transacción
+        db.rollback()
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+    except SQLAlchemyError as e:
+        db.rollback()
+        print(f"Error al cambiar el estado del usuario: {e}")
+        raise HTTPException(status_code=500, detail="Error al cambiar el estado del usuario")
+
 
 # Obtener historial de actividades por administrador/delegado
 def get_activity_history_by_admin(db: Session, user_id: int):

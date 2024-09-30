@@ -5,9 +5,11 @@ from appv1.routers.login import get_current_user
 from appv1.schemas.superadmin.superadmin import (
     PaginatedAdminResponse, 
     UserRoleUpdateSchema, 
-    ActivityHistoryResponse
+    ActivityHistoryResponse,
+    UserStatusUpdateResponse
 )
 from appv1.crud.superadmin.superadmin import (
+    cambiar_estado_usuario,
     get_all_admins, 
     update_user_role, 
     get_activity_history_by_admin
@@ -42,6 +44,19 @@ async def read_all_admins_by_page(
         "current_page": page,
         "page_size": page_size
     }
+
+@router_superadmin.put("/usuarios/{user_id}/estado", response_model=UserStatusUpdateResponse)
+def cambiar_estado(user_id: int, db: Session = Depends(get_db)):
+    
+    resultado = cambiar_estado_usuario(db, user_id)
+
+    if not resultado:
+        raise HTTPException(status_code=400, detail="Error al cambiar el estado del usuario")
+
+    # Devolvemos el esquema con la respuesta completa
+    return UserStatusUpdateResponse(
+        message=resultado["message"]
+    )
 
 # Modificar el rol de un usuario
 @router_superadmin.put("/update-role/", response_model=bool)

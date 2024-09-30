@@ -26,7 +26,7 @@ def get_all_convocatorias(db: Session, page: int = 1, page_size: int = 5):
                 nombre,
                 fecha_inicio,
                 fecha_fin,
-                estado,
+                estado
                 FROM convocatorias          
             LIMIT :page_size OFFSET :offset;
         """)
