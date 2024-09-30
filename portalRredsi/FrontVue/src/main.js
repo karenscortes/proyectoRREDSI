@@ -17,6 +17,11 @@ app.use(Toast, {
     // Comprobar si ya hay una alerta de sesión expirada
     const sessionExpiredToast = toasts.some(t => t.content.includes('Su sesíon ha expirado...'));
 
+    // Si ya existe una alerta de sesión expirada, no crear otra
+    if (sessionExpiredToast && toast.content.includes('Su sesíon ha expirado...')) {
+      return false; // Evitar duplicado de alerta de sesión expirada
+    }
+
     // Si ya hay una alerta de sesión expirada y la nueva no es de ese tipo, descartar la nueva
     if (sessionExpiredToast) {
       if (!toast.content.includes('Su sesíon ha expirado...')) {
