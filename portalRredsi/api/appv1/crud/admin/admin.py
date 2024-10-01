@@ -61,7 +61,8 @@ def create_sala(db: Session, id_usuario: int, area_conocimiento: int,  numero: s
         )
         db.add(sala)
         db.commit()
-        return {"message": "Sala creada exitosamente"}
+        db.refresh(sala)
+        return sala
     except IntegrityError as e:
         db.rollback()
         raise HTTPException(status_code=400, detail="Error. No hay Integridad de datos al crear la sala")
