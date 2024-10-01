@@ -63,16 +63,6 @@
                         <AreasConocimientoSelect v-model="datosProyecto.area_conocimiento" />
                     </div>
                 </div>
-
-                <!-- Poster -->
-                <div class="row mb-3">
-                    <div class="col-md-12">
-                        <label for="poster" class="form-label text-black">Poster:</label>
-                        <input type="file" @change="handleFileUpload($event, 'poster')" class="form-control"
-                            id="poster" />
-                    </div>
-                </div>
-
                 <!-- Aval -->
                 <div class="row mb-3">
                     <div class="col-md-12">
@@ -112,6 +102,16 @@
                         <input v-model="datosTutor.apellidos" type="text" class="form-control" id="apellidos_tutor" />
                     </div>
                 </div>
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <label for="celular_tutor" class="form-label text-black">Celular:</label>
+                        <input v-model="datosTutor.celular" type="text" class="form-control" id="celular_tutor" />
+                    </div>
+                    <div class="col-md-6">
+                        <label for="correo_tutor" class="form-label text-black">Correo Electrónico:</label>
+                        <input v-model="datosTutor.correo" type="email" class="form-control" id="correo_tutor" />
+                    </div>
+                </div>
 
                 <div class="text-center">
                     <button type="submit" class="btn btn-outline-dark btn-sm">Guardar Datos del Tutor</button>
@@ -145,6 +145,16 @@
                             id="apellidos_ponente" />
                     </div>
                 </div>
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <label for="celular_ponente" class="form-label text-black">Celular:</label>
+                        <input v-model="datosPonente.celular" type="text" class="form-control" id="celular_ponente" />
+                    </div>
+                    <div class="col-md-6">
+                        <label for="correo_ponente" class="form-label text-black">Correo Electrónico:</label>
+                        <input v-model="datosPonente.correo" type="email" class="form-control" id="correo_ponente" />
+                    </div>
+                </div>
 
                 <div class="text-center">
                     <button type="submit" class="btn btn-outline-dark btn-sm">Guardar Datos del Ponente</button>
@@ -163,7 +173,7 @@
                         <div class="col-md-6">
                             <label for="tipo_documento_opcional" class="form-label text-black">Tipo de
                                 Documento:</label>
-                            <TipoDocumentoSelect v-model="ponenteOpcional.tipo_documento"/>
+                            <TipoDocumentoSelect v-model="ponenteOpcional.tipo_documento" />
                         </div>
                         <div class="col-md-6">
                             <label for="numero_documento_opcional" class="form-label text-black">Número de
@@ -182,6 +192,18 @@
                             <label for="apellidos_opcional" class="form-label text-black">Apellidos:</label>
                             <input v-model="ponenteOpcional.apellidos" type="text" class="form-control"
                                 id="apellidos_opcional" />
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <label for="celular_opcional" class="form-label text-black">Celular:</label>
+                            <input v-model="ponenteOpcional.celular" type="text" class="form-control"
+                                id="celular_opcional" />
+                        </div>
+                        <div class="col-md-6">
+                            <label for="correo_opcional" class="form-label text-black">Correo Electrónico:</label>
+                            <input v-model="ponenteOpcional.correo" type="email" class="form-control"
+                                id="correo_opcional" />
                         </div>
                     </div>
                 </div>
@@ -241,7 +263,6 @@ export default {
             titulo: '',
             propuesta_escrita: null,
             area_conocimiento: null,
-            poster: null,
             aval: null,
         });
 
@@ -250,6 +271,8 @@ export default {
             numero_documento: '',
             nombres: '',
             apellidos: '',
+            celular: '',
+            correo: '',
         });
 
         const datosPonente = ref({
@@ -257,6 +280,8 @@ export default {
             numero_documento: '',
             nombres: '',
             apellidos: '',
+            celular: '',
+            correo: '',
         });
 
         const ponenteOpcional = ref({
@@ -264,6 +289,8 @@ export default {
             numero_documento: '',
             nombres: '',
             apellidos: '',
+            celular: '',
+            correo: '',
         });
 
         const mostrarPonenteOpcional = ref(false);
