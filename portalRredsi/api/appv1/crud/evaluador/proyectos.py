@@ -1,3 +1,4 @@
+from typing import List
 from sqlalchemy.orm import Session
 from sqlalchemy import text
 from sqlalchemy.exc import SQLAlchemyError, IntegrityError
@@ -705,3 +706,37 @@ def get_datos_proyecto_calificado_completo(db: Session, id_proyecto: int, id_usu
 
 
         # Obtener los datos para calificar un proyecto
+
+# Obtener los nombres de las fases y las fechas de la programación de una convocatoria en curso
+def get_nombres_fases_y_fechas_programacion(db: Session) -> List[dict]:
+    try:
+        sql_query = text("""
+            SELECT 
+                fase.nombre AS nombre_fase,
+                programacion_fases.fecha_inicio,
+                programacion_fases.fecha_fin
+            FROM programacion_fases
+            JOIN convocatorias ON programacion_fases.id_convocatoria = convocatorias.id_convocatoria
+            JOIN fases AS fase ON programacion_fases.id_fase = fase.id_fase
+            WHERE 
+                convocatorias.estado = 'en curso'
+        """)
+        
+        # Ejecuta la consulta y obtiene los resultados
+        result = db.execute(sql_query).fetchall()
+
+        # Transformar el resultado en una lista de diccionarios
+        programacion_fases = [
+            {
+                "nombre_fase": row[0],
+                "fecha_inicio": row[1],
+                "fecha_fin": row[2]
+            }
+            for row in result
+        ]
+
+        return programacion_fases
+
+    except Exception as e:
+        db.rollback()
+        raise HTTPException(status_code=500, detail="Error al consultar las fases junto a su programación")

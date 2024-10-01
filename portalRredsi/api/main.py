@@ -31,6 +31,7 @@ app.include_router(participantes_proyecto.router_participante_proyecto, prefix="
 
 # CONSULTAS GENERALES
 app.include_router(generales.router_consultas_generales, prefix="/generales", tags=["Consultas generales"])
+app.include_router(evaluadores.routerObtenerProgramacionFases, prefix="/obtenerProgramacionFases", tags=["Consultas generales"])
 
 
 #EVENTOS

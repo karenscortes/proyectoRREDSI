@@ -76,3 +76,10 @@ class CalificarProyectoRespuesta(BaseModel):
     celular_evaluador: str
     nombres_ponentes: Optional[str] = None
     componentes: List[Componente]
+
+class ProgramacionFases(BaseModel):
+    nombre_fase: str
+    fecha_inicio: date
+    fecha_fin: date
+class ListaDeProgramacionFases(BaseModel):
+    data: List[ProgramacionFases]
