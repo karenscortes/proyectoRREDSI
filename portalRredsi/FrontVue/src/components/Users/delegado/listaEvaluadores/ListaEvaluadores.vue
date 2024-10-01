@@ -252,9 +252,14 @@ export default {
         },
         async modalTitulos(){
             try {
+                // cierra el primer modal 
+                $('#evaluatorInformation').modal('hide');
+
                 const response = await getCertificatesById(this.evaluadorActual.id_usuario);
                 console.log(response.data);
                 this.certificates = response.data;
+
+                // Abre el modal de titulos
                 $('#modal_titulos').modal('show');
             } catch (error) {
                 this.showInfoToast("No se registraron títulos académicos");

@@ -8,23 +8,25 @@
             <table class="table table-hover border table-responsive">
                 <thead>
                     <tr>
-                        <th class="text-center">Evaluadores</th>
+                        <!-- <th class="text-center">Evaluadores</th> -->
                         <th v-for="time in timeSlots" :key="time" class="text-center time-slot">{{ time }}</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr class="fila_tabla" v-for="(detalle, index) in detalleSala" :key="index">
-                        <td class="nombre_evaluador">{{ detalle.nombre_evaluador }}</td>
                         <td class="align-middle" v-for="(slot, i) in 24" :key="i"
                             :style="getStyle(i, detalle.hora_inicio, detalle.hora_fin)">
-                            <span
-                                v-if="isProjectTime(i, detalle.hora_inicio, detalle.hora_fin) && i === getMiddleSlot(detalle.hora_inicio, detalle.hora_fin)">
-                                <a class="text-dark fw-semibold text-center" type="button" data-bs-toggle="modal"
+                            <div v-if="i === getMiddleSlot(detalle.hora_inicio, detalle.hora_fin) && isProjectTime(i, detalle.hora_inicio, detalle.hora_fin)"
+                                class="d-flex justify-content-center align-items-center h-100" style="height: 100%;">
+                                <a class="text-dark fw-semibold" type="button" data-bs-toggle="modal"
                                     data-bs-target="#detalle_proyecto"
                                     @click="proyectoSeleccionado(detalle.id_proyecto)">Ver Detalle</a>
-                            </span>
+                            </div>
                         </td>
                     </tr>
+
+
+
                 </tbody>
             </table>
         </div>
@@ -32,37 +34,69 @@
         <div class="modal fade" id="detalle_proyecto" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content bg-light shadow-sm border border-dark border-5 rounded-5 text-dark">
-                    <div class="modal-header text-center">
-                        <h3 class="modal-title w-100 fs-4 text-dark" id="modalLabel">{{ detalle_proyecto.titulo }}</h3>
-                        <button type="button" class="btn-close mr-1 mt-1" data-bs-dismiss="modal" aria-label="Close"
+                    <div class="modal-header">
+                        <h3 class="modal-title w-100 fs-5 text-dark text-wrap text-center" id="modalLabel">
+                            {{ detalle_proyecto.titulo }}
+                        </h3>
+                        <button type="button" class="btn-close me-1 mt-1" data-bs-dismiss="modal" aria-label="Close"
                             @click="limpiarModalDetalleProyecto"></button>
                     </div>
+
                     <div class="modal-body text-center mt-3">
-                        <div class="row align-items-center text-center">
+                        <div class="row align-items-start text-center">
                             <div class="col-md-6">
-                                <h4 class="fs-5 text-dark">Ponentes</h4>
-                                <p class="fs-6 text-muted mb-0">Pendiente...</p>
+                                <h4 class="fs-6 text-dark mb-3">Ponentes</h4>
+                                <div v-if="ponentes.length === 0" class="fs-7 text-muted">No se registraron ponentes
+                                </div>
+                                <div v-else>
+                                    <div class="ponente-item mb-2" v-for="(ponente, index) in ponentes" :key="index">
+                                        <span class="fs-6 text-dark">{{ ponente.nombres }} {{ ponente.apellidos
+                                            }}</span>
+                                    </div>
+                                </div>
                             </div>
                             <div class="col-md-6 border-start">
-                                <h4 class="fs-5 text-dark">Evaluadores</h4>
-                                <p class="fs-6 text-muted mb-0">Pendiente...</p>
+                                <h4 class="fs-6 text-dark mb-3">Evaluadores</h4>
+                                <div v-if="evaluadoresProyectoSeleccionado.length === 0" class="fs-7 text-muted">No se
+                                    registraron evaluadores</div>
+                                <div v-else>
+                                    <div class="evaluador-item mb-2"
+                                        v-for="(evaluador, index) in evaluadoresProyectoSeleccionado" :key="index">
+                                        <span class="fs-6 text-dark">{{ evaluador.nombres }} {{ evaluador.apellidos
+                                            }}</span>
+                                    </div>
+                                </div>
                             </div>
                         </div>
+
+
+
 
                         <!-- Línea de separación superior para la siguiente fila -->
                         <hr class="border-dark my-4">
 
                         <div class="row align-items-center text-center">
                             <div class="col-md-6">
-                                <h4 class="fs-5 text-dark">Horarios</h4>
+                                <h4 class="fs-6 text-dark">Horarios</h4>
                                 <p class="fs-6 text-muted mb-0">Pendiente...</p>
 
                             </div>
                             <div class="col-md-6 border-start">
-                                <h4 class="fs-5 text-dark">URL Propuesta Escrita</h4>
+                                <h4 class="fs-6 text-dark">URL Propuesta Escrita</h4>
                                 <p class="fs-6">
                                     <a :href="detalle_proyecto.url_propuesta_escrita" target="_blank"
                                         class="text-primary">Ver Propuesta</a>
+                                </p>
+                            </div>
+                        </div>
+                        <!-- Línea de separación superior para la siguiente fila -->
+                        <hr class="border-dark my-4">
+
+                        <div class="row justify-content-center align-items-center text-center">
+                            <div class="col-md-6">
+                                <h4 class="fs-5 text-dark">URL de presentación</h4>
+                                <p class="fs-6">
+                                    <a href="" target="_blank" class="text-primary">Ver presentación</a>
                                 </p>
                             </div>
                         </div>
@@ -71,10 +105,6 @@
             </div>
         </div>
 
-
-
-
-
         <!-- alerta  -->
         <FlashMessage v-if="isOpen" @close="closeModal" :titulo="titulo_alerta" :mensaje="mensaje_alerta"
             :tipo="tipo_alerta" />
@@ -82,7 +112,8 @@
 </template>
 
 <script>
-import { obtenerDetalleSala, obtenerDatosProyecto } from "@/services/salasDelegadoService";
+import { obtenerDetalleSala, obtenerDatosProyecto, obtenerPonentesProyecto } from "@/services/salasDelegadoService";
+import { obtenerEvaluadoresProyecto } from "@/services/delegadoService";
 import FlashMessage from "../../../FlashMessage.vue";
 
 export default {
@@ -102,6 +133,12 @@ export default {
             mensaje_alerta: "",
             tipo_alerta: "",
             isOpen: false,
+            ponentes: [],
+            horariosProyectoSeleccionado: {
+                hora_inicio: "",
+                hora_fin: ""
+            },
+            evaluadoresProyectoSeleccionado: [],
             detalle_proyecto: {}
         }
 
@@ -192,12 +229,24 @@ export default {
             try {
                 const response = await obtenerDatosProyecto(p_id_proyecto);
                 this.detalle_proyecto = response.data;
+                console.log(this.detalle_proyecto);
             } catch (error) {
                 alert("error")
             }
         },
-        proyectoSeleccionado(p_id_proyecto) {
-            this.obtenerDetalleProyecto(p_id_proyecto);
+        async proyectoSeleccionado(p_id_proyecto) {
+            this.ponentes = "";
+            this.evaluadoresProyectoSeleccionado = "";
+            await this.obtenerDetalleProyecto(p_id_proyecto);
+
+            // obtiene los evaluadores del proyecto que selecciono
+            const responseEvaluadores = await obtenerEvaluadoresProyecto(p_id_proyecto);
+            this.evaluadoresProyectoSeleccionado = responseEvaluadores;
+
+            // obtiene los ponentes del proyecto que selecciono
+            const responsePonentes = await obtenerPonentesProyecto(p_id_proyecto);
+            this.ponentes = responsePonentes.data.ponentes;
+
         },
         limpiarModalDetalleProyecto() {
             this.detalle_proyecto = "";

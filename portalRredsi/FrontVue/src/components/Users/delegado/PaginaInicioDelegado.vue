@@ -49,7 +49,7 @@
                                 <div class="milestone_icon"><img src="@/assets/img/milestone_2.svg"
                                         alt="https://www.flaticon.com/authors/zlatko-najdenovski"></div>
                                 <div class="milestone_counter" data-end-value="120">0</div>
-                                <div class="milestone_text">Presentaciones</div>
+                                <div class="milestone_text">Proyectos inscritos</div>
                             </div>
                         </div>
 
