@@ -19,7 +19,7 @@
                                     {{ tab.nombre }}
                                 </a>
                                 <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                <li v-for="(opcion, index) in tab.opciones" :key="index"><a href="#"  :class="['dropdown-item', opcion.uso]" aria-disabled="true" @click="selectComponent(opcion.ruta)">{{ opcion.nombre }}</a></li>
+                                <li v-for="(opcion, index) in tab.opciones" :key="index"><a href="#"  :class="['dropdown-item', opcion.uso, 'text-center']" aria-disabled="true" @click="selectComponent(opcion.ruta)">{{ opcion.nombre }}</a></li>
                                 </ul>
                             </div>
                         </li>
