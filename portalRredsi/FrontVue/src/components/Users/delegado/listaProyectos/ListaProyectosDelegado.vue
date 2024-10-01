@@ -234,7 +234,7 @@
             changeComponent({ componentName, proyecto }) {
                 this.selectedComponent = componentName;
                 this.selectedProyecto = proyecto; 
-                console.log(this.selectedProyecto);
+                // console.log(this.selectedProyecto);
                 this.showCalificarProyecto = true; 
             },
 

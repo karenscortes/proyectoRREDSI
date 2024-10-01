@@ -3,7 +3,7 @@
         <div class="icon">
             <i class="fa-solid fa-graduation-cap fa-lg text-dark mb-3"></i>
         </div>
-        <h3 class="text-dark text-left">Evaluadores</h3>
+        <h2 class="text-dark text-left font-weight-bold">Evaluadores</h2>
         <p class="text-dark text-left">
             <span v-for="(evaluador, index) in evaluadores" :key="index">
                 {{ evaluador.nombres }} {{ evaluador.apellidos }}<br>
@@ -25,10 +25,10 @@ export default {
 </script>
 
 <style scoped>
-h3,
+h2,
 p {
-    font-size: 0.9rem;
-    margin-bottom: 5px;
+    font-size: 0.8rem;
+    margin-bottom: 4px;
 }
 
 .text-left {
