@@ -131,7 +131,7 @@ def insertar_historial_admin(db: Session, servicio:str, modulo: int,registro:int
             accion= servicio,
             id_modulo= modulo,
             id_registro=registro,
-            usuario=id_admin,
+            id_usuario=id_admin,
             fecha = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         )
 
