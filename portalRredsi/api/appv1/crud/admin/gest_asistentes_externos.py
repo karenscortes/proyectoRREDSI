@@ -122,8 +122,8 @@ def get_attendee_by_document(db: Session, documento:str, page, page_size):
 #Función para llamar procedimiento almacenado
 def insertar_historial_admin(db: Session, accion:str, modulo: int,id_registro:int, id_admin: int):
     try:
-       
-       db.execute("CALL insertar_acciones_admin(:accion, :id_modulo, :id_registro, :id_usuario)", {'accion':accion, 'id_modulo': modulo, 'id_registro':id_registro, 'id_usuario':id_admin})
+
+       db.execute("CALL insertar_acciones_admin(:servicio, :modulo, :registro, :administrador)", {'servicio':accion, 'modulo': modulo, 'registro':id_registro, 'administrador':id_admin})
 
     except SQLAlchemyError as e:
         print(f"Error al ejecutar el procedimiento insertar_acciones_admin: {e}")
