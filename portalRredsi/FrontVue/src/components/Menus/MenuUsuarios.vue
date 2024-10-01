@@ -169,7 +169,7 @@ export default defineComponent({
                     },
                     {
                         nombre:"Proyectos", 
-                        opciones:[{nombre:'Asignacion de Proyectos', ruta:'AsignarProyectos',uso: asignacion1 }, {nombre:'Lista de Proyectos',ruta:'ListaProyectosDelegado', uso: otras_opciones}]
+                        opciones:[{nombre:'Asignación de Proyectos', ruta:'AsignarProyectos',uso: asignacion1 }, {nombre:'Lista de Proyectos',ruta:'ListaProyectosDelegado', uso: otras_opciones}]
                     },
                     {
                         nombre:"Evento", 
