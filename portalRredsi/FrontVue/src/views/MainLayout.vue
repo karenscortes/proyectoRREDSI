@@ -67,6 +67,8 @@ import MenuPrincipal from "../components/Menus/MenuPrincipal.vue";
 import ComponenteDinamico from "../components/ComponenteDinamico.vue";
 import RegistroUsuario from "../components/Users/inicio/RegistroUsuario.vue";
 import RegistroProyecto from '../components/Users/inicio/RegistroProyecto.vue';
+import Registro_fases from "../components/Users/inicio/Registro_fases.vue";
+import RubricasCalificadas from "../components/Users/inicio/RubricasCalificadas.vue";
 import NotAvailable from "./NotAvailable.vue";
 
 // Styles
@@ -77,12 +79,16 @@ import '../assets/plugins/fontawesome-free-5.0.1/css/fontawesome-all.css';
 
 
 
+
+
 export default {
     components: {
         MenuPrincipal: markRaw(MenuPrincipal),
         FooterPrincipal: markRaw(FooterPrincipal),
         RegistroUsuario: markRaw(RegistroUsuario),
         RegistroProyecto: markRaw(RegistroProyecto),
+        Registro_fases:markRaw(Registro_fases),
+        RubricasCalificadas:markRaw(RubricasCalificadas),
         
         //Componente Por defecto
         NotAvailable: markRaw(NotAvailable),
@@ -90,13 +96,16 @@ export default {
     },
     setup() {
 
-        const currentComponent = ref(NotAvailable);           
+        const currentComponent = ref();           
         
         const changeComponent = (componentName) => {
             const componentMap = {
                 NotAvailable: NotAvailable,
                 RegistroUsuario: RegistroUsuario,
                 RegistroProyecto:RegistroProyecto,
+                Registro_fases:Registro_fases,
+                RubricasCalificadas:RubricasCalificadas,
+            
             };
 
             currentComponent.value = componentMap[componentName] || NotAvailable;
