@@ -4,10 +4,13 @@
         <MenuPrincipal @component-selected="changeComponent"/>
     </div>
 
-    <!-- Mostrar la imagen de fondo en las otras opciones del menú -->
-    <!-- <div v-if="currentComponent !== Inicio">
+    <!-- Mostrar la imagen de fondo en las otras opciones del menú  -->
+    <div v-if="componente == 'RegistroProyecto' || componente == 'RegistroUsuario' || componente == 'ConsultarProyecto'">
         <img src="../assets/img/slider_background.jpg" alt height="200px" width="100%">
-    </div> -->
+    </div>
+    <div v-else>
+        
+    </div>
 
     <div class="container pt-5">
         <ComponenteDinamico :currentComponent="currentComponent"/>
@@ -90,7 +93,8 @@ export default {
     },
     setup() {
 
-        const currentComponent = ref(NotAvailable);           
+        const currentComponent = ref(NotAvailable); 
+        const componente = ref("");          
         
         const changeComponent = (componentName) => {
             const componentMap = {
@@ -100,6 +104,8 @@ export default {
             };
 
             currentComponent.value = componentMap[componentName] || NotAvailable;
+            componente.value=componentName;
+            console.log(componentName);
         };
 
         const authStore = useAuthStore();
@@ -137,6 +143,7 @@ export default {
             errorMessage,
             route,
             currentComponent,
+            componente,
             changeComponent,
             handleLogin,
         };

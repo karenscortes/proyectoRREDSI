@@ -39,7 +39,7 @@
                 <ul class="pagination justify-content-center">
                     <li class="page-item m-1">
                         <button @click="prevPage" :disabled="currentPage == 1" class="page-link"
-                            style="border-radius: 20px; color: black;">Previous</button>
+                            style="border-radius: 20px; color: black;">Anterior</button>
                     </li>
                     <li v-for="i in totalPages"  :key="i" class="page-item rounded m-1">
                         <button @click="selectedPage(i)" class="page-link rounded-circle" style="color: black;">{{ i
@@ -47,7 +47,7 @@
                     </li>
                     <li class="page-item m-1">
                         <button @click="nextPage" :disabled="currentPage == totalPages" class="page-link"
-                            style="border-radius: 20px; color: black;">Next</button>
+                            style="border-radius: 20px; color: black;">Siguiente</button>
                     </li>
                 </ul>
             </div>
@@ -59,7 +59,7 @@
 <script>
 import { getApplicationsByPage} from '@/services/PostulacionService';
 import AcordeonPostulaciones from './AcordeonPostulaciones.vue';
-
+import { useToastUtils } from '@/utils/toast';
 export default {
     components: {
         AcordeonPostulaciones,
@@ -73,6 +73,7 @@ export default {
         };
     },
     methods: {
+        ... useToastUtils(),
         handleNotification() {
             this.fetchEvaluators();
         },
@@ -82,7 +83,7 @@ export default {
                 this.evaluators = response.data.applications; 
                 this.totalPages = response.data.total_pages;
             } catch (error) {
-                console.log(error);
+                this.showErrorToast('Error al cargar postulaciones');
             }
         },
 

@@ -74,7 +74,7 @@
                 </div>
                 <div class="row mt-4 justify-content-center">
                     <div class="col-md-4 col-12">
-                        <a data-bs-toggle="modal" :data-bs-target="`#modal_titulos_${evaluator.id_evaluador}`" @click="openModal(evaluator)"
+                        <a @click="openModal(evaluator)"
                             class="btn btn-outline-primary w-100 mb-3">Visualizar
                             Títulos</a>
                     </div>
@@ -113,6 +113,7 @@
 
 <script>
 import { getCertificatesById, updateApplication} from '@/services/postulacionService';
+import { useToastUtils } from '@/utils/toast';
 export default {
     name: "AcordeonPostulaciones",
     props: {
@@ -124,7 +125,7 @@ export default {
         }
     },
     methods: {
-
+        ... useToastUtils(),
         notifyParent(){
             this.$emit('notify');
         },
@@ -132,10 +133,15 @@ export default {
         async updateStatus(evaluator,estado) {
             try {
                 await updateApplication(evaluator.id_evaluador, estado);
-                alert('Usuario actualizado exitosamente');
+                if(estado == 'rechazada'){
+                    this.showSuccessToast('La postulación se rechazó exitosamente.');
+                }else{
+                    this.showSuccessToast('La postulación se aceptó exitosamente.');
+                }
+                
                 this.notifyParent();
             } catch (error) {
-                alert(error.data.detail);
+                this.showErrorToast('Error al procesar postulación.')
             }
         },
         
@@ -143,11 +149,15 @@ export default {
             try {
                 this.certificates = [];
                 const response = await getCertificatesById(evaluator.id_evaluador);
-                console.log(response.data);
-                this.certificates = response.data; 
-                $('#modal_titulos').modal('show'); // Abre el modal
+                if(response.data.length > 0){
+                    this.certificates = response.data; 
+                    $(`#modal_titulos_${evaluator.id_evaluador}`).modal('show'); // Abre el modal
+                }else{
+                    this.showInfoToast('El postulado no cuenta con titulación.');   
+                }
+               
             } catch (error) {
-                console.log(error);
+                this.showErrorToast('Error al consultar titulación.')
             }
         },
     }
