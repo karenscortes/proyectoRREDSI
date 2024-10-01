@@ -37,8 +37,9 @@
                     type="checkbox"
                     role="switch"
                     :id="'estado' + index"
-                    v-model="administrador.estado"
-                    disabled
+                    :checked="administrador.estado === 'activo'"
+                    @change="cambiarEstadoUsuario(administrador)"
+
                   >
                   <label class="form-check-label" :for="'estado' + index"></label>
                 </div>
@@ -62,7 +63,7 @@
         </table>
       </div>
 
-      <PaginatorBody :totalPages="totalPaginas" @page-changed="cambiarPagina" />
+      <PaginatorBody :totalPages="totalPaginas" @page-changed="cambiarPagina" v-if="totalPaginas > 1" />
 
       <!-- Modal detalle administrador -->
       <div class="modal fade" id="detalleAdminModal" tabindex="-1" aria-labelledby="detalleModalLabel" aria-hidden="true">
@@ -163,7 +164,9 @@
 
 
 <script>
-import { getAdminsByPage, updateUserRole, getActivityHistoryByAdmin } from '../../../services/superadminService';
+import { getAdminsByPage, updateUserRole, getActivityHistoryByAdmin, toggleUserStatus } from '../../../services/superadminService';
+import { useToastUtils } from '@/utils/toast';
+const { showSuccessToast, showErrorToast, showWarningToast} = useToastUtils();
 import PaginatorBody from '../../UI/PaginatorBody.vue';
 
 export default {
@@ -196,7 +199,7 @@ export default {
         this.administradores = response.admins;  // Asignar los administradores
         this.totalPaginas = response.total_pages;  // Total de páginas para la paginación
       } catch (error) {
-        alert(error.detail || 'Error al obtener administradores');
+        showWarningToast('Error al obtener administradores');
       }
     },
     // Mostrar el detalle del administrador en el modal
@@ -213,10 +216,39 @@ export default {
         if (actualizado) {
           // Actualizar la lista de administradores después de guardar el nuevo rol
           await this.fetchAdmins();
-          alert('Rol actualizado exitosamente');
+          showSuccessToast('Rol actualizado exitosamente');
         }
       } catch (error) {
-        alert(error.detail || 'Error al actualizar el rol');
+        showErrorToast(error.detail || 'Error al actualizar el rol');
+      }
+    },
+
+    // Cambiar el estado del usuario
+    async cambiarEstadoUsuario(admin) {
+      try {
+        // Guardar el estado actual del usuario
+        const estadoActual = admin.estado;  // true si está activo, false si está inactivo
+
+        // Cambiar el estado en el backend
+        const actualizado = await toggleUserStatus(admin.id_usuario);  // Usar el servicio toggleUserStatus
+
+        if (actualizado) {
+          // Invertir el estado local en el objeto admin
+          admin.estado = !estadoActual;  // Esto actualiza el estado después de que ha cambiado en el backend
+
+          // Mostrar el mensaje basado en el nuevo estado
+          if (admin.estado) {
+            // Ahora está activo
+            showSuccessToast('El estado del usuario ha sido cambiado.');
+          } else {
+            // Ahora está inactivo
+            showSuccessToast('El estado del usuario ha sido cambiado.');
+          }
+
+          await this.fetchAdmins();  // Refrescar la lista de administradores
+        }
+      } catch (error) {
+        showWarningToast(error.detail || 'Error al cambiar el estado del usuario');
       }
     },
 
@@ -232,21 +264,9 @@ export default {
       }
     },
     // Paginación
-    paginaAnterior() {
-      if (this.paginaActual > 1) {
-        this.paginaActual--;
-        this.fetchAdmins();
-      }
-    },
-    paginaSiguiente() {
-      if (this.paginaActual < this.totalPaginas) {
-        this.paginaActual++;
-        this.fetchAdmins();
-      }
-    },
-    irAPagina(pagina) {
-      this.paginaActual = pagina;
-      this.fetchAdmins();
+    cambiarPagina(pagina){
+        this.paginaActual = pagina;
+        this.fetchAdmins(pagina);
     },
   },
   mounted() {

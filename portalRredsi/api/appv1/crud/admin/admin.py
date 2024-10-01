@@ -1,19 +1,15 @@
 from datetime import date
-from typing import Optional
 from fastapi import HTTPException
 from sqlalchemy.orm import Session
 from appv1.models.area_conocimiento import Area_conocimiento
 from appv1.models.convocatoria import Convocatoria
-from appv1.models.etapa import Etapa
-from appv1.models.fase import Fase
 from appv1.models.programacion_fase import Programacion_fase
 from appv1.models.sala import Sala
-from appv1.models.usuario import Usuario
-from appv1.schemas.admin.admin import EstadoDeConvocatoria, EtapaUpdate, UpdateSala
+from appv1.schemas.admin.admin import ConvocatoriaResponse, EstadoDeConvocatoria, ProgramacionFaseResponse, UpdateSala
 from sqlalchemy.exc import SQLAlchemyError, IntegrityError
 from appv1.crud.evaluador.proyectos import get_current_convocatoria
 
-# Crear una nueva convocatoria
+# Crear una convocatoria que devuelva su id 
 def create_convocatoria(db: Session, nombre: str, fecha_inicio: date, fecha_fin: date, estado: EstadoDeConvocatoria):
     convocatoria = Convocatoria(
         nombre=nombre, 
@@ -24,90 +20,34 @@ def create_convocatoria(db: Session, nombre: str, fecha_inicio: date, fecha_fin:
     db.add(convocatoria)
     db.commit()
     db.refresh(convocatoria)  # Refresca para obtener el ID generado
-    return convocatoria  # Retorna la convocatoria creada
-
-
-# Crear una nueva etapa dentro de una convocatoria
-def create_etapa(db: Session, nombre: str, id_convocatoria: int):
     
-    convocatoria = db.query(Convocatoria).get(id_convocatoria)
-    if not convocatoria:
-        raise HTTPException(status_code=404, detail="Convocatoria no encontrada")
-    
-    etapa = Etapa(nombre=nombre, id_convocatoria=id_convocatoria)
-    
-    db.add(etapa)
-    db.commit()
-    db.refresh(etapa)
-    return {"message": "Etapa creada exitosamente", "etapa_id": etapa.id_etapa}
+    return ConvocatoriaResponse(
+        id_convocatoria=convocatoria.id_convocatoria,
+        nombre=convocatoria.nombre,
+        fecha_inicio=convocatoria.fecha_inicio,
+        fecha_fin=convocatoria.fecha_fin,
+        estado=convocatoria.estado
+    )
 
-
-# Crear una nueva fase dentro de una etapa
-def create_fase(db: Session, nombre: str, id_etapa: int):
-    # Verifica que la etapa existe
-    etapa = db.query(Etapa).get(id_etapa)
-    if not etapa:
-        raise HTTPException(status_code=404, detail="Etapa no encontrada")
-
-    # Crea la nueva fase
-    fase = Fase(nombre=nombre, id_etapa=id_etapa)
-    
-    # Añade y guarda en la base de datos
-    db.add(fase)
-    db.commit()
-    db.refresh(fase)  # Refresca el objeto fase con el ID generado
-    return {"message": "Fase creada exitosamente", "fase_id": fase.id_fase}
-
-# Traer fases por etapa
-def get_fases_by_etapa(db: Session, id_etapa: int):
-    # Verifica que la etapa exista
-    etapa = db.query(Etapa).get(id_etapa)
-    if not etapa:
-        raise HTTPException(status_code=404, detail="Etapa no encontrada")
-    
-    # Obtiene todas las fases asociadas a la etapa
-    fases = db.query(Fase).filter(Fase.id_etapa == id_etapa).all()
-    return fases
-
-# Editar una etapa
-def update_etapa(db: Session, id_etapa: int, nombre: Optional[str] = None):
-    # Verifica que la etapa exista
-    etapa = db.query(Etapa).get(id_etapa)
-    if not etapa:
-        raise HTTPException(status_code=404, detail="Etapa no encontrada")
-
-    # Actualiza los campos que sean provistos
-    if nombre:
-        etapa.nombre = nombre
-
-    # Guarda los cambios en la base de datos
-    db.commit()
-    db.refresh(etapa)
-    return etapa
-
-
-# Editar una fase
-def update_fase(db: Session, id_fase: int, nombre: Optional[str] = None):
-    # Verifica que la fase exista
-    fase = db.query(Fase).get(id_fase)
-    if not fase:
-        raise HTTPException(status_code=404, detail="Fase no encontrada")
-
-    # Actualiza los campos que sean provistos
-    if nombre:
-        fase.nombre = nombre
-
-    # Guarda los cambios en la base de datos
-    db.commit()
-    db.refresh(fase)
-    return fase
-
-# Crear una nueva programación de fase
+# Crear programacion de fase
 def create_programacion_fase(db: Session, id_fase: int, id_convocatoria: int, fecha_inicio: date, fecha_fin: date):
-    programacion_fase = Programacion_fase(id_fase=id_fase, id_convocatoria=id_convocatoria, fecha_inicio=fecha_inicio, fecha_fin=fecha_fin)
+    programacion_fase = Programacion_fase(
+        id_fase=id_fase,
+        id_convocatoria=id_convocatoria,
+        fecha_inicio=fecha_inicio,
+        fecha_fin=fecha_fin
+    )
     db.add(programacion_fase)
     db.commit()
-    return {"message": "Programación de fase creada exitosamente"}
+    db.refresh(programacion_fase)  # Refresca para obtener el ID generado
+    
+    return ProgramacionFaseResponse(
+        id_programacion_fase=programacion_fase.id_programacion_fase,
+        id_fase=programacion_fase.id_fase,
+        id_convocatoria=programacion_fase.id_convocatoria,
+        fecha_inicio=programacion_fase.fecha_inicio,
+        fecha_fin=programacion_fase.fecha_fin
+    )
 
 # Crear una nueva sala
 def create_sala(db: Session, id_usuario: int, area_conocimiento: int,  numero: str, nombre: str):
@@ -121,7 +61,8 @@ def create_sala(db: Session, id_usuario: int, area_conocimiento: int,  numero: s
         )
         db.add(sala)
         db.commit()
-        return {"message": "Sala creada exitosamente"}
+        db.refresh(sala)
+        return sala
     except IntegrityError as e:
         db.rollback()
         raise HTTPException(status_code=400, detail="Error. No hay Integridad de datos al crear la sala")

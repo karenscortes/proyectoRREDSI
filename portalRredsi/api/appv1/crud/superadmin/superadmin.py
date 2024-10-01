@@ -2,6 +2,10 @@ from fastapi import HTTPException
 from sqlalchemy.orm import Session
 from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy import text
+from appv1.models import Usuario
+from appv1.models.usuario import Estados
+
+from appv1.schemas.superadmin.superadmin import EstadoEnum
 
 # Consultar administradores con paginación
 def get_all_admins(db: Session, page: int = 1, page_size: int = 10):
@@ -25,7 +29,6 @@ def get_all_admins(db: Session, page: int = 1, page_size: int = 10):
             FROM usuarios
             JOIN roles ON usuarios.id_rol = roles.id_rol
             WHERE (usuarios.id_rol = 3 OR usuarios.id_rol = 2)
-            AND usuarios.estado = 'activo'
             LIMIT :page_size OFFSET :offset;
         """)
         params = {
@@ -38,8 +41,7 @@ def get_all_admins(db: Session, page: int = 1, page_size: int = 10):
         count_sql = text("""
             SELECT COUNT(usuarios.id_usuario)
             FROM usuarios
-            WHERE usuarios.id_rol = 3
-            AND usuarios.estado = 'activo';
+            WHERE (usuarios.id_rol = 3 OR usuarios.id_rol = 2);
         """)
         total_admins = db.execute(count_sql).scalar()
 
@@ -53,19 +55,19 @@ def get_all_admins(db: Session, page: int = 1, page_size: int = 10):
         return result, total_pages
 
     except SQLAlchemyError as e:
-        print(f"Error al buscar administradores: {e}")
-        raise HTTPException(status_code=500, detail="Error al buscar administradores")
+        print(f"Error al buscar administradores y delegados: {e}")
+        raise HTTPException(status_code=500, detail="Error al buscar administradores y delegados")
 
-# Actualizar el rol de un usuario si es un administrador activo
+# Actualizar el rol de un usuario si es un administrador/delegado
 def update_user_role(db: Session, user_id: int, new_role_id: int):
     try:
         # Verificar si el usuario es un administrador o delegado activo
-        sql_check = text("SELECT id_usuario, id_rol FROM usuarios WHERE id_usuario = :user_id AND (id_rol = 2 OR id_rol = 3) AND estado = 'activo'")
+        sql_check = text("SELECT id_usuario, id_rol FROM usuarios WHERE id_usuario = :user_id AND (id_rol = 2 OR id_rol = 3)")
         params_check = {"user_id": user_id}
         user_to_update = db.execute(sql_check, params_check).fetchone()
 
         if not user_to_update:
-            raise HTTPException(status_code=404, detail="Usuario no encontrado o no es un administrador o delegado activo")
+            raise HTTPException(status_code=404, detail="Usuario no encontrado")
 
         current_role_id = user_to_update[1]
 
@@ -73,7 +75,7 @@ def update_user_role(db: Session, user_id: int, new_role_id: int):
             raise HTTPException(status_code=400, detail="El usuario ya tiene el rol seleccionado")
 
         # Proceder con la actualización del rol
-        sql_update = text("UPDATE usuarios SET id_rol = :new_role_id WHERE id_usuario = :user_id AND estado = 'activo'")
+        sql_update = text("UPDATE usuarios SET id_rol = :new_role_id WHERE id_usuario = :user_id")
         params_update = {"new_role_id": new_role_id, "user_id": user_id}
 
         db.execute(sql_update, params_update)
@@ -83,6 +85,49 @@ def update_user_role(db: Session, user_id: int, new_role_id: int):
         db.rollback()  # Revertir la transacción en caso de error
         print(f"Error al actualizar rol de usuario: {e}")
         raise HTTPException(status_code=500, detail="Error al actualizar rol de usuario")
+
+
+def cambiar_estado_usuario(db: Session, user_id: int):
+    try:
+        # Obtener el usuario por ID
+        usuario = db.query(Usuario).filter(Usuario.id_usuario == user_id).first()
+
+        if not usuario:
+            raise HTTPException(status_code=404, detail="Usuario no encontrado")
+
+        # Cambiar el estado de activo a inactivo o viceversa
+        if usuario.estado == Estados.activo:
+            nuevo_estado = Estados.inactivo
+        elif usuario.estado == Estados.inactivo:
+            nuevo_estado = Estados.activo
+        else:
+            raise HTTPException(status_code=400, detail="Estado del usuario inválido")
+
+        # Asignar el nuevo estado al usuario
+        usuario.estado = nuevo_estado
+
+        # Guardar los cambios en la base de datos
+        db.commit()
+        db.refresh(usuario)  # Refrescar el objeto para reflejar los nuevos valores
+
+        # Debug: Mostrar el nuevo estado para asegurarse de que se cambió
+        print(f"Nuevo estado del usuario: {usuario.estado}")
+
+        return {
+            "message": f"El estado del usuario ha sido cambiado a {nuevo_estado.value}"
+        }
+
+    except Exception as e:
+        # Manejo de excepciones en caso de error en la transacción
+        db.rollback()
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+    except SQLAlchemyError as e:
+        db.rollback()
+        print(f"Error al cambiar el estado del usuario: {e}")
+        raise HTTPException(status_code=500, detail="Error al cambiar el estado del usuario")
+
 
 # Obtener historial de actividades por administrador/delegado
 def get_activity_history_by_admin(db: Session, user_id: int):

@@ -55,7 +55,8 @@ def create_delegado(user: UserCreate, db: Session):
         )
         db.add(nuevo_usuario)
         db.commit()
-        return True
+        db.refresh(nuevo_usuario)
+        return nuevo_usuario
     except IntegrityError as e:
         db.rollback()
         print(f"Error al crear usuario: {e}")

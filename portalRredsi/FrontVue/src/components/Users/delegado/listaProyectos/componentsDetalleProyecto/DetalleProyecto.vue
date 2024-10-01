@@ -12,7 +12,7 @@
                 <div class="row justify-content-between">
                     <div class="col-lg-6 order-2 order-lg-1">
                         <div class="section-title mt-4 text-left">
-                            <h4>Información del proyecto</h4>
+                            <h2>Información del proyecto</h2>
                         </div>
                         <div class="row my-5 gy-4">
                             <!-- Ponentes -->
@@ -25,30 +25,30 @@
                             </div>
                             <!-- Evento -->
                             <div class="col-6 col-md-6 mt-3">
-                                <EventoCom :horario="horario" :sala="sala" />
+                                <EventoCom :fecha="infoSala.fecha" :horaInicio="infoSala.hora_inicio"
+                                    :horaFin="infoSala.hora_fin" :sala="infoSala.numero_sala" />
                             </div>
                             <!-- Suplentes -->
-                            <div class="col-6 col-md-6 mt-3">
+                            <!-- <div class="col-6 col-md-6 mt-3">
                                 <SuplentesCom :tipo="tipo" :suplente="suplente" />
-                            </div>
+                            </div>  -->
                         </div>
                         <!-- Botones -->
                         <div class="col-10 d-flex justify-content-between">
-                            <button type="button" class="btn btn-sm btn-warning font-weight-bold" style="width: 36%;"
+                            <!-- <button type="button" class="btn btn-sm btn-warning font-weight-bold" style="width: 36%;"
                                 @click="openModal">
                                 Añadir presentación
-                            </button>
-                            <ModalAgregarLink :isVisible="showModal" @close="closeModal" />
-
-                            <form action="../../../assets/img/constancia_NotasAprendiz.pdf"
-                                style="width: 31%;" target="_blank">
+                            </button> -->
+                            <!-- <ModalAgregarLink :isVisible="showModal" @close="closeModal" /> -->
+                            <form action="../../../assets/img/constancia_NotasAprendiz.pdf" style="width: 31%;"
+                                target="_blank">
                                 <button type="submit" class="btn btn-sm btn-warning font-weight-bold"
                                     style="width: 100%;">
                                     Ver presentación
                                 </button>
                             </form>
-                            <form action="../../../assets/img/constancia_NotasAprendiz.pdf"
-                                style="width: 31%;" target="_blank">
+                            <form action="../../../assets/img/constancia_NotasAprendiz.pdf" style="width: 31%;"
+                                target="_blank">
                                 <button type="submit" class="btn btn-sm btn-warning font-weight-bold"
                                     style="width: 100%;">
                                     Ver proyecto
@@ -60,7 +60,7 @@
                     <!-- Imagen del proyecto -->
                     <div class="col-lg-6 order-1 order-lg-2">
                         <div class="img-wrap mt-4">
-                            <img src="../../../assets/img/course_5.jpg" style="border-radius: 25px;" alt="Image"
+                            <img src="../../../../../assets/img/course_5.jpg" style="border-radius: 25px;" alt="Image"
                                 class="img-fluid shadow-lg" />
                         </div>
                     </div>
@@ -68,7 +68,6 @@
             </div>
         </div>
 
-        <!-- Accordion -->
         <div class="accordion pt-5 mt-3" id="accordionExample">
             <div class="card p-2">
                 <div id="headingOne">
@@ -80,12 +79,7 @@
                 </div>
                 <div id="collapseOne" class="collapse mt-5" aria-labelledby="headingOne"
                     data-bs-parent="#accordionExample">
-                    <!-- Componente RubricaCom -->
-                    <RubricaCom :tituloProyecto="tituloProyecto" :ponentesProyecto="ponentesProyecto"
-                        :universidadProyecto="universidadProyecto" :puntajeTotal="puntajeTotal"
-                        :nombreEvaluador="nombreEvaluador" :cedulaEvaluador="cedulaEvaluador"
-                        :universidadEvaluador="universidadEvaluador" :emailEvaluador="emailEvaluador"
-                        :celularEvaluador="celularEvaluador" />
+                    <RubricaCom  v-if="cargarRubrica" :proyecto="proyecto" :id_evaluador = "id_evaluador1" />
                 </div>
             </div>
             <div class="card p-2">
@@ -98,11 +92,7 @@
                 </div>
                 <div id="collapseTwo" class="collapse mt-5" aria-labelledby="headingTwo"
                     data-bs-parent="#accordionExample">
-                    <RubricaCom :tituloProyecto="tituloProyecto" :ponentesProyecto="ponentesProyecto"
-                        :universidadProyecto="universidadProyecto" :puntajeTotal="puntajeTotal"
-                        :nombreEvaluador="nombreEvaluador" :cedulaEvaluador="cedulaEvaluador"
-                        :universidadEvaluador="universidadEvaluador" :emailEvaluador="emailEvaluador"
-                        :celularEvaluador="celularEvaluador" />
+                    <RubricaCom  v-if="cargarRubrica" :proyecto="proyecto" :id_evaluador = "id_evaluador2" />
                 </div>
             </div>
             <div class="card p-2">
@@ -115,11 +105,11 @@
                 </div>
                 <div id="collapseThree" class="collapse mt-5" aria-labelledby="headingThree"
                     data-bs-parent="#accordionExample">
-                    <RubricaCom :tituloProyecto="tituloProyecto" :ponentesProyecto="ponentesProyecto"
+                    <!-- <RubricaCom :tituloProyecto="tituloProyecto" :ponentesProyecto="ponentesProyecto"
                         :universidadProyecto="universidadProyecto" :puntajeTotal="puntajeTotal"
                         :nombreEvaluador="nombreEvaluador" :cedulaEvaluador="cedulaEvaluador"
                         :universidadEvaluador="universidadEvaluador" :emailEvaluador="emailEvaluador"
-                        :celularEvaluador="celularEvaluador" />
+                        :celularEvaluador="celularEvaluador" /> -->
                     <!--Respaldo-->
                     <h4 class="text-center text-dark mt-4 mb-4">Respaldo</h4>
                     <div class="custom-file-upload mx-auto">
@@ -141,69 +131,98 @@ import EventoCom from './EventoCom.vue';
 import PonentesCom from './PonentesCom.vue';
 import SuplentesCom from './SuplentesCom.vue';
 import RubricaCom from './RubricaCom.vue';
-
-import { ref } from 'vue';
+import { obtenerEvaluadoresProyecto, obtenerPonentesProyecto, obtenerInfoSalaProyecto } from '../../../../../services/delegadoService';
 
 export default {
+    name: 'DetalleProyecto',
+    props: {
+        proyecto: {
+            type: Object,
+            required: true
+        },
+    },
     components: {
         EvaluadoresCom,
-        EventoCom,
         PonentesCom,
-        SuplentesCom,
+        EventoCom,
+        // SuplentesCom,
         RubricaCom,
     },
-    setup() {
-        //Datos evaluadores, ponentes, horario
-        const ponentes = ['Diego Fernando Legarda', 'Felipe Londoño'];
-        const evaluadores = ['Sebastian Usma', 'Miguel Alzate'];
-        const horario = '10:30 - 11:00 A.M.';
-        const sala = '123ASV';
-        const tipo = 'Evaluador';
-        const suplente = 'Juana de Arco';
-
-        // Datos para RubricaCom
-        const tituloProyecto = ref('BigData');
-        const ponentesProyecto = ref('Diego Legarda, Felipe Londoño');
-        const universidadProyecto = ref('UTP');
-        const puntajeTotal = ref('50');
-        const nombreEvaluador = ref('Miguel Alzate');
-        const cedulaEvaluador = ref(123456789);
-        const universidadEvaluador = ref('Catolica');
-        const emailEvaluador = ref('cruelo@mail.com');
-        const celularEvaluador = ref(987654321);
-
-        // Modal Agregar Presentación
-        const showModal = ref(false);
-        const openModal = () => {
-            showModal.value = true;
-        };
-        const closeModal = () => {
-            showModal.value = false;
-        };
-
+    data() {
         return {
-            ponentes,
-            evaluadores,
-            horario,
-            sala,
-            tipo,
-            suplente,
-            tituloProyecto,
-            ponentesProyecto,
-            universidadProyecto,
-            puntajeTotal,
-            nombreEvaluador,
-            cedulaEvaluador,
-            universidadEvaluador,
-            emailEvaluador,
-            celularEvaluador,
-            showModal,
-            openModal,
-            closeModal,
+            cargarRubrica: false,
+            evaluadores: [],
+            id_evaluador1: 0,
+            id_evaluador2: 0,
+            ponentes: [],
+            infoSala: {
+                fecha: '',
+                hora_inicio: '',
+                hora_fin: '',
+                numero_sala: ''
+            },
+            rubricas: [],
+            tituloProyecto: '',
+            ponentesProyecto: '',
+            universidadProyecto: '',
+            puntajeTotal: 0,
+
         };
     },
+    methods: {
+        // Función para obtener los evaluadores del proyecto
+        async fetchEvaluadores(id_proyecto) {
+            try {
+                const data = await obtenerEvaluadoresProyecto(id_proyecto);
+                this.evaluadores = data;
+                this.id_evaluador1 = this.evaluadores[0].id_usuario;
+                this.id_evaluador2 = this.evaluadores[1].id_usuario;
+            } catch (error) {
+                console.error('Error al obtener evaluadores:', error);
+            }
+        },
+        // Función para obtener los ponentes del proyecto
+        async fetchPonentes(id_proyecto) {
+            try {
+                const data = await obtenerPonentesProyecto(id_proyecto);
+                this.ponentes = data;
+            } catch (error) {
+                console.error('Error al obtener ponentes:', error);
+            }
+        },
+        // Función para obtener informacion de sala para un proyecto
+        async fetchInfoSala(id_proyecto) {
+            try {
+                const data = await obtenerInfoSalaProyecto(id_proyecto);
+                // console.log("Datos de sala: ", data);
+                this.infoSala = data;
+            } catch (error) {
+                console.error('Error al obtener la información de la sala:', error);
+            }
+        },
+
+        async fetchAllData() {
+            try {
+                await this.fetchEvaluadores(this.proyecto.id_proyecto);
+                console.log("MIERDITAAAAAAAAAAAA",this.evaluadores);
+                await this.fetchPonentes(this.proyecto.id_proyecto);
+                await this.fetchInfoSala(this.proyecto.id_proyecto);
+                if (this.evaluadores.length > 0) {
+                    this.cargarRubrica = true;
+                }
+            } catch (error) {
+                console.error('Error al cargar los datos del proyecto:', error);
+            }
+        }
+    },
+    mounted() {
+        this.fetchAllData()
+    }
 };
 </script>
+
+
+
 
 <style scoped>
 .section_title h1 {

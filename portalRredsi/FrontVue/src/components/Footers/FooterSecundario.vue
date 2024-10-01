@@ -7,24 +7,18 @@
           class="footer_bar d-flex flex-column flex-sm-row align-items-center"
         >
           <div class="footer_copyright">
-            <span>Colorlib All rights reserved</span>
+            <span>Desarrollado por ADSO 2670586. Todos los derechos reservados.</span>
           </div>
           <div class="footer_social ml-sm-auto">
             <ul class="menu_social">
               <li class="menu_social_item">
-                <a href="#"><i class="fab fa-pinterest"></i></a>
+                <a href="https://www.instagram.com/rredsiquindio/" target="_blank"><i class="fab fa-instagram"></i></a>
               </li>
               <li class="menu_social_item">
-                <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                <a href="https://www.facebook.com/rredsi?mibextid=ZbWKwL" target="_blank"><i class="fab fa-facebook-f"></i></a>
               </li>
               <li class="menu_social_item">
-                <a href="#"><i class="fab fa-instagram"></i></a>
-              </li>
-              <li class="menu_social_item">
-                <a href="#"><i class="fab fa-facebook-f"></i></a>
-              </li>
-              <li class="menu_social_item">
-                <a href="#"><i class="fab fa-twitter"></i></a>
+                <a href="https://x.com/Rredsi" target="_blank"><i class="fab fa-twitter"></i></a>
               </li>
             </ul>
           </div>

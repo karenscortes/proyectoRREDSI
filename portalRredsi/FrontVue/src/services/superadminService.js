@@ -14,6 +14,41 @@ export const getAdminsByPage = async (page = 1, pageSize = 10) => {
     }
 };
 
+// Función para cambiar el estado de un usuario (activo/inactivo)
+export const toggleUserStatus = async (userId) => {
+    try {
+        const response = await api.put(`/superadmin/usuarios/${userId}/estado`);  // Llamada a la nueva ruta
+        return response.data; // Retorna la respuesta del servidor (UserStatusUpdateResponse)
+    } catch (error) {
+        if (error.response) {
+            // Manejar el error que proviene del servidor
+            throw error.response.data;
+        } else {
+            // Manejar errores de red u otros errores no relacionados con la API
+            throw new Error('Error de red o de servidor');
+        }
+    }
+};
+
+// Función para modificar el rol de un usuario
+export const updateUserStatus = async (userId, newRoleId) => {
+    try {
+        const response = await api.put('/superadmin/update-role/', {
+            user_id: userId,
+            new_role_id: newRoleId
+        });
+        return response.data; // Retorna el resultado del servidor (booleano)
+    } catch (error) {
+        if (error.response) {
+            // Manejar el error que proviene del servidor
+            throw error.response.data;
+        } else {
+            // Manejar errores de red u otros errores no relacionados con la API
+            throw new Error('Error de red o de servidor');
+        }
+    }
+};
+
 // Función para modificar el rol de un usuario
 export const updateUserRole = async (userId, newRoleId) => {
     try {

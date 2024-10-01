@@ -66,7 +66,7 @@ DELIMITER ;
 
 -- ACTUALIZAR ROL DE USUARIO DE EXTERNO A SUSTITUTO EVALUADOR O ESTADO_CALIFICACIÓN A P_presencial
 DELIMITER //
-CREATE TRIGGER actualizar_estado_o_rol AFTER INSERT ON participantes_proyecto
+CREATE TRIGGER actualizar_estado AFTER INSERT ON participantes_proyecto
 FOR EACH ROW
     BEGIN
 
@@ -77,7 +77,7 @@ FOR EACH ROW
         SET id_rol = (SELECT id_rol FROM usuarios WHERE id_usuario = NEW.id_usuario);
 
         --Si la etapa es la presencial y el rol es Evaluador, se cuenta cuantos evaluadores tiene el proyecto vinculado.
-        --Si ya tiene 2 evaluadores, el estado calidificación del proyecto pasa a pendiente presencial
+        --Si ya tiene 2 evaluadores, el estado calificación del proyecto pasa a pendiente presencial
         IF(NEW.id_etapa = 1 AND id_rol = 1) THEN
 
             SET total_evaluators =  (SELECT COUNT(id_usuario) FROM participantes_proyecto 
@@ -86,18 +86,8 @@ FOR EACH ROW
             
             IF(total_evaluators = 2) THEN
 
-                UPDATE proyectos SET estado_calificacion = 'P_presencial' WHERE id_proyecto = NEW.id_proyecto;
-            
-            END IF;
-
-         --Si la etapa es presencial, pero el rol es externo, se cambial el rol del usuario a sustituto evaluador
-        ELSE 
-            
-            IF(NEW.id_etapa = 1 AND id_rol = 7) THEN
-           
-                UPDATE usuarios SET id_rol = 8 WHERE id_usuario = NEW.id_usuario;
-            END IF;
-        
+                UPDATE proyectos SET estado_calificacion = 'P_presencial' WHERE id_proyecto = NEW.id_proyecto;            
+            END IF;        
         END IF;
     END;
 //

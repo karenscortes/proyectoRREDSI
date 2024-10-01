@@ -1,5 +1,41 @@
 import api from './api'; 
 
+// Función para obtener cantidad de postulaciones de una convocatoria activa
+export const obtenerCantidadPostulaciones = async () => {
+    try {
+        const response = await api.get(`/generales/get_cantidad_postulaciones/`, {
+            headers: {
+                'Authorization': `Bearer ${localStorage.getItem('access_token')}`
+            }
+        });
+        return response;
+    } catch (error) {
+        if (error.response) {
+            throw error;
+        } else {
+            throw new Error('Error de red o de servidor');
+        }
+    }
+};
+
+// Función para obtener cantidad de postulaciones de una convocatoria activa
+export const obtenerCantidadProyectosAsignados = async () => {
+    try {
+        const response = await api.get(`/generales/get_cantidad_proyectos_asignados/`, {
+            headers: {
+                'Authorization': `Bearer ${localStorage.getItem('access_token')}`
+            }
+        });
+        return response;
+    } catch (error) {
+        if (error.response) {
+            throw error;
+        } else {
+            throw new Error('Error de red o de servidor');
+        }
+    }
+};
+
 // Función para obtener proyectos sin asignar
 export const proyectosSinAsignar = async (page = 1, pageSize = 10) => {
     try {
@@ -349,7 +385,7 @@ export const obtenerProyectosPorEstado = async (nombreEtapa, estado_calificacion
         return response;
     } catch (error) {
         if (error.response) {
-            throw error; // Lanza el error para que lo maneje el store
+            throw error; 
         } else {
             throw new Error('Error de red o de servidor'); // Manejar errores de red
         }
@@ -367,6 +403,76 @@ export const obtenerFechasAsignaciones = async () => {
       } else {
         throw new Error('Error de red o de servidor'); 
       }
+    }
+};
+
+//Función para obtener evaluadores de un proyecto
+export const obtenerEvaluadoresProyecto = async (id_proyecto) => {
+    try {
+        const response = await api.get(`/detalleProyecto/evaluadores-proyecto/?id_proyecto=${id_proyecto}`, {
+            headers: {
+                'Authorization': `Bearer` 
+            },
+        });
+        return response.data; 
+    } catch (error) {
+        if (error.response) {
+            throw error; 
+        } else {
+            throw new Error('Error de red o de servidor');
+        }
+    }
+};
+//Función para obtener ponentes de un proyecto
+export const obtenerPonentesProyecto = async (id_proyecto) => {
+    try {
+        const response = await api.get(`/detalleProyecto/ponentes-proyecto/?id_proyecto=${id_proyecto}`, {
+            headers: {
+                'Authorization': `Bearer` 
+            },
+        });
+        return response.data; 
+    } catch (error) {
+        if (error.response) {
+            throw error; 
+        } else {
+            throw new Error('Error de red o de servidor');
+        }
+    }
+};
+
+//Función para obtener datos de sala para presentación de un proyecto
+export const obtenerInfoSalaProyecto = async (id_proyecto) => {
+    try {
+        const response = await api.get(`detalleProyecto/datos-sala-proyecto/?id_proyecto=${id_proyecto}` , {
+            headers: {
+                'Authorization': `Bearer` 
+            },
+        });
+        return response.data
+    }catch (error) {
+        if (error.response) {
+            throw error; 
+        } else {
+            throw new Error('Error de red o de servidor');
+        }
+    }
+};
+
+export const obtenerRubricaCalificada = async (id_proyecto, id_usuario) => {
+    try {
+        const response = await api.get(`/obtenerProyectosEvaluador/obtener-datos-del-proyecto-calificado/?id_proyecto=${id_proyecto}&id_usuario=${id_usuario}` , {
+            headers: {
+                'Authorization': `Bearer` 
+            },
+        });
+        return response.data
+    }catch (error) {
+        if (error.response) {
+            throw error; 
+        } else {
+            throw new Error('Error de red o de servidor');
+        }
     }
 };
 

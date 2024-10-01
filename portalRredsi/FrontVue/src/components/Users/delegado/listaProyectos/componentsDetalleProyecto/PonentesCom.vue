@@ -3,10 +3,10 @@
         <div class="icon">
             <i class="fa-solid fa-users fa-lg text-dark mb-3"></i>
         </div>
-        <h3 class="text-dark text-left">Ponentes</h3>
+        <h2 class="text-dark text-left font-weight-bold">Ponentes</h2>
         <p class="text-dark text-left">
             <span v-for="(ponente, index) in ponentes" :key="index">
-                {{ ponente }}<br>
+                {{ ponente.nombres }} {{ ponente.apellidos }}<br>
             </span>
         </p>
     </div>
@@ -25,10 +25,10 @@ export default {
 </script>
 
 <style scoped>
-h3,
+h2,
 p {
-    font-size: 0.9rem;
-    margin-bottom: 5px;
+    font-size: 0.8rem;
+    margin-bottom: 4px;
 }
 .text-left {
     text-align: left;

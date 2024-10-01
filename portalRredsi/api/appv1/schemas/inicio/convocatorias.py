@@ -20,6 +20,16 @@ class ConvocatoriaBase(BaseModel):
 class ConvocatoriaResponse(ConvocatoriaBase):
     pass
 
+# Esquema para la respuesta paginada
+class PaginatedConvocatoriaResponse(BaseModel):
+    convocatorias: List[ConvocatoriaBase]
+    total_pages: int
+    current_page: int
+    page_size: int
+
+    class Config:
+        orm_mode = True
+
 class ConvocatoriaUpdate(ConvocatoriaBase):
  
     documento: Optional[Annotated[str, StringConstraints(max_length=55)]] = None

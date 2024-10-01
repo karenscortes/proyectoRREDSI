@@ -5,7 +5,7 @@
           <div class="col-xl-10 col-lg-10 col-md-12">
             <div class="big-screen">
               <div class="row text-center">
-                <div class="col-4 text-white">
+                <div class="col-6 text-white">
                   <a href="#convocatorias" class="btn btn-outline-dark w-100">
                       <i class="fa fa-window-maximize"></i>
                     <strong class="font-weight-bold text-white">
@@ -13,19 +13,11 @@
                     </strong>
                   </a>
                 </div>
-                <div class="col-4">
-                  <a href="#etapas" class="btn btn-outline-dark w-100">
-                      <i class="fa fa-window-restore" aria-hidden="true"></i>
-                    <strong class="font-weight-bold text-white">
-                      2. Etapas
-                    </strong>
-                  </a>
-                </div>
-                <div class="col-4">
+                <div class="col-6">
                   <a href="#gestionar_fases" class="btn btn-outline-dark w-100">
                       <i class="fa fa-retweet" aria-hidden="true"></i>
                     <strong class="font-weight-bold text-white">
-                      3. Fases
+                      2. Fases y etapas
                     </strong>
                   </a>
                 </div>
@@ -39,7 +31,7 @@
                 </div>
                 <div class="title-line"></div>
                 <div class="text-left mt-3">
-                  <button type="button" class="btn btn-warning fw-bold text-white w-25" @click="showCreateConvocatoriaModal">
+                  <button type="button" class="btn btn-warning fw-bold text-white w-25" @click="showCreateConvocatoriaModal" >
                     Crear convocatoria
                   </button>
                 </div>
@@ -63,66 +55,7 @@
                         </tr>
                       </tbody>
                     </table>
-                  </div>
-                </div>
-              </div>
-  
-              <!-- Sección Etapas -->
-              <div class="form-section mt-5" id="etapas">
-                <div class="d-flex align-items-center justify-content-center mb-3">
-                  <i class="fa fa-window-restore title-icon"></i>
-                  <h2>Etapas</h2>
-                </div>
-                <div class="title-line mb-4"></div>
-            
-                <!-- Contenido de Etapas -->
-                <div class="container">
-                  <div class="row">
-                    <div class="col-md-6">
-                      <div class="modal-content text-center">
-                        <div class="modal-header justify-content-center">
-                          <h2 class="modal-title text-dark">Etapa virtual</h2>
-                        </div>
-                        <div class="modal-body">
-                          <div class="row justify-content-center">
-                            <div class="col-sm-8 m-4">
-                              <h3 class="text-dark"><strong>Fecha Inicio:</strong></h3>
-                              <input type="date" class="form-control text-dark" v-model="etapaVirtual.fechaInicio">
-                            </div>
-                            <div class="col-sm-8 m-4">
-                              <h3 class="text-dark"><strong>Fecha Fin:</strong></h3>
-                              <input type="date" class="form-control text-dark" v-model="etapaVirtual.fechaFin">
-                            </div>
-                          </div>
-                        </div>
-                        <div class="modal-footer justify-content-center">
-                          <button class="btn btn-warning text-white" @click="createEtapa('virtual')">Guardar</button>
-                        </div>
-                      </div>
-                    </div>
-  
-                    <div class="col-md-6">
-                      <div class="modal-content text-center">
-                        <div class="modal-header justify-content-center">
-                          <h2 class="modal-title text-dark">Etapa presencial</h2>
-                        </div>
-                        <div class="modal-body">
-                          <div class="row justify-content-center">
-                            <div class="col-sm-8 m-4">
-                              <h3 class="text-dark"><strong>Fecha Inicio:</strong></h3>
-                              <input type="date" class="form-control text-dark" v-model="etapaPresencial.fechaInicio">
-                            </div>
-                            <div class="col-sm-8 m-4">
-                              <h3 class="text-dark"><strong>Fecha Fin:</strong></h3>
-                              <input type="date" class="form-control text-dark" v-model="etapaPresencial.fechaFin">
-                            </div>
-                          </div>
-                        </div>
-                        <div class="modal-footer justify-content-center">
-                          <button class="btn btn-warning text-white" @click="createEtapa('presencial')">Guardar</button>
-                        </div>
-                      </div>
-                    </div>
+                    <PaginatorBody :totalPages="totalPaginas" @page-changed="cambiarPagina" v-if="totalPaginas > 1" />
                   </div>
                 </div>
               </div>
@@ -131,7 +64,7 @@
               <div class="form-section mt-5" id="gestionar_fases">
                 <div class="d-flex align-items-center justify-content-center mb-3">
                   <i class="fa fa-retweet title-icon"></i>
-                  <h2>Gestionar fases</h2>
+                  <h2>Gestionar fases y etapas</h2>
                 </div>
                 <div class="title-line mb-4"></div>
                 <div class="container">
@@ -189,7 +122,7 @@
                   </table>
                 </div>
               </div>
-  
+
               <!-- Botón de Guardar -->
               <div class="text-center mt-4">
                 <button type="button" class="btn btn-primary text-white" @click="saveData">Guardar</button>
@@ -208,7 +141,7 @@
                     <div class="modal-body">
                       <div class="form-group">
                         <label>Nombre:</label>
-                        <input type="text" class="form-control" v-model="newConvocatoria.nombre" />
+                        <input type="text" class="form-control" v-model="newConvocatoria.nombre"/>
                       </div>
                       <div class="form-group">
                         <label>Fecha Inicio:</label>
@@ -220,7 +153,7 @@
                       </div>
                       <div class="form-group">
                         <label>Estado:</label>
-                        <select class="form-select" aria-label="Default select example" v-model="newConvocatoria.estado">
+                        <select class="form-select" aria-label="Default select example" v-model="newConvocatoria.estado" >
                           <option selected disabled="disabled">Selecciona un estado</option>
                           <option value="en curso">En curso</option>
                           <option value="concluida">Concluida</option>
@@ -242,18 +175,25 @@
   </template>
   
 <script>
-  import { createConvocatoria, getConvocatorias } from '../../../../services/administradorService';
+  import { createConvocatoria, getConvocatoriasByPage } from '../../../../services/administradorService';
+  import { useToastUtils } from '@/utils/toast';
+  import PaginatorBody from '../../../UI/PaginatorBody.vue';
+
+  const { showSuccessToast, showErrorToast, showWarningToast} = useToastUtils();
   export default {
     data() {
       return {
-        convocatorias: [], // Array para almacenar convocatorias
+        paginaActual: 1,  // Página actual de la paginación
+        totalPaginas: 0,  // Total de páginas disponibles
+
+        convocatorias: [],
         newConvocatoria: {
           nombre: '',
           fechaInicio: '',
           fechaFin: '',
           estado: '',
         },
-        etapas: [], // Array para etapas
+        etapas: [],
         etapaVirtual: {
           fechaInicio: '',
           fechaFin: ''
@@ -262,78 +202,127 @@
           fechaInicio: '',
           fechaFin: ''
         },
-        fases: [], // Array para fases
+        fases: [],
         selectedFase: '',
         fechaInicioFase: '',
         fechaFinFase: ''
       };
     },
+
+    components: {
+        PaginatorBody
+    },
     methods: {
       // Mostrar modal para crear convocatoria
       showCreateConvocatoriaModal() {
-        // Inicializar campos vacios
-        this.newConvocatoria.nombre = '';
-        this.newConvocatoria.fechaInicio = '';
-        this.newConvocatoria.fechaFin = '';
-        this.newConvocatoria.estado = '';
+        this.resetConvocatoria();
         $('#crearConvocatoria').modal('show');
+      },
+
+      // Resetear el formulario de convocatoria
+      resetConvocatoria() {
+        this.newConvocatoria = {
+          nombre: '',
+          fechaInicio: '',
+          fechaFin: '',
+          estado: ''
+        };
+      },
+
+      // Validar campos de convocatoria
+      validarCamposConvocatoria() {
+        const { nombre, fechaInicio, fechaFin, estado } = this.newConvocatoria;
+
+        // Verificar que todos los campos estén completos
+        if (!nombre || !fechaInicio || !fechaFin || !estado) {
+          showWarningToast('Todos los campos son obligatorios');
+          return false;
+        }
+
+        // Validar que la fecha de inicio no sea mayor que la fecha de fin
+        const fechaInicioObj = new Date(fechaInicio);
+        const fechaFinObj = new Date(fechaFin);
+
+        if (fechaInicioObj > fechaFinObj) {
+          showWarningToast('La fecha de inicio no puede ser mayor que la fecha de fin');
+          return false;
+        }
+
+        return true;
       },
 
       // Crear nueva convocatoria
       async createConvocatoria() {
+        if (!this.validarCamposConvocatoria()) return; // Validar antes de crear
+
         try {
           console.log(this.newConvocatoria); 
-          await createConvocatoria(this.newConvocatoria.nombre, this.newConvocatoria.fechaInicio, this.newConvocatoria.fechaFin, this.newConvocatoria.estado);
-          alert('Convocatoria registrada exitosamente');
+          await createConvocatoria(
+            this.newConvocatoria.nombre,
+            this.newConvocatoria.fechaInicio,
+            this.newConvocatoria.fechaFin,
+            this.newConvocatoria.estado
+          );
+          showSuccessToast('Convocatoria registrada exitosamente');
           this.fetchConvocatorias();
           $('#crearConvocatoria').modal('hide');
         } catch (error) {
-          console.error('Error de creación de convocatoria:', error); // Log completo del error
-          alert(error?.detail || 'Ocurrió un error al crear la convocatoria'); // Muestra mensaje más adecuado
+          showErrorToast(error?.detail || 'Ocurrió un error al crear la convocatoria');
         }
       },
 
+      // Obtener las convocatorias de la API
       async fetchConvocatorias() {
         try {
-          const response = await getConvocatorias();
-          this.convocatorias = response.data; 
+          const response = await getConvocatoriasByPage(this.paginaActual);
+          this.convocatorias = response.convocatorias;  // Asignar los administradores
+          this.totalPaginas = response.total_pages;  // Total de páginas para la paginación
         } catch (error) {
-          alert(error.data.detail);
-          
+          showWarningToast('Error al obtener convocatorias');
         }
       },
- 
-  
-  
-      // Eliminar convocatoria
-      deleteConvocatoria(convocatoria) {
-        // Lógica para eliminar convocatoria
-      },
-  
+
       // Crear nueva etapa
-      createEtapa(tipo) {
+      async createEtapa(tipo) {
         const nuevaEtapa = tipo === 'virtual' ? { ...this.etapaVirtual } : { ...this.etapaPresencial };
-        this.etapas.push(nuevaEtapa);
-        if (tipo === 'virtual') {
-          this.etapaVirtual = { fechaInicio: '', fechaFin: '' };
-        } else {
-          this.etapaPresencial = { fechaInicio: '', fechaFin: '' };
+        
+        // Validar fechas de la etapa
+        if (!nuevaEtapa.fechaInicio || !nuevaEtapa.fechaFin) {
+          showWarningToast('Ambas fechas de la etapa son obligatorias');
+          return;
+        }
+
+        try {
+          // Llamada al servicio de creación de etapas
+          await createEtapa(nuevaEtapa, this.selectedConvocatoriaId); // Aquí debes pasar el id de la convocatoria
+          showSuccessToast('Etapa creada exitosamente');
+          this.etapas.push(nuevaEtapa);
+
+          // Limpiar los campos
+          if (tipo === 'virtual') {
+            this.etapaVirtual = { fechaInicio: '', fechaFin: '' };
+          } else {
+            this.etapaPresencial = { fechaInicio: '', fechaFin: '' };
+          }
+        } catch (error) {
+          showErrorToast(error?.detail || 'Ocurrió un error al crear la etapa');
         }
       },
-  
-      // Editar fase
-      editFase(fase) {
-        // Lógica para editar fase
+
+      // Paginación
+      cambiarPagina(pagina){
+          this.paginaActual = pagina;
+          this.fetchConvocatorias(pagina);
       },
-  
-      // Guardar datos
+
+      // Guardar todos los datos
       saveData() {
-        // Lógica para guardar todos los datos
-      }
-    }, // Fin de los metodos
+        // Implementar la lógica para guardar toda la información
+      },
+    }, 
     mounted() {
       this.fetchConvocatorias();
     },
   };
-  </script>
+</script>
   

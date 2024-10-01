@@ -44,12 +44,12 @@
             proyecto: {
                 type: Object,
                 required: true
-            }
+            },
         },
         computed: {
             estadoEvaluacionFormatted() {
                 const status = this.proyecto.estado_calificacion;
-                console.log(status);
+                // console.log(status);
                 if (status === 'P_presencial' || status === 'P_virtual') {
                     return 'Pendiente';
                 } else if (status === 'C_presencial' || status === 'C_virtual') {
