@@ -2,10 +2,10 @@ from typing import Dict
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 from appv1.routers.login import get_current_user
-from appv1.schemas.evaluador.evaluador import CalificarProyectoRespuesta, PaginatedResponse, PaginatedResponseHorario, PostulacionEvaluadorCreate, RespuestaRubricaCreate
+from appv1.schemas.evaluador.evaluador import CalificarProyectoRespuesta, ListaDeProgramacionFases, PaginatedResponse, PaginatedResponseHorario, PostulacionEvaluadorCreate, RespuestaRubricaCreate
 from appv1.schemas.usuario import UserResponse
 from db.database import get_db
-from appv1.crud.evaluador.proyectos import convertir_timedelta_a_hora, create_postulacion_evaluador, get_current_convocatoria, get_datos_calificar_proyecto_completo, get_datos_proyecto_calificado_completo, get_etapa_actual, get_proyectos_etapa_presencial_con_horario, get_proyectos_por_etapa, get_proyectos_por_etapa_y_estado, insert_respuesta_rubrica
+from appv1.crud.evaluador.proyectos import convertir_timedelta_a_hora, create_postulacion_evaluador, get_current_convocatoria, get_datos_calificar_proyecto_completo, get_datos_proyecto_calificado_completo, get_etapa_actual, get_nombres_fases_y_fechas_programacion, get_proyectos_etapa_presencial_con_horario, get_proyectos_por_etapa, get_proyectos_por_etapa_y_estado, insert_respuesta_rubrica
 from appv1.crud.permissions import get_permissions
 
 routerObtenerProyectos = APIRouter()
@@ -13,12 +13,14 @@ routerInsertarPostulacionEvaluador = APIRouter()
 routerInsetarCalificacionRubrica = APIRouter()
 routerObtenerHorarioEvaluador = APIRouter()
 routerObtenerEtapaActual = APIRouter()
+routerObtenerProgramacionFases = APIRouter()
 
 # ID del modulo
 MODULE_PROYECTOS = 11
 MODULE_POSTULACIONES = 8
 MODULE_RESPUESTAS_RUBRICAS = 14
 MODULE_ETAPAS = 4
+MODULE_PROGRAMACION_FASES = 7
 
 # Ruta para obtener los proyectos asignados por etapa (Presencial/Virtual) paginados
 @routerObtenerProyectos.get("/obtener-proyectos-por-etapa-paginados/", response_model=PaginatedResponse)
@@ -193,3 +195,17 @@ async def obtener_datos_del_proyecto_calificado(
     
     proyecto = get_datos_proyecto_calificado_completo(db, id_proyecto, id_usuario)
     return proyecto
+
+# Ruta para obtener las programaciones de las fases de la convocatoria en curso
+@routerObtenerProgramacionFases.get("/obtener-programacion-fases/", response_model=ListaDeProgramacionFases)
+async def obtener_programacion_fases(
+    current_user: UserResponse = Depends(get_current_user),
+    db: Session = Depends(get_db),
+):
+    # Verificar permisos (opcional)
+    permisos = get_permissions(db, current_user.id_rol, MODULE_PROGRAMACION_FASES)  
+    if not permisos.p_consultar:
+        raise HTTPException(status_code=401, detail="No está autorizado a utilizar este módulo")
+    
+    programacion_fases = get_nombres_fases_y_fechas_programacion(db)
+    return {"data": programacion_fases}

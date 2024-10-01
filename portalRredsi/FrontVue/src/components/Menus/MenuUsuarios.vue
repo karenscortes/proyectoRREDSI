@@ -25,7 +25,7 @@
                         </li>
 
                         
-                        <li class="main_nav_item" v-if="user.id_rol === 1"><a href="#" @click="selectComponent('ConvocatoriaInfoPage')">Convocatoria</a></li>
+                        <li class="main_nav_item" v-if="user.id_rol === 1"><a href="#" @click="selectComponent('ConvocatoriaInfoPageView')">Convocatoria</a></li>
                         <li class="main_nav_item"><a href="#" @click="logout">Cerrar Sesión</a></li>
                     </ul>
                 </div>
@@ -67,7 +67,7 @@
                             </ul>
                         </div>
                     </li>
-                    <li class="menu_item menu_mm" v-if="user.id_rol === 1"><a href="#" @click="selectComponent('ConvocatoriaInfoPage')">Convocatoria</a></li>
+                    <li class="menu_item menu_mm" v-if="user.id_rol === 1"><a href="#" @click="selectComponent('ConvocatoriaInfoPageView')">Convocatoria</a></li>
                     <li class="menu_item menu_mm"><a href="#"  @click="logout">Cerrar sesión</a></li>
                 </ul>
 
@@ -181,7 +181,7 @@ export default defineComponent({
             
         } else if (user?.id_rol === 1) {
             Object.assign(state, {
-                left_tabs: [{nombre:'Inicio', ruta:'PaginaInicioEvaluadorView'}, {nombre:'Perfil', ruta:'PerfilEvaluador'}, {nombre:'Proyectos', ruta:'ProyectosAsignadosEvaluadorView'}],
+                left_tabs: [{nombre:'Inicio', ruta:'PaginaInicioEvaluadorView'}, {nombre:'Perfil', ruta:'EditarPerfil'}, {nombre:'Proyectos', ruta:'ProyectosAsignadosEvaluadorView'}],
                 visibilidad:"d-none"
             });
         } else if(user?.id_rol == 6) {
