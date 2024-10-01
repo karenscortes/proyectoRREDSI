@@ -9,7 +9,7 @@ from appv1.crud.admin.admin import create_convocatoria, create_programacion_fase
 from appv1.routers.login import get_current_user
 from appv1.schemas.admin.admin import ConvocatoriaCreate, CreateSala, ProgramacionFaseCreate, UpdateSala
 from appv1.crud.admin.admin import create_convocatoria
-from appv1.schemas.admin.attendees import AttendeesBase, PaginatedAttendees, UpdatedAttendee
+from appv1.schemas.admin.attendees import PaginatedAttendees, UpdatedAttendee
 from appv1.schemas.admin.delegado import DelegadoResponse, PaginatedDelegadoResponse
 from appv1.schemas.admin.items_rubrica import ItemCreate, ItemUpdate
 from appv1.schemas.admin.rubrica import RubricaResponse
@@ -439,9 +439,6 @@ async def get_attendee(
         raise HTTPException(status_code=401, detail="Usuario no autorizado")
     
     attendees, total_pages = get_attendee_by_document(db, documento,page, page_size)
-
-    if len(attendees) == 0:
-        raise HTTPException(status_code=404, detail="No hay asistentes con ese documento")
 
     return {
         "attendees": attendees,
