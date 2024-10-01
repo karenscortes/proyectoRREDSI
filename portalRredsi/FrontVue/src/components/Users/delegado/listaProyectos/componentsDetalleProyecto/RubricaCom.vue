@@ -115,7 +115,7 @@ export default {
             required: true
         },
         id_evaluador: {
-            type: String,
+            type: Number,
             required: true
         }
     },
@@ -152,7 +152,6 @@ export default {
                 // Verificar si el proyecto está calificado
                 if (props.proyecto.estado_calificacion === 'C_presencial' || props.proyecto.estado_calificacion === 'C_virtual') {
                     // Obtener datos del proyecto cuando esta calificado
-                    console.log("EVALUADORRRRRRRRRRRRRRRRRRRRRRRR", props.id_evaluador);
                     const data = await obtenerRubricasCalificadas(props.proyecto.id_proyecto, props.id_evaluador);
                     tituloProyecto.value = data.titulo_proyecto;
                     universidadProyecto.value = data.universidad_proyecto;

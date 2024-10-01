@@ -60,7 +60,7 @@
                     <!-- Imagen del proyecto -->
                     <div class="col-lg-6 order-1 order-lg-2">
                         <div class="img-wrap mt-4">
-                            <img src="../../../assets/img/course_5.jpg" style="border-radius: 25px;" alt="Image"
+                            <img src="../../../../../assets/img/course_5.jpg" style="border-radius: 25px;" alt="Image"
                                 class="img-fluid shadow-lg" />
                         </div>
                     </div>
@@ -120,9 +120,6 @@
                         </label>
                     </div>
                 </div>
-                <!-- <button
-                    @click="fetchRubricaCalificada(proyecto.id_proyecto, evaluadores[0].id_usuario)">RUBRICA1</button> -->
-                <!-- <button @click="fetchRubricaCalificada(proyecto.id_proyecto, evaluadores[1].id_usuario)">RUBRICA2</button> -->
             </div>
         </div>
     </div>
@@ -134,7 +131,7 @@ import EventoCom from './EventoCom.vue';
 import PonentesCom from './PonentesCom.vue';
 import SuplentesCom from './SuplentesCom.vue';
 import RubricaCom from './RubricaCom.vue';
-import { obtenerEvaluadoresProyecto, obtenerPonentesProyecto, obtenerInfoSalaProyecto, obtenerRubricaCalificada } from '../../../../../services/delegadoService';
+import { obtenerEvaluadoresProyecto, obtenerPonentesProyecto, obtenerInfoSalaProyecto } from '../../../../../services/delegadoService';
 
 export default {
     name: 'DetalleProyecto',
@@ -177,10 +174,9 @@ export default {
         async fetchEvaluadores(id_proyecto) {
             try {
                 const data = await obtenerEvaluadoresProyecto(id_proyecto);
-                // console.log('Evaluadores obtenidos:', data);
                 this.evaluadores = data;
                 this.id_evaluador1 = this.evaluadores[0].id_usuario;
-                this.id_evualuador2 = this.evaluadores[1].id_usuario;
+                this.id_evaluador2 = this.evaluadores[1].id_usuario;
             } catch (error) {
                 console.error('Error al obtener evaluadores:', error);
             }
@@ -208,6 +204,7 @@ export default {
         async fetchAllData() {
             try {
                 await this.fetchEvaluadores(this.proyecto.id_proyecto);
+                console.log("MIERDITAAAAAAAAAAAA",this.evaluadores);
                 await this.fetchPonentes(this.proyecto.id_proyecto);
                 await this.fetchInfoSala(this.proyecto.id_proyecto);
                 if (this.evaluadores.length > 0) {
