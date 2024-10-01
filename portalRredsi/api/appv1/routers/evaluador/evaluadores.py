@@ -196,8 +196,7 @@ async def obtener_datos_del_proyecto_calificado(
     proyecto = get_datos_proyecto_calificado_completo(db, id_proyecto, id_usuario)
     return proyecto
 
-
-# Ruta para obtener la etapa actual de la convocotaria en curso
+# Ruta para obtener las programaciones de las fases de la convocatoria en curso
 @routerObtenerProgramacionFases.get("/obtener-programacion-fases/", response_model=ListaDeProgramacionFases)
 async def obtener_programacion_fases(
     current_user: UserResponse = Depends(get_current_user),
