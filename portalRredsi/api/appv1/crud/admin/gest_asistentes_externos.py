@@ -118,3 +118,13 @@ def get_attendee_by_document(db: Session, documento:str, page, page_size):
     except SQLAlchemyError as e:
         print(f"Error al buscar el asistente por documento: {e}")
         raise HTTPException(status_code=500, detail="Error. No hay integridad de datos")
+
+#Función para llamar procedimiento almacenado
+def insertar_historial_admin(db: Session, accion:str, modulo: int,id_registro:int, id_admin: int):
+    try:
+       
+       db.execute("CALL insertar_acciones_admin(:accion, :id_modulo, :id_registro, :id_usuario)", {'accion':accion, 'id_modulo': modulo, 'id_registro':id_registro, 'id_usuario':id_admin})
+
+    except SQLAlchemyError as e:
+        print(f"Error al ejecutar el procedimiento insertar_acciones_admin: {e}")
+        raise HTTPException(status_code=500, detail="Error al ejecutar el procedimiento.")

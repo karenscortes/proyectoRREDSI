@@ -36,8 +36,6 @@ async def read_all_certificates(
     db: Session = Depends(get_db) 
 ):
     certificates = get_certificates_by_id(db, id_usuario)
-    if len(certificates) == 0:
-        raise HTTPException(status_code=404, detail="No hay titulos académicos")
     return certificates
 
 @router_postulaciones.put("/update-application-status/", response_model=dict)

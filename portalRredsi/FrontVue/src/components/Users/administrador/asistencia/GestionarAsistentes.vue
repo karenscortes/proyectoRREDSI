@@ -93,6 +93,7 @@
 <script>
 import { getAttendeesByPage, getAttendeeByDocument } from '@/services/asistenciaService';
 import { onMounted, ref, reactive } from "vue";
+import { useToastUtils } from '@/utils/toast';
 import AddAttendeesModal from './AddAttendeesModal.vue';
 import EditAttendeeModal from './EditAttendeeModal.vue';
 import AttendeesTableRow from './AttendeesTableRow.vue';
@@ -106,6 +107,7 @@ export default {
         EditAttendeeModal
     },
     setup() {
+        const { showErrorToast,showInfoToast} = useToastUtils();
         const isEditModalOpen = ref(false);
         const isAddModalOpen = ref(false);
         const currentPage = ref(1);
@@ -132,7 +134,8 @@ export default {
                 totalPages.value = response.data.total_pages;
 
             } catch (error) {
-                console.log(error);
+
+                showErrorToast(`Error en cargar asistentes`);
             }
         }
 
@@ -145,11 +148,11 @@ export default {
                     attendees.value = response.data.attendees;
                     totalPages.value = response.data.total_pages;
                 }else{
-
+                    showInfoToast('No se encontró ningún asistente con ese documento')
                 }  
                 
             } catch (error) {
-                console.log(error);
+                showErrorToast(`Error en buscar asistente por documento`);
             }
         }
 

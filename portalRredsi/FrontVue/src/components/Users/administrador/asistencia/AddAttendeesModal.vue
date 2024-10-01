@@ -34,9 +34,11 @@
 <script>
 import { ref } from "vue";
 import { uploadFileData } from "@/services/asistenciaService";
+import { useToastUtils } from '@/utils/toast';
 export default {
     emits: ["close"],
-    setup(props, { emit }) {
+    setup(_, { emit }) {
+        const { showErrorToast,showSuccessToast} = useToastUtils();
         const file = ref(null);
 
         const onFileChange = (event) => {
@@ -47,10 +49,10 @@ export default {
             try {
                 if (file.value) {
                     await uploadFileData(file.value); // Llama al servicio para subir los datos del excel
-                    alert('Archivo subido exitosamente');
+                    showSuccessToast('Archivo subido exitosamente.');
                 }
             } catch (error) {
-                console.error('Error al subir el archivo:', error);
+                showErrorToast('Error al subir el archivo.');
             }
         };
 
