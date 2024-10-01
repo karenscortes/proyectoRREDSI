@@ -2,7 +2,9 @@ import datetime
 from sqlalchemy.exc import SQLAlchemyError
 from fastapi import HTTPException
 from sqlalchemy.orm import Session
+from sqlalchemy.sql import text
 from appv1.models.asistente import Asistente
+from appv1.models.historial_actividades_admin import Historial_admin
 from appv1.models.tipo_documento import Tipo_documento
 from appv1.models.usuario import Usuario
 from appv1.schemas.admin.attendees import UpdatedAttendee
@@ -10,9 +12,12 @@ from core.security import get_hashed_password
 import random
 import string
 
+from core.utils import generate_user_id_int
+
 def insert_user(db: Session, tipo_doc: int, num_doc:str, nombres: str, apellidos: str, correo: str, clave: str, telefono: str = None ):
     
     nuevo_usuario = Usuario(
+        id_usuario = generate_user_id_int(),
         id_rol=7,
         id_tipo_documento=tipo_doc,
         documento=num_doc, 
@@ -101,12 +106,37 @@ def update_external_attendees(db: Session, usuario_id: int, newData: UpdatedAtte
         print(f"Error al actualizar asistente: {e}")
         raise HTTPException(status_code=500, detail=f"Error. No hay Integridad de datos",)
     
-def get_attendee_by_document(db: Session, documento:str):
+def get_attendee_by_document(db: Session, documento:str, page, page_size):
     try:
-        attendee = db.query(Asistente.url_comprobante_pago, Usuario.id_usuario, Usuario.documento, Usuario.nombres, Usuario.apellidos, Usuario.celular, Usuario.correo).join(Usuario).filter(Usuario.documento == documento).first()
-        if attendee is None:
+        offset = (page - 1) * page_size
+
+        attendees = db.query(Asistente.url_comprobante_pago, Usuario.id_usuario, Usuario.documento, Usuario.nombres, Usuario.apellidos, Usuario.celular, Usuario.correo).join(Usuario).filter(Usuario.documento.like(f'{documento}%')).limit(page_size).offset(offset).all()
+
+        
+        if attendees is None:
             raise HTTPException(status_code=404, detail="No hay asistentes con ese documeto")
-        return attendee
+        
+        total_coincidences = db.query(Usuario).join(Asistente).filter(Usuario.documento.like(f'{documento}%')).count()
+
+        total_pages = (total_coincidences + page_size - 1) // page_size
+        return attendees, total_pages
     except SQLAlchemyError as e:
         print(f"Error al buscar el asistente por documento: {e}")
         raise HTTPException(status_code=500, detail="Error. No hay integridad de datos")
+
+#Función para llamar procedimiento almacenado
+def insertar_historial_admin(db: Session, servicio:str, modulo: int,registro:int, id_admin: int):
+    try:
+        nuevo_registro = Historial_admin(
+            accion= servicio,
+            id_modulo= modulo,
+            id_registro=registro,
+            id_usuario=id_admin,
+            fecha = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        )
+
+        db.add(nuevo_registro)
+        db.commit()
+    except SQLAlchemyError as e:
+        print(f"Error al ejecutar el procedimiento insertar_acciones_admin: {e}")
+        raise HTTPException(status_code=500, detail="Error al ejecutar el procedimiento.")

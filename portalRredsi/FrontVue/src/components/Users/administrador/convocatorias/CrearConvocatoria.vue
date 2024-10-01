@@ -31,7 +31,7 @@
                 </div>
                 <div class="title-line"></div>
                 <div class="text-left mt-3">
-                  <button type="button" class="btn btn-warning fw-bold text-white w-25" @click="showCreateConvocatoriaModal">
+                  <button type="button" class="btn btn-warning fw-bold text-white w-25" @click="showCreateConvocatoriaModal" >
                     Crear convocatoria
                   </button>
                 </div>
@@ -55,7 +55,7 @@
                         </tr>
                       </tbody>
                     </table>
-                    <PaginatorBody :totalPages="totalPaginas" @page-changed="cambiarPagina" />
+                    <PaginatorBody :totalPages="totalPaginas" @page-changed="cambiarPagina" v-if="totalPaginas > 1" />
                   </div>
                 </div>
               </div>
@@ -64,12 +64,20 @@
               <div class="form-section mt-5" id="gestionar_fases">
                 <div class="d-flex align-items-center justify-content-center mb-3">
                   <i class="fa fa-retweet title-icon"></i>
-                  <h2>Gestionar fases</h2>
+                  <h2>Gestionar fases y etapas</h2>
                 </div>
                 <div class="title-line mb-4"></div>
                 <div class="container">
                   <div class="row mb-4">
-                    <div class="col-sm-4">
+                    <div class="col-sm-6">
+                      <label><strong class="text-dark">Modalidad:</strong></label>
+                      <select class="form-select border border-dark">
+                        <option class="text-dark" value="" disabled>Seleccionar modalidad</option>
+                        <option value="Presencial">Presencial</option>
+                        <option value="Virtual">Virtual</option>
+                      </select>
+                    </div>
+                    <div class="col-sm-6">
                       <label><strong class="text-dark">Nombre:</strong></label>
                       <select class="form-select border border-dark" v-model="selectedFase">
                         <option class="text-dark" value="" disabled>Seleccionar</option>
@@ -80,54 +88,46 @@
                         <option value="Publicación de resultados">Publicación de resultados</option>
                       </select>
                     </div>
-                    <div class="col-sm-4">
+                    <div class="col-sm-4 mt-4">
                       <label><strong class="text-dark">Fecha Inicio:</strong></label>
                       <input type="date" class="form-control text-dark" v-model="fechaInicioFase">
                     </div>
-                    <div class="col-sm-4">
+                    <div class="col-sm-4 mt-4">
                       <label><strong class="text-dark">Fecha Fin:</strong></label>
                       <input type="date" class="form-control text-dark" v-model="fechaFinFase">
                     </div>
-                    <div class="col-sm-11 mt-3">
-                      <button class="btn btn-outline-warning col-sm-4 text-white">
-                      <i class="fas fa-plus"></i> 
-                      Agregar
-                    </button>
+                    <div class="col-sm-4 mt-5">
+                      <button class="btn btn-outline-warning w-100 text-white">
+                        <i class="fas fa-plus"></i> 
+                        Agregar
+                      </button>
                     </div>
                   </div>
-  
-                  <!-- Tabla de Fases -->
-                  <table class="table table-bordered border border-dark text-center">
-                    <thead>
-                      <tr>
-                        <th class="bg-warning">Fase</th>
-                        <th class="bg-warning">Nombre</th>
-                        <th class="bg-warning">Fecha Inicio</th>
-                        <th class="bg-warning">Fecha Fin</th>
-                        <th class="bg-warning">Editar</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr v-for="fase in fases" :key="fase.nombre">
-                        <td>{{ fase.nombre }}</td>
-                        <td>{{ fase.fechaInicio }}</td>
-                        <td>{{ fase.fechaFin }}</td>
-                        <td class="text-center">
-                          <button type="button" class="btn" @click="editFase(fase)">
-                            <i class="fas fa-edit"></i>
-                          </button>
-                        </td>
-                      </tr>
-                    </tbody>
-                  </table>
+                  <!-- Tabla para mostrar fases -->
+                  <div class="table-responsive mt-4">
+                    <table class="table table-striped">
+                      <thead class="thead-warning">
+                        <tr>
+                          <th scope="col">Nombre</th>
+                          <th scope="col">Modalidad</th>
+                          <th scope="col">Fecha Inicio</th>
+                          <th scope="col">Fecha Fin</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr v-for="(fase, index) in fases" :key="index">
+                          <td>{{ fase.nombre }}</td>
+                          <td>{{ fase.modalidad }}</td>
+                          <td>{{ fase.fechaInicio }}</td>
+                          <td>{{ fase.fechaFin }}</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
                 </div>
               </div>
 
-              <!-- Botón de Guardar -->
-              <div class="text-center mt-4">
-                <button type="button" class="btn btn-primary text-white" @click="saveData">Guardar</button>
-              </div>
-  
+              
               <!-- Modal de Crear Convocatoria -->
               <div class="modal fade" id="crearConvocatoria" tabindex="-1" role="dialog">
                 <div class="modal-dialog" role="document">
@@ -175,7 +175,7 @@
   </template>
   
 <script>
-  import { createConvocatoria, getConvocatorias } from '../../../../services/administradorService';
+  import { createConvocatoria, getConvocatoriasByPage } from '../../../../services/administradorService';
   import { useToastUtils } from '@/utils/toast';
   import PaginatorBody from '../../../UI/PaginatorBody.vue';
 
@@ -271,13 +271,14 @@
         }
       },
 
-      // Obtener convocatorias desde el backend
+      // Obtener las convocatorias de la API
       async fetchConvocatorias() {
         try {
-          const response = await getConvocatorias();
-          this.convocatorias = response.data; 
+          const response = await getConvocatoriasByPage(this.paginaActual);
+          this.convocatorias = response.convocatorias;  // Asignar los administradores
+          this.totalPaginas = response.total_pages;  // Total de páginas para la paginación
         } catch (error) {
-          showErrorToast(error.data.detail);
+          showWarningToast('Error al obtener convocatorias');
         }
       },
 
@@ -309,21 +310,9 @@
       },
 
       // Paginación
-      paginaAnterior() {
-        if (this.paginaActual > 1) {
-          this.paginaActual--;
-          this.fetchConvocatorias();
-        }
-      },
-      paginaSiguiente() {
-        if (this.paginaActual < this.totalPaginas) {
-          this.paginaActual++;
-          this.fetchConvocatorias();
-        }
-      },
-      irAPagina(pagina) {
-        this.paginaActual = pagina;
-        this.fetchConvocatorias();
+      cambiarPagina(pagina){
+          this.paginaActual = pagina;
+          this.fetchConvocatorias(pagina);
       },
 
       // Guardar todos los datos

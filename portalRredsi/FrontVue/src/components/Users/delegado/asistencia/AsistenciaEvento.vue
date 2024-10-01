@@ -22,36 +22,26 @@
                         </div>
                     </div>
                 </div>
-
-                <!-- Select de salas disponibles -->
-                <div class="col-4 col-sm-2">
-                    <select class="form-select text-dark" v-model="salaSeleccionada" @change="filtrarPorSala">
-                        <option value="" disabled selected>Salas</option>
-                        <option v-for="opcion in opciones" :value="opcion.numero_sala" :key="opcion.id_sala">
-                            {{ opcion.numero_sala }}
-                        </option>
-                    </select>
-                </div>
             </div>
 
             <!-- Filtros -->
             <div class="row ml-1 mb-2 justify-content-start mt-3">
                 <div class="col-auto">
-                    <a href="#" @click.prevent="fetchAsistentes"
+                    <a href="#" @click.prevent="fetchFiltrar('Todos')"
                         :class="['mx-1 px-2 border', filtroActivo === 'Todos' ? 'bg-secondary text-white' : 'text-dark']"
                         style="border-radius: 20px;">
                         Todos
                     </a>
                 </div>
                 <div class="col-auto">
-                    <a href="#" @click.prevent="filtrarPonentes"
+                    <a href="#" @click.prevent="fetchFiltrar('Ponentes')"
                         :class="['mx-1 px-2 border', filtroActivo === 'Ponentes' ? 'bg-secondary text-white' : 'text-dark']"
                         style="border-radius: 20px;">
                         Ponentes
                     </a>
                 </div>
                 <div class="col-auto">
-                    <a href="#" @click.prevent="filtrarEvaluadores"
+                    <a href="#" @click.prevent="fetchFiltrar('Evaluadores')"
                         :class="['mx-1 px-2 border', filtroActivo === 'Evaluadores' ? 'bg-secondary text-white' : 'text-dark']"
                         style="border-radius: 20px;">
                         Evaluadores
@@ -89,41 +79,30 @@
             </div>
 
             <!-- Paginador -->
-            <div v-if="totalPages > 1" class="mt-5">
-                <div aria-label="Page navigation example mb-5">
-                    <ul class="pagination justify-content-center">
-                        <li class="page-item m-1">
-                            <button @click="prevPage" :disabled="currentPage == 1" class="page-link"
-                                style="border-radius: 20px; color: black;">Previous</button>
-                        </li>
-                        <li v-for="i in totalPages" :key="i" class="page-item rounded m-1">
-                            <button @click="selectedPage(i)" class="page-link rounded-circle" style="color: black;">{{ i
-                                }}</button>
-                        </li>
-                        <li class="page-item m-1">
-                            <button @click="nextPage" :disabled="currentPage == totalPages" class="page-link"
-                                style="border-radius: 20px; color: black;">Next</button>
-                        </li>
-                    </ul>
-                </div>
-            </div>
+            <PaginatorBody 
+                :totalPages="totalPages" @page-changed="selectedPage" v-if="totalPages > 1" 
+            />
         </div>
     </div>
 </template>
 
 <script>
 import { asistenciaEvento, actualizarAsistencia, obtenerAsistentesPorSala, obtenerAsistentesPorRol, obtenerAsistentePorDocumento, obtenerSalas, obtenerConvocatoria } from '@/services/delegadoService';
+import PaginatorBody from '../../../UI/PaginatorBody.vue';
 
 export default {
+    components: {
+        PaginatorBody, 
+    },
     data() {
         return {
-            asistentes: [], // Lista de asistentes
+            asistentes: [], 
             busqueda: '',
             salaSeleccionada: '',
-            opciones: [], // Lista de salas
+            opciones: [], 
             currentPage: 1,
             totalPages: 0,
-            filtroActivo: 'Todos', // filtro
+            filtroActivo: 'Todos', 
         };
     },
     methods: {
@@ -149,12 +128,24 @@ export default {
             }
         },
 
+        async fetchFiltrar(filtro) {
+            this.filtroActivo = filtro;
+            this.currentPage = 1; 
+
+            if (filtro === 'Ponentes') {
+                await this.filtrarPonentes();
+            } else if (filtro === 'Evaluadores') {
+                await this.filtrarEvaluadores();
+            } else {
+                await this.fetchAsistentes();
+            }
+        },
+
         async filtrarPonentes() {
             try {
                 const response = await obtenerAsistentesPorRol('Ponente', this.currentPage);
                 this.asistentes = response.data.asistentes;
-                this.totalPages= response.data.total_pages;
-                this.filtroActivo = 'Ponentes';
+                this.totalPages = response.data.total_pages;
             } catch (error) {
                 alert("Error al filtrar ponentes: " + error);
             }
@@ -164,31 +155,20 @@ export default {
             try {
                 const response = await obtenerAsistentesPorRol('Evaluador', this.currentPage);
                 this.asistentes = response.data.asistentes;
-                this.totalPages= response.data.total_pages;
-                this.filtroActivo = 'Evaluadores';
+                this.totalPages = response.data.total_pages;
             } catch (error) {
                 alert("Error al filtrar evaluadores: " + error);
             }
         },
 
-        async filtrarPorSala() {
-            try {
-                const response = await obtenerAsistentesPorSala(this.salaSeleccionada, this.currentPage);
-                this.asistentes = response.data.asistentes;
-            } catch (error) {
-                alert("Error al filtrar por sala: " + error);
-            }
-        },
-
         async buscarPorDocumento() {
             try {
-                if (this.busqueda.trim() == ""){
-                    alert("Debes ingresar un valor")
-                }else {
+                if (this.busqueda.trim() == "") {
+                    alert("Debes ingresar un valor");
+                } else {
                     const response = await obtenerAsistentePorDocumento(this.busqueda);
                     this.asistentes = [response.data];
                 }
-                
             } catch (error) {
                 this.fetchAsistentes();
             }
@@ -203,27 +183,17 @@ export default {
                 alert("Error al actualizar la asistencia: " + error.message);
             }
         },
-        nextPage() {
-            if (this.currentPage < this.totalPages) {
-                this.currentPage++;
-                this.fetchAsistentes();
-                this.fetchAsistentesSalas();
-            }
-        },
 
-        prevPage() {
-            if (this.currentPage > 1) {
-                this.currentPage--;
-                this.fetchAsistentes();
-                this.fetchAsistentesSalas();
-            }
-        },
-
-        selectedPage(pagina) {
+        async selectedPage(pagina) {
             this.currentPage = pagina;
-            this.fetchAsistentes();
+            if (this.filtroActivo === 'Ponentes') {
+                await this.filtrarPonentes();
+            } else if (this.filtroActivo === 'Evaluadores') {
+                await this.filtrarEvaluadores();
+            } else {
+                await this.fetchAsistentes();
+            }
         },
-
 
         async fetchConvocatoriaActual() {
             try {
@@ -239,18 +209,18 @@ export default {
                 alert("Error al obtener la convocatoria actual: " + error.message);
             }
         },
-
     },
-    // Final de los metodos
     mounted() {
         const obtenerDatos = async () => {
             await this.fetchConvocatoriaActual();
             await this.fetchAsistentesSalas();
-        }
+        };
         obtenerDatos();
     }
 }
 </script>
+
+
 
 
 <style scoped>

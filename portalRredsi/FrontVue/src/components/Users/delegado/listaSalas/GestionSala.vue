@@ -123,6 +123,7 @@ import { defineComponent } from 'vue';
 import { obtenerPonentesProyecto, obetnerProyectosSinAsignarEtapaPresencial, obtenerPosiblesEvaluadoresEtapaPresencial, asignarEvaluadoresEtapaPresencial } from '@/services/salasDelegadoService';
 import { obtenerProyectoConvocatoria } from '@/services/DelegadoService';
 import ComponenteHorario from './ComponenteHorario.vue';
+import { useToastUtils } from '@/utils/toast';
 
 export default defineComponent({
     props: {
@@ -133,6 +134,7 @@ export default defineComponent({
         ComponenteHorario
     },
     data() {
+        const { showSuccessToast, showErrorToast, showWarningToast, showDefaultToast, showInfoToast } = useToastUtils();
         return {
             proyectoSeleccionado: {
                 id_proyecto: "",
@@ -150,6 +152,7 @@ export default defineComponent({
                 hora_inicio: "",
                 hora_fin: "",
             },
+            showInfoToast,
             id_proyecto_convocatoria: "",
             evaluadores: [],
             listaProyectosSinAsignar: [],
@@ -198,7 +201,7 @@ export default defineComponent({
                 this.listaProyectosSinAsignar = response.data.proyectos;
 
             } catch (error) {
-                alert("Error al obtener proyectos: ", error);
+                this.showInfoToast("Todos los proyectos han sido asignados");
             }
         },
         async consultarPonentesProyecto(id_proyecto) {

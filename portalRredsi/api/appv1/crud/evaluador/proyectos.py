@@ -1,3 +1,4 @@
+from typing import List
 from sqlalchemy.orm import Session
 from sqlalchemy import text
 from sqlalchemy.exc import SQLAlchemyError, IntegrityError
@@ -298,7 +299,7 @@ def insert_respuesta_rubrica(db: Session, id_item_rubrica: int, id_usuario: int,
         )
         modalidad = db.execute(sql_get_modalidad, {"id_proyecto": id_proyecto}).scalar()
         
-        if modalidad == '2':
+        if modalidad == '1':
             puntaje_minimo_aprobacion = 80
         else:
             puntaje_minimo_aprobacion = 75
@@ -371,9 +372,30 @@ def insert_respuesta_rubrica(db: Session, id_item_rubrica: int, id_usuario: int,
             "id_rubrica_resultado": id_rubrica_resultado
         })
 
-        # Actualización del estado_calificacion en la tabla proyectos según la etapa actual
-        nuevo_estado_calificacion = 'C_virtual' if etapa_actual == 'Virtual' else 'C_presencial'
-        
+        # Verificar si hay otras respuestas en la etapa presencial
+        if etapa_actual == 'Presencial':
+            sql_check_otras_respuestas = text(
+                """
+                SELECT COUNT(*) FROM respuestas_rubricas
+                WHERE id_proyecto_convocatoria = :id_proyecto_convocatoria
+                AND id_usuario != :id_usuario
+                """
+            )
+            otras_respuestas_count = db.execute(sql_check_otras_respuestas, {
+                "id_proyecto_convocatoria": id_proyecto_convocatoria,
+                "id_usuario": id_usuario
+            }).scalar()
+
+            if otras_respuestas_count > 0:
+                # Si hay otras respuestas, el proyecto pasa a C_presencial
+                nuevo_estado_calificacion = 'C_presencial'
+            else:
+                # Si no hay otras respuestas, queda en P_presencial
+                nuevo_estado_calificacion = 'P_presencial'
+        else:
+            nuevo_estado_calificacion = 'C_virtual' if etapa_actual == 'Virtual' else 'C_presencial'
+
+        # Actualización del estado_calificacion en la tabla proyectos
         sql_update_proyecto = text(
             """
             UPDATE proyectos
@@ -392,7 +414,6 @@ def insert_respuesta_rubrica(db: Session, id_item_rubrica: int, id_usuario: int,
     except SQLAlchemyError as e:
         db.rollback()
         print(f"Error al insertar respuesta de rúbrica: {e}")
-        raise HTTPException(status_code=500, detail="Error al insertar respuesta de rúbrica")
     
 def get_proyectos_etapa_presencial_con_horario(db: Session, id_usuario: int, page: int = 1, page_size: int = 10):
     try:
@@ -508,7 +529,7 @@ def get_datos_rubrica_proyecto(db: Session, id_proyecto: int, id_usuario: int):
 def get_nombres_ponentes_proyecto(db: Session, id_proyecto: int):
     try:
         sql_query = text("""
-            SELECT GROUP_CONCAT(ponente.nombres SEPARATOR ', ') AS nombres_ponentes
+            SELECT GROUP_CONCAT(ponente.nombres, ' ', ponente.apellidos SEPARATOR ', ') AS nombres_ponentes
             FROM participantes_proyecto
             JOIN usuarios AS ponente ON ponente.id_usuario = participantes_proyecto.id_usuario
             JOIN proyectos_convocatoria ON participantes_proyecto.id_proyecto = proyectos_convocatoria.id_proyecto
@@ -706,73 +727,36 @@ def get_datos_proyecto_calificado_completo(db: Session, id_proyecto: int, id_usu
 
         # Obtener los datos para calificar un proyecto
 
-
-
-def get_datos_proyecto_calificado_completo(db: Session, id_proyecto: int, id_usuario: int):
+# Obtener los nombres de las fases y las fechas de la programación de una convocatoria en curso
+def get_nombres_fases_y_fechas_programacion(db: Session) -> List[dict]:
     try:
-        # Obtener los datos básicos del proyecto y del evaluador
         sql_query = text("""
             SELECT 
-                proyectos.titulo AS titulo_proyecto,
-                inst_proyecto.nombre AS universidad_proyecto,
-                usuarios.nombres AS nombre_evaluador,
-                usuarios.documento AS cedula_evaluador,
-                inst_evaluador.nombre AS universidad_evaluador,
-                usuarios.correo AS email_evaluador,
-                usuarios.celular AS celular_evaluador
-            FROM 
-                proyectos
-            JOIN 
-                participantes_proyecto ON proyectos.id_proyecto = participantes_proyecto.id_proyecto
-            JOIN 
-                usuarios ON usuarios.id_usuario = participantes_proyecto.id_usuario
-            JOIN 
-                detalles_institucionales ON usuarios.id_usuario = detalles_institucionales.id_usuario
-            JOIN 
-                instituciones AS inst_proyecto ON proyectos.id_institucion = inst_proyecto.id_institucion
-            JOIN 
-                instituciones AS inst_evaluador ON detalles_institucionales.id_institucion = inst_evaluador.id_institucion
+                fase.nombre AS nombre_fase,
+                programacion_fases.fecha_inicio,
+                programacion_fases.fecha_fin
+            FROM programacion_fases
+            JOIN convocatorias ON programacion_fases.id_convocatoria = convocatorias.id_convocatoria
+            JOIN fases AS fase ON programacion_fases.id_fase = fase.id_fase
             WHERE 
-                proyectos.id_proyecto = :id_proyecto
-                AND usuarios.id_usuario = :id_usuario
+                convocatorias.estado = 'en curso'
         """)
-        result = db.execute(sql_query, {"id_proyecto": id_proyecto, "id_usuario": id_usuario}).fetchone()
-
-        if not result:
-            raise HTTPException(status_code=404, detail="Datos no encontrados")
-
-        # Obtener los nombres de los ponentes asociados al proyecto
-        nombres_ponentes = get_nombres_ponentes_proyecto(db, id_proyecto)
-
-        # Obtener los datos de la rúbrica asociados al proyecto
-        rubrica_result = get_datos_calificados_rubrica(db, id_proyecto, id_usuario)
         
-        componentes_rubrica = [
-            Componente(
-                id_item_rubrica=item['id_item_rubrica'],
-                titulo=item['titulo'],
-                descripcion=item['componente'],
-                observaciones=item['observacion'],
-                calificacion=item['calificacion'],
-                valor_maximo=item['valor_max']
-            ) for item in rubrica_result
+        # Ejecuta la consulta y obtiene los resultados
+        result = db.execute(sql_query).fetchall()
+
+        # Transformar el resultado en una lista de diccionarios
+        programacion_fases = [
+            {
+                "nombre_fase": row[0],
+                "fecha_inicio": row[1],
+                "fecha_fin": row[2]
+            }
+            for row in result
         ]
 
-        # Crear la respuesta final incluyendo los datos del proyecto y la rúbrica
-        proyecto_respuesta = CalificarProyectoRespuesta(
-            titulo_proyecto=result.titulo_proyecto,
-            universidad_proyecto=result.universidad_proyecto,
-            nombre_evaluador=result.nombre_evaluador,
-            cedula_evaluador=result.cedula_evaluador,
-            universidad_evaluador=result.universidad_evaluador,
-            email_evaluador=result.email_evaluador,
-            celular_evaluador=result.celular_evaluador,
-            nombres_ponentes=nombres_ponentes,  
-            componentes=componentes_rubrica  
-        )
-
-        return proyecto_respuesta
+        return programacion_fases
 
     except Exception as e:
         db.rollback()
-        raise HTTPException(status_code=500, detail=f"Error al consultar los datos del proyecto:{e}")
+        raise HTTPException(status_code=500, detail="Error al consultar las fases junto a su programación")

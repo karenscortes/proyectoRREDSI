@@ -29,6 +29,7 @@ def create_items(item: ItemCreate,db: Session):
         )
         db.add(nuevo_item)
         db.commit()
+        db.refresh(nuevo_item)
         return nuevo_item
     except IntegrityError as e:
         db.rollback()
