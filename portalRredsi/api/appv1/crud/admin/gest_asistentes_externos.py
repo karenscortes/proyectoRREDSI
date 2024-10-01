@@ -2,6 +2,7 @@ import datetime
 from sqlalchemy.exc import SQLAlchemyError
 from fastapi import HTTPException
 from sqlalchemy.orm import Session
+from sqlalchemy.sql import text
 from appv1.models.asistente import Asistente
 from appv1.models.tipo_documento import Tipo_documento
 from appv1.models.usuario import Usuario
@@ -122,8 +123,19 @@ def get_attendee_by_document(db: Session, documento:str, page, page_size):
 #Función para llamar procedimiento almacenado
 def insertar_historial_admin(db: Session, accion:str, modulo: int,id_registro:int, id_admin: int):
     try:
+        # Definir la consulta para llamar al procedimiento almacenado
+        sql_query = text("CALL insertar_acciones_admin(:accion, :modulo, :registro, :administrador)")
 
-       db.execute("CALL insertar_acciones_admin(:servicio, :modulo, :registro, :administrador)", {'servicio':accion, 'modulo': modulo, 'registro':id_registro, 'administrador':id_admin})
+        # Parametros de entrada
+        params = {
+            "accion": accion,
+            "modulo": modulo,
+            'registro':id_registro,
+            'administrador':id_admin
+        }
+
+        # Ejecutar el procedimiento almacenado
+        db.execute(sql_query, params)
 
     except SQLAlchemyError as e:
         print(f"Error al ejecutar el procedimiento insertar_acciones_admin: {e}")
