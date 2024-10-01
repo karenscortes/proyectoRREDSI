@@ -136,7 +136,8 @@ def insertar_historial_admin(db: Session, accion:str, modulo: int,id_registro:in
 
         # Ejecutar el procedimiento almacenado
         db.execute(sql_query, params)
-
+        db.commit() 
+        return True
     except SQLAlchemyError as e:
         print(f"Error al ejecutar el procedimiento insertar_acciones_admin: {e}")
         raise HTTPException(status_code=500, detail="Error al ejecutar el procedimiento.")
