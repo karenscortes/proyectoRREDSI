@@ -24,7 +24,7 @@
                                 v-model="busqueda"
                                 class="form-control"
                                 placeholder="Buscar..."
-                                @keydown="keyboardActions"
+                                @keyup="keyboardActions"
                             />
                             </div>
                             <div class="col-md-2 col-4">
@@ -52,7 +52,7 @@
                         <th>Editar</th>
                     </tr>
                 </thead>
-                <tbody class="text-center" v-if="attendees !== null">
+                <tbody class="text-center">
                     <AttendeesTableRow
                         v-for="(asistente, index) in attendees"
                         :key="index"
@@ -93,6 +93,7 @@
 <script>
 import { getAttendeesByPage, getAttendeeByDocument } from '@/services/asistenciaService';
 import { onMounted, ref, reactive } from "vue";
+import { useToastUtils } from '@/utils/toast';
 import AddAttendeesModal from './AddAttendeesModal.vue';
 import EditAttendeeModal from './EditAttendeeModal.vue';
 import AttendeesTableRow from './AttendeesTableRow.vue';
@@ -106,6 +107,7 @@ export default {
         EditAttendeeModal
     },
     setup() {
+        const { showErrorToast,showInfoToast} = useToastUtils();
         const isEditModalOpen = ref(false);
         const isAddModalOpen = ref(false);
         const currentPage = ref(1);
@@ -132,36 +134,38 @@ export default {
                 totalPages.value = response.data.total_pages;
 
             } catch (error) {
-                console.log(error);
+
+                showErrorToast(`Error en cargar asistentes`);
             }
         }
 
         const searchAttendee = async() => {
             try {
-
+                console.log(busqueda.value)
                 const response = await getAttendeeByDocument(busqueda.value);
-
-                if(response.data){
+                console.log(`logitud coincidencias: ${response.data.attendees.length}`);
+                if(response.data.attendees.length > 0){
                     attendees.value = response.data.attendees;
                     totalPages.value = response.data.total_pages;
                 }else{
-
+                    showInfoToast('No se encontró ningún asistente con ese documento')
                 }  
                 
             } catch (error) {
-                console.log(error);
+                showErrorToast(`Error en buscar asistente por documento`);
             }
         }
 
         const keyboardActions = (event) => {
             if (event.key === 'Backspace') {
-                if (busqueda.value.length == 1) {
+                if (busqueda.value.length == 0) {
                     fetchAttendees();
                     
-                }else if(busqueda.value.length > 1){
+                }else{
                     searchAttendee();
                 }
             }else{
+                console.log("entró")
                 searchAttendee();
             }
         }

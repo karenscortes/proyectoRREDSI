@@ -3,7 +3,7 @@
         <div class="icon">
             <i class="fa-solid fa-user-group fa-lg text-dark mb-3"></i>
         </div>
-        <h3 class="text-dark text-left">Suplentes <i type="button" class="fa-regular fa-square-plus fa-lg text-dark" @click="openModal"></i></h3>
+        <h2 class="text-dark text-left font-weight-bold">Suplentes <i type="button" class="fa-regular fa-square-plus fa-lg text-dark" @click="openModal"></i></h2>
         <p class="text-dark text-left">
             Tipo: {{ tipo }} <br> 
             Nombre: {{ suplente }}
@@ -69,10 +69,10 @@ export default {
 </script>
 
 <style scoped>
-h3,
+h2,
 p {
-    font-size: 0.9rem;
-    margin-bottom: 5px;
+    font-size: 0.8rem;
+    margin-bottom: 4px;
 }
 
 .text-left {

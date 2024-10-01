@@ -3,7 +3,7 @@
         <div class="icon">
             <i class="fa-solid fa-person-booth fa-lg text-dark mb-3"></i>
         </div>
-        <h3 class="text-dark text-left">Evento</h3>
+        <h2 class="text-dark text-left font-weight-bold">Evento</h2>
         <p class="text-dark text-left">
             Fecha: {{ fecha }}<br>
             Horario: {{ obtenerHoraMinutos(horaInicio) }} - {{ obtenerHoraMinutos(horaFin) }}<br>
@@ -73,10 +73,10 @@ export default {
 
 
 <style scoped>
-h3,
+h2,
 p {
-    font-size: 0.9rem;
-    margin-bottom: 5px;
+    font-size: 0.8rem;
+    margin-bottom: 4px;
 }
 
 .text-left {

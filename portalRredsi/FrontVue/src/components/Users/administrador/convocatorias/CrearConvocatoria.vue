@@ -31,7 +31,7 @@
                 </div>
                 <div class="title-line"></div>
                 <div class="text-left mt-3">
-                  <button type="button" class="btn btn-warning fw-bold text-white w-25" @click="showCreateConvocatoriaModal">
+                  <button type="button" class="btn btn-warning fw-bold text-white w-25" @click="showCreateConvocatoriaModal" >
                     Crear convocatoria
                   </button>
                 </div>

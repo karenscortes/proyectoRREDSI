@@ -1,7 +1,7 @@
 from typing import List
 from fastapi import APIRouter, Depends, File, HTTPException, UploadFile
 from sqlalchemy.orm import Session
-from appv1.crud.admin.gest_asistentes_externos import generate_code, get_attendee_by_document, get_id_document_type, get_paginated_attendees, insert_attendee, insert_user, update_external_attendees
+from appv1.crud.admin.gest_asistentes_externos import generate_code, get_attendee_by_document, get_id_document_type, get_paginated_attendees, insert_attendee, insert_user, insertar_historial_admin, update_external_attendees
 from appv1.crud.admin.gest_delegado import create_delegado,get_delegados_activos_paginated, get_delegados_by_document
 from appv1.crud.admin.gest_rubricas import create_items, delete_items, get_all_rubricas, update_items
 from appv1.crud.admin.gest_rubricas import get_all_rubricas
@@ -39,7 +39,7 @@ def create_new_convocatoria(
         db, convocatoria.nombre, convocatoria.fecha_inicio, 
         convocatoria.fecha_fin, convocatoria.estado
     )
-
+    insertar_historial_admin(db,'Insertar',MODULE,convocatoria_created.id_convocatoria,current_user.id_usuario)
     return {
         "message": "Convocatoria creada exitosamente", 
         "id_convocatoria": convocatoria_created.id_convocatoria
@@ -66,7 +66,7 @@ def create_new_programacion_fase(
         programacion_fase.fecha_inicio, 
         programacion_fase.fecha_fin
     )
-
+    insertar_historial_admin(db,'Insertar',MODULE,programacion_fase_created.id_programacion_fase,current_user.id_usuario)
     return {
         "message": "Programación de fase creada exitosamente", 
         "id_programacion_fase": programacion_fase_created.id_programacion_fase
@@ -163,6 +163,7 @@ def create_delegates(
         raise HTTPException(status_code=400, detail="Ya se encuentra registrado un usuario con este documento")
     
     new_user = create_delegado(user, db)
+    insertar_historial_admin(db,'Insertar',MODULE,new_user.id_usuario,current_user.id_usuario)
     if new_user:
         return{
             'success': True,
@@ -187,8 +188,9 @@ def create_item_rubric(
     if permisos is None or not permisos.p_insertar:
         raise HTTPException(status_code=401, detail="Usuario no autorizado")
     
-    item = create_items(item, db)
-    if item:
+    new_item = create_items(item, db)
+    insertar_historial_admin(db,'Insertar',MODULE,new_item.id_item_rubrica,current_user.id_usuario)
+    if new_item:
         return{
             'success': True,
             'message': 'Registrado con éxito', 
@@ -215,6 +217,7 @@ def update_item(
         raise HTTPException(status_code=401, detail="Usuario no autorizado")
     
     item = update_items(id_item,item_nuevo,db)
+    insertar_historial_admin(db,'Actualizar',MODULE,id_item,current_user.id_usuario)
     if item:
         return{
             'success': True,
@@ -242,6 +245,7 @@ def delete_item(
         raise HTTPException(status_code=401, detail="Usuario no autorizado")
     
     item = delete_items(id_item,db)
+    insertar_historial_admin(db,'Eliminar',MODULE,id_item,current_user.id_usuario)
     if item:
         return{
             'success': True,
@@ -267,6 +271,7 @@ def create_sala_admin(
         raise HTTPException(status_code=401, detail="Usuario no autorizado")
 
     new_sala = create_sala(db, sala.id_usuario, sala.area_conocimento, sala.numero_sala, sala.nombre_sala)
+    insertar_historial_admin(db,'Insertar',MODULE,new_sala.id_sala,current_user.id_usuario)
     if new_sala:
         return{
             'success': True,
@@ -295,7 +300,7 @@ def update_sala_admin(
 
     # Asumiendo que tienes una función para actualizar la sala en lugar de crearla
     updated_sala = update_sala(id_sala, sala,db )
-
+    insertar_historial_admin(db,'Actualizar',MODULE,id_sala,current_user.id_usuario)
     if updated_sala:
         return {
             'success': True,
@@ -309,15 +314,18 @@ def update_sala_admin(
 
 # Subir el archivo excel y procesar los datos
 @router_admin.post("/upload-excel/")
-async def upload_file(file: UploadFile = File(...), db: Session = Depends(get_db)):
-
-    # Guardar el archivo
-    file_location = save_file(file)
+async def upload_file(file: UploadFile = File(...), db: Session = Depends(get_db), current_user: UserResponse = Depends(get_current_user)):
     
-    # Leer el archivo Excel
+    MODULE = 12
+    permisos = get_permissions(db, current_user.id_rol, MODULE)
+
+    if permisos is None or not permisos.p_insertar:
+        raise HTTPException(status_code=401, detail="Usuario no autorizado")
+
+    file_location = save_file(file)
+
     df = pd.read_excel(file_location)
 
-    # Se itera por cada fila del excel
     for index, row in df.iterrows():
         
         #Se comprueba que el asistente no se encuentre en la tabla usuarios
@@ -350,12 +358,13 @@ async def upload_file(file: UploadFile = File(...), db: Session = Depends(get_db
             id_asistente=existing_user_doc[0]
 
         # Insertar comprobante_pago y demás datos en la tabala asistencia 
-        insert_attendee(
-            db=db, 
-            usuario_id=id_asistente, 
-            url_comprobante_pago=row['url_comprobante_pago']
+        new_attendee = insert_attendee(
+            db, 
+            id_asistente, 
+            row['url_comprobante_pago']
         )
-    
+
+        insertar_historial_admin(db,'Insertar',MODULE,new_attendee.id_asistente,current_user.id_usuario)
     return {"message": "File processed and data stored successfully.", "file_location": file_location}
 
 
@@ -385,7 +394,7 @@ async def get_all_attendees(
         "page_size": page_size
     }
 
-# Editar items
+# Editar asistente
 @router_admin.put("/update-attendee/{id_usuario}/")
 def update_attendee(
     id_usuario:int, 
@@ -400,13 +409,13 @@ def update_attendee(
         raise HTTPException(status_code=401, detail="Usuario no autorizado")
     
     user,attendee = update_external_attendees(db,id_usuario,newData)
+    insertar_historial_admin(db,'Actualizar',MODULE,attendee.id_asistente,current_user.id_usuario)
     if user or attendee:
         return{
             'success': True,
-            'message': 'Se actualizo con éxito',
+            'message': 'Asistente actualizado con éxito',
             'usuario': user,
             'asistente': attendee,
-
         }
     else: 
         return{

@@ -61,6 +61,7 @@
 <script>
 import { updateAttendees } from '@/services/asistenciaService';
 import { reactive } from "vue";
+import { useToastUtils } from '@/utils/toast';
 export default {
   props:{
     infoModal: {
@@ -81,6 +82,7 @@ export default {
   },
   emits: ["closeEditModal"],
   setup(props, { emit }) {
+    const { showErrorToast,showSuccessToast} = useToastUtils();
 
     const editableData = reactive({
         nombres: props.infoModal.nombres,
@@ -102,11 +104,13 @@ export default {
             {
                 const response = await updateAttendees(infoModal.id_usuario, editableData);
 
-            }else{
+                showSuccessToast(response.data.message);
 
+            }else{
+                showErrorToast("Error al intentar Actualizar.");
             }
         } catch (error) {
-            console.error('Error al subir el archivo:', error);
+            showErrorToast("Error al subir archivo.");
         }
     };
     return { 
