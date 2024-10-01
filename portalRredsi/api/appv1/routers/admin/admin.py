@@ -440,9 +440,6 @@ async def get_attendee(
     
     attendees, total_pages = get_attendee_by_document(db, documento,page, page_size)
 
-    if len(attendees) == 0:
-        raise HTTPException(status_code=404, detail="No hay asistentes con ese documento")
-
     return {
         "attendees": attendees,
         "total_pages": total_pages,

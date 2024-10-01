@@ -35,6 +35,7 @@ import ListaProyectosDelegado from "../components/Users/delegado/listaProyectos/
 import PaginaInicioDelegado from "../components/Users/delegado/PaginaInicioDelegado.vue";
 import GestionarAsistentes from "../components/Users/administrador/asistencia/GestionarAsistentes.vue";
 import InicioAdminView from "./InicioAdminView.vue";
+import ConvocatoriaInfoPageView from "./ConvocatoriaInfoPageView.vue";
 
 // Styles
 import '../assets/plugins/fontawesome-free-5.0.1/css/fontawesome-all.css';
@@ -67,6 +68,7 @@ export default {
         PaginaInicioEvaluadorView: markRaw(PaginaInicioEvaluadorView),
         ProyectosAsignadosEvaluadorView: markRaw(ProyectosAsignadosEvaluadorView),
         CalificarProyecto: markRaw(CalificarProyecto),
+        ConvocatoriaInfoPageView: markRaw(ConvocatoriaInfoPageView),
 
         //Componentes SuperAdmin
         InicioSuperAdminView: markRaw(InicioSuperAdminView),
@@ -123,6 +125,7 @@ export default {
                 PaginaInicioEvaluadorView: PaginaInicioEvaluadorView,
                 ProyectosAsignadosEvaluadorView: ProyectosAsignadosEvaluadorView,
                 CalificarProyecto: CalificarProyecto,
+                ConvocatoriaInfoPageView: ConvocatoriaInfoPageView,
 
                 //SuperAdmin
                 InicioSuperAdminView: InicioSuperAdminView ,

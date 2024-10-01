@@ -141,7 +141,7 @@ export default {
 
         const searchAttendee = async() => {
             try {
-                console.log(busqueda.value)
+
                 const response = await getAttendeeByDocument(busqueda.value);
                 console.log(`logitud coincidencias: ${response.data.attendees.length}`);
                 if(response.data.attendees.length > 0){
@@ -165,7 +165,6 @@ export default {
                     searchAttendee();
                 }
             }else{
-                console.log("entró")
                 searchAttendee();
             }
         }
