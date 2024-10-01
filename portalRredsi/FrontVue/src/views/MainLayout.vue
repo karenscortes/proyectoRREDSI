@@ -100,7 +100,7 @@ export default {
     setup() {
 
         const currentComponent = ref(NotAvailable);           
-        
+        const componente = ref("")
         const changeComponent = (componentName) => {
             const componentMap = {
                 NotAvailable: NotAvailable,
