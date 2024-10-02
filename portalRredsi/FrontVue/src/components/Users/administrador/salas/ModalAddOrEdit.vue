@@ -146,12 +146,10 @@ export default {
         closeModal();
         // ALERTA DE CREACION DE SALA EXITOSA
         showSuccessToast("La sala se ha creado exitosamente");
-       
       } catch (error) {
         closeModal();
         // ALERTA SI FALLA LA CREACION DE SALA EXITOSA
         showErrorToast("La sala no se ha podido crear, intenta de nuevo más tarde...");
-       
       }
     }
 
@@ -167,8 +165,6 @@ export default {
         closeModal();
         // ALERTA SI FALLA LA ACTUALIZACION DE SALA
         showErrorToast("La sala no se ha podido actualizar, intenta de nuevo más tarde...");
-
-     
       }
     }
 
