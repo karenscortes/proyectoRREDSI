@@ -108,8 +108,8 @@ export default defineComponent({
     },
     setup(_,{emit}) {
         //propiedades para las opciones  del menú que se habilitan dependiendo dde la convocatoria en curso y sus fases 
-        const asignacion1 = ref('disabled');
-        const asignacion2 = ref('disabled');
+        const asignacion1 = ref('');
+        const asignacion2 = ref('');
         const otras_opciones = ref('');
         
         //obteniendo fecha actual
@@ -195,9 +195,9 @@ export default defineComponent({
             emit('component-selected', componentName); // Emite un evento para seleccionar el componente
         };
 
-        onMounted(() => {
-            getAssignmentDates();
-        });
+        // onMounted(() => {
+        //     getAssignmentDates();
+        // });
 
         // Acción para cerrar sesión
         const logout = () => {
