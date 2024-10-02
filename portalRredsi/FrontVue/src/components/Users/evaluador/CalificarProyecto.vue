@@ -95,7 +95,7 @@
         </tfoot>
       </table>
     </div>
-    <div class="col-8 text-center py-5" v-if="puedeCalificar">
+    <div class="col-8 text-center py-5" v-if="botonCalificar == 'Activo'">
       <button @click.prevent="enviarCalificaciones" class="btn btn-warning font-weight-bold text-dark">
         Calificar
       </button>
@@ -128,9 +128,10 @@
       const componentes = ref([]);
       const puntajeTotal = ref(0);
       const currentEtapa = ref('');
+      const botonCalificar = ref('Activo');
 
 
-      const { showSuccessToast, showErrorToast, showWarningToast} = useToastUtils();
+      const { showSuccessToast, showErrorToast, showWarningToast, showInfoToast} = useToastUtils();
 
       const puedeCalificar = computed(() => {
         // Verificar si el estado es pendiente en alguna de las fases (P_virtual o P_presencial)
@@ -138,7 +139,7 @@
       });
 
       const disabledCalificacionObservacion = computed(() => {
-        return props.proyecto.estado_evaluacion === 'C_presencial' || props.proyecto.estado_evaluacion === 'C_virtual';
+        return props.proyecto.estado_evaluacion === 'C_presencial' || props.proyecto.estado_evaluacion === 'C_virtual' || botonCalificar.value==="Inactivo";
       });
 
       const obtenerDatos = async () => {
@@ -146,43 +147,54 @@
         const user = authStore.user;
 
         try {
-          // Verificar si el proyecto está calificado
-          if (props.proyecto.estado_evaluacion === 'C_presencial' || props.proyecto.estado_evaluacion === 'C_virtual' ) {
-            // Obtener datos del proyecto cuando esta calificado
-            const data = await obtenerRubricasCalificadas(props.proyecto.id_proyecto, user.id_usuario);
-            tituloProyecto.value = data.titulo_proyecto;
-            universidadProyecto.value = data.universidad_proyecto;
-            nombreEvaluador.value = data.nombre_evaluador;
-            cedulaEvaluador.value = data.cedula_evaluador;
-            universidadEvaluador.value = data.universidad_evaluador;
-            emailEvaluador.value = data.email_evaluador;
-            celularEvaluador.value = data.celular_evaluador;
-            ponentesProyecto.value = data.nombres_ponentes;
-            componentes.value = data.componentes;
+          // Intentamos obtener los datos de las rúbricas calificadas.
+          const data = await obtenerRubricasCalificadas(props.proyecto.id_proyecto, user.id_usuario);
+          
+          // Si se obtienen correctamente, significa que ya hay calificaciones registradas.
+          tituloProyecto.value = data.titulo_proyecto;
+          universidadProyecto.value = data.universidad_proyecto;
+          nombreEvaluador.value = data.nombre_evaluador;
+          cedulaEvaluador.value = data.cedula_evaluador;
+          universidadEvaluador.value = data.universidad_evaluador;
+          emailEvaluador.value = data.email_evaluador;
+          celularEvaluador.value = data.celular_evaluador;
+          ponentesProyecto.value = data.nombres_ponentes;
+          componentes.value = data.componentes;
 
-          } else {  
-            //Si no esta calificado, se pondra nulo la observacion y calificacion
-            const data = await obtenerDatosParaCalificarProyecto(props.proyecto.id_proyecto, user.id_usuario);
-            tituloProyecto.value = data.titulo_proyecto;
-            universidadProyecto.value = data.universidad_proyecto;
-            nombreEvaluador.value = data.nombre_evaluador;
-            cedulaEvaluador.value = data.cedula_evaluador;
-            universidadEvaluador.value = data.universidad_evaluador;
-            emailEvaluador.value = data.email_evaluador;
-            celularEvaluador.value = data.celular_evaluador;
-            ponentesProyecto.value = data.nombres_ponentes;
-            componentes.value = data.componentes;
+          if(props.proyecto.estado_evaluacion === 'P_presencial'){
+            showInfoToast("El estado del proyecto cambiará a calificado en el momento que se ingrese la otra respuesta del otro evaluador.");
           }
 
-          // Obtener etapa actual
-          const response = await obtenerEtapaActual();
-          currentEtapa.value = response.nombre_etapa;
+          botonCalificar.value = "Inactivo";
 
         } catch (error) {
-          showErrorToast('Error al obtener los datos del proyecto o la etapa:');
+          // Si hay un error, significa que no hay calificaciones registradas aún, por lo tanto, obtenemos los datos para calificar.
+          try {
+            const data = await obtenerDatosParaCalificarProyecto(props.proyecto.id_proyecto, user.id_usuario);
+            
+            tituloProyecto.value = data.titulo_proyecto;
+            universidadProyecto.value = data.universidad_proyecto;
+            nombreEvaluador.value = data.nombre_evaluador;
+            cedulaEvaluador.value = data.cedula_evaluador;
+            universidadEvaluador.value = data.universidad_evaluador;
+            emailEvaluador.value = data.email_evaluador;
+            celularEvaluador.value = data.celular_evaluador;
+            ponentesProyecto.value = data.nombres_ponentes;
+            componentes.value = data.componentes;
+          
+          } catch (innerError) {
+            showErrorToast('Error al obtener los datos para calificar el proyecto.');
+          }
         }
 
-      };
+        // Obtener etapa actual
+        try {
+          const response = await obtenerEtapaActual();
+          currentEtapa.value = response.nombre_etapa;
+        } catch (etapaError) {
+          showErrorToast('Error al obtener la etapa actual.');
+        }
+    };
 
       const actualizarPuntajeTotal = () => {
         puntajeTotal.value = componentes.value.reduce((total, componente) => {
@@ -288,6 +300,7 @@
         puedeCalificar,
         disabledCalificacionObservacion,
         validarCalificacion,
+        botonCalificar,
       };
     },
     emits: ['volver'], 
