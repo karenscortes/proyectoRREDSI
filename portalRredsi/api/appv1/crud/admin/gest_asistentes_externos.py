@@ -4,6 +4,7 @@ from fastapi import HTTPException
 from sqlalchemy.orm import Session
 from sqlalchemy.sql import text
 from appv1.models.asistente import Asistente
+from appv1.models.historial_actividades_admin import Historial_admin
 from appv1.models.tipo_documento import Tipo_documento
 from appv1.models.usuario import Usuario
 from appv1.schemas.admin.attendees import UpdatedAttendee
@@ -11,9 +12,12 @@ from core.security import get_hashed_password
 import random
 import string
 
+from core.utils import generate_user_id_int
+
 def insert_user(db: Session, tipo_doc: int, num_doc:str, nombres: str, apellidos: str, correo: str, clave: str, telefono: str = None ):
     
     nuevo_usuario = Usuario(
+        id_usuario = generate_user_id_int(),
         id_rol=7,
         id_tipo_documento=tipo_doc,
         documento=num_doc, 
@@ -121,23 +125,18 @@ def get_attendee_by_document(db: Session, documento:str, page, page_size):
         raise HTTPException(status_code=500, detail="Error. No hay integridad de datos")
 
 #Función para llamar procedimiento almacenado
-def insertar_historial_admin(db: Session, accion:str, modulo: int,id_registro:int, id_admin: int):
+def insertar_historial_admin(db: Session, servicio:str, modulo: int,registro:int, id_admin: int):
     try:
-        # Definir la consulta para llamar al procedimiento almacenado
-        sql_query = text("CALL insertar_acciones_admin(:accion, :modulo, :registro, :administrador)")
+        nuevo_registro = Historial_admin(
+            accion= servicio,
+            id_modulo= modulo,
+            id_registro=registro,
+            id_usuario=id_admin,
+            fecha = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        )
 
-        # Parametros de entrada
-        params = {
-            "accion": accion,
-            "modulo": modulo,
-            'registro':id_registro,
-            'administrador':id_admin
-        }
-
-        # Ejecutar el procedimiento almacenado
-        db.execute(sql_query, params)
-        db.commit() 
-        return True
+        db.add(nuevo_registro)
+        db.commit()
     except SQLAlchemyError as e:
         print(f"Error al ejecutar el procedimiento insertar_acciones_admin: {e}")
         raise HTTPException(status_code=500, detail="Error al ejecutar el procedimiento.")

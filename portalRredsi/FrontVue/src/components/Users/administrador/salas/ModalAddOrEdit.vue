@@ -143,12 +143,15 @@ export default {
     const crearSala = async (p_id_delegado,p_id_area_conocimiento,p_numero_sala,p_nombre_sala)=>{
       try {
         await addSala(p_id_delegado,p_id_area_conocimiento,p_numero_sala,p_nombre_sala);
-
+        closeModal();
         // ALERTA DE CREACION DE SALA EXITOSA
         showSuccessToast("La sala se ha creado exitosamente");
+       
       } catch (error) {
+        closeModal();
         // ALERTA SI FALLA LA CREACION DE SALA EXITOSA
         showErrorToast("La sala no se ha podido crear, intenta de nuevo más tarde...");
+       
       }
     }
 
@@ -156,12 +159,16 @@ export default {
     const actualizarSala = async (idSala,p_id_delegado,p_id_area_conocimiento,p_numero_sala,p_nombre_sala)=>{
       try {
         await updateSala(idSala,p_id_delegado,p_id_area_conocimiento,p_numero_sala,p_nombre_sala);
-        
+        closeModal();
         // ALERTA PARA LA ACTUALIZACION DE SALA EXITOSA
         showSuccessToast("La sala se ha actualizado con exito");
+  
       } catch (error) {
+        closeModal();
         // ALERTA SI FALLA LA ACTUALIZACION DE SALA
         showErrorToast("La sala no se ha podido actualizar, intenta de nuevo más tarde...");
+
+     
       }
     }
 

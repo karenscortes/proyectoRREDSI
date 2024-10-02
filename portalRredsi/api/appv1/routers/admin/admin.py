@@ -9,7 +9,7 @@ from appv1.crud.admin.admin import create_convocatoria, create_programacion_fase
 from appv1.routers.login import get_current_user
 from appv1.schemas.admin.admin import ConvocatoriaCreate, CreateSala, ProgramacionFaseCreate, UpdateSala
 from appv1.crud.admin.admin import create_convocatoria
-from appv1.schemas.admin.attendees import AttendeesBase, PaginatedAttendees, UpdatedAttendee
+from appv1.schemas.admin.attendees import PaginatedAttendees, UpdatedAttendee
 from appv1.schemas.admin.delegado import DelegadoResponse, PaginatedDelegadoResponse
 from appv1.schemas.admin.items_rubrica import ItemCreate, ItemUpdate
 from appv1.schemas.admin.rubrica import RubricaResponse
@@ -163,7 +163,7 @@ def create_delegates(
         raise HTTPException(status_code=400, detail="Ya se encuentra registrado un usuario con este documento")
     
     new_user = create_delegado(user, db)
-    # insertar_historial_admin(db,'Insertar',MODULE,new_user.id_usuario,current_user.id_usuario)
+    insertar_historial_admin(db,'Insertar',MODULE,new_user.id_usuario,current_user.id_usuario)
     if new_user:
         return{
             'success': True,
@@ -188,9 +188,9 @@ def create_item_rubric(
     if permisos is None or not permisos.p_insertar:
         raise HTTPException(status_code=401, detail="Usuario no autorizado")
     
-    item = create_items(item, db)
-    # insertar_historial_admin(db,'Insertar',MODULE,item.id_item_rubrica,current_user.id_usuario)
-    if item:
+    new_item = create_items(item, db)
+    insertar_historial_admin(db,'Insertar',MODULE,new_item.id_item_rubrica,current_user.id_usuario)
+    if new_item:
         return{
             'success': True,
             'message': 'Registrado con éxito', 
@@ -271,7 +271,7 @@ def create_sala_admin(
         raise HTTPException(status_code=401, detail="Usuario no autorizado")
 
     new_sala = create_sala(db, sala.id_usuario, sala.area_conocimento, sala.numero_sala, sala.nombre_sala)
-    # insertar_historial_admin(db,'Insertar',MODULE,new_sala.id_sala,current_user.id_usuario)
+    insertar_historial_admin(db,'Insertar',MODULE,new_sala.id_sala,current_user.id_usuario)
     if new_sala:
         return{
             'success': True,
@@ -439,9 +439,6 @@ async def get_attendee(
         raise HTTPException(status_code=401, detail="Usuario no autorizado")
     
     attendees, total_pages = get_attendee_by_document(db, documento,page, page_size)
-
-    if len(attendees) == 0:
-        raise HTTPException(status_code=404, detail="No hay asistentes con ese documento")
 
     return {
         "attendees": attendees,

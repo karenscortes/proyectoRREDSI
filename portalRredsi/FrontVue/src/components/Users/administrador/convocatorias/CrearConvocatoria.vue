@@ -55,7 +55,7 @@
                         </tr>
                       </tbody>
                     </table>
-                    <PaginatorBody :totalPages="totalPaginas" @page-changed="cambiarPagina" v-if="totalPaginas > 1" />
+                    <PaginatorBody :totalPages="totalPaginasConvocatoria" @page-changed="cambiarPaginaConvocatorias" v-if="totalPaginasConvocatoria > 1" />
                   </div>
                 </div>
               </div>
@@ -69,7 +69,15 @@
                 <div class="title-line mb-4"></div>
                 <div class="container">
                   <div class="row mb-4">
-                    <div class="col-sm-4">
+                    <div class="col-sm-6">
+                      <label><strong class="text-dark">Modalidad:</strong></label>
+                      <select class="form-select border border-dark">
+                        <option class="text-dark" value="" disabled>Seleccionar modalidad</option>
+                        <option value="Presencial">Presencial</option>
+                        <option value="Virtual">Virtual</option>
+                      </select>
+                    </div>
+                    <div class="col-sm-6">
                       <label><strong class="text-dark">Nombre:</strong></label>
                       <select class="form-select border border-dark" v-model="selectedFase">
                         <option class="text-dark" value="" disabled>Seleccionar</option>
@@ -80,54 +88,47 @@
                         <option value="Publicación de resultados">Publicación de resultados</option>
                       </select>
                     </div>
-                    <div class="col-sm-4">
+                    <div class="col-sm-4 mt-4">
                       <label><strong class="text-dark">Fecha Inicio:</strong></label>
                       <input type="date" class="form-control text-dark" v-model="fechaInicioFase">
                     </div>
-                    <div class="col-sm-4">
+                    <div class="col-sm-4 mt-4">
                       <label><strong class="text-dark">Fecha Fin:</strong></label>
                       <input type="date" class="form-control text-dark" v-model="fechaFinFase">
                     </div>
-                    <div class="col-sm-11 mt-3">
-                      <button class="btn btn-outline-warning col-sm-4 text-white">
-                      <i class="fas fa-plus"></i> 
-                      Agregar
-                    </button>
+                    <div class="col-sm-4 mt-5">
+                      <button class="btn btn-outline-warning w-100 text-white">
+                        <i class="fas fa-plus"></i> 
+                        Agregar
+                      </button>
                     </div>
                   </div>
-  
-                  <!-- Tabla de Fases -->
-                  <table class="table table-bordered border border-dark text-center">
-                    <thead>
-                      <tr>
-                        <th class="bg-warning">Fase</th>
-                        <th class="bg-warning">Nombre</th>
-                        <th class="bg-warning">Fecha Inicio</th>
-                        <th class="bg-warning">Fecha Fin</th>
-                        <th class="bg-warning">Editar</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr v-for="fase in fases" :key="fase.nombre">
-                        <td>{{ fase.nombre }}</td>
-                        <td>{{ fase.fechaInicio }}</td>
-                        <td>{{ fase.fechaFin }}</td>
-                        <td class="text-center">
-                          <button type="button" class="btn" @click="editFase(fase)">
-                            <i class="fas fa-edit"></i>
-                          </button>
-                        </td>
-                      </tr>
-                    </tbody>
-                  </table>
+                  <!-- Tabla para mostrar fases -->
+                  <div class="table-responsive mt-4">
+                      <table class="table table-striped">
+                          <thead class="thead-warning">
+                              <tr>
+                                  <th scope="col">Nombre</th>
+                                  <th scope="col">Modalidad</th>
+                                  <th scope="col">Fecha Inicio</th>
+                                  <th scope="col">Fecha Fin</th>
+                              </tr>
+                          </thead>
+                          <tbody>
+                              <tr v-for="fase in fases" :key="fase.id">
+                                  <td>{{ fase.fase_nombre }}</td> <!-- Asegúrate de que `fase.nombre` existe -->
+                                  <td>{{ fase.etapa_nombre }}</td> <!-- Asegúrate de que `fase.modalidad` existe -->
+                                  <td>{{ fase.fecha_inicio }}</td> <!-- Verifica que esto coincida con la propiedad correcta -->
+                                  <td>{{ fase.fecha_fin }}</td> <!-- Verifica que esto coincida con la propiedad correcta -->
+                              </tr>
+                          </tbody>
+                      </table>
+                      <PaginatorBody :totalPages="totalPaginasFase" @page-changed="cambiarPaginaFases" v-if="totalPaginasFase > 1" />
+                  </div>
                 </div>
               </div>
 
-              <!-- Botón de Guardar -->
-              <div class="text-center mt-4">
-                <button type="button" class="btn btn-primary text-white" @click="saveData">Guardar</button>
-              </div>
-  
+
               <!-- Modal de Crear Convocatoria -->
               <div class="modal fade" id="crearConvocatoria" tabindex="-1" role="dialog">
                 <div class="modal-dialog" role="document">
@@ -175,7 +176,7 @@
   </template>
   
 <script>
-  import { createConvocatoria, getConvocatoriasByPage } from '../../../../services/administradorService';
+  import { createConvocatoria, getConvocatoriasByPage, getProgramacionFasesByPage } from '../../../../services/administradorService';
   import { useToastUtils } from '@/utils/toast';
   import PaginatorBody from '../../../UI/PaginatorBody.vue';
 
@@ -183,26 +184,22 @@
   export default {
     data() {
       return {
-        paginaActual: 1,  // Página actual de la paginación
-        totalPaginas: 0,  // Total de páginas disponibles
+        paginaActualConvocatoria: 1,  // Página actual de la paginación
+        totalPaginasConvocatoria: 0,  // Total de páginas disponibles
+
+        paginaActualFase: 1,
+        totalPaginasFase: 0,
 
         convocatorias: [],
         newConvocatoria: {
           nombre: '',
-          fechaInicio: '',
+          modalidad: '',
           fechaFin: '',
           estado: '',
         },
-        etapas: [],
-        etapaVirtual: {
-          fechaInicio: '',
-          fechaFin: ''
-        },
-        etapaPresencial: {
-          fechaInicio: '',
-          fechaFin: ''
-        },
+        
         fases: [],
+        nombre: '',
         selectedFase: '',
         fechaInicioFase: '',
         fechaFinFase: ''
@@ -272,47 +269,37 @@
       },
 
       // Obtener las convocatorias de la API
-      async fetchConvocatorias() {
+      async fetchConvocatorias(paginaActualConvocatoria) {
         try {
-          const response = await getConvocatoriasByPage(this.paginaActual);
+          const response = await getConvocatoriasByPage(paginaActualConvocatoria);
           this.convocatorias = response.convocatorias;  // Asignar los administradores
-          this.totalPaginas = response.total_pages;  // Total de páginas para la paginación
+          this.totalPaginasConvocatoria = response.data.totalPaginasConvocatoria;  // Total de páginas para la paginación
         } catch (error) {
           showWarningToast('Error al obtener convocatorias');
         }
       },
-
-      // Crear nueva etapa
-      async createEtapa(tipo) {
-        const nuevaEtapa = tipo === 'virtual' ? { ...this.etapaVirtual } : { ...this.etapaPresencial };
-        
-        // Validar fechas de la etapa
-        if (!nuevaEtapa.fechaInicio || !nuevaEtapa.fechaFin) {
-          showWarningToast('Ambas fechas de la etapa son obligatorias');
-          return;
-        }
-
+      
+      async fetchFases() {
         try {
-          // Llamada al servicio de creación de etapas
-          await createEtapa(nuevaEtapa, this.selectedConvocatoriaId); // Aquí debes pasar el id de la convocatoria
-          showSuccessToast('Etapa creada exitosamente');
-          this.etapas.push(nuevaEtapa);
-
-          // Limpiar los campos
-          if (tipo === 'virtual') {
-            this.etapaVirtual = { fechaInicio: '', fechaFin: '' };
-          } else {
-            this.etapaPresencial = { fechaInicio: '', fechaFin: '' };
-          }
+            const response = await getProgramacionFasesByPage(this.paginaActualFase);
+            this.fases = response.programacion_fases; // Verifica que esto sea correcto
+            this.totalPaginasFase = response.data.totalPaginasFase; // Asegúrate de que esta propiedad exista en la respuesta
         } catch (error) {
-          showErrorToast(error?.detail || 'Ocurrió un error al crear la etapa');
+            showWarningToast('Error al obtener fases');
         }
       },
 
-      // Paginación
-      cambiarPagina(pagina){
-          this.paginaActual = pagina;
-          this.fetchConvocatorias(pagina);
+
+      // Paginación convocatorias
+      cambiarPaginaConvocatorias(paginaConvocatoria){
+          this.paginaActualConvocatoria = paginaConvocatoria;
+          this.fetchConvocatorias(paginaConvocatoria);
+      },
+
+      // Paginación fases
+      cambiarPaginaFases(paginaFases){
+          this.paginaActualFase = paginaFases;
+          this.fetchFases(paginaFases);
       },
 
       // Guardar todos los datos
@@ -322,6 +309,7 @@
     }, 
     mounted() {
       this.fetchConvocatorias();
+      this.fetchFases();
     },
   };
 </script>
