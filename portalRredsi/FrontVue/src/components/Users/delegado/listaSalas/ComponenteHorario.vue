@@ -96,7 +96,7 @@
                             <div class="col-md-6">
                                 <h4 class="fs-5 text-dark">URL de presentación</h4>
                                 <p class="fs-6">
-                                    <a href="" target="_blank" class="text-primary">Ver presentación</a>
+                                    <a :href="url_presentacion" target="_blank" class="text-primary">Ver presentación</a>
                                 </p>
                             </div>
                         </div>
@@ -113,7 +113,7 @@
 
 <script>
 import { obtenerDetalleSala, obtenerDatosProyecto, obtenerPonentesProyecto } from "@/services/salasDelegadoService";
-import { obtenerEvaluadoresProyecto } from "@/services/delegadoService";
+import { obtenerEvaluadoresProyecto, obtenerUrlPresentacionProyecto } from "@/services/delegadoService";
 import FlashMessage from "../../../FlashMessage.vue";
 
 export default {
@@ -134,6 +134,7 @@ export default {
             tipo_alerta: "",
             isOpen: false,
             ponentes: [],
+            url_presentacion:"",
             horariosProyectoSeleccionado: {
                 hora_inicio: "",
                 hora_fin: ""
@@ -240,13 +241,31 @@ export default {
             await this.obtenerDetalleProyecto(p_id_proyecto);
 
             // obtiene los evaluadores del proyecto que selecciono
-            const responseEvaluadores = await obtenerEvaluadoresProyecto(p_id_proyecto);
-            this.evaluadoresProyectoSeleccionado = responseEvaluadores;
+            try {
+                const responseEvaluadores = await obtenerEvaluadoresProyecto(p_id_proyecto);
+                this.evaluadoresProyectoSeleccionado = responseEvaluadores;
+            } catch (error) {
+                console.error(error);
+            }
 
             // obtiene los ponentes del proyecto que selecciono
-            const responsePonentes = await obtenerPonentesProyecto(p_id_proyecto);
-            this.ponentes = responsePonentes.data.ponentes;
+            try {
+                const responsePonentes = await obtenerPonentesProyecto(p_id_proyecto);
+                this.ponentes = responsePonentes.data.ponentes;
+            } catch (error) {
+                console.error(error);
+            }
+            
 
+            // obtiene la url de presentacion de un proyecto
+            try {
+                const responseUrlPresentacion = await obtenerUrlPresentacionProyecto(p_id_proyecto);
+                this.url_presentacion = responseUrlPresentacion.data;
+            } catch (error) {
+                this.url_presentacion = "Sin presentación";
+                console.error(error);
+            }
+            
         },
         limpiarModalDetalleProyecto() {
             this.detalle_proyecto = "";

@@ -36,6 +36,24 @@ export const obtenerCantidadProyectosAsignados = async () => {
     }
 };
 
+// Función para obtener cantidad la url de una presentación de un proyecto
+export const obtenerUrlPresentacionProyecto = async (id_proyecto) => {
+    try {
+        const response = await api.get(`/salas/get-presentacion-proyecto/?id_proyecto=${id_proyecto}`, {
+            headers: {
+                'Authorization': `Bearer ${localStorage.getItem('access_token')}`
+            }
+        });
+        return response;
+    } catch (error) {
+        if (error.response) {
+            throw error;
+        } else {
+            throw new Error('Error de red o de servidor');
+        }
+    }
+};
+
 // Función para obtener proyectos sin asignar
 export const proyectosSinAsignar = async (page = 1, pageSize = 10) => {
     try {
