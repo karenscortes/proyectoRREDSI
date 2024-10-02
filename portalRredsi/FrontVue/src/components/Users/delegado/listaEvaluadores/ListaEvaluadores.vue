@@ -258,7 +258,10 @@ export default {
                 const response = await getCertificatesById(this.evaluadorActual.id_usuario);
                 console.log(response.data);
                 this.certificates = response.data;
-
+                if (this.certificates.length == 0){
+                    this.showInfoToast("No se registraron títulos académicos");
+                    return;
+                }
                 // Abre el modal de titulos
                 $('#modal_titulos').modal('show');
             } catch (error) {
