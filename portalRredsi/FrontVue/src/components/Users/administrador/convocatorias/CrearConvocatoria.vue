@@ -55,7 +55,8 @@
                         </tr>
                       </tbody>
                     </table>
-                    <PaginatorBody :totalPages="totalPaginasConvocatoria" @page-changed="cambiarPaginaConvocatorias" v-if="totalPaginasConvocatoria > 1" />
+                    <!-- Paginador -->
+                    <PaginatorBody :totalPages="totalPaginasConvocatoria" @page-changed="cambiarPaginaConvocatoria" v-if="totalPaginasConvocatoria > 1" />
                   </div>
                 </div>
               </div>
@@ -116,14 +117,14 @@
                           </thead>
                           <tbody>
                               <tr v-for="fase in fases" :key="fase.id">
-                                  <td>{{ fase.fase_nombre }}</td> <!-- Asegúrate de que `fase.nombre` existe -->
-                                  <td>{{ fase.etapa_nombre }}</td> <!-- Asegúrate de que `fase.modalidad` existe -->
-                                  <td>{{ fase.fecha_inicio }}</td> <!-- Verifica que esto coincida con la propiedad correcta -->
-                                  <td>{{ fase.fecha_fin }}</td> <!-- Verifica que esto coincida con la propiedad correcta -->
+                                  <td>{{ fase.fase_nombre }}</td> 
+                                  <td>{{ fase.etapa_nombre }}</td> 
+                                  <td>{{ fase.fecha_inicio }}</td> 
+                                  <td>{{ fase.fecha_fin }}</td> 
                               </tr>
                           </tbody>
                       </table>
-                      <PaginatorBody :totalPages="totalPaginasFase" @page-changed="cambiarPaginaFases" v-if="totalPaginasFase > 1" />
+                      <PaginatorBody :totalPages="totalPaginasFases" @page-changed="cambiarPaginaFases" v-if="totalPaginasFases > 1" />
                   </div>
                 </div>
               </div>
@@ -162,7 +163,7 @@
                         </select>
                       </div>
                     </div>
-                    <div class="modal-footer">
+                    <div class="modal-footer text-center">
                       <button type="button" class="btn btn-primary" @click="createConvocatoria">Crear</button>
                     </div>
                   </div>
@@ -184,11 +185,11 @@
   export default {
     data() {
       return {
-        paginaActualConvocatoria: 1,  // Página actual de la paginación
-        totalPaginasConvocatoria: 0,  // Total de páginas disponibles
+        totalPaginasConvocatoria: 0,
+        PaginarActualConvocatoria: 1,
 
-        paginaActualFase: 1,
-        totalPaginasFase: 0,
+        totalPaginasFases: 0,
+        PaginarActualFases: 1,
 
         convocatorias: [],
         newConvocatoria: {
@@ -269,43 +270,41 @@
       },
 
       // Obtener las convocatorias de la API
-      async fetchConvocatorias(paginaActualConvocatoria) {
+      async fetchConvocatorias(pagina_actual) {
         try {
-          const response = await getConvocatoriasByPage(paginaActualConvocatoria);
-          this.convocatorias = response.convocatorias;  // Asignar los administradores
-          this.totalPaginasConvocatoria = response.data.totalPaginasConvocatoria;  // Total de páginas para la paginación
+          const respuesta = await getConvocatoriasByPage(pagina_actual);
+          this.convocatorias = respuesta.convocatorias;  // Asignar los administradores
+          this.totalPaginasConvocatoria = respuesta.total_pages;  // Total de páginas para la paginación
         } catch (error) {
           showWarningToast('Error al obtener convocatorias');
         }
       },
       
-      async fetchFases() {
+      async fetchFases(pagina_actual) {
         try {
-            const response = await getProgramacionFasesByPage(this.paginaActualFase);
-            this.fases = response.programacion_fases; // Verifica que esto sea correcto
-            this.totalPaginasFase = response.data.totalPaginasFase; // Asegúrate de que esta propiedad exista en la respuesta
+          const respuesta = await getProgramacionFasesByPage(pagina_actual);
+          console.log('Respuesta de fases:', respuesta); // <-- Agregar log para ver qué llega
+          this.fases = respuesta.fases; 
+          this.totalPaginasFases = respuesta.total_pages;
         } catch (error) {
-            showWarningToast('Error al obtener fases');
+          showWarningToast('Error al obtener fases');
         }
       },
 
 
+
       // Paginación convocatorias
-      cambiarPaginaConvocatorias(paginaConvocatoria){
-          this.paginaActualConvocatoria = paginaConvocatoria;
-          this.fetchConvocatorias(paginaConvocatoria);
+      cambiarPaginaConvocatoria(pagina){
+          this.PaginarActualConvocatoria = pagina;
+          this.fetchConvocatorias(pagina);
       },
 
       // Paginación fases
-      cambiarPaginaFases(paginaFases){
-          this.paginaActualFase = paginaFases;
-          this.fetchFases(paginaFases);
+      cambiarPaginaFases(pagina){
+          this.paginaActualFase = pagina;
+          this.fetchFases(pagina);
       },
 
-      // Guardar todos los datos
-      saveData() {
-        // Implementar la lógica para guardar toda la información
-      },
     }, 
     mounted() {
       this.fetchConvocatorias();
