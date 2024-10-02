@@ -95,7 +95,7 @@
         </tfoot>
       </table>
     </div>
-    <div class="col-8 text-center py-5" v-if="puedeCalificar">
+    <div class="col-8 text-center py-5" v-if="botonCalificar == 'Activo'">
       <button @click.prevent="enviarCalificaciones" class="btn btn-warning font-weight-bold text-dark">
         Calificar
       </button>
@@ -104,194 +104,207 @@
 </template>
   
 <script>
-import { ref, computed, watch, onMounted } from 'vue';
-import { obtenerDatosParaCalificarProyecto, insertarRespuestaRubrica, obtenerEtapaActual, obtenerRubricasCalificadas } from '../../../services/evaluadorService';
-import { useAuthStore } from '@/store';
-import { useToastUtils } from '@/utils/toast'; // Importar aquí directamente
+  import { ref, computed, watch, onMounted } from 'vue';
+  import { obtenerDatosParaCalificarProyecto, insertarRespuestaRubrica, obtenerEtapaActual, obtenerRubricasCalificadas } from '../../../services/evaluadorService';
+  import { useAuthStore } from '@/store';
+  import { useToastUtils } from '@/utils/toast'; // Importar aquí directamente
 
-export default {
-  props: {
-    proyecto: {
-      type: Object,
-      required: true
-    }
-  },
-  setup(props,  { emit }) {
-    const tituloProyecto = ref('');
-    const universidadProyecto = ref('');
-    const nombreEvaluador = ref('');
-    const cedulaEvaluador = ref('');
-    const universidadEvaluador = ref('');
-    const emailEvaluador = ref('');
-    const celularEvaluador = ref('');
-    const ponentesProyecto = ref('');
-    const componentes = ref([]);
-    const puntajeTotal = ref(0);
-    const currentEtapa = ref('');
-
-
-    const { showSuccessToast, showErrorToast, showWarningToast} = useToastUtils();
-
-    const puedeCalificar = computed(() => {
-      // Verificar si el estado es pendiente en alguna de las fases (P_virtual o P_presencial)
-      return props.proyecto.estado_evaluacion === 'P_virtual' || props.proyecto.estado_evaluacion === 'P_presencial';
-    });
-
-    const disabledCalificacionObservacion = computed(() => {
-      return props.proyecto.estado_evaluacion === 'C_presencial' || props.proyecto.estado_evaluacion === 'C_virtual';
-    });
-
-    const obtenerDatos = async () => {
-      const authStore = useAuthStore();
-      const user = authStore.user;
-
-      try {
-        // Verificar si el proyecto está calificado
-        if (props.proyecto.estado_evaluacion === 'C_presencial' || props.proyecto.estado_evaluacion === 'C_virtual' ) {
-          // Obtener datos del proyecto cuando esta calificado
-          const data = await obtenerRubricasCalificadas(props.proyecto.id_proyecto, user.id_usuario);
-          tituloProyecto.value = data.titulo_proyecto;
-          universidadProyecto.value = data.universidad_proyecto;
-          nombreEvaluador.value = data.nombre_evaluador;
-          cedulaEvaluador.value = data.cedula_evaluador;
-          universidadEvaluador.value = data.universidad_evaluador;
-          emailEvaluador.value = data.email_evaluador;
-          celularEvaluador.value = data.celular_evaluador;
-          ponentesProyecto.value = data.nombres_ponentes;
-          componentes.value = data.componentes;
-
-        } else {  
-          //Si no esta calificado, se pondra nulo la observacion y calificacion
-          const data = await obtenerDatosParaCalificarProyecto(props.proyecto.id_proyecto, user.id_usuario);
-          tituloProyecto.value = data.titulo_proyecto;
-          universidadProyecto.value = data.universidad_proyecto;
-          nombreEvaluador.value = data.nombre_evaluador;
-          cedulaEvaluador.value = data.cedula_evaluador;
-          universidadEvaluador.value = data.universidad_evaluador;
-          emailEvaluador.value = data.email_evaluador;
-          celularEvaluador.value = data.celular_evaluador;
-          ponentesProyecto.value = data.nombres_ponentes;
-          componentes.value = data.componentes;
-        }
-
-        // Obtener etapa actual
-        const response = await obtenerEtapaActual();
-        currentEtapa.value = response.nombre_etapa;
-
-      } catch (error) {
-        showErrorToast('Error al obtener los datos del proyecto o la etapa:');
+  export default {
+    props: {
+      proyecto: {
+        type: Object,
+        required: true
       }
-
-    };
-
-    const actualizarPuntajeTotal = () => {
-      puntajeTotal.value = componentes.value.reduce((total, componente) => {
-        return total + (componente.calificacion || 0);
-      }, 0);
-    };
-
-    const validarCalificacion = (componente, index) => {
-      //Si la calificacion que va a insertar es mayor al valor maximo, se pondrá el valor maximo y manda una alerta
-      if (componente.calificacion > componente.valor_maximo) {
-        showWarningToast(`La calificación para "${componente.titulo}" no puede exceder el valor de ${componente.valor_maximo}.`);
-        componente.calificacion = componente.valor_maximo;
-      }
-
-      if (componente.calificacion < 0) {
-        showWarningToast(`La calificación para "${componente.titulo}" no puede ser menor de 0.`);
-        componente.calificacion = 0;
-      }
-      actualizarPuntajeTotal();
-    };
-
-    const actualizarCaracteres = (event) => {
-      const textarea = event.target;
-      textarea.style.height = 'auto';
-      textarea.style.height = textarea.scrollHeight + 'px';
-    };
-
-    const formateadoPuntajeTotal = computed(() => {
-      return puntajeTotal.value.toFixed(1);
-    });
-
-    const validarCalificacionesYObservaciones = () => {
-      //Verificamos si hay algún campo vacío
-      for (let componente of componentes.value) {
-        const calificacionValida = componente.calificacion !== null && componente.calificacion !== undefined && componente.calificacion !== '';
-        const observacionValida = componente.observaciones !== null && componente.observaciones !== undefined && componente.observaciones.trim() !== '';
-
-        if (!calificacionValida || !observacionValida) {
-          showWarningToast('Hay campos vacíos en las calificaciones o observaciones.');
-          return false; // Si algún campo está vacío, retornamos false para indicar que la validación ha fallado
-        }
-      }
-      return true; // Si todos los campos están completos, retornamos true
-    };
+    },
+    setup(props,  { emit }) {
+      const tituloProyecto = ref('');
+      const universidadProyecto = ref('');
+      const nombreEvaluador = ref('');
+      const cedulaEvaluador = ref('');
+      const universidadEvaluador = ref('');
+      const emailEvaluador = ref('');
+      const celularEvaluador = ref('');
+      const ponentesProyecto = ref('');
+      const componentes = ref([]);
+      const puntajeTotal = ref(0);
+      const currentEtapa = ref('');
+      const botonCalificar = ref('Activo');
 
 
-    const enviarCalificaciones = async () => {
+      const { showSuccessToast, showErrorToast, showWarningToast, showInfoToast} = useToastUtils();
 
-      // Validar antes campos de enviar la calificacion
-      if (!validarCalificacionesYObservaciones()) {
-        return;  // Si la validación falla, no se envían las calificaciones
-      }
+      const puedeCalificar = computed(() => {
+        // Verificar si el estado es pendiente en alguna de las fases (P_virtual o P_presencial)
+        return props.proyecto.estado_evaluacion === 'P_virtual' || props.proyecto.estado_evaluacion === 'P_presencial';
+      });
 
-      try {
+      const disabledCalificacionObservacion = computed(() => {
+        return props.proyecto.estado_evaluacion === 'C_presencial' || props.proyecto.estado_evaluacion === 'C_virtual' || botonCalificar.value==="Inactivo";
+      });
+
+      const obtenerDatos = async () => {
         const authStore = useAuthStore();
         const user = authStore.user;
 
-        // Iterar sobre los componentes y enviar la calificación de cada uno
-        for (let componente of componentes.value) {
-          const respuestaData = {
-            id_item_rubrica: componente.id_item_rubrica,
-            id_usuario: user.id_usuario,
-            id_proyecto: props.proyecto.id_proyecto,
-            observacion: componente.observaciones,
-            calificacion: componente.calificacion,
-            calificacion_final: puntajeTotal.value,
-            etapa_actual: currentEtapa.value,  // Etapa actual
-          };
+        try {
+          // Intentamos obtener los datos de las rúbricas calificadas.
+          const data = await obtenerRubricasCalificadas(props.proyecto.id_proyecto, user.id_usuario);
+          
+          // Si se obtienen correctamente, significa que ya hay calificaciones registradas.
+          tituloProyecto.value = data.titulo_proyecto;
+          universidadProyecto.value = data.universidad_proyecto;
+          nombreEvaluador.value = data.nombre_evaluador;
+          cedulaEvaluador.value = data.cedula_evaluador;
+          universidadEvaluador.value = data.universidad_evaluador;
+          emailEvaluador.value = data.email_evaluador;
+          celularEvaluador.value = data.celular_evaluador;
+          ponentesProyecto.value = data.nombres_ponentes;
+          componentes.value = data.componentes;
 
-          await insertarRespuestaRubrica(respuestaData);
+          if(props.proyecto.estado_evaluacion === 'P_presencial'){
+            showInfoToast("El estado del proyecto cambiará a calificado en el momento que se ingrese la otra respuesta del otro evaluador.");
+          }
+
+          botonCalificar.value = "Inactivo";
+
+        } catch (error) {
+          // Si hay un error, significa que no hay calificaciones registradas aún, por lo tanto, obtenemos los datos para calificar.
+          try {
+            const data = await obtenerDatosParaCalificarProyecto(props.proyecto.id_proyecto, user.id_usuario);
+            
+            tituloProyecto.value = data.titulo_proyecto;
+            universidadProyecto.value = data.universidad_proyecto;
+            nombreEvaluador.value = data.nombre_evaluador;
+            cedulaEvaluador.value = data.cedula_evaluador;
+            universidadEvaluador.value = data.universidad_evaluador;
+            emailEvaluador.value = data.email_evaluador;
+            celularEvaluador.value = data.celular_evaluador;
+            ponentesProyecto.value = data.nombres_ponentes;
+            componentes.value = data.componentes;
+          
+          } catch (innerError) {
+            showErrorToast('Error al obtener los datos para calificar el proyecto.');
+          }
         }
 
-        showSuccessToast('Calificación enviada exitosamente'); 
-        emit('volver'); // Emite el evento también en caso de error
-       
-      } catch (error) {
-        showErrorToast('Ocurrió un error al enviar las calificaciones');
-      }
+        // Obtener etapa actual
+        try {
+          const response = await obtenerEtapaActual();
+          currentEtapa.value = response.nombre_etapa;
+        } catch (etapaError) {
+          showErrorToast('Error al obtener la etapa actual.');
+        }
     };
 
-    watch(() => componentes.value, actualizarPuntajeTotal, { deep: true });
+      const actualizarPuntajeTotal = () => {
+        puntajeTotal.value = componentes.value.reduce((total, componente) => {
+          return total + (componente.calificacion || 0);
+        }, 0);
+      };
 
-    onMounted(() => {
-      obtenerDatos();
-    });
-    
+      const validarCalificacion = (componente, index) => {
+        //Si la calificacion que va a insertar es mayor al valor maximo, se pondrá el valor maximo y manda una alerta
+        if (componente.calificacion > componente.valor_maximo) {
+          showWarningToast(`La calificación para "${componente.titulo}" no puede exceder el valor de ${componente.valor_maximo}.`);
+          componente.calificacion = componente.valor_maximo;
+        }
 
-    return {
-      tituloProyecto,
-      universidadProyecto,
-      nombreEvaluador,
-      cedulaEvaluador,
-      universidadEvaluador,
-      emailEvaluador,
-      celularEvaluador,
-      ponentesProyecto,
-      componentes,
-      puntajeTotal,
-      formateadoPuntajeTotal,
-      actualizarPuntajeTotal,
-      actualizarCaracteres,
-      enviarCalificaciones,
-      puedeCalificar,
-      disabledCalificacionObservacion,
-      validarCalificacion,
-    };
-  },
+        if (componente.calificacion < 0) {
+          showWarningToast(`La calificación para "${componente.titulo}" no puede ser menor de 0.`);
+          componente.calificacion = 0;
+        }
+        actualizarPuntajeTotal();
+      };
+
+      const actualizarCaracteres = (event) => {
+        const textarea = event.target;
+        textarea.style.height = 'auto';
+        textarea.style.height = textarea.scrollHeight + 'px';
+      };
+
+      const formateadoPuntajeTotal = computed(() => {
+        return puntajeTotal.value.toFixed(1);
+      });
+
+      const validarCalificacionesYObservaciones = () => {
+        //Verificamos si hay algún campo vacío
+        for (let componente of componentes.value) {
+          const calificacionValida = componente.calificacion !== null && componente.calificacion !== undefined && componente.calificacion !== '';
+          const observacionValida = componente.observaciones !== null && componente.observaciones !== undefined && componente.observaciones.trim() !== '';
+
+          if (!calificacionValida || !observacionValida) {
+            showWarningToast('Hay campos vacíos en las calificaciones o observaciones.');
+            return false; // Si algún campo está vacío, retornamos false para indicar que la validación ha fallado
+          }
+        }
+        return true; // Si todos los campos están completos, retornamos true
+      };
+
+
+      const enviarCalificaciones = async () => {
+
+        // Validar antes campos de enviar la calificacion
+        if (!validarCalificacionesYObservaciones()) {
+          return;  // Si la validación falla, no se envían las calificaciones
+        }
+
+        try {
+          const authStore = useAuthStore();
+          const user = authStore.user;
+
+          // Iterar sobre los componentes y enviar la calificación de cada uno
+          for (let componente of componentes.value) {
+            const respuestaData = {
+              id_item_rubrica: componente.id_item_rubrica,
+              id_usuario: user.id_usuario,
+              id_proyecto: props.proyecto.id_proyecto,
+              observacion: componente.observaciones,
+              calificacion: componente.calificacion,
+              calificacion_final: puntajeTotal.value,
+              etapa_actual: currentEtapa.value,  // Etapa actual
+            };
+
+            await insertarRespuestaRubrica(respuestaData);
+          }
+
+          showSuccessToast('Calificación enviada exitosamente'); 
+          emit('volver'); // Emite el evento también en caso de error
+        
+        } catch (error) {
+          showErrorToast('Ocurrió un error al enviar las calificaciones');
+        }
+      };
+
+      watch(() => componentes.value, actualizarPuntajeTotal, { deep: true });
+
+      onMounted(() => {
+        obtenerDatos();
+      });
+      
+
+      return {
+        tituloProyecto,
+        universidadProyecto,
+        nombreEvaluador,
+        cedulaEvaluador,
+        universidadEvaluador,
+        emailEvaluador,
+        celularEvaluador,
+        ponentesProyecto,
+        componentes,
+        puntajeTotal,
+        formateadoPuntajeTotal,
+        actualizarPuntajeTotal,
+        actualizarCaracteres,
+        enviarCalificaciones,
+        puedeCalificar,
+        disabledCalificacionObservacion,
+        validarCalificacion,
+        botonCalificar,
+      };
+    },
     emits: ['volver'], 
-};
+  };
 </script>
 
 <style scoped>
@@ -335,7 +348,5 @@ export default {
   .btn-warning {
     width: 300px;
   }
-
-
 
 </style>

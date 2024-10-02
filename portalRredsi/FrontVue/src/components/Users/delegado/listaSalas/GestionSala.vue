@@ -201,7 +201,7 @@ export default defineComponent({
                 this.listaProyectosSinAsignar = response.data.proyectos;
 
             } catch (error) {
-                this.showInfoToast("Todos los proyectos han sido asignados");
+                this.showInfoToast("Todos los proyectos están asignados");
             }
         },
         async consultarPonentesProyecto(id_proyecto) {

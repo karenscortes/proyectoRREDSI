@@ -142,6 +142,48 @@ def get_ponentes_proyecto(db: Session, id_proyecto: int):
     except SQLAlchemyError as e:
         raise HTTPException(status_code=500, detail="La sala no se ha encontrado")
 
+# PROYECTOS SIN ASIGNAR EN LA ETAPA PRESENCIAL
+def get_proyectos_sin_asignar_etapa_presencial(db: Session):
+        try:
+
+            sql = text(
+            """
+                    SELECT  DISTINCT proyectos.id_proyecto,
+                                    proyectos.titulo,
+                                    proyectos.id_institucion,
+                                    areas_conocimiento.id_area_conocimiento
+                    FROM proyectos
+                            JOIN areas_conocimiento ON (proyectos.id_area_conocimiento = areas_conocimiento.id_area_conocimiento)
+                            JOIN proyectos_convocatoria ON (proyectos.id_proyecto = proyectos_convocatoria.id_proyecto) 
+                            JOIN participantes_proyecto ON (participantes_proyecto.id_proyectos_convocatoria = proyectos_convocatoria.id_proyecto_convocatoria)  
+                            JOIN convocatorias ON (proyectos_convocatoria.id_convocatoria = convocatorias.id_convocatoria)  
+                            LEFT JOIN detalle_sala ON proyectos_convocatoria.id_proyecto_convocatoria = detalle_sala.id_proyecto_convocatoria     
+                    WHERE proyectos.estado_asignacion= 'pendiente' 
+                    AND convocatorias.estado = 'en curso' 
+                    AND participantes_proyecto.id_etapa = 1
+                    AND detalle_sala.id_proyecto_convocatoria IS NULL
+            """
+            )
+            
+            result = db.execute(sql).mappings().all()
+
+            return result
+        except SQLAlchemyError as e:
+                print(f"Error al obtener proyectos no asignados: {e}")
+                raise HTTPException(status_code=500, detail="Error al obtener todos los proyectos no asignados")
+
+# Consultar la url de presentacion de un proyecto especifico
+def get_url_presentacion_proyecto(db: Session, id_proyecto: int):
+    try:
+        sql = text("""SELECT url_presentacion
+                        FROM presentaciones_proyectos 
+                        WHERE id_proyecto = :id_p
+                    """)
+        result = db.execute(sql, {"id_p": id_proyecto}).scalar()
+        return result
+    except SQLAlchemyError as e:
+        raise HTTPException(status_code=500, detail="La presentación no se ha encontrado")
+    
 # CONSULTAR LOS POSIBLES EVALUADORES PARA UN PROYECTO EN ETAPA PRESENCIAL
 def get_posibles_evaluadores_para_proyecto_etapa_presencial(db: Session, id_area_conocimiento: int, id_institucion: int):
     try:

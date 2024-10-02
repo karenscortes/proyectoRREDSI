@@ -14,7 +14,7 @@
             <ul class="main_nav_list d-flex justify-content-between">
               <li class="main_nav_item">
                 <!-- Componente que se remplazará por el Inicio Principal -->
-                <a href="#" @click="selectComponent('InicioPage')">Inicio</a>
+                <a href="#" @click="selectComponent('InicioPrincipal')">Inicio</a>
               </li>
               <li class="main_nav_item">
                 <div class="dropdown">
@@ -24,7 +24,7 @@
                   </a>
                   <div class="dropdown-menu text-center">
                     <a href="#" class="dropdown-item" @click="selectComponent('RegistroProyecto')">Registrar proyecto</a>
-                    <a href="#" class="dropdown-item" @click="selectComponent('RubricasCalificadas')">Consultar proyecto</a>
+                    <a href="#" class="dropdown-item" @click="selectComponent('Rubricas_Calificadas')">Consultar proyecto</a>
                   </div>
                 </div>
               </li>
@@ -53,7 +53,7 @@
       <div class="menu_inner menu_mm">
         <div class="menu menu_mm">
           <ul class="menu_list menu_mm">
-            <li class="menu_item menu_mm"><a href="#" @click="selectComponent('InicioPage')">Inicio</a></li>
+            <li class="menu_item menu_mm"><a href="#" @click="selectComponent('InicioPrincipal')">Inicio</a></li>
             <li class="menu_item menu_mm dropdown">
               <a  href="#" class="dropdown-toggle" role="button" type="button"
                 data-toggle="dropdown" aria-expanded="false">

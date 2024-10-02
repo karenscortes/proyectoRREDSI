@@ -727,23 +727,28 @@ def get_datos_proyecto_calificado_completo(db: Session, id_proyecto: int, id_usu
 
         # Obtener los datos para calificar un proyecto
 
-# Obtener los nombres de las fases y las fechas de la programación de una convocatoria en curso
-def get_nombres_fases_y_fechas_programacion(db: Session) -> List[dict]:
+# Obtener los nombres de las fases y las fechas de la programación de una convocatoria en curso filtrando por etapa
+def get_nombres_fases_y_fechas_programacion(db: Session, nombre_etapa: str) -> List[dict]:
     try:
         sql_query = text("""
             SELECT 
-                fase.nombre AS nombre_fase,
+                fases.nombre AS nombre_fase,
                 programacion_fases.fecha_inicio,
                 programacion_fases.fecha_fin
             FROM programacion_fases
-            JOIN convocatorias ON programacion_fases.id_convocatoria = convocatorias.id_convocatoria
-            JOIN fases AS fase ON programacion_fases.id_fase = fase.id_fase
+            JOIN convocatorias 
+                ON programacion_fases.id_convocatoria = convocatorias.id_convocatoria
+            JOIN fases 
+                ON programacion_fases.id_fase = fases.id_fase
+            JOIN etapas 
+                ON fases.id_etapa = etapas.id_etapa 
             WHERE 
                 convocatorias.estado = 'en curso'
+                AND etapas.nombre = :nombre_etapa  
         """)
         
-        # Ejecuta la consulta y obtiene los resultados
-        result = db.execute(sql_query).fetchall()
+        # Ejecuta la consulta y pasa el parámetro de la etapa
+        result = db.execute(sql_query, {"nombre_etapa": nombre_etapa}).fetchall()
 
         # Transformar el resultado en una lista de diccionarios
         programacion_fases = [

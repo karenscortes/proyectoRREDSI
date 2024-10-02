@@ -6,7 +6,7 @@ from appv1.routers.login import get_current_user
 from appv1.schemas.delegado.salas import AsignarProyectoSala, DetalleSala, SalaBase, SalaResponse
 from appv1.schemas.usuario import UserResponse
 from db.database import get_db
-from appv1.crud.delegado.salas import asignar_evaluadores_para_proyecto_etapa_presencial, asignar_proyecto_a_sala, get_detalle_sala, get_ponentes_proyecto, get_posibles_evaluadores_para_proyecto_etapa_presencial, get_proyectos_sin_asignar_etapa_presencial, get_salas_por_convocatoria, verificar_sala_asignada
+from appv1.crud.delegado.salas import asignar_evaluadores_para_proyecto_etapa_presencial, asignar_proyecto_a_sala, get_detalle_sala, get_ponentes_proyecto, get_posibles_evaluadores_para_proyecto_etapa_presencial, get_proyectos_sin_asignar_etapa_presencial, get_salas_por_convocatoria, get_url_presentacion_proyecto, verificar_sala_asignada
 from appv1.crud.permissions import get_permissions
 
 router_sala = APIRouter()
@@ -196,3 +196,23 @@ async def assignar_evaluadores_etapa_presencial(
 
     
     return {"mensaje": "Evaluadores asignados con exito"}
+
+
+
+# RUTA PARA OBTENER LA PRESENTACION DE UN PROYECTO
+@router_sala.get("/get-presentacion-proyecto/")
+async def read_presentacion_proyecto(
+    id_proyecto: int,
+    current_user: UserResponse = Depends(get_current_user),
+    db: Session = Depends(get_db),
+):
+    permisos = get_permissions(db, current_user.id_rol, MODULE_PROYECTOS)
+    
+    if not permisos.p_consultar:
+        raise HTTPException(status_code=401, detail="No está autorizado a utilizar este modulo")
+    
+    presentacion = get_url_presentacion_proyecto(db,id_proyecto)
+    if not presentacion:
+        raise HTTPException(status_code=404, detail="Sin presentación")
+    
+    return presentacion

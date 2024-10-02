@@ -78,7 +78,8 @@
                         <div class="row align-items-center text-center">
                             <div class="col-md-6">
                                 <h4 class="fs-6 text-dark">Horarios</h4>
-                                <p class="fs-6 text-muted mb-0">Pendiente...</p>
+                                <p class="fs-6 text-muted mb-0">{{ horariosProyectoSeleccionado.hora_inicio }} - {{
+                                    horariosProyectoSeleccionado.hora_fin }}</p>
 
                             </div>
                             <div class="col-md-6 border-start">
@@ -96,7 +97,12 @@
                             <div class="col-md-6">
                                 <h4 class="fs-5 text-dark">URL de presentación</h4>
                                 <p class="fs-6">
-                                    <a href="" target="_blank" class="text-primary">Ver presentación</a>
+                                    <a v-if="existe_presentacion" :href="url_presentacion" target="_blank"
+                                        class="text-primary">
+                                        <span>Ver
+                                            presentación</span>
+                                    </a>
+                                    <span v-else class="text-dark">No hay presentación</span>
                                 </p>
                             </div>
                         </div>
@@ -104,21 +110,23 @@
                 </div>
             </div>
         </div>
-
-        <!-- alerta  -->
-        <FlashMessage v-if="isOpen" @close="closeModal" :titulo="titulo_alerta" :mensaje="mensaje_alerta"
-            :tipo="tipo_alerta" />
     </div>
 </template>
 
 <script>
 import { obtenerDetalleSala, obtenerDatosProyecto, obtenerPonentesProyecto } from "@/services/salasDelegadoService";
-import { obtenerEvaluadoresProyecto } from "@/services/delegadoService";
-import FlashMessage from "../../../FlashMessage.vue";
+import { obtenerEvaluadoresProyecto, obtenerUrlPresentacionProyecto } from "@/services/delegadoService";
+import { useToastUtils } from '@/utils/toast';
 
 export default {
     props: {
         sala: Object,
+    },
+    setup(){
+        const { showSuccessToast, showErrorToast, showInfoToast } = useToastUtils();
+        return{
+            showInfoToast
+        }
     },
     data() {
         return {
@@ -128,12 +136,11 @@ export default {
                 "2:00pm", "2:30pm", "3:00pm", "3:30pm", "4:00pm", "4:30pm", "5:00pm", "5:30pm", "6:00pm", "6:30pm"
             ],
             detalleSala: [],
+            copiaDetalleSala: [],
             evaluadores: [],
-            titulo_alerta: "",
-            mensaje_alerta: "",
-            tipo_alerta: "",
-            isOpen: false,
             ponentes: [],
+            url_presentacion: "",
+            existe_presentacion: false,
             horariosProyectoSeleccionado: {
                 hora_inicio: "",
                 hora_fin: ""
@@ -142,9 +149,6 @@ export default {
             detalle_proyecto: {}
         }
 
-    },
-    components: {
-        FlashMessage
     },
     methods: {
         calcularPosicion(hora) {
@@ -175,6 +179,7 @@ export default {
             try {
                 const datosSala = await obtenerDetalleSala(this.sala.id_sala);
                 this.detalleSala = datosSala.data.detalle_sala;
+                this.copiaDetalleSala = JSON.parse(JSON.stringify(this.detalleSala));
 
                 // Convierte las horas a minutos en cada fila de la tabla
                 for (let i = 0; i < this.detalleSala.length; i++) {
@@ -187,10 +192,7 @@ export default {
                     this.detalleSala[i].hora_fin = this.calcularPosicion(this.detalleSala[i].hora_fin);
                 }
             } catch (error) {
-                this.titulo_alerta = "Sala sin detalle";
-                this.mensaje_alerta = "Aún no se han asignado proyectos a esta sala";
-                this.tipo_alerta = 1;
-                this.openModal();
+                this.showInfoToast("Aún no se han asignado proyectos a esta sala");
             }
         },
 
@@ -218,39 +220,95 @@ export default {
 
             return horas + ":" + minutos
         },
-        //Metodos para abrir y cerrar el Modal Informativo
-        openModal() {
-            this.isOpen = true;
-        },
-        closeModal() {
-            this.isOpen = false;
-        },
         async obtenerDetalleProyecto(p_id_proyecto) {
             try {
                 const response = await obtenerDatosProyecto(p_id_proyecto);
                 this.detalle_proyecto = response.data;
-                console.log(this.detalle_proyecto);
             } catch (error) {
                 alert("error")
             }
         },
         async proyectoSeleccionado(p_id_proyecto) {
+            // Inicializar variables antes de la carga de datos
             this.ponentes = "";
             this.evaluadoresProyectoSeleccionado = "";
-            await this.obtenerDetalleProyecto(p_id_proyecto);
+            this.horariosProyectoSeleccionado.hora_inicio = "";
+            this.horariosProyectoSeleccionado.hora_fin = "";
 
-            // obtiene los evaluadores del proyecto que selecciono
-            const responseEvaluadores = await obtenerEvaluadoresProyecto(p_id_proyecto);
-            this.evaluadoresProyectoSeleccionado = responseEvaluadores;
+            // Obtener el horario asignado al proyecto sin necesidad de hacer una consulta extra
+            const horarioProyectoEspecifico = this.buscarProyectoPorId(p_id_proyecto);
+            if (horarioProyectoEspecifico) {
+                this.horariosProyectoSeleccionado.hora_inicio = this.formatearHora(this.obtenerHoraMinutos(horarioProyectoEspecifico.hora_inicio));
+                this.horariosProyectoSeleccionado.hora_fin = this.formatearHora(this.obtenerHoraMinutos(horarioProyectoEspecifico.hora_fin));
+            }
+            this.obtenerDetalleProyecto(p_id_proyecto)
 
-            // obtiene los ponentes del proyecto que selecciono
-            const responsePonentes = await obtenerPonentesProyecto(p_id_proyecto);
-            this.ponentes = responsePonentes.data.ponentes;
+            // Ejecutar todas las consultas en paralelo y manejar los resultados de manera independiente
+            const [ responseEvaluadores, responsePonentes, responseUrlPresentacion] = await Promise.allSettled([
+                obtenerEvaluadoresProyecto(p_id_proyecto),
+                obtenerPonentesProyecto(p_id_proyecto),
+                obtenerUrlPresentacionProyecto(p_id_proyecto)
+            ]);
 
-        },
+            // Evaluadores
+            if (responseEvaluadores.status === "fulfilled") {
+                this.evaluadoresProyectoSeleccionado = responseEvaluadores.value;
+            } else {
+                console.error("Error al obtener evaluadores:", responseEvaluadores.reason);
+            }
+
+            // Ponentes
+            if (responsePonentes.status === "fulfilled") {
+                this.ponentes = responsePonentes.value.data.ponentes;
+            } else {
+                console.error("Error al obtener ponentes:", responsePonentes.reason);
+            }
+
+            // URL de presentación
+            if (responseUrlPresentacion.status === "fulfilled") {
+                this.url_presentacion = responseUrlPresentacion.value.data;
+                this.existe_presentacion = true;
+            } else {
+                this.existe_presentacion = false;
+                console.error("Error al obtener URL de presentación:", responseUrlPresentacion.reason);
+            }
+        }
+
+        ,
         limpiarModalDetalleProyecto() {
             this.detalle_proyecto = "";
+        },
+        buscarProyectoPorId(p_id_proyecto) {
+            // Busca el primer detalle que coincida con el id_proyecto
+            const detalleEncontrado = this.copiaDetalleSala.find(detalle => detalle.id_proyecto == p_id_proyecto);
+
+            // Si lo encuentra, lo retorna; de lo contrario, maneja un resultado no encontrado
+            if (detalleEncontrado) {
+                return detalleEncontrado;
+            } else {
+                console.warn('No se encontró el proyecto con el id:', p_id_proyecto);
+                return null; // O maneja como prefieras
+            }
+        },
+        formatearHora(hora) {
+            // Verifica si la hora está en formato HH:mm
+            const [h, m] = hora.split(':');
+            let horas = parseInt(h, 10);
+            const minutos = m;
+
+            // Determina si es AM o PM
+            const modifier = horas < 12 ? 'AM' : 'PM';
+
+            // Convierte las horas a formato 12
+            if (horas === 0) {
+                horas = 12; // 00:xx a 12:xx AM
+            } else if (horas > 12) {
+                horas -= 12; // 13:xx a 1:xx PM
+            }
+
+            return `${horas}:${minutos} ${modifier}`;
         }
+
     },
     mounted() {
         this.obtenerDatosSala();

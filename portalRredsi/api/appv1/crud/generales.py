@@ -2,7 +2,7 @@ from sqlalchemy.orm import Session
 from sqlalchemy import text
 
 def get_areas_conocimiento(db: Session):
-    sql = text("SELECT * FROM areas_conocimiento")
+    sql = text("SELECT DISTINCT areas_conocimiento.* FROM areas_conocimiento")
     result = db.execute(sql).fetchall()
     return result
 
