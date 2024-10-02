@@ -41,16 +41,16 @@
         </tbody>
       </table>
     </div>
-    <ModalAddOrEdit v-if="isModalOpen" :infoEditar="infoModal" @close="closeModal()"></ModalAddOrEdit>
+    <ModalAddOrEdit v-if="isModalOpen" :infoEditar="infoModal" @actualizarLista="obtenerInfoSalas(paginaActual)"
+      @close="closeModal()"></ModalAddOrEdit>
 
     <!-- Componente del paginador  -->
-    <PaginatorBody :totalPages="totalPages" @page-changed="cambiarPagina" v-if="totalPages > 1"  />
+    <PaginatorBody :totalPages="totalPages" @page-changed="cambiarPagina" v-if="totalPages > 1" />
   </div>
 </template>
 
 <script>
-import { reactive } from "vue";
-import { ref } from "vue";
+import { reactive, onMounted, ref } from "vue";
 import RowTableSala from '../components/Users/administrador/salas/RowTableSala.vue';
 import ModalAddOrEdit from '../components/Users/administrador/salas/ModalAddOrEdit.vue';
 import { obtenerSalas } from '@/services/delegadoService';
@@ -69,34 +69,15 @@ export default {
     let arrayDelegados = reactive([]);
     let posiblesAreasConocimiento = reactive([]);
     let totalPages = ref(0);
+    const paginaActual = ref(1);
 
     // Funcion para obtener las salas
     const obtenerInfoSalas = async (p_pagina_Actual) => {
-      
       // Limpia la lista de salas
       infoSalas.length = 0;
 
       // Obtiene las salas de la página actual
       const salasObtenidas = await obtenerSalas(p_pagina_Actual);
-      
-      // Obtengo las posibles áreas de conocimiento en la primera carga de la pagina para que no vuelva a cargar un vez se abara el modal
-      const datos_area_conocimiento = await getAreasConocimiento();
-      datos_area_conocimiento.data.forEach((area) => {
-        posiblesAreasConocimiento.push({
-          p_nombre: area.nombre,
-          p_id_area_conocimiento: area.id_area_conocimiento
-        });
-      });
-
-      const delegadosObtenidos = await getDelegatesAll();
-      delegadosObtenidos.data.users.forEach((delegado) => {
-        arrayDelegados.push({
-          id_delegado: delegado.id_usuario,
-          nombres: delegado.nombres,
-          apellidos: delegado.apellidos
-        });
-      });
-    
 
       // Obtiene el total de paginas
       totalPages.value = salasObtenidas.data.total_pages;
@@ -114,14 +95,47 @@ export default {
           p_posiblesAreasConocimiento: posiblesAreasConocimiento
         });
       });
-      return infoSalas;
+      // return infoSalas;
     }
+
+    const obtenerInfoParaEditar = async () => {
+      try {
+        // Obtengo las posibles áreas de conocimiento en la primera carga de la página
+        const datos_area_conocimiento = await getAreasConocimiento();
+
+        // Recorro y almaceno en posiblesAreasConocimiento
+        datos_area_conocimiento.data.forEach((area) => {
+          posiblesAreasConocimiento.push({
+            p_nombre: area.nombre,
+            p_id_area_conocimiento: area.id_area_conocimiento,
+          });
+        });
+
+        // Obtener delegados
+        const delegadosObtenidos = await getDelegatesAll();
+
+        // Recorro y almaceno en arrayDelegados
+        delegadosObtenidos.data.users.forEach((delegado) => {
+          arrayDelegados.push({
+            id_delegado: delegado.id_usuario,
+            nombres: delegado.nombres,
+            apellidos: delegado.apellidos,
+          });
+        });
+
+        console.log('Toda la información para editar ha sido cargada con éxito');
+      } catch (error) {
+        console.error('Error al obtener la información para editar:', error);
+      }
+    };
+
+
 
     //Objeto que se enviara al modal
     const infoModal = reactive({
       p_idDelegado: null,
       p_idSala: null,
-      p_numSala:null,
+      p_numSala: null,
       p_nombre_sala: null,
       p_idAreaConocimiento: null,
       p_posiblesAreasConocimiento: posiblesAreasConocimiento,
@@ -133,7 +147,7 @@ export default {
       infoModal.p_idDelegado = null;
       infoModal.p_idSala = null;
       infoModal.p_numSala = null;
-      infoModal.p_nombre_sala= null;
+      infoModal.p_nombre_sala = null;
       infoModal.p_idAreaConocimiento = null;
       isModalOpen.value = false;
     }
@@ -147,27 +161,28 @@ export default {
     const onModal = infoSala => {
       infoModal.p_idDelegado = infoSala.p_idDelegado;
       infoModal.p_idSala = infoSala.p_idSala;
-      infoModal.p_numSala= infoSala.p_numSala,
-      infoModal.p_nombre_sala= infoSala.p_nombre_sala,
-      infoModal.p_idAreaConocimiento = infoSala.p_idAreaConocimiento;
+      infoModal.p_numSala = infoSala.p_numSala,
+        infoModal.p_nombre_sala = infoSala.p_nombre_sala,
+        infoModal.p_idAreaConocimiento = infoSala.p_idAreaConocimiento;
       showModal();
     }
 
     // cambiar la pagina en el componente paginador
-    const cambiarPagina= (pagina)=>{
+    const cambiarPagina = (pagina) => {
+      paginaActual.value = pagina;
       obtenerInfoSalas(pagina);
     }
-
-    return { infoSalas, infoModal, busqueda, isModalOpen, closeModal, showModal, onModal, obtenerInfoSalas, totalPages,cambiarPagina };
+    onMounted(async() => {
+      await obtenerInfoParaEditar();
+      await obtenerInfoSalas();
+    });
+    return { infoSalas, infoModal, busqueda, isModalOpen, closeModal, showModal, onModal, obtenerInfoSalas, totalPages, cambiarPagina, paginaActual };
   },
   components: {
     RowTableSala,
     ModalAddOrEdit,
     PaginatorBody
   },
-  mounted() {
-    this.obtenerInfoSalas();  //Obtener la información de las salas al cargar la página
-  }
 };
 </script>
 <style scoped>
