@@ -58,6 +58,20 @@ export const getConvocatoriasByPage = async (page = 1, pageSize = 5) => {
   }
 };
 
+// Función para obtener todos los admins con paginación
+export const getProgramacionFasesByPage = async (page = 1, pageSize = 5) => {
+  try {
+      const response = await api.get(`/convocatorias/programacion-fases-activa/?page=${page}&page_size=${pageSize}`);
+      return response.data;  // Acceder a los datos de la respuesta
+  } catch (error) {
+      if (error.response) {
+          throw error.response.data;  // Devuelve el error original de la API
+      } else {
+          throw new Error('Error de red o de servidor');
+      }
+  }
+};
+
 
 // Función para obtener todas las rubricas
 export const getRubricsAll = async () => {

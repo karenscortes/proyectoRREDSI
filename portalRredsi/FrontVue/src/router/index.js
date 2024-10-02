@@ -12,7 +12,7 @@ const routes = [
   { path: '/', name: 'mainLayout', component: MainLayout },
 
   //RUTA A USERSLAYOUT
-  { path: '/pagina-usuario', name: 'UsersLayout', component: UsersLayout },
+  { path: '/pagina-usuario', name: 'UsersLayout', component: UsersLayout, meta: { requiresAuth: true } },
   
   // RUTA A NOTFOUND
   { path: '/not-found', name: 'NotFound', component: NotFound },

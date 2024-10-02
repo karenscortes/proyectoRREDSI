@@ -3,6 +3,8 @@ from pydantic import BaseModel, EmailStr, StringConstraints, constr
 from datetime import date
 import enum
 
+from appv1.schemas.admin.admin import ProgramacionFaseResponse
+
 class EstadosEnum(str, enum.Enum):
     en_curso = "en curso"
     concluida = "concluida"
@@ -30,8 +32,24 @@ class PaginatedConvocatoriaResponse(BaseModel):
     class Config:
         orm_mode = True
 
+class ProgramacionFaseResponse(BaseModel):
+    id_programacion_fase: int
+    convocatoria_nombre: str
+    fase_nombre: str
+    etapa_nombre: str
+    fecha_inicio: date 
+    fecha_fin: date
+    id_fase: int 
+    id_convocatoria: int  
+
+# Esquema para la respuesta paginada
+class PaginatedProgramacionFasesResponse(BaseModel):
+    programacion_fases: List[ProgramacionFaseResponse]
+    total_pages: int
+    current_page: int
+    page_size: int        
+
 class ConvocatoriaUpdate(ConvocatoriaBase):
- 
     documento: Optional[Annotated[str, StringConstraints(max_length=55)]] = None
     nombres: Optional[Annotated[str, StringConstraints(max_length=25)]] = None
     apellidos: Optional[Annotated[str, StringConstraints(max_length=25)]]= None

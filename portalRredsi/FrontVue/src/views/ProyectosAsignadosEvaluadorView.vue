@@ -272,7 +272,6 @@
                     }
 
                     this.selectedState = estado;
-                    console.log(this.selectedState);
 
                     // Mapear estado según la etapa actual
                     const estadoMap = {
@@ -301,8 +300,9 @@
                 if (this.currentPage < this.totalPages) {
                     const nextPage = this.currentPage + 1; 
                     if (this.selectedState) {
-                        await this.fetchProyectosPorEstado(this.selectedState);
                         this.currentPage++; 
+                        await this.fetchProyectosPorEstado(this.selectedState);
+                      
                     } else {
                         await this.fetchProyectos(nextPage);
                     }
@@ -313,8 +313,8 @@
                 if (this.currentPage > 1) {
                     const prevPage = this.currentPage - 1; 
                     if (this.selectedState) {
-                        await this.fetchProyectosPorEstado(this.selectedState);
                         this.currentPage--; 
+                        await this.fetchProyectosPorEstado(this.selectedState);
                     } else {
                         await this.fetchProyectos(prevPage);
                     }

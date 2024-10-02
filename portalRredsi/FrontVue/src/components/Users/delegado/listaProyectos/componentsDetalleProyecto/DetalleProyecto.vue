@@ -60,7 +60,7 @@
                     <!-- Imagen del proyecto -->
                     <div class="col-lg-6 order-1 order-lg-2">
                         <div class="img-wrap mt-4">
-                            <img src="../../../assets/img/course_5.jpg" style="border-radius: 25px;" alt="Image"
+                            <img src="../../../../../assets/img/course_5.jpg" style="border-radius: 25px;" alt="Image"
                                 class="img-fluid shadow-lg" />
                         </div>
                     </div>
@@ -79,7 +79,7 @@
                 </div>
                 <div id="collapseOne" class="collapse mt-5" aria-labelledby="headingOne"
                     data-bs-parent="#accordionExample">
-                    <RubricaCom :proyecto="proyecto" />
+                    <RubricaCom  v-if="cargarRubrica" :proyecto="proyecto" :id_evaluador = "id_evaluador1" />
                 </div>
             </div>
             <div class="card p-2">
@@ -92,11 +92,7 @@
                 </div>
                 <div id="collapseTwo" class="collapse mt-5" aria-labelledby="headingTwo"
                     data-bs-parent="#accordionExample">
-                    <!-- <RubricaCom :tituloProyecto="tituloProyecto" :ponentesProyecto="ponentesProyecto"
-                        :universidadProyecto="universidadProyecto" :puntajeTotal="puntajeTotal"
-                        :nombreEvaluador="evaluadores[1]?.nombre" :cedulaEvaluador="evaluadores[1]?.cedula"
-                        :universidadEvaluador="evaluadores[1]?.universidad" :emailEvaluador="evaluadores[1]?.email"
-                        :celularEvaluador="evaluadores[1]?.celular" /> -->
+                    <RubricaCom  v-if="cargarRubrica" :proyecto="proyecto" :id_evaluador = "id_evaluador2" />
                 </div>
             </div>
             <div class="card p-2">
@@ -124,9 +120,6 @@
                         </label>
                     </div>
                 </div>
-                <!-- <button
-                    @click="fetchRubricaCalificada(proyecto.id_proyecto, evaluadores[0].id_usuario)">RUBRICA1</button> -->
-                <!-- <button @click="fetchRubricaCalificada(proyecto.id_proyecto, evaluadores[1].id_usuario)">RUBRICA2</button> -->
             </div>
         </div>
     </div>
@@ -138,7 +131,7 @@ import EventoCom from './EventoCom.vue';
 import PonentesCom from './PonentesCom.vue';
 import SuplentesCom from './SuplentesCom.vue';
 import RubricaCom from './RubricaCom.vue';
-import { obtenerEvaluadoresProyecto, obtenerPonentesProyecto, obtenerInfoSalaProyecto, obtenerRubricaCalificada } from '../../../../../services/delegadoService';
+import { obtenerEvaluadoresProyecto, obtenerPonentesProyecto, obtenerInfoSalaProyecto } from '../../../../../services/delegadoService';
 
 export default {
     name: 'DetalleProyecto',
@@ -157,7 +150,10 @@ export default {
     },
     data() {
         return {
+            cargarRubrica: false,
             evaluadores: [],
+            id_evaluador1: 0,
+            id_evaluador2: 0,
             ponentes: [],
             infoSala: {
                 fecha: '',
@@ -178,8 +174,9 @@ export default {
         async fetchEvaluadores(id_proyecto) {
             try {
                 const data = await obtenerEvaluadoresProyecto(id_proyecto);
-                console.log('Evaluadores obtenidos:', data);
                 this.evaluadores = data;
+                this.id_evaluador1 = this.evaluadores[0].id_usuario;
+                this.id_evaluador2 = this.evaluadores[1].id_usuario;
             } catch (error) {
                 console.error('Error al obtener evaluadores:', error);
             }
@@ -197,33 +194,22 @@ export default {
         async fetchInfoSala(id_proyecto) {
             try {
                 const data = await obtenerInfoSalaProyecto(id_proyecto);
-                console.log("Datos de sala: ", data);
+                // console.log("Datos de sala: ", data);
                 this.infoSala = data;
             } catch (error) {
                 console.error('Error al obtener la información de la sala:', error);
             }
         },
 
-        async fetchRubricaCalificada(p_id_proyecto, p_id_usuario) {
-            try {
-                const data = await obtenerRubricaCalificada(p_id_proyecto, p_id_usuario);
-                console.log("DATOS DE RUBRICA :", data);
-                this.rubricas = data;
-            }
-            catch (error) {
-                console.error('Error al obtener la información de rúbrica:', error);
-            }
-        },
-
         async fetchAllData() {
             try {
-
-                if (this.evaluadores.length > 0) {
-                    await this.fetchRubricaCalificada(this.proyecto.id_proyecto, this.evaluadores[0].id_usuario);
-                }
                 await this.fetchEvaluadores(this.proyecto.id_proyecto);
+                console.log("MIERDITAAAAAAAAAAAA",this.evaluadores);
                 await this.fetchPonentes(this.proyecto.id_proyecto);
                 await this.fetchInfoSala(this.proyecto.id_proyecto);
+                if (this.evaluadores.length > 0) {
+                    this.cargarRubrica = true;
+                }
             } catch (error) {
                 console.error('Error al cargar los datos del proyecto:', error);
             }
