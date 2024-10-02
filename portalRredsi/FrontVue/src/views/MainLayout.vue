@@ -71,7 +71,7 @@ import ComponenteDinamico from "../components/ComponenteDinamico.vue";
 import RegistroUsuario from "../components/Users/inicio/RegistroUsuario.vue";
 import RegistroProyecto from '../components/Users/inicio/RegistroProyecto.vue';
 import Registro_fases from "../components/Users/inicio/Registro_fases.vue";
-import RubricasCalificadas from "../components/Users/inicio/RubricasCalificadas.vue";
+import Rubricas_Calificadas from "../components/Users/inicio/Rubricas_Calificadas.vue";
 import Carrusel from "../components/Users/inicio/Carrusel.vue";
 import InicioPrincipal from "../components/Users/inicio/InicioPrincipal.vue";
 import NotAvailable from "./NotAvailable.vue";
@@ -91,7 +91,7 @@ export default {
         RegistroUsuario: markRaw(RegistroUsuario),
         RegistroProyecto: markRaw(RegistroProyecto),
         Registro_fases:markRaw(Registro_fases),
-        RubricasCalificadas:markRaw(RubricasCalificadas),
+        Rubricas_Calificadas:markRaw(Rubricas_Calificadas),
         InicioPrincipal:markRaw(InicioPrincipal),
         Carrusel:markRaw(Carrusel),
 
@@ -111,7 +111,7 @@ export default {
                 RegistroUsuario: RegistroUsuario,
                 RegistroProyecto:RegistroProyecto,
                 Registro_fases:Registro_fases,
-                RubricasCalificadas:RubricasCalificadas,
+                Rubricas_Calificadas:Rubricas_Calificadas,
                 InicioPrincipal:InicioPrincipal
             
             };
