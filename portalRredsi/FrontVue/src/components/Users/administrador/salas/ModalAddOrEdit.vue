@@ -92,11 +92,16 @@ export default {
     },
   },
   //Evento para cerrar modal
-  emits: ['close'],
+  emits: ['close','actualizarLista'],
   setup(props, { emit }) {
     const closeModal = () => {
       emit('close');
     }
+
+    // Emite el evento de actualizar lista
+    const actualizarLista = () => {
+      emit('actualizarLista');
+    };
 
     //Propiedades para la alerta
     const { showSuccessToast, showErrorToast } = useToastUtils();
@@ -146,6 +151,7 @@ export default {
         closeModal();
         // ALERTA DE CREACION DE SALA EXITOSA
         showSuccessToast("La sala se ha creado exitosamente");
+        actualizarLista();
       } catch (error) {
         closeModal();
         // ALERTA SI FALLA LA CREACION DE SALA EXITOSA
@@ -160,7 +166,7 @@ export default {
         closeModal();
         // ALERTA PARA LA ACTUALIZACION DE SALA EXITOSA
         showSuccessToast("La sala se ha actualizado con exito");
-  
+        actualizarLista();
       } catch (error) {
         closeModal();
         // ALERTA SI FALLA LA ACTUALIZACION DE SALA
