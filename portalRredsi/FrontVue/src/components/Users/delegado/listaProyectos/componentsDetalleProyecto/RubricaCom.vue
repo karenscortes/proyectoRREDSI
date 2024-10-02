@@ -229,7 +229,6 @@ export default {
             return true; // Si todos los campos están completos, retornamos true
         };
 
-
         const enviarCalificaciones = async () => {
 
             // Validar antes campos de enviar la calificacion

@@ -1,6 +1,6 @@
 <template>
     <div class="container pt-5">
-        <div class="row mb-4 mt-2">
+        <div class="row mb-2 mt-2">
             <div class="col">
                 <div class="section_title text-center">
                     <h1>Detalle del Proyecto</h1>
@@ -31,14 +31,14 @@
                             <!-- Suplentes -->
                             <!-- <div class="col-6 col-md-6 mt-3">
                                 <SuplentesCom :tipo="tipo" :suplente="suplente" />
-                            </div>  -->
+                            </div>   -->
                         </div>
                         <!-- Botones -->
                         <div class="col-10 d-flex justify-content-between">
-                            <!-- <button type="button" class="btn btn-sm btn-warning font-weight-bold" style="width: 36%;"
+                            <button type="button" class="btn btn-sm btn-warning font-weight-bold" style="width: 36%;"
                                 @click="openModal">
                                 Añadir presentación
-                            </button> -->
+                            </button> 
                             <!-- <ModalAgregarLink :isVisible="showModal" @close="closeModal" /> -->
                             <form action="../../../assets/img/constancia_NotasAprendiz.pdf" style="width: 31%;"
                                 target="_blank">
@@ -57,7 +57,7 @@
                         </div>
                     </div>
 
-                    <!-- Imagen del proyecto -->
+                    <!-- Imagen del detalle -->
                     <div class="col-lg-6 order-1 order-lg-2">
                         <div class="img-wrap mt-4">
                             <img src="../../../../../assets/img/course_5.jpg" style="border-radius: 25px;" alt="Image"
@@ -145,7 +145,7 @@ export default {
         EvaluadoresCom,
         PonentesCom,
         EventoCom,
-        // SuplentesCom,
+        //SuplentesCom,
         RubricaCom,
     },
     data() {
@@ -200,11 +200,10 @@ export default {
                 console.error('Error al obtener la información de la sala:', error);
             }
         },
-
+        // Función para renderizar la vista
         async fetchAllData() {
             try {
                 await this.fetchEvaluadores(this.proyecto.id_proyecto);
-                console.log("MIERDITAAAAAAAAAAAA",this.evaluadores);
                 await this.fetchPonentes(this.proyecto.id_proyecto);
                 await this.fetchInfoSala(this.proyecto.id_proyecto);
                 if (this.evaluadores.length > 0) {

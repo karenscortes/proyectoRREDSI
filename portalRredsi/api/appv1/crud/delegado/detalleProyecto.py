@@ -35,8 +35,21 @@ def get_datos_sala(db: Session, id_proyecto:int):
     except SQLAlchemyError as e:
         raise HTTPException(status_code=500, detail="Datos de sala no encontrados")
     
-def get_suplentes_sala(db:Session):
+# def get_suplentes_sala(db:Session):
+#     try:
+#         sql = text("""SELECT """)
+#     except SQLAlchemyError as e:
+#         raise HTTPException(status_code=500, detail="Datos de sala no encontrados")
+    
+    
+#Insertar presentacion del proyecto
+def get_insertar_presentacion_proyecto(db: Session, id_proyecto: int):
     try:
-        sql = text("""SELECT """)
+        sql = text("""INSERT INTO presentaciones_proyectos (id_presentacion, id_proyecto, url_presentacion)
+                VALUES :id_pres, :id_proy, :url""") 
+        params = {
+            "id_proy" : id_proyecto    
+        }
+        result = db.execute(db, params)
     except SQLAlchemyError as e:
-        raise HTTPException(status_code=500, detail="Datos de sala no encontrados")
+        raise HTTPException(status_code=500, detail="Error al insertar url de presentación")
