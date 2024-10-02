@@ -5,6 +5,7 @@
                 <div class="col">
                     <div class="section_title text-center">
                         <h1>Información de la convocatoria</h1>
+                        <h2 class="text-muted">{{ tituloEtapa }}</h2> <!-- Título dinámico -->
                     </div>
                 </div>
             </div>
@@ -41,24 +42,40 @@
 
 
 <script>
-    import {obtenerProgramacionFases}  from '../services/evaluadorService';
+    import {obtenerProgramacionFases, obtenerEtapaActual}  from '../services/evaluadorService';
     import { useToastUtils } from '@/utils/toast'; 
 
-    const { showErrorToast, showSuccessToast } = useToastUtils();
+    const { showErrorToast, showInfoToast } = useToastUtils();
 
     export default {
         data() {
             return {
                 listaFases: [],
+                currentEtapa: '', // Almacena la etapa actual
+                
             };
+        },
+        computed: {
+            // Computed para el título dinámico
+            tituloEtapa() {
+                return this.currentEtapa === 'Virtual' ? 'Primera Etapa' : 'Segunda Etapa';
+            }
         },
         methods: {
             async obtenerFases() {
                 try {
 
-                    const response = await obtenerProgramacionFases();
+                    // Obtener etapa actual
+                    const response2 = await obtenerEtapaActual();
+                    this.currentEtapa = response2.nombre_etapa; // Asignar la etapa
+
+
+                    const response = await obtenerProgramacionFases(this.currentEtapa);
                     this.listaFases = response.data; 
-                    showSuccessToast("Fases de la convocatoria obtenidas con éxito");
+
+               
+
+                    showInfoToast("Fases de la convocatoria obtenidas con éxito");
                     
                 } catch (error) {
                     console.log(error);
@@ -73,6 +90,13 @@
 </script>
 
 <style scoped>
+
+    .text-muted {
+        font-size: 1.2rem;
+        color: #999;
+    }
+
+
     /* Event Items */
     .event_items {
         margin-top: 30px;
@@ -144,4 +168,5 @@
         height: auto;
         object-fit: cover;
     }
+
 </style>

@@ -207,8 +207,6 @@
         margin-top: -12px;
     }
 
-
-
 </style>
   
 <style src="../../../assets/Styles/listaProyectos_evaluadorEtapa2_styles.css" scoped></style>

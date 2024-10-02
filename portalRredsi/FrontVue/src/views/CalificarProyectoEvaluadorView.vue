@@ -74,6 +74,7 @@
 </script>
 
 <style scoped>
+
     .text-muted {
         font-size: 1.2rem;
         color: #999;
@@ -82,4 +83,5 @@
     .btn-warning {
         width: 300px;
     }
+    
 </style>
