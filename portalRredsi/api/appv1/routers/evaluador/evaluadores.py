@@ -199,6 +199,7 @@ async def obtener_datos_del_proyecto_calificado(
 # Ruta para obtener las programaciones de las fases de la convocatoria en curso
 @routerObtenerProgramacionFases.get("/obtener-programacion-fases/", response_model=ListaDeProgramacionFases)
 async def obtener_programacion_fases(
+    nombre_etapa: str,
     current_user: UserResponse = Depends(get_current_user),
     db: Session = Depends(get_db),
 ):
@@ -207,5 +208,5 @@ async def obtener_programacion_fases(
     if not permisos.p_consultar:
         raise HTTPException(status_code=401, detail="No está autorizado a utilizar este módulo")
     
-    programacion_fases = get_nombres_fases_y_fechas_programacion(db)
+    programacion_fases = get_nombres_fases_y_fechas_programacion(db, nombre_etapa)
     return {"data": programacion_fases}

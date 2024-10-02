@@ -1,6 +1,5 @@
 import api from './api'; 
 
-
 // Función para obtener la etapa actual con la convocatoria del momento
 export const obtenerEtapaActual = async () => {
   try {
@@ -14,7 +13,6 @@ export const obtenerEtapaActual = async () => {
     }
   }
 };
-
 
 export const obtenerProyectosAsignados = async (nombreEtapa, idUsuario, page = 1, pageSize = 10) => {
   try {
@@ -35,7 +33,6 @@ export const obtenerProyectosAsignados = async (nombreEtapa, idUsuario, page = 1
     }
   }
 };
-
 
 // Función para obtener los proyectos asignados
 export const obtenerProyectosPorEstado = async (nombreEtapa, estado_evaluacion, idUsuario, page = 1, pageSize = 10) => {
@@ -100,7 +97,6 @@ export const obtenerDatosParaCalificarProyecto = async (idProyecto, idUsuario) =
   }
 };
 
-
 // Función para insertar una postulación de evaluador
 export const insertarPostulacionEvaluador = async (postulacionData) => {
   try {
@@ -139,7 +135,6 @@ export const insertarRespuestaRubrica = async (respuestaData) => {
   }
 };
 
-
 // Servicio para obtener el horario de los proyectos en segunda fase
 export const obtenerHorarios= async (idUsuario, page = 1, pageSize = 5) => {
   try {
@@ -160,11 +155,14 @@ export const obtenerHorarios= async (idUsuario, page = 1, pageSize = 5) => {
   }
 };
 
-
 // Función para obtener la etapa actual con la convocatoria del momento
-export const obtenerProgramacionFases = async () => {
+export const obtenerProgramacionFases = async (nombreEtapa) => {
   try {
-    const response = await api.get('/obtenerProgramacionFases/obtener-programacion-fases/');
+    const response = await api.get('/obtenerProgramacionFases/obtener-programacion-fases/', {
+      params: {
+        nombre_etapa: nombreEtapa,
+      }
+    });
     return response.data;
   } catch (error) {
     if (error.response) {

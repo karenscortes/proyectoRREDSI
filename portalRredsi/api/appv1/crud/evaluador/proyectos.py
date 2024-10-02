@@ -299,7 +299,7 @@ def insert_respuesta_rubrica(db: Session, id_item_rubrica: int, id_usuario: int,
         )
         modalidad = db.execute(sql_get_modalidad, {"id_proyecto": id_proyecto}).scalar()
         
-        if modalidad == '2':
+        if modalidad == '1':
             puntaje_minimo_aprobacion = 80
         else:
             puntaje_minimo_aprobacion = 75
@@ -372,9 +372,30 @@ def insert_respuesta_rubrica(db: Session, id_item_rubrica: int, id_usuario: int,
             "id_rubrica_resultado": id_rubrica_resultado
         })
 
-        # Actualización del estado_calificacion en la tabla proyectos según la etapa actual
-        nuevo_estado_calificacion = 'C_virtual' if etapa_actual == 'Virtual' else 'C_presencial'
-        
+        # Verificar si hay otras respuestas en la etapa presencial
+        if etapa_actual == 'Presencial':
+            sql_check_otras_respuestas = text(
+                """
+                SELECT COUNT(*) FROM respuestas_rubricas
+                WHERE id_proyecto_convocatoria = :id_proyecto_convocatoria
+                AND id_usuario != :id_usuario
+                """
+            )
+            otras_respuestas_count = db.execute(sql_check_otras_respuestas, {
+                "id_proyecto_convocatoria": id_proyecto_convocatoria,
+                "id_usuario": id_usuario
+            }).scalar()
+
+            if otras_respuestas_count > 0:
+                # Si hay otras respuestas, el proyecto pasa a C_presencial
+                nuevo_estado_calificacion = 'C_presencial'
+            else:
+                # Si no hay otras respuestas, queda en P_presencial
+                nuevo_estado_calificacion = 'P_presencial'
+        else:
+            nuevo_estado_calificacion = 'C_virtual' if etapa_actual == 'Virtual' else 'C_presencial'
+
+        # Actualización del estado_calificacion en la tabla proyectos
         sql_update_proyecto = text(
             """
             UPDATE proyectos
@@ -393,7 +414,6 @@ def insert_respuesta_rubrica(db: Session, id_item_rubrica: int, id_usuario: int,
     except SQLAlchemyError as e:
         db.rollback()
         print(f"Error al insertar respuesta de rúbrica: {e}")
-        raise HTTPException(status_code=500, detail="Error al insertar respuesta de rúbrica")
     
 def get_proyectos_etapa_presencial_con_horario(db: Session, id_usuario: int, page: int = 1, page_size: int = 10):
     try:
@@ -707,23 +727,28 @@ def get_datos_proyecto_calificado_completo(db: Session, id_proyecto: int, id_usu
 
         # Obtener los datos para calificar un proyecto
 
-# Obtener los nombres de las fases y las fechas de la programación de una convocatoria en curso
-def get_nombres_fases_y_fechas_programacion(db: Session) -> List[dict]:
+# Obtener los nombres de las fases y las fechas de la programación de una convocatoria en curso filtrando por etapa
+def get_nombres_fases_y_fechas_programacion(db: Session, nombre_etapa: str) -> List[dict]:
     try:
         sql_query = text("""
             SELECT 
-                fase.nombre AS nombre_fase,
+                fases.nombre AS nombre_fase,
                 programacion_fases.fecha_inicio,
                 programacion_fases.fecha_fin
             FROM programacion_fases
-            JOIN convocatorias ON programacion_fases.id_convocatoria = convocatorias.id_convocatoria
-            JOIN fases AS fase ON programacion_fases.id_fase = fase.id_fase
+            JOIN convocatorias 
+                ON programacion_fases.id_convocatoria = convocatorias.id_convocatoria
+            JOIN fases 
+                ON programacion_fases.id_fase = fases.id_fase
+            JOIN etapas 
+                ON fases.id_etapa = etapas.id_etapa 
             WHERE 
                 convocatorias.estado = 'en curso'
+                AND etapas.nombre = :nombre_etapa  
         """)
         
-        # Ejecuta la consulta y obtiene los resultados
-        result = db.execute(sql_query).fetchall()
+        # Ejecuta la consulta y pasa el parámetro de la etapa
+        result = db.execute(sql_query, {"nombre_etapa": nombre_etapa}).fetchall()
 
         # Transformar el resultado en una lista de diccionarios
         programacion_fases = [
