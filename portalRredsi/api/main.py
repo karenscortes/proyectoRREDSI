@@ -30,6 +30,7 @@ app.include_router(rubricasCalificadas.routerRubricasCalificadas, prefix="/proye
 
 # CONSULTAS GENERALES
 app.include_router(generales.router_consultas_generales, prefix="/generales", tags=["Consultas generales"])
+app.include_router(evaluadores.routerObtenerProgramacionFases, prefix="/obtenerProgramacionFases", tags=["Consultas generales"])
 
 
 #EVENTOS

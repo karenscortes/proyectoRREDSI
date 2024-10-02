@@ -159,3 +159,18 @@ export const obtenerHorarios= async (idUsuario, page = 1, pageSize = 5) => {
     }
   }
 };
+
+
+// Función para obtener la etapa actual con la convocatoria del momento
+export const obtenerProgramacionFases = async () => {
+  try {
+    const response = await api.get('/obtenerProgramacionFases/obtener-programacion-fases/');
+    return response.data;
+  } catch (error) {
+    if (error.response) {
+      throw error; // Lanza el error para que lo maneje el store
+    } else {
+      throw new Error('Error de red o de servidor'); // Manejar errores de red
+    }
+  }
+};
