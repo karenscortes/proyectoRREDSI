@@ -8,8 +8,8 @@
     <div v-if="componente == 'RegistroProyecto' || componente == 'RegistroUsuario' || componente == 'ConsultarProyecto'">
         <img src="../assets/img/slider_background.jpg" alt height="200px" width="100%">
     </div>
-    <div v-else>
-        
+    <div class="cont-slides" v-else>
+        <Carrusel/>  
     </div>
 
     <div class="container pt-5">
@@ -72,15 +72,14 @@ import RegistroUsuario from "../components/Users/inicio/RegistroUsuario.vue";
 import RegistroProyecto from '../components/Users/inicio/RegistroProyecto.vue';
 import Registro_fases from "../components/Users/inicio/Registro_fases.vue";
 import Rubricas_Calificadas from "../components/Users/inicio/Rubricas_Calificadas.vue";
-
+import Carrusel from "../components/Users/inicio/Carrusel.vue";
+import InicioPrincipal from "../components/Users/inicio/InicioPrincipal.vue";
 import NotAvailable from "./NotAvailable.vue";
 
 // Styles
 import "../assets/Styles/main_styles.css";
 import '../assets/Styles/responsive_main.css';
 import '../assets/plugins/fontawesome-free-5.0.1/css/fontawesome-all.css';
-
-
 
 
 
@@ -93,6 +92,9 @@ export default {
         RegistroProyecto: markRaw(RegistroProyecto),
         Registro_fases:markRaw(Registro_fases),
         Rubricas_Calificadas:markRaw(Rubricas_Calificadas),
+        InicioPrincipal:markRaw(InicioPrincipal),
+        Carrusel:markRaw(Carrusel),
+
         
         //Componente Por defecto
         NotAvailable: markRaw(NotAvailable),
@@ -100,21 +102,23 @@ export default {
     },
     setup() {
 
-        const currentComponent = ref(NotAvailable);           
-        const componente = ref("")
+        const currentComponent = ref(InicioPrincipal);           
+        const componente = ref("");
         const changeComponent = (componentName) => {
+   
             const componentMap = {
                 NotAvailable: NotAvailable,
                 RegistroUsuario: RegistroUsuario,
                 RegistroProyecto:RegistroProyecto,
                 Registro_fases:Registro_fases,
                 Rubricas_Calificadas:Rubricas_Calificadas,
-                
+                InicioPrincipal:InicioPrincipal
+            
             };
 
             currentComponent.value = componentMap[componentName] || NotAvailable;
             componente.value=componentName;
-            console.log(componentName);
+
         };
 
         const authStore = useAuthStore();
@@ -169,7 +173,14 @@ export default {
 };
 </script>
 <style scoped>
-    .container{
-        min-height: 600px;
+    .cont-slides{
+    margin: 20px;
     }
+
+    .super_container {
+        width: 100%;
+        overflow: hidden;
+        z-index: 10;
+    }
+
 </style>

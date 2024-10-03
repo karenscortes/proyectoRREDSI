@@ -106,6 +106,7 @@
                   </div>
                   <!-- Tabla para mostrar fases -->
                   <div class="table-responsive mt-4">
+                      <h2>Convocatoria activa: {{ convocatoriaActiva }}</h2>
                       <table class="table table-striped">
                           <thead class="thead-warning">
                               <tr>
@@ -116,7 +117,7 @@
                               </tr>
                           </thead>
                           <tbody>
-                              <tr v-for="fase in fases" :key="fase.id">
+                              <tr v-for="fase in fases" :key="fase.id_programacion_fase">
                                   <td>{{ fase.fase_nombre }}</td> 
                                   <td>{{ fase.etapa_nombre }}</td> 
                                   <td>{{ fase.fecha_inicio }}</td> 
@@ -131,12 +132,12 @@
 
 
               <!-- Modal de Crear Convocatoria -->
-              <div class="modal fade" id="crearConvocatoria" tabindex="-1" role="dialog">
+              <div v-if="showModal" class="modal fade show d-block" tabindex="-1" role="dialog">
                 <div class="modal-dialog" role="document">
                   <div class="modal-content">
                     <div class="modal-header">
                       <h2 class="modal-title">Crear Convocatoria</h2>
-                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <button type="button" class="close" @click="hideModal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                       </button>
                     </div>
@@ -163,7 +164,7 @@
                         </select>
                       </div>
                     </div>
-                    <div class="modal-footer text-center">
+                    <div class="modal-footer d-flex justify-content-center">
                       <button type="button" class="btn btn-primary" @click="createConvocatoria">Crear</button>
                     </div>
                   </div>
@@ -185,6 +186,7 @@
   export default {
     data() {
       return {
+        showModal: false,  // Control del estado del modal
         totalPaginasConvocatoria: 0,
         PaginarActualConvocatoria: 1,
 
@@ -200,6 +202,7 @@
         },
         
         fases: [],
+        convocatoriaActiva: '',
         nombre: '',
         selectedFase: '',
         fechaInicioFase: '',
@@ -214,9 +217,14 @@
       // Mostrar modal para crear convocatoria
       showCreateConvocatoriaModal() {
         this.resetConvocatoria();
-        $('#crearConvocatoria').modal('show');
+        this.showModal = true; // Mostrar modal
       },
 
+      // Ocultar modal
+      hideModal() {
+        this.showModal = false; // Ocultar modal
+      },
+      
       // Resetear el formulario de convocatoria
       resetConvocatoria() {
         this.newConvocatoria = {
@@ -283,13 +291,20 @@
       async fetchFases(pagina_actual) {
         try {
           const respuesta = await getProgramacionFasesByPage(pagina_actual);
-          console.log('Respuesta de fases:', respuesta); // <-- Agregar log para ver qué llega
-          this.fases = respuesta.fases; 
+          this.fases = respuesta.programacion_fases;
           this.totalPaginasFases = respuesta.total_pages;
+
+          // Extraer el nombre de la convocatoria de la primera fase
+          if (this.fases.length > 0) {
+            this.convocatoriaActiva = this.fases[0].convocatoria_nombre;
+          } else {
+            this.convocatoriaActiva = 'Sin convocatoria activa';
+          }
         } catch (error) {
           showWarningToast('Error al obtener fases');
         }
       },
+
 
 
 

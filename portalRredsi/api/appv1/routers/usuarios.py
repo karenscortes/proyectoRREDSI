@@ -1,8 +1,9 @@
 from typing import List, Optional
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
-from appv1.crud.usuarios import create_user_sql,  get_user_by_email, get_user_by_id, update_password, update_user
+from appv1.crud.usuarios import create_user_sql, get_institutional_details,  get_user_by_email, get_user_by_id, update_password, update_user
 from appv1.routers.login import get_current_user
+from appv1.schemas.detalle_institucional import DetalleInstitucionalEditable, DetalleInstitucionalResponse
 from appv1.schemas.usuario import UserCreate, UserResponse, UserUpdate
 from core.security import get_hashed_password
 from db.database import get_db
@@ -34,11 +35,13 @@ async def insert_user(
         return {"mensaje":"usuario registrado con éxito"}
 
 # Obtener info actual de la persona logueada
-@router_user.get("/me", response_model=UserResponse)
+@router_user.get("/me/get_institutional_details/", response_model=DetalleInstitucionalEditable)
 def read_current_user(
-    current_user: UserResponse = Depends(get_current_user)  # Obtener el usuario autenticado desde el token
+    current_user: UserResponse = Depends(get_current_user),
+    db: Session = Depends(get_db)# Obtener el usuario autenticado desde el token
 ):
-    return current_user
+    information = get_institutional_details(db,current_user.id_usuario)
+    return information
 
 
     

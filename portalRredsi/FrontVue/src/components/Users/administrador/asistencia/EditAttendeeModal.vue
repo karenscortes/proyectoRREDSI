@@ -102,15 +102,15 @@ export default {
                 editableData.celular !== props.infoModal.celular || editableData.correo !== props.infoModal.correo ||
                 editableData.url_comprobante_pago !== props.infoModal.url_comprobante_pago) 
             {
-                const response = await updateAttendees(infoModal.id_usuario, editableData);
-
+                console.log("entró");
+                const response = await updateAttendees(props.infoModal.id_usuario, editableData);
                 showSuccessToast(response.data.message);
 
             }else{
                 showErrorToast("Error al intentar Actualizar.");
             }
         } catch (error) {
-            showErrorToast("Error al subir archivo.");
+            showErrorToast("Error al actualizar Asistente.");
         }
     };
     return { 
