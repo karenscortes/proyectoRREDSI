@@ -4,6 +4,7 @@ from fastapi import HTTPException
 from sqlalchemy.orm import Session
 from sqlalchemy.sql import text
 from appv1.models.asistente import Asistente
+from appv1.models.convocatoria import Convocatoria
 from appv1.models.historial_actividades_admin import Historial_admin
 from appv1.models.tipo_documento import Tipo_documento
 from appv1.models.usuario import Usuario
@@ -62,7 +63,7 @@ def get_id_document_type(db:Session, nombre:str):
 def get_paginated_attendees(db: Session, page, page_size):
     try:
         offset = (page - 1) * page_size
-        attendees = db.query(Asistente.url_comprobante_pago, Usuario.id_usuario, Usuario.documento, Usuario.nombres, Usuario.apellidos, Usuario.celular, Usuario.correo).join(Usuario).limit(page_size).offset(offset).all()
+        attendees = db.query(Asistente.url_comprobante_pago, Usuario.id_usuario, Usuario.documento, Usuario.nombres, Usuario.apellidos, Usuario.celular, Usuario.correo).join(Usuario).filter(Asistente.id_convocatoria.in_(db.query(Convocatoria.id_convocatoria).filter(Convocatoria.estado == 'en curso'))).limit(page_size).offset(offset).all()
         if attendees is None:
             raise HTTPException(status_code=404, detail="No hay asistentes")
         
@@ -110,7 +111,7 @@ def get_attendee_by_document(db: Session, documento:str, page, page_size):
     try:
         offset = (page - 1) * page_size
 
-        attendees = db.query(Asistente.url_comprobante_pago, Usuario.id_usuario, Usuario.documento, Usuario.nombres, Usuario.apellidos, Usuario.celular, Usuario.correo).join(Usuario).filter(Usuario.documento.like(f'{documento}%')).limit(page_size).offset(offset).all()
+        attendees = db.query(Asistente.url_comprobante_pago, Usuario.id_usuario, Usuario.documento, Usuario.nombres, Usuario.apellidos, Usuario.celular, Usuario.correo).join(Usuario).filter(Usuario.documento.like(f'{documento}%',Asistente.id_convocatoria.in_(db.query(Convocatoria.id_convocatoria).filter(Convocatoria.estado == 'en curso')))).limit(page_size).offset(offset).all()
 
         
         if attendees is None:
