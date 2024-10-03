@@ -249,6 +249,7 @@ CREATE TABLE items_rubrica (
     titulo VARCHAR(50),
     componente TEXT,
     valor_max FLOAT(3, 1),
+    estado ENUM('activo','inactivo'),
     FOREIGN KEY (id_rubrica) REFERENCES rubricas(id_rubrica)
 );
 
@@ -359,8 +360,10 @@ CREATE TABLE asistentes (
     id_usuario INT,
     asistencia TINYINT DEFAULT 0,
     fecha TIMESTAMP,
+    id_convocatoria INT,
     url_comprobante_pago VARCHAR(255),
-    FOREIGN KEY (id_usuario) REFERENCES usuarios(id_usuario)
+    FOREIGN KEY (id_usuario) REFERENCES usuarios(id_usuario),
+    FOREIGN KEY (id_convocatoria) REFERENCES convocatorias(id_convocatoria)
 );
 
 INSERT INTO asistentes (id_usuario, asistencia, tipo_asistente, fecha, url_comprobante_pago)
@@ -391,6 +394,7 @@ CREATE TABLE participantes_proyecto (
     id_etapa INT,
     id_proyecto INT,
     id_proyectos_convocatoria INT,
+    tipo_usuario ENUM('evaluador','suplenteEvaluador','ponente', 'suplentePonente', 'tutor'),
     FOREIGN KEY (id_usuario) REFERENCES usuarios(id_usuario),
     FOREIGN KEY (id_etapa) REFERENCES etapas(id_etapa),
     FOREIGN KEY (id_proyecto) REFERENCES proyectos(id_proyecto),
