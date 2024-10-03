@@ -128,7 +128,7 @@
       const componentes = ref([]);
       const puntajeTotal = ref(0);
       const currentEtapa = ref('');
-      const botonCalificar = ref('Activo');
+      const botonCalificar = ref('Activo'); // Nueva variable para habilitar o no el botón de calificar
 
 
       const { showSuccessToast, showErrorToast, showWarningToast, showInfoToast} = useToastUtils();
@@ -146,9 +146,17 @@
         const authStore = useAuthStore();
         const user = authStore.user;
 
+        // Obtener etapa actual
+        try {
+          const response = await obtenerEtapaActual();
+          currentEtapa.value = response.nombre_etapa;
+        } catch (etapaError) {
+          showErrorToast('Error al obtener la etapa actual.');
+        }
+        
         try {
           // Intentamos obtener los datos de las rúbricas calificadas.
-          const data = await obtenerRubricasCalificadas(props.proyecto.id_proyecto, user.id_usuario);
+          const data = await obtenerRubricasCalificadas(props.proyecto.id_proyecto, user.id_usuario, currentEtapa.value);
           
           // Si se obtienen correctamente, significa que ya hay calificaciones registradas.
           tituloProyecto.value = data.titulo_proyecto;
@@ -162,7 +170,7 @@
           componentes.value = data.componentes;
 
           if(props.proyecto.estado_evaluacion === 'P_presencial'){
-            showInfoToast("El estado del proyecto cambiará a calificado en el momento que se ingrese la otra respuesta del otro evaluador.");
+            showInfoToast("El estado del proyecto cambiará a calificado en el momento que se ingrese la respuesta del otro evaluador.");
           }
 
           botonCalificar.value = "Inactivo";
@@ -170,7 +178,7 @@
         } catch (error) {
           // Si hay un error, significa que no hay calificaciones registradas aún, por lo tanto, obtenemos los datos para calificar.
           try {
-            const data = await obtenerDatosParaCalificarProyecto(props.proyecto.id_proyecto, user.id_usuario);
+            const data = await obtenerDatosParaCalificarProyecto(props.proyecto.id_proyecto, user.id_usuario, currentEtapa.value);
             
             tituloProyecto.value = data.titulo_proyecto;
             universidadProyecto.value = data.universidad_proyecto;
@@ -186,15 +194,7 @@
             showErrorToast('Error al obtener los datos para calificar el proyecto.');
           }
         }
-
-        // Obtener etapa actual
-        try {
-          const response = await obtenerEtapaActual();
-          currentEtapa.value = response.nombre_etapa;
-        } catch (etapaError) {
-          showErrorToast('Error al obtener la etapa actual.');
-        }
-    };
+      };
 
       const actualizarPuntajeTotal = () => {
         puntajeTotal.value = componentes.value.reduce((total, componente) => {

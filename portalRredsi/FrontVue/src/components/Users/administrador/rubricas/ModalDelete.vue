@@ -40,7 +40,7 @@ import { reactive } from "vue";
 const props = defineProps({
   infoModalEliminar: {
     type: Object,
-    default: null,
+    default:null,
     validator(value) {
       return (
         typeof value.id_item_rubrica === "number" &&
@@ -71,8 +71,6 @@ const actualizar = ()=>{
 
 //Función para eliminar item, cerrar modal y disparar el método que emitira a la rubrica
 const save = () => {
-  console.log("Hola desde modal delete")
-  console.log(infoBorrar);
   const aux_id_item = props.infoModalEliminar.id_item_rubrica;  
   const result = deleteItems(aux_id_item); 
   closeModal();

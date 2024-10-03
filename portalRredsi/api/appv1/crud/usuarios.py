@@ -54,14 +54,28 @@ def create_user_sql(db: Session, usuario: UserCreate):
     
     
 # Consultar un usuario por su email
+# Consultar un usuario por su email y validar si está activo
+# Consultar un usuario por su email y validar si está activo
 def get_user_by_email(db: Session, p_mail: str):
     try:
         sql = text("SELECT * FROM usuarios WHERE correo = :mail")
         result = db.execute(sql, {"mail": p_mail}).fetchone()
+
+        # Validar si el usuario existe
+        if not result:
+            raise HTTPException(status_code=404, detail="El correo no está registrado, por favor crear cuenta")
+
+        # Validar si el usuario está activo
+        if result.estado != 'activo':
+            raise HTTPException(status_code=403, detail="Usuario no autorizado")
+        
         return result
     except SQLAlchemyError as e:
         print(f"Error al buscar usuario por email: {e}")
         raise HTTPException(status_code=500, detail="Error al buscar usuario por email")
+
+
+
 
 # Consultar un usuario por su documento
 def get_user_by_documento(db: Session, p_documento: str):
@@ -179,4 +193,5 @@ def update_user(db: Session, id_usuario: int, usuario: UserUpdate):
         db.rollback()
         print(f"Error al actualizar usuario: {e}")
         raise HTTPException(status_code=500, detail="Error interno al actualizar usuario.")
+
 

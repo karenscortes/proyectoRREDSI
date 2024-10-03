@@ -1,7 +1,6 @@
 import enum
-from typing import Annotated, List, Optional
+from typing import List, Optional
 from pydantic import BaseModel, EmailStr, constr
-from datetime import datetime
 
 class EstadoProyectoEnum(str, enum.Enum):
     pendiente_virtual = "pendiente_virtual"
@@ -9,28 +8,35 @@ class EstadoProyectoEnum(str, enum.Enum):
     asignado = "asignado"
     pendiente = "pendiente"
 
+class UsuarioBase(BaseModel):
+    id_tipo_documento: int
+    documento: str
+    nombres: str
+    apellidos: str
+    celular: str
+    correo: EmailStr
+
+class TutorCreate(UsuarioBase):
+    pass
+
+class PonenteCreate(UsuarioBase):
+    pass
+
+class AutorCreate(BaseModel):
+    nombre: str
 
 class ProyectoBase(BaseModel):
     id_institucion: int
-    id_modalidad:int
-    id_area_conocimiento:int
-    titulo: Annotated[str, constr(max_length=100)]
-    programa_academico: Annotated[str, constr(max_length=50)]
-    grupo_investigacion:Annotated[str, constr(max_length=50)]
-    linea_investigacion:Annotated[str, constr(max_length=50)]
-    nombre_semillero:Annotated[str, constr(max_length=50)]
-  
-
+    id_modalidad: int
+    id_area_conocimiento: int
+    titulo: str
+    programa_academico: str
+    grupo_investigacion: str
+    linea_investigacion: str
+    nombre_semillero: str
 
 class ProyectoCreate(ProyectoBase):
-    pass
-
-class ProyectoResponse(ProyectoBase):
-    id_proyecto: int
-    
-
-class PaginatedProyectosResponse(BaseModel):
-    proyectos: List[ProyectoResponse]
-    total_pages: int
-    current_page: int
-    page_size: int
+    tutor: TutorCreate
+    ponente1: PonenteCreate
+    ponente2: Optional[PonenteCreate] = None
+    autores: List[AutorCreate] = []

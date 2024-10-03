@@ -9,13 +9,13 @@
         <img src="../assets/img/slider_background.jpg" alt height="200px" width="100%">
     </div>
     <div class="cont-slides" v-else>
-        <Carrusel/>  
+        <Carrusel />
     </div>
 
     <div class="container pt-5">
-        <ComponenteDinamico :currentComponent="currentComponent"/>
+        <ComponenteDinamico :currentComponent="currentComponent" />
     </div>
-    
+
     <FooterPrincipal />
 
     <!-- Modal de Login -->
@@ -62,7 +62,7 @@
 </template>
 
 <script>
-import { ref , markRaw} from "vue";
+import { ref, markRaw } from "vue";
 import { useRouter } from "vue-router";
 import { useAuthStore } from "@/store";
 import FooterPrincipal from "../components/Footers/FooterPrincipal.vue";
@@ -81,56 +81,43 @@ import "../assets/Styles/main_styles.css";
 import '../assets/Styles/responsive_main.css';
 import '../assets/plugins/fontawesome-free-5.0.1/css/fontawesome-all.css';
 
-
-
-
 export default {
     components: {
         MenuPrincipal: markRaw(MenuPrincipal),
         FooterPrincipal: markRaw(FooterPrincipal),
         RegistroUsuario: markRaw(RegistroUsuario),
         RegistroProyecto: markRaw(RegistroProyecto),
-        Registro_fases:markRaw(Registro_fases),
-        Rubricas_Calificadas:markRaw(Rubricas_Calificadas),
-        InicioPrincipal:markRaw(InicioPrincipal),
-        Carrusel:markRaw(Carrusel),
-
-        
-        //Componente Por defecto
+        Registro_fases: markRaw(Registro_fases),
+        Rubricas_Calificadas: markRaw(Rubricas_Calificadas),
+        InicioPrincipal: markRaw(InicioPrincipal),
+        Carrusel: markRaw(Carrusel),
         NotAvailable: markRaw(NotAvailable),
         ComponenteDinamico,
     },
     setup() {
-
-        const currentComponent = ref(InicioPrincipal);           
+        const currentComponent = ref(InicioPrincipal);
         const componente = ref("");
         const changeComponent = (componentName) => {
-   
             const componentMap = {
                 NotAvailable: NotAvailable,
                 RegistroUsuario: RegistroUsuario,
-                RegistroProyecto:RegistroProyecto,
-                Registro_fases:Registro_fases,
-                Rubricas_Calificadas:Rubricas_Calificadas,
-                InicioPrincipal:InicioPrincipal
-            
+                RegistroProyecto: RegistroProyecto,
+                Registro_fases: Registro_fases,
+                Rubricas_Calificadas: Rubricas_Calificadas,
+                InicioPrincipal: InicioPrincipal
             };
 
             currentComponent.value = componentMap[componentName] || NotAvailable;
-            componente.value=componentName;
-
         };
 
         const authStore = useAuthStore();
         const route = useRouter();
 
-        // Define las propiedades reactivas 
         const user = ref(null);
         const email = ref("");
         const password = ref("");
         const errorMessage = ref(null);
 
-        // Método para manejar el login
         const handleLogin = async () => {
             try {
 
@@ -149,6 +136,7 @@ export default {
             }
         };
 
+
         return {
             user,
             email,
@@ -160,20 +148,34 @@ export default {
             changeComponent,
             handleLogin,
         };
-
     },
     mounted() {
         const script = document.createElement('script');
-        script.src = 'src/assets/js/custom.js'; // Ruta del archivo JS
-        script.async = true; // Opcional, para cargarlo de forma asíncrona
+        script.src = 'src/assets/js/custom.js';
+        script.async = true;
         document.head.appendChild(script);
     }
-
-
 };
 </script>
+
 <style scoped>
-    .cont-slides{
+.cont-slides {
+    margin: 20px;
+}
+
+.modal-footer {
+    justify-content: center;
+}
+
+.forgot-password-link {
+    color: black;
+    text-decoration: none;
+}
+
+.forgot-password-link:hover {
+    text-decoration: underline;
+}
+.cont-slides{
     margin: 20px;
     }
 
