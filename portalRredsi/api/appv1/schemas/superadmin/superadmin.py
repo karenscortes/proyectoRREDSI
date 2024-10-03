@@ -61,3 +61,14 @@ class ActivityHistoryResponse(BaseModel):
     class Config:
         orm_mode = True
 
+# Esquema de respuesta para el historial de actividades paginado
+class PaginatedActivityHistoryResponse(BaseModel):
+    activities: List[ActivityHistoryResponse]  
+    total_pages: int                          
+    current_page: int                          
+    page_size: int                          
+
+    class Config:
+        orm_mode = True
+
+
