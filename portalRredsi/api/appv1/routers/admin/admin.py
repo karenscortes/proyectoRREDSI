@@ -5,11 +5,11 @@ from appv1.crud.admin.gest_asistentes_externos import generate_code, get_attende
 from appv1.crud.admin.gest_delegado import create_delegado,get_delegados_activos_paginated, get_delegados_by_document
 from appv1.crud.admin.gest_rubricas import create_items, delete_items, get_all_rubricas, update_items
 from appv1.crud.admin.gest_rubricas import get_all_rubricas
-from appv1.crud.admin.admin import create_convocatoria, create_programacion_fase, create_sala, update_sala
+from appv1.crud.admin.admin import create_convocatoria, create_programacion_fase, create_sala, existe_convocatoria_en_curso, update_sala
 from appv1.models.convocatoria import Convocatoria
 from appv1.models.programacion_fase import Programacion_fase
 from appv1.routers.login import get_current_user
-from appv1.schemas.admin.admin import ConvocatoriaCreate, CreateSala, ProgramacionFaseCreate, UpdateSala
+from appv1.schemas.admin.admin import ConvocatoriaCreate, CreateSala, EstadoDeConvocatoria, ProgramacionFaseCreate, UpdateSala
 from appv1.crud.admin.admin import create_convocatoria
 from appv1.schemas.admin.attendees import PaginatedAttendees, UpdatedAttendee
 from appv1.schemas.admin.delegado import DelegadoResponse, PaginatedDelegadoResponse
@@ -37,10 +37,8 @@ def create_new_convocatoria(
     if permisos is None or not permisos.p_insertar:  
         raise HTTPException(status_code=401, detail="Usuario no autorizado")
 
-    # Verificar si ya existe una convocatoria en curso
-    convocatoria_en_curso = db.query(Convocatoria).filter(Convocatoria.estado == "en curso").first()
-    
-    if convocatoria_en_curso:
+    # Verificar si ya existe una convocatoria en curso usando count()
+    if existe_convocatoria_en_curso(db):
         raise HTTPException(status_code=400, detail="Ya existe una convocatoria en curso.")
 
     # Crear la nueva convocatoria si no hay ninguna en curso
@@ -54,6 +52,7 @@ def create_new_convocatoria(
         "message": "Convocatoria creada exitosamente", 
         "id_convocatoria": convocatoria_created.id_convocatoria
     }
+
 
 
 @router_admin.post("/crear-programacion-fase")
@@ -72,7 +71,7 @@ def create_new_programacion_fase(
     # 1. Verificar que la convocatoria esté en curso
     convocatoria_en_curso = db.query(Convocatoria).filter(
         Convocatoria.id_convocatoria == programacion_fase.id_convocatoria,
-        Convocatoria.estado == "en curso"
+        Convocatoria.estado == "en_curso"
     ).first()
 
     if not convocatoria_en_curso:
