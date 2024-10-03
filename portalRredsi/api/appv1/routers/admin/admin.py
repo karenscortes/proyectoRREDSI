@@ -6,6 +6,8 @@ from appv1.crud.admin.gest_delegado import create_delegado,get_delegados_activos
 from appv1.crud.admin.gest_rubricas import create_items, delete_items, get_all_rubricas, update_items
 from appv1.crud.admin.gest_rubricas import get_all_rubricas
 from appv1.crud.admin.admin import create_convocatoria, create_programacion_fase, create_sala, update_sala
+from appv1.models.convocatoria import Convocatoria
+from appv1.models.programacion_fase import Programacion_fase
 from appv1.routers.login import get_current_user
 from appv1.schemas.admin.admin import ConvocatoriaCreate, CreateSala, ProgramacionFaseCreate, UpdateSala
 from appv1.crud.admin.admin import create_convocatoria
@@ -22,7 +24,6 @@ import pandas as pd
 
 router_admin = APIRouter()
 
-# Crear convocatoria
 @router_admin.post("/crear-convocatoria")
 def create_new_convocatoria(
     convocatoria: ConvocatoriaCreate, 
@@ -32,20 +33,29 @@ def create_new_convocatoria(
     MODULE = 6  # Módulo para convocatorias
     permisos = get_permissions(db, current_user.id_rol, MODULE)
 
+    # Verificación de permisos
     if permisos is None or not permisos.p_insertar:  
         raise HTTPException(status_code=401, detail="Usuario no autorizado")
 
+    # Verificar si ya existe una convocatoria en curso
+    convocatoria_en_curso = db.query(Convocatoria).filter(Convocatoria.estado == "en curso").first()
+    
+    if convocatoria_en_curso:
+        raise HTTPException(status_code=400, detail="Ya existe una convocatoria en curso.")
+
+    # Crear la nueva convocatoria si no hay ninguna en curso
     convocatoria_created = create_convocatoria(
         db, convocatoria.nombre, convocatoria.fecha_inicio, 
         convocatoria.fecha_fin, convocatoria.estado
     )
-    insertar_historial_admin(db,'Insertar',MODULE,convocatoria_created.id_convocatoria,current_user.id_usuario)
+
+    # Devolver el ID de la convocatoria creada
     return {
         "message": "Convocatoria creada exitosamente", 
         "id_convocatoria": convocatoria_created.id_convocatoria
     }
 
-# Crear programación de fase
+
 @router_admin.post("/crear-programacion-fase")
 def create_new_programacion_fase(
     programacion_fase: ProgramacionFaseCreate, 
@@ -55,10 +65,29 @@ def create_new_programacion_fase(
     MODULE = 7  # Módulo para programación de fases
     permisos = get_permissions(db, current_user.id_rol, MODULE)
 
+    # Verificación de permisos
     if permisos is None or not permisos.p_insertar:  
         raise HTTPException(status_code=401, detail="Usuario no autorizado")
 
-    # Crear la programación de fase
+    # 1. Verificar que la convocatoria esté en curso
+    convocatoria_en_curso = db.query(Convocatoria).filter(
+        Convocatoria.id_convocatoria == programacion_fase.id_convocatoria,
+        Convocatoria.estado == "en curso"
+    ).first()
+
+    if not convocatoria_en_curso:
+        raise HTTPException(status_code=400, detail="La convocatoria no está en curso o no existe.")
+
+    # 2. Verificar si ya existe una programación de la misma fase para la convocatoria
+    programacion_existente = db.query(Programacion_fase).filter(
+        Programacion_fase.id_fase == programacion_fase.id_fase,
+        Programacion_fase.id_convocatoria == programacion_fase.id_convocatoria
+    ).first()
+
+    if programacion_existente:
+        raise HTTPException(status_code=400, detail="La programación de esta fase ya existe para la convocatoria.")
+
+    # 3. Crear la programación de fase si todo está en orden
     programacion_fase_created = create_programacion_fase(
         db, 
         programacion_fase.id_fase, 
@@ -66,7 +95,7 @@ def create_new_programacion_fase(
         programacion_fase.fecha_inicio, 
         programacion_fase.fecha_fin
     )
-    insertar_historial_admin(db,'Insertar',MODULE,programacion_fase_created.id_programacion_fase,current_user.id_usuario)
+    
     return {
         "message": "Programación de fase creada exitosamente", 
         "id_programacion_fase": programacion_fase_created.id_programacion_fase

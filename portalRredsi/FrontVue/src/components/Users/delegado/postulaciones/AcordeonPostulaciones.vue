@@ -61,7 +61,7 @@
                         <p class="text-dark"><strong>Etapa:</strong></p>
                         <p v-if="evaluator.etapa_virtual && evaluator.etapa_presencial" class="text-dark"> Virtual y
                             presencial</p>
-                        <p v-else>{{ evaluator.etapa_virtual ? "Virtual" : "Presencial" }}</p>
+                        <p v-else class="text-dark">{{ evaluator.etapa_virtual ? "Virtual" : "Presencial" }}</p>
 
                     </div>
                     <div v-if="evaluator.etapa_virtual && evaluator.etapa_presencial || evaluator.etapa_presencial"
@@ -69,7 +69,7 @@
                         <p class="text-dark"><strong>Jornada:</strong></p>
                         <p v-if="evaluator.jornada_manana && evaluator.jornada_tarde" class="text-dark"> Mañana y tarde
                         </p>
-                        <p v-else>{{ evaluator.jornada_manana ? "Mañana" : "Tarde" }}</p>
+                        <p v-else class="text-dark">{{ evaluator.jornada_manana ? "Mañana" : "Tarde" }}</p>
                     </div>
                 </div>
                 <div class="row mt-4 justify-content-center">
