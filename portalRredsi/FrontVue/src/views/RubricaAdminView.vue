@@ -267,9 +267,9 @@ const rubricas = () => {
 }
 
 const nuevoItem = (item)=>{
-  const idx_rubric = arrayRubricas.values.data.findIndex( rubrica => rubrica.id_rubrica === item.id_rubrica );
+  const idx_rubric = arrayRubricas.findIndex( rubrica => rubrica.id_rubrica === item.id_rubrica );
   if(idx_rubric > -1){
-    arrayRubricas.values.data[idx_rubric].items_rubrica.push(item)
+    arrayRubricas[idx_rubric].items_rubrica.push(item)
     infoItems.push(item);
   }
 }
