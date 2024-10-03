@@ -166,4 +166,14 @@ export default {
 .forgot-password-link:hover {
     text-decoration: underline;
 }
+.cont-slides{
+    margin: 20px;
+    }
+
+    .super_container {
+        width: 100%;
+        overflow: hidden;
+        z-index: 10;
+    }
+
 </style>

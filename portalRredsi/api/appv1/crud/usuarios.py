@@ -115,21 +115,26 @@ def get_user_by_id(db: Session, user_id: int) -> UserResponse:
 
 
 # Obtener info actual de la persona logueada
-async def get_current_user(
-    token: str = Depends(oauth2_scheme), 
-    db: Session = Depends(get_db)
-) -> UserResponse:
-    # Verificar el token
-    user_id = await verify_token(token)  # verify_token ahora verifica y decodifica el token
- 
-    if user_id is None:
-        raise HTTPException(status_code=401, detail="Token inválido o expirado")
+def get_institutional_details(db: Session, id_usuario: int):
+    try:
+        # Segunda consulta para obtener los detalles institucionales
+        sql_detalles_institucionales = text("""
+            SELECT id_institucion, semillero, grupo_investigacion, 
+                id_primera_area_conocimiento, id_segunda_area_conocimiento
+            FROM detalles_institucionales
+            WHERE id_usuario = :user_id
+        """)
 
-    user = get_user_by_id(db, user_id)
-    if user is None:
-        raise HTTPException(status_code=401, detail="Usuario no encontrado")
- 
-    return user
+        result_detalles = db.execute(sql_detalles_institucionales, {"user_id": id_usuario}).fetchone()
+
+        if result_detalles is None:
+            return None
+
+        return result_detalles
+
+    except SQLAlchemyError as e:
+        print(f"Error al obtener información del usuario: {e}")
+        raise HTTPException(status_code=500, detail="Error al obtener información del usuario")
 
 
 def update_password(db: Session, email: str, new_password: str):

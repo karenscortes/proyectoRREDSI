@@ -60,12 +60,13 @@ export const obtenerProyectosPorEstado = async (nombreEtapa, estado_evaluacion, 
 };
 
 // Servicio para obtener las rúbricas calificadas de un proyecto
-export const obtenerRubricasCalificadas = async (idProyecto, idUsuario) => {
+export const obtenerRubricasCalificadas = async (idProyecto, idUsuario, nombreEtapa) => {
   try {
     const response = await api.get(`/obtenerProyectosEvaluador/obtener-datos-del-proyecto-calificado`, {
       params: {
         id_proyecto: idProyecto,
-        id_usuario: idUsuario
+        id_usuario: idUsuario,
+        nombre_etapa: nombreEtapa
       }
     });
     return response.data; // Devuelve los datos de las rúbricas calificadas
@@ -79,12 +80,13 @@ export const obtenerRubricasCalificadas = async (idProyecto, idUsuario) => {
 };
 
 // Servicio para obtener los datos para calificar un proyecto
-export const obtenerDatosParaCalificarProyecto = async (idProyecto, idUsuario) => {
+export const obtenerDatosParaCalificarProyecto = async (idProyecto, idUsuario, nombreEtapa) => {
   try {
     const response = await api.get('/obtenerProyectosEvaluador/obtener-datos-para-calificar-proyecto/', {
       params: {
         id_proyecto: idProyecto,
-        id_usuario: idUsuario
+        id_usuario: idUsuario,
+        nombre_etapa: nombreEtapa
       }
     });
     return response.data;
