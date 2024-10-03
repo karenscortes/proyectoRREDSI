@@ -16,5 +16,7 @@ class Asistente(Base):
     asistencia = Column(SmallInteger(), default=0)
     fecha = Column(TIMESTAMP)
     url_comprobante_pago = Column(String(255))
+    id_convocatoria = Column(Integer,ForeignKey('convocatorias.id_convocatoria'))
     
     usuario= relationship("Usuario", back_populates="asistentes")
+    convocatoria= relationship("Convocatoria", back_populates="asistentes")
