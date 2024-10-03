@@ -5,7 +5,7 @@
       <div class="row mb-5 mt-2">
         <div class="col">
           <div class="section_title text-center">
-            <h1>Información administradores</h1>
+            <h1>Gestión de administradores y delegados</h1>
           </div>
         </div>
       </div>
@@ -16,7 +16,7 @@
           <thead>
             <tr>
               <th class="bg-warning">Identificación</th>
-              <th class="bg-warning">Administrador</th>
+              <th class="bg-warning">Administrador/Delegado</th>
               <th class="bg-warning">Correo</th>
               <th class="bg-warning">Teléfono</th>
               <th class="bg-warning">Estado</th>
@@ -127,35 +127,43 @@
               <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body text-dark">
-              <!-- Historial detallado del administrador/delegado -->
-              <div class="row text-dark" v-if="historialAdmin.length">
-                <div class="col-12" v-for="(actividad, index) in historialAdmin" :key="index">
-                  <div class="row mb-3">
-                    <div class="col-4">
-                      <strong>Módulo:</strong>
-                      <p class="text-dark">{{ actividad.modulo_nombre }}</p>
-                    </div>
-                    <div class="col-4">
-                      <strong>Acción:</strong>
-                      <p class="text-dark">{{ actividad.accion }}</p>
-                    </div>
-                    <div class="col-4">
-                      <strong>Fecha:</strong>
-                      <p class="text-dark">{{ actividad.fecha }}</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
+              <!-- Tabla para mostrar el historial de actividades del administrador -->
+              <table class="table table-bordered table-striped" v-if="historialAdmin.length">
+                <thead>
+                  <tr>
+                    <th>Módulo</th>
+                    <th>Acción</th>
+                    <th>Fecha</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr v-for="(actividad, index) in historialAdmin" :key="index">
+                    <td>{{ actividad.modulo_nombre }}</td>
+                    <td>{{ actividad.accion }}</td>
+                    <td>{{ new Date(actividad.fecha).toLocaleString() }}</td>
+                  </tr>
+                </tbody>
+              </table>
               <div v-else>
                 <p>No se encontraron actividades.</p>
               </div>
             </div>
-            <div class="modal-footer">
+            <div class="modal-footer d-flex justify-content-between">
+              <!-- Controles de paginación centrados -->
+              <div class="mx-auto">
+                <PaginatorBody 
+                  :totalPages="totalPaginasHistorial" 
+                  @page-changed="cambiarPaginaHistorial" 
+                  v-if="totalPaginasHistorial > 1" 
+                />
+              </div>
+              <!-- Botón de cerrar a la derecha -->
               <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
             </div>
           </div>
         </div>
       </div>
+
 
 
     </div>
@@ -177,7 +185,9 @@ export default {
       nuevoRolSeleccionado: null, // Rol seleccionado para actualizar
       paginaActual: 1,  // Página actual de la paginación
       totalPaginas: 0,  // Total de páginas disponibles
-      historialAdmin: [],
+      historialAdmin: [],  // Historial de actividades del admin seleccionado
+      paginaHistorialActual: 1,  // Página actual del historial
+      totalPaginasHistorial: 0,  // Total de páginas del historial
 
     };
   },
@@ -252,17 +262,32 @@ export default {
       }
     },
 
-    // Mostrar las acciones del administrador en el modal
+    // Mostrar las acciones del administrador en el modal con paginación
     async mostrarAcciones(admin) {
-        this.adminSeleccionado = admin;
+      this.adminSeleccionado = admin;
+      this.paginaHistorialActual = 1;  // Reiniciar la paginación al abrir el modal
+      await this.fetchHistorialAdmin();
+    },
+
+    // Obtener el historial de actividades paginado
+    async fetchHistorialAdmin() {
       try {
-        // Llama al servicio para obtener el historial de actividades
-        const historial = await getActivityHistoryByAdmin(admin.id_usuario);
-        this.historialAdmin = historial;  // Asigna el historial de actividades
-     } catch (error) {
-        this.historialAdmin = [];  // En caso de error, deja vacío el historial
+        // Llama al servicio para obtener el historial paginado
+        const response = await getActivityHistoryByAdmin(this.adminSeleccionado.id_usuario, this.paginaHistorialActual);
+        this.historialAdmin = response.activities;  // Asignar el historial de actividades
+        this.totalPaginasHistorial = response.total_pages;  // Total de páginas del historial
+      } catch (error) {
+        showWarningToast(error.detail || 'Error al obtener el historial de actividades');
+        this.historialAdmin = [];  // Limpiar el historial si ocurre un error
       }
     },
+
+    // Paginación del historial de actividades
+    async cambiarPaginaHistorial(pagina) {
+      this.paginaHistorialActual = pagina;
+      await this.fetchHistorialAdmin();
+    },
+
     // Paginación
     cambiarPagina(pagina){
         this.paginaActual = pagina;
@@ -271,6 +296,7 @@ export default {
   },
   mounted() {
     this.fetchAdmins();  // Obtener los administradores cuando se monte el componente
+    this.fetchHistorialAdmin();
   },
 };
 </script>
