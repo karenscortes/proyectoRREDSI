@@ -5,6 +5,27 @@ from sqlalchemy import text
 
 
 # Consultar los evaluadores de un proyecto
+def get_participantes_por_etapa(db: Session, id_proyecto: int, id_usuario: int, id_etapa: int):
+    try:
+        sql = text("""
+            SELECT DISTINCT usuarios.id_usuario, usuarios.nombres, usuarios.apellidos, participantes_proyecto.id_etapa
+            FROM participantes_proyecto
+            JOIN proyectos ON participantes_proyecto.id_proyecto = proyectos.id_proyecto
+            JOIN etapas ON participantes_proyecto.id_etapa = etapas.id_etapa
+            JOIN usuarios ON participantes_proyecto.id_usuario = usuarios.id_usuario
+            JOIN respuestas_rubricas ON usuarios.id_usuario = respuestas_rubricas.id_usuario 
+            WHERE participantes_proyecto.id_proyecto = :id_proyecto
+            AND respuestas_rubricas.id_usuario = :id_usuario
+            AND participantes_proyecto.id_etapa = :id_etapa
+        """)
+        result = db.execute(sql, {"id_proyecto": id_proyecto, "id_usuario": id_usuario, "id_etapa": id_etapa}).mappings().all()
+        return result
+    except SQLAlchemyError as e:
+        print(f"Error al ejecutar la consulta: {e}")
+        raise HTTPException(status_code=500, detail="Error interno del servidor")
+
+    
+# Consultar los evaluadores de un proyecto
 def get_participantes_proyecto(db: Session, id_proyecto: int, id_rol: int):
     try:
         sql = text("""SELECT usuarios.id_usuario, usuarios.nombres, usuarios.apellidos, usuarios.id_rol
@@ -34,13 +55,7 @@ def get_datos_sala(db: Session, id_proyecto:int):
         return result
     except SQLAlchemyError as e:
         raise HTTPException(status_code=500, detail="Datos de sala no encontrados")
-    
-# def get_suplentes_sala(db:Session):
-#     try:
-#         sql = text("""SELECT """)
-#     except SQLAlchemyError as e:
-#         raise HTTPException(status_code=500, detail="Datos de sala no encontrados")
-    
+        
     
 #Insertar presentacion del proyecto
 def insertar_presentacion_proyecto(db: Session, id_proyecto: int, url_presentacion: str):

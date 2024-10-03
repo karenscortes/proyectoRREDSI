@@ -6,9 +6,21 @@ from appv1.routers.login import get_current_user
 from appv1.schemas.delegado.detalleProyectos import  SalaConHorario, UrlPresentacionProyecto, UsuarioProyecto
 from appv1.schemas.usuario import UserResponse
 from db.database import get_db
-from appv1.crud.delegado.detalleProyecto import get_datos_sala, get_participantes_proyecto, insertar_presentacion_proyecto
+from appv1.crud.delegado.detalleProyecto import get_datos_sala, get_participantes_por_etapa, get_participantes_proyecto, insertar_presentacion_proyecto
 
 router_detalle_proyecto = APIRouter()
+
+@router_detalle_proyecto.get("/participantes-etapa/", response_model=List[UsuarioProyecto])
+async def obtener_participantes_por_etapa(
+    id_proyecto: int,
+    id_usuario: int,
+    id_etapa: int,
+    db: Session = Depends(get_db)
+):
+    etapas = get_participantes_por_etapa(db, id_proyecto, id_usuario, id_etapa)
+    if not etapas:
+        raise HTTPException(status_code=404, detail="No se encontraron evaluadores para el proyecto")
+    return etapas
 
 #ruta para traer evaluadores del proyecto
 @router_detalle_proyecto.get("/evaluadores-proyecto/", response_model=List[UsuarioProyecto])

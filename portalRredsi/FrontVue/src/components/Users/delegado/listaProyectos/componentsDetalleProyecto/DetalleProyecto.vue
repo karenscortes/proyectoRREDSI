@@ -77,6 +77,7 @@
                         <h2 class="modal-title" id="exampleModalLabel">Añadir URL de Presentación</h2>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" style="font-size: 0.75rem; padding: 0.25rem; width: 1.5rem; height: 1.5rem;"></button>
 
+
                     </div>
                     <div class="modal-body">
                         <form @submit.prevent="guardarPresentacion">

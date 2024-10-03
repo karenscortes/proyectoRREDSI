@@ -25,7 +25,7 @@ class UsuarioProyecto(BaseModel):
     id_usuario: int 
     nombres: str  
     apellidos: str
-    id_rol: Optional[int]
+    id_etapa: Optional[int]
 
 class ProyectoResponse(BaseModel):
     proyecto: DetalleProyecto 
