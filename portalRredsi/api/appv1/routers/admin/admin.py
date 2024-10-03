@@ -9,7 +9,7 @@ from appv1.crud.admin.admin import create_convocatoria, create_programacion_fase
 from appv1.models.convocatoria import Convocatoria
 from appv1.models.programacion_fase import Programacion_fase
 from appv1.routers.login import get_current_user
-from appv1.schemas.admin.admin import ConvocatoriaCreate, CreateSala, ProgramacionFaseCreate, UpdateSala
+from appv1.schemas.admin.admin import ConvocatoriaCreate, CreateSala, EstadoDeConvocatoria, ProgramacionFaseCreate, UpdateSala
 from appv1.crud.admin.admin import create_convocatoria
 from appv1.schemas.admin.attendees import PaginatedAttendees, UpdatedAttendee
 from appv1.schemas.admin.delegado import DelegadoResponse, PaginatedDelegadoResponse
@@ -38,7 +38,9 @@ def create_new_convocatoria(
         raise HTTPException(status_code=401, detail="Usuario no autorizado")
 
     # Verificar si ya existe una convocatoria en curso
-    convocatoria_en_curso = db.query(Convocatoria).filter(Convocatoria.estado == "en curso").first()
+    convocatoria_en_curso = db.query(Convocatoria).filter(Convocatoria.estado == EstadoDeConvocatoria.en_curso.value).first()
+    print(f"Valor del estado: {EstadoDeConvocatoria.en_curso.value}")
+
     
     if convocatoria_en_curso:
         raise HTTPException(status_code=400, detail="Ya existe una convocatoria en curso.")
@@ -54,6 +56,8 @@ def create_new_convocatoria(
         "message": "Convocatoria creada exitosamente", 
         "id_convocatoria": convocatoria_created.id_convocatoria
     }
+
+
 
 
 @router_admin.post("/crear-programacion-fase")
@@ -72,7 +76,7 @@ def create_new_programacion_fase(
     # 1. Verificar que la convocatoria esté en curso
     convocatoria_en_curso = db.query(Convocatoria).filter(
         Convocatoria.id_convocatoria == programacion_fase.id_convocatoria,
-        Convocatoria.estado == "en curso"
+        Convocatoria.estado == "en_curso"
     ).first()
 
     if not convocatoria_en_curso:
