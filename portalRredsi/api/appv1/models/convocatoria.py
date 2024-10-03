@@ -1,11 +1,12 @@
 from enum import Enum as PyEnum
 from .base_class import Base
-from sqlalchemy import DATE, Column, Integer, Enum, String # type: ignore
+from sqlalchemy import DATE, Column, Integer, Enum, String
 from sqlalchemy.orm import relationship
-from datetime import date
-class estado(PyEnum):
-    en_curso = "en curso"
-    concluida= "concluida"
+
+# Estado de convocatoria
+class EstadoDeConvocatoria(PyEnum):
+    en_curso = "en curso"  
+    concluida = "concluida"
     por_publicar = "por publicar"
 
 class Convocatoria(Base):
@@ -14,8 +15,9 @@ class Convocatoria(Base):
     nombre = Column(String(25))
     fecha_inicio = Column(DATE)
     fecha_fin= Column(DATE)
-    estado = Column(Enum(estado))
+    estado = Column(Enum(EstadoDeConvocatoria, native_enum=False))
 
     programacion_fases = relationship("Programacion_fase", back_populates="convocatoria")
     postulaciones_evaluadores = relationship("Postulacion_evaluador", back_populates="convocatoria")
     proyectos_convocatorias = relationship("Proyecto_convocatoria", back_populates="convocatoria")
+

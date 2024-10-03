@@ -110,63 +110,62 @@
               <div class="form-row">
                 <div class="form-group col-md-4">
                   <label for="inputUndergraduateDegree">Título Pregrado:</label>
+                  <br>
                   <div class="d-inline-flex">
-                    <input type="text" v-model="formData.academico.pregrado" class="form-control" id="inputUndergraduateDegree" />
+                    <input v-if="formData.academico.pregrado == ''" type="text" class="form-control" id="inputMasterDegree" />
+                    <a v-else :href="formData.academico.pregrado.url_titulo" target="_blank"> Ver titulo</a>
                     <label class="items-center p-1 text-black">
                       <i class="fas fa-plus-circle h4"></i>
-                      <input type="file" class="d-none d-print-block" />
+                      <input  type="file" class="d-none d-print-block" />
                     </label>
                   </div>
                 </div>
                 <div class="form-group col-md-4">
                   <label for="inputPostgraduateDiploma">Título de Especialización:</label>
                   <div class="d-inline-flex">
-                    <input type="text" v-model="formData.academico.especializacion" class="form-control" id="inputPostgraduateDiploma" />
+                    <input v-if="formData.academico.especializacion == ''" type="text" class="form-control" id="inputMasterDegree" />
+                    <a v-else :href="formData.academico.especializacion.url_titulo" target="_blank"> Ver titulo</a>
                     <label class="items-center p-1 text-black">
                       <i class="fas fa-plus-circle h4"></i>
-                      <input type="file" class="d-none d-print-block" />
+                      <input  type="file" class="d-none d-print-block" />
                     </label>
                   </div>
                 </div>
                 <div class="form-group col-md-4">
                   <label for="inputMasterDegree">Título de Maestría:</label>
                   <div class="d-inline-flex">
-                    <input type="text" v-model="formData.academico.maestria" class="form-control" id="inputMasterDegree" />
+                    <input v-if="formData.academico.maestria == ''" type="text" class="form-control" id="inputMasterDegree" />
+                    <a v-else :href="formData.academico.maestria.url_titulo" target="_blank"> Ver titulo</a>
                     <label class="items-center p-1 text-black">
                       <i class="fas fa-plus-circle h4"></i>
-                      <input type="file" class="d-none d-print-block" />
+                      <input  type="file" class="d-none d-print-block" />
                     </label>
                   </div>
                 </div>
                 <div class="form-group col-md-4">
                   <label for="inputMasterDegree">Título de doctorado:</label>
                   <div class="d-inline-flex">
-                    <input type="text" v-model="formData.academico.maestria" class="form-control" id="inputMasterDegree" />
+                    <input v-if="formData.academico.doctorado == ''" type="text" class="form-control" id="inputMasterDegree" />
+                    <a v-else :href="formData.academico.doctorado.url_titulo" target="_blank"> Ver titulo</a>
                     <label class="items-center p-1 text-black">
                       <i class="fas fa-plus-circle h4"></i>
-                      <input type="file" class="d-none d-print-block" />
+                      <input  type="file" class="d-none d-print-block" />
                     </label>
                   </div>
                 </div>
                 <div class="form-group col-md-4">
-                  <label for="inputMasterDegree">Area de conocimiento:</label>
-                  <div class="d-inline-flex">
-                    <input type="text" v-model="formData.academico.maestria" class="form-control" id="inputMasterDegree" />
-                    <label class="items-center p-1 text-black">
-                      <i class="fas fa-plus-circle h4"></i>
-                      <input type="file" class="d-none d-print-block" />
-                    </label>
-                  </div>
+                  <label for="inputDocumentType">Área de conocimiento:</label>
+                  <select v-model="formData.institucional.id_primer_area" id="inputDocumentType" class="form-control text-dark custom-select" required>
+                    <option value="" disabled selected>Seleccione una opción</option>
+                    <option :value="area.id_area_conocimiento" v-for="(area,index) in areasConocimiento" :key="index">{{ area.nombre  }}</option>
+                  </select>
                 </div>
                 <div class="form-group col-md-4">
                   <label for="inputMasterDegree">Otra área:</label>
-                  <div class="d-inline-flex">
-                    <input type="text" v-model="formData.academico.maestria" class="form-control" id="inputMasterDegree" />
-                    <label class="items-center p-1 text-black">
-                      <i class="fas fa-plus-circle h4"></i>
-                      <input type="file" class="d-none d-print-block" />
-                    </label>
-                  </div>
+                  <select v-model="formData.institucional.id_segunda_area" id="inputDocumentType" class="form-control text-dark custom-select" required>
+                    <option value="" disabled selected>Seleccione una opción</option>
+                    <option :value="area.id_area_conocimiento" v-for="(area,index) in areasConocimiento" :key="index">{{ area.nombre  }}</option>
+                  </select>
                 </div>
               </div>
             </form>
@@ -182,8 +181,11 @@
 </template>
 
 <script>
-import { getCurrentUser } from '../../services/UsuarioService';
+import { getCurrentUser,getInstitutionalDetails } from '../../services/UsuarioService';
 import { useAuthStore } from '@/store';
+import { getCertificatesById } from '@/services/postulacionService';
+import { getAreasConocimiento } from '@/services/administradorService';
+
 export default {
   data() {
     return {
@@ -200,13 +202,17 @@ export default {
           institucion: '',
           grupoInvestigacion: '',
           semillero: '',
+          id_primer_area:'',
+          id_segunda_area:'',
         },
         academico: {
           pregrado: '',
           especializacion: '',
           maestria: '',
+          doctorado: '',
         },
       },
+      areasConocimiento: [],
     };
   },
   setup() {
@@ -247,10 +253,54 @@ export default {
       // Lógica para manejar el envío del formulario por sección (personal, institucional, académico)
       console.log(`Datos enviados de la sección: ${section}`, this.formData[section]);
     },
-    
+    async loadAcademicDegrees(){
+      
+      // OBTIENE LOS DATOS ACADEMICOS 
+      try {
+        const response_datos_academicos = await getInstitutionalDetails();
+
+        this.formData.institucional.institucion = response_datos_academicos.data.id_institucion ;
+        this.formData.institucional.grupoInvestigacion = response_datos_academicos.data.grupo_investigacion;
+        this.formData.institucional.semillero = response_datos_academicos.data.semillero;
+        this.formData.institucional.id_primer_area = response_datos_academicos.data.id_primera_area_conocimiento;
+        this.formData.institucional.id_segunda_area = response_datos_academicos.data.id_segunda_area_conocimiento;
+      } catch (error) {
+        console.error(error);
+      }
+
+      // OBTIENE LOS TITULOS 
+      try {
+        const responseTitulos = await getCertificatesById(this.user.id_usuario);
+        const titulos = responseTitulos.data;
+
+        // Buscar los titulos disponibles y agregarlo al formData.academico.pregrado
+        for (let i = 0; i < titulos.length; i++) {
+          if (titulos[i].nivel == "pregrado") {
+            this.formData.academico.pregrado = titulos[i];
+          }else if (titulos[i].nivel == "especializacion") {
+            this.formData.academico.especializacion = titulos[i];
+          }else if (titulos[i].nivel == "doctorado") {
+            this.formData.academico.doctorado = titulos[i];
+          }else if (titulos[i].nivel == "maestria") {
+            this.formData.academico.maestria = titulos[i];
+          }
+        }
+      } catch (error) {
+        console.error(error);
+      }
+
+      // OBTIENE LAS AREAS DE CONOCIMIENTO 
+      try {
+        const responseAreasConocimiento = await getAreasConocimiento();
+        this.areasConocimiento = responseAreasConocimiento.data;
+      } catch (error) {
+        console.error(error);
+      }
+    },
   },
   mounted() {
     this.loadUserProfile();
+    this.loadAcademicDegrees();
   },
 };
 </script>

@@ -1,5 +1,5 @@
 <template>
-  <div class="rubrica-container container mt-5 pt-5">
+  <div class="rubrica-container container">
     <!-- Verifica si hay una rúbrica seleccionada -->
     <div v-if="rubricaSeleccionada">
       <!-- Pasamos los datos al componente de detalle -->
@@ -31,7 +31,7 @@
       </div>
 
       <div class="text-center">
-        <button class="btn btn-primary" @click="buscarRubricas">Buscar</button>
+        <button class="btn btn-dark" @click="buscarRubricas">Buscar</button>
       </div>
 
       <!-- Lista de rúbricas calificadas -->
@@ -60,7 +60,7 @@
 
 <script>
 import { obtenerRubricasCalificadas } from '@/services/rubricasCalificadas';
-import RubricaDetalle from './Rubrica_detalle.vue';
+import RubricaDetalle from './Rubricas_detalle.vue';
 
 export default {
   components: {
@@ -125,12 +125,12 @@ export default {
 
 <style scoped>
 .rubrica-container {
-  margin-top: 50px;
-  padding-top: 50px;
+  margin-top: 90px;
+  padding-top: 90px;
 }
 
 .buscar-rubricas {
-  background-color: #f8f9fa;
+  background-color: #f4f4f4;
   padding: 20px;
   border-radius: 10px;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
@@ -147,6 +147,6 @@ h2 {
 
 .btn-outline-primary {
   border-color: #000000;
-  color: #a6a4a4;
+  color: #292828;
 }
 </style>
