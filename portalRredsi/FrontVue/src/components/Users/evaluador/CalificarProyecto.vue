@@ -128,7 +128,7 @@
       const componentes = ref([]);
       const puntajeTotal = ref(0);
       const currentEtapa = ref('');
-      const botonCalificar = ref('Activo');
+      const botonCalificar = ref('Activo'); // Nueva variable para habilitar o no el botón de calificar
 
 
       const { showSuccessToast, showErrorToast, showWarningToast, showInfoToast} = useToastUtils();
@@ -145,7 +145,7 @@
       const obtenerDatos = async () => {
         const authStore = useAuthStore();
         const user = authStore.user;
-
+        
         try {
           // Intentamos obtener los datos de las rúbricas calificadas.
           const data = await obtenerRubricasCalificadas(props.proyecto.id_proyecto, user.id_usuario);
@@ -162,7 +162,7 @@
           componentes.value = data.componentes;
 
           if(props.proyecto.estado_evaluacion === 'P_presencial'){
-            showInfoToast("El estado del proyecto cambiará a calificado en el momento que se ingrese la otra respuesta del otro evaluador.");
+            showInfoToast("El estado del proyecto cambiará a calificado en el momento que se ingrese la respuesta del otro evaluador.");
           }
 
           botonCalificar.value = "Inactivo";

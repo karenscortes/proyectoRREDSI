@@ -500,6 +500,7 @@ def get_datos_rubrica_proyecto(db: Session, id_proyecto: int, id_usuario: int):
             JOIN proyectos_convocatoria ON participantes_proyecto.id_proyecto = proyectos_convocatoria.id_proyecto         
             JOIN proyectos ON proyectos_convocatoria.id_proyecto = proyectos.id_proyecto
             JOIN convocatorias ON proyectos_convocatoria.id_convocatoria = convocatorias.id_convocatoria
+            JOIN etapas ON rubricas.id_etapa = etapas.id_etapa    
             
             WHERE 
                 participantes_proyecto.id_proyecto = :id_proyecto
@@ -507,6 +508,7 @@ def get_datos_rubrica_proyecto(db: Session, id_proyecto: int, id_usuario: int):
                 AND rubricas.id_modalidad = proyectos.id_modalidad
                 AND participantes_proyecto.id_etapa = rubricas.id_etapa
                 AND convocatorias.estado = 'en curso'
+                AND etapas.nombre = 'Virtual'
 
         """)
         params = {
@@ -632,10 +634,13 @@ def get_datos_calificados_rubrica(db: Session, id_proyecto: int, id_usuario: int
             JOIN items_rubrica ON respuestas_rubricas.id_item_rubrica = items_rubrica.id_item_rubrica
             JOIN proyectos_convocatoria ON respuestas_rubricas.id_proyecto_convocatoria = proyectos_convocatoria.id_proyecto_convocatoria
             JOIN convocatorias ON proyectos_convocatoria.id_convocatoria = convocatorias.id_convocatoria
+            JOIN rubricas ON items_rubrica.id_rubrica = rubricas.id_rubrica
+            JOIN etapas ON rubricas.id_etapa = etapas.id_etapa    
             WHERE 
                 proyectos_convocatoria.id_proyecto = :id_proyecto
                 AND respuestas_rubricas.id_usuario = :id_usuario
                 AND convocatorias.estado = 'en curso'
+                AND etapas.nombre = 'Virtual'
         """)
         
         params = {
