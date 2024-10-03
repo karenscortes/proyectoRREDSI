@@ -157,6 +157,7 @@ async def obtener_horario_evaluador(
 async def obtener_datos_para_calificar_proyecto(
     id_proyecto: int,
     id_usuario: int,
+    nombre_etapa: str,
     current_user: UserResponse = Depends(get_current_user),
     db: Session = Depends(get_db),
 ):
@@ -164,7 +165,7 @@ async def obtener_datos_para_calificar_proyecto(
     if not permisos.p_consultar:
         raise HTTPException(status_code=401, detail="No está autorizado a utilizar este módulo")
     
-    proyecto = get_datos_calificar_proyecto_completo(db, id_proyecto, id_usuario)
+    proyecto = get_datos_calificar_proyecto_completo(db, id_proyecto, id_usuario, nombre_etapa)
     return proyecto
 
 # Ruta para obtener la etapa actual de la convocotaria en curso
@@ -186,6 +187,7 @@ async def obtener_etapa_actual(
 async def obtener_datos_del_proyecto_calificado(
     id_proyecto: int,
     id_usuario: int,
+    nombre_etapa: str,
     current_user: UserResponse = Depends(get_current_user),
     db: Session = Depends(get_db),
 ):
@@ -193,7 +195,7 @@ async def obtener_datos_del_proyecto_calificado(
     if not permisos.p_consultar:
         raise HTTPException(status_code=401, detail="No está autorizado a utilizar este módulo")
     
-    proyecto = get_datos_proyecto_calificado_completo(db, id_proyecto, id_usuario)
+    proyecto = get_datos_proyecto_calificado_completo(db, id_proyecto, id_usuario, nombre_etapa)
     return proyecto
 
 # Ruta para obtener las programaciones de las fases de la convocatoria en curso
