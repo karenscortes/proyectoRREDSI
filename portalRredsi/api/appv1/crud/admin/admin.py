@@ -29,6 +29,11 @@ def create_convocatoria(db: Session, nombre: str, fecha_inicio: date, fecha_fin:
         estado=convocatoria.estado
     )
 
+# Verificar convocatorias activa
+def existe_convocatoria_en_curso(db: Session) -> bool:
+    return db.query(Convocatoria).filter(Convocatoria.estado == EstadoDeConvocatoria.en_curso).count() > 0
+
+
 # Crear programacion de fase
 def create_programacion_fase(db: Session, id_fase: int, id_convocatoria: int, fecha_inicio: date, fecha_fin: date):
     programacion_fase = Programacion_fase(
