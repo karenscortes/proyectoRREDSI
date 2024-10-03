@@ -2,12 +2,12 @@
     <div class="accordion-item">
         <h2 class="accordion-header">
             <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                :data-bs-target="`#flush-collapseProyecto${index}`" aria-expanded="false"
+                :data-bs-target="`#flush-collapseProyecto${proyecto.id_proyecto}`" aria-expanded="false"
                 aria-controls="flush-collapseProyecto1" @click="abrirAcordeon">
                 <h4 class="h5">{{ proyecto.titulo }}</h4>
             </button>
         </h2>
-        <div :id="`flush-collapseProyecto${index}`" class="accordion-collapse collapse"
+        <div :id="`flush-collapseProyecto${proyecto.id_proyecto}`" class="accordion-collapse collapse"
             data-bs-parent="#accordionFlushExample">
             <div class="accordion-body text-dark text-start">
                 <div class="row">
@@ -59,8 +59,8 @@
                             <input type="text" class="form-control text-dark"
                                 placeholder="Identificación del evaluador" v-model="evaluadorBuscado">
                             <p class="d-inline-flex gap-1 mb-0">
-                                <a data-bs-toggle="collapse" :href="`#collapseExample${index}`" role="button"
-                                    aria-expanded="false" :aria-controls="`collapseExample${index}`"
+                                <a data-bs-toggle="collapse" :href="`#collapseExample${proyecto.id_proyecto}`" role="button"
+                                    aria-expanded="false" :aria-controls="`collapseExample${proyecto.id_proyecto}`"
                                     style="background: white; border: none;">
                                     <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960"
                                         width="24px" fill="#000000" class="ms-2">
@@ -70,7 +70,7 @@
                                 </a>
                             </p>
                         </div>
-                        <div class="collapse" :id="`collapseExample${index}`">
+                        <div class="collapse" :id="`collapseExample${proyecto.id_proyecto}`">
                             <div class="card card-body mt-2">
                                 Este campo es opcional.
                                 Visita la lista de evaluadores si deseas tener más clara tu selección
@@ -95,7 +95,6 @@ import { ref } from 'vue'
 export default {
     props: {
         proyecto: Object,
-        index: Number
     },
     data() {
         return {

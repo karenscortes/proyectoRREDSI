@@ -1,6 +1,5 @@
 import api from './api'; 
 
-
 // Función para obtener la etapa actual con la convocatoria del momento
 export const obtenerEtapaActual = async () => {
   try {
@@ -14,7 +13,6 @@ export const obtenerEtapaActual = async () => {
     }
   }
 };
-
 
 export const obtenerProyectosAsignados = async (nombreEtapa, idUsuario, page = 1, pageSize = 10) => {
   try {
@@ -35,7 +33,6 @@ export const obtenerProyectosAsignados = async (nombreEtapa, idUsuario, page = 1
     }
   }
 };
-
 
 // Función para obtener los proyectos asignados
 export const obtenerProyectosPorEstado = async (nombreEtapa, estado_evaluacion, idUsuario, page = 1, pageSize = 10) => {
@@ -63,12 +60,13 @@ export const obtenerProyectosPorEstado = async (nombreEtapa, estado_evaluacion, 
 };
 
 // Servicio para obtener las rúbricas calificadas de un proyecto
-export const obtenerRubricasCalificadas = async (idProyecto, idUsuario) => {
+export const obtenerRubricasCalificadas = async (idProyecto, idUsuario, nombreEtapa) => {
   try {
     const response = await api.get(`/obtenerProyectosEvaluador/obtener-datos-del-proyecto-calificado`, {
       params: {
         id_proyecto: idProyecto,
-        id_usuario: idUsuario
+        id_usuario: idUsuario,
+        nombre_etapa: nombreEtapa
       }
     });
     return response.data; // Devuelve los datos de las rúbricas calificadas
@@ -82,12 +80,13 @@ export const obtenerRubricasCalificadas = async (idProyecto, idUsuario) => {
 };
 
 // Servicio para obtener los datos para calificar un proyecto
-export const obtenerDatosParaCalificarProyecto = async (idProyecto, idUsuario) => {
+export const obtenerDatosParaCalificarProyecto = async (idProyecto, idUsuario, nombreEtapa) => {
   try {
     const response = await api.get('/obtenerProyectosEvaluador/obtener-datos-para-calificar-proyecto/', {
       params: {
         id_proyecto: idProyecto,
-        id_usuario: idUsuario
+        id_usuario: idUsuario,
+        nombre_etapa: nombreEtapa
       }
     });
     return response.data;
@@ -99,7 +98,6 @@ export const obtenerDatosParaCalificarProyecto = async (idProyecto, idUsuario) =
     }
   }
 };
-
 
 // Función para insertar una postulación de evaluador
 export const insertarPostulacionEvaluador = async (postulacionData) => {
@@ -139,7 +137,6 @@ export const insertarRespuestaRubrica = async (respuestaData) => {
   }
 };
 
-
 // Servicio para obtener el horario de los proyectos en segunda fase
 export const obtenerHorarios= async (idUsuario, page = 1, pageSize = 5) => {
   try {
@@ -160,11 +157,14 @@ export const obtenerHorarios= async (idUsuario, page = 1, pageSize = 5) => {
   }
 };
 
-
 // Función para obtener la etapa actual con la convocatoria del momento
-export const obtenerProgramacionFases = async () => {
+export const obtenerProgramacionFases = async (nombreEtapa) => {
   try {
-    const response = await api.get('/obtenerProgramacionFases/obtener-programacion-fases/');
+    const response = await api.get('/obtenerProgramacionFases/obtener-programacion-fases/', {
+      params: {
+        nombre_etapa: nombreEtapa,
+      }
+    });
     return response.data;
   } catch (error) {
     if (error.response) {

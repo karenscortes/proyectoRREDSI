@@ -70,3 +70,23 @@ export const updateUserProfile = async (userId, userData) => {
     }
   }
 };
+
+// Función consultar los detalles institucionales de un usuario loguegado
+export const getInstitutionalDetails = async () => {
+  try {
+      const url = `/users/me/get_institutional_details/
+`;
+      const response = await api.get(url, {
+      headers: {
+        'Authorization': `Bearer ${localStorage.getItem('access_token')}` 
+      }
+    });
+    return response;
+  } catch (error) {
+    if (error.response) {
+      throw error;
+    } else {
+      throw new Error('Error de red o de servidor'); 
+    }
+  }
+};
