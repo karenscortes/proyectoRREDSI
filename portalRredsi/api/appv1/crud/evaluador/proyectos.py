@@ -491,7 +491,7 @@ def convertir_timedelta_a_hora(timedelta_obj: timedelta) -> str:
     return f"{horas:02}:{minutos:02}"
 
 # Obtener los datos de la rubrica que fue asignada a un proyecto especifico
-def get_datos_rubrica_proyecto(db: Session, id_proyecto: int, id_usuario: int):
+def get_datos_rubrica_proyecto(db: Session, id_proyecto: int, id_usuario: int, nombre_etapa: str):
     try:
         sql_query = text("""
             SELECT DISTINCT items_rubrica.* FROM items_rubrica
@@ -508,12 +508,13 @@ def get_datos_rubrica_proyecto(db: Session, id_proyecto: int, id_usuario: int):
                 AND rubricas.id_modalidad = proyectos.id_modalidad
                 AND participantes_proyecto.id_etapa = rubricas.id_etapa
                 AND convocatorias.estado = 'en curso'
-                AND etapas.nombre = 'Virtual'
+                AND etapas.nombre = :nombre_etapa
 
         """)
         params = {
             "id_proyecto": id_proyecto, 
-            "id_usuario": id_usuario
+            "id_usuario": id_usuario,
+            "nombre_etapa": nombre_etapa
         }
 
         result = db.execute(sql_query,params).mappings().all()
@@ -557,7 +558,7 @@ def get_nombres_ponentes_proyecto(db: Session, id_proyecto: int):
         raise HTTPException(status_code=500, detail="Error al consultar los ponentes del proyecto:")
 
 # Obtener los datos para calificar un proyecto
-def get_datos_calificar_proyecto_completo(db: Session, id_proyecto: int, id_usuario: int):
+def get_datos_calificar_proyecto_completo(db: Session, id_proyecto: int, id_usuario: int, nombre_etapa: str):
     try:
         # Obtener los datos básicos del proyecto y del evaluador
         sql_query = text("""
@@ -594,7 +595,7 @@ def get_datos_calificar_proyecto_completo(db: Session, id_proyecto: int, id_usua
         nombres_ponentes = get_nombres_ponentes_proyecto(db, id_proyecto)
 
         # Obtener los datos de la rúbrica asociados al proyecto
-        rubrica_result = get_datos_rubrica_proyecto(db, id_proyecto, id_usuario)
+        rubrica_result = get_datos_rubrica_proyecto(db, id_proyecto, id_usuario, nombre_etapa)
         
         componentes_rubrica = [
             Componente(
@@ -625,10 +626,10 @@ def get_datos_calificar_proyecto_completo(db: Session, id_proyecto: int, id_usua
         raise HTTPException(status_code=500, detail=f"Error al consultar los datos del proyecto:{e}")
 
 # Obtener los datos calificados de la rúbrica para un proyecto
-def get_datos_calificados_rubrica(db: Session, id_proyecto: int, id_usuario: int):
+def get_datos_calificados_rubrica(db: Session, id_proyecto: int, id_usuario: int, nombre_etapa: str):
     try:
-        # Obtener el id_proyecto_convocatoria para el proyecto en curso
-        sql_query = text("""
+        # Obtener los datos calificados para el proyecto en la etapa proporcionada
+        sql_query = text(""" 
             SELECT DISTINCT respuestas_rubricas.*, items_rubrica.titulo, items_rubrica.componente, items_rubrica.valor_max
             FROM respuestas_rubricas
             JOIN items_rubrica ON respuestas_rubricas.id_item_rubrica = items_rubrica.id_item_rubrica
@@ -640,12 +641,13 @@ def get_datos_calificados_rubrica(db: Session, id_proyecto: int, id_usuario: int
                 proyectos_convocatoria.id_proyecto = :id_proyecto
                 AND respuestas_rubricas.id_usuario = :id_usuario
                 AND convocatorias.estado = 'en curso'
-                AND etapas.nombre = 'Virtual'
+                AND etapas.nombre = :nombre_etapa
         """)
         
         params = {
             "id_proyecto": id_proyecto,
-            "id_usuario": id_usuario
+            "id_usuario": id_usuario,
+            "nombre_etapa": nombre_etapa
         }
 
         result = db.execute(sql_query, params).mappings().all()
@@ -660,10 +662,10 @@ def get_datos_calificados_rubrica(db: Session, id_proyecto: int, id_usuario: int
         raise HTTPException(status_code=500, detail=f"Error al consultar los datos calificados del proyecto: {e}")
 
 # Obtener los datos para calificar un proyecto
-def get_datos_proyecto_calificado_completo(db: Session, id_proyecto: int, id_usuario: int):
+def get_datos_proyecto_calificado_completo(db: Session, id_proyecto: int, id_usuario: int, nombre_etapa: str):
     try:
         # Obtener los datos básicos del proyecto y del evaluador
-        sql_query = text("""
+        sql_query = text(""" 
             SELECT 
                 proyectos.titulo AS titulo_proyecto,
                 inst_proyecto.nombre AS universidad_proyecto,
@@ -696,8 +698,8 @@ def get_datos_proyecto_calificado_completo(db: Session, id_proyecto: int, id_usu
         # Obtener los nombres de los ponentes asociados al proyecto
         nombres_ponentes = get_nombres_ponentes_proyecto(db, id_proyecto)
 
-        # Obtener los datos de la rúbrica asociados al proyecto
-        rubrica_result = get_datos_calificados_rubrica(db, id_proyecto, id_usuario)
+        # Obtener los datos de la rúbrica asociados al proyecto, incluyendo el nombre de la etapa
+        rubrica_result = get_datos_calificados_rubrica(db, id_proyecto, id_usuario, nombre_etapa)
         
         componentes_rubrica = [
             Componente(
@@ -727,10 +729,7 @@ def get_datos_proyecto_calificado_completo(db: Session, id_proyecto: int, id_usu
 
     except Exception as e:
         db.rollback()
-        raise HTTPException(status_code=500, detail=f"Error al consultar los datos del proyecto:{e}")
-
-
-        # Obtener los datos para calificar un proyecto
+        raise HTTPException(status_code=500, detail=f"Error al consultar los datos del proyecto: {e}")
 
 # Obtener los nombres de las fases y las fechas de la programación de una convocatoria en curso filtrando por etapa
 def get_nombres_fases_y_fechas_programacion(db: Session, nombre_etapa: str) -> List[dict]:
