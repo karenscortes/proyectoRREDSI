@@ -494,6 +494,23 @@ export const obtenerRubricaCalificada = async (id_proyecto, id_usuario) => {
     }
 };
 
+//Función insertar url presentación
+export const insertarUrlPresentacion = async (id_proyecto, url_presentacion) => {
+    try {
+        const response = await api.post(`detalleProyecto/insertar-url-presentacion/?id_proyecto=${id_proyecto}&url_presentacion=${url_presentacion} `, {
+            headers: {
+                'Authorization': `Bearer` 
+            },
+        });
+    }catch (error) {
+        if (error.response) {
+            throw error;
+        } else {
+            throw new Error('Error de red o de servidor');
+        }
+    }
+};
+
 
 
 

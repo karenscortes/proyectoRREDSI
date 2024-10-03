@@ -192,7 +192,7 @@ export default {
         };
 
         const validarCalificacion = (componente, index) => {
-            //Si la calificacion que va a insertar es mayor al valor maximo, se pondrá el valor maximo y manda una alerta
+    
             if (componente.calificacion > componente.valor_maximo) {
                 showWarningToast(`La calificación para "${componente.titulo}" no puede exceder el valor de ${componente.valor_maximo}.`);
                 componente.calificacion = componente.valor_maximo;
@@ -216,24 +216,24 @@ export default {
         });
 
         const validarCalificacionesYObservaciones = () => {
-            //Verificamos si hay algún campo vacío
+            
             for (let componente of componentes.value) {
                 const calificacionValida = componente.calificacion !== null && componente.calificacion !== undefined && componente.calificacion !== '';
                 const observacionValida = componente.observaciones !== null && componente.observaciones !== undefined && componente.observaciones.trim() !== '';
 
                 if (!calificacionValida || !observacionValida) {
                     showWarningToast('Hay campos vacíos en las calificaciones o observaciones.');
-                    return false; // Si algún campo está vacío, retornamos false para indicar que la validación ha fallado
+                    return false; 
                 }
             }
-            return true; // Si todos los campos están completos, retornamos true
+            return true; 
         };
 
         const enviarCalificaciones = async () => {
 
-            // Validar antes campos de enviar la calificacion
+            
             if (!validarCalificacionesYObservaciones()) {
-                return;  // Si la validación falla, no se envían las calificaciones
+                return;  
             }
 
             try {

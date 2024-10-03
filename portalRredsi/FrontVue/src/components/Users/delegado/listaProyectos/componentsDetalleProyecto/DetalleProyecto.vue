@@ -38,8 +38,8 @@
                             <button type="button" class="btn btn-sm btn-warning font-weight-bold" style="width: 36%;"
                                 @click="openModal">
                                 Añadir presentación
-                            </button> 
-                            <!-- <ModalAgregarLink :isVisible="showModal" @close="closeModal" /> -->
+                            </button>
+
                             <form action="../../../assets/img/constancia_NotasAprendiz.pdf" style="width: 31%;"
                                 target="_blank">
                                 <button type="submit" class="btn btn-sm btn-warning font-weight-bold"
@@ -68,6 +68,30 @@
             </div>
         </div>
 
+        <!-- Modal para ingresar la URL de la presentación -->
+        <div class="modal fade" id="presentationModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h2 class="modal-title" id="exampleModalLabel">Añadir URL de Presentación</h2>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" style="font-size: 0.75rem; padding: 0.25rem; width: 1.5rem; height: 1.5rem;"></button>
+
+                    </div>
+                    <div class="modal-body">
+                        <form @submit.prevent="guardarPresentacion">
+                            <div class="form-group">
+                                <label for="urlPresentacion">URL de la Presentación</label>
+                                <input type="url" class="form-control" id="urlPresentacion" v-model="urlPresentacion"
+                                    placeholder="https://example.com/presentacion" required>
+                            </div>
+                            <button type="submit" class="btn btn-warning">Guardar</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <div class="accordion pt-5 mt-3" id="accordionExample">
             <div class="card p-2">
                 <div id="headingOne">
@@ -79,7 +103,7 @@
                 </div>
                 <div id="collapseOne" class="collapse mt-5" aria-labelledby="headingOne"
                     data-bs-parent="#accordionExample">
-                    <RubricaCom  v-if="cargarRubrica" :proyecto="proyecto" :id_evaluador = "id_evaluador1" />
+                    <RubricaCom v-if="cargarRubrica" :proyecto="proyecto" :id_evaluador="id_evaluador1" />
                 </div>
             </div>
             <div class="card p-2">
@@ -92,7 +116,7 @@
                 </div>
                 <div id="collapseTwo" class="collapse mt-5" aria-labelledby="headingTwo"
                     data-bs-parent="#accordionExample">
-                    <RubricaCom  v-if="cargarRubrica" :proyecto="proyecto" :id_evaluador = "id_evaluador2" />
+                    <RubricaCom v-if="cargarRubrica" :proyecto="proyecto" :id_evaluador="id_evaluador2" />
                 </div>
             </div>
             <div class="card p-2">
@@ -131,7 +155,8 @@ import EventoCom from './EventoCom.vue';
 import PonentesCom from './PonentesCom.vue';
 import SuplentesCom from './SuplentesCom.vue';
 import RubricaCom from './RubricaCom.vue';
-import { obtenerEvaluadoresProyecto, obtenerPonentesProyecto, obtenerInfoSalaProyecto } from '../../../../../services/delegadoService';
+import { useToastUtils } from '@/utils/toast';
+import { obtenerEvaluadoresProyecto, obtenerPonentesProyecto, obtenerInfoSalaProyecto, insertarUrlPresentacion } from '../../../../../services/delegadoService';
 
 export default {
     name: 'DetalleProyecto',
@@ -166,8 +191,13 @@ export default {
             ponentesProyecto: '',
             universidadProyecto: '',
             puntajeTotal: 0,
+            urlPresentacion: '',
 
         };
+    },
+    setup() {
+        const { showSuccessToast, showErrorToast, showInfoToast } = useToastUtils();
+        return { showSuccessToast, showErrorToast, showInfoToast };
     },
     methods: {
         // Función para obtener los evaluadores del proyecto
@@ -212,7 +242,22 @@ export default {
             } catch (error) {
                 console.error('Error al cargar los datos del proyecto:', error);
             }
-        }
+        },
+
+        openModal() {
+                $('#presentationModal').modal('show');
+            },
+        async guardarPresentacion() {
+            try {
+                await insertarUrlPresentacion(this.proyecto.id_proyecto, this.urlPresentacion);
+                this.showInfoToast('Presentación guardada correctamente.');
+                $('#presentationModal').modal('hide');
+            } catch (error) {
+                console.error('Error al guardar la URL de la presentación:', error);
+                this.showInfoToast('Error al guardar la presentación. Por favor, intenta nuevamente.');
+            }
+        },
+        
     },
     mounted() {
         this.fetchAllData()

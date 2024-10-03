@@ -10,6 +10,7 @@ class DetalleProyecto(BaseModel):
     titulo: str
     url_propuesta_escrita: str
     estado_evaluacion: Optional[str] = None
+    url_presentacion: Optional[str] = None
 
 # Esquema para la sala y el horario del proyecto
 class SalaConHorario(BaseModel):
@@ -26,8 +27,15 @@ class UsuarioProyecto(BaseModel):
     apellidos: str
     id_rol: Optional[int]
 
-# Esquema de respuesta completo que unifica toda la información del proyecto
 class ProyectoResponse(BaseModel):
     proyecto: DetalleProyecto 
     sala: SalaConHorario  
     participantes: List[UsuarioProyecto]  
+    
+class UrlPresentacionProyecto(BaseModel):
+    id_presentacion: int
+    id_proyecto: int
+    url_presentacion: str
+    
+
+

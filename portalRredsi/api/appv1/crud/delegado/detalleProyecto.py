@@ -43,13 +43,19 @@ def get_datos_sala(db: Session, id_proyecto:int):
     
     
 #Insertar presentacion del proyecto
-def get_insertar_presentacion_proyecto(db: Session, id_proyecto: int):
+def insertar_presentacion_proyecto(db: Session, id_proyecto: int, url_presentacion: str):
     try:
-        sql = text("""INSERT INTO presentaciones_proyectos (id_presentacion, id_proyecto, url_presentacion)
-                VALUES :id_pres, :id_proy, :url""") 
+        sql = text("""
+            INSERT INTO presentaciones_proyectos (id_proyecto, url_presentacion)
+            VALUES (:id_proy, :url)
+        """)
         params = {
-            "id_proy" : id_proyecto    
+            "id_proy": id_proyecto,
+            "url": url_presentacion
         }
-        result = db.execute(db, params)
+        
+        db.execute(sql, params)
+        db.commit() 
     except SQLAlchemyError as e:
-        raise HTTPException(status_code=500, detail="Error al insertar url de presentación")
+        db.rollback()  
+        raise HTTPException(status_code=500, detail="Error al insertar URL de presentación")
