@@ -122,7 +122,7 @@ async def read_datos_institucion(
 
 # RUTA PARA ACTUALIZAR EL ESTADO DE UN PROYECTO CUANDO ES ASIGNADO 
 @router_proyecto_etapa_uno.put("/update-estado-proyecto/")
-async def update_estado_proyecto(
+async def read_update_estado_proyecto(
     id_proyecto: int,
     current_user: UserResponse = Depends(get_current_user),
     db: Session = Depends(get_db),
@@ -133,6 +133,6 @@ async def update_estado_proyecto(
     
     estado_actualizado = update_estado_proyecto(db,id_proyecto)
     if estado_actualizado != True:
-        raise HTTPException(status_code=404, detail="Institucion no encontrada")
+        raise HTTPException(status_code=404, detail="Id proyecto no encontrado")
     
-    return {"Mensaje: Estado de proyetco actulizado correctamente"}
+    return {"Mensaje": "Estado de proyecto actualizado correctamente"}

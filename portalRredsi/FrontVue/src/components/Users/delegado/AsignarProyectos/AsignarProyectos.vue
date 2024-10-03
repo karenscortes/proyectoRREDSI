@@ -23,12 +23,19 @@
 import PaginatorBody from '../../../UI/PaginatorBody.vue';
 import AcordeonProyecto from './AcordeonProyecto.vue';
 import { proyectosSinAsignar } from '@/services/delegadoService'
+import { useToastUtils } from '@/utils/toast';
 
 export default {
     data() {
         return {
             proyectos: [],
             totalPages: 0
+        }
+    },
+    setup(){
+        const { showWarningToast } = useToastUtils();
+        return{
+            showWarningToast
         }
     },
     methods: {
@@ -39,7 +46,7 @@ export default {
                 this.totalPages = response.data.total_pages;
 
             } catch (error) {
-                alert("Error al obtener proyectos: ", error);
+                this.showWarningToast("Error al obtener proyectos");
             }
         },
         cambiarPagina(pagina){
