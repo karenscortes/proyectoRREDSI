@@ -1,5 +1,5 @@
 <template>
-  <div class="container mt-5 pt-5">
+  <div class="container">
     <h2 class="text-center text-teal text-black mt-5">Formulario de Registro</h2>
     <form @submit.prevent="handleSubmit">
       <!-- Filas del formulario -->

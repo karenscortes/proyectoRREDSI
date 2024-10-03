@@ -1,7 +1,7 @@
 <template>
     <div class="super_container">
         <!-- Header -->
-        <MenuPrincipal @component-selected="changeComponent" />
+        <MenuPrincipal @component-selected="changeComponent"/>
     </div>
 
     <!-- Mostrar la imagen de fondo en las otras opciones del menú  -->
@@ -24,6 +24,9 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="LoginModalLabel">Login</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
                 </div>
                 <div class="modal-body">
                     <!-- Formulario de login -->
@@ -38,16 +41,15 @@
                             <input type="password" class="form-control" id="password" v-model="password"
                                 placeholder="Contraseña" />
                         </div>
-                        <p v-if="errorMessage" class="text-danger mt-3">
-                            {{ errorMessage }}
-                        </p>
                     </form>
-                    <!-- Enlace "¿Se te olvidó la contraseña?" en negro -->
-                    <div class="text-center mt-3">
-                        <a href="#" class="text-dark forgot-password-link">¿Se te olvidó la contraseña?</a>
-                    </div>
+                    <p v-if="errorMessage" class="text-danger mt-3">
+                        {{ errorMessage }}
+                    </p>
                 </div>
-                <div class="modal-footer justify-content-center">
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                        Cerrar
+                    </button>
                     <button type="button" data-dismiss="modal" aria-label="Close"
                         class="btn btn-primary custom-login-button" @click="handleLogin">
                         Iniciar Sesión
@@ -106,7 +108,6 @@ export default {
             };
 
             currentComponent.value = componentMap[componentName] || NotAvailable;
-            componente.value = componentName;
         };
 
         const authStore = useAuthStore();
@@ -119,14 +120,22 @@ export default {
 
         const handleLogin = async () => {
             try {
+
                 await authStore.login(email.value, password.value);
-                if (!authStore.authError) {
+
+                if (authStore.authError) {
+                } else {
+                    const user = authStore.user;
+                    console.log(user);
+
                     route.push('/pagina-usuario');
+
                 }
             } catch (error) {
                 errorMessage.value = "Error durante el login: " + error.message;
             }
         };
+
 
         return {
             user,
