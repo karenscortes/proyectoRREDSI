@@ -173,7 +173,14 @@ export default {
 };
 </script>
 <style scoped>
- .cont-slides{
+    .cont-slides{
     margin: 20px;
- }
+    }
+
+    .super_container {
+        width: 100%;
+        overflow: hidden;
+        z-index: 10;
+    }
+
 </style>

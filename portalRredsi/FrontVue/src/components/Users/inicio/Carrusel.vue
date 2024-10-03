@@ -118,7 +118,7 @@ export default {
 			$carousel.owlCarousel({
 			loop: true,
 			margin: 10,
-			nav: true,
+			nav: false,
 			items: 1,
 			autoplay: true,
 			autoplayTimeout: 3000,
@@ -147,19 +147,6 @@ export default {
 	-ms-transition: all 200ms ease;
 	-o-transition: all 200ms ease;
 	transition: all 200ms ease;
-}
-
-/*div {
-	display: block;
-	position: relative;
-	-webkit-box-sizing: border-box;
-	-moz-box-sizing: border-box;
-	box-sizing: border-box;
-}*/
-
-.super_container {
-	width: 100%;
-	overflow: hidden;
 }
 
 /*********************************
