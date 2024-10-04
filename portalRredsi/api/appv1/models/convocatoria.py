@@ -20,4 +20,5 @@ class Convocatoria(Base):
     programacion_fases = relationship("Programacion_fase", back_populates="convocatoria")
     postulaciones_evaluadores = relationship("Postulacion_evaluador", back_populates="convocatoria")
     proyectos_convocatorias = relationship("Proyecto_convocatoria", back_populates="convocatoria")
+    asistentes = relationship("Asistente", back_populates="convocatoria")
 
