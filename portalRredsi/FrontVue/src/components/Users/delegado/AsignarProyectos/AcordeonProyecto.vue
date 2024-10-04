@@ -91,6 +91,7 @@
 <script>
 import { obtenerAutoresProyecto, obtenerIdAreaConocimiento, obtenerPosiblesEvaluadores, obtenerIdInstitucion, obtenerListaEvaluadores, obtenerProyectoConvocatoria, asignarProyectoEtapaVirtual, obtenerIdEvaluador, actualizarEstadoProyecto } from '@/services/delegadoService'
 import { ref } from 'vue'
+import { useToastUtils } from '@/utils/toast';
 
 export default {
     props: {
@@ -106,14 +107,20 @@ export default {
             autores : [] 
         }
     },
+    setup(){
+        const { showSuccessToast, showErrorToast } = useToastUtils();
+        return{
+            showSuccessToast,
+            showErrorToast
+        }
+    },
     methods: {
         async asignarAutoresAProyectos(id_proyecto) {
             try {
                 const autores_cant = await obtenerAutoresProyecto(id_proyecto);
                 this.autores = autores_cant.data; 
-                // console.log(this.autores);
             } catch (error) {
-                console.log("Error al obtener autores");
+                console.log("Sin autores registrados");
             }
 
         },
@@ -185,11 +192,10 @@ export default {
                 
                 // Actualiza el estado del proyecto a asignado para que salga de la vista
                 await actualizarEstadoProyecto(this.proyecto.id_proyecto);
-                alert("Proyecto asignado con exito");
 
-                // console.log("id proyecto convocatoria "+id_proyecto_convocatoria); 
+                this.showSuccessToast("Proyecto asignado con exito");
             } catch (error) {
-                alert("Error al asignar proyecto");
+                this.showErrorToast("Error al asignar proyecto");
             }
         },
         async ProyectoSelecionado(){

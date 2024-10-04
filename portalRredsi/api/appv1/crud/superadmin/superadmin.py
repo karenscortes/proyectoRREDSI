@@ -129,10 +129,9 @@ def cambiar_estado_usuario(db: Session, user_id: int):
         raise HTTPException(status_code=500, detail="Error al cambiar el estado del usuario")
 
 
-# Obtener historial de actividades por administrador/delegado
-def get_activity_history_by_admin(db: Session, user_id: int):
+def get_activity_history_by_admin(db: Session, user_id: int, offset: int = 0, limit: int = 10):
     try:
-        # Consulta SQL para obtener el historial de actividades por id_usuario
+        # Consulta SQL para obtener el historial de actividades por id_usuario con paginación
         sql = text("""
             SELECT 
                 historial_actividades_admin.id_actividad,
@@ -148,8 +147,10 @@ def get_activity_history_by_admin(db: Session, user_id: int):
             JOIN modulos ON historial_actividades_admin.id_modulo = modulos.id_modulo
             WHERE usuarios.id_usuario = :user_id
             ORDER BY historial_actividades_admin.fecha DESC
+            LIMIT :limit OFFSET :offset
         """)
-        params = {"user_id": user_id}
+        
+        params = {"user_id": user_id, "limit": limit, "offset": offset}
         
         # Ejecutar la consulta
         result = db.execute(sql, params).fetchall()
@@ -165,4 +166,5 @@ def get_activity_history_by_admin(db: Session, user_id: int):
         # Manejo de errores de SQLAlchemy
         print(f"Error al buscar el historial de actividades: {e}")
         raise HTTPException(status_code=500, detail="Error al buscar el historial de actividades")
+
 

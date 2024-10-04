@@ -5,8 +5,9 @@ from enum import Enum as PyEnum
 class Tipo_de_participante(PyEnum):
     ponente = "ponente"
     tutor = "tutor"
-    suplente = "suplente"
     evaluador = "evaluador"
+    suplenteEvaluador = "suplenteEvaluador"
+    suplentePonente = "suplentePonente"
 
 class Participante_proyecto(Base):
     __tablename__ = 'participantes_proyecto'
@@ -14,7 +15,8 @@ class Participante_proyecto(Base):
     id_usuario = Column(Integer, ForeignKey('usuarios.id_usuario'))
     id_etapa = Column(Integer, ForeignKey("etapas.id_etapa"))
     id_proyecto = Column(Integer, ForeignKey('proyectos.id_proyecto') )
-    id_proyecto_convocatoria = Column(Integer, ForeignKey('proyectos_convocatoria.id_proyecto_convocatoria') )    
+    id_proyecto_convocatoria = Column(Integer, ForeignKey('proyectos_convocatoria.id_proyecto_convocatoria'))
+    tipo_usuario = Column(Enum(Tipo_de_participante))    
     
     usuario = relationship('Usuario', back_populates="participantes_proyectos")
     proyecto = relationship('Proyecto', back_populates="participantes_proyectos")
