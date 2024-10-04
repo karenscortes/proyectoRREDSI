@@ -127,7 +127,6 @@ export default {
         async obtenerSalaAsignada(id_delegado) {
             try {
                 const datosSalaAsignada = await obtenerDatosSalaAsignada(id_delegado);
-                console.log(datosSalaAsignada.data);
                 this.miSala = datosSalaAsignada.data;
                 this.salaAsignada = true;
             } catch (error) {

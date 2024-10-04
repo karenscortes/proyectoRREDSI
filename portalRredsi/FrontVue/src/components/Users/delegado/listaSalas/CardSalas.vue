@@ -3,7 +3,7 @@
         <div class="card">
             <div class="card-header d-flex align-items-center justify-content-between text-dark"
                 style="background: rgb(255, 182, 6); box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);">
-                <strong class="mb-0 text-white h4">{{ sala.numero_sala }}</strong>
+                <strong class="mb-0 text-white h4">{{ sala.nombre_sala }}</strong>
             </div>
             <div class="card-img">
                 <div class="card_plus trans_200 text-center"><a @click="selectComponent('DetalleSala',sala)">+</a></div>
