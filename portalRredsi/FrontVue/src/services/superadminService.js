@@ -68,18 +68,23 @@ export const updateUserRole = async (userId, newRoleId) => {
     }
 };
 
-// Funcion para obtener el historial de actividades por administrador
-export const getActivityHistoryByAdmin = async (userId) => {
+// Función para obtener el historial de actividades por administrador con paginación
+export const getActivityHistoryByAdmin = async (userId, page = 1, pageSize = 10) => {
     try {
-            const response = await api.get(`/superadmin/get-activity-history/${userId}/`);
-            return response.data; // Retorna el historial de actividades
+        const response = await api.get(`/superadmin/get-activity-history/${userId}/`, {
+            params: { 
+                page: page,        
+                page_size: pageSize 
+            }
+        });
+        return response.data; 
     } catch (error) {
         if (error.response) {
-
             throw error.response.data;
         } else {
             throw new Error('Error de red o de servidor');
-        }       
+        }
     }
 };
+
 

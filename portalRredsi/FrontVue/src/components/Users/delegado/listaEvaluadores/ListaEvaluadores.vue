@@ -169,7 +169,7 @@ export default {
             correo: "",
             otraAreaConocimiento: "",
         });
-        const { showSuccessToast, showErrorToast, showWarningToast, showDefaultToast, showInfoToast } = useToastUtils();
+        const { showSuccessToast, showErrorToast, showWarningToast, showInfoToast } = useToastUtils();
 
         const obtenerEvaluadorActual = (evaluador) => {
             evaluadorActual.id_usuario = evaluador.id_usuario;
