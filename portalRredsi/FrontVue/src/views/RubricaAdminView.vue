@@ -166,7 +166,7 @@ const infoCards = reactive([]);
 //Método para recorrer items de cualquier rubrica que le pasemos por parametros(array_items)
 const recorrerItemsRubrica = (arrayItems) => {
   infoItems.splice(0, infoItems.length)
-  arrayItems.values.forEach(function (item, i) {
+  arrayItems.forEach(function (item, i) {
     infoItems[i] = item;
   });
 } 
@@ -181,9 +181,9 @@ const onCardSeleccionada = (id_rubrica) =>{
 //Método para buscar item de la rubrica seleccionada en las cards 
 const buscarItemsRubricaSeleccionada = (id_rubrica)=>{
   const arrayItemsActual = reactive([]); 
-  arrayRubricas.values.data.forEach(function (rubricActual,i) {
+  arrayRubricas.forEach(function (rubricActual,i) {
     if(rubricActual.id_rubrica == id_rubrica){
-      arrayItemsActual.values = rubricActual.items_rubrica; 
+      arrayItemsActual.splice(0,arrayItemsActual.length, ... rubricActual.items_rubrica);
     }
   });
   return arrayItemsActual;
@@ -195,7 +195,6 @@ const showModalEdit = () => {
 
 //Método para cambiar la información del modal editar por info actual y abrir modal de editar
 const onEditModal = (informacionTr) => {
-  console.log(informacionTr)
   infoModalEditarOrAdd.id_rubrica = informacionTr.id_rubrica; 
   infoModalEditarOrAdd.id_item_rubrica = informacionTr.id_item_rubrica;
   infoModalEditarOrAdd.titulo = informacionTr.titulo;
@@ -227,11 +226,10 @@ const CloseDeleteModal = () =>{
 //Método para actualizar los items cuando se haya eliminado uno
 const actualizarItemDelete = (infoEliminar)=>{
 
-  const idx_rubric = arrayRubricas.values.data.findIndex( rubrica => rubrica.id_rubrica === infoEliminar.id_rubrica );
-  const idx_itemRubric = arrayRubricas.values.data[idx_rubric].items_rubrica.findIndex( item => infoEliminar.id_item_rubrica === item.id_item_rubrica );
-  console.log(idx_itemRubric);
+  const idx_rubric = arrayRubricas.findIndex( rubrica => rubrica.id_rubrica === infoEliminar.id_rubrica );
+  const idx_itemRubric = arrayRubricas[idx_rubric].items_rubrica.findIndex( item => infoEliminar.id_item_rubrica === item.id_item_rubrica );
   if(idx_rubric > -1 && idx_itemRubric > -1 ){
-    arrayRubricas.values.data[idx_rubric].items_rubrica.splice(idx_itemRubric,1)
+    arrayRubricas[idx_rubric].items_rubrica.splice(idx_itemRubric,1)
     infoItems.splice(idx_itemRubric,1);
   }
 }
@@ -241,13 +239,14 @@ const actualizarItemEdit = ({id_item_rubrica, itemActual})=>{
   infoItems.forEach(function (item, i) {
     if(item.id_item_rubrica == id_item_rubrica){
       infoItems[i] = itemActual; 
+      infoItems[i].id_item_rubrica = id_item_rubrica;
     }
   });
 }
 
 //Método para recorrer items de la primer rubrica(la de por defecto)
-const itemsPrimerRubrica = () => {
-  const primerRubrica = arrayRubricas.values.data[0];
+const itemsPrimerRubrica  =  async () => {
+  const primerRubrica = arrayRubricas[0];
   const itemsRubrica = primerRubrica.items_rubrica;
   infoModalEditarOrAdd.id_rubrica = primerRubrica.id_rubrica;
   itemsRubrica.forEach(function (item, i) {
@@ -257,7 +256,7 @@ const itemsPrimerRubrica = () => {
 
 //Método para recorrer todas las rubricas y llenar el array que se enviara a las cards(Para que se listen en cards)
 const rubricas = () => {
-  arrayRubricas.values.data.forEach(function (rubricActual,i) {
+  arrayRubricas.forEach(function (rubricActual,i) {
     const objectInfoCard = {
       'nombreModalidad': rubricActual.modalidad.nombre, 
       'nombreEtapa': rubricActual.etapa.nombre,
@@ -268,9 +267,9 @@ const rubricas = () => {
 }
 
 const nuevoItem = (item)=>{
-  const idx_rubric = arrayRubricas.values.data.findIndex( rubrica => rubrica.id_rubrica === item.id_rubrica );
+  const idx_rubric = arrayRubricas.findIndex( rubrica => rubrica.id_rubrica === item.id_rubrica );
   if(idx_rubric > -1){
-    arrayRubricas.values.data[idx_rubric].items_rubrica.push(item)
+    arrayRubricas[idx_rubric].items_rubrica.push(item)
     infoItems.push(item);
   }
 }
@@ -279,11 +278,11 @@ const nuevoItem = (item)=>{
 const fetchAllRubrics = async () => {
   try {
     const response = await getRubricsAll();
-    arrayRubricas.values = response;
+    arrayRubricas.splice(0, arrayRubricas.length, ...response.data);
     itemsPrimerRubrica(); 
     rubricas(); 
   } catch (error) {
-    console.error("Error al obtener rubricas: ", error);
+    console.error(error);
     alert("Error al obtener las rúbricas");
   }
 };

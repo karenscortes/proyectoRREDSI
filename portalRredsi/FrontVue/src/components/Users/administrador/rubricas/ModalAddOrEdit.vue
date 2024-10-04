@@ -118,20 +118,16 @@ const newRubricAdded = (nuevo_item)=> emit('newRubricAdded', nuevo_item);
 
 //Método para hacer el guardado, cerrar modal y disparar el método que emitira
 const save = async () =>{
+  console.log("soy el id del item rubrica"); 
+  console.log(id_item_rubrica); 
   if(id_item_rubrica == null){
     const { data } = await InsertItems(itemActual);
     const { data : id_item_rubrica } = data
     newRubricAdded({id_item_rubrica, ...itemActual }) 
-    // Spread operator -> objNombre = { nombre: "Laura" } objApellido = {apellido: "Motato"} -> 
-    
-    // nuevoObjeto = { objAepllido } -> {objAellido: {apellido: "Motato"}}
-    // nuevoObjConSpread = {...objApellido } -> { apellido: "Motato" }
-    // nuevoObjConSpreadConvinado = {...objNombre, ...objApellido}
-
   }else{
     const itemActualizado = await updateItems(id_item_rubrica, itemActual);
+    actualizar(); 
   }
-  actualizar(); 
   closeModal();
 }
 </script>
