@@ -172,7 +172,9 @@ export default {
 }
 
 .hero_slide_background {
-    background-image:url(../../../assets/img/slider_background.jpg);
+    /*background-image:url(../../../assets/img/slider_background.jpg);*/
+	background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), 
+	url(../../../assets/img/slider_background.jpg);	
 	position: absolute;
 	top: 0;
 	left: 0;
