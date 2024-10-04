@@ -1,8 +1,10 @@
 from typing import List
 from fastapi import APIRouter, Depends, HTTPException
+from sqlalchemy import text
 from sqlalchemy.orm import Session
 from appv1.routers.login import get_current_user
 from appv1.schemas.superadmin.superadmin import (
+    PaginatedActivityHistoryResponse,
     PaginatedAdminResponse, 
     UserRoleUpdateSchema, 
     ActivityHistoryResponse,
@@ -72,10 +74,13 @@ async def modify_user_role(
     updated = update_user_role(db, user_id=user_role_update.user_id, new_role_id=user_role_update.new_role_id)
     return updated
 
-# Obtener el historial de actividades de un administrador
-@router_superadmin.get("/get-activity-history/{user_id}/", response_model=List[ActivityHistoryResponse])
+
+# Traer paginas de historial de admin/delegado
+@router_superadmin.get("/get-activity-history/{user_id}/", response_model=PaginatedActivityHistoryResponse)
 async def get_activity_history(
     user_id: int, 
+    page: int = 1,  
+    page_size: int = 10,  
     current_user: UserResponse = Depends(get_current_user),
     db: Session = Depends(get_db)
 ):
@@ -83,4 +88,25 @@ async def get_activity_history(
     if not permisos.p_consultar:
         raise HTTPException(status_code=401, detail="No está autorizado a utilizar este módulo")
     
-    return get_activity_history_by_admin(db, user_id=user_id)
+    # Calcular offset
+    offset = (page - 1) * page_size
+
+    # Llamar al CRUD con limit y offset en lugar de page y page_size
+    activities = get_activity_history_by_admin(db, user_id=user_id, offset=offset, limit=page_size)
+
+    # Obtener el total de actividades para calcular total_pages
+    total_activities = db.execute(text("""
+        SELECT COUNT(*) FROM historial_actividades_admin
+        WHERE id_usuario = :user_id
+    """), {"user_id": user_id}).scalar()
+
+    total_pages = (total_activities + page_size - 1) // page_size
+
+    return {
+        "activities": activities,
+        "total_pages": total_pages,
+        "current_page": page,
+        "page_size": page_size
+    }
+
+

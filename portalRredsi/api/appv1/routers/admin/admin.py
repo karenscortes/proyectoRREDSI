@@ -24,6 +24,7 @@ import pandas as pd
 
 router_admin = APIRouter()
 
+# Ruta para crear convocatorias 
 @router_admin.post("/crear-convocatoria")
 def create_new_convocatoria(
     convocatoria: ConvocatoriaCreate, 
@@ -53,8 +54,6 @@ def create_new_convocatoria(
         "id_convocatoria": convocatoria_created.id_convocatoria
     }
 
-
-
 @router_admin.post("/crear-programacion-fase")
 def create_new_programacion_fase(
     programacion_fase: ProgramacionFaseCreate, 
@@ -68,14 +67,9 @@ def create_new_programacion_fase(
     if permisos is None or not permisos.p_insertar:  
         raise HTTPException(status_code=401, detail="Usuario no autorizado")
 
-    # 1. Verificar que la convocatoria esté en curso
-    convocatoria_en_curso = db.query(Convocatoria).filter(
-        Convocatoria.id_convocatoria == programacion_fase.id_convocatoria,
-        Convocatoria.estado == "en_curso"
-    ).first()
-
-    if not convocatoria_en_curso:
-        raise HTTPException(status_code=400, detail="La convocatoria no está en curso o no existe.")
+    # 1. Verificar que ya existe una convocatoria en curso usando la función existe_convocatoria_en_curso
+    if not existe_convocatoria_en_curso(db):
+        raise HTTPException(status_code=400, detail="No hay ninguna convocatoria en curso.")
 
     # 2. Verificar si ya existe una programación de la misma fase para la convocatoria
     programacion_existente = db.query(Programacion_fase).filter(
