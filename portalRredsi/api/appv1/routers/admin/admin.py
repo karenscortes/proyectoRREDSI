@@ -3,7 +3,7 @@ from fastapi import APIRouter, Depends, File, HTTPException, UploadFile
 from sqlalchemy.orm import Session
 from appv1.crud.admin.gest_asistentes_externos import generate_code, get_attendee_by_document, get_id_document_type, get_paginated_attendees, insert_attendee, insert_user, insertar_historial_admin, update_external_attendees
 from appv1.crud.admin.gest_delegado import create_delegado,get_delegados_activos_paginated, get_delegados_by_document
-from appv1.crud.admin.gest_rubricas import create_items, delete_items, get_all_rubricas, update_items
+from appv1.crud.admin.gest_rubricas import create_items,get_all_rubricas, update_items, update_status
 from appv1.crud.admin.gest_rubricas import get_all_rubricas
 from appv1.crud.admin.admin import create_convocatoria, create_programacion_fase, create_sala, existe_convocatoria_en_curso, update_sala
 from appv1.models.convocatoria import Convocatoria
@@ -254,9 +254,10 @@ def update_item(
         }
     
 # Eliminar items
-@router_admin.post("/delete-items/{id_item}/")
-def delete_item(
+@router_admin.post("/update-status-items/{id_item}/")
+def update_status_item(
     id_item:int, 
+    estado: str,
     db: Session = Depends(get_db),
     current_user: UserResponse = Depends(get_current_user),
 ):
@@ -264,10 +265,10 @@ def delete_item(
     MODULE = 10
     permisos = get_permissions(db, current_user.id_rol, MODULE)
     
-    if permisos is None or not permisos.p_eliminar:
+    if permisos is None or not permisos.p_actualizar:
         raise HTTPException(status_code=401, detail="Usuario no autorizado")
     
-    item = delete_items(id_item,db)
+    item = update_status(id_item,estado,db)
     insertar_historial_admin(db,'Eliminar',MODULE,id_item,current_user.id_usuario)
     if item:
         return{
