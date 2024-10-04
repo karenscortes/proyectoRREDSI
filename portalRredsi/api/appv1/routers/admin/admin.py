@@ -139,6 +139,7 @@ async def consult_delegates(
     if len(users) == 0:
         raise HTTPException(status_code=404, detail="No hay delegados")
 
+    
     return {
         "users": users,
         "total_pages": total_pages,
