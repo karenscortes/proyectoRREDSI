@@ -219,7 +219,6 @@
 
                     this.listaHorario = response.data; 
                     this.totalPagesHorario = response.total_pages; 
-                    
                 } catch (error) {
                     showErrorToast("Error al obtener los horarios");
                 }
@@ -233,6 +232,10 @@
                     const response = await obtenerEtapaActual(user.id_usuario);
                     this.currentEtapa = response.nombre_etapa;
 
+                    if(this.currentEtapa == "Presencial"){
+                        this.obtenerHorarios();
+                    }
+             
                     this.fetchProyectos();
                 } catch (error) {
                     showErrorToast("Error al obtener la etapa actual");
@@ -354,7 +357,6 @@
         },
         mounted() {
             this.obtenerEtapa();
-            this.obtenerHorarios();
         }
     };
 </script>
