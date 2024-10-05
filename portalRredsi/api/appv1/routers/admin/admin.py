@@ -68,23 +68,33 @@ def create_new_programacion_fase(
         raise HTTPException(status_code=401, detail="Usuario no autorizado")
 
     # 1. Verificar que ya existe una convocatoria en curso usando la función existe_convocatoria_en_curso
-    if not existe_convocatoria_en_curso(db):
+    convocatoria_en_curso = existe_convocatoria_en_curso(db)
+    
+    if not convocatoria_en_curso:
         raise HTTPException(status_code=400, detail="No hay ninguna convocatoria en curso.")
 
-    # 2. Verificar si ya existe una programación de la misma fase para la convocatoria
+    # 2. Validar que la fecha de inicio sea antes que la fecha de fin
+    if programacion_fase.fecha_inicio >= programacion_fase.fecha_fin:
+        raise HTTPException(status_code=400, detail="La fecha de inicio debe ser anterior a la fecha de fin.")
+
+    # 3. Validar que las fechas de la programación estén dentro del rango de las fechas de la convocatoria
+    if programacion_fase.fecha_inicio < convocatoria_en_curso.fecha_inicio or programacion_fase.fecha_fin > convocatoria_en_curso.fecha_fin:
+        raise HTTPException(status_code=400, detail="Las fechas de la programación deben estar dentro del rango de las fechas de la convocatoria.")
+
+    # 4. Verificar si ya existe una programación de la misma fase para la convocatoria
     programacion_existente = db.query(Programacion_fase).filter(
         Programacion_fase.id_fase == programacion_fase.id_fase,
-        Programacion_fase.id_convocatoria == programacion_fase.id_convocatoria
+        Programacion_fase.id_convocatoria == convocatoria_en_curso.id_convocatoria
     ).first()
 
     if programacion_existente:
         raise HTTPException(status_code=400, detail="La programación de esta fase ya existe para la convocatoria.")
 
-    # 3. Crear la programación de fase si todo está en orden
+    # 5. Crear la programación de fase si todo está en orden
     programacion_fase_created = create_programacion_fase(
         db, 
         programacion_fase.id_fase, 
-        programacion_fase.id_convocatoria, 
+        convocatoria_en_curso.id_convocatoria,  # Usamos el id de la convocatoria en curso
         programacion_fase.fecha_inicio, 
         programacion_fase.fecha_fin
     )
@@ -93,6 +103,8 @@ def create_new_programacion_fase(
         "message": "Programación de fase creada exitosamente", 
         "id_programacion_fase": programacion_fase_created.id_programacion_fase
     }
+
+
 
 
 # Obtener todas las rubricas

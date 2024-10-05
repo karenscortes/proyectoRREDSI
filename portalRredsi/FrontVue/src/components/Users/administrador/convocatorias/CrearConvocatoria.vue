@@ -62,73 +62,83 @@
               </div>
   
               <!-- Sección Gestionar Fases -->
-              <div class="form-section mt-5" id="gestionar_fases">
-                <div class="d-flex align-items-center justify-content-center mb-3">
-                  <i class="fa fa-retweet title-icon"></i>
-                  <h2>Gestionar fases y etapas</h2>
-                </div>
-                <div class="title-line mb-4"></div>
-                <div class="container">
-                  <div class="row mb-4">
-                    <div class="col-sm-6">
-                      <label><strong class="text-dark">Modalidad:</strong></label>
-                      <select class="form-select border border-dark">
-                        <option class="text-dark" value="" disabled>Seleccionar modalidad</option>
-                        <option value="Presencial">Presencial</option>
-                        <option value="Virtual">Virtual</option>
-                      </select>
-                    </div>
-                    <div class="col-sm-6">
-                      <label><strong class="text-dark">Nombre:</strong></label>
-                      <select class="form-select border border-dark" v-model="selectedFase">
-                        <option class="text-dark" value="" disabled>Seleccionar</option>
-                        <option value="Inscripciones abiertas">Inscripciones abiertas</option>
-                        <option value="Asignaciones">Asignaciones</option>
-                        <option value="Ponencias">Ponencias</option>
-                        <option value="Evaluaciones">Evaluaciones</option>
-                        <option value="Publicación de resultados">Publicación de resultados</option>
-                      </select>
-                    </div>
-                    <div class="col-sm-4 mt-4">
-                      <label><strong class="text-dark">Fecha Inicio:</strong></label>
-                      <input type="date" class="form-control text-dark" v-model="fechaInicioFase">
-                    </div>
-                    <div class="col-sm-4 mt-4">
-                      <label><strong class="text-dark">Fecha Fin:</strong></label>
-                      <input type="date" class="form-control text-dark" v-model="fechaFinFase">
-                    </div>
-                    <div class="col-sm-4 mt-5">
-                      <button class="btn btn-outline-warning w-100 text-white">
-                        <i class="fas fa-plus"></i> 
-                        Agregar
-                      </button>
-                    </div>
-                  </div>
-                  <!-- Tabla para mostrar fases -->
-                  <div class="table-responsive mt-4">
-                      <h2>Convocatoria activa: {{ convocatoriaActiva }}</h2>
-                      <table class="table table-striped">
-                          <thead class="thead-warning">
-                              <tr>
-                                  <th scope="col">Nombre</th>
-                                  <th scope="col">Modalidad</th>
-                                  <th scope="col">Fecha Inicio</th>
-                                  <th scope="col">Fecha Fin</th>
-                              </tr>
-                          </thead>
-                          <tbody>
-                              <tr v-for="fase in fases" :key="fase.id_programacion_fase">
-                                  <td>{{ fase.fase_nombre }}</td> 
-                                  <td>{{ fase.etapa_nombre }}</td> 
-                                  <td>{{ fase.fecha_inicio }}</td> 
-                                  <td>{{ fase.fecha_fin }}</td> 
-                              </tr>
-                          </tbody>
-                      </table>
-                      <PaginatorBody :totalPages="totalPaginasFases" @page-changed="cambiarPaginaFases" v-if="totalPaginasFases > 1" />
-                  </div>
-                </div>
+            <div class="form-section mt-5" id="gestionar_fases">
+              <div class="d-flex align-items-center justify-content-center mb-3">
+                <i class="fa fa-retweet title-icon"></i>
+                <h2>Gestionar fases y etapas</h2>
               </div>
+              <div class="title-line mb-4"></div>
+              <div class="container">
+                <div class="row mb-4">
+                    <!-- Tabla para agregar fases -->
+                    <div class="col-sm-12">
+                      <label><strong class="text-dark fs-5">Nombre de Fase:</strong></label>
+                      <table class="table table-striped">
+                        <thead class="thead-warning">
+                          <tr>
+                            <th scope="col">Fase</th>
+                            <th scope="col">Fecha Inicio</th>
+                            <th scope="col">Fecha Fin</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <!-- Lista de fases estática -->
+                          <tr>
+                            <td>Inscripciones abiertas</td>
+                            <td><input type="date" class="form-control text-dark" v-model="fechaInicioInscripciones"></td>
+                            <td><input type="date" class="form-control text-dark" v-model="fechaFinInscripciones"></td>
+                          </tr>
+                          <tr>
+                            <td>Asignaciones</td>
+                            <td><input type="date" class="form-control text-dark" v-model="fechaInicioAsignaciones"></td>
+                            <td><input type="date" class="form-control text-dark" v-model="fechaFinAsignaciones"></td>
+                          </tr>
+                          <tr>
+                            <td>Evaluaciones</td>
+                            <td><input type="date" class="form-control text-dark" v-model="fechaInicioEvaluaciones"></td>
+                            <td><input type="date" class="form-control text-dark" v-model="fechaFinEvaluaciones"></td>
+                          </tr>
+                          <tr>
+                            <td>Publicación de resultados</td>
+                            <td><input type="date" class="form-control text-dark" v-model="fechaInicioResultados"></td>
+                            <td><input type="date" class="form-control text-dark" v-model="fechaFinResultados"></td>
+                          </tr>
+                          <tr>
+                            <td>Evento</td>
+                            <td><input type="date" class="form-control text-dark" v-model="fechaInicioEvento"></td>
+                            <td><input type="date" class="form-control text-dark" v-model="fechaFinEvento"></td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+
+                  <!-- Tabla para mostrar las fases existentes -->
+                  <div class="table-responsive mt-4">
+                    <h2>Convocatoria activa: {{ convocatoriaActiva }}</h2>
+                    <table class="table table-striped">
+                      <thead class="thead-warning">
+                        <tr>
+                          <th scope="col">Nombre</th>
+                          <th scope="col">Modalidad</th>
+                          <th scope="col">Fecha Inicio</th>
+                          <th scope="col">Fecha Fin</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr v-for="fase in fases" :key="fase.id_programacion_fase">
+                          <td>{{ fase.fase_nombre }}</td>
+                          <td>{{ fase.etapa_nombre }}</td>
+                          <td>{{ fase.fecha_inicio }}</td>
+                          <td>{{ fase.fecha_fin }}</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                    <PaginatorBody :totalPages="totalPaginasFases" @page-changed="cambiarPaginaFases" v-if="totalPaginasFases > 1" />
+                  </div>
+                </div>
+            </div>
+
 
 
               <!-- Modal de Crear Convocatoria -->
