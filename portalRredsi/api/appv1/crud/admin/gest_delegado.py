@@ -32,6 +32,7 @@ def get_delegados_by_document(doc: str, db: Session,):
         result = db.query(Usuario).filter(
         Usuario.documento == doc, Usuario.rol.has(Rol.nombre == "Delegado")).first()
         if result is None:
+            
             raise HTTPException(status_code=404, detail="No se encontro el delegado")    
  
         return result    
