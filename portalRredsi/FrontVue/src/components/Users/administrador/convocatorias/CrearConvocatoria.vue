@@ -111,7 +111,15 @@
                         </tbody>
                       </table>
                     </div>
+                    <!-- Botón para crear la programación de fases -->
+                    <div class="col-sm-12 mt-4">
+                      <button class="btn btn-outline-warning w-100 text-white" @click="crearProgramacionFases">
+                        <i class="fas fa-plus"></i> Crear programación de fases
+                      </button>
+                    </div>
                   </div>
+
+
 
                   <!-- Tabla para mostrar las fases existentes -->
                   <div class="table-responsive mt-4">

@@ -5,11 +5,10 @@ from appv1.crud.admin.gest_asistentes_externos import generate_code, get_attende
 from appv1.crud.admin.gest_delegado import create_delegado,get_delegados_activos_paginated, get_delegados_by_document
 from appv1.crud.admin.gest_rubricas import create_items,get_all_rubricas, update_items, update_status
 from appv1.crud.admin.gest_rubricas import get_all_rubricas
-from appv1.crud.admin.admin import create_convocatoria, create_programacion_fase, create_sala, existe_convocatoria_en_curso, update_sala
-from appv1.models.convocatoria import Convocatoria
+from appv1.crud.admin.admin import create_convocatoria, create_programacion_fase, create_sala, existe_convocatoria_en_curso, obtener_convocatoria_en_curso, update_sala
 from appv1.models.programacion_fase import Programacion_fase
 from appv1.routers.login import get_current_user
-from appv1.schemas.admin.admin import ConvocatoriaCreate, CreateSala, EstadoDeConvocatoria, ProgramacionFaseCreate, UpdateSala
+from appv1.schemas.admin.admin import ConvocatoriaCreate, ConvocatoriaResponse, CreateSala, ProgramacionFaseCreate, UpdateSala
 from appv1.crud.admin.admin import create_convocatoria
 from appv1.schemas.admin.attendees import PaginatedAttendees, UpdatedAttendee
 from appv1.schemas.admin.delegado import DelegadoResponse, PaginatedDelegadoResponse
@@ -53,6 +52,18 @@ def create_new_convocatoria(
         "message": "Convocatoria creada exitosamente", 
         "id_convocatoria": convocatoria_created.id_convocatoria
     }
+
+
+@router_admin.get("/convocatoria-en-curso", response_model=ConvocatoriaResponse)
+def get_convocatoria_en_curso(db: Session = Depends(get_db)):
+    convocatoria = obtener_convocatoria_en_curso(db)
+    if not convocatoria:
+        raise HTTPException(status_code=404, detail="No hay convocatorias en curso")
+    
+    return convocatoria
+
+
+
 
 @router_admin.post("/crear-programacion-fase")
 def create_new_programacion_fase(

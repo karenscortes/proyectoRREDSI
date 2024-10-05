@@ -7,6 +7,8 @@ from appv1.models.programacion_fase import Programacion_fase
 from appv1.models.sala import Sala
 from appv1.schemas.admin.admin import ConvocatoriaResponse, EstadoDeConvocatoria, ProgramacionFaseResponse, UpdateSala
 from sqlalchemy.exc import SQLAlchemyError, IntegrityError
+from sqlalchemy import text
+
 from appv1.crud.evaluador.proyectos import get_current_convocatoria
 
 # Crear una convocatoria que devuelva su id 
@@ -32,6 +34,27 @@ def create_convocatoria(db: Session, nombre: str, fecha_inicio: date, fecha_fin:
 # Verificar convocatorias activa
 def existe_convocatoria_en_curso(db: Session) -> bool:
     return db.query(Convocatoria).filter(Convocatoria.estado == EstadoDeConvocatoria.en_curso).count() > 0
+
+
+# Consulta directa a la base de datos usando SQL crudo
+def obtener_convocatoria_en_curso(db: Session):
+    sql = text("SELECT * FROM convocatorias WHERE estado = 'en curso'")
+    result = db.execute(sql).fetchone()
+    
+    if result:
+        # Acceder a los valores por índice en lugar de por nombre
+        return ConvocatoriaResponse(
+            id_convocatoria=result[0],  
+            nombre=result[1],           
+            fecha_inicio=result[2],     
+            fecha_fin=result[3],        
+            estado=result[4]            
+        )
+    else:
+        return None
+
+
+
 
 
 # Crear programacion de fase
