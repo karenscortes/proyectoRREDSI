@@ -103,9 +103,9 @@ import { useAuthStore } from "@/store";
 export default defineComponent({
     emits: ['component-selected'],
     setup(_,{emit}) {
-        //propiedades para las opciones  del menú que se habilitan dependiendo dde la convocatoria en curso y sus fases 
-        const asignacion1 = ref('');
-        const asignacion2 = ref('');
+        //propiedades para las opciones  del menú de DELEGADO que se habilitan dependiendo de la convocatoria en curso y sus fases 
+        const asignacion1 = ref(''); //poner disabled para hacer pruebas
+        const asignacion2 = ref(''); //poner disabled para hacer pruebas
         const otras_opciones = ref('');
         
         //obteniendo fecha actual
