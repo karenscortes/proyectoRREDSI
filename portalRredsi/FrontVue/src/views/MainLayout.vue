@@ -5,14 +5,19 @@
     </div>
 
     <!-- Mostrar la imagen de fondo en las otras opciones del menú  -->
-    <div v-if="componente == 'RegistroProyecto' || componente == 'RegistroUsuario' || componente == 'ConsultarProyecto'">
-        <img src="../assets/img/slider_background.jpg" alt height="200px" width="100%">
+    <div v-if="componente == 'Registrar Proyecto' || componente == 'Evaluadores' || componente == 'Consultar Proyecto' || componente == 'Consultar Proyecto'" class="hero_slide">
+        <div class="back_img"></div>
+        <div class="hero_slide_container d-flex flex-column align-items-center justify-content-center">
+            <div class="hero_slide_content text-center">
+                <h1>{{componente}}</h1>
+            </div>
+        </div>
     </div>
     <div class="cont-slides" v-else>
         <Carrusel />
     </div>
 
-    <div class="container pt-5">
+    <div class="container">
         <ComponenteDinamico :currentComponent="currentComponent" />
     </div>
 
@@ -70,7 +75,6 @@ import MenuPrincipal from "../components/Menus/MenuPrincipal.vue";
 import ComponenteDinamico from "../components/ComponenteDinamico.vue";
 import RegistroUsuario from "../components/Users/inicio/RegistroUsuario.vue";
 import RegistroProyecto from '../components/Users/inicio/RegistroProyecto.vue';
-import Registro_fases from "../components/Users/inicio/Registro_fases.vue";
 import Rubricas_Calificadas from "../components/Users/inicio/Rubricas_Calificadas.vue";
 import Carrusel from "../components/Users/inicio/Carrusel.vue";
 import InicioPrincipal from "../components/Users/inicio/InicioPrincipal.vue";
@@ -87,7 +91,6 @@ export default {
         FooterPrincipal: markRaw(FooterPrincipal),
         RegistroUsuario: markRaw(RegistroUsuario),
         RegistroProyecto: markRaw(RegistroProyecto),
-        Registro_fases: markRaw(Registro_fases),
         Rubricas_Calificadas: markRaw(Rubricas_Calificadas),
         InicioPrincipal: markRaw(InicioPrincipal),
         Carrusel: markRaw(Carrusel),
@@ -102,12 +105,20 @@ export default {
                 NotAvailable: NotAvailable,
                 RegistroUsuario: RegistroUsuario,
                 RegistroProyecto: RegistroProyecto,
-                Registro_fases: Registro_fases,
                 Rubricas_Calificadas: Rubricas_Calificadas,
                 InicioPrincipal: InicioPrincipal
             };
 
             currentComponent.value = componentMap[componentName] || NotAvailable;
+            componente.value=componentName;
+
+            if(componentName == 'RegistroProyecto'){
+                componente.value= 'Registrar Proyecto';
+            }else if(componentName == 'RegistroUsuario'){
+                componente.value= 'Evaluadores';
+            }else if(componentName == 'Rubricas_Calificadas'){
+                componente.value= 'Consultar Proyecto';
+            }
         };
 
         const authStore = useAuthStore();
@@ -159,10 +170,6 @@ export default {
 </script>
 
 <style scoped>
-.cont-slides {
-    margin: 20px;
-}
-
 .modal-footer {
     justify-content: center;
 }
@@ -175,14 +182,59 @@ export default {
 .forgot-password-link:hover {
     text-decoration: underline;
 }
-.cont-slides{
-    margin: 20px;
-    }
 
-    .super_container {
-        width: 100%;
-        overflow: hidden;
-        z-index: 10;
-    }
+.super_container {
+    width: 100%;
+    overflow: hidden;
+    z-index: 10;
+}
 
+.hero_slider_container {
+	width: 100%;
+	height: 100%;
+}
+
+.hero_slide {
+	width: 100%;
+	height: 100%;
+}
+
+.back_img{
+    background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
+                    url(../assets/img/slider_background.jpg);
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 450px;
+	background-size: cover;
+	background-position: center center;
+}
+
+
+.hero_slide_container {
+	width: 100%;
+	height: 65vh;
+    padding-top: 15vh;
+    align-content: center;
+}
+
+.hero_slide_content {
+	max-width: 80%; 
+    padding: 10px; 
+}
+
+.hero_slide_content h1 {
+	font-size: 62px;
+	font-weight: 400;
+	color: #FFFFFF;
+}
+
+.hero_slide_content h1 span {
+	background: #ffb606;
+	padding-left: 13px;
+	padding-right: 13px;
+	margin-left: -12px;
+	margin-right: -12px;
+}
 </style>

@@ -3,17 +3,16 @@ from fastapi import APIRouter, Depends, File, HTTPException, UploadFile
 from sqlalchemy.orm import Session
 from appv1.crud.admin.gest_asistentes_externos import generate_code, get_attendee_by_document, get_id_document_type, get_paginated_attendees, insert_attendee, insert_user, insertar_historial_admin, update_external_attendees
 from appv1.crud.admin.gest_delegado import create_delegado,get_delegados_activos_paginated, get_delegados_by_document
-from appv1.crud.admin.gest_rubricas import create_items, delete_items, get_all_rubricas, update_items
+from appv1.crud.admin.gest_rubricas import create_items,get_all_rubricas, update_items, update_status
 from appv1.crud.admin.gest_rubricas import get_all_rubricas
-from appv1.crud.admin.admin import create_convocatoria, create_programacion_fase, create_sala, existe_convocatoria_en_curso, update_sala
-from appv1.models.convocatoria import Convocatoria
+from appv1.crud.admin.admin import create_convocatoria, create_programacion_fase, create_sala, existe_convocatoria_en_curso, obtener_convocatoria_en_curso, update_sala
 from appv1.models.programacion_fase import Programacion_fase
 from appv1.routers.login import get_current_user
-from appv1.schemas.admin.admin import ConvocatoriaCreate, CreateSala, EstadoDeConvocatoria, ProgramacionFaseCreate, UpdateSala
+from appv1.schemas.admin.admin import ConvocatoriaCreate, ConvocatoriaResponse, CreateSala, ProgramacionFaseCreate, UpdateSala
 from appv1.crud.admin.admin import create_convocatoria
 from appv1.schemas.admin.attendees import PaginatedAttendees, UpdatedAttendee
 from appv1.schemas.admin.delegado import DelegadoResponse, PaginatedDelegadoResponse
-from appv1.schemas.admin.items_rubrica import ItemCreate, ItemUpdate
+from appv1.schemas.admin.items_rubrica import ItemCreate, ItemUpdate, ItemUpdateStatus
 from appv1.schemas.admin.rubrica import RubricaResponse
 from appv1.schemas.usuario import UserCreate, UserResponse
 from core.utils import save_file
@@ -54,6 +53,18 @@ def create_new_convocatoria(
         "id_convocatoria": convocatoria_created.id_convocatoria
     }
 
+
+@router_admin.get("/convocatoria-en-curso", response_model=ConvocatoriaResponse)
+def get_convocatoria_en_curso(db: Session = Depends(get_db)):
+    convocatoria = obtener_convocatoria_en_curso(db)
+    if not convocatoria:
+        raise HTTPException(status_code=404, detail="No hay convocatorias en curso")
+    
+    return convocatoria
+
+
+
+
 @router_admin.post("/crear-programacion-fase")
 def create_new_programacion_fase(
     programacion_fase: ProgramacionFaseCreate, 
@@ -68,23 +79,33 @@ def create_new_programacion_fase(
         raise HTTPException(status_code=401, detail="Usuario no autorizado")
 
     # 1. Verificar que ya existe una convocatoria en curso usando la función existe_convocatoria_en_curso
-    if not existe_convocatoria_en_curso(db):
+    convocatoria_en_curso = existe_convocatoria_en_curso(db)
+    
+    if not convocatoria_en_curso:
         raise HTTPException(status_code=400, detail="No hay ninguna convocatoria en curso.")
 
-    # 2. Verificar si ya existe una programación de la misma fase para la convocatoria
+    # 2. Validar que la fecha de inicio sea antes que la fecha de fin
+    if programacion_fase.fecha_inicio >= programacion_fase.fecha_fin:
+        raise HTTPException(status_code=400, detail="La fecha de inicio debe ser anterior a la fecha de fin.")
+
+    # 3. Validar que las fechas de la programación estén dentro del rango de las fechas de la convocatoria
+    if programacion_fase.fecha_inicio < convocatoria_en_curso.fecha_inicio or programacion_fase.fecha_fin > convocatoria_en_curso.fecha_fin:
+        raise HTTPException(status_code=400, detail="Las fechas de la programación deben estar dentro del rango de las fechas de la convocatoria.")
+
+    # 4. Verificar si ya existe una programación de la misma fase para la convocatoria
     programacion_existente = db.query(Programacion_fase).filter(
         Programacion_fase.id_fase == programacion_fase.id_fase,
-        Programacion_fase.id_convocatoria == programacion_fase.id_convocatoria
+        Programacion_fase.id_convocatoria == convocatoria_en_curso.id_convocatoria
     ).first()
 
     if programacion_existente:
         raise HTTPException(status_code=400, detail="La programación de esta fase ya existe para la convocatoria.")
 
-    # 3. Crear la programación de fase si todo está en orden
+    # 5. Crear la programación de fase si todo está en orden
     programacion_fase_created = create_programacion_fase(
         db, 
         programacion_fase.id_fase, 
-        programacion_fase.id_convocatoria, 
+        convocatoria_en_curso.id_convocatoria,  # Usamos el id de la convocatoria en curso
         programacion_fase.fecha_inicio, 
         programacion_fase.fecha_fin
     )
@@ -93,6 +114,8 @@ def create_new_programacion_fase(
         "message": "Programación de fase creada exitosamente", 
         "id_programacion_fase": programacion_fase_created.id_programacion_fase
     }
+
+
 
 
 # Obtener todas las rubricas
@@ -133,6 +156,7 @@ async def consult_delegates(
     if len(users) == 0:
         raise HTTPException(status_code=404, detail="No hay delegados")
 
+    
     return {
         "users": users,
         "total_pages": total_pages,
@@ -252,9 +276,10 @@ def update_item(
             'message': 'Error al actualizar',
         }
     
-# Eliminar items
-@router_admin.post("/delete-items/{id_item}/")
-def delete_item(
+# editar estado items 
+@router_admin.put("/update-status-items/{id_item}/")
+def update_status_item(
+    data: ItemUpdateStatus,
     id_item:int, 
     db: Session = Depends(get_db),
     current_user: UserResponse = Depends(get_current_user),
@@ -263,10 +288,10 @@ def delete_item(
     MODULE = 10
     permisos = get_permissions(db, current_user.id_rol, MODULE)
     
-    if permisos is None or not permisos.p_eliminar:
+    if permisos is None or not permisos.p_actualizar:
         raise HTTPException(status_code=401, detail="Usuario no autorizado")
     
-    item = delete_items(id_item,db)
+    item = update_status(id_item,data.estado,db)
     insertar_historial_admin(db,'Eliminar',MODULE,id_item,current_user.id_usuario)
     if item:
         return{

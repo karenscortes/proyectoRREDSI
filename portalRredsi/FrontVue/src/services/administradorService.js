@@ -27,22 +27,33 @@ export const programarFase = async (id_fase, id_convocatoria, fecha_inicio, fech
   try {
     const url = `/admin/crear-programacion-fase`;
     const payload = { id_fase, id_convocatoria, fecha_inicio, fecha_fin };
+    
     console.log('Enviando payload para programar fase:', payload); // Verifica qué se está enviando
+
     const response = await api.post(url, payload, {
       headers: {
         'Authorization': `Bearer ${localStorage.getItem('access_token')}`
       }
     });
-    return response;
+
+    return response.data; // Devolver solo los datos de la respuesta
   } catch (error) {
     console.error('Error en el servicio programarFase:', error);
+
+    // Diferenciar errores del servidor y otros tipos de errores
     if (error.response) {
-      throw error.response.data; // Enviar el mensaje de error exacto si el servidor lo provee
+      // Error del servidor, lanzar el mensaje del servidor
+      throw error.response.data; 
+    } else if (error.request) {
+      // Error de red (la solicitud se hizo pero no hubo respuesta)
+      throw new Error('No se recibió respuesta del servidor. Verifica tu conexión de red.');
     } else {
-      throw new Error('Error de red o de servidor');
+      // Otro tipo de error (algo ocurrió al hacer la solicitud)
+      throw new Error('Error al configurar la solicitud.');
     }
   }
 };
+
 
 // Función para obtener todos los admins con paginación
 export const getConvocatoriasByPage = async (page = 1, pageSize = 5) => {
@@ -133,8 +144,10 @@ export const updateItems = async (id_item_rubrica, item_nuevo) => {
 // Función para eliminar item
 export const deleteItems = async (id_item_rubrica) => {
   try {
-      const url = `/admin/delete-items/${id_item_rubrica}/`;
-      const response = await api.post(url, {
+      const url = `/admin/update-status-items/${id_item_rubrica}/`;
+      const response = await api.put(url, {
+        estado: "inactivo"
+      },{
       headers: {
         'Authorization': `Bearer ${localStorage.getItem('access_token')}` 
       }
