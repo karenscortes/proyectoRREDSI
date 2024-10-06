@@ -1,5 +1,7 @@
-from sqlalchemy import Column, String, ForeignKey, Integer
+from sqlalchemy import Column, String, ForeignKey, Integer, and_
 from sqlalchemy.orm import relationship
+
+from appv1.models.item_rubrica import Item_rubrica
 from .base_class import Base
 
 class Rubrica(Base):
@@ -11,4 +13,5 @@ class Rubrica(Base):
 
     etapa = relationship('Etapa', back_populates='rubricas')
     modalidad = relationship("Modalidad", back_populates='rubricas')
-    items_rubrica = relationship("Item_rubrica", back_populates='rubrica')
+    items_rubrica = relationship("Item_rubrica", primaryjoin=and_(Item_rubrica.id_rubrica==id_rubrica,Item_rubrica.estado=="activo"), back_populates='rubrica')
+    

@@ -26,6 +26,7 @@ def create_items(item: ItemCreate,db: Session):
             titulo = item.titulo, 
             componente = item.componente, 
             valor_max = item.valor_max,
+            estado = item.estado,
         )
         db.add(nuevo_item)
         db.commit()
@@ -78,9 +79,6 @@ def update_status(id_item:int, estado: str, db: Session):
         item = db.query(Item_rubrica).filter(Item_rubrica.id_item_rubrica == id_item).first()       
         if item is None:
             raise HTTPException(status_code=404, detail="Item no encontrado")
-
-        print("este es el estado")
-        print(item.estado)
         item.estado = estado
         try:
             db.commit()
