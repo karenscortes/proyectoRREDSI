@@ -4,6 +4,9 @@
     <div class="container mt-5">
         <ComponenteDinamico :currentComponent="currentComponent"/>
     </div>
+    <div class="row" v-if="componente == 'PaginaInicioDelegado'">
+        <Milestones/>
+    </div>
 
     <FooterSecundario />
 </template>
@@ -36,9 +39,11 @@ import PaginaInicioDelegado from "../components/Users/delegado/PaginaInicioDeleg
 import GestionarAsistentes from "../components/Users/administrador/asistencia/GestionarAsistentes.vue";
 import InicioAdminView from "./InicioAdminView.vue";
 import ConvocatoriaInfoPageView from "./ConvocatoriaInfoPageView.vue";
+import Milestones from "../components/Users/delegado/Milestones.vue";
 
 // Styles
 import '../assets/plugins/fontawesome-free-5.0.1/css/fontawesome-all.css';
+
 
 
 
@@ -63,6 +68,7 @@ export default {
         ListaSalasDelegado: markRaw(ListaSalasDelegado),
         ListaProyectosDelegado: markRaw(ListaProyectosDelegado),
         PaginaInicioDelegado: markRaw(PaginaInicioDelegado),
+        Milestones: markRaw(Milestones),
 
         //Componentes Evaluador
         PaginaInicioEvaluadorView: markRaw(PaginaInicioEvaluadorView),
@@ -85,6 +91,7 @@ export default {
 
         const authStore = useAuthStore();
         const user = authStore.user;
+        const componente = ref("");
 
         //Componente que se mostrará al iniciar sesión
         const currentComponent = ref(NotAvailable);
@@ -93,6 +100,7 @@ export default {
             currentComponent.value = PaginaInicioEvaluadorView;
         }else if (user?.id_rol === 2){ //Delegado
             currentComponent.value = PaginaInicioDelegado;
+            componente.value='PaginaInicioDelegado';
         }else if (user?.id_rol === 3){ //Admin
             currentComponent.value = InicioAdminView;
         }else if(user?.id_rol === 6){ //SuperAdmin
@@ -136,12 +144,14 @@ export default {
             };
 
             currentComponent.value = componentMap[componentName] || NotAvailable;
+            componente.value=componentName;
         };
 
 
         return {
             user,
             currentComponent,
+            componente,
             changeComponent,
         };
 

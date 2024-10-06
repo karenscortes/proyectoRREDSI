@@ -72,16 +72,23 @@ def update_items(item_id: int, nuevo_item: ItemUpdate,db: Session):
         print(f"Error al actualizar el item: {e}")
         raise HTTPException(status_code=500, detail=f"Error. No hay Integridad de datos",)
     
-#Eliminar item
-def delete_items(id_item:int,db: Session):
+#Update status item
+def update_status(id_item:int, estado: str, db: Session):
     try:
         item = db.query(Item_rubrica).filter(Item_rubrica.id_item_rubrica == id_item).first()       
         if item is None:
             raise HTTPException(status_code=404, detail="Item no encontrado")
 
-        db.delete(item)
-        db.commit()
-        return True
+        print("este es el estado")
+        print(item.estado)
+        item.estado = estado
+        try:
+            db.commit()
+            db.refresh(item)
+            return item  
+        except Exception as e:
+            db.rollback()
+            raise HTTPException(status_code=500, detail="Error al actualizar el estado del item")
     except SQLAlchemyError as e:
         print(f"Error al eliminar el item: {e}")
         raise HTTPException(status_code=500, detail=f"Error. No hay Integridad de datos",)
