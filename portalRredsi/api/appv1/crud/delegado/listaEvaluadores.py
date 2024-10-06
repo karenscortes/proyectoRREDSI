@@ -8,7 +8,7 @@ def get_all_evaluators(db: Session, page: int = 1, page_size: int = 10):
         offset = (page - 1) * page_size
         sql = text(
         """
-            SELECT usuarios.id_usuario,
+            SELECT DISTINCT usuarios.id_usuario,
             usuarios.correo,
             usuarios.estado,
             usuarios.nombres,

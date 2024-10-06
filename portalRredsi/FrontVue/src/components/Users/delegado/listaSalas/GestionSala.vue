@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div class="col-3">
+        <div class="col-5 col-sm-3">
             <a class="btn_regresar text-dark fw-bold d-flex align-items-center" @click="$emit('volver')">
                 <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px"
                     fill="#00000" class="me-2">
@@ -19,9 +19,119 @@
         <div class=" container mt-5">
             <div class="container">
                 <div class="container">
+                    <!-- <button type="button" class="btn" data-bs-toggle="modal"
+                        data-bs-target="#asignarHorarioModal">
+                        Asignar horario
+                    </button> -->
 
+                    <!-- Modal de asignar horario -->
+                    <!-- <div class="modal fade" id="asignarHorarioModal" tabindex="-1"
+                        aria-labelledby="asignarHorarioModalLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-lg">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title fs-3 " id="asignarHorarioModalLabel">Asignación de Horario</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                        aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <form class="mt-4" @submit.prevent="asignarHorario">
+                                        <div class="row mb-4 justify-content-center">
+                                            <div class="col-12 col-md-6">
+                                                <label for="proyecto_codigo"
+                                                    class="fw-bold text-dark text-center">Proyecto:</label>
+                                                <select id="id_proyecto" v-model="proyectoSeleccionado"
+                                                    @change="seleccionarProyecto(proyectoSeleccionado.id_proyecto, proyectoSeleccionado.id_area_conocimiento, proyectoSeleccionado.id_institucion)"
+                                                    class="form-select text-dark" required>
+                                                    <option value="" disabled selected>Seleccione una opción</option>
+                                                    <option v-for="(proyecto, index) in listaProyectosSinAsignar"
+                                                        :key="index" :value="proyecto">
+                                                        {{ proyecto.titulo }}
+                                                    </option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="row mb-4">
+                                            <div class="col-md-6">
+                                                <label for="ponente_1" class="form-label text-black">Ponente 1:</label>
+                                                <input type="text" class="form-control" id="ponente_1" :value="ponente1"
+                                                    disabled>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label for="ponente_2" class="form-label text-black">Ponente 2
+                                                    (Opcional):</label>
+                                                <input type="text" class="form-control" id="ponente_2" :value="ponente2"
+                                                    disabled>
+                                            </div>
+                                        </div>
 
+                                        <hr class="my-4">
 
+                                        <div class="row mb-4">
+                                            <div class="col-md-6">
+                                                <label for="evaluador_1" class="fw-bold text-dark">Evaluador 1:</label>
+                                                <select id="id_evaluador_1" v-model="id_evaluador1"
+                                                    class="form-select text-dark" required>
+                                                    <option value="" disabled selected>Seleccione una opción</option>
+                                                    <option v-for="(evaluador, index) in evaluadoresFiltrados1"
+                                                        :key="index" :value="evaluador.id_evaluador">
+                                                        {{ evaluador.nombre_evaluador }} {{
+                                                        evaluador.apellidos_evaluador }}
+                                                    </option>
+                                                </select>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label for="evaluador_2" class="fw-bold text-dark">Evaluador 2:</label>
+                                                <select id="id_evaluador_2" v-model="id_evaluador2"
+                                                    class="form-select text-dark" required>
+                                                    <option value="" disabled selected>Seleccione una opción</option>
+                                                    <option v-for="(evaluador, index) in evaluadoresFiltrados2"
+                                                        :key="index" :value="evaluador.id_evaluador">
+                                                        {{ evaluador.nombre_evaluador }} {{
+                                                        evaluador.apellidos_evaluador }}
+                                                    </option>
+                                                </select>
+                                            </div>
+                                        </div>
+
+                                        <hr class="my-4">
+
+                                        <div class="row mb-4">
+                                            <div class="col-md-4">
+                                                <label for="fecha" class="form-label text-black">Fecha:</label>
+                                                <input id="fecha" type="date" :value="sala.fechasEvento.fecha_inicio"
+                                                    :min="sala.fechasEvento.fecha_inicio"
+                                                    :max="sala.fechasEvento.fecha_fin" class="form-control text-dark">
+                                            </div>
+                                            <div class="col-md-4">
+                                                <label for="horario_inicio" class="form-label text-black">Hora de
+                                                    Inicio:</label>
+                                                <input id="horario_inicio" type="time" v-model="horario.hora_inicio"
+                                                    class="form-control text-dark" min="06:00" max="18:30" step="1800"
+                                                    required>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <label for="horario_fin" class="form-label text-black">Hora de
+                                                    Fin:</label>
+                                                <input id="horario_fin" type="time" v-model="horario.hora_fin"
+                                                    class="form-control text-dark" min="06:00" max="18:30" step="1800"
+                                                    required>
+                                            </div>
+                                        </div>
+
+                                        <div class="text-center">
+                                            <button class="btn text-dark fw-bold" type="submit" id="asignar_horario"
+                                                style="background-color: rgb(255, 182, 6);">
+                                                Asignar Horario
+                                            </button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div> -->
+
+                    <!-- forumalario de asignar horario -->
                     <form class="mt-4" @submit.prevent="asignarHorario">
                         <!-- Proyecto -->
                         <div class="row mb-4 justify-content-center">
@@ -111,9 +221,14 @@
 
                 <div class="title-line mt-3"></div>
                 <!-- Línea debajo del título -->
-
+                <!-- Submit Button -->
+                <div class="text-right mt-3">
+                    <button class="btn text-white bg-dark fw-bold" type="button" @click="modoEditarHorario">
+                        <span>{{ editarHorario ? 'Ver detalles': 'Editar Horario' }}</span>
+                    </button>
+                </div>
                 <!-- Tabla Horarios agregados -->
-                <ComponenteHorario ref="horario" :sala="sala" />
+                <ComponenteHorario ref="horario" :sala="sala" :editarHorario="editarHorario"/>
             </div>
         </div>
 
@@ -162,6 +277,7 @@ export default defineComponent({
             evaluadores: [],
             listaProyectosSinAsignar: [],
             actualizarHorario: true,
+            editarHorario : false,
             detalleSala: []
         };
     },
@@ -298,6 +414,9 @@ export default defineComponent({
             const proyecto_convocatoria = await obtenerProyectoConvocatoria(p_id_proyecto);
             this.id_proyecto_convocatoria = proyecto_convocatoria.data.proyecto_convocatoria.id_proyecto_convocatoria;
         },
+        modoEditarHorario(){
+            this.editarHorario = !this.editarHorario;
+        }
 
     },
     computed: {
@@ -341,6 +460,10 @@ export default defineComponent({
 .btn_regresar:hover svg {
     transform: translateX(-4px);
     /* Pequeño desplazamiento del ícono al hover */
+}
+.btn-close {
+    width: 8px;
+    height: 8px;
 }
 
 @media (max-width: 768px) {

@@ -34,7 +34,7 @@
                                     class="form-control text-dark w-100" style="height: 100%; padding: 0.5rem;"
                                     placeholder="Ingresa numero de sala" @input="buscarSala">
                             </div>
-                            <div class="col-4 col-sm-3">
+                            <div class="col-4 col-sm-4">
                                 <button class="btn w-100 font-weight-bold"
                                     style="background: rgb(255, 182, 6); color: #000000"
                                     @click="buscarSala">Buscar</button>

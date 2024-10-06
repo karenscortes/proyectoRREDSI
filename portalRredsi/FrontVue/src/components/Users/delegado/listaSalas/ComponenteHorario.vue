@@ -1,7 +1,7 @@
 <template>
     <div>
         <!-- Tabla de horarios -->
-        <div class="container mt-4">
+        <div class="container">
             <div>
                 <h3 class="text-center m-0 mb-2">{{ sala.fechasEvento.fecha_inicio }}</h3>
             </div>
@@ -18,9 +18,8 @@
                             :style="getStyle(i, detalle.hora_inicio, detalle.hora_fin)">
                             <div v-if="i === getMiddleSlot(detalle.hora_inicio, detalle.hora_fin) && isProjectTime(i, detalle.hora_inicio, detalle.hora_fin)"
                                 class="d-flex justify-content-center align-items-center h-100" style="height: 100%;">
-                                <a class="text-dark fw-semibold" type="button" data-bs-toggle="modal"
-                                    data-bs-target="#detalle_proyecto"
-                                    @click="proyectoSeleccionado(detalle.id_proyecto)">Ver Detalle</a>
+                                <a class="text-dark fw-semibold" type="button"
+                                    @click="proyectoSeleccionado(detalle)">{{ editarHorario ? 'Editar' : 'Ver Detalle'}}</a>
                             </div>
                         </td>
                     </tr>
@@ -30,6 +29,77 @@
                 </tbody>
             </table>
         </div>
+        <!-- Modal para editar un horario  -->
+        <div class="modal fade" id="actualizarHorarioModal" tabindex="-1" aria-labelledby="actualizarHorarioLabel"
+            aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title fs-3" id="actualizarHorarioLabel">Actualización de Horario</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" @click="cerrarModalActualizar"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form class="mt-4">
+                            <div class="row mb-4 justify-content-center">
+                                <div class="col-12 col-md-6">
+                                    <label for="proyecto_codigo" class="fw-bold text-dark text-center">Proyecto:</label>
+                                    <select id="id_proyecto" class="form-select text-dark" required>
+                                        <option value="" disabled selected>Seleccione una opción</option>
+                                        <!-- Opciones del proyecto -->
+                                    </select>
+                                </div>
+                            </div>
+
+                            <hr class="my-4">
+
+                            <div class="row mb-4">
+                                <div class="col-md-6">
+                                    <label for="evaluador_1" class="fw-bold text-dark">Evaluador 1:</label>
+                                    <select id="id_evaluador_1" class="form-select text-dark" required>
+                                        <option value="" disabled selected>Seleccione una opción</option>
+                                        <!-- Opciones del evaluador 1 -->
+                                    </select>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="evaluador_2" class="fw-bold text-dark">Evaluador 2:</label>
+                                    <select id="id_evaluador_2" class="form-select text-dark" required>
+                                        <option value="" disabled selected>Seleccione una opción</option>
+                                        <!-- Opciones del evaluador 2 -->
+                                    </select>
+                                </div>
+                            </div>
+
+                            <hr class="my-4">
+
+                            <div class="row mb-4">
+                                <div class="col-md-4">
+                                    <label for="fecha" class="form-label text-black">Fecha:</label>
+                                    <input id="fecha" type="date" :value="detalles_editables_horario.fecha" class="form-control text-dark">
+                                </div>
+                                <div class="col-md-4">
+                                    <label for="horario_inicio" class="form-label text-black">Hora de Inicio:</label>
+                                    <input id="horario_inicio" :value="detalles_editables_horario.hora_inicio" type="time" class="form-control text-dark" min="06:00"
+                                        max="18:30" step="1800" required>
+                                </div>
+                                <div class="col-md-4">
+                                    <label for="horario_fin" class="form-label text-black">Hora de Fin:</label>
+                                    <input id="horario_fin" type="time" :value="detalles_editables_horario.hora_fin" class="form-control text-dark" min="06:00"
+                                        max="18:30" step="1800" required>
+                                </div>
+                            </div>
+
+                            <div class="text-center">
+                                <button class="btn text-dark fw-bold" type="button" id="asignar_horario" @click="actualizarHorario"
+                                    style="background-color: rgb(255, 182, 6);">
+                                    Actualizar Horario
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <!-- Modal con detalles del proyecto  -->
         <div class="modal fade" id="detalle_proyecto" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered">
@@ -121,10 +191,11 @@ import { useToastUtils } from '@/utils/toast';
 export default {
     props: {
         sala: Object,
+        editarHorario: Boolean || false,
     },
-    setup(){
+    setup() {
         const { showSuccessToast, showErrorToast, showInfoToast } = useToastUtils();
-        return{
+        return {
             showInfoToast
         }
     },
@@ -146,7 +217,8 @@ export default {
                 hora_fin: ""
             },
             evaluadoresProyectoSeleccionado: [],
-            detalle_proyecto: {}
+            detalle_proyecto: {},
+            detalles_editables_horario:{}
         }
 
     },
@@ -217,7 +289,9 @@ export default {
             if (duracion.includes('M')) {
                 minutos = parseInt(duracion.split('M')[0]);
             }
-
+            if(horas < 10){
+                horas = `0${horas}`;
+            }
             return horas + ":" + minutos
         },
         async obtenerDetalleProyecto(p_id_proyecto) {
@@ -228,53 +302,75 @@ export default {
                 alert("error")
             }
         },
-        async proyectoSeleccionado(p_id_proyecto) {
-            // Inicializar variables antes de la carga de datos
-            this.ponentes = "";
-            this.evaluadoresProyectoSeleccionado = "";
-            this.horariosProyectoSeleccionado.hora_inicio = "";
-            this.horariosProyectoSeleccionado.hora_fin = "";
+        async proyectoSeleccionado(p_detalle_sala) {
 
-            // Obtener el horario asignado al proyecto sin necesidad de hacer una consulta extra
-            const horarioProyectoEspecifico = this.buscarProyectoPorId(p_id_proyecto);
-            if (horarioProyectoEspecifico) {
-                this.horariosProyectoSeleccionado.hora_inicio = this.formatearHora(this.obtenerHoraMinutos(horarioProyectoEspecifico.hora_inicio));
-                this.horariosProyectoSeleccionado.hora_fin = this.formatearHora(this.obtenerHoraMinutos(horarioProyectoEspecifico.hora_fin));
-            }
-            this.obtenerDetalleProyecto(p_id_proyecto)
+            if (this.editarHorario) {
+                $("#actualizarHorarioModal").modal('show');
+                // Se busca en la copia del detalle de sala el id del proyecto para traer los datos editables 
+                this.detalles_editables_horario = this.copiaDetalleSala.find(detalle => detalle.id_proyecto === p_detalle_sala.id_proyecto);
+                this.detalles_editables_horario.hora_inicio = this.obtenerHoraMinutos(this.detalles_editables_horario.hora_inicio);
+                this.detalles_editables_horario.hora_fin = this.obtenerHoraMinutos(this.detalles_editables_horario.hora_fin)
 
-            // Ejecutar todas las consultas en paralelo y manejar los resultados de manera independiente
-            const [ responseEvaluadores, responsePonentes, responseUrlPresentacion] = await Promise.allSettled([
-                obtenerEvaluadoresProyecto(p_id_proyecto),
-                obtenerPonentesProyecto(p_id_proyecto),
-                obtenerUrlPresentacionProyecto(p_id_proyecto)
-            ]);
-
-            // Evaluadores
-            if (responseEvaluadores.status === "fulfilled") {
-                this.evaluadoresProyectoSeleccionado = responseEvaluadores.value;
             } else {
-                console.error("Error al obtener evaluadores:", responseEvaluadores.reason);
-            }
+                $("#detalle_proyecto").modal('show');
 
-            // Ponentes
-            if (responsePonentes.status === "fulfilled") {
-                this.ponentes = responsePonentes.value.data.ponentes;
-            } else {
-                console.error("Error al obtener ponentes:", responsePonentes.reason);
-            }
+                // Inicializar variables antes de la carga de datos
+                this.ponentes = "";
+                this.evaluadoresProyectoSeleccionado = "";
+                this.horariosProyectoSeleccionado.hora_inicio = "";
+                this.horariosProyectoSeleccionado.hora_fin = "";
 
-            // URL de presentación
-            if (responseUrlPresentacion.status === "fulfilled") {
-                this.url_presentacion = responseUrlPresentacion.value.data;
-                this.existe_presentacion = true;
-            } else {
-                this.existe_presentacion = false;
-                console.error("Error al obtener URL de presentación:", responseUrlPresentacion.reason);
+                // Obtener el horario asignado al proyecto sin necesidad de hacer una consulta extra
+                const horarioProyectoEspecifico = this.buscarProyectoPorId(p_detalle_sala.id_proyecto);
+                if (horarioProyectoEspecifico) {
+                    this.horariosProyectoSeleccionado.hora_inicio = this.formatearHora(this.obtenerHoraMinutos(horarioProyectoEspecifico.hora_inicio));
+                    this.horariosProyectoSeleccionado.hora_fin = this.formatearHora(this.obtenerHoraMinutos(horarioProyectoEspecifico.hora_fin));
+                }
+                console.log('horario especifico',horarioProyectoEspecifico)
+                this.obtenerDetalleProyecto(p_detalle_sala.id_proyecto)
+
+                // Ejecutar todas las consultas en paralelo y manejar los resultados de manera independiente
+                const [responseEvaluadores, responsePonentes, responseUrlPresentacion] = await Promise.allSettled([
+                    obtenerEvaluadoresProyecto(p_detalle_sala.id_proyecto),
+                    obtenerPonentesProyecto(p_detalle_sala.id_proyecto),
+                    obtenerUrlPresentacionProyecto(p_detalle_sala.id_proyecto)
+                ]);
+
+                // Evaluadores
+                if (responseEvaluadores.status === "fulfilled") {
+                    this.evaluadoresProyectoSeleccionado = responseEvaluadores.value;
+                } else {
+                    console.error("Error al obtener evaluadores:", responseEvaluadores.reason);
+                }
+
+                // Ponentes
+                if (responsePonentes.status === "fulfilled") {
+                    this.ponentes = responsePonentes.value.data.ponentes;
+                } else {
+                    console.error("Error al obtener ponentes:", responsePonentes.reason);
+                }
+
+                // URL de presentación
+                if (responseUrlPresentacion.status === "fulfilled") {
+                    this.url_presentacion = responseUrlPresentacion.value.data;
+                    this.existe_presentacion = true;
+                } else {
+                    this.existe_presentacion = false;
+                    console.error("Error al obtener URL de presentación:", responseUrlPresentacion.reason);
+                }
             }
+        },
+        async actualizarHorario(){
+            // pendiente
+            this.showInfoToast("Pendiente la consulta para actualizar");
+            this.obtenerDatosSala();
+            $("#actualizarHorarioModal").modal('hide');
         }
-
         ,
+        cerrarModalActualizar(){
+            this.obtenerDatosSala();
+
+        },
         limpiarModalDetalleProyecto() {
             this.detalle_proyecto = "";
         },
@@ -305,10 +401,9 @@ export default {
             } else if (horas > 12) {
                 horas -= 12; // 13:xx a 1:xx PM
             }
-
+            
             return `${horas}:${minutos} ${modifier}`;
         }
-
     },
     mounted() {
         this.obtenerDatosSala();
