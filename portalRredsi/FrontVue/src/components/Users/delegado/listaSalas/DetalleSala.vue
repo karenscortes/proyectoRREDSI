@@ -36,11 +36,6 @@
         <!-- Línea divisoria para separar la información de la sala del horario -->
         <hr class="my-4">
 
-        <!-- Sección de la fecha -->
-        <div class="text-center my-4">
-            <h3 class="text-muted mb-3">Sep 6 de 2024</h3>
-        </div>
-
         <!-- Tabla de horarios asignados -->
         <div class="table-responsive">
             <ComponenteHorario :sala="sala" />

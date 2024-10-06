@@ -83,7 +83,9 @@
                         <div class="row mb-4">
                             <div class="col-md-4">
                                 <label for="fecha" class="form-label text-black">Fecha:</label>
-                                <input id="fecha" type="date" v-model="horario.fecha" class="form-control text-dark">
+                                <input id="fecha" type="date" :value="sala.fechasEvento.fecha_inicio"
+                                    :min="sala.fechasEvento.fecha_inicio" :max="sala.fechasEvento.fecha_fin"
+                                    class="form-control text-dark">
                             </div>
                             <div class="col-md-4">
                                 <label for="horario_inicio" class="form-label text-black">Hora de Inicio:</label>
@@ -120,7 +122,7 @@
 
 <script>
 import { defineComponent } from 'vue';
-import { obtenerPonentesProyecto, obetnerProyectosSinAsignarEtapaPresencial, obtenerPosiblesEvaluadoresEtapaPresencial, asignarEvaluadoresEtapaPresencial } from '@/services/salasDelegadoService';
+import { obtenerPonentesProyecto, obtenerDetalleSala, obetnerProyectosSinAsignarEtapaPresencial, obtenerPosiblesEvaluadoresEtapaPresencial, asignarEvaluadoresEtapaPresencial } from '@/services/salasDelegadoService';
 import { obtenerProyectoConvocatoria } from '@/services/DelegadoService';
 import ComponenteHorario from './ComponenteHorario.vue';
 import { useToastUtils } from '@/utils/toast';
@@ -134,7 +136,7 @@ export default defineComponent({
         ComponenteHorario
     },
     data() {
-        const { showSuccessToast, showErrorToast, showWarningToast, showDefaultToast, showInfoToast } = useToastUtils();
+        const { showSuccessToast, showErrorToast, showWarningToast, showInfoToast } = useToastUtils();
         return {
             proyectoSeleccionado: {
                 id_proyecto: "",
@@ -153,10 +155,14 @@ export default defineComponent({
                 hora_fin: "",
             },
             showInfoToast,
+            showSuccessToast,
+            showErrorToast,
+            showWarningToast,
             id_proyecto_convocatoria: "",
             evaluadores: [],
             listaProyectosSinAsignar: [],
             actualizarHorario: true,
+            detalleSala: []
         };
     },
     emits: ['component-selected'],
@@ -167,20 +173,27 @@ export default defineComponent({
         async asignarHorario() {
             try {
                 if (this.horario.hora_inicio < this.horario.hora_fin) {
-                    await asignarEvaluadoresEtapaPresencial(this.id_evaluador1, this.id_evaluador2, this.proyectoSeleccionado.id_proyecto, this.id_proyecto_convocatoria, this.sala.id_sala, this.horario.fecha, this.horario.hora_inicio, this.horario.hora_fin);
+                    const conflictos_horario = this.detalleSala.filter(detalle => detalle.hora_inicio === this.horario.hora_inicio);
 
-                    alert("La asignación del horario ha sido exitosa");
-                    this.fetchProyectosSinAsignar();
-                    this.limpiarFormulario();
+                    if (conflictos_horario.length > 0) {
+                        this.showInfoToast("Ya hay un proyecto asignado a esta hora, intenta con otro horario");
+                    } else {
+                        await asignarEvaluadoresEtapaPresencial(this.id_evaluador1, this.id_evaluador2, this.proyectoSeleccionado.id_proyecto, this.id_proyecto_convocatoria, this.sala.id_sala, this.horario.fecha, this.horario.hora_inicio, this.horario.hora_fin);
 
-                    // actualiza la tabla de horario 
-                    this.$refs.horario.obtenerDatosSala();
+                        this.showSuccessToast("La asignación del horario ha sido exitosa");
+                        this.fetchProyectosSinAsignar();
+                        this.limpiarFormulario();
+
+                        // actualiza la tabla de horario 
+                        this.$refs.horario.obtenerDatosSala();
+                    }
+
                 } else {
-                    alert("Debes ingresar una hora de finalización mayor a la de inicio")
+                    this.showWarningToast("Debes ingresar una hora de finalización mayor a la de inicio")
                 }
 
             } catch (error) {
-                alert("No se ha podido asignar el proyecto a esta sala");
+                this.showErrorToast("No se ha podido asignar el proyecto a esta sala");
             }
         },
         limpiarFormulario() {
@@ -226,6 +239,48 @@ export default defineComponent({
             }
 
         },
+        async obtenerDatosMiSala() {
+            try {
+
+                const datosSala = await obtenerDetalleSala(this.sala.id_sala);
+                this.detalleSala = datosSala.data.detalle_sala;
+
+                // Convierte las horas a minutos en cada fila de la tabla
+                for (let i = 0; i < this.detalleSala.length; i++) {
+                    // castea el formato a horas y minutos validos 
+                    this.detalleSala[i].hora_inicio = this.obtenerHoraMinutos(this.detalleSala[i].hora_inicio);
+                    this.detalleSala[i].hora_fin = this.obtenerHoraMinutos(this.detalleSala[i].hora_fin);
+                }
+                console.log(this.detalleSala);
+            } catch (error) {
+                console.error("Aún no se asignan proyectos a esta sala");
+            }
+        },
+
+        obtenerHoraMinutos(duracion) {
+            // Remover "PT" del inicio de la cadena
+            duracion = duracion.replace('PT', '');
+
+            let horas = 0;
+            let minutos = '00';
+
+            const partesHoras = duracion.split('H');
+
+            if (partesHoras.length > 1) {
+                // Si hay una parte con 'H', extraer las horas
+                horas = parseInt(partesHoras[0]);
+                duracion = partesHoras[1];  // El resto contiene minutos
+            } else {
+                duracion = partesHoras[0];
+            }
+
+            // Dividir la parte restante por la letra 'M' para obtener los minutos
+            if (duracion.includes('M')) {
+                minutos = parseInt(duracion.split('M')[0]);
+            }
+
+            return horas + ":" + minutos
+        },
         async fetchPosiblesEvaluadores(p_id_area_conocimiento, p_id_institucion) {
             try {
                 // Consulta los posibles evaluadores del proyecto seleccionado
@@ -256,6 +311,7 @@ export default defineComponent({
         }
     },
     mounted() {
+        this.obtenerDatosMiSala();
         this.fetchProyectosSinAsignar();
     }
 });

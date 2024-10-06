@@ -3,7 +3,7 @@
         <!-- Tabla de horarios -->
         <div class="container mt-4">
             <div>
-                <!-- <h3 class="text-center m-0">{{ horario.fecha }}</h3> -->
+                <h3 class="text-center m-0 mb-2">{{ sala.fechasEvento.fecha_inicio }}</h3>
             </div>
             <table class="table table-hover border table-responsive">
                 <thead>
