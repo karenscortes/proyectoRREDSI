@@ -19,7 +19,7 @@
           ></button>
         </div>
         <div class="modal-body">
-          <form action="">
+          <form action="" id="formAdd" @submit.prevent="save()">
             <div class="row">
               <div class="col-md-6 mb-4">
                 <label for="titulo" class="form-label"
@@ -64,7 +64,7 @@
         </div>
         <div class="modal-footer">
           <button class="btn" data-bs-dismiss="modal" @click="closeModal()">Cerrar</button>
-          <button class="btn" @click="save()">Guardar</button>
+          <button class="btn" type="submit" form="formAdd">Guardar</button>
         </div>
       </div>
     </div>
