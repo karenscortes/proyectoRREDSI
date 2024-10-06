@@ -32,10 +32,6 @@
                 <a href="" class="btn px-5 py-3">Más información</a>
             </div>
         </div>
-
-
-        
-
 </template>
 <style scoped>
 .title-border-radius {

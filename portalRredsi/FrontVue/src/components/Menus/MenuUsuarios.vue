@@ -99,13 +99,9 @@ import { ref, onMounted} from "vue";
 import { defineComponent,reactive } from "vue";
 import { useRouter } from "vue-router";
 import { useAuthStore } from "@/store";
-import FlashMessage from '../FlashMessage.vue';
 
 export default defineComponent({
     emits: ['component-selected'],
-    components: {
-        FlashMessage, // Registra el componente FlashMessage
-    },
     setup(_,{emit}) {
         //propiedades para las opciones  del menú que se habilitan dependiendo dde la convocatoria en curso y sus fases 
         const asignacion1 = ref('');
@@ -160,7 +156,7 @@ export default defineComponent({
 
             });
         } else if (user?.id_rol === 2) {
-            
+            //     getAssignmentDates();            
             Object.assign(state, {
                 left_tabs: [{nombre:'Inicio', ruta:'PaginaInicioDelegado', uso: ''}, {nombre:'Perfil', ruta:'EditarPerfil', uso: ''}],
                 mid_tabs:[
@@ -194,10 +190,6 @@ export default defineComponent({
         const selectComponent = (componentName) => {
             emit('component-selected', componentName); // Emite un evento para seleccionar el componente
         };
-
-        // onMounted(() => {
-        //     getAssignmentDates();
-        // });
 
         // Acción para cerrar sesión
         const logout = () => {
