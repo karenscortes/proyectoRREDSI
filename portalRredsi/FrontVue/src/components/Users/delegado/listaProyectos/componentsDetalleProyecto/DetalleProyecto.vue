@@ -34,22 +34,22 @@
                             </div>   -->
                         </div>
                         <!-- Botones -->
-                        <div class="col-10 d-flex justify-content-between">
-                            <button type="button" class="btn btn-sm btn-warning font-weight-bold" style="width: 36%;"
-                                @click="openModal">
-                                Añadir presentación
+                        <div class="col-10 d-flex justify-content-between ">
+                            <button type="button" class="btn btn-sm btn-warning font-weight-bold w-100 mx-2"
+                                style="width: 36%;" @click="openModal">
+                                Añadir <br />presentación
                             </button>
 
                             <form action="../../../assets/img/constancia_NotasAprendiz.pdf" style="width: 31%;"
                                 target="_blank">
-                                <button type="submit" class="btn btn-sm btn-warning font-weight-bold"
+                                <button type="submit" class="btn btn-sm btn-warning font-weight-bold w-100 "
                                     style="width: 100%;">
                                     Ver presentación
                                 </button>
                             </form>
                             <form action="../../../assets/img/constancia_NotasAprendiz.pdf" style="width: 31%;"
                                 target="_blank">
-                                <button type="submit" class="btn btn-sm btn-warning font-weight-bold"
+                                <button type="submit" class="btn btn-sm btn-warning font-weight-bold w-100 "
                                     style="width: 100%;">
                                     Ver proyecto
                                 </button>
@@ -75,9 +75,8 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <h2 class="modal-title" id="exampleModalLabel">Añadir URL de Presentación</h2>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" style="font-size: 0.75rem; padding: 0.25rem; width: 1.5rem; height: 1.5rem;"></button>
-
-
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+                            style="font-size: 0.75rem; padding: 0.25rem; width: 1.5rem; height: 1.5rem;"></button>
                     </div>
                     <div class="modal-body">
                         <form @submit.prevent="guardarPresentacion">
@@ -104,7 +103,7 @@
                 </div>
                 <div id="collapseOne" class="collapse mt-5" aria-labelledby="headingOne"
                     data-bs-parent="#accordionExample">
-                    <RubricaCom v-if="cargarRubrica" :proyecto="proyecto" :id_evaluador="id_evaluador1" />
+                    <RubricaCom v-if="cargarRubricaVirtual" :proyecto="proyecto" :id_evaluador="id_evaluador1" :etapa="'virtual'" />
                 </div>
             </div>
             <div class="card p-2">
@@ -117,7 +116,7 @@
                 </div>
                 <div id="collapseTwo" class="collapse mt-5" aria-labelledby="headingTwo"
                     data-bs-parent="#accordionExample">
-                    <RubricaCom v-if="cargarRubrica" :proyecto="proyecto" :id_evaluador="id_evaluador2" />
+                    <RubricaCom v-if="cargarRubricaPresencial" :proyecto="proyecto" :id_evaluador="id_evaluador2" :etapa="'presencial'" />
                 </div>
             </div>
             <div class="card p-2">
@@ -130,11 +129,8 @@
                 </div>
                 <div id="collapseThree" class="collapse mt-5" aria-labelledby="headingThree"
                     data-bs-parent="#accordionExample">
-                    <!-- <RubricaCom :tituloProyecto="tituloProyecto" :ponentesProyecto="ponentesProyecto"
-                        :universidadProyecto="universidadProyecto" :puntajeTotal="puntajeTotal"
-                        :nombreEvaluador="nombreEvaluador" :cedulaEvaluador="cedulaEvaluador"
-                        :universidadEvaluador="universidadEvaluador" :emailEvaluador="emailEvaluador"
-                        :celularEvaluador="celularEvaluador" /> -->
+                    <RubricaCom v-if="cargarRubricaPresencial" :proyecto="proyecto" :id_evaluador="id_evaluador3" :etapa="'presencial'" />
+                    
                     <!--Respaldo-->
                     <h4 class="text-center text-dark mt-4 mb-4">Respaldo</h4>
                     <div class="custom-file-upload mx-auto">
@@ -176,10 +172,12 @@ export default {
     },
     data() {
         return {
-            cargarRubrica: false,
+            cargarRubricaVirtual: false,
+            cargarRubricaPresencial: false,
             evaluadores: [],
             id_evaluador1: 0,
             id_evaluador2: 0,
+            id_evaluador3: 0,
             ponentes: [],
             infoSala: {
                 fecha: '',
@@ -193,6 +191,7 @@ export default {
             universidadProyecto: '',
             puntajeTotal: 0,
             urlPresentacion: '',
+            
 
         };
     },
@@ -204,14 +203,28 @@ export default {
         // Función para obtener los evaluadores del proyecto
         async fetchEvaluadores(id_proyecto) {
             try {
-                const data = await obtenerEvaluadoresProyecto(id_proyecto);
-                this.evaluadores = data;
-                this.id_evaluador1 = this.evaluadores[0].id_usuario;
-                this.id_evaluador2 = this.evaluadores[1].id_usuario;
+                const id_etapa = this.proyecto.id_etapa;
+                if (id_etapa == 2) {
+                    const data = await obtenerEvaluadoresProyecto(id_proyecto, id_etapa);
+                    this.evaluadores = data;
+                } else {
+                    // Obtener evaluadores virtuales y agregarlos a this.evaluadores
+                    const dataEvaluadorVirtual = await obtenerEvaluadoresProyecto(id_proyecto, 2);
+                    this.evaluadores['virtual'] = dataEvaluadorVirtual; // Guardar evaluadores virtuales en una clave específica
+                    this.id_evaluador1 = this.evaluadores.virtual[0].id_usuario;
+                    // Obtener evaluadores presenciales y agregarlos a this.evaluadores
+                    const dataEvaluadorPresencial = await obtenerEvaluadoresProyecto(id_proyecto, 1);
+                    this.evaluadores['presencial'] = dataEvaluadorPresencial; // Guardar evaluadores presenciales en otra clave específica
+                    this.id_evaluador2 = this.evaluadores.presencial[0].id_usuario;
+                    this.id_evaluador3 = this.evaluadores.presencial[1].id_usuario;
+
+                }
+
             } catch (error) {
                 console.error('Error al obtener evaluadores:', error);
             }
         },
+
         // Función para obtener los ponentes del proyecto
         async fetchPonentes(id_proyecto) {
             try {
@@ -237,8 +250,14 @@ export default {
                 await this.fetchEvaluadores(this.proyecto.id_proyecto);
                 await this.fetchPonentes(this.proyecto.id_proyecto);
                 await this.fetchInfoSala(this.proyecto.id_proyecto);
-                if (this.evaluadores.length > 0) {
-                    this.cargarRubrica = true;
+                if (this.evaluadores.virtual.length > 0 || this.evaluadores.presencial.length > 0) {
+                    if(this.proyecto.id_etapa == 2) {
+                        this.cargarRubricaVirtual = true;
+                        this.cargarRubricaPresencial = false;
+                    }else {
+                        this.cargarRubricaPresencial = true;
+                        this.cargarRubricaVirtual= true;
+                    }
                 }
             } catch (error) {
                 console.error('Error al cargar los datos del proyecto:', error);
@@ -246,8 +265,8 @@ export default {
         },
 
         openModal() {
-                $('#presentationModal').modal('show');
-            },
+            $('#presentationModal').modal('show');
+        },
         async guardarPresentacion() {
             try {
                 await insertarUrlPresentacion(this.proyecto.id_proyecto, this.urlPresentacion);
@@ -258,7 +277,7 @@ export default {
                 this.showInfoToast('Error al guardar la presentación. Por favor, intenta nuevamente.');
             }
         },
-        
+
     },
     mounted() {
         this.fetchAllData()

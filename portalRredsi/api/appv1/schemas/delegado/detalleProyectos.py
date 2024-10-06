@@ -15,7 +15,6 @@ class DetalleProyecto(BaseModel):
 # Esquema para la sala y el horario del proyecto
 class SalaConHorario(BaseModel):
     numero_sala: str
-    # nombre_sala: str
     fecha: date
     hora_inicio: timedelta 
     hora_fin: timedelta 
@@ -25,7 +24,9 @@ class UsuarioProyecto(BaseModel):
     id_usuario: int 
     nombres: str  
     apellidos: str
-    id_etapa: Optional[int]
+    id_rol: Optional[int] = None 
+    id_etapa: Optional[int] = None
+
 
 class ProyectoResponse(BaseModel):
     proyecto: DetalleProyecto 

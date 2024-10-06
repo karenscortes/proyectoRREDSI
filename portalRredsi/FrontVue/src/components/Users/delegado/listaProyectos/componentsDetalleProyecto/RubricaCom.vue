@@ -1,5 +1,5 @@
 <template>
-    <form action="#" class="row justify-content-center">
+    <form class="row justify-content-center">
         <div class="col-lg-12 col-md-12 col-sm-12 mb-3 table-responsive">
             <table class="table display text-dark border border-dark">
                 <thead class="text-center">
@@ -93,13 +93,14 @@
                 </tfoot>
             </table>
         </div>
-        <div class="col-8 text-center py-5" v-if="puedeCalificar">
+        <div class="col-8 text-center py-5" v-if="botonCalificar">
             <button @click.prevent="enviarCalificaciones" class="btn btn-warning font-weight-bold text-dark">
                 Calificar
             </button>
         </div>
     </form>
 </template>
+
 
 <script>
 import { ref, computed, watch, onMounted } from 'vue';
@@ -116,6 +117,10 @@ export default {
         },
         id_evaluador: {
             type: Number,
+            required: true
+        },
+        etapa: {
+            type: String,
             required: true
         }
     },
@@ -138,11 +143,11 @@ export default {
 
         const puedeCalificar = computed(() => {
             // Verificar si el estado es pendiente en alguna de las fases (P_virtual o P_presencial)
-            return props.proyecto.estado_evaluacion === 'P_virtual' || props.proyecto.estado_evaluacion === 'P_presencial';
+            return props.proyecto.estado_calificacion === 'P_virtual' || props.proyecto.estado_calificacion === 'P_presencial';
         });
 
         const disabledCalificacionObservacion = computed(() => {
-            return props.proyecto.estado_evaluacion === 'C_presencial' || props.proyecto.estado_evaluacion === 'C_virtual' || botonCalificar.value === "Inactivo";
+            return props.proyecto.estado_calificacion === 'C_presencial' || props.proyecto.estado_calificacion === 'C_virtual' || botonCalificar.value === "Inactivo";
         });
 
         const obtenerDatos = async () => {
@@ -159,8 +164,8 @@ export default {
 
             try {
                 // Intentamos obtener los datos de las rúbricas calificadas.
-                const data = await obtenerRubricasCalificadas(props.proyecto.id_proyecto, user.id_usuario, currentEtapa.value);
-
+                const data = await obtenerRubricasCalificadas(props.proyecto.id_proyecto, props.id_evaluador, props.etapa);
+                console.log("EVALUADOR DESDE RUBRICA", props.id_evaluador);
                 // Si se obtienen correctamente, significa que ya hay calificaciones registradas.
                 tituloProyecto.value = data.titulo_proyecto;
                 universidadProyecto.value = data.universidad_proyecto;
@@ -172,7 +177,7 @@ export default {
                 ponentesProyecto.value = data.nombres_ponentes;
                 componentes.value = data.componentes;
 
-                if (props.proyecto.estado_evaluacion === 'P_presencial') {
+                if (props.proyecto.estado_calificacion === 'P_presencial') {
                     showInfoToast("El estado del proyecto cambiará a calificado en el momento que se ingrese la respuesta del otro evaluador.");
                 }
 
@@ -181,7 +186,7 @@ export default {
             } catch (error) {
                 // Si hay un error, significa que no hay calificaciones registradas aún, por lo tanto, obtenemos los datos para calificar.
                 try {
-                    const data = await obtenerDatosParaCalificarProyecto(props.proyecto.id_proyecto, user.id_usuario, currentEtapa.value);
+                    const data = await obtenerDatosParaCalificarProyecto(props.proyecto.id_proyecto, props.id_evaluador, props.etapa);
 
                     tituloProyecto.value = data.titulo_proyecto;
                     universidadProyecto.value = data.universidad_proyecto;
@@ -197,6 +202,12 @@ export default {
                     showErrorToast('Error al obtener los datos para calificar el proyecto.');
                 }
             }
+        };
+
+        const actualizarPuntajeTotal = () => {
+            puntajeTotal.value = componentes.value.reduce((total, componente) => {
+                return total + (componente.calificacion || 0);
+            }, 0);
         };
 
         const validarCalificacion = (componente, index) => {

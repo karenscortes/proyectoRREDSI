@@ -369,7 +369,7 @@ export const actualizarAsistencia = async (id_asistente, id_usuario, asistencia)
 // Todos los Proyectos 
 export const obtenerListaProyectos = async (nombreEtapa, page = 1, pageSize = 10) => {
     try {
-        const response = await api.get('/listaProyectos/obtener-proyectos-por-etapa-paginados/', {
+        const response = await api.get(`listaProyectos/obtener-proyectos-por-etapa-paginados/?nombre_etapa=${nombreEtapa}&page=${page}&page_size=${pageSize}`, {
             params: {
                 nombre_etapa: nombreEtapa,
                 page: page,
@@ -424,23 +424,29 @@ export const obtenerFechasAsignaciones = async () => {
     }
 };
 
-//Función para obtener evaluadores de un proyecto
-export const obtenerEvaluadoresProyecto = async (id_proyecto) => {
+//Función para obtener evaluadores de un proyecto por etapa
+export const obtenerEvaluadoresProyecto = async (id_proyecto, id_etapa) => {
     try {
-        const response = await api.get(`/detalleProyecto/evaluadores-proyecto/?id_proyecto=${id_proyecto}`, {
+        console.log("Parámetros enviados a la API:", { id_proyecto,  id_etapa });
+        const response = await api.get(`/detalleProyecto/participantes-etapa/?id_proyecto=${id_proyecto}&id_etapa=${id_etapa}`, {
             headers: {
                 'Authorization': `Bearer` 
             },
+            
         });
+        console.log('Respuesta de la API:', response.data);
         return response.data; 
     } catch (error) {
         if (error.response) {
-            throw error; 
+            console.error('Error de respuesta de la API:', error.response.data);  
+            throw error;  
         } else {
+            console.error('Error de red o de servidor:', error.message);  
             throw new Error('Error de red o de servidor');
         }
     }
 };
+
 //Función para obtener ponentes de un proyecto
 export const obtenerPonentesProyecto = async (id_proyecto) => {
     try {
@@ -448,6 +454,7 @@ export const obtenerPonentesProyecto = async (id_proyecto) => {
             headers: {
                 'Authorization': `Bearer` 
             },
+            
         });
         return response.data; 
     } catch (error) {

@@ -5,8 +5,11 @@
         </div>
         <h2 class="text-dark text-left font-weight-bold">Evaluadores</h2>
         <p class="text-dark text-left">
-            <span v-for="(evaluador, index) in evaluadores" :key="index">
-                {{ evaluador.nombres }} {{ evaluador.apellidos }}<br>
+            <span v-for="(evaluador, index) in evaluadores.virtual" :key="index">
+                {{ evaluador.nombres }} {{ evaluador.apellidos }}  <strong>Virtual</strong><br>
+            </span>
+            <span v-for="(evaluador, index) in evaluadores.presencial" :key="index">
+                {{ evaluador.nombres }} {{ evaluador.apellidos }}  <strong>Presencial</strong><br>
             </span>
         </p>
     </div>

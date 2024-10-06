@@ -6,44 +6,33 @@ from appv1.routers.login import get_current_user
 from appv1.schemas.delegado.detalleProyectos import  SalaConHorario, UrlPresentacionProyecto, UsuarioProyecto
 from appv1.schemas.usuario import UserResponse
 from db.database import get_db
-from appv1.crud.delegado.detalleProyecto import get_datos_sala, get_participantes_por_etapa, get_participantes_proyecto, insertar_presentacion_proyecto
+from appv1.crud.delegado.detalleProyecto import get_datos_sala, get_evaluadores_por_etapa,  get_participantes_proyecto, insertar_presentacion_proyecto
 
 router_detalle_proyecto = APIRouter()
 
+#ruta para traer los evaluadores según etapa
 @router_detalle_proyecto.get("/participantes-etapa/", response_model=List[UsuarioProyecto])
 async def obtener_participantes_por_etapa(
     id_proyecto: int,
-    id_usuario: int,
     id_etapa: int,
     db: Session = Depends(get_db)
 ):
-    etapas = get_participantes_por_etapa(db, id_proyecto, id_usuario, id_etapa)
-    if not etapas:
-        raise HTTPException(status_code=404, detail="No se encontraron evaluadores para el proyecto")
-    return etapas
-
-#ruta para traer evaluadores del proyecto
-@router_detalle_proyecto.get("/evaluadores-proyecto/", response_model=List[UsuarioProyecto])
-async def obtener_evaluadores_proyecto(
-    id_proyecto: int,
-    db: Session = Depends(get_db)
-):
-    evaluadores = get_participantes_proyecto(db, id_proyecto, id_rol=1)  
+    evaluadores = get_evaluadores_por_etapa(db, id_proyecto, id_etapa)
     if not evaluadores:
         raise HTTPException(status_code=404, detail="No se encontraron evaluadores para el proyecto")
-    print(evaluadores)
-    return [UsuarioProyecto(**evaluador) for evaluador in evaluadores]
+    return evaluadores
 
 #ruta para traer ponentes del proyecto
 @router_detalle_proyecto.get("/ponentes-proyecto/", response_model=List[UsuarioProyecto])
-async def obtener_ponentes_proyecto(
+async def obtener_participantes_proyecto(
     id_proyecto: int,
     db: Session = Depends(get_db)
 ):
-    ponentes = get_participantes_proyecto(db, id_proyecto, id_rol=5)  
-    if not ponentes:
-        raise HTTPException(status_code=404, detail="No se encontraron ponentes para el proyecto")
-    return [UsuarioProyecto(**ponente) for ponente in ponentes]
+    ponentesProyecto = get_participantes_proyecto(db, id_proyecto)  
+    if not ponentesProyecto:
+        raise HTTPException(status_code=404, detail="No se encontraron evaluadores para el proyecto")
+    return ponentesProyecto
+
 
 #ruta para traer datos de sala
 @router_detalle_proyecto.get("/datos-sala-proyecto/", response_model=SalaConHorario)
