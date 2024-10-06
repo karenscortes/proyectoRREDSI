@@ -12,7 +12,7 @@ from appv1.schemas.admin.admin import ConvocatoriaCreate, ConvocatoriaResponse, 
 from appv1.crud.admin.admin import create_convocatoria
 from appv1.schemas.admin.attendees import PaginatedAttendees, UpdatedAttendee
 from appv1.schemas.admin.delegado import DelegadoResponse, PaginatedDelegadoResponse
-from appv1.schemas.admin.items_rubrica import ItemCreate, ItemUpdate
+from appv1.schemas.admin.items_rubrica import ItemCreate, ItemUpdate, ItemUpdateStatus
 from appv1.schemas.admin.rubrica import RubricaResponse
 from appv1.schemas.usuario import UserCreate, UserResponse
 from core.utils import save_file
@@ -276,11 +276,11 @@ def update_item(
             'message': 'Error al actualizar',
         }
     
-# Eliminar items
-@router_admin.post("/update-status-items/{id_item}/")
+# editar estado items 
+@router_admin.put("/update-status-items/{id_item}/")
 def update_status_item(
+    data: ItemUpdateStatus,
     id_item:int, 
-    estado: str,
     db: Session = Depends(get_db),
     current_user: UserResponse = Depends(get_current_user),
 ):
@@ -291,7 +291,7 @@ def update_status_item(
     if permisos is None or not permisos.p_actualizar:
         raise HTTPException(status_code=401, detail="Usuario no autorizado")
     
-    item = update_status(id_item,estado,db)
+    item = update_status(id_item,data.estado,db)
     insertar_historial_admin(db,'Eliminar',MODULE,id_item,current_user.id_usuario)
     if item:
         return{
