@@ -5,7 +5,7 @@ from appv1.crud.admin.gest_asistentes_externos import generate_code, get_attende
 from appv1.crud.admin.gest_delegado import create_delegado,get_delegados_activos_paginated, get_delegados_by_document
 from appv1.crud.admin.gest_rubricas import create_items,get_all_rubricas, update_items, update_status
 from appv1.crud.admin.gest_rubricas import get_all_rubricas
-from appv1.crud.admin.admin import create_convocatoria, create_sala, existe_convocatoria_en_curso, obtener_convocatoria_en_curso, update_sala
+from appv1.crud.admin.admin import crear_varias_programaciones_fases, create_convocatoria, create_sala, existe_convocatoria_en_curso, obtener_convocatoria_en_curso, update_sala
 from appv1.models.programacion_fase import Programacion_fase
 from appv1.routers.login import get_current_user
 from appv1.schemas.admin.admin import ConvocatoriaCreate, ConvocatoriaResponse, CreateSala, ProgramacionFaseCreate, UpdateSala
@@ -64,19 +64,10 @@ def get_convocatoria_en_curso(db: Session = Depends(get_db)):
 
 
 @router_admin.post("/crear-programaciones-fases")
-def create_multiple_programaciones_fases(
+def create_programaciones_fases(
     programaciones_fases: List[ProgramacionFaseCreate], 
-    db: Session = Depends(get_db), 
-    current_user: UserResponse = Depends(get_current_user)
+    db: Session = Depends(get_db),
 ):
-    print(current_user)
-    MODULE = 7  # Módulo para programación de fases
-    permisos = get_permissions(db, current_user.id_rol, MODULE)
-
-    # Verificación de permisos
-    if permisos is None or not permisos.p_insertar:  
-        raise HTTPException(status_code=401, detail="Usuario no autorizado")
-
     # 1. Verificar que existe una convocatoria en curso
     convocatoria_activa = existe_convocatoria_en_curso(db)
     
@@ -93,7 +84,6 @@ def create_multiple_programaciones_fases(
 
     # Validar cada programación de fase
     for programacion_fase in programaciones_fases:
-
         # 3. Validar que la fecha de inicio sea antes que la fecha de fin
         if programacion_fase.fecha_inicio >= programacion_fase.fecha_fin:
             raise HTTPException(status_code=400, detail=f"La fecha de inicio debe ser anterior a la fecha de fin en la fase {programacion_fase.id_fase}")
@@ -112,20 +102,16 @@ def create_multiple_programaciones_fases(
             raise HTTPException(status_code=400, detail=f"La programación de la fase {programacion_fase.id_fase} ya existe para la convocatoria.")
         
         # Agregar a la lista de programaciones válidas
-        programaciones_para_crear.append({
-            "id_fase": programacion_fase.id_fase,
-            "id_convocatoria": convocatoria_en_curso.id_convocatoria,
-            "fecha_inicio": programacion_fase.fecha_inicio,
-            "fecha_fin": programacion_fase.fecha_fin
-        })
+        programaciones_para_crear.append(programacion_fase)
 
     # 6. Crear todas las programaciones de fase si todo está en orden
-    programaciones_creadas = create_multiple_programaciones_fases(db, programaciones_para_crear)
+    programaciones_creadas = crear_varias_programaciones_fases(db, programaciones_para_crear)
     
     return {
         "message": "Programaciones de fases creadas exitosamente", 
         "programaciones_creadas": programaciones_creadas
     }
+
 
 
 

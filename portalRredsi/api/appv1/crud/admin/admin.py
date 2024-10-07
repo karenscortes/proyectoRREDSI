@@ -1,11 +1,12 @@
 from datetime import date
+from typing import List
 from fastapi import HTTPException
 from sqlalchemy.orm import Session
 from appv1.models.area_conocimiento import Area_conocimiento
 from appv1.models.convocatoria import Convocatoria
 from appv1.models.programacion_fase import Programacion_fase
 from appv1.models.sala import Sala
-from appv1.schemas.admin.admin import ConvocatoriaResponse, EstadoDeConvocatoria, ProgramacionFaseResponse, UpdateSala
+from appv1.schemas.admin.admin import ConvocatoriaResponse, EstadoDeConvocatoria, ProgramacionFaseCreate, ProgramacionFaseResponse, UpdateSala
 from sqlalchemy.exc import SQLAlchemyError, IntegrityError
 from sqlalchemy import text
 
@@ -54,7 +55,7 @@ def obtener_convocatoria_en_curso(db: Session):
         return None
 
 # Crear programación de varias fases
-def create_multiple_programaciones_fases(db: Session, programaciones_fases: list):
+def crear_varias_programaciones_fases(db: Session, programaciones_fases: List[ProgramacionFaseCreate]):
     programaciones_creadas = []
 
     for programacion in programaciones_fases:
