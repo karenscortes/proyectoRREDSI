@@ -63,6 +63,7 @@ import GestionSala from "./GestionSala.vue";
 import DetalleSala from "./DetalleSala.vue";
 import PaginatorBody from "../../../UI/PaginatorBody.vue";
 import { obtenerProgramacionFases } from '@/services/evaluadorService';
+import { useToastUtils } from '@/utils/toast';
 
 export default {
     components: {
@@ -72,6 +73,7 @@ export default {
         PaginatorBody
     },
     data() {
+        const { showSuccessToast, showErrorToast, showWarningToast, showInfoToast } = useToastUtils();
         return {
             salas: [], // Almacena todas las salas originales
             salasFiltradas: [], // Almacena las salas filtradas
@@ -81,12 +83,14 @@ export default {
             salaDetalle: [],
             salaAsignada: false,
             miSala: {},
-            SalaSeleccionada: "",
+            SalaSeleccionada: {},
             totalPages: 0,
             fechasEvento: {
                 fecha_inicio:"",
                 fecha_fin:"",
             },
+            showErrorToast,
+            showInfoToast
         }
     },
     setup() {
@@ -112,7 +116,7 @@ export default {
                     sala.fechasEvento = this.fechasEvento;
                 })
             } catch (error) {
-                alert("Error al consultar salas");
+                this.showErrorToast("Error al consultar salas");
             }
         },
         buscarSala() {
@@ -153,12 +157,13 @@ export default {
                         this.fechasEvento.fecha_inicio = response.data[i].fecha_inicio;
                         this.fechasEvento.fecha_fin = response.data[i].fecha_fin;
                         this.miSala.fechasEvento = this.fechasEvento;
+                        this.SalaSeleccionada.fechasEvento = this.fechasEvento;
                         break;
                     }
                 }
             } catch (error) {
                 console.log(error);
-                showErrorToast("Error al obtener las fases de la convocatoria");
+                this.showErrorToast("Error al obtener las fases de la convocatoria");
             }
         },
         cambiarPagina(pagina) {
