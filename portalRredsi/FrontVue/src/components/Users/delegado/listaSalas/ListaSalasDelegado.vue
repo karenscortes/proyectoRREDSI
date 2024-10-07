@@ -34,7 +34,7 @@
                                     class="form-control text-dark w-100" style="height: 100%; padding: 0.5rem;"
                                     placeholder="Ingresa numero de sala" @input="buscarSala">
                             </div>
-                            <div class="col-4 col-sm-3">
+                            <div class="col-4 col-sm-4">
                                 <button class="btn w-100 font-weight-bold"
                                     style="background: rgb(255, 182, 6); color: #000000"
                                     @click="buscarSala">Buscar</button>
@@ -62,6 +62,7 @@ import { useAuthStore } from '@/store';
 import GestionSala from "./GestionSala.vue";
 import DetalleSala from "./DetalleSala.vue";
 import PaginatorBody from "../../../UI/PaginatorBody.vue";
+import { obtenerProgramacionFases } from '@/services/evaluadorService';
 
 export default {
     components: {
@@ -81,7 +82,11 @@ export default {
             salaAsignada: false,
             miSala: {},
             SalaSeleccionada: "",
-            totalPages: 0
+            totalPages: 0,
+            fechasEvento: {
+                fecha_inicio:"",
+                fecha_fin:"",
+            },
         }
     },
     setup() {
@@ -99,7 +104,13 @@ export default {
                 const response = await obtenerSalas(pagina);
                 this.salas = response.data.salas;
                 this.totalPages = response.data.total_pages;
-                this.salasFiltradas = [...this.salas]; // Inicialmente muestra todas las salas
+                this.salasFiltradas = [...this.salas];
+
+                // Obtengo las fechas del evento y se las agrego al detalle de las salas
+                this.obtenerFechasEvento();
+                this.salasFiltradas.forEach(sala =>{
+                    sala.fechasEvento = this.fechasEvento;
+                })
             } catch (error) {
                 alert("Error al consultar salas");
             }
@@ -127,7 +138,6 @@ export default {
         async obtenerSalaAsignada(id_delegado) {
             try {
                 const datosSalaAsignada = await obtenerDatosSalaAsignada(id_delegado);
-                console.log(datosSalaAsignada.data);
                 this.miSala = datosSalaAsignada.data;
                 this.salaAsignada = true;
             } catch (error) {
@@ -135,13 +145,29 @@ export default {
             }
 
         },
-        cambiarPagina(pagina){
+        async obtenerFechasEvento() {
+            try {
+                const response = await obtenerProgramacionFases("presencial");
+                for (let i = 0; i < response.data.length; i++) {
+                    if(response.data[i].nombre_fase == "Evento"){
+                        this.fechasEvento.fecha_inicio = response.data[i].fecha_inicio;
+                        this.fechasEvento.fecha_fin = response.data[i].fecha_fin;
+                        this.miSala.fechasEvento = this.fechasEvento;
+                        break;
+                    }
+                }
+            } catch (error) {
+                console.log(error);
+                showErrorToast("Error al obtener las fases de la convocatoria");
+            }
+        },
+        cambiarPagina(pagina) {
             this.listarSalas(pagina);
         }
 
     },
     mounted() {
-        this.obtenerSalaAsignada(this.user.id_usuario)
+        this.obtenerSalaAsignada(this.user.id_usuario);
         this.listarSalas();
     }
 }

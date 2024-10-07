@@ -9,8 +9,8 @@ class Sala(Base):
     id_usuario = Column(Integer, ForeignKey('usuarios.id_usuario'))
     id_area_conocimiento = Column(Integer, ForeignKey('areas_conocimiento.id_area_conocimiento'))
     id_convocatoria = Column(Integer, ForeignKey('convocatorias.id_convocatoria'))
-    numero_sala = Column(String(25))
-    nombre_sala = Column(String(25))
+    numero_sala = Column(String(40))
+    nombre_sala = Column(String(40))
     
     usuario = relationship("Usuario", back_populates="salas")
     area_conocimiento = relationship("Area_conocimiento", back_populates="salas")
