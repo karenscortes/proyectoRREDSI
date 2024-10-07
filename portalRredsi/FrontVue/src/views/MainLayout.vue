@@ -24,45 +24,99 @@
     <FooterPrincipal />
 
     <!-- Modal de Login -->
-    <div class="modal fade" id="LoginModal" tabindex="-1" aria-labelledby="LoginModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="LoginModalLabel">Login</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
+<div class="modal fade" id="LoginModal" tabindex="-1" aria-labelledby="LoginModalLabel" aria-hidden="true" >
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="LoginModalLabel">Login</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <!-- Formulario de login -->
+                <form>
+                    <div class="form-group">
+                        <label for="email" class="text-dark">Correo electrónico</label>
+                        <input type="email" class="form-control" id="email" v-model="email"
+                            placeholder="Ingrese su correo" />
+                    </div>
+                    <div class="form-group mt-3">
+                        <label for="password" class="text-dark">Contraseña</label>
+                        <input type="password" class="form-control" id="password" v-model="password"
+                            placeholder="Contraseña" />
+                    </div>
+                </form>
+
+                <!-- Enlace de "Se te olvidó la contraseña" -->
+                <div class="text-center mt-3">
+                    <a href="#" class="small forgot-password-link" @click="openResetPasswordModal">¿Se te olvidó la contraseña?</a>
                 </div>
-                <div class="modal-body">
-                    <!-- Formulario de login -->
-                    <form>
-                        <div class="form-group">
-                            <label for="email" class="text-dark">Correo electrónico</label>
-                            <input type="email" class="form-control" id="email" v-model="email"
-                                placeholder="Ingrese su correo" />
-                        </div>
-                        <div class="form-group mt-3">
-                            <label for="password" class="text-dark">Contraseña</label>
-                            <input type="password" class="form-control" id="password" v-model="password"
-                                placeholder="Contraseña" />
-                        </div>
-                    </form>
-                    <p v-if="errorMessage" class="text-danger mt-3">
-                        {{ errorMessage }}
-                    </p>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">
-                        Cerrar
-                    </button>
-                    <button type="button" data-dismiss="modal" aria-label="Close"
-                        class="btn btn-primary custom-login-button" @click="handleLogin">
-                        Iniciar Sesión
-                    </button>
-                </div>
+
+                <p v-if="errorMessage" class="text-danger mt-3">
+                    {{ errorMessage }}
+                </p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" data-dismiss="modal" aria-label="Close"
+                    class="btn btn-primary custom-login-button" @click="handleLogin">
+                    Iniciar Sesión
+                </button>
             </div>
         </div>
     </div>
+</div>
+
+<!-- Modal para Restaurar Contraseña -->
+<div class="modal fade" id="ResetPasswordModal" tabindex="-1" aria-labelledby="ResetPasswordModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="ResetPasswordModalLabel">Restaurar Contraseña</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <!-- Formulario de restauración de contraseña -->
+                <form @submit.prevent="sendResetCode">
+                    <div v-if="!showPasswordForm">
+                        <div class="form-group">
+                            <label for="reset-email" class="text-dark">Correo electrónico</label>
+                            <input type="email" class="form-control" id="reset-email" v-model="resetEmail" placeholder="Ingrese su correo" required />
+                        </div>
+                        <button type="submit" class="btn btn-primary btn-block">
+                            Enviar código
+                        </button>
+                    </div>
+
+                    <div v-if="showPasswordForm">
+                        <div class="form-group">
+                            <label for="reset-code" class="text-dark">Código de verificación</label>
+                            <input type="text" class="form-control" id="reset-code" v-model="resetCode" placeholder="Ingrese el código" required />
+                        </div>
+                        <div class="form-group">
+                            <label for="new-password" class="text-dark">Nueva contraseña</label>
+                            <input type="password" class="form-control" id="new-password" v-model="newPassword" placeholder="Nueva contraseña" required />
+                        </div>
+                        <div class="form-group">
+                            <label for="confirm-password" class="text-dark">Confirmar contraseña</label>
+                            <input type="password" class="form-control" id="confirm-password" v-model="confirmPassword" placeholder="Confirmar contraseña" required />
+                        </div>
+                        <button type="submit" class="btn btn-primary btn-block">
+                            Actualizar contraseña
+                        </button>
+                    </div>
+                </form>
+
+                <p v-if="resetErrorMessage" class="text-danger mt-3">
+                    {{ resetErrorMessage }}
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
 
 </template>
 
@@ -110,14 +164,14 @@ export default {
             };
 
             currentComponent.value = componentMap[componentName] || NotAvailable;
-            componente.value=componentName;
+            componente.value = componentName;
 
-            if(componentName == 'RegistroProyecto'){
-                componente.value= 'Registrar Proyecto';
-            }else if(componentName == 'RegistroUsuario'){
-                componente.value= 'Evaluadores';
-            }else if(componentName == 'Rubricas_Calificadas'){
-                componente.value= 'Consultar Proyecto';
+            if (componentName == 'RegistroProyecto') {
+                componente.value = 'Registrar Proyecto';
+            } else if (componentName == 'RegistroUsuario') {
+                componente.value = 'Evaluadores';
+            } else if (componentName == 'Rubricas_Calificadas') {
+                componente.value = 'Consultar Proyecto';
             }
         };
 
@@ -129,24 +183,45 @@ export default {
         const password = ref("");
         const errorMessage = ref(null);
 
+        // Variables para el modal de restauración de contraseña
+        const resetEmail = ref("");
+        const resetCode = ref("");
+        const newPassword = ref("");
+        const confirmPassword = ref("");
+        const showPasswordForm = ref(false);
+        const resetErrorMessage = ref(null);
+
         const handleLogin = async () => {
             try {
-
                 await authStore.login(email.value, password.value);
 
-                if (authStore.authError) {
-                } else {
+                if (!authStore.authError) {
                     const user = authStore.user;
                     console.log(user);
 
                     route.push('/pagina-usuario');
-
                 }
             } catch (error) {
                 errorMessage.value = "Error durante el login: " + error.message;
             }
         };
 
+        // Abrir el modal de restauración de contraseña
+        const openResetPasswordModal = () => {
+            $('#LoginModal').modal('dispose'); // Destruye completamente el modal de login
+            $('#ResetPasswordModal').modal('show'); // Muestra el modal de restauración de contraseña
+        };
+
+
+        // Simular el envío del código de restauración
+        const sendResetCode = async () => {
+            if (resetEmail.value) {
+                showPasswordForm.value = true; // Mostrar el formulario de nueva contraseña
+                resetErrorMessage.value = null; // Limpiar mensaje de error
+            } else {
+                resetErrorMessage.value = "Ingrese su correo electrónico.";
+            }
+        };
 
         return {
             user,
@@ -158,6 +233,16 @@ export default {
             componente,
             changeComponent,
             handleLogin,
+
+            // Restauración de contraseña
+            resetEmail,
+            resetCode,
+            newPassword,
+            confirmPassword,
+            showPasswordForm,
+            resetErrorMessage,
+            openResetPasswordModal,
+            sendResetCode,
         };
     },
     mounted() {
@@ -168,6 +253,7 @@ export default {
     }
 };
 </script>
+
 
 <style scoped>
 .modal-footer {

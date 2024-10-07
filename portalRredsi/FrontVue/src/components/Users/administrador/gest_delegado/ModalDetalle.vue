@@ -17,7 +17,7 @@
           >
             <span aria-hidden="true">&times;</span>
           </button>
-          <h3 class="modal-title mt-5" id="modalLabel">{{infoModal.p_nombres}} {{ infoModal.p_apellidos }}</h3>
+          <h3 class="modal-title mt-5" id="modalLabel">{{infoModal.value.nombres}} {{infoModal.value.apellidos}}</h3>
         </div>
         <div class="modal-body mt-3">
           <div class="row mx-auto justify-content-center">
@@ -25,33 +25,33 @@
               Tipo de Documento:
             </div>
             <div class="col-6 border mb-3">
-              <span class="text-dark" id="tipo_documento">{{ infoModal.p_tipoDocumento }}</span>
+              <span class="text-dark" id="tipo_documento">{{ infoModal.value.tipo_documento }}</span>
             </div>
             <div class="col-6 text-dark font-weight-bold">Documento:</div>
             <div class="col-6 border mb-3">
-              <span class="text-dark" id="conocimiento">{{ infoModal.p_documento}}</span>
-            </div>
-            <div class="col-6 text-dark font-weight-bold">Nombre Completo:</div>
-            <div class="col-6 border mb-3">
-              <span class="text-dark" id="conocimiento">{{ infoModal.p_nombres }} {{ infoModal.p_apellidos}}</span>
-            </div>
-            <div class="col-6 text-dark font-weight-bold">
-              Area de conocimiento:
-            </div>
-            <div class="col-6 border mb-3">
-              <span class="text-dark" id="conocimiento">{{ infoModal.p_areaConocimiento }}</span>
+              <span class="text-dark" id="documento">{{ infoModal.value.documento}}</span>
             </div>
             <div class="col-6 text-dark font-weight-bold">Institución:</div>
             <div class="col-6 border mb-3">
-              <span class="text-dark" id="conocimiento">{{ infoModal.p_institucion }}</span>
+              <span class="text-dark" id="conocimiento">{{ infoModal.value.nombre_institucion }}</span>
             </div>
             <div class="col-6 text-dark font-weight-bold">Teléfono:</div>
             <div class="col-6 border mb-3">
-              <span class="text-dark" id="conocimiento">{{ infoModal.p_telefono }}</span>
+              <span class="text-dark" id="conocimiento">{{ infoModal.value.celular }}</span>
             </div>
             <div class="col-6 text-dark font-weight-bold">Correo:</div>
             <div class="col-6 border mb-3">
-              <span class="text-dark" id="conocimiento">{{ infoModal.p_correo}}</span>
+              <span class="text-dark" id="conocimiento">{{ infoModal.value.correo}}</span>
+            </div>
+            <div class="col-6 text-dark font-weight-bold">Primer area:</div>
+            <div class="col-6 border mb-3">
+              <span class="text-dark" id="primer_area">{{ infoModal.value.primer_area }}</span>
+            </div>
+            <div class="col-6 text-dark font-weight-bold">
+              Segunda area:
+            </div>
+            <div class="col-6 border mb-3" v-if="infoModal.value.segunda_area">
+              <span class="text-dark" id="segunda_area">{{ infoModal.value.segunda_area }}</span>
             </div>
 
             <div class="text-center mt-3">
@@ -74,22 +74,23 @@
 export default {
   props:{
     infoModal: {
-      type: Object,  
-      default: null,
+      type: Object,
+      required: true,
       validator(value){
+        const actualValue = value.value;
         return(
-          typeof id_delegado === 'number' &&
-          typeof value.nombres === 'string' &&
-          typeof value.apellidos === 'string' &&
-          typeof tipo_documento === 'string' &&
-          typeof value.documento === 'string' &&
-          typeof (value.id_institucion === 'string' || value.id_institucion === null) &&
-          typeof (value.id_primera_area_conocimiento === 'string' || value.id_primera_area_conocimiento === null) &&
-          typeof (value.id_segunda_area_conocimiento === 'string' || value.id_segunda_area_conocimiento === null) &&
-          typeof (value.url_titulo === 'string'|| value.url_titulo === null) &&
-          typeof value.estado  === 'string' &&
-          typeof value.celular === 'string' &&
-          typeof value.correo === 'string' 
+          typeof actualValue.id_usuario === 'number' &&
+          typeof actualValue.nombres === 'string' &&
+          typeof actualValue.apellidos === 'string' &&
+          typeof actualValue.tipo_documento === 'string' &&
+          typeof actualValue.documento === 'string' &&
+          typeof actualValue.nombre_institucion === 'string' &&
+          typeof actualValue.primer_area === 'string' &&
+          typeof (actualValue.segunda_area === 'string' && actualValue.segunda_area === null) &&
+          typeof actualValue.url_titulo === 'string' &&
+          typeof actualValue.estado  === 'string' &&
+          typeof actualValue.celular === 'string' &&
+          typeof actualValue.correo === 'string' 
         );
       }
     }

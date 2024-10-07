@@ -9,7 +9,7 @@
         </div>
         <div class="accordion accordion-flush border-bottom mb-4" id="accordionFlushExample">
 
-            <AcordeonProyecto v-for="proyecto in proyectos" :key="proyecto.id_proyecto" :proyecto="proyecto"  />
+            <AcordeonProyecto v-for="proyecto in proyectos" @actualizarListaProyectos="actualizarListaProyectos" :key="proyecto.id_proyecto" :proyecto="proyecto"  />
 
         </div>
         <!-- Paginador -->
@@ -48,6 +48,9 @@ export default {
             } catch (error) {
                 this.showWarningToast("Error al obtener proyectos");
             }
+        },
+        actualizarListaProyectos(){
+            this.fetchProyectos(); // Recarga la lista con los proyectos actualizados
         },
         cambiarPagina(pagina){
             this.fetchProyectos(pagina);
