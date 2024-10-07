@@ -6,7 +6,6 @@
                 <div class="col">
                     <div class="section_title text-center">
                         <h1>Información de la convocatoria</h1>
-                        <h2 class="text-muted">{{ tituloEtapa }}</h2>  <!-- Título dinámico  -->
                     </div>
                 </div>
             </div>

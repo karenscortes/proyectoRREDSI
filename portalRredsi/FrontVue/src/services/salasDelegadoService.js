@@ -111,10 +111,30 @@ export const asignarEvaluadoresEtapaPresencial = async (id_evaluador_1,id_evalua
     }
 };
 
-// FUNCION PARA OBETNER DATOS DE UN PROYECTO POR ID
+// FUNCION PARA OBTENER DATOS DE UN PROYECTO POR ID
 export const obtenerDatosProyecto = async (id_proyecto) => {
     try {
         const response = await api.get(`/generales/get_proyecto_by_id/?id_proyecto=${id_proyecto}
+`, {
+            headers: {
+                'Authorization': `Bearer ${localStorage.getItem('access_token')}`
+            }
+        });
+        return response;
+    } catch (error) {
+        if (error.response) {
+            throw error;
+        } else {
+            throw new Error('Error de red o de servidor');
+        }
+    }
+};
+
+// FUNCION PARA ACTUALIZAR LA FECHA Y HORARIO DE DETALLE SALA DATOS DE UN PROYECTO POR ID
+export const actualizarHorarioAsignado = async (p_id_sala,p_id_proyecto_convocatoria,p_fecha,p_hora_inicio,p_hora_fin) => {
+    try {
+        const response = await api.put(`/salas/actualizar-horario/?id_sala=${p_id_sala}&id_proyecto_convocatoria=${p_id_proyecto_convocatoria}&fecha=${p_fecha}&hora_inicio=${p_hora_inicio}&hora_fin=${p_hora_fin}
+
 `, {
             headers: {
                 'Authorization': `Bearer ${localStorage.getItem('access_token')}`

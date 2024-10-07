@@ -377,8 +377,11 @@ def insert_respuesta_rubrica(db: Session, id_item_rubrica: int, id_usuario: int,
             sql_check_otras_respuestas = text(
                 """
                 SELECT COUNT(*) FROM respuestas_rubricas
-                WHERE id_proyecto_convocatoria = :id_proyecto_convocatoria
-                AND id_usuario != :id_usuario
+                JOIN items_rubrica ON respuestas_rubricas.id_item_rubrica = items_rubrica.id_item_rubrica
+                JOIN rubricas on items_rubrica.id_rubrica = rubricas.id_rubrica
+                WHERE respuestas_rubricas.id_proyecto_convocatoria = :id_proyecto_convocatoria
+                AND respuestas_rubricas.id_usuario != :id_usuario
+                AND rubricas.id_etapa = '1'
                 """
             )
             otras_respuestas_count = db.execute(sql_check_otras_respuestas, {
@@ -509,6 +512,7 @@ def get_datos_rubrica_proyecto(db: Session, id_proyecto: int, id_usuario: int, n
                 AND participantes_proyecto.id_etapa = rubricas.id_etapa
                 AND convocatorias.estado = 'en curso'
                 AND etapas.nombre = :nombre_etapa
+                AND items_rubrica.estado = 'activo'
 
         """)
         params = {

@@ -6,16 +6,29 @@ from sqlalchemy.exc import SQLAlchemyError
 def get_phase_dates(db: Session):
     try:
         sql = text("""
-            SELECT pf.fecha_inicio, pf.fecha_fin, f.nombre AS nombre_fase, e.nombre AS nombre_etapa
-            FROM programacion_fases pf
-            INNER JOIN fases f ON pf.id_fase = f.id_fase
-            INNER JOIN etapas e ON f.id_etapa = e.id_etapa
-            INNER JOIN convocatorias c ON pf.id_convocatoria = c.id_convocatoria
-            WHERE 
-                (f.nombre = 'Inscripciones abiertas' AND e.nombre = 'Virtual') OR
-                (f.nombre = 'Publicación de resultados' AND e.nombre = 'Virtual') OR
-                (f.nombre = 'Ponencias' AND e.nombre = 'Presencial') OR
-                (f.nombre = 'Publicación de resultados' AND e.nombre = 'Presencial');
+            SELECT 
+                    MIN(pf.fecha_inicio) AS fecha_inicio, 
+                    MAX(pf.fecha_fin) AS fecha_fin, 
+                    f.nombre AS nombre_fase, 
+                    e.nombre AS nombre_etapa
+                FROM 
+                    programacion_fases pf
+                INNER JOIN 
+                    fases f ON pf.id_fase = f.id_fase
+                INNER JOIN 
+                    etapas e ON f.id_etapa = e.id_etapa
+                INNER JOIN 
+                    convocatorias c ON pf.id_convocatoria = c.id_convocatoria
+                WHERE 
+                    (f.nombre = 'Inscripciones abiertas' AND e.nombre = 'Virtual') OR
+                    (f.nombre = 'Publicación de resultados' AND e.nombre = 'Virtual') OR
+                    (f.nombre = 'Evento' AND e.nombre = 'Presencial') OR
+                    (f.nombre = 'Publicación de resultados' AND e.nombre = 'Presencial')
+                GROUP BY 
+                    f.nombre, e.nombre
+                HAVING 
+                    f.nombre = 'Evento' OR COUNT(*) = 1;
+
         """)
         result = db.execute(sql).mappings().all()
 
