@@ -12,10 +12,10 @@
             <div class="row mb-4 justify-content-end">
                 <div class="col-10 col-sm-6 justify-content-end">
                     <div class="row justify-content-end">
-                        <div class="col-7">
-                            <input v-model="documento_evaluador" type="text" id="busqueda" class="form-control text-dark" placeholder="Ingrese documento del evaluador">
+                        <div class="col-8">
+                            <input v-model="documento_evaluador" type="text" id="busqueda" @keyup.enter="buscarEvaluador" class="form-control text-dark" placeholder="Ingrese documento o nombre del evaluador">
                         </div>
-                        <div class="col-5">
+                        <div class="col-4">
                             <button class="btn btn-buscar w-100 font-weight-bold" @click="buscarEvaluador">Buscar</button>
                         </div>
                     </div>
@@ -28,6 +28,7 @@
                     <thead style="background: rgb(255, 182, 6)
 ;">
                         <tr>
+                            <th>Documento</th>
                             <th>Evaluador</th>
                             <th>Area de conocimiento</th>
                             <th>Institucion</th>
@@ -37,6 +38,7 @@
                     </thead>
                     <tbody>
                         <tr v-for="(evaluador, index) in evaluadores" :key="index">
+                            <td>{{ evaluador.documento }}</td>
                             <td>{{ evaluador.nombres }} {{ evaluador.apellidos  }}</td>
                             <td>{{ evaluador.area_conocimiento }}</td>
                             <td>{{ evaluador.nombre_institucion }}</td>
@@ -233,8 +235,7 @@ export default {
                     const evaluador = await obtenerIdEvaluador(this.documento_evaluador);
                     this.obtenerEvaluadorActual(evaluador.data);
                     this.evaluadores = [evaluador.data];
-
-                    console.log(this.evaluadores)
+                    this.totalPages = 0;
                     $('#delegateInformation').modal('show');
                 }
                 if(this.documento_evaluador.trim() == ""){

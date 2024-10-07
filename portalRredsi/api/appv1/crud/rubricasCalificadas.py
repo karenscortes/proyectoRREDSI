@@ -1,14 +1,13 @@
 from sqlalchemy.orm import Session
 from sqlalchemy.sql import text
-from typing import List, Optional
 from fastapi import HTTPException
-from appv1.schemas.rubricasCalificadas import ProyectoRubricasResponse, RubricaCalificada, ItemRubrica, Evaluador
+from appv1.schemas.rubricasCalificadas import ProyectoRubricasResponse, RubricaCalificada, ItemRubrica
 
-def get_rubricas_calificadas(db: Session, id_tutor: Optional[int] = None, id_proyecto: Optional[int] = None) -> ProyectoRubricasResponse:
+def get_rubricas_calificadas(db: Session, id_proyecto: int) -> ProyectoRubricasResponse:
     try:
-        # Verificar si se recibe al menos uno de los dos parámetros
-        if not id_tutor and not id_proyecto:
-            raise HTTPException(status_code=400, detail="Debe proporcionar un id de tutor o un id de proyecto.")
+        # Verificar si se recibe el parámetro id_proyecto
+        if not id_proyecto:
+            raise HTTPException(status_code=400, detail="Debe proporcionar un id de proyecto.")
         
         # Consulta para obtener el título del proyecto y la universidad
         proyecto_result = db.execute(text("""
@@ -35,7 +34,7 @@ def get_rubricas_calificadas(db: Session, id_tutor: Optional[int] = None, id_pro
             WHERE pp.id_proyecto = :id_proyecto
         """), {"id_proyecto": id_proyecto}).fetchone()
 
-        # Consulta para obtener todas las rúbricas calificadas
+        # Consulta para obtener todas las rúbricas calificadas por id_rubrica y id_evaluador, pero SIN mostrar la información del evaluador
         rubricas_result = db.execute(text("""
             SELECT
                 r.id_rubrica,
@@ -47,34 +46,25 @@ def get_rubricas_calificadas(db: Session, id_tutor: Optional[int] = None, id_pro
                 ir.componente AS item_componente,
                 ir.valor_max,
                 rr.calificacion,
-                rr.observacion,
-                u.nombres AS nombre_evaluador,
-                u.apellidos AS apellidos_evaluador,
-                u.documento AS cedula_evaluador,
-                inst.nombre AS universidad_evaluador,
-                u.correo AS email_evaluador,
-                u.celular AS celular_evaluador
+                rr.observacion
             FROM respuestas_rubricas rr
             JOIN items_rubrica ir ON rr.id_item_rubrica = ir.id_item_rubrica
             JOIN rubricas r ON ir.id_rubrica = r.id_rubrica
             JOIN rubricas_resultados rr_result ON rr.id_rubrica_resultado = rr_result.id_rubrica_resultado
             JOIN proyectos_convocatoria pc ON rr.id_proyecto_convocatoria = pc.id_proyecto_convocatoria
-            JOIN usuarios u ON rr.id_usuario = u.id_usuario
-            JOIN detalles_institucionales di ON u.id_usuario = di.id_usuario
-            JOIN instituciones inst ON di.id_institucion = inst.id_institucion
             WHERE pc.id_proyecto = :id_proyecto
-            AND (:id_tutor IS NULL OR u.id_usuario = :id_tutor)
-        """), {"id_proyecto": id_proyecto, "id_tutor": id_tutor}).fetchall()
+            ORDER BY r.id_rubrica, rr.id_usuario
+        """), {"id_proyecto": id_proyecto}).fetchall()
 
         if not rubricas_result:
             raise HTTPException(status_code=404, detail="No se encontraron rúbricas calificadas para el proyecto")
 
-        # Diccionario para agrupar las rúbricas por ID de rúbrica y evaluador
+        # Diccionario para agrupar las rúbricas por ID de rúbrica y ID de evaluador
         rubricas_dict = {}
 
         # Iterar sobre cada fila y agrupar por rúbrica y evaluador
         for row in rubricas_result:
-            rubrica_key = (row.id_rubrica, row.cedula_evaluador)  # Clave única por rúbrica y evaluador
+            rubrica_key = (row.id_rubrica, row.estado_proyecto, row.puntaje_aprobacion)  # Clave única por rúbrica, estado y puntaje
             if rubrica_key not in rubricas_dict:
                 # Si la rúbrica aún no está en el diccionario, agregarla
                 rubricas_dict[rubrica_key] = {
@@ -82,13 +72,6 @@ def get_rubricas_calificadas(db: Session, id_tutor: Optional[int] = None, id_pro
                     "titulo_rubrica": row.titulo_rubrica,
                     "estado_proyecto": row.estado_proyecto,
                     "puntaje_aprobacion": row.puntaje_aprobacion,
-                    "evaluador": {
-                        "nombre_evaluador": f"{row.nombre_evaluador} {row.apellidos_evaluador}" if row.nombre_evaluador else "Evaluador no especificado",
-                        "cedula_evaluador": row.cedula_evaluador or "No especificado",
-                        "universidad_evaluador": row.universidad_evaluador or "No especificado",
-                        "email_evaluador": row.email_evaluador or "No especificado",
-                        "celular_evaluador": row.celular_evaluador or "No especificado"
-                    },
                     "items_rubrica": []
                 }
 
@@ -109,8 +92,7 @@ def get_rubricas_calificadas(db: Session, id_tutor: Optional[int] = None, id_pro
                 titulo_rubrica=r["titulo_rubrica"],
                 estado_proyecto=r["estado_proyecto"],
                 puntaje_aprobacion=r["puntaje_aprobacion"],
-                items_rubrica=[ItemRubrica(**item) for item in r["items_rubrica"]],
-                evaluador=Evaluador(**r["evaluador"])
+                items_rubrica=[ItemRubrica(**item) for item in r["items_rubrica"]]
             ) for r in rubricas_dict.values()
         ]
 

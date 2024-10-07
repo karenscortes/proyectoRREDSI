@@ -104,7 +104,6 @@ export const getProgramacionFasesByPage = async (page = 1, pageSize = 5) => {
   }
 };
 
-
 // Función para obtener todas las rubricas
 export const getRubricsAll = async () => {
     try {
@@ -201,6 +200,47 @@ export const getDelegatesAll = async (page = 1, page_size = 10) => {
     }
   }
 };
+
+// Función para buscar por id delegado
+export const getDelegateById = async (id_delegado) => {
+  try {
+      const url = `/admin/delegates/${id_delegado}/`;
+      const response = await api.get(url,{
+      headers: {
+        'Authorization': `Bearer ${localStorage.getItem('access_token')}` 
+      }
+    });
+    return response;
+  } catch (error) {
+    if (error.response) {
+      throw error;
+    } else {
+      throw new Error('Error de red o de servidor'); 
+    }
+  }
+};
+
+export const updateStatusDelegate = async (id_delegado, estado) => {
+  try{
+    const url = `/admin/update-delegate-status/${id_delegado}/`;
+      const response = await api.put(url, 
+      {
+        estado: estado
+      },
+      {
+      headers: {
+        'Authorization': `Bearer ${localStorage.getItem('access_token')}` 
+      }
+    });
+    return response;
+  }catch(error){
+    if (error.response) {
+      throw error;
+    } else {
+      throw new Error('Error de red o de servidor'); 
+    }
+  }
+}
 
 // Función consultar las reas de conocimiento
 export const getAreasConocimiento = async () => {

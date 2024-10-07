@@ -1,13 +1,13 @@
 <template>
     <div class="row justify-content-center">
-        <div class="col-8 mb-3" v-if="convocatoriaEnCurso">
-            <div class="row justify-content-between align-items-center question">
-                <div class="col-6">
+        <div class="col-lg-8 col-10 mb-3" v-if="convocatoriaEnCurso">
+            <div class="row justify-content-between align-items-center question text-center">
+                <div class="col-md-8 col-sm-6 col-xs-10">
                     <h4 class=" text-dark">¿Te gustaría ser evaluador en la convocatoria actual?</h4>
                 </div>
-                <div class="col-4">
+                <div class="col-md-4 col-sm-6 col-xs-10">
                     <a href="#" type="button" data-bs-toggle="modal"
-                    data-bs-target="#postulacionEvaluador" class="btn px-5 py-3">Postularme</a>
+                    data-bs-target="#postulacionEvaluador" class="btn w-md-100 w-xs-25 px-lg-5 py-3">Postularme</a>
                 </div> 
             </div>
         </div>
@@ -171,10 +171,10 @@
 </template>
 
 <script>
-    import { insertarPostulacionEvaluador } from '../services/evaluadorService'; 
+    import { insertarPostulacionEvaluador, obtenerProgramacionFases} from '../services/evaluadorService'; 
     import { useAuthStore } from '@/store';
     import { useToastUtils } from '@/utils/toast'; 
-    import {ref} from 'vue';
+    import {onMounted, ref} from 'vue';
 
     const { showSuccessToast, showErrorToast, showWarningToast} = useToastUtils();
 
@@ -253,10 +253,27 @@
             },
         },
         setup(){
-            const convocatoriaEnCurso = ref(true);
+            const convocatoriaEnCurso = ref(true);//poner en false para hacer pruebas
+
+            //obteniendo fecha actual
+            const currentDate = ref(new Date().toISOString().split('T')[0]);
+
+            const verificar_fase_actual = async() => {
+              const response = await obtenerProgramacionFases('virtual');
+              if(response.data && response.data.length > 0){
+                if(currentDate >= response.data[0].fecha_inicio && currentDate <= response.data[0].fecha_fin){
+                  convocatoriaEnCurso.value = ref(true);
+                }
+              }
+            };
+
+            onMounted (() =>{
+              verificar_fase_actual();
+            });
 
             return{
-                convocatoriaEnCurso,
+              convocatoriaEnCurso,
+              verificar_fase_actual
             }
         },
         mounted() {

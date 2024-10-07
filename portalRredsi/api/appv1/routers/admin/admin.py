@@ -2,7 +2,7 @@ from typing import List
 from fastapi import APIRouter, Depends, File, HTTPException, UploadFile
 from sqlalchemy.orm import Session
 from appv1.crud.admin.gest_asistentes_externos import generate_code, get_attendee_by_document, get_id_document_type, get_paginated_attendees, insert_attendee, insert_user, insertar_historial_admin, update_external_attendees
-from appv1.crud.admin.gest_delegado import create_delegado,get_delegados_activos_paginated, get_delegados_by_document
+from appv1.crud.admin.gest_delegado import create_delegado,get_delegados_activos_paginated, get_delegados_by_document, update_status_delegate
 from appv1.crud.admin.gest_rubricas import create_items,get_all_rubricas, update_items, update_status
 from appv1.crud.admin.gest_rubricas import get_all_rubricas
 from appv1.crud.admin.admin import crear_varias_programaciones_fases, create_convocatoria, create_sala, existe_convocatoria_en_curso, obtener_convocatoria_en_curso, update_sala
@@ -155,7 +155,6 @@ async def consult_delegates(
     if len(users) == 0:
         raise HTTPException(status_code=404, detail="No hay delegados")
 
-    
     return {
         "users": users,
         "total_pages": total_pages,
@@ -164,9 +163,9 @@ async def consult_delegates(
     }
 
 # Obtener delegado por documento
-@router_admin.get("/delegates/{doc}/", response_model= DelegadoResponse)
+@router_admin.get("/delegates/{busqueda}/", response_model= DelegadoResponse)
 def consult_by_document(
-    document: str, 
+    busqueda: str, 
     db: Session = Depends(get_db),
     current_user: UserResponse = Depends(get_current_user),
 ):
@@ -176,13 +175,39 @@ def consult_by_document(
     if permisos is None or not permisos.p_consultar:
         raise HTTPException(status_code=401, detail="Usuario no autorizado")
     
-    delegate = get_delegados_by_document(document, db)
+    delegate = get_delegados_by_document(busqueda, db)
 
     if (delegate is None):
         raise HTTPException(status_code=404, detail="No se encontró un delegado con ese documento")
 
     return delegate
 
+#Actualizar estado delegado 
+@router_admin.put("/update-delegate-status/{id_delegate}/")
+def update_delegate_status( 
+    id_delegate: int,
+    data: ItemUpdateStatus,
+    db: Session = Depends(get_db),
+    current_user: UserResponse = Depends(get_current_user),
+):  
+    MODULE = 3  
+    permisos = get_permissions(db, current_user.id_rol, MODULE)
+    if permisos is None or not permisos.p_actualizar:
+        raise HTTPException(status_code=401, detail="Usuario no autorizado")
+
+    delegate = update_status_delegate(id_delegate, data.estado, db)
+    insertar_historial_admin(db,'Actualizar',MODULE,id_delegate,current_user.id_usuario)
+    if delegate:    
+        return{
+            'success': True,
+            'message': 'Se actualizo con éxito',
+        }
+    else:           
+        return{
+            'success': False,
+            'message': 'Error al actualizar',
+        }
+        
 # Crear delegado 
 @router_admin.post("/create-delegates/")
 def create_delegates(

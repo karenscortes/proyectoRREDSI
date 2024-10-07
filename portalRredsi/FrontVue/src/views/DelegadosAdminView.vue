@@ -27,7 +27,10 @@
                     />
                   </div>
                   <div class="col-md-2 col-4">
-                    <button class="btn btn-dark w-100 font-weight-bold">
+                    <button
+                      class="btn btn-dark w-100 font-weight-bold"
+                      @click="buscar()"
+                    >
                       Buscar
                     </button>
                   </div>
@@ -82,6 +85,8 @@ import ModalAdd from "../components/Users/administrador/gest_delegado/ModalAdd.v
 import ModalDetalle from "../components/Users/administrador/gest_delegado/ModalDetalle.vue";
 import PaginatorBody from "../components/UI/PaginatorBody.vue";
 import { getDelegatesAll } from "@/services/administradorService";
+import { updateStatusDelegate } from "@/services/administradorService";
+import { getDelegateById } from "@/services/administradorService";
 
 //Propiedades para manejar la apertura del modal
 const isModalOpenEdit = ref(false);
@@ -101,34 +106,28 @@ const estadoActualDelegado = ref("");
 const ArrayDelegados = reactive([]);
 
 //Objeto de prueba, para enviarle la informacion del delegado al modal de detalle
-const infoModalDetail = reactive({
-  p_idDelegado: null,
-  p_tipoDocumento: "",
-  p_documento: "",
-  p_nombres: "",
-  p_apellidos: "",
-  p_areaConocimiento: "",
-  p_institucion: "",
-  p_telefono: "",
-  p_correo: "",
-});
+const infoModalDetail = reactive({});
 
 //Objeto que almacena la configuracion del paginador, es decir, la respuesta que nos da el endPoint,
-//el array de usuarios, la pagina actual, la cantidad de paginas, etc... 
-//esto con el fin de ir actualizando la información para que el array funcione de manera adecuada. 
+//el array de usuarios, la pagina actual, la cantidad de paginas, etc...
+//esto con el fin de ir actualizando la información para que el array funcione de manera adecuada.
 //Se llena cada que el paginador emita el evento de cambio de pagina, ya sea previous o next
 const configPagination = reactive({});
 
-//Funcion que se ejecuta cuando se emite un evento desde el td, recibe el nuevo estado, cada que se hace algún cambio. 
-//Se encarga de actualizar ese estado en el array 
+//Funcion que se ejecuta cuando se emite un evento desde el td, recibe el nuevo estado, cada que se hace algún cambio.
+//Se encarga de actualizar ese estado en el array
 const cambiarEstadoCheckboxDelegado = (index) => {
-  estadoActualDelegado.value = ArrayDelegados[index].p_estado == "activo" ? "inactivo" : "activo";
+  estadoActualDelegado.value =
+    ArrayDelegados[index].estado == "activo" ? "inactivo" : "activo";
   ArrayDelegados[index].p_estado = estadoActualDelegado.value;
+  const estado = estadoActualDelegado.value;
+  const id_delegado = ArrayDelegados[index].id_usuario;
+  actualizarEstado(id_delegado, estado);
 };
 
 //Función que se ejecuta cuando se cambia la pagina desde el paginador, es decir, cuando el paginador nos emite por medio del evento
-//Su funcionalidad es recibir la pagina actual, para poder actualizar nuestra propiedad page, hacer la petición, para que el 
-//endPoint nos devuelva el data con los respectivos campos(la misma respuesta de siempre) 
+//Su funcionalidad es recibir la pagina actual, para poder actualizar nuestra propiedad page, hacer la petición, para que el
+//endPoint nos devuelva el data con los respectivos campos(la misma respuesta de siempre)
 const handlePaginate = async (pagina) => {
   page.value = pagina;
   const newPage = await fetchAllDelegates(page.value);
@@ -140,12 +139,14 @@ const handlePaginate = async (pagina) => {
 //Función que se ejecutara cada que el paginador emita un cambio de pagina, se encarga de actualizar el array con la nueva información
 const modificarArrayDelegados = () => {
   const users = configPagination.value.users;
+  ArrayDelegados.splice(0, ArrayDelegados.length);
   users.forEach(function (delegado, i) {
     const infoDelegado = {
       id_usuario: delegado.id_usuario,
       nombres: delegado.nombres,
       apellidos: delegado.apellidos,
-      nombre_institucion: delegado.detalles_institucionales[0].id_institucion,
+      nombre_institucion:
+        delegado.detalles_institucionales[0].institucion.nombre,
       primer_area: delegado.detalles_institucionales[0].primer_area.nombre,
       segunda_area: delegado.detalles_institucionales[0].segunda_area.nombre,
       url_titulo: delegado.titulos_academicos[0].url_titulo,
@@ -154,7 +155,7 @@ const modificarArrayDelegados = () => {
       documento: delegado.documento,
       celular: delegado.celular,
       correo: delegado.correo,
-    }
+    };
     ArrayDelegados[i] = infoDelegado;
   });
 };
@@ -169,25 +170,49 @@ const closeModalAdd = () => {
   isModalOpenAdd.value = false;
 };
 
-//Función que se ejecutara cuando el td emita que le dieron click al btn de abrir modal detalle, 
+//Función que se ejecutara cuando el td emita que le dieron click al btn de abrir modal detalle,
 //esta modifica el objeto con la info que se enviara al modal detalle(también era prueba)
 //el td puede devolver toda la info completa(ya que la tiene), se instancia un objeto global vacio y se llena con la info recibida.
 const showModalDetail = (infoDelegado) => {
-  infoModalDetail.p_idDelegado = infoDelegado.p_idDelegado;
-  infoModalDetail.p_tipoDocumento = infoDelegado.p_tipoDocumento;
-  infoModalDetail.p_documento = infoDelegado.p_documento;
-  infoModalDetail.p_nombres = infoDelegado.p_nombres;
-  infoModalDetail.p_apellidos = infoDelegado.p_apellidos;
-  infoModalDetail.p_areaConocimiento = infoDelegado.p_areaConocimiento;
-  infoModalDetail.p_institucion = infoDelegado.p_institucion;
-  infoModalDetail.p_telefono = infoDelegado.p_telefono;
-  infoModalDetail.p_correo = infoDelegado.p_correo;
+  infoModalDetail.value = infoDelegado;
   isModalOpenEdit.value = true;
 };
 
-//Función para cerrar modal detalle 
+//Función para cerrar modal detalle
 const closeModalDetail = () => {
   isModalOpenEdit.value = false;
+};
+
+//Funcion para actualizar el estado del delegado
+const actualizarEstado = async (id_delegado, estado) => {
+  try {
+    const response = await updateStatusDelegate(id_delegado, estado);
+    return response;
+  } catch (error) {
+    console.error("Error al actualizar el estado: ", error);
+    alert("Error al actualizar el estado del delegado");
+  }
+};
+
+//Funcion para buscar delegados
+const buscar = async () => {
+  if (busqueda.value !== "") {
+    try {
+      const response = await getDelegateById(busqueda.value);
+      configPagination.value.users = [response.data];
+      configPagination.value.total_pages = 1;
+      configPagination.value.total_users = 1;
+      modificarArrayDelegados();
+      busqueda.value = ""; 
+      return response;
+    } catch (error) {
+      console.error("Error al buscar los delegados: ", error);
+      alert("Error al buscar los delegados");
+    }
+  } 
+  if(busqueda.value == ""){
+    fetchAllDelegates();
+  }
 };
 
 //Función para utilizar el servicio, hacer la petición y actualizar las respectivas propiedades.
