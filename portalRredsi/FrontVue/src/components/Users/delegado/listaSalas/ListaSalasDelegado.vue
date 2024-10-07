@@ -32,7 +32,7 @@
                             <div class="col-8 col-sm-6">
                                 <input v-model="valorBusqueda" type="text" id="busqueda"
                                     class="form-control text-dark w-100" style="height: 100%; padding: 0.5rem;"
-                                    placeholder="Ingresa numero de sala" @input="buscarSala">
+                                    placeholder="Ingresa nombre de la sala">
                             </div>
                             <div class="col-4 col-sm-4">
                                 <button class="btn w-100 font-weight-bold"
@@ -136,7 +136,8 @@ export default {
             this.habilitarComponente = true;
             this.SalaSeleccionada = p_sala_seleccionada;
         },
-        volverListaSalas() {
+        async volverListaSalas() {
+            await this.listarSalas();
             this.habilitarComponente = false;
         },
         async obtenerSalaAsignada(id_delegado) {
