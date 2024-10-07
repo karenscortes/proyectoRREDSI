@@ -57,7 +57,7 @@
 </template>
 
 <script>
-import { getApplicationsByPage} from '@/services/PostulacionService';
+import { getApplicationsByPage} from '@/services/postulacionService';
 import AcordeonPostulaciones from './AcordeonPostulaciones.vue';
 import { useToastUtils } from '@/utils/toast';
 export default {
