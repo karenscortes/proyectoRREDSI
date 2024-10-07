@@ -182,7 +182,7 @@ export default defineComponent({
             });
         } else if(user?.id_rol == 6) {
             Object.assign(state, {
-                left_tabs: [{nombre: "Inicio", ruta: "InicioSuperAdminView" }, {nombre: "Editar perfil", ruta: "EditarPerfil" },{nombre: "Gestionar administradores y delegados", ruta: "ListaAdministradores" }],
+                left_tabs: [{nombre: "Inicio", ruta: "InicioSuperAdminView" }, {nombre: "Editar perfil", ruta: "EditarPerfil" },{nombre: "Gestionar administradores", ruta: "ListaAdministradores" }],
                 visibilidad: "d-none",
             });
         }
