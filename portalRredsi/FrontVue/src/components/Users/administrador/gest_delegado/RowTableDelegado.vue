@@ -37,10 +37,10 @@
           typeof value.apellidos === 'string' &&
           typeof value.tipo_documento === 'string' &&
           typeof value.documento === 'string' &&
-          typeof value.nombre_institucion === 'number' &&
+          typeof value.nombre_institucion === 'string' &&
           typeof value.primer_area === 'string' &&
           typeof value.segunda_area === 'string' &&
-          typeof value?.url_titulo === 'string' &&
+          typeof value.url_titulo === 'string' &&
           typeof value.estado  === 'string' &&
           typeof value.celular === 'string' &&
           typeof value.correo === 'string' 
