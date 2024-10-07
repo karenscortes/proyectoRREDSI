@@ -29,14 +29,15 @@
                                     :horaFin="infoSala.hora_fin" :sala="infoSala.numero_sala" />
                             </div>
                             <!-- Suplentes -->
-                            <!-- <div class="col-6 col-md-6 mt-3">
-                                <SuplentesCom :tipo="tipo" :suplente="suplente" />
-                            </div>   -->
+                            <div class="col-6 col-md-6 mt-3">
+                                <SuplentesCom :idProyecto="proyecto.id_proyecto" :idEtapa="proyecto.id_etapa"
+                                    :tipo="tipo" :suplente="suplente" @suplenteSeleccionado="suplenteSeleccionado" />
+                            </div>
                         </div>
                         <!-- Botones -->
-                        <div class="col-10 d-flex justify-content-between ">
+                        <div class="col-10 d-flex justify-content-between button-container ">
                             <button type="button" class="btn btn-sm btn-warning font-weight-bold w-100 mx-2"
-                                style="width: 36%;" @click="openModal">
+                                style="width: 31%;" @click="openModal">
                                 Añadir <br />presentación
                             </button>
 
@@ -59,9 +60,8 @@
 
                     <!-- Imagen del detalle -->
                     <div class="col-lg-6 order-1 order-lg-2">
-                        <div class="img-wrap mt-4">
-                            <img src="../../../../../assets/img/course_5.jpg" style="border-radius: 25px;" alt="Image"
-                                class="img-fluid shadow-lg" />
+                        <div class="img-wrap mt-5">
+                            <img src="../../../../../assets/img/course_5.jpg" class="img-fluid shadow-lg detail-image" />
                         </div>
                     </div>
                 </div>
@@ -95,43 +95,38 @@
         <div class="accordion pt-5 mt-3" id="accordionExample">
             <div class="card p-2">
                 <div id="headingOne">
-                    <button class="btn btn-block toggle-button collapsed" type="button" data-bs-toggle="collapse"
+                    <button class="btn btn-block toggle-button collapsed rubrica-btn" type="button" data-bs-toggle="collapse"
                         data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
                         <i style="margin-right: 10px;" class="fa-solid fa-check fa-lg"></i>
                         Respuesta rúbrica 1
                     </button>
                 </div>
-                <div id="collapseOne" class="collapse mt-5" aria-labelledby="headingOne"
-                    data-bs-parent="#accordionExample">
+                <div id="collapseOne" class="collapse mt-5" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
                     <RubricaCom v-if="cargarRubricaVirtual" :proyecto="proyecto" :id_evaluador="id_evaluador1" :etapa="'virtual'" />
                 </div>
             </div>
             <div class="card p-2">
                 <div id="headingTwo">
-                    <button class="btn btn-block toggle-button collapsed" type="button" data-bs-toggle="collapse"
+                    <button class="btn btn-block toggle-button collapsed rubrica-btn" type="button" data-bs-toggle="collapse"
                         data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
                         <i style="margin-right: 10px;" class="fa-solid fa-check fa-lg"></i>
                         Respuesta rúbrica 2
                     </button>
                 </div>
-                <div id="collapseTwo" class="collapse mt-5" aria-labelledby="headingTwo"
-                    data-bs-parent="#accordionExample">
+                <div id="collapseTwo" class="collapse mt-5" aria-labelledby="headingTwo" data-bs-parent="#accordionExample">
                     <RubricaCom v-if="cargarRubricaPresencial" :proyecto="proyecto" :id_evaluador="id_evaluador2" :etapa="'presencial'" />
                 </div>
             </div>
             <div class="card p-2">
                 <div id="headingThree">
-                    <button class="btn btn-block toggle-button collapsed" type="button" data-bs-toggle="collapse"
+                    <button class="btn btn-block toggle-button collapsed rubrica-btn" type="button" data-bs-toggle="collapse"
                         data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
                         <i style="margin-right: 10px;" class="fa-solid fa-x fa-lg"></i>
                         Respuesta rúbrica 3
                     </button>
                 </div>
-                <div id="collapseThree" class="collapse mt-5" aria-labelledby="headingThree"
-                    data-bs-parent="#accordionExample">
+                <div id="collapseThree" class="collapse mt-5" aria-labelledby="headingThree" data-bs-parent="#accordionExample">
                     <RubricaCom v-if="cargarRubricaPresencial" :proyecto="proyecto" :id_evaluador="id_evaluador3" :etapa="'presencial'" />
-                    
-                    <!--Respaldo-->
                     <h4 class="text-center text-dark mt-4 mb-4">Respaldo</h4>
                     <div class="custom-file-upload mx-auto">
                         <input type="file" id="comprobante_pago" name="comprobante_pago" />
@@ -167,7 +162,7 @@ export default {
         EvaluadoresCom,
         PonentesCom,
         EventoCom,
-        //SuplentesCom,
+        SuplentesCom,
         RubricaCom,
     },
     data() {
@@ -191,7 +186,8 @@ export default {
             universidadProyecto: '',
             puntajeTotal: 0,
             urlPresentacion: '',
-            
+            suplente: {},
+            tipo: '',
 
         };
     },
@@ -208,13 +204,11 @@ export default {
                     const data = await obtenerEvaluadoresProyecto(id_proyecto, id_etapa);
                     this.evaluadores = data;
                 } else {
-                    // Obtener evaluadores virtuales y agregarlos a this.evaluadores
                     const dataEvaluadorVirtual = await obtenerEvaluadoresProyecto(id_proyecto, 2);
-                    this.evaluadores['virtual'] = dataEvaluadorVirtual; // Guardar evaluadores virtuales en una clave específica
+                    this.evaluadores['virtual'] = dataEvaluadorVirtual;
                     this.id_evaluador1 = this.evaluadores.virtual[0].id_usuario;
-                    // Obtener evaluadores presenciales y agregarlos a this.evaluadores
                     const dataEvaluadorPresencial = await obtenerEvaluadoresProyecto(id_proyecto, 1);
-                    this.evaluadores['presencial'] = dataEvaluadorPresencial; // Guardar evaluadores presenciales en otra clave específica
+                    this.evaluadores['presencial'] = dataEvaluadorPresencial;
                     this.id_evaluador2 = this.evaluadores.presencial[0].id_usuario;
                     this.id_evaluador3 = this.evaluadores.presencial[1].id_usuario;
 
@@ -251,12 +245,12 @@ export default {
                 await this.fetchPonentes(this.proyecto.id_proyecto);
                 await this.fetchInfoSala(this.proyecto.id_proyecto);
                 if (this.evaluadores.virtual.length > 0 || this.evaluadores.presencial.length > 0) {
-                    if(this.proyecto.id_etapa == 2) {
+                    if (this.proyecto.id_etapa == 2) {
                         this.cargarRubricaVirtual = true;
                         this.cargarRubricaPresencial = false;
-                    }else {
+                    } else {
                         this.cargarRubricaPresencial = true;
-                        this.cargarRubricaVirtual= true;
+                        this.cargarRubricaVirtual = true;
                     }
                 }
             } catch (error) {
@@ -277,6 +271,10 @@ export default {
                 this.showInfoToast('Error al guardar la presentación. Por favor, intenta nuevamente.');
             }
         },
+        suplenteSeleccionado({ suplente, tipo }) {
+            this.suplente = suplente;
+            this.tipo = tipo;
+        },
 
     },
     mounted() {
@@ -289,6 +287,21 @@ export default {
 
 
 <style scoped>
+
+.button-container {
+    gap: 20px;
+    margin-bottom: 20px;
+}
+
+.detail-image {
+    max-width: 90%;
+    margin-top: 20px;
+}
+
+.rubrica-btn {
+    padding: 8px 15px;
+    font-size: 0.875rem;
+}
 .section_title h1 {
     display: block;
     color: #1a1a1a;

@@ -27,7 +27,6 @@ class UsuarioProyecto(BaseModel):
     id_rol: Optional[int] = None 
     id_etapa: Optional[int] = None
 
-
 class ProyectoResponse(BaseModel):
     proyecto: DetalleProyecto 
     sala: SalaConHorario  
@@ -39,4 +38,17 @@ class UrlPresentacionProyecto(BaseModel):
     url_presentacion: str
     
 
-
+class AsistenciaEvento(BaseModel):
+    id_asistente: int
+    id_convocatoria: int
+    id_usuario: int
+    nombres: str  
+    apellidos: str  
+    documento: str
+    asistencia: bool
+class SuplenteRequest(BaseModel):
+    id_proyecto: int
+    id_usuario: int
+    id_etapa: int
+    id_proyecto_convocatoria: int
+    tipo_usuario: str

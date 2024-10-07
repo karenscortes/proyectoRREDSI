@@ -16,3 +16,5 @@ class ConvocatoriaActual(BaseModel):
     nombre:str
     fecha_inicio: datetime
     fecha_fin: datetime
+    
+

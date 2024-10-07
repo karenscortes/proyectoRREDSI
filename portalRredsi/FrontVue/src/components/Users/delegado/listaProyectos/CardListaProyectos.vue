@@ -46,7 +46,7 @@
                 required: true
             },
             id_etapa_actual: {
-                type: Number,
+                type: String,
                 required: true
             },
         },

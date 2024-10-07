@@ -59,7 +59,51 @@ def get_datos_sala(db: Session, id_proyecto:int):
     except SQLAlchemyError as e:
         raise HTTPException(status_code=500, detail="Datos de sala no encontrados")
         
-    
+#Consultar todos los asistentes de una convocatoria en curso
+def get_asistentes_evento(db: Session, id_convocatoria: int):
+    try:
+        sql = text("""
+            SELECT DISTINCT asistentes.id_asistente, asistentes.id_convocatoria, asistentes.asistencia, asistentes.fecha,usuarios.id_usuario, usuarios.nombres, usuarios.apellidos, usuarios.documento
+            FROM asistentes
+            JOIN usuarios ON asistentes.id_usuario = usuarios.id_usuario
+            JOIN convocatorias ON asistentes.id_convocatoria = convocatorias.id_convocatoria
+            JOIN proyectos_convocatoria ON convocatorias.id_convocatoria = proyectos_convocatoria.id_convocatoria
+            WHERE convocatorias.estado = 'en curso'
+            AND asistentes.asistencia = 1
+            AND asistentes.id_convocatoria = :id_convocatoria
+        """)
+        params = {
+            "id_convocatoria": id_convocatoria, 
+        }
+        result = db.execute(sql, params).mappings().all()
+        return result 
+    except SQLAlchemyError as e:
+        db.rollback()  
+        raise HTTPException(status_code=500, detail="Error al consultar los asistentes del evento")
+
+
+
+#Insertar suplente
+def insertar_suplente_proyecto(db: Session, id_usuario: int, id_etapa: int, id_proyecto: int, id_proyectos_convocatoria: int, tipo_usuario: str):
+    try:
+        sql = text("""
+            INSERT INTO participantes_proyecto (id_usuario, id_etapa, id_proyecto, id_proyectos_convocatoria, tipo_usuario)
+            VALUES (:id_usuario, :id_etapa, :id_proyecto, :id_proyectos_convocatoria, :tipo_usuario)
+        """)
+        params = {
+            "id_usuario": id_usuario,
+            "id_etapa": id_etapa,
+            "id_proyecto": id_proyecto,
+            "id_proyectos_convocatoria": id_proyectos_convocatoria,
+            "tipo_usuario": tipo_usuario,
+        }
+        db.execute(sql, params)
+        db.commit()
+    except SQLAlchemyError as e:
+        db.rollback()
+        raise HTTPException(status_code=500, detail="Error al registrar el suplente")
+
+
 #Insertar presentacion del proyecto
 def insertar_presentacion_proyecto(db: Session, id_proyecto: int, url_presentacion: str):
     try:

@@ -3,10 +3,10 @@ from typing import List
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 from appv1.routers.login import get_current_user
-from appv1.schemas.delegado.detalleProyectos import  SalaConHorario, UrlPresentacionProyecto, UsuarioProyecto
+from appv1.schemas.delegado.detalleProyectos import  SalaConHorario, UrlPresentacionProyecto, UsuarioProyecto, AsistenciaEvento
 from appv1.schemas.usuario import UserResponse
 from db.database import get_db
-from appv1.crud.delegado.detalleProyecto import get_datos_sala, get_evaluadores_por_etapa,  get_participantes_proyecto, insertar_presentacion_proyecto
+from appv1.crud.delegado.detalleProyecto import get_asistentes_evento, get_datos_sala, get_evaluadores_por_etapa,  get_participantes_proyecto,  insertar_presentacion_proyecto, insertar_suplente_proyecto
 
 router_detalle_proyecto = APIRouter()
 
@@ -33,6 +33,32 @@ async def obtener_participantes_proyecto(
         raise HTTPException(status_code=404, detail="No se encontraron evaluadores para el proyecto")
     return ponentesProyecto
 
+#ruta para traer asistentes por convocatoria
+@router_detalle_proyecto.get("/asistentes-evento/", response_model=List[AsistenciaEvento])
+async def obtener_asistentes_evento(
+    id_convocatoria: int,  
+    db: Session = Depends(get_db)
+):
+    asistentesEvento = get_asistentes_evento(db, id_convocatoria)  
+    if not asistentesEvento:
+        raise HTTPException(status_code=404, detail="No se encontraron asistentes para este evento")
+    return asistentesEvento
+
+#ruta para insertar suplentes 
+@router_detalle_proyecto.post("/insertar-suplentes/")
+async def insertar_suplente(
+    id_usuario: int,
+    id_etapa: int,
+    id_proyecto: int,
+    id_proyectos_convocatoria: int,
+    tipo_usuario: str,
+    db: Session = Depends(get_db)    
+):   
+    try:
+        insertar_suplente_proyecto(db,  id_usuario, id_etapa, id_proyecto, id_proyectos_convocatoria, tipo_usuario)
+        return {"mensaje": "Suplente insertado correctamente"}
+    except HTTPException as e:
+        return {"mensaje": "Error al insertar suplente"}   
 
 #ruta para traer datos de sala
 @router_detalle_proyecto.get("/datos-sala-proyecto/", response_model=SalaConHorario)

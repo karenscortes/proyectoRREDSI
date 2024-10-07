@@ -1,149 +1,197 @@
 <template>
     <div class="feature">
         <div class="icon">
-            <i class="fa-solid fa-user-group fa-lg text-dark mb-3"></i>
+            <i class="fa-solid fa-user-group fa-1.5x text-dark mb-3"></i>
         </div>
-        <h2 class="text-dark text-left font-weight-bold">Suplentes <i type="button" class="fa-regular fa-square-plus fa-lg text-dark" @click="openModal"></i></h2>
+        <h2 class="text-dark text-left font-weight-bold">
+            Suplentes
+            <i type="button" class="fa-regular fa-square-plus fa-lg text-dark" @click="openModal"></i>
+        </h2>
+
         <p class="text-dark text-left">
-            Tipo: {{ tipo }} <br> 
-            Nombre: {{ suplente }}
+            Tipo: {{ nuevoTipo }} <br>
+            Nombre: {{ suplenteSeleccionado ? `${suplenteSeleccionado.nombres} ${suplenteSeleccionado.apellidos}` : ''
+            }}
         </p>
+
         <div v-if="isModalOpen" class="modal">
             <div class="modal-content">
                 <span class="close" @click="closeModal">&times;</span>
                 <h4>Agregar Suplente</h4>
+
                 <div class="form-group">
                     <label for="tipo">Tipo:</label>
                     <select v-model="nuevoTipo" id="tipo" class="form-control">
                         <option value="" disabled selected>Seleccionar Tipo</option>
-                        <option value="Ponente">Ponente</option>
-                        <option value="Evaluador">Evaluador</option>
+                        <option v-for="(tipo, index) in tiposSuplentes" :key="index" :value="tipo">
+                            {{ tipo }}
+                        </option>
                     </select>
                 </div>
+
                 <div class="form-group">
-                    <label for="nombre">Nombre:</label>
-                    <input type="text" v-model="nuevoNombre" id="nombre" class="form-control" />
+                    <label for="suplente">Seleccionar Suplente (por nombre):</label>
+                    <select v-model="suplenteSeleccionado" id="suplente" class="form-control">
+                        <option value="" disabled selected>Seleccionar Suplente</option>
+                        <option v-for="(suplente, index) in suplentes" :key="index" :value="suplente">
+                            {{ suplente.nombres }} {{ suplente.apellidos }}
+                        </option>
+                    </select>
                 </div>
-                <button type="submit" class="btn btn-warning font-weight-bold" @click="addSuplente">Añadir</button>
+
+                <button class="btn btn-warning font-weight-bold" @click="addSuplente">Añadir</button>
             </div>
         </div>
     </div>
 </template>
 
 <script>
-export default {
-    name: 'SuplentesCom',
-    props: {
-        tipo: {
-            type: String,
-            required: true,
+    import { useToastUtils } from '@/utils/toast';
+    import { obtenerAsistentesSuplentes, insertarSuplente, obtenerProyectoConvocatoria } from '../../../../../services/delegadoService';
+
+    export default {
+        name: 'SuplentesCom',
+        props: {
+            idProyecto: {
+                type: Number,
+                required: true
+            },
+            idEtapa: {
+                type: Number,
+                required: true
+            },
+            id_suplente: {
+                type: Number,
+                required: true
+            }
         },
-        suplente: {
-            type: String,
-            required: true,
+        data() {
+            return {
+                isModalOpen: false,
+                suplentes: [],
+                tiposSuplentes: ['evaluador', 'suplenteEvaluador', 'ponente', 'suplentePonente', 'tutor'],
+                nuevoTipo: '',
+                suplenteSeleccionado: null,
+                idProyectoConvocatoria: null
+            };
         },
-    },
-    data() {
-        return {
-            isModalOpen: false, 
-            nuevoTipo: '',        
-            nuevoNombre: '',     
-        };
-    },
-    methods: {
-        openModal() {
-            this.isModalOpen = true;
+        setup() {
+            const { showSuccessToast, showErrorToast, showInfoToast } = useToastUtils();
+            return { showSuccessToast, showErrorToast, showInfoToast };
         },
-        closeModal() {
-            this.isModalOpen = false;
+        methods: {
+            async openModal() {
+                this.isModalOpen = true;
+                await this.fetchAsistentes();
+                await this.fetchProyectoConvocatoria();
+            },
+            closeModal() {
+                this.isModalOpen = false;
+            },
+            async fetchAsistentes() {
+                try {
+                    this.suplentes = await obtenerAsistentesSuplentes(1);
+                } catch (error) {
+                    console.error("Error al obtener los asistentes:", error);
+                }
+            },
+            async fetchProyectoConvocatoria() {
+                try {
+                    const response = await obtenerProyectoConvocatoria(this.idProyecto);
+                    if (response) {
+                        this.idProyectoConvocatoria = response.data.proyecto_convocatoria.id_proyecto_convocatoria;
+                    } else {
+                        console.error("No se encontró proyecto convocatoria para el ID del proyecto:", this.idProyecto);
+                    }
+                } catch (error) {
+                    console.error("Error al obtener el proyecto convocatoria:", error);
+                }
+            },
+            async addSuplente() {
+                
+                console.log("Datos del suplente seleccionado:", this.suplenteSeleccionado);
+                console.log("ID Proyecto:", this.idProyecto);
+                console.log("ID Etapa:", this.idEtapa);
+                console.log("ID Proyecto Convocatoria:", this.idProyectoConvocatoria);
+                console.log("Tipo de Suplente:", this.nuevoTipo);
+
+                try {
+                    await insertarSuplente(
+                        this.suplenteSeleccionado.id_usuario,
+                        this.idEtapa,
+                        this.idProyecto,
+                        this.idProyectoConvocatoria,
+                        this.nuevoTipo
+                    );
+
+                    alert("Suplente insertado con éxito");
+                    this.$emit('suplenteSeleccionado', {
+                        suplente: this.suplenteSeleccionado,
+                        tipo: this.nuevoTipo
+                    });
+
+                    this.resetForm();
+                    this.closeModal();
+                } catch (error) {
+                    console.error("Error al agregar suplente:", error);
+                    alert("Error al insertar el suplente. Por favor, intenta nuevamente.");
+                }
+            }
         },
-        addSuplente() {
-            this.nuevoTipo; 
-            this.nuevoNombre;    
-            this.nuevoTipo = '';
-            this.nuevoNombre = '';
-            this.closeModal();
-        },
-    },
-};
+        mounted(){
+            this.suplentes.id_usuario = this.id_suplente;
+        }
+    };
 </script>
 
-<style scoped>
-h2,
-p {
-    font-size: 0.8rem;
-    margin-bottom: 4px;
-}
 
-.text-left {
-    text-align: left;
+
+
+<style scoped>
+h2 {
+    font-size: 0.8rem;
+    margin-bottom: 2px;
 }
 
 .modal {
     display: block;
+    /* Mostrar el modal */
     position: fixed;
     z-index: 1;
     left: 0;
     top: 0;
     width: 100%;
     height: 100%;
-    overflow: auto;
-    background-color: rgba(0, 0, 0, 0.4);
+    background-color: rgba(0, 0, 0, 0.5);
 }
 
 .modal-content {
-    background-color: #fefefe;
-    margin: 15% auto;
+    background-color: #fff;
+    margin: 10% auto;
     padding: 20px;
     border: 1px solid #888;
-    width: 400px;
-    border-radius: 10px;
-    position: relative; 
+    width: 50%;
+    max-width: 600px;
 }
 
 .close {
     color: #aaa;
-    float: right;
     font-size: 28px;
     font-weight: bold;
+    float: right;
     cursor: pointer;
-    position: absolute;
-    top: 10px;
-    right: 15px; 
 }
 
 .close:hover,
 .close:focus {
-    color: black;
+    color: #000;
     text-decoration: none;
-    cursor: pointer;
 }
 
-.form-group {
-    margin-bottom: 15px;
-}
-
-.form-control {
+select {
+    display: block;
     width: 100%;
-    padding: 8px;
-    box-sizing: border-box;
-    border-radius: 5px;
-    border: 1px solid #ccc;
-}
-
-.btn {
-    padding: 10px 20px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-}
-
-.add-icon {
-    cursor: pointer;
-    margin-top: 10px;
-}
-
-.add-icon:hover {
-    color: #0056b3
+    max-height: 200px;
+    overflow-y: auto;
 }
 </style>

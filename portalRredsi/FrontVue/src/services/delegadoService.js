@@ -427,21 +427,17 @@ export const obtenerFechasAsignaciones = async () => {
 //Función para obtener evaluadores de un proyecto por etapa
 export const obtenerEvaluadoresProyecto = async (id_proyecto, id_etapa) => {
     try {
-        console.log("Parámetros enviados a la API:", { id_proyecto,  id_etapa });
         const response = await api.get(`/detalleProyecto/participantes-etapa/?id_proyecto=${id_proyecto}&id_etapa=${id_etapa}`, {
             headers: {
                 'Authorization': `Bearer` 
             },
             
         });
-        console.log('Respuesta de la API:', response.data);
         return response.data; 
     } catch (error) {
-        if (error.response) {
-            console.error('Error de respuesta de la API:', error.response.data);  
+        if (error.response) {  
             throw error;  
-        } else {
-            console.error('Error de red o de servidor:', error.message);  
+        } else {  
             throw new Error('Error de red o de servidor');
         }
     }
@@ -484,6 +480,7 @@ export const obtenerInfoSalaProyecto = async (id_proyecto) => {
     }
 };
 
+//Función para obtener datos de rúbirca calificada
 export const obtenerRubricaCalificada = async (id_proyecto, id_usuario) => {
     try {
         const response = await api.get(`/obtenerProyectosEvaluador/obtener-datos-del-proyecto-calificado/?id_proyecto=${id_proyecto}&id_usuario=${id_usuario}` , {
@@ -500,6 +497,43 @@ export const obtenerRubricaCalificada = async (id_proyecto, id_usuario) => {
         }
     }
 };
+
+//Función para obtener los asistentes de un evento (suplentes)
+export const obtenerAsistentesSuplentes = async (id_convocatoria) => {
+    try {
+        const response = await api.get(`/detalleProyecto/asistentes-evento/?id_convocatoria=${id_convocatoria}`, {
+            headers: {
+                'Authorization': `Bearer` 
+            },
+        });
+        return response.data       
+    }catch (error){
+        if (error.response) {
+            throw error;
+        }else {
+            throw new Error('Error del red o de servidor')
+        }
+    }
+};
+
+//Funcion para insertar suplente
+export const insertarSuplente = async(id_usuario, id_etapa, id_proyecto, id_proyectos_convocatoria, tipo_usuario) => {
+    try {
+        const response = await api.post(`detalleProyecto/insertar-suplentes/?id_usuario=${id_usuario}&id_etapa=${id_etapa}&id_proyecto=${id_proyecto}&id_proyectos_convocatoria=${id_proyectos_convocatoria}&tipo_usuario=${tipo_usuario}`, {
+            headers: {
+                'Authorization': `Bearer` 
+            },
+        });
+        return response.data;
+    } catch (error) {
+        if (error.response) {
+            throw error;
+        } else {
+            throw new Error('Error de red o de servidor');
+        }
+    }
+};
+
 
 //Función insertar url presentación
 export const insertarUrlPresentacion = async (id_proyecto, url_presentacion) => {

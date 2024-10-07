@@ -93,7 +93,7 @@
                 </tfoot>
             </table>
         </div>
-        <div class="col-8 text-center py-5" v-if="botonCalificar">
+        <div class="col-8 text-center py-5" v-if="botonCalificar == 'Activo'">
             <button @click.prevent="enviarCalificaciones" class="btn btn-warning font-weight-bold text-dark">
                 Calificar
             </button>
@@ -122,7 +122,12 @@ export default {
         etapa: {
             type: String,
             required: true
+        },
+        id_suplente: {
+            type: Number,
+            required: true
         }
+        
     },
     setup(props) {
         const tituloProyecto = ref('');
@@ -165,7 +170,6 @@ export default {
             try {
                 // Intentamos obtener los datos de las rúbricas calificadas.
                 const data = await obtenerRubricasCalificadas(props.proyecto.id_proyecto, props.id_evaluador, props.etapa);
-                console.log("EVALUADOR DESDE RUBRICA", props.id_evaluador);
                 // Si se obtienen correctamente, significa que ya hay calificaciones registradas.
                 tituloProyecto.value = data.titulo_proyecto;
                 universidadProyecto.value = data.universidad_proyecto;
@@ -306,6 +310,7 @@ export default {
             enviarCalificaciones,
             disabledCalificacionObservacion,
             validarCalificacion,
+            botonCalificar,
         };
     }
 }

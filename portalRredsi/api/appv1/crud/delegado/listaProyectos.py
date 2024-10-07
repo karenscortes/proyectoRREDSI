@@ -71,7 +71,6 @@ def get_all_projects(db: Session, nombre_etapa: str, page: int = 1, page_size: i
         print(f"Error al buscar proyectos por etapa: {e}")
         raise HTTPException(status_code=500, detail=f"Error al buscar proyectos por etapa {e}")
     
-
 # Consulta para filtrar todos los proyectos por estado(calificado, pendiente) y por etapa
 def get_projects_by_state(db: Session, nombre_etapa: str, estado_calificacion: str, page: int = 1, page_size: int = 10):
     try:
