@@ -154,9 +154,7 @@ export const actualizarHorarioAsignado = async (p_id_sala,p_id_proyecto_convocat
 // FUNCION PARA BUSCAR UNA SALA POR NOMBRE,AREA DE CONOCIMIENTO O NUMERO
 export const buscarSala = async (valor_buscado) => {
     try {
-        const response = await api.get(`/salas/buscar-sala-por-nombre/?valor_buscado=${valor_buscado}
-
-`, {
+        const response = await api.get(`/salas/buscar-sala-por-nombre/?valor_buscado=${valor_buscado}`, {
             headers: {
                 'Authorization': `Bearer ${localStorage.getItem('access_token')}`
             }

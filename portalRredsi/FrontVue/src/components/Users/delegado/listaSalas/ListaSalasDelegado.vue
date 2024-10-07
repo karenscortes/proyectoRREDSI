@@ -122,7 +122,8 @@ export default {
             }
         },
         async buscarSalaEspecifica() {
-            if (this.valorBusqueda.trim() != "") {
+            try {
+                if (this.valorBusqueda.trim() != "") {
                 // Buscar salas espeficicas 
                 const responseBuscarSala = await buscarSala(this.valorBusqueda);
                 this.salas = responseBuscarSala.data.salas;
@@ -136,12 +137,15 @@ export default {
                     sala.fechasEvento = "";
                     sala.fechasEvento = this.fechasEvento;
                 });
-
-
             } else {
                 await this.listarSalas();
-                this.showInfoToast("Si deseas buscar una sala debes ingresar un valor");
+                this.showInfoToast("Si deseas buscar una sala debes ingresar un valor en el campo de busqueda");
             }
+            } catch (error) {
+                this.showInfoToast("No se ha podido encontrar la sala");
+                await this.listarSalas();
+            }
+            this.valorBusqueda = "";
         },
         changeComponent(componentName, p_sala_seleccionada) {
             this.selectedComponent = componentName;
