@@ -22,6 +22,27 @@ export const createConvocatoria = async (nombre, fecha_inicio, fecha_fin, estado
   }
 };
 
+// Función para obtener la convocatoria en curso
+export const getConvocatoriaEnCurso = async () => {
+  try {
+    const url = `/admin/convocatoria-en-curso`; // Ajusta la ruta según tu backend
+    const response = await api.get(url, {
+      headers: {
+        'Authorization': `Bearer ${localStorage.getItem('access_token')}` // Token de autenticación
+      }
+    });
+    return response.data; // Retorna los datos de la convocatoria en curso
+  } catch (error) {
+    console.error('Error en el servicio getConvocatoriaEnCurso:', error);
+    if (error.response) {
+      throw error.response.data; // Retorna el mensaje de error exacto si el servidor lo provee
+    } else {
+      throw new Error('Error de red o de servidor');
+    }
+  }
+};
+
+
 // Servicio para la programación de fases
 export const programarFase = async (id_fase, id_convocatoria, fecha_inicio, fecha_fin) => {
   try {
