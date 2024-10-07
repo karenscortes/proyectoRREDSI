@@ -286,3 +286,21 @@ def asignar_evaluadores_para_proyecto_etapa_presencial(db: Session, id_evaluador
         db.rollback()
         print(f"Error al asignar evaluadores")
         raise HTTPException(status_code=204, detail="Error al asignar evaluadores")
+
+# ACTUALIZAR FECHA Y HORARIOS DE SALA
+def update_horario_sala(db: Session, id_sala:int, id_proyecto_convocatoria: int, fecha: date, hora_inicio:time,hora_fin:time ):
+    try:
+        sql = text("UPDATE detalle_sala SET fecha=:fecha, hora_inicio=:hora_inicio, hora_fin=:hora_fin  WHERE id_sala = :id_sala AND id_proyecto_convocatoria=:id_p_convocatoria ")
+        params = {
+            "id_sala": id_sala,
+            "id_p_convocatoria": id_proyecto_convocatoria,
+            "fecha":fecha,
+            "hora_inicio": hora_inicio,
+            "hora_fin": hora_fin
+        }
+        db.execute(sql, params)
+        db.commit()
+        return True
+    except SQLAlchemyError as e:
+        print(f"Error al actualizar horario en sala: {e}")
+        raise HTTPException(status_code=500, detail="Error al actualizar horario en sala")

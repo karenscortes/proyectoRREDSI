@@ -35,6 +35,20 @@
                   placeholder="usuario@gmail.com"
                 />
               </div>
+              <label
+                for="email"
+                class="col-1 col-form-label col-form-label-sm"
+                >nombre:
+              </label>
+              <div class="col-5">
+                <input
+                  type="email"
+                  class="form-control form-control-sm"
+                  id="email"
+                  v-model="correo"
+                  placeholder="usuario@gmail.com"
+                />
+              </div>
             </div>
             <div class="text-center">
               <button type="submit" class="btn btn-warning font-weight-bold">
