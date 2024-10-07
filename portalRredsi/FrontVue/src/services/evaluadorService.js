@@ -174,3 +174,21 @@ export const obtenerProgramacionFases = async (nombreEtapa) => {
     }
   }
 };
+
+// Servicio para obtener las rúbricas calificadas de un proyecto
+export const obtenerEstadoPostulacion = async (idUsuario) => {
+  try {
+    const response = await api.get(`/obtenerDatosEvaluador/obtener-estado-postulacion-evaluador`, {
+      params: {
+        id_usuario: idUsuario,
+      }
+    });
+    return response.data; // Devuelve los datos de las rúbricas calificadas
+  } catch (error) {
+    if (error.response) {
+      throw error; // Lanza el error para que lo maneje el componente
+    } else {
+      throw new Error('Error de red o de servidor'); // Manejar errores de red
+    }
+  }
+};

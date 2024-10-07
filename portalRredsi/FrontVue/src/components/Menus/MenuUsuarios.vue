@@ -12,7 +12,7 @@
             <nav class="main_nav_container">
                 <div class="main_nav">
                     <ul class="main_nav_list d-flex justify-content-between">
-                        <li class="main_nav_item" v-for="(tab, index) in left_tabs" :key="index"><a href="#" @click="selectComponent(tab.ruta)">{{ tab.nombre }}</a></li>
+                        <li class="main_nav_item" v-for="(tab, index) in left_tabs" :key="index"><a href="#" :class="tab.uso" @click="selectComponent(tab.ruta)">{{ tab.nombre }}</a></li>
                         <li :class="['main_nav_item', visibilidad]" v-for="(tab, index) in mid_tabs" :key="index">
                             <div class="dropdown">
                                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -25,7 +25,7 @@
                         </li>
 
                         
-                        <li class="main_nav_item" v-if="user.id_rol === 1"><a href="#" @click="selectComponent('ConvocatoriaInfoPageView')">Convocatoria</a></li>
+                        <li class="main_nav_item" v-if="user.id_rol === 1"><a href="#" :class="convocatoriaUso" @click="selectComponent('ConvocatoriaInfoPageView')">Convocatoria</a></li>
                         <li class="main_nav_item"><a href="#" @click="logout">Cerrar Sesión</a></li>
                     </ul>
                 </div>
@@ -56,7 +56,7 @@
         <div class="menu_inner menu_mm">
             <div class="menu menu_mm">
                 <ul class="menu_list menu_mm ">
-                    <li class="menu_item menu_mm"  v-for="(tab, index) in left_tabs" :key="index"><a href="#" @click="selectComponent(tab.ruta)">{{ tab.nombre }}</a></li>
+                    <li class="menu_item menu_mm"  v-for="(tab, index) in left_tabs" :key="index"><a href="#" :class="tab.uso" @click="selectComponent(tab.ruta)">{{ tab.nombre }}</a></li>
                     <li :class="['menu_item menu_mm d-block ', visibilidad]" v-for="(tab, index) in mid_tabs" :key="index">
                         <div class="dropdown menu_mm">
                             <a class="nav-link dropdown-toggle menu_mm" href="#" id="navbarDropdown" role="button" type="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -67,7 +67,7 @@
                             </ul>
                         </div>
                     </li>
-                    <li class="menu_item menu_mm" v-if="user.id_rol === 1"><a href="#" @click="selectComponent('ConvocatoriaInfoPageView')">Convocatoria</a></li>
+                    <li class="menu_item menu_mm" v-if="user.id_rol === 1"><a href="#" :class="convocatoriaUso" @click="selectComponent('ConvocatoriaInfoPageView')">Convocatoria</a></li>
                     <li class="menu_item menu_mm"><a href="#"  @click="logout">Cerrar sesión</a></li>
                 </ul>
 
@@ -95,6 +95,7 @@
 
 <script>
 import { obtenerFechasAsignaciones} from '@/services/delegadoService'
+import { obtenerEstadoPostulacion} from '@/services/evaluadorService'
 import { ref, onMounted} from "vue";
 import { defineComponent,reactive } from "vue";
 import { useRouter } from "vue-router";
@@ -107,6 +108,9 @@ export default defineComponent({
         const asignacion1 = ref('');
         const asignacion2 = ref('');
         const otras_opciones = ref('');
+        const proyectosUso = ref('');
+        const convocatoriaUso = ref('');
+        const paginaUso = ref('');
         
         //obteniendo fecha actual
         const currentDate = ref(new Date().toISOString().split('T')[0]);
@@ -144,6 +148,47 @@ export default defineComponent({
             }
         };
 
+        const handleEvaluadorMenu = async () => {
+            try {
+                // Realiza la llamada a la API
+                const response = await obtenerEstadoPostulacion(user.id_usuario);
+
+                // Accede a la propiedad estado_postulacion de la respuesta
+                const estadoPostulacion = response.estado_postulacion;
+
+                console.log(estadoPostulacion); // Para verificar el valor recibido
+
+                // Según el estado de la postulación, definimos si se habilitan o no los apartados
+                switch (estadoPostulacion) {
+                    case 'aceptada':
+                        proyectosUso.value = '';
+                        convocatoriaUso.value = '';
+                        break;
+                    case 'pendiente':
+                        proyectosUso.value = 'disabled';
+                        convocatoriaUso.value = 'disabled';
+                        break;
+                    case 'rechazada':
+                        proyectosUso.value = 'disabled';
+                        convocatoriaUso.value = 'disabled';
+                        break;
+                    case 'sin postulacion':
+                        proyectosUso.value = 'disabled';
+                        convocatoriaUso.value = 'disabled';
+                        break;
+                    default:
+                        console.error('Estado de postulación desconocido:', estadoPostulacion);
+                        proyectosUso.value = 'disabled';
+                        convocatoriaUso.value = 'disabled';
+                }
+            } catch (error) {
+                console.error('Error obteniendo estado de postulación:', error);
+                // Si ocurre un error, definir los valores predeterminados para evitar fallos en la UI
+                proyectosUso.value = 'disabled';
+                convocatoriaUso.value = 'disabled';
+            }
+        };
+
         if (user?.id_rol === 3) {
             Object.assign(state, {
                 left_tabs: [{nombre:'Inicio', ruta:'InicioAdminView'}, {nombre:'Perfil', ruta:'PerfilAdmin'}, {nombre:'Cuentas', ruta:'DelegadosAdminView'},{nombre:'Rubricas', ruta:'RubricaAdminView'}],
@@ -176,8 +221,9 @@ export default defineComponent({
             });
             
         } else if (user?.id_rol === 1) {
+            handleEvaluadorMenu();
             Object.assign(state, {
-                left_tabs: [{nombre:'Inicio', ruta:'PaginaInicioEvaluadorView'}, {nombre:'Perfil', ruta:'EditarPerfil'}, {nombre:'Proyectos', ruta:'ProyectosAsignadosEvaluadorView'}],
+                left_tabs: [{nombre:'Inicio', ruta:'PaginaInicioEvaluadorView', uso: paginaUso}, {nombre:'Perfil', ruta:'EditarPerfil', uso:''}, {nombre:'Proyectos', ruta:'ProyectosAsignadosEvaluadorView', uso: proyectosUso}],
                 visibilidad:"d-none"
             });
         } else if(user?.id_rol == 6) {
@@ -201,7 +247,9 @@ export default defineComponent({
             user,
             ...state,
             getAssignmentDates,
+            handleEvaluadorMenu,
             selectComponent,
+            convocatoriaUso,
             logout
         };
     },
