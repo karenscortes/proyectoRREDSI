@@ -25,7 +25,7 @@
                   <div class="event_name">
                     <a class="trans_200" href="#">
                       <!-- Cambiar Ponencias a Evento presencial -->
-                      {{ event.nombre_fase === 'Ponencias' ? 'Evento presencial' : event.nombre_fase }}
+                      {{ event.nombre_fase === 'Evento' ? 'Evento presencial' : event.nombre_fase }}
                     </a>
                   </div>
                   <div class="event_location">{{ event.nombre_etapa }}</div>
