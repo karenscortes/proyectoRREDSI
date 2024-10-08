@@ -286,3 +286,43 @@ def asignar_evaluadores_para_proyecto_etapa_presencial(db: Session, id_evaluador
         db.rollback()
         print(f"Error al asignar evaluadores")
         raise HTTPException(status_code=204, detail="Error al asignar evaluadores")
+
+# ACTUALIZAR FECHA Y HORARIOS DE SALA
+def update_horario_sala(db: Session, id_sala:int, id_proyecto_convocatoria: int, fecha: date, hora_inicio:time,hora_fin:time ):
+    try:
+        sql = text("UPDATE detalle_sala SET fecha=:fecha, hora_inicio=:hora_inicio, hora_fin=:hora_fin  WHERE id_sala = :id_sala AND id_proyecto_convocatoria=:id_p_convocatoria ")
+        params = {
+            "id_sala": id_sala,
+            "id_p_convocatoria": id_proyecto_convocatoria,
+            "fecha":fecha,
+            "hora_inicio": hora_inicio,
+            "hora_fin": hora_fin
+        }
+        db.execute(sql, params)
+        db.commit()
+        return True
+    except SQLAlchemyError as e:
+        print(f"Error al actualizar horario en sala: {e}")
+        raise HTTPException(status_code=500, detail="Error al actualizar horario en sala")
+    
+# BUSCAR SALA POR NOMBRE, NUMERO O AREA DE CONOCIMIENTO
+def buscar_sala_por_nombre(db: Session, valor_buscado: str):
+    try:
+        
+        sql = text("""SELECT salas.*,areas_conocimiento.nombre AS nombre_area_conocimiento, usuarios.nombres AS nombres_delegado,usuarios.apellidos AS apellidos_delegado FROM salas
+                        JOIN areas_conocimiento ON salas.id_area_conocimiento = areas_conocimiento.id_area_conocimiento
+                        JOIN usuarios ON salas.id_usuario = usuarios.id_usuario
+                        JOIN convocatorias ON salas.id_convocatoria = convocatorias.id_convocatoria 
+                        WHERE convocatorias.estado = 'en curso' 
+                        AND (salas.nombre_sala LIKE :v_buscado OR salas.numero_sala LIKE :v_buscado OR areas_conocimiento.nombre LIKE :v_buscado)
+                    """)
+        
+        params ={
+            "v_buscado": f"%{valor_buscado}%",
+        }
+        result = db.execute(sql,params).mappings().all()
+
+        return result
+    except SQLAlchemyError as e:
+        print(f"Error al buscar salas: {e}")
+        raise HTTPException(status_code=500, detail="Error al buscar salas")

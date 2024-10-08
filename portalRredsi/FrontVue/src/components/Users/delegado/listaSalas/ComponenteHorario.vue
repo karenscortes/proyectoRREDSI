@@ -18,8 +18,8 @@
                             :style="getStyle(i, detalle.hora_inicio, detalle.hora_fin)">
                             <div v-if="i === getMiddleSlot(detalle.hora_inicio, detalle.hora_fin) && isProjectTime(i, detalle.hora_inicio, detalle.hora_fin)"
                                 class="d-flex justify-content-center align-items-center h-100" style="height: 100%;">
-                                <a class="text-dark fw-semibold" type="button"
-                                    @click="proyectoSeleccionado(detalle)">{{ editarHorario ? 'Editar' : 'Ver Detalle'}}</a>
+                                <a class="text-dark fw-semibold" type="button" @click="proyectoSeleccionado(detalle)">{{
+                                    editarHorario ? 'Editar' : 'Ver Detalle' }}</a>
                             </div>
                         </td>
                     </tr>
@@ -36,36 +36,31 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title fs-3" id="actualizarHorarioLabel">Actualización de Horario</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" @click="cerrarModalActualizar"></button>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+                            @click="cerrarModalActualizar"></button>
                     </div>
                     <div class="modal-body">
-                        <form class="mt-4">
+                        <form class="mt-4" @submit.prevent="actualizarHorario">
                             <div class="row mb-4 justify-content-center">
-                                <div class="col-12 col-md-6">
-                                    <label for="proyecto_codigo" class="fw-bold text-dark text-center">Proyecto:</label>
-                                    <select id="id_proyecto" class="form-select text-dark" required>
-                                        <option value="" disabled selected>Seleccione una opción</option>
-                                        <!-- Opciones del proyecto -->
-                                    </select>
+                                <div class="col-12 text-center mb-1">
+                                    <label for="proyecto_codigo" class="fw-bold text-dark">Proyecto:</label>
+                                </div>
+                                <div class="col-12 col-md-8 text-center">
+                                    <span class="text-dark">{{ detalle_proyecto.titulo }}</span>
                                 </div>
                             </div>
+
 
                             <hr class="my-4">
 
                             <div class="row mb-4">
                                 <div class="col-md-6">
                                     <label for="evaluador_1" class="fw-bold text-dark">Evaluador 1:</label>
-                                    <select id="id_evaluador_1" class="form-select text-dark" required>
-                                        <option value="" disabled selected>Seleccione una opción</option>
-                                        <!-- Opciones del evaluador 1 -->
-                                    </select>
+                                    nombre del evaluador 1
                                 </div>
                                 <div class="col-md-6">
                                     <label for="evaluador_2" class="fw-bold text-dark">Evaluador 2:</label>
-                                    <select id="id_evaluador_2" class="form-select text-dark" required>
-                                        <option value="" disabled selected>Seleccione una opción</option>
-                                        <!-- Opciones del evaluador 2 -->
-                                    </select>
+                                    nombre del evaluador 2
                                 </div>
                             </div>
 
@@ -74,22 +69,25 @@
                             <div class="row mb-4">
                                 <div class="col-md-4">
                                     <label for="fecha" class="form-label text-black">Fecha:</label>
-                                    <input id="fecha" type="date" :value="detalles_editables_horario.fecha" class="form-control text-dark">
+                                    <input id="fecha" type="date" v-model="detalles_editables_horario.fecha"
+                                        class="form-control text-dark" :min="sala.fechasEvento.fecha_inicio"
+                                        :max="sala.fechasEvento.fecha_fin">
                                 </div>
                                 <div class="col-md-4">
                                     <label for="horario_inicio" class="form-label text-black">Hora de Inicio:</label>
-                                    <input id="horario_inicio" :value="detalles_editables_horario.hora_inicio" type="time" class="form-control text-dark" min="06:00"
-                                        max="18:30" step="1800" required>
+                                    <input id="horario_inicio" v-model="detalles_editables_horario.hora_inicio"
+                                        type="time" class="form-control text-dark" min="06:00" max="18:30" step="1800"
+                                        required>
                                 </div>
                                 <div class="col-md-4">
                                     <label for="horario_fin" class="form-label text-black">Hora de Fin:</label>
-                                    <input id="horario_fin" type="time" :value="detalles_editables_horario.hora_fin" class="form-control text-dark" min="06:00"
-                                        max="18:30" step="1800" required>
+                                    <input id="horario_fin" type="time" v-model="detalles_editables_horario.hora_fin"
+                                        class="form-control text-dark" min="06:00" max="18:30" step="1800" required>
                                 </div>
                             </div>
 
                             <div class="text-center">
-                                <button class="btn text-dark fw-bold" type="button" id="asignar_horario" @click="actualizarHorario"
+                                <button class="btn text-dark fw-bold" type="submit" id="asignar_horario"
                                     style="background-color: rgb(255, 182, 6);">
                                     Actualizar Horario
                                 </button>
@@ -184,7 +182,7 @@
 </template>
 
 <script>
-import { obtenerDetalleSala, obtenerDatosProyecto, obtenerPonentesProyecto } from "@/services/salasDelegadoService";
+import { obtenerDetalleSala, obtenerDatosProyecto, obtenerPonentesProyecto, actualizarHorarioAsignado } from "@/services/salasDelegadoService";
 import { obtenerEvaluadoresProyecto, obtenerUrlPresentacionProyecto } from "@/services/delegadoService";
 import { useToastUtils } from '@/utils/toast';
 
@@ -194,9 +192,12 @@ export default {
         editarHorario: Boolean || false,
     },
     setup() {
-        const { showSuccessToast, showErrorToast, showInfoToast } = useToastUtils();
+        const { showSuccessToast, showErrorToast, showInfoToast, showWarningToast } = useToastUtils();
         return {
-            showInfoToast
+            showInfoToast,
+            showErrorToast,
+            showSuccessToast,
+            showWarningToast
         }
     },
     data() {
@@ -218,7 +219,7 @@ export default {
             },
             evaluadoresProyectoSeleccionado: [],
             detalle_proyecto: {},
-            detalles_editables_horario:{}
+            detalles_editables_horario: {}
         }
 
     },
@@ -251,6 +252,15 @@ export default {
             try {
                 const datosSala = await obtenerDetalleSala(this.sala.id_sala);
                 this.detalleSala = datosSala.data.detalle_sala;
+
+                // Filtra los proyectos que ya están en la sala para que no salgan duplicados
+                this.detalleSala = this.detalleSala.filter((item, index, self) => {
+                    // Usamos 'findIndex' para ver si el mismo 'id_sala' y 'id_proyecto_convocatoria' ya apareció antes
+                    return self.findIndex(
+                        elem => elem.id_sala === item.id_sala && elem.id_proyecto_convocatoria === item.id_proyecto_convocatoria
+                    ) === index;
+                });
+
                 this.copiaDetalleSala = JSON.parse(JSON.stringify(this.detalleSala));
 
                 // Convierte las horas a minutos en cada fila de la tabla
@@ -289,7 +299,7 @@ export default {
             if (duracion.includes('M')) {
                 minutos = parseInt(duracion.split('M')[0]);
             }
-            if(horas < 10){
+            if (horas < 10) {
                 horas = `0${horas}`;
             }
             return horas + ":" + minutos
@@ -309,7 +319,14 @@ export default {
                 // Se busca en la copia del detalle de sala el id del proyecto para traer los datos editables 
                 this.detalles_editables_horario = this.copiaDetalleSala.find(detalle => detalle.id_proyecto === p_detalle_sala.id_proyecto);
                 this.detalles_editables_horario.hora_inicio = this.obtenerHoraMinutos(this.detalles_editables_horario.hora_inicio);
-                this.detalles_editables_horario.hora_fin = this.obtenerHoraMinutos(this.detalles_editables_horario.hora_fin)
+                this.detalles_editables_horario.hora_fin = this.obtenerHoraMinutos(this.detalles_editables_horario.hora_fin);
+                this.detalles_editables_horario.id_proyecto_convocatoria = p_detalle_sala.id_proyecto_convocatoria;
+                this.detalles_editables_horario.id_sala = p_detalle_sala.id_sala;
+                ;
+
+                this.detalle_proyecto = "";
+                this.obtenerDetalleProyecto(p_detalle_sala.id_proyecto);
+                console.log(p_detalle_sala)
 
             } else {
                 $("#detalle_proyecto").modal('show');
@@ -326,8 +343,7 @@ export default {
                     this.horariosProyectoSeleccionado.hora_inicio = this.formatearHora(this.obtenerHoraMinutos(horarioProyectoEspecifico.hora_inicio));
                     this.horariosProyectoSeleccionado.hora_fin = this.formatearHora(this.obtenerHoraMinutos(horarioProyectoEspecifico.hora_fin));
                 }
-                console.log('horario especifico',horarioProyectoEspecifico)
-                this.obtenerDetalleProyecto(p_detalle_sala.id_proyecto)
+                this.obtenerDetalleProyecto(p_detalle_sala.id_proyecto);
 
                 // Ejecutar todas las consultas en paralelo y manejar los resultados de manera independiente
                 const [responseEvaluadores, responsePonentes, responseUrlPresentacion] = await Promise.allSettled([
@@ -360,14 +376,37 @@ export default {
                 }
             }
         },
-        async actualizarHorario(){
-            // pendiente
-            this.showInfoToast("Pendiente la consulta para actualizar");
-            this.obtenerDatosSala();
-            $("#actualizarHorarioModal").modal('hide');
+        async actualizarHorario() {
+            try {
+                if (this.detalles_editables_horario.hora_inicio < this.detalles_editables_horario.hora_fin) {
+                    if ( this.detalles_editables_horario.hora_inicio == this.detalles_editables_horario.hora_fin ) {
+                        this.showInfoToast("Ya hay un proyecto asignado a esta hora o estas ingresando la misma hora en los dos campos, intenta con otro horario");
+                    } else {
+                        await actualizarHorarioAsignado(
+                            this.detalles_editables_horario.id_sala,
+                            this.detalles_editables_horario.id_proyecto_convocatoria,
+                            this.detalles_editables_horario.fecha,
+                            this.detalles_editables_horario.hora_inicio,
+                            this.detalles_editables_horario.hora_fin
+                        );
+
+                        // ALERTA Y RECARGA DE COMPONENTES DE LA VISTA 
+                        this.showSuccessToast("Horario actualizado con exito");
+                        this.obtenerDatosSala();
+                        $("#actualizarHorarioModal").modal('hide');
+                    }
+                } else {
+                    this.showWarningToast("Debes ingresar una hora de finalización mayor a la de inicio")
+                }
+
+
+            } catch (error) {
+                console.log(error);
+                this.showErrorToast("No se pudo actualizar el horario");
+            }
         }
         ,
-        cerrarModalActualizar(){
+        cerrarModalActualizar() {
             this.obtenerDatosSala();
 
         },
@@ -401,7 +440,7 @@ export default {
             } else if (horas > 12) {
                 horas -= 12; // 13:xx a 1:xx PM
             }
-            
+
             return `${horas}:${minutos} ${modifier}`;
         }
     },

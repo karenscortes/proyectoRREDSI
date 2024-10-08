@@ -21,7 +21,7 @@
                 <div class="container">
                     <!-- <button type="button" class="btn" data-bs-toggle="modal"
                         data-bs-target="#asignarHorarioModal">
-                        Asignar horario
+                        Asignar horario +
                     </button> -->
 
                     <!-- Modal de asignar horario -->
@@ -224,11 +224,11 @@
                 <!-- Submit Button -->
                 <div class="text-right mt-3">
                     <button class="btn text-white bg-dark fw-bold" type="button" @click="modoEditarHorario">
-                        <span>{{ editarHorario ? 'Ver detalles': 'Editar Horario' }}</span>
+                        <span>{{ editarHorario ? 'Ver detalles' : 'Editar Horario' }}</span>
                     </button>
                 </div>
                 <!-- Tabla Horarios agregados -->
-                <ComponenteHorario ref="horario" :sala="sala" :editarHorario="editarHorario"/>
+                <ComponenteHorario ref="horario" :sala="sala" :editarHorario="editarHorario" />
             </div>
         </div>
 
@@ -277,7 +277,7 @@ export default defineComponent({
             evaluadores: [],
             listaProyectosSinAsignar: [],
             actualizarHorario: true,
-            editarHorario : false,
+            editarHorario: false,
             detalleSala: []
         };
     },
@@ -291,8 +291,8 @@ export default defineComponent({
                 if (this.horario.hora_inicio < this.horario.hora_fin) {
                     const conflictos_horario = this.detalleSala.filter(detalle => detalle.hora_inicio === this.horario.hora_inicio);
 
-                    if (conflictos_horario.length > 0) {
-                        this.showInfoToast("Ya hay un proyecto asignado a esta hora, intenta con otro horario");
+                    if (conflictos_horario.length > 0 || this.detalles_editables_horario.hora_inicio == this.detalles_editables_horario.hora_fin) {
+                        this.showInfoToast("Ya hay un proyecto asignado a esta hora o estas ingresando la misma hora en los dos campos, intenta con otro horario");
                     } else {
                         await asignarEvaluadoresEtapaPresencial(this.id_evaluador1, this.id_evaluador2, this.proyectoSeleccionado.id_proyecto, this.id_proyecto_convocatoria, this.sala.id_sala, this.horario.fecha, this.horario.hora_inicio, this.horario.hora_fin);
 
@@ -367,7 +367,6 @@ export default defineComponent({
                     this.detalleSala[i].hora_inicio = this.obtenerHoraMinutos(this.detalleSala[i].hora_inicio);
                     this.detalleSala[i].hora_fin = this.obtenerHoraMinutos(this.detalleSala[i].hora_fin);
                 }
-                console.log(this.detalleSala);
             } catch (error) {
                 console.error("Aún no se asignan proyectos a esta sala");
             }
@@ -414,7 +413,7 @@ export default defineComponent({
             const proyecto_convocatoria = await obtenerProyectoConvocatoria(p_id_proyecto);
             this.id_proyecto_convocatoria = proyecto_convocatoria.data.proyecto_convocatoria.id_proyecto_convocatoria;
         },
-        modoEditarHorario(){
+        modoEditarHorario() {
             this.editarHorario = !this.editarHorario;
         }
 
@@ -461,6 +460,7 @@ export default defineComponent({
     transform: translateX(-4px);
     /* Pequeño desplazamiento del ícono al hover */
 }
+
 .btn-close {
     width: 8px;
     height: 8px;

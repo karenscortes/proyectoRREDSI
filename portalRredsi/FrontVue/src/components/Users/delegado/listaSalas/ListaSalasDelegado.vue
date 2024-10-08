@@ -32,19 +32,19 @@
                             <div class="col-8 col-sm-6">
                                 <input v-model="valorBusqueda" type="text" id="busqueda"
                                     class="form-control text-dark w-100" style="height: 100%; padding: 0.5rem;"
-                                    placeholder="Ingresa numero de sala" @input="buscarSala">
+                                    placeholder="Ingresa nombre de la sala">
                             </div>
                             <div class="col-4 col-sm-4">
                                 <button class="btn w-100 font-weight-bold"
                                     style="background: rgb(255, 182, 6); color: #000000"
-                                    @click="buscarSala">Buscar</button>
+                                    @click="buscarSalaEspecifica">Buscar</button>
                             </div>
                         </div>
                     </div>
                 </div>
 
                 <div class="row">
-                    <CardSalas v-for="(sala, index) in salasFiltradas" :key="index" :sala="sala"
+                    <CardSalas v-for="(sala, index) in salas" :key="index" :sala="sala"
                         @component-selected="changeComponent" />
                 </div>
 
@@ -57,12 +57,13 @@
 <script>
 import CardSalas from "./CardSalas.vue";
 import { obtenerSalas } from '@/services/delegadoService';
-import { obtenerDatosSalaAsignada } from '@/services/salasDelegadoService';
+import { obtenerDatosSalaAsignada, buscarSala} from '@/services/salasDelegadoService';
 import { useAuthStore } from '@/store';
 import GestionSala from "./GestionSala.vue";
 import DetalleSala from "./DetalleSala.vue";
 import PaginatorBody from "../../../UI/PaginatorBody.vue";
 import { obtenerProgramacionFases } from '@/services/evaluadorService';
+import { useToastUtils } from '@/utils/toast';
 
 export default {
     components: {
@@ -72,6 +73,7 @@ export default {
         PaginatorBody
     },
     data() {
+        const { showSuccessToast, showErrorToast, showWarningToast, showInfoToast } = useToastUtils();
         return {
             salas: [], // Almacena todas las salas originales
             salasFiltradas: [], // Almacena las salas filtradas
@@ -81,12 +83,15 @@ export default {
             salaDetalle: [],
             salaAsignada: false,
             miSala: {},
-            SalaSeleccionada: "",
+            SalaSeleccionada: {},
             totalPages: 0,
             fechasEvento: {
                 fecha_inicio:"",
                 fecha_fin:"",
             },
+            showErrorToast,
+            showInfoToast,
+            showWarningToast
         }
     },
     setup() {
@@ -107,32 +112,48 @@ export default {
                 this.salasFiltradas = [...this.salas];
 
                 // Obtengo las fechas del evento y se las agrego al detalle de las salas
-                this.obtenerFechasEvento();
-                this.salasFiltradas.forEach(sala =>{
+                await this.obtenerFechasEvento();
+                this.salas.forEach(sala =>{
+                    sala.fechasEvento = "";
                     sala.fechasEvento = this.fechasEvento;
-                })
+                });
             } catch (error) {
-                alert("Error al consultar salas");
+                this.showErrorToast("Error al consultar salas");
             }
         },
-        buscarSala() {
-            if (this.valorBusqueda.trim() != "") {
+        async buscarSalaEspecifica() {
+            try {
+                if (this.valorBusqueda.trim() != "") {
                 // Buscar salas espeficicas 
-                this.salasFiltradas = this.salas.filter(sala =>
-                    sala.numero_sala.toLowerCase().includes(this.valorBusqueda.toLowerCase()) ||
-                    sala.nombre_area_conocimiento.toLowerCase().includes(this.valorBusqueda.toLowerCase()) ||
-                    sala.nombres_delegado.toLowerCase().includes(this.valorBusqueda.toLowerCase())
-                );
+                const responseBuscarSala = await buscarSala(this.valorBusqueda);
+                this.salas = responseBuscarSala.data.salas;
+                
+                this.valorBusqueda = "";
+                this.totalPages = 0;
+                
+                // Obtengo las fechas del evento y se las agrego al detalle de las salas
+                await this.obtenerFechasEvento();
+                this.salas.forEach(sala =>{
+                    sala.fechasEvento = "";
+                    sala.fechasEvento = this.fechasEvento;
+                });
             } else {
-                this.salasFiltradas = [...this.salas]; // Si no hay búsqueda, muestra todas las salas
+                await this.listarSalas();
+                this.showInfoToast("Si deseas buscar una sala debes ingresar un valor en el campo de busqueda");
             }
+            } catch (error) {
+                this.showInfoToast("No se ha podido encontrar la sala");
+                await this.listarSalas();
+            }
+            this.valorBusqueda = "";
         },
         changeComponent(componentName, p_sala_seleccionada) {
             this.selectedComponent = componentName;
             this.habilitarComponente = true;
             this.SalaSeleccionada = p_sala_seleccionada;
         },
-        volverListaSalas() {
+        async volverListaSalas() {
+            await this.listarSalas();
             this.habilitarComponente = false;
         },
         async obtenerSalaAsignada(id_delegado) {
@@ -153,12 +174,13 @@ export default {
                         this.fechasEvento.fecha_inicio = response.data[i].fecha_inicio;
                         this.fechasEvento.fecha_fin = response.data[i].fecha_fin;
                         this.miSala.fechasEvento = this.fechasEvento;
+                        this.SalaSeleccionada.fechasEvento = this.fechasEvento;
                         break;
                     }
                 }
             } catch (error) {
                 console.log(error);
-                showErrorToast("Error al obtener las fases de la convocatoria");
+                this.showErrorToast("Error al obtener las fases de la convocatoria");
             }
         },
         cambiarPagina(pagina) {
