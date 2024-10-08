@@ -18,7 +18,7 @@
       <div class="col-12 col-md-6 d-flex justify-content-end">
         <div class="d-flex w-100">
           <input type="text" id="busqueda" v-model="busqueda" class="form-control mr-2" placeholder="Buscar..." />
-          <button class="btn btn-warning font-weight-bold">Buscar</button>
+          <button class="btn btn-warning font-weight-bold" @click="buscarSalaEspecifica">Buscar</button>
         </div>
       </div>
     </div>
@@ -57,6 +57,8 @@ import { obtenerSalas } from '@/services/delegadoService';
 import PaginatorBody from "../components/UI/PaginatorBody.vue";
 import { getAreasConocimiento } from '@/services/administradorService';
 import { getDelegatesAll } from '@/services/administradorService';
+import { buscarSala } from '@/services/salasDelegadoService';
+import { useToastUtils } from '@/utils/toast';
 
 export default {
   setup() {
@@ -70,6 +72,7 @@ export default {
     let posiblesAreasConocimiento = reactive([]);
     let totalPages = ref(0);
     const paginaActual = ref(1);
+    const { showSuccessToast, showErrorToast, showWarningToast, showInfoToast } = useToastUtils();
 
     // Funcion para obtener las salas
     const obtenerInfoSalas = async (p_pagina_Actual) => {
@@ -129,6 +132,34 @@ export default {
       }
     };
 
+    const buscarSalaEspecifica = async () => {
+      try {
+        if (busqueda.value.trim() != "") {
+          infoSalas.length = 0;
+          const responseBuscarSala = await buscarSala(busqueda.value);
+          responseBuscarSala.data.salas.forEach((sala) => {
+            infoSalas.push({
+              p_idDelegado: sala.id_usuario,
+              p_delegado: `${sala.nombres_delegado} ${sala.apellidos_delegado}`,
+              p_idSala: sala.id_sala,
+              p_numSala: sala.numero_sala,
+              p_nombre_sala: sala.nombre_sala,
+              p_idAreaConocimiento: sala.id_area_conocimiento,
+              p_areaConocimiento: sala.nombre_area_conocimiento,
+              p_posiblesAreasConocimiento: posiblesAreasConocimiento
+            });
+          });
+          totalPages.value = 0;
+        }else{
+          showWarningToast("Si deseas buscar un sala debes ingresar un valor de busqueda");
+          obtenerInfoSalas();
+        }
+      } catch (error) {
+        showInfoToast("No se ha podido encontrar la sala buscada")
+        obtenerInfoSalas();
+      }
+      busqueda.value = "";
+    }
 
 
     //Objeto que se enviara al modal
@@ -172,11 +203,11 @@ export default {
       paginaActual.value = pagina;
       obtenerInfoSalas(pagina);
     }
-    onMounted(async() => {
+    onMounted(async () => {
       await obtenerInfoParaEditar();
       await obtenerInfoSalas();
     });
-    return { infoSalas, infoModal, busqueda, isModalOpen, closeModal, showModal, onModal, obtenerInfoSalas, totalPages, cambiarPagina, paginaActual };
+    return { infoSalas, infoModal, busqueda, isModalOpen, closeModal, showModal, onModal, obtenerInfoSalas, totalPages, cambiarPagina, paginaActual, buscarSalaEspecifica };
   },
   components: {
     RowTableSala,

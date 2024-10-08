@@ -32,19 +32,19 @@
                             <div class="col-8 col-sm-6">
                                 <input v-model="valorBusqueda" type="text" id="busqueda"
                                     class="form-control text-dark w-100" style="height: 100%; padding: 0.5rem;"
-                                    placeholder="Ingresa numero de sala" @input="buscarSala">
+                                    placeholder="Ingresa nombre de la sala">
                             </div>
                             <div class="col-4 col-sm-4">
                                 <button class="btn w-100 font-weight-bold"
                                     style="background: rgb(255, 182, 6); color: #000000"
-                                    @click="buscarSala">Buscar</button>
+                                    @click="buscarSalaEspecifica">Buscar</button>
                             </div>
                         </div>
                     </div>
                 </div>
 
                 <div class="row">
-                    <CardSalas v-for="(sala, index) in salasFiltradas" :key="index" :sala="sala"
+                    <CardSalas v-for="(sala, index) in salas" :key="index" :sala="sala"
                         @component-selected="changeComponent" />
                 </div>
 
@@ -57,7 +57,7 @@
 <script>
 import CardSalas from "./CardSalas.vue";
 import { obtenerSalas } from '@/services/delegadoService';
-import { obtenerDatosSalaAsignada } from '@/services/salasDelegadoService';
+import { obtenerDatosSalaAsignada, buscarSala} from '@/services/salasDelegadoService';
 import { useAuthStore } from '@/store';
 import GestionSala from "./GestionSala.vue";
 import DetalleSala from "./DetalleSala.vue";
@@ -90,7 +90,8 @@ export default {
                 fecha_fin:"",
             },
             showErrorToast,
-            showInfoToast
+            showInfoToast,
+            showWarningToast
         }
     },
     setup() {
@@ -111,32 +112,48 @@ export default {
                 this.salasFiltradas = [...this.salas];
 
                 // Obtengo las fechas del evento y se las agrego al detalle de las salas
-                this.obtenerFechasEvento();
-                this.salasFiltradas.forEach(sala =>{
+                await this.obtenerFechasEvento();
+                this.salas.forEach(sala =>{
+                    sala.fechasEvento = "";
                     sala.fechasEvento = this.fechasEvento;
-                })
+                });
             } catch (error) {
                 this.showErrorToast("Error al consultar salas");
             }
         },
-        buscarSala() {
-            if (this.valorBusqueda.trim() != "") {
+        async buscarSalaEspecifica() {
+            try {
+                if (this.valorBusqueda.trim() != "") {
                 // Buscar salas espeficicas 
-                this.salasFiltradas = this.salas.filter(sala =>
-                    sala.numero_sala.toLowerCase().includes(this.valorBusqueda.toLowerCase()) ||
-                    sala.nombre_area_conocimiento.toLowerCase().includes(this.valorBusqueda.toLowerCase()) ||
-                    sala.nombres_delegado.toLowerCase().includes(this.valorBusqueda.toLowerCase())
-                );
+                const responseBuscarSala = await buscarSala(this.valorBusqueda);
+                this.salas = responseBuscarSala.data.salas;
+                
+                this.valorBusqueda = "";
+                this.totalPages = 0;
+                
+                // Obtengo las fechas del evento y se las agrego al detalle de las salas
+                await this.obtenerFechasEvento();
+                this.salas.forEach(sala =>{
+                    sala.fechasEvento = "";
+                    sala.fechasEvento = this.fechasEvento;
+                });
             } else {
-                this.salasFiltradas = [...this.salas]; // Si no hay búsqueda, muestra todas las salas
+                await this.listarSalas();
+                this.showInfoToast("Si deseas buscar una sala debes ingresar un valor en el campo de busqueda");
             }
+            } catch (error) {
+                this.showInfoToast("No se ha podido encontrar la sala");
+                await this.listarSalas();
+            }
+            this.valorBusqueda = "";
         },
         changeComponent(componentName, p_sala_seleccionada) {
             this.selectedComponent = componentName;
             this.habilitarComponente = true;
             this.SalaSeleccionada = p_sala_seleccionada;
         },
-        volverListaSalas() {
+        async volverListaSalas() {
+            await this.listarSalas();
             this.habilitarComponente = false;
         },
         async obtenerSalaAsignada(id_delegado) {

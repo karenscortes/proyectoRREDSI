@@ -21,7 +21,7 @@
                 <div class="container">
                     <!-- <button type="button" class="btn" data-bs-toggle="modal"
                         data-bs-target="#asignarHorarioModal">
-                        Asignar horario
+                        Asignar horario +
                     </button> -->
 
                     <!-- Modal de asignar horario -->

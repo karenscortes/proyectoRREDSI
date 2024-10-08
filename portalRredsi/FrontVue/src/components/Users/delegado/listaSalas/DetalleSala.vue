@@ -48,7 +48,7 @@ import ComponenteHorario from "./ComponenteHorario.vue";
 export default {
     props: {
         sala: Object,
-        index: Number
+        index: Number,
     },
     components: {
         ComponenteHorario
