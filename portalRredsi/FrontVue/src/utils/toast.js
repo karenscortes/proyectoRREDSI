@@ -88,6 +88,5 @@ export function useToastUtils() {
           rtl: false
         });
     }
-    
   };
 }

@@ -2,7 +2,7 @@ from typing import List
 from fastapi import APIRouter, Depends, File, HTTPException, UploadFile
 from sqlalchemy.orm import Session
 from appv1.crud.admin.gest_asistentes_externos import generate_code, get_attendee_by_document, get_id_document_type, get_paginated_attendees, insert_attendee, insert_user, insertar_historial_admin, update_external_attendees
-from appv1.crud.admin.gest_delegado import create_delegado,get_delegados_activos_paginated, get_delegados_by_document, update_status_delegate
+from appv1.crud.admin.gest_delegado import create_delegado, get_all_document,get_delegados_activos_paginated, get_delegados_by_document, get_user_email, update_status_delegate
 from appv1.crud.admin.gest_rubricas import create_items,get_all_rubricas, update_items, update_status
 from appv1.crud.admin.gest_rubricas import get_all_rubricas
 from appv1.crud.admin.admin import create_convocatoria, create_programacion_fase, create_sala, existe_convocatoria_en_curso, obtener_convocatoria_en_curso, update_sala
@@ -14,6 +14,7 @@ from appv1.schemas.admin.attendees import PaginatedAttendees, UpdatedAttendee
 from appv1.schemas.admin.delegado import DelegadoResponse, PaginatedDelegadoResponse
 from appv1.schemas.admin.items_rubrica import ItemCreate, ItemUpdate, ItemUpdateStatus
 from appv1.schemas.admin.rubrica import RubricaResponse
+from appv1.schemas.tipo_documento import TipoDocumentoResponse
 from appv1.schemas.usuario import UserCreate, UserResponse
 from core.utils import save_file
 from db.database import get_db
@@ -61,8 +62,6 @@ def get_convocatoria_en_curso(db: Session = Depends(get_db)):
         raise HTTPException(status_code=404, detail="No hay convocatorias en curso")
     
     return convocatoria
-
-
 
 
 @router_admin.post("/crear-programacion-fase")
@@ -114,8 +113,6 @@ def create_new_programacion_fase(
         "message": "Programación de fase creada exitosamente", 
         "id_programacion_fase": programacion_fase_created.id_programacion_fase
     }
-
-
 
 
 # Obtener todas las rubricas
@@ -183,6 +180,22 @@ def consult_by_document(
 
     return delegate
 
+# Obtener tipos de documento
+@router_admin.get("/all_type_documents/")
+def consult_all_documents_types(
+    db: Session = Depends(get_db),
+    current_user: UserResponse = Depends(get_current_user),
+):
+    MODULE = 3
+    permisos = get_permissions(db, current_user.id_rol, MODULE)
+
+    if permisos is None or not permisos.p_consultar:
+        raise HTTPException(status_code=401, detail="Usuario no autorizado")
+    
+    documents_types = get_all_document(db)
+
+    return documents_types
+
 #Actualizar estado delegado 
 @router_admin.put("/update-delegate-status/{id_delegate}/")
 def update_delegate_status( 
@@ -225,7 +238,7 @@ def create_delegates(
     if permisos is None or not permisos.p_insertar:
         raise HTTPException(status_code=401, detail="Usuario no autorizado")
     
-    existing_user_email = get_user_by_email(db, user.correo)
+    existing_user_email = get_user_email(db, user.correo)
     existing_user_doc = get_user_by_documento(db,user.documento) 
     if existing_user_email:
         raise HTTPException(status_code=400, detail="Ya se encuentra registrado un usuario con este email")

@@ -1,5 +1,5 @@
 <template>
-    <div class="container mt-5 pt-5">
+    <div class="container">
         <!-- Sección Datos del Proyecto -->
         <div v-if="showSection === 'datosProyecto'" class="form-section mt-5">
             <h2 class="text-center section-title">Datos del Proyecto</h2>

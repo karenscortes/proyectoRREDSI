@@ -3,6 +3,8 @@ import { useToastUtils } from '@/utils/toast'; // Importar la librería de utili
 
 // Función para manejar el inicio de sesión
 export const login = async (username, password) => {
+  const { showErrorToast } = useToastUtils(); // Inicializar las alertas
+
   try {
     // Enviar solicitud de inicio de sesión
     const response = await api.post('/access/token', new URLSearchParams({
@@ -17,18 +19,38 @@ export const login = async (username, password) => {
         'Content-Type': 'application/x-www-form-urlencoded'
       }
     });
-    
+
     // Retornar la respuesta de la API
     return response;
+
   } catch (error) {
     // Manejar errores de la solicitud
     if (error.response) {
+      const status = error.response.status;
+
+      // Mostrar un mensaje de error adecuado en el frontend usando las alertas personalizadas
+      if (status === 404) {
+        showErrorToast('El correo no está registrado, por favor crear cuenta.'); // Correo no encontrado
+      } else if (status === 403) {
+        showErrorToast('El usuario no está autorizado, comuníquese con el administrador.');
+      } else if (status === 401) {
+        showErrorToast('Información incorrecta, verifica tu email o contraseña.');
+      } else if (status === 500) {
+        showErrorToast('Error del servidor. Intenta de nuevo más tarde.');
+      } else {
+        showErrorToast(`Error desconocido: ${status}. Intenta de nuevo.`);
+      }
+
       throw error; // Lanza el error para que lo maneje el store
+
     } else {
-      throw new Error('Error de red o de servidor'); // Manejar errores de red
+      // Manejar errores de red
+      showErrorToast('Error de red o de servidor');
+      throw new Error('Error de red o de servidor');
     }
   }
 };
+
 
 export const requestResetCode = async (email) => {
   try {

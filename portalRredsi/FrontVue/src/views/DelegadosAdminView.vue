@@ -222,6 +222,7 @@ const fetchAllDelegates = async () => {
     total_pages.value = response.data.total_pages;
     configPagination.value = response.data;
     modificarArrayDelegados();
+    showInfoToast("hola mundito");
     return response;
   } catch (error) {
     console.error("Error al obtener los delegados: ", error);
