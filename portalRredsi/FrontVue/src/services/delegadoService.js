@@ -498,7 +498,7 @@ export const obtenerRubricaCalificada = async (id_proyecto, id_usuario) => {
     }
 };
 
-//Función para obtener los asistentes de un evento (suplentes)
+//Función para obtener los asistentes de un evento 
 export const obtenerAsistentesSuplentes = async (id_convocatoria) => {
     try {
         const response = await api.get(`/detalleProyecto/asistentes-evento/?id_convocatoria=${id_convocatoria}`, {
@@ -516,7 +516,7 @@ export const obtenerAsistentesSuplentes = async (id_convocatoria) => {
     }
 };
 
-//Funcion para insertar suplente
+//Función para insertar suplente
 export const insertarSuplente = async(id_usuario, id_etapa, id_proyecto, id_proyectos_convocatoria, tipo_usuario) => {
     try {
         const response = await api.post(`detalleProyecto/insertar-suplentes/?id_usuario=${id_usuario}&id_etapa=${id_etapa}&id_proyecto=${id_proyecto}&id_proyectos_convocatoria=${id_proyectos_convocatoria}&tipo_usuario=${tipo_usuario}`, {
@@ -534,6 +534,23 @@ export const insertarSuplente = async(id_usuario, id_etapa, id_proyecto, id_proy
     }
 };
 
+//Función para obtener suplentes
+export const obtenerSuplentes = async(id_usuario, id_proyecto, tipo_usuario) => {
+    try {
+        const response = await api.get(`/detalleProyecto/obtener-suplentes/?id_usuario=${id_usuario}&id_proyecto=${id_proyecto}&tipo_usuario=${tipo_usuario}`, {
+            headers: {
+                'Authorization': `Bearer` 
+            },
+        });
+        return response.data
+    }catch (error){
+        if (error.response) {
+            throw error;
+        }else {
+            throw new Error('Error del red o de servidor')
+        }
+    }
+};
 
 //Función insertar url presentación
 export const insertarUrlPresentacion = async (id_proyecto, url_presentacion) => {

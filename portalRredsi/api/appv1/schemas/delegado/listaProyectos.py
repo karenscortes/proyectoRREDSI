@@ -9,6 +9,7 @@ class ProyectoSchema(BaseModel):
     institucion: str 
     modalidad: str 
     titulo: str
+    url_propuesta_escrita: str
     estado_calificacion: Optional[str] = None
     
 # Esquema para la respuesta paginada de varios proyectos

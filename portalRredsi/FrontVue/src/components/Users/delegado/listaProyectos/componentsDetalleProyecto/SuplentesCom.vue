@@ -16,134 +16,155 @@
 
         <div v-if="isModalOpen" class="modal">
             <div class="modal-content">
-                <span class="close" @click="closeModal">&times;</span>
-                <h4>Agregar Suplente</h4>
-
-                <div class="form-group">
-                    <label for="tipo">Tipo:</label>
-                    <select v-model="nuevoTipo" id="tipo" class="form-control">
-                        <option value="" disabled selected>Seleccionar Tipo</option>
-                        <option v-for="(tipo, index) in tiposSuplentes" :key="index" :value="tipo">
-                            {{ tipo }}
-                        </option>
-                    </select>
+                <div class="modal-header">
+                    <h2 class="modal-title">Agregar Suplente</h2>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+                        style="font-size: 0.75rem; padding: 0.25rem; width: 1.5rem; height: 1.5rem;">
+                        <span @click="closeModal">&times;</span>
+                    </button>
                 </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="tipo">Tipo:</label>
+                        <select v-model="nuevoTipo" id="tipo" class="form-control custom-select">
+                            <option value="" disabled selected>Seleccionar Tipo</option>
+                            <option value="suplenteEvaluador">Suplente Evaluador</option>
+                            <option value="suplentePonente">Suplente Ponente</option>
+                        </select>
+                    </div>
 
-                <div class="form-group">
-                    <label for="suplente">Seleccionar Suplente (por nombre):</label>
-                    <select v-model="suplenteSeleccionado" id="suplente" class="form-control">
-                        <option value="" disabled selected>Seleccionar Suplente</option>
-                        <option v-for="(suplente, index) in suplentes" :key="index" :value="suplente">
-                            {{ suplente.nombres }} {{ suplente.apellidos }}
-                        </option>
-                    </select>
+                    <div class="form-group">
+                        <label for="suplente">Seleccionar Suplente (por nombre):</label>
+                        <select v-model="suplenteSeleccionado" id="suplente" class="form-control custom-select">
+                            <option value="" disabled selected>Seleccionar Suplente</option>
+                            <option v-for="(suplente, index) in suplentes" :key="index" :value="suplente">
+                                {{ suplente.nombres }} {{ suplente.apellidos }}
+                            </option>
+                        </select>
+                    </div>
+                    <div class="button-container text-center">
+                        <button class="btn btn-warning font-weight-bold btn-lg" @click="addSuplente">Añadir</button>
+                    </div>
                 </div>
-
-                <button class="btn btn-warning font-weight-bold" @click="addSuplente">Añadir</button>
             </div>
         </div>
     </div>
 </template>
 
 <script>
-    import { useToastUtils } from '@/utils/toast';
-    import { obtenerAsistentesSuplentes, insertarSuplente, obtenerProyectoConvocatoria } from '../../../../../services/delegadoService';
+import { useToastUtils } from '@/utils/toast';
+import { obtenerAsistentesSuplentes, insertarSuplente, obtenerProyectoConvocatoria, obtenerSuplentes } from '../../../../../services/delegadoService';
 
-    export default {
-        name: 'SuplentesCom',
-        props: {
-            idProyecto: {
-                type: Number,
-                required: true
-            },
-            idEtapa: {
-                type: Number,
-                required: true
-            },
-            id_suplente: {
-                type: Number,
-                required: true
-            }
+export default {
+    name: 'SuplentesCom',
+    props: {
+        idProyecto: {
+            type: Number,
+            required: true
         },
-        data() {
-            return {
-                isModalOpen: false,
-                suplentes: [],
-                tiposSuplentes: ['evaluador', 'suplenteEvaluador', 'ponente', 'suplentePonente', 'tutor'],
-                nuevoTipo: '',
-                suplenteSeleccionado: null,
-                idProyectoConvocatoria: null
-            };
+        idEtapa: {
+            type: Number,
+            required: true
         },
-        setup() {
-            const { showSuccessToast, showErrorToast, showInfoToast } = useToastUtils();
-            return { showSuccessToast, showErrorToast, showInfoToast };
-        },
-        methods: {
-            async openModal() {
-                this.isModalOpen = true;
+        id_suplente: {
+            type: Number,
+            required: true
+        }
+    },
+    data() {
+        return {
+            isModalOpen: false,
+            suplentes: [],
+            nuevoTipo: '',
+            suplenteSeleccionado: null,
+            idProyectoConvocatoria: null,
+            tipo_usuario: '' 
+        };
+    },
+    setup() {
+        const { showSuccessToast, showErrorToast } = useToastUtils();
+        return { showSuccessToast, showErrorToast };
+    },
+    methods: {
+        async openModal() {
+            this.isModalOpen = true;
+            try {
                 await this.fetchAsistentes();
                 await this.fetchProyectoConvocatoria();
-            },
-            closeModal() {
+            } catch (error) {
                 this.isModalOpen = false;
-            },
-            async fetchAsistentes() {
-                try {
-                    this.suplentes = await obtenerAsistentesSuplentes(1);
-                } catch (error) {
-                    console.error("Error al obtener los asistentes:", error);
-                }
-            },
-            async fetchProyectoConvocatoria() {
-                try {
-                    const response = await obtenerProyectoConvocatoria(this.idProyecto);
-                    if (response) {
-                        this.idProyectoConvocatoria = response.data.proyecto_convocatoria.id_proyecto_convocatoria;
-                    } else {
-                        console.error("No se encontró proyecto convocatoria para el ID del proyecto:", this.idProyecto);
-                    }
-                } catch (error) {
-                    console.error("Error al obtener el proyecto convocatoria:", error);
-                }
-            },
-            async addSuplente() {
-                
-                console.log("Datos del suplente seleccionado:", this.suplenteSeleccionado);
-                console.log("ID Proyecto:", this.idProyecto);
-                console.log("ID Etapa:", this.idEtapa);
-                console.log("ID Proyecto Convocatoria:", this.idProyectoConvocatoria);
-                console.log("Tipo de Suplente:", this.nuevoTipo);
-
-                try {
-                    await insertarSuplente(
-                        this.suplenteSeleccionado.id_usuario,
-                        this.idEtapa,
-                        this.idProyecto,
-                        this.idProyectoConvocatoria,
-                        this.nuevoTipo
-                    );
-
-                    alert("Suplente insertado con éxito");
-                    this.$emit('suplenteSeleccionado', {
-                        suplente: this.suplenteSeleccionado,
-                        tipo: this.nuevoTipo
-                    });
-
-                    this.resetForm();
-                    this.closeModal();
-                } catch (error) {
-                    console.error("Error al agregar suplente:", error);
-                    alert("Error al insertar el suplente. Por favor, intenta nuevamente.");
-                }
             }
         },
-        mounted(){
-            this.suplentes.id_usuario = this.id_suplente;
-        }
-    };
-</script>
+        closeModal() {
+            this.isModalOpen = false;
+        },
+        async fetchAsistentes() {
+            try {
+                this.suplentes = await obtenerAsistentesSuplentes(1); 
+                console.log("Suplentes obtenidos:", this.suplentes);
+            } catch (error) {
+                this.showErrorToast("Error al obtener los asistentes:");
+            }
+        },
+        async fetchProyectoConvocatoria() {
+            try {
+                const response = await obtenerProyectoConvocatoria(this.idProyecto);
+                this.idProyectoConvocatoria = response.data.proyecto_convocatoria.id_proyecto_convocatoria;
+                console.log("ID Proyecto Convocatoria:", this.idProyectoConvocatoria);
+            } catch (error) {
+                this.showErrorToast("Error al obtener el proyecto convocatoria:");
+            }
+        },
+        async fetchSuplentesSeleccionados() {
+            try {
+                
+                const suplenteData = await obtenerSuplentes(this.id_suplente, this.idProyecto, this.tipo_usuario);
+                if (suplenteData && suplenteData.length > 0) {    
+                    this.suplenteSeleccionado = suplenteData[0];
+                    this.nuevoTipo = suplenteData[0].tipo_usuario;
+                    console.log("Suplente seleccionado:", this.suplenteSeleccionado);
+                } else {
+                    console.warn("No se encontraron suplentes para el id_suplente:", this.id_suplente);
+                    this.showInfoToast("No hay suplentes asignados a este proyecto.");
+                }
+            } catch (error) {
+                console.error("Error al obtener los suplentes seleccionados:", error);
+                // this.showErrorToast("Error al obtener los suplentes seleccionados."); 
+            }
+        },
 
+        async addSuplente() {
+            try {
+                await insertarSuplente(
+                    this.suplenteSeleccionado.id_usuario,
+                    this.idEtapa,
+                    this.idProyecto,
+                    this.idProyectoConvocatoria,
+                    this.nuevoTipo
+                );
+
+                this.showSuccessToast("Suplente insertado con éxito");
+                this.$emit('suplenteSeleccionado', {
+                    suplente: this.suplenteSeleccionado,
+                    tipo: this.nuevoTipo
+                });
+                this.resetForm();
+                this.closeModal();
+            } catch (error) {
+                this.showErrorToast("Error al agregar suplente:");
+            }
+        },
+        resetForm() {
+            this.nuevoTipo = '';
+            this.suplenteSeleccionado = null;
+        }
+    },
+    async mounted() {
+        console.log("ID Suplente en mounted:", this.id_suplente);
+        await this.fetchSuplentesSeleccionados();
+    }
+};
+</script>
 
 
 
@@ -170,8 +191,8 @@ h2 {
     margin: 10% auto;
     padding: 20px;
     border: 1px solid #888;
-    width: 50%;
-    max-width: 600px;
+    width: 40%;
+    max-width: 500px;
 }
 
 .close {
@@ -193,5 +214,17 @@ select {
     width: 100%;
     max-height: 200px;
     overflow-y: auto;
+}
+
+.button-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 10px;
+}
+
+button.btn-lg {
+    padding: 6px 12px;
+    font-size: 1rem;
+    width: 25%;
 }
 </style>

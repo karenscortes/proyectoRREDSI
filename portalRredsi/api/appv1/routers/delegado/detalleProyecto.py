@@ -3,10 +3,10 @@ from typing import List
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 from appv1.routers.login import get_current_user
-from appv1.schemas.delegado.detalleProyectos import  SalaConHorario, UrlPresentacionProyecto, UsuarioProyecto, AsistenciaEvento
+from appv1.schemas.delegado.detalleProyectos import  ParticipanteProyectoS, SalaConHorario, UrlPresentacionProyecto, UsuarioProyecto, AsistenciaEvento
 from appv1.schemas.usuario import UserResponse
 from db.database import get_db
-from appv1.crud.delegado.detalleProyecto import get_asistentes_evento, get_datos_sala, get_evaluadores_por_etapa,  get_participantes_proyecto,  insertar_presentacion_proyecto, insertar_suplente_proyecto
+from appv1.crud.delegado.detalleProyecto import get_asistentes_evento, get_datos_sala, get_evaluadores_por_etapa, get_obtener_suplentes,  get_participantes_proyecto,  insertar_presentacion_proyecto, insertar_suplente_proyecto
 
 router_detalle_proyecto = APIRouter()
 
@@ -60,6 +60,21 @@ async def insertar_suplente(
     except HTTPException as e:
         return {"mensaje": "Error al insertar suplente"}   
 
+#ruta para obtener suplentes
+@router_detalle_proyecto.get("/obtener-suplentes/", response_model=List[ParticipanteProyectoS])
+async def obtener_suplente(
+    id_usuario: int,
+    id_proyecto: int,
+    tipo_usuario: str,
+    db: Session = Depends(get_db)
+):
+    infoSuplentes = get_obtener_suplentes(db, id_usuario, id_proyecto, tipo_usuario)
+    if not infoSuplentes:
+        raise HTTPException(status_code=404, detail="No se encontraron suplentes")
+    return infoSuplentes
+
+        
+
 #ruta para traer datos de sala
 @router_detalle_proyecto.get("/datos-sala-proyecto/", response_model=SalaConHorario)
 async def obtener_datos_proyecto(
@@ -68,8 +83,10 @@ async def obtener_datos_proyecto(
 ):
     infoSala = get_datos_sala(db, id_proyecto)
     if not infoSala:
-        raise HTTPException(status_code=404, detail="No se encontraron información de sala para el proyecto")
+        raise HTTPException(status_code=404, detail="No se encontró información de sala para el proyecto")
     return infoSala
+
+
 
 #ruta para insertar url presentación proyecto
 @router_detalle_proyecto.post("/insertar-url-presentacion/")

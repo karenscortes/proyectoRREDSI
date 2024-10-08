@@ -104,6 +104,29 @@ def insertar_suplente_proyecto(db: Session, id_usuario: int, id_etapa: int, id_p
         raise HTTPException(status_code=500, detail="Error al registrar el suplente")
 
 
+
+# consultar suplentes
+def get_obtener_suplentes(db: Session, id_usuario: int, id_proyecto: int, tipo_usuario: str, ):
+    try:
+        sql = text("""
+            SELECT usuarios.nombres, usuarios.apellidos, participantes_proyecto.id_usuario,
+                participantes_proyecto.id_proyecto,
+                participantes_proyecto.tipo_usuario  
+            FROM participantes_proyecto
+            JOIN usuarios ON participantes_proyecto.id_usuario = usuarios.id_usuario
+            WHERE (participantes_proyecto.tipo_usuario = 'suplenteEvaluador' 
+                OR participantes_proyecto.tipo_usuario = 'suplentePonente')
+            AND participantes_proyecto.id_proyecto = :id_proyecto
+            AND participantes_proyecto.id_usuario = :id_usuario
+        """)
+        
+        result = db.execute(sql,{"id_usuario":id_usuario, "id_proyecto": id_proyecto, "tipo_usuario": tipo_usuario}).fetchall()
+        return result
+    except SQLAlchemyError as e:
+        db.rollback()
+        raise HTTPException(status_code=500, detail="Error al consultar suplentes")
+
+                
 #Insertar presentacion del proyecto
 def insertar_presentacion_proyecto(db: Session, id_proyecto: int, url_presentacion: str):
     try:
@@ -121,3 +144,5 @@ def insertar_presentacion_proyecto(db: Session, id_proyecto: int, url_presentaci
     except SQLAlchemyError as e:
         db.rollback()  
         raise HTTPException(status_code=500, detail="Error al insertar URL de presentación")
+
+

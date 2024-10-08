@@ -46,9 +46,18 @@ class AsistenciaEvento(BaseModel):
     apellidos: str  
     documento: str
     asistencia: bool
+
 class SuplenteRequest(BaseModel):
     id_proyecto: int
     id_usuario: int
     id_etapa: int
     id_proyecto_convocatoria: int
     tipo_usuario: str
+
+#Esquema participantes proyecto
+class ParticipanteProyectoS(BaseModel):
+    id_usuario: int
+    id_proyecto: int
+    tipo_usuario: str
+    nombres: str
+    apellidos:str

@@ -1,11 +1,20 @@
 <template>
-    <div class="container pt-5">
+    <div class="container mt-5">
         <div class="row mb-2 mt-2">
             <div class="col">
                 <div class="section_title text-center">
                     <h1>Detalle del Proyecto</h1>
                 </div>
             </div>
+        </div>
+        <div class="col-5 col-sm-3 my-3">
+            <a class="btn_regresar text-dark fw-bold d-flex align-items-center" @click="$emit('volver')">
+                <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px"
+                    fill="#000000" class="me-2">
+                    <path d="m313-440 224 224-57 56-320-320 320-320 57 56-224 224h487v80H313Z" />
+                </svg>
+                Lista de proyectos
+            </a>
         </div>
         <div class="why-choose-section ">
             <div class="container">
@@ -14,7 +23,7 @@
                         <div class="section-title mt-4 text-left">
                             <h2>Información del proyecto</h2>
                         </div>
-                        <div class="row my-5 gy-4">
+                        <div class="row my-4 gy-3">
                             <!-- Ponentes -->
                             <div class="col-6 col-md-6">
                                 <PonentesCom :ponentes="ponentes" />
@@ -31,36 +40,36 @@
                             <!-- Suplentes -->
                             <div class="col-6 col-md-6 mt-3">
                                 <SuplentesCom :idProyecto="proyecto.id_proyecto" :idEtapa="proyecto.id_etapa"
-                                    :tipo="tipo" :suplente="suplente" @suplenteSeleccionado="suplenteSeleccionado" />
+                                    :tipo="tipo" :id_suplente="id_suplente" :suplente="suplente"
+                                    @suplenteSeleccionado="suplenteSeleccionado" />
                             </div>
                         </div>
                         <!-- Botones -->
-                        <div class="col-10 d-flex justify-content-between button-container ">
-                            <button type="button" class="btn btn-sm btn-warning font-weight-bold w-100 mx-2"
-                                style="width: 31%;" @click="openModal">
-                                Añadir <br />presentación
-                            </button>
-
-                            <form action="../../../assets/img/constancia_NotasAprendiz.pdf" style="width: 31%;"
-                                target="_blank">
-                                <button type="submit" class="btn btn-sm btn-warning font-weight-bold w-100 "
-                                    style="width: 100%;">
-                                    Ver presentación
+                        <div class="row">
+                            <div class="col-4">
+                                <button type="button" class="btn btn-sm btn-warning font-weight-bold w-100 " title="Añadir Presentación"
+                                    @click="openModal">
+                                    <i class="fa-solid fa-plus"></i>
                                 </button>
-                            </form>
-                            <form action="../../../assets/img/constancia_NotasAprendiz.pdf" style="width: 31%;"
-                                target="_blank">
-                                <button type="submit" class="btn btn-sm btn-warning font-weight-bold w-100 "
-                                    style="width: 100%;">
-                                    Ver proyecto
-                                </button>
-                            </form>
+                            </div>
+                            <div class="col-4">
+                                <form :action="urlPresentacion" target="_blank">
+                                    <button type="submit" class="btn btn-sm btn-warning font-weight-bold w-100" title="Ver Presentación">
+                                        <i class="fa-solid fa-eye"></i>
+                                    </button>
+                                </form>
+                            </div>
+                            <div class="col-4">
+                                <a :href="proyecto.url_propuesta_escrita" target="_blank"
+                                    class="btn btn-sm btn-warning font-weight-bold w-100" title="Ver Proyecto">
+                                    <i class="fa-solid fa-file-pdf"></i>
+                                </a>
+                            </div>
                         </div>
                     </div>
-
                     <!-- Imagen del detalle -->
                     <div class="col-lg-6 order-1 order-lg-2">
-                        <div class="img-wrap mt-5">
+                        <div class="img-wrap mt-5 ">
                             <img src="../../../../../assets/img/course_5.jpg" class="img-fluid shadow-lg detail-image" />
                         </div>
                     </div>
@@ -85,48 +94,59 @@
                                 <input type="url" class="form-control" id="urlPresentacion" v-model="urlPresentacion"
                                     placeholder="https://example.com/presentacion" required>
                             </div>
-                            <button type="submit" class="btn btn-warning">Guardar</button>
+                            <div class="text-center">
+                                <button type="submit" class="btn btn-warning">Guardar</button>
+                            </div>
                         </form>
                     </div>
                 </div>
             </div>
         </div>
 
-        <div class="accordion pt-5 mt-3" id="accordionExample">
+        <div class="accordion pt-4 mt-3" id="accordionExample">
             <div class="card p-2">
                 <div id="headingOne">
-                    <button class="btn btn-block toggle-button collapsed rubrica-btn" type="button" data-bs-toggle="collapse"
-                        data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+                    <button class="btn btn-block toggle-button collapsed rubrica-btn" type="button"
+                        data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="false"
+                        aria-controls="collapseOne">
                         <i style="margin-right: 10px;" class="fa-solid fa-check fa-lg"></i>
                         Respuesta rúbrica 1
                     </button>
                 </div>
-                <div id="collapseOne" class="collapse mt-5" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
-                    <RubricaCom v-if="cargarRubricaVirtual" :proyecto="proyecto" :id_evaluador="id_evaluador1" :etapa="'virtual'" />
+                <div id="collapseOne" class="collapse mt-5" aria-labelledby="headingOne"
+                    data-bs-parent="#accordionExample">
+                    <RubricaCom v-if="cargarRubricaVirtual" :proyecto="proyecto" :id_suplente="id_suplente"
+                        :id_evaluador="id_evaluador1" :etapa="'virtual'" />
                 </div>
             </div>
             <div class="card p-2">
                 <div id="headingTwo">
-                    <button class="btn btn-block toggle-button collapsed rubrica-btn" type="button" data-bs-toggle="collapse"
-                        data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                    <button class="btn btn-block toggle-button collapsed rubrica-btn" type="button"
+                        data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false"
+                        aria-controls="collapseTwo">
                         <i style="margin-right: 10px;" class="fa-solid fa-check fa-lg"></i>
                         Respuesta rúbrica 2
                     </button>
                 </div>
-                <div id="collapseTwo" class="collapse mt-5" aria-labelledby="headingTwo" data-bs-parent="#accordionExample">
-                    <RubricaCom v-if="cargarRubricaPresencial" :proyecto="proyecto" :id_evaluador="id_evaluador2" :etapa="'presencial'" />
+                <div id="collapseTwo" class="collapse mt-5" aria-labelledby="headingTwo"
+                    data-bs-parent="#accordionExample">
+                    <RubricaCom v-if="cargarRubricaPresencial" :proyecto="proyecto" :id_suplente="id_suplente"
+                        :id_evaluador="id_evaluador2" :etapa="'presencial'" />
                 </div>
             </div>
             <div class="card p-2">
                 <div id="headingThree">
-                    <button class="btn btn-block toggle-button collapsed rubrica-btn" type="button" data-bs-toggle="collapse"
-                        data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                    <button class="btn btn-block toggle-button collapsed rubrica-btn" type="button"
+                        data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false"
+                        aria-controls="collapseThree">
                         <i style="margin-right: 10px;" class="fa-solid fa-x fa-lg"></i>
                         Respuesta rúbrica 3
                     </button>
                 </div>
-                <div id="collapseThree" class="collapse mt-5" aria-labelledby="headingThree" data-bs-parent="#accordionExample">
-                    <RubricaCom v-if="cargarRubricaPresencial" :proyecto="proyecto" :id_evaluador="id_evaluador3" :etapa="'presencial'" />
+                <div id="collapseThree" class="collapse mt-5" aria-labelledby="headingThree"
+                    data-bs-parent="#accordionExample">
+                    <RubricaCom v-if="cargarRubricaPresencial" :proyecto="proyecto" :id_suplente="id_suplente"
+                        :id_evaluador="id_evaluador3" :etapa="'presencial'" />
                     <h4 class="text-center text-dark mt-4 mb-4">Respaldo</h4>
                     <div class="custom-file-upload mx-auto">
                         <input type="file" id="comprobante_pago" name="comprobante_pago" />
@@ -148,7 +168,7 @@ import PonentesCom from './PonentesCom.vue';
 import SuplentesCom from './SuplentesCom.vue';
 import RubricaCom from './RubricaCom.vue';
 import { useToastUtils } from '@/utils/toast';
-import { obtenerEvaluadoresProyecto, obtenerPonentesProyecto, obtenerInfoSalaProyecto, insertarUrlPresentacion } from '../../../../../services/delegadoService';
+import { obtenerEvaluadoresProyecto, obtenerPonentesProyecto, obtenerInfoSalaProyecto, insertarUrlPresentacion, obtenerUrlPresentacionProyecto } from '../../../../../services/delegadoService';
 
 export default {
     name: 'DetalleProyecto',
@@ -188,6 +208,7 @@ export default {
             urlPresentacion: '',
             suplente: {},
             tipo: '',
+            id_suplente: null,
 
         };
     },
@@ -211,7 +232,6 @@ export default {
                     this.evaluadores['presencial'] = dataEvaluadorPresencial;
                     this.id_evaluador2 = this.evaluadores.presencial[0].id_usuario;
                     this.id_evaluador3 = this.evaluadores.presencial[1].id_usuario;
-
                 }
 
             } catch (error) {
@@ -238,12 +258,22 @@ export default {
                 console.error('Error al obtener la información de la sala:', error);
             }
         },
+        //Función para obtener presentación
+        async fetchUrlPresentacion(id_proyecto) {
+            try {
+                const response = await obtenerUrlPresentacionProyecto(id_proyecto);
+                this.urlPresentacion = response.data.url_presentacion;
+            } catch (error) {
+                console.log('Error al obtener la URL de la presentación.');
+            }
+        },
         // Función para renderizar la vista
         async fetchAllData() {
             try {
                 await this.fetchEvaluadores(this.proyecto.id_proyecto);
                 await this.fetchPonentes(this.proyecto.id_proyecto);
                 await this.fetchInfoSala(this.proyecto.id_proyecto);
+                await this.fetchUrlPresentacion(this.proyecto.id_proyecto);
                 if (this.evaluadores.virtual.length > 0 || this.evaluadores.presencial.length > 0) {
                     if (this.proyecto.id_etapa == 2) {
                         this.cargarRubricaVirtual = true;
@@ -255,6 +285,7 @@ export default {
                 }
             } catch (error) {
                 console.error('Error al cargar los datos del proyecto:', error);
+                this.showErrorToast('Error al cargar los datos del proyecto.')
             }
         },
 
@@ -268,16 +299,18 @@ export default {
                 $('#presentationModal').modal('hide');
             } catch (error) {
                 console.error('Error al guardar la URL de la presentación:', error);
-                this.showInfoToast('Error al guardar la presentación. Por favor, intenta nuevamente.');
+                this.showErrorToast('Error al guardar la presentación. Por favor, intenta nuevamente.');
             }
         },
         suplenteSeleccionado({ suplente, tipo }) {
             this.suplente = suplente;
             this.tipo = tipo;
+            this.id_suplente = suplente.id_usuario;
         },
 
     },
     mounted() {
+        console.log(this.proyecto);
         this.fetchAllData()
     }
 };
@@ -287,6 +320,33 @@ export default {
 
 
 <style scoped>
+.btn_regresar:hover {
+    cursor: pointer;
+    color: #007bff;
+}
+
+.btn_regresar {
+    padding: 8px 16px;
+    border: 2px solid transparent;
+    transition: background-color 0.3s ease, border-color 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+}
+
+.btn_regresar:hover {
+    background-color: rgba(0, 0, 0, 0.05);
+    border-color: #000;
+    cursor: pointer;
+}
+
+.btn_regresar svg {
+    transition: transform 0.3s ease;
+}
+
+.btn_regresar:hover svg {
+    transform: translateX(-4px);
+    
+}
 
 .button-container {
     gap: 20px;
@@ -295,6 +355,7 @@ export default {
 
 .detail-image {
     max-width: 90%;
+    border-radius: 8px;
     margin-top: 20px;
 }
 
@@ -302,6 +363,7 @@ export default {
     padding: 8px 15px;
     font-size: 0.875rem;
 }
+
 .section_title h1 {
     display: block;
     color: #1a1a1a;
@@ -398,6 +460,18 @@ export default {
         color: rgb(255, 182, 6);
     }
 
+}
+
+@media (max-width: 768px) {
+    .btn_regresar {
+        padding: 6px 12px;
+        font-size: 14px;
+    }
+
+    .btn_regresar svg {
+        width: 20px;
+        height: 20px;
+    }
 }
 
 @media only screen and (max-width: 767px) {
