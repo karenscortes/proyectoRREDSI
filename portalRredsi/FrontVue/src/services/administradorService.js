@@ -22,27 +22,59 @@ export const createConvocatoria = async (nombre, fecha_inicio, fecha_fin, estado
   }
 };
 
-// Servicio para la programación de fases
-export const programarFase = async (id_fase, id_convocatoria, fecha_inicio, fecha_fin) => {
+// Función para obtener la convocatoria en curso
+export const getConvocatoriaEnCurso = async () => {
   try {
-    const url = `/admin/crear-programacion-fase`;
-    const payload = { id_fase, id_convocatoria, fecha_inicio, fecha_fin };
-    console.log('Enviando payload para programar fase:', payload); // Verifica qué se está enviando
-    const response = await api.post(url, payload, {
+    const url = `/admin/convocatoria-en-curso`; // Ajusta la ruta según tu backend
+    const response = await api.get(url, {
       headers: {
-        'Authorization': `Bearer ${localStorage.getItem('access_token')}`
+        'Authorization': `Bearer ${localStorage.getItem('access_token')}` // Token de autenticación
       }
     });
-    return response;
+    return response.data; // Retorna los datos de la convocatoria en curso
   } catch (error) {
-    console.error('Error en el servicio programarFase:', error);
+    console.error('Error en el servicio getConvocatoriaEnCurso:', error);
     if (error.response) {
-      throw error.response.data; // Enviar el mensaje de error exacto si el servidor lo provee
+      throw error.response.data; // Retorna el mensaje de error exacto si el servidor lo provee
     } else {
       throw new Error('Error de red o de servidor');
     }
   }
 };
+
+
+// Servicio para la programación de fases
+export const programarFase = async (id_fase, id_convocatoria, fecha_inicio, fecha_fin) => {
+  try {
+    const url = `/admin/crear-programacion-fase`;
+    const payload = { id_fase, id_convocatoria, fecha_inicio, fecha_fin };
+    
+    console.log('Enviando payload para programar fase:', payload); // Verifica qué se está enviando
+
+    const response = await api.post(url, payload, {
+      headers: {
+        'Authorization': `Bearer ${localStorage.getItem('access_token')}`
+      }
+    });
+
+    return response.data; // Devolver solo los datos de la respuesta
+  } catch (error) {
+    console.error('Error en el servicio programarFase:', error);
+
+    // Diferenciar errores del servidor y otros tipos de errores
+    if (error.response) {
+      // Error del servidor, lanzar el mensaje del servidor
+      throw error.response.data; 
+    } else if (error.request) {
+      // Error de red (la solicitud se hizo pero no hubo respuesta)
+      throw new Error('No se recibió respuesta del servidor. Verifica tu conexión de red.');
+    } else {
+      // Otro tipo de error (algo ocurrió al hacer la solicitud)
+      throw new Error('Error al configurar la solicitud.');
+    }
+  }
+};
+
 
 // Función para obtener todos los admins con paginación
 export const getConvocatoriasByPage = async (page = 1, pageSize = 5) => {
@@ -71,7 +103,6 @@ export const getProgramacionFasesByPage = async (page = 1, pageSize = 5) => {
       }
   }
 };
-
 
 // Función para obtener todas las rubricas
 export const getRubricsAll = async () => {
@@ -133,8 +164,10 @@ export const updateItems = async (id_item_rubrica, item_nuevo) => {
 // Función para eliminar item
 export const deleteItems = async (id_item_rubrica) => {
   try {
-      const url = `/admin/delete-items/${id_item_rubrica}/`;
-      const response = await api.post(url, {
+      const url = `/admin/update-status-items/${id_item_rubrica}/`;
+      const response = await api.put(url, {
+        estado: "inactivo"
+      },{
       headers: {
         'Authorization': `Bearer ${localStorage.getItem('access_token')}` 
       }
@@ -167,6 +200,47 @@ export const getDelegatesAll = async (page = 1, page_size = 10) => {
     }
   }
 };
+
+// Función para buscar por id delegado
+export const getDelegateById = async (id_delegado) => {
+  try {
+      const url = `/admin/delegates/${id_delegado}/`;
+      const response = await api.get(url,{
+      headers: {
+        'Authorization': `Bearer ${localStorage.getItem('access_token')}` 
+      }
+    });
+    return response;
+  } catch (error) {
+    if (error.response) {
+      throw error;
+    } else {
+      throw new Error('Error de red o de servidor'); 
+    }
+  }
+};
+
+export const updateStatusDelegate = async (id_delegado, estado) => {
+  try{
+    const url = `/admin/update-delegate-status/${id_delegado}/`;
+      const response = await api.put(url, 
+      {
+        estado: estado
+      },
+      {
+      headers: {
+        'Authorization': `Bearer ${localStorage.getItem('access_token')}` 
+      }
+    });
+    return response;
+  }catch(error){
+    if (error.response) {
+      throw error;
+    } else {
+      throw new Error('Error de red o de servidor'); 
+    }
+  }
+}
 
 // Función consultar las reas de conocimiento
 export const getAreasConocimiento = async () => {

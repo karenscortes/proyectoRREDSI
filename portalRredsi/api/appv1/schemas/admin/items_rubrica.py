@@ -5,6 +5,7 @@ class ItemRubrica(BaseModel):
     componente: str
     valor_max: Annotated[float,condecimal(max_digits=2, decimal_places=1)]
     id_rubrica: int
+    estado: Optional[str] = "activo"
     
 
 class ItemRubricaResponse(ItemRubrica):
@@ -22,3 +23,6 @@ class ItemUpdate(BaseModel):
     valor_max: Optional[Annotated[float,condecimal(max_digits=2, decimal_places=1)]] = None
     class Config:
         orm_mode = True
+
+class ItemUpdateStatus(BaseModel):
+    estado: Optional[str] = "inactivo"

@@ -7,6 +7,7 @@ class EvaluatorsResponse(BaseModel):
     estado:str
     nombres:str
     apellidos:str
+    documento:str
     celular:str
     nombre_institucion:str
     area_conocimiento:str

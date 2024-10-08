@@ -1,16 +1,14 @@
 <template>
-    <div class="container mt-4">
+    <div class="mt-4">
         <!-- Botón de regresar -->
-        <div class="d-flex justify-content-start mb-4">
-            <div class="col-3">
-                <a class="btn_regresar text-dark fw-bold d-flex align-items-center" @click="$emit('volver')">
-                    <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px"
-                        fill="#00000" class="me-2">
-                        <path d="m313-440 224 224-57 56-320-320 320-320 57 56-224 224h487v80H313Z" />
-                    </svg>
-                    Lista de salas
-                </a>
-            </div>
+        <div class="col-5 col-sm-3">
+            <a class="btn_regresar text-dark fw-bold d-flex align-items-center" @click="$emit('volver')">
+                <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px"
+                    fill="#00000" class="me-2">
+                    <path d="m313-440 224 224-57 56-320-320 320-320 57 56-224 224h487v80H313Z" />
+                </svg>
+                Lista de salas
+            </a>
         </div>
 
         <!-- Sala Information Section -->
@@ -36,11 +34,6 @@
         <!-- Línea divisoria para separar la información de la sala del horario -->
         <hr class="my-4">
 
-        <!-- Sección de la fecha -->
-        <div class="text-center my-4">
-            <h3 class="text-muted mb-3">Sep 6 de 2024</h3>
-        </div>
-
         <!-- Tabla de horarios asignados -->
         <div class="table-responsive">
             <ComponenteHorario :sala="sala" />
@@ -55,7 +48,7 @@ import ComponenteHorario from "./ComponenteHorario.vue";
 export default {
     props: {
         sala: Object,
-        index: Number
+        index: Number,
     },
     components: {
         ComponenteHorario

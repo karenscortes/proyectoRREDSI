@@ -23,3 +23,8 @@ class PaginatedDelegadoResponse(BaseModel):
     page_size: int
     class Config:
         orm_mode = True
+
+class updateStatusDelegate(BaseModel):  
+    estado: str
+    class Config:
+        orm_mode = True

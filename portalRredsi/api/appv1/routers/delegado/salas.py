@@ -6,7 +6,7 @@ from appv1.routers.login import get_current_user
 from appv1.schemas.delegado.salas import AsignarProyectoSala, DetalleSala, SalaBase, SalaResponse
 from appv1.schemas.usuario import UserResponse
 from db.database import get_db
-from appv1.crud.delegado.salas import asignar_evaluadores_para_proyecto_etapa_presencial, asignar_proyecto_a_sala, get_detalle_sala, get_ponentes_proyecto, get_posibles_evaluadores_para_proyecto_etapa_presencial, get_proyectos_sin_asignar_etapa_presencial, get_salas_por_convocatoria, get_url_presentacion_proyecto, verificar_sala_asignada
+from appv1.crud.delegado.salas import asignar_evaluadores_para_proyecto_etapa_presencial, asignar_proyecto_a_sala, buscar_sala_por_nombre, get_detalle_sala, get_ponentes_proyecto, get_posibles_evaluadores_para_proyecto_etapa_presencial, get_proyectos_sin_asignar_etapa_presencial, get_salas_por_convocatoria, get_url_presentacion_proyecto, update_horario_sala, verificar_sala_asignada
 from appv1.crud.permissions import get_permissions
 
 router_sala = APIRouter()
@@ -198,7 +198,6 @@ async def assignar_evaluadores_etapa_presencial(
     return {"mensaje": "Evaluadores asignados con exito"}
 
 
-
 # RUTA PARA OBTENER LA PRESENTACION DE UN PROYECTO
 @router_sala.get("/get-presentacion-proyecto/")
 async def read_presentacion_proyecto(
@@ -216,3 +215,50 @@ async def read_presentacion_proyecto(
         raise HTTPException(status_code=404, detail="Sin presentación")
     
     return presentacion
+
+# RUTA PARA ACTUALIZAR EL HORARIO Y FECHA EN DETALLE DE SALA
+@router_sala.put("/actualizar-horario/")
+async def read_presentacion_proyecto(
+    id_sala:int,
+    id_proyecto_convocatoria: int,
+    fecha: date,
+    hora_inicio:time,
+    hora_fin:time,
+    current_user: UserResponse = Depends(get_current_user),
+    db: Session = Depends(get_db),
+):
+    permisos = get_permissions(db, current_user.id_rol, MODULE_PROYECTOS)
+    
+    if not permisos.p_actualizar:
+        raise HTTPException(status_code=401, detail="No está autorizado a utilizar este modulo")
+    
+    horario_actualizado = update_horario_sala(db, id_sala, id_proyecto_convocatoria, fecha, hora_inicio, hora_fin)
+    if horario_actualizado:    
+        return {"mensaje": "Horario actualizado con exito" }
+
+# RURA PARA OBTENER TODAS LAS SALAS QUE SE ENCUENTREN REGISTRADAS EN UNA CONVOCATORIA ACTIVA 
+@router_sala.get("/buscar-sala-por-nombre/", response_model=dict)
+async def read_sala_por_nombre(
+    valor_buscado:str,
+    current_user: UserResponse = Depends(get_current_user),
+    db: Session = Depends(get_db)
+    
+):
+    # Aqui tienen que consultar que permisos tiene asignados por rol :)
+    permisos = get_permissions(db, current_user.id_rol, MODULE_SALAS)
+    
+    # Si no tiene permiso que necesita tira el mensaje de error
+    if not permisos.p_consultar:
+        raise HTTPException(status_code=401, detail="No está autorizado a utilizar este modulo")
+    
+    # si no imprime el resultado
+    salas = buscar_sala_por_nombre(db,valor_buscado )
+    if len(salas) == 0:
+        raise HTTPException(status_code=404, detail="Salas no encontradas")
+
+    # Convertir cada fila en un diccionario
+    salas_convocatoria = [dict(sala) for sala in salas]
+
+    return {
+        "salas": salas_convocatoria
+    }

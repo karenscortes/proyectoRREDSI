@@ -5,8 +5,8 @@ from pydantic import BaseModel, StringConstraints
 
 class SalaBase(BaseModel):
     id_sala: int
-    numero_sala: Annotated[str, StringConstraints(max_length=25)]
-    nombre_sala: Annotated[str, StringConstraints(max_length=25)]
+    numero_sala: Annotated[str, StringConstraints(max_length=40)]
+    nombre_sala: Annotated[str, StringConstraints(max_length=40)]
     
 class SalaResponse(SalaBase):
     id_usuario: int

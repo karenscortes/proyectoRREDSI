@@ -1,3 +1,4 @@
+from sqlalchemy import or_
 from sqlalchemy.orm import Session
 from sqlalchemy.exc import SQLAlchemyError
 from fastapi import HTTPException
@@ -12,7 +13,7 @@ from sqlalchemy.exc import SQLAlchemyError, IntegrityError
 def get_delegados_activos_paginated(db: Session, page, page_size):
     try:
         offset = (page - 1) * page_size
-        users = db.query(Usuario).join(Usuario.detalles_institucionales).filter( 
+        users = db.query(Usuario).join(Usuario.detalles_institucionales).join(Usuario.titulos_academicos).filter( 
         Usuario.rol.has(Rol.nombre == "Delegado")).order_by(Usuario.nombres.asc()).limit(page_size).offset(offset).all()
         if users is None:
             raise HTTPException(status_code=404, detail="No hay delegados")
@@ -26,11 +27,11 @@ def get_delegados_activos_paginated(db: Session, page, page_size):
         print(f"Error al buscar los delegados: {e}")
         raise HTTPException(status_code=500, detail="Error. No hay integridad de datos")
 
-#Obtener delegado por numero de documento
-def get_delegados_by_document(doc: str, db: Session,):
+#Obtener delegado por documento o nombre
+def get_delegados_by_document(busqueda: str, db: Session,):
     try:
-        result = db.query(Usuario).filter(
-        Usuario.documento == doc, Usuario.rol.has(Rol.nombre == "Delegado")).first()
+        result = db.query(Usuario).join(Usuario.detalles_institucionales).join(Usuario.titulos_academicos).filter(
+        or_(Usuario.documento == busqueda, Usuario.nombres.like("%{}%".format(busqueda))), Usuario.rol.has(Rol.nombre == "Delegado")).first()
         if result is None:
             raise HTTPException(status_code=404, detail="No se encontro el delegado")    
  
@@ -39,6 +40,19 @@ def get_delegados_by_document(doc: str, db: Session,):
         print(f"Error al buscar los delegados: {e}")
         raise HTTPException(status_code=500, detail="Error. No hay integridad de datos")
 
+#actualizar estado de delegado
+def update_status_delegate(id_delegate: int, estado: Estados, db: Session):
+    try:
+        user = db.query(Usuario).filter(Usuario.id_usuario == id_delegate).first()
+        if user is None:
+            raise HTTPException(status_code=404, detail="No se encontro el delegado")
+        user.estado = estado
+        db.commit()
+        return user
+    except SQLAlchemyError as e:
+        print(f"Error al actualizar el estado del delegado: {e}")
+        raise HTTPException(status_code=500, detail="Error. No hay integridad de datos")
+    
 #Crear delegado
 def create_delegado(user: UserCreate, db: Session):
     try:
