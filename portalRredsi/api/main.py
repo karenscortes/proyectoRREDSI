@@ -51,6 +51,7 @@ app.include_router(evaluadores.routerInsertarPostulacionEvaluador, prefix="/post
 app.include_router(evaluadores.routerInsetarCalificacionRubrica, prefix="/calificacionRubrica", tags=["Evaluadores"])
 app.include_router(evaluadores.routerObtenerHorarioEvaluador, prefix="/obtenerHorarioEvaluador", tags=["Evaluadores"])
 app.include_router(evaluadores.routerObtenerEtapaActual, prefix="/obtenerEtapaActual", tags=["Evaluadores"])
+app.include_router(evaluadores.routerObtenerDatosEvaluador, prefix="/obtenerDatosEvaluador", tags=["Evaluadores"])
 
 # DELEGADO
 app.include_router(asignarProyectoEtapaVirtual.router_proyecto_etapa_uno, prefix="/asignarProyectoEtapaVirtual", tags=["Delegado"])
