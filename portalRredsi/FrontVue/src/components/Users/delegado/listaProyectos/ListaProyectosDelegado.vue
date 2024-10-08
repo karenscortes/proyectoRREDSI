@@ -1,12 +1,8 @@
 <template>
     <!-- Mostrar el componente seleccionado si 'showCalificarProyecto' es verdadero -->
-    <component 
-        v-if="showCalificarProyecto && selectedComponent" 
-        :is="selectedComponent" 
-        :proyecto="selectedProyecto" 
-        @volver="handleVolver" 
-    />
-    
+    <component v-if="showCalificarProyecto && selectedComponent" :is="selectedComponent" :proyecto="selectedProyecto"
+        @volver="handleVolver" />
+
     <!-- Mostrar la lista de proyectos si 'showCalificarProyecto' es falso -->
     <div v-else>
         <!-- Sección de botones y proyectos -->
@@ -14,7 +10,7 @@
             <div class="col">
                 <div class="section_title text-center">
                     <h1>Listado de proyectos</h1>
-                    <h2 class="text-muted">{{ tituloEtapa }}</h2> 
+                    <h2 class="text-muted">{{ tituloEtapa }}</h2>
                 </div>
             </div>
         </div>
@@ -25,39 +21,26 @@
                 <div class="row text-center">
                     <!-- Botones de navegación -->
                     <div class="col-2 d-flex justify-content-center align-items-center">
-                        <button 
-                            class="btn cards__buttons w-100"
-                            @click="prevPage"
-                            :disabled="currentPage === 1"
-                        >
+                        <button class="btn cards__buttons w-100" @click="prevPage" :disabled="currentPage === 1">
                             <i class="fa-solid fa-circle-arrow-left fa-2xl"></i>
                         </button>
                     </div>
 
                     <div class="col-8">
                         <div class="d-flex justify-content-around">
-                            <button
-                                class="btn cards__buttons border"
-                                :class="{ 'active-button': selectedState === '' }"
-                                @click="fetchProyectos(1)"
-                                :disabled="selectedState === ''"
-                            >
+                            <button class="btn cards__buttons border" :class="{ 'active-button': selectedState === '' }"
+                                @click="fetchProyectos(1)" :disabled="selectedState === ''">
                                 Todos
                             </button>
-                            <button
-                                class="btn cards__buttons border"
+                            <button class="btn cards__buttons border"
                                 :class="{ 'active-button': selectedState === 'Calificado' }"
                                 @click="fetchProyectosPorEstado('Calificado')"
-                                :disabled="selectedState === 'Calificado'"
-                            >
+                                :disabled="selectedState === 'Calificado'">
                                 Calificados
                             </button>
-                            <button
-                                class="btn cards__buttons border"
+                            <button class="btn cards__buttons border"
                                 :class="{ 'active-button': selectedState === 'Pendiente' }"
-                                @click="fetchProyectosPorEstado('Pendiente')"
-                                :disabled="selectedState === 'Pendiente'"
-                            >
+                                @click="fetchProyectosPorEstado('Pendiente')" :disabled="selectedState === 'Pendiente'">
                                 Pendientes
                             </button>
                         </div>
@@ -65,15 +48,12 @@
 
                     <!-- Botón de navegación derecha -->
                     <div class="col-2 d-flex justify-content-center align-items-center">
-                        <button 
-                            class="btn cards__buttons w-100"
-                            @click="nextPage"
-                            :disabled="currentPage === totalPages"
-                        >
+                        <button class="btn cards__buttons w-100" @click="nextPage"
+                            :disabled="currentPage === totalPages">
                             <i class="fa-solid fa-circle-arrow-right fa-2xl"></i>
                         </button>
                     </div>
-                </div>     
+                </div>
             </div>
         </div>
 
@@ -87,220 +67,225 @@
         </div>
 
         <div v-else class="row justify-content-center mt-3">
-            <CardListaProyectos 
-                v-for="(proyecto, index) in proyectos" 
-                :key="index" 
-                :proyecto="proyecto" 
-                :currentEtapa="currentEtapa"
-                @component-selected="changeComponent" 
-            />
+            <CardListaProyectos v-for="(proyecto, index) in proyectos" :key="index" :proyecto="proyecto"
+                :currentEtapa="currentEtapa" :id_etapa_actual="id_etapa_actual" @component-selected="changeComponent" />
         </div>
     </div>
 
 </template>
 
 <script>
-    import {obtenerEtapaActual} from '../../../../services/evaluadorService';
-    import { obtenerListaProyectos, obtenerProyectosPorEstado } from '../../../../services/delegadoService';
-    import CalificarProyectoEvaluadorView from '../../../../views/CalificarProyectoEvaluadorView.vue'; 
-    import { useAuthStore } from '@/store';     
-    import CardListaProyectos from './CardListaProyectos.vue';
-    import DetalleProyecto from './componentsDetalleProyecto/DetalleProyecto.vue';
+import { obtenerEtapaActual } from '../../../../services/evaluadorService';
+import { obtenerListaProyectos, obtenerProyectosPorEstado } from '../../../../services/delegadoService';
+import CalificarProyectoEvaluadorView from '../../../../views/CalificarProyectoEvaluadorView.vue';
+import { useAuthStore } from '@/store';
+import CardListaProyectos from './CardListaProyectos.vue';
+import DetalleProyecto from './componentsDetalleProyecto/DetalleProyecto.vue';
 
 
-    export default {
-        components: {
-            CardListaProyectos,
-            CalificarProyectoEvaluadorView,
-            DetalleProyecto
+export default {
+    components: {
+        CardListaProyectos,
+        CalificarProyectoEvaluadorView,
+        DetalleProyecto
+    },
+    data() {
+        return {
+            proyectos: [],
+            currentPage: 1,
+            totalPages: 1,
+            itemsPerPage: 6,
+            selectedState: '',
+            selectedComponent: '',
+            selectedProyecto: null,
+            id_etapa_actual: '',
+            showCalificarProyecto: false,
+            currentEtapa: ''
+        };
+    },
+    computed: {
+        hasProyectos() {
+            return this.proyectos.length > 0;
         },
-        data() {
-            return {
-                proyectos: [],
-                currentPage: 1,
-                totalPages: 1,
-                itemsPerPage: 6,
-                selectedState: '',
-                selectedComponent: '',
-                selectedProyecto: null, 
-                showCalificarProyecto: false,
-                currentEtapa: '' 
-            };
-        },
-        computed: {
-            hasProyectos() {
-                return this.proyectos.length > 0; 
-            },
 
-            mensajeSinProyectos() {
-                if (!this.selectedState) {
-                    return "No tienes proyectos asignados por el momento...";
-                } else if (this.selectedState === 'Calificado') {
-                    return "No tienes proyectos calificados...";
-                } else if (this.selectedState === 'Pendiente') {
-                    return "No tienes proyectos pendientes...";
-                }
-                return "No hay proyectos disponibles.";
-            },
-
-            tituloEtapa() {
-                return this.currentEtapa === 'Virtual' ? 'Primera Etapa' : 'Segunda Etapa';
+        mensajeSinProyectos() {
+            if (!this.selectedState) {
+                return "No tienes proyectos asignados por el momento...";
+            } else if (this.selectedState === 'Calificado') {
+                return "No tienes proyectos calificados...";
+            } else if (this.selectedState === 'Pendiente') {
+                return "No tienes proyectos pendientes...";
             }
+            return "No hay proyectos disponibles.";
         },
-        methods: {
-            async obtenerEtapa() {
-                try {
-                    const authStore = useAuthStore();
-                    const user = authStore.user;
 
-                    const response = await obtenerEtapaActual(user.id_usuario);
-                    this.currentEtapa = response.nombre_etapa;
-
-                    this.fetchProyectos();
-                } catch (error) {
-                    console.error("Error al obtener la etapa actual: ", error);
-                    alert("Error al obtener la etapa actual");
-                }
-            },
-
-            async fetchProyectos(page = 1) {
-                try {
-                    this.selectedState = ''; 
-
-                    const authStore = useAuthStore();
-                    const user = authStore.user;
-
-                    const response = await obtenerListaProyectos(this.currentEtapa,  page, this.itemsPerPage);
-
-                    this.proyectos = response.data; 
-                    this.totalPages = response.total_pages; 
-                    this.currentPage = page;
-
-                } catch (error) {
-                    console.error("Error al obtener proyectos: ", error);
-                    alert("Error al obtener proyectos");
-                }
-            },
-
-            async fetchProyectosPorEstado(estado) {
-                try {
-                    const authStore = useAuthStore();
-
-                    if(this.selectedState !== estado){
-                        this.currentPage = 1;
-                    }
-                    
-                    this.selectedState = estado;
-
-                    // Mapear estado según la etapa actual
-                    const estadoMap = {
-                        'Calificado': this.currentEtapa === 'Virtual' ? 'C_virtual' : 'C_presencial',
-                        'Pendiente': this.currentEtapa === 'Presencial' ? 'P_virtual' : 'P_presencial'
-                    };
-
-                    this.currentPage = 1;
-                    const estadoEnvio = estadoMap[estado] || ''; 
-
-                    const response = await obtenerProyectosPorEstado(this.currentEtapa, estadoEnvio, this.currentPage, this.itemsPerPage);
-
-                    this.proyectos = response.data.data;
-                    this.totalPages = response.data.total_pages;
-
-                } catch (error) {
-                    console.error("Error al obtener proyectos por estado: ", error);
-                    alert("Error al obtener proyectos por estado");
-                }
-            },
-
-            nextPage() {
-                if (this.currentPage < this.totalPages) {
-                    if (this.selectedState) {
-                        this.fetchProyectosPorEstado(this.selectedState);
-                    } else {
-                        this.fetchProyectos(this.currentPage + 1);
-                    }
-                }
-            },
-            prevPage() {
-                if (this.currentPage > 1) {
-                    if (this.selectedState) {
-                        this.fetchProyectosPorEstado(this.selectedState);
-                    } else {
-                        this.fetchProyectos(this.currentPage - 1);
-                    }
-                }
-            },
-
-            changeComponent({ componentName, proyecto }) {
-                this.selectedComponent = componentName;
-                this.selectedProyecto = proyecto; 
-                // console.log(this.selectedProyecto);
-                this.showCalificarProyecto = true; 
-            },
-
-            handleVolver() {
-                this.showCalificarProyecto = false;
-            }
-        },
-        mounted() {
-            this.obtenerEtapa();
+        tituloEtapa() {
+            return this.currentEtapa === 'Virtual' ? 'Primera Etapa' : 'Segunda Etapa';
         }
-    };
+    },
+    methods: {
+        async obtenerEtapa() {
+            try {
+                const authStore = useAuthStore();
+                const user = authStore.user;
+                const response = await obtenerEtapaActual(user.id_usuario);
+                this.currentEtapa = response.nombre_etapa;
+                this.id_etapa_actual = response.id_etapa;
+
+                this.fetchProyectos();
+            } catch (error) {
+                console.error("Error al obtener la etapa actual: ", error);
+                alert("Error al obtener la etapa actual");
+            }
+        },
+
+        async fetchProyectos(page = 1) {
+            try {
+                this.selectedState = '';
+
+                const authStore = useAuthStore();
+                const user = authStore.user;
+
+                const response = await obtenerListaProyectos(this.currentEtapa, page, this.itemsPerPage);
+
+                this.proyectos = response.data;
+                this.totalPages = response.total_pages;
+                this.currentPage = page;
+
+            } catch (error) {
+                console.error("Error al obtener proyectos: ", error);
+                alert("Error al obtener proyectos");
+            }
+        },
+
+        async fetchProyectosPorEstado(estado) {
+            try {
+                const authStore = useAuthStore();
+
+                // Resetea la página si se selecciona un nuevo estado
+                if (this.selectedState !== estado) {
+                    this.currentPage = 1;
+                }
+
+                this.selectedState = estado;
+
+                // Mapear estado según la etapa actual
+                const estadoMap = {
+                    'Calificado': this.currentEtapa === 'Virtual' ? 'C_virtual' : 'C_presencial',
+                    'Pendiente': this.currentEtapa === 'Virtual' ? 'P_virtual' : 'P_presencial' // Corregir el error en la lógica de 'Pendiente'
+                };
+
+                const estadoEnvio = estadoMap[estado];
+
+                // Verificar si el estado es válido antes de proceder
+                if (!estadoEnvio) {
+                    console.warn("Estado no válido seleccionado:", estado);
+                    alert("El estado seleccionado no es válido");
+                    return;
+                }
+
+                const response = await obtenerProyectosPorEstado(this.currentEtapa, estadoEnvio, this.currentPage, this.itemsPerPage);
+
+                // Actualizar datos del paginador y los proyectos
+                this.proyectos = response.data.data;
+                this.totalPages = response.data.total_pages;
+
+            } catch (error) {
+                console.error("Error al obtener proyectos por estado: ", error);
+                alert("Error al obtener proyectos por estado");
+            }
+        },
+
+
+        nextPage() {
+            if (this.currentPage < this.totalPages) {
+                if (this.selectedState) {
+                    this.fetchProyectosPorEstado(this.selectedState);
+                } else {
+                    this.fetchProyectos(this.currentPage + 1);
+                }
+            }
+        },
+        prevPage() {
+            if (this.currentPage > 1) {
+                if (this.selectedState) {
+                    this.fetchProyectosPorEstado(this.selectedState);
+                } else {
+                    this.fetchProyectos(this.currentPage - 1);
+                }
+            }
+        },
+
+        changeComponent({ componentName, proyecto }) {
+            this.selectedComponent = componentName;
+            this.selectedProyecto = proyecto;
+            // console.log(this.selectedProyecto);
+            this.showCalificarProyecto = true;
+        },
+
+        handleVolver() {
+            this.showCalificarProyecto = false;
+        }
+    },
+    mounted() {
+        this.obtenerEtapa();
+    }
+};
 </script>
 
 
 
 <style scoped>
+.cards__buttons {
+    background-color: #fff;
+    width: 30%;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.cards__buttons:hover {
+    background-color: #ffb521;
+    transform: scale(1.02);
+    cursor: pointer;
+}
+
+.cards__buttons:disabled {
+    background-color: #f9f9f9;
+    border: none;
+    cursor: default;
+}
+
+.active-button {
+    background-color: #e0e0e0;
+    border-color: #c0c0c0;
+}
+
+.text-muted {
+    font-size: 1.2rem;
+    color: #999;
+}
+
+/* Media query para pantallas pequeñas */
+@media (max-width: 576px) {
     .cards__buttons {
-        background-color: #fff;
-        width: 30%;
-        transition: background-color 0.3s ease, transform 0.2s ease;
+        font-size: 0.8rem;
+        padding: 0.5rem;
     }
 
-    .cards__buttons:hover {
-        background-color: #ffb521;
-        transform: scale(1.02); 
-        cursor: pointer; 
+    .d-flex.justify-content-around {
+        flex-wrap: wrap;
     }
 
-    .cards__buttons:disabled {
-        background-color: #f9f9f9;
-        border: none; 
-        cursor: default;
+    .d-flex.justify-content-center {
+        margin-bottom: 0.5rem;
     }
+}
 
-    .active-button {
-        background-color: #e0e0e0; 
-        border-color: #c0c0c0;
+
+/* Media query para pantallas entre 998px y 766px */
+@media (min-width: 766px) and (max-width: 998px) {
+    .cards__buttons {
+        font-size: 0.9rem;
+        padding: 0.5rem;
     }
-
-    .text-muted {
-        font-size: 1.2rem;
-        color: #999;
-    }
-
-    /* Media query para pantallas pequeñas */
-    @media (max-width: 576px) {
-        .cards__buttons {
-            font-size: 0.8rem;
-            padding: 0.5rem; 
-        }
-        
-        .d-flex.justify-content-around {
-            flex-wrap: wrap; 
-        }
-
-        .d-flex.justify-content-center {
-            margin-bottom: 0.5rem; 
-        }
-    }
-
-    
-    /* Media query para pantallas entre 998px y 766px */
-    @media (min-width: 766px) and (max-width: 998px) {
-        .cards__buttons {
-            font-size: 0.9rem;
-            padding: 0.5rem; 
-        }
-    }
+}
 </style>

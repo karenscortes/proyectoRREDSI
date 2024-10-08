@@ -104,7 +104,9 @@
 
                 <!-- Tabla para mostrar las fases existentes -->
                 <div class="table-responsive mt-4">
-                  <h2>Convocatoria activa: {{ convocatoriaActiva }}</h2>
+                  <div v-if="convocatoriaActiva">
+                    <h2>Convocatoria Activa: {{ convocatoriaActiva.nombre }}</h2>
+                  </div>
                   <table class="table table-striped">
                     <thead class="thead-warning">
                       <tr>
@@ -179,9 +181,8 @@
   </div>
 </template>
 
-  
 <script>
-import { createConvocatoria, getConvocatoriasByPage, getProgramacionFasesByPage, programarFase } from '../../../../services/administradorService';
+import { createConvocatoria, getConvocatoriasByPage, getProgramacionFasesByPage, programarFases, getConvocatoriaEnCurso } from '../../../../services/administradorService';
 import { useToastUtils } from '@/utils/toast';
 import PaginatorBody from '../../../UI/PaginatorBody.vue';
 
@@ -206,11 +207,8 @@ export default {
       },
 
       fases: [],
-      convocatoriaActiva: '',
-      nombre: '',
-      selectedFase: '',
-      fechaInicioFase: '',
-      fechaFinFase: '',
+      convocatoriaActiva: null,  // Inicializa como null para verificar si hay una activa
+      errorMessage: '',
 
       // Fases con ID y modalidad a programar
       programacionFases: [
@@ -221,7 +219,7 @@ export default {
         { idFase: 5, idEtapa: 1, nombre: 'Asignaciones (Presencial)', fechaInicio: '', fechaFin: '' },
         { idFase: 7, idEtapa: 1, nombre: 'Publicación de Resultados (Presencial)', fechaInicio: '', fechaFin: '' },
         { idFase: 8, idEtapa: 1, nombre: 'Evento (Presencial)', fechaInicio: '', fechaFin: '' },
-      ]
+      ],
     };
   },
 
@@ -296,7 +294,7 @@ export default {
     async fetchConvocatorias(pagina_actual) {
       try {
         const respuesta = await getConvocatoriasByPage(pagina_actual);
-        this.convocatorias = respuesta.convocatorias;  // Asignar los administradores
+        this.convocatorias = respuesta.convocatorias;  // Asignar las convocatorias
         this.totalPaginasConvocatoria = respuesta.total_pages;  // Total de páginas para la paginación
       } catch (error) {
         showWarningToast('Error al obtener convocatorias');
@@ -308,60 +306,97 @@ export default {
         const respuesta = await getProgramacionFasesByPage(pagina_actual);
         this.fases = respuesta.programacion_fases;
         this.totalPaginasFases = respuesta.total_pages;
-
-        // Extraer el nombre de la convocatoria de la primera fase
-        if (this.fases.length > 0) {
-          this.convocatoriaActiva = this.fases[0].convocatoria_nombre;
-        } else {
-          this.convocatoriaActiva = 'Sin convocatoria activa';
-        }
       } catch (error) {
         showWarningToast('Error al obtener fases');
       }
     },
 
-    // Crear programación de fases
-    async crearProgramacionFases() {
-      // Validación de fechas para cada fase
-      for (const fase of this.programacionFases) {
-        const { fechaInicio, fechaFin, nombre } = fase;
-
-        // Verificar que las fechas no sean vacías
-        if (!fechaInicio || !fechaFin) {
-          showWarningToast(`Las fechas de la fase "${nombre}" son obligatorias`);
-          return;
-        }
-
-        const fechaInicioObj = new Date(fechaInicio);
-        const fechaFinObj = new Date(fechaFin);
-
-        // Validar que la fecha de inicio no sea mayor que la fecha de fin
-        if (fechaInicioObj > fechaFinObj) {
-          showWarningToast(`La fecha de inicio no puede ser mayor que la fecha de fin en la fase "${nombre}"`);
-          return;
-        }
-      }
-
-      // Si todas las fechas son válidas, programar las fases
+    async obtenerConvocatoriaActiva() {
       try {
-        const idConvocatoria = this.convocatorias[0].id; // Usar la primera convocatoria como ejemplo
-
-        for (const fase of this.programacionFases) {
-          await programarFase(
-            idConvocatoria,
-            fase.idFase,
-            fase.idEtapa,
-            fase.fechaInicio,
-            fase.fechaFin
-          );
-        }
-
-        showSuccessToast('Fases programadas exitosamente');
-        this.fetchFases(); // Actualizar la lista de fases
+        const convocatoria = await getConvocatoriaEnCurso();
+        this.convocatoriaActiva = convocatoria; // Almacena la convocatoria activa
       } catch (error) {
-        showErrorToast(error?.detail || 'Error al programar fases');
+        showWarningToast('Error al obtener la convocatoria activa');
       }
     },
+
+    async crearProgramacionFases() {
+      await this.obtenerConvocatoriaActiva(); // Obtener convocatoria activa antes de programar
+
+      // Verifica si la convocatoria activa existe
+      if (!this.convocatoriaActiva || !this.convocatoriaActiva.id_convocatoria) {
+        showWarningToast('No hay una convocatoria activa para programar fases.');
+        return;
+      }
+
+      // Obtener las fases programadas desde el backend
+      let fasesProgramadas = [];
+      try {
+        fasesProgramadas = await this.obtenerFasesProgramadas(); // Llama al servicio de fases programadas
+      } catch (error) {
+        showErrorToast('Error al obtener las fases programadas.');
+        return; // Salir del método si ocurre un error
+      }
+
+      // Comprobar si alguna de las fases que se quiere programar ya está programada
+      const faseYaProgramada = this.programacionFases.some(nuevaFase => 
+        fasesProgramadas.some(faseProgramada => 
+          faseProgramada.idFase === nuevaFase.idFase && 
+          faseProgramada.fechaInicio === nuevaFase.fechaInicio && 
+          faseProgramada.fechaFin === nuevaFase.fechaFin
+        )
+      );
+
+      if (faseYaProgramada) {
+        showWarningToast('Una o más fases ya están programadas. Por favor, revise las fechas.');
+        return; // Salir del método si alguna fase ya está programada
+      }
+
+      const payload = this.programacionFases
+        .filter(fase => fase.fechaInicio && fase.fechaFin) // Filtrar fases con fechas válidas
+        .map(fase => ({
+          id_fase: fase.idFase,  // Cambiar idFase a id_fase
+          id_convocatoria: this.convocatoriaActiva.id_convocatoria,  // Incluir id_convocatoria dentro de cada objeto fase
+          fecha_inicio: fase.fechaInicio,  // Cambiar fechaInicio a fecha_inicio
+          fecha_fin: fase.fechaFin  // Cambiar fechaFin a fecha_fin
+      }));
+
+
+      console.log(JSON.stringify(payload, null, 2));  // Mostrar el payload en formato JSON
+
+
+      console.log('Payload que se envía:', payload); // Agrega esto
+
+      try {
+        await programarFases(payload);
+        showSuccessToast('Programación de fases creada exitosamente.');
+        this.fetchFases(this.PaginarActualFases); // Refrescar lista de fases
+      } catch (error) {
+        showErrorToast('Error al programar las fases.');
+      }
+    },
+
+
+    async obtenerFasesProgramadas(page = 1, pageSize = 100) {
+      try {
+        const response = await getProgramacionFasesByPage(page, pageSize);
+        console.log('Respuesta completa del backend:', response); // Ver la estructura completa de la respuesta
+
+        // Verificar si el array 'programacion_fases' está presente y es válido
+        if (!response || !Array.isArray(response.programacion_fases)) {
+          throw new Error('La respuesta no contiene un array válido de programaciones de fases.');
+        }
+        
+        return response.programacion_fases;  // Devolver el array de fases programadas
+      } catch (error) {
+        console.error('Error al obtener fases programadas:', error);
+        throw error; // Propagar el error para que sea manejado arriba
+      }
+    },
+
+
+
+
 
     cambiarPaginaConvocatoria(pageNumber) {
       this.PaginarActualConvocatoria = pageNumber;
@@ -376,9 +411,10 @@ export default {
 
   mounted() {
     this.fetchConvocatorias(this.PaginarActualConvocatoria);
+    this.obtenerConvocatoriaActiva(); // Obtiene la convocatoria activa al montar el componente
     this.fetchFases(this.PaginarActualFases);
   }
 };
 </script>
 
-  
+

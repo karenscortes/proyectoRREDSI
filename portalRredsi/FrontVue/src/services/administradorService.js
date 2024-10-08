@@ -43,15 +43,15 @@ export const getConvocatoriaEnCurso = async () => {
 };
 
 
-// Servicio para la programación de fases
-export const programarFase = async (id_fase, id_convocatoria, fecha_inicio, fecha_fin) => {
+// Servicio para la programación de múltiples fases
+export const programarFases = async (programacionesFases) => {
   try {
-    const url = `/admin/crear-programacion-fase`;
-    const payload = { id_fase, id_convocatoria, fecha_inicio, fecha_fin };
-    
-    console.log('Enviando payload para programar fase:', payload); // Verifica qué se está enviando
+    const url = `/admin/crear-programaciones-fases`;
 
-    const response = await api.post(url, payload, {
+    // Verifica qué payload se está enviando
+    console.log('Enviando payload para programar fases:', programacionesFases);
+
+    const response = await api.post(url, programacionesFases, {
       headers: {
         'Authorization': `Bearer ${localStorage.getItem('access_token')}`
       }
@@ -59,12 +59,12 @@ export const programarFase = async (id_fase, id_convocatoria, fecha_inicio, fech
 
     return response.data; // Devolver solo los datos de la respuesta
   } catch (error) {
-    console.error('Error en el servicio programarFase:', error);
+    console.error('Error en el servicio programarFases:', error);
 
     // Diferenciar errores del servidor y otros tipos de errores
     if (error.response) {
       // Error del servidor, lanzar el mensaje del servidor
-      throw error.response.data; 
+      throw error.response.data;
     } else if (error.request) {
       // Error de red (la solicitud se hizo pero no hubo respuesta)
       throw new Error('No se recibió respuesta del servidor. Verifica tu conexión de red.');
@@ -74,6 +74,7 @@ export const programarFase = async (id_fase, id_convocatoria, fecha_inicio, fech
     }
   }
 };
+
 
 
 // Función para obtener todos los admins con paginación

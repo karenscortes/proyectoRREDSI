@@ -1,7 +1,7 @@
 <template>
     <div class="feature">
         <div class="icon">
-            <i class="fa-solid fa-users fa-lg text-dark mb-3"></i>
+            <i class="fa-solid fa-users fa-1.5x text-dark mb-3"></i>
         </div>
         <h2 class="text-dark text-left font-weight-bold">Ponentes</h2>
         <p class="text-dark text-left">
@@ -25,10 +25,9 @@ export default {
 </script>
 
 <style scoped>
-h2,
-p {
+h2{
     font-size: 0.8rem;
-    margin-bottom: 4px;
+    margin-bottom: 2px;
 }
 .text-left {
     text-align: left;
