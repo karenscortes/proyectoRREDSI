@@ -277,7 +277,7 @@ def get_proyecto_convocatoria(db: Session, id_proyecto: int):
             raise HTTPException(status_code=404, detail="No se encontró una convocatoria en curso para el proyecto.")
     except SQLAlchemyError as e:
         db.rollback()
-        print(f"Error al consultar el proyecto convocatoria: {e}")
+        print("Error al consultar el proyecto convocatoria")
         raise HTTPException(status_code=500, detail="Error al consultar el proyecto convocatoria")
     
 # Inserción de las respuestas de un proyecto
@@ -416,8 +416,9 @@ def insert_respuesta_rubrica(db: Session, id_item_rubrica: int, id_usuario: int,
 
     except SQLAlchemyError as e:
         db.rollback()
-        print(f"Error al insertar respuesta de rúbrica: {e}")
-    
+        print("Error al insertar respuesta de rúbrica")
+
+# Obtener los datos del proyecto con los datos de la sala    
 def get_proyectos_etapa_presencial_con_horario(db: Session, id_usuario: int, page: int = 1, page_size: int = 10):
     try:
         offset = (page - 1) * page_size
@@ -484,7 +485,7 @@ def get_proyectos_etapa_presencial_con_horario(db: Session, id_usuario: int, pag
             "total_pages": total_pages
         }
     except SQLAlchemyError as e:
-        print(f"Error al buscar el horario de los proyectos {e}")
+        print("Error al buscar el horario de los proyectos")
         raise HTTPException(status_code=500, detail="Error al buscar el horario de los proyectos")
     
 # Funcion para convetir la hora de la db a tiempo real
@@ -530,7 +531,7 @@ def get_datos_rubrica_proyecto(db: Session, id_proyecto: int, id_usuario: int, n
     
     except Exception as e:
         db.rollback()
-        raise HTTPException(status_code=500, detail=f"Error al consultar la rubrica del proyecto{e}")
+        raise HTTPException(status_code=500, detail="Error al consultar la rubrica del proyecto")
 
 # Obtener los nombres de los ponentes asignados a un proyecto y convocatoria en curso
 def get_nombres_ponentes_proyecto(db: Session, id_proyecto: int):
@@ -627,7 +628,7 @@ def get_datos_calificar_proyecto_completo(db: Session, id_proyecto: int, id_usua
 
     except Exception as e:
         db.rollback()
-        raise HTTPException(status_code=500, detail=f"Error al consultar los datos del proyecto:{e}")
+        raise HTTPException(status_code=500, detail="Error al consultar los datos del proyecto")
 
 # Obtener los datos calificados de la rúbrica para un proyecto
 def get_datos_calificados_rubrica(db: Session, id_proyecto: int, id_usuario: int, nombre_etapa: str):
@@ -663,7 +664,7 @@ def get_datos_calificados_rubrica(db: Session, id_proyecto: int, id_usuario: int
     
     except Exception as e:
         db.rollback()
-        raise HTTPException(status_code=500, detail=f"Error al consultar los datos calificados del proyecto: {e}")
+        raise HTTPException(status_code=500, detail="Error al consultar los datos calificados del proyecto")
 
 # Obtener los datos para calificar un proyecto
 def get_datos_proyecto_calificado_completo(db: Session, id_proyecto: int, id_usuario: int, nombre_etapa: str):
@@ -733,7 +734,7 @@ def get_datos_proyecto_calificado_completo(db: Session, id_proyecto: int, id_usu
 
     except Exception as e:
         db.rollback()
-        raise HTTPException(status_code=500, detail=f"Error al consultar los datos del proyecto: {e}")
+        raise HTTPException(status_code=500, detail="Error al consultar los datos del proyecto")
 
 # Obtener los nombres de las fases y las fechas de la programación de una convocatoria en curso filtrando por etapa
 def get_nombres_fases_y_fechas_programacion(db: Session, nombre_etapa: str) -> List[dict]:
@@ -773,3 +774,56 @@ def get_nombres_fases_y_fechas_programacion(db: Session, nombre_etapa: str) -> L
     except Exception as e:
         db.rollback()
         raise HTTPException(status_code=500, detail="Error al consultar las fases junto a su programación")
+
+# Obtener la información de la postulación del evaluador
+def get_estado_postulacion_evaluador(db: Session, id_usuario: int):
+    # Obtener la convocatoria actual
+    convocatoria_actual = get_current_convocatoria(db)
+
+    if not convocatoria_actual:
+        raise HTTPException(status_code=404, detail="No se encontró ninguna convocatoria en curso")
+
+    try:
+        # Obtener el estado de la postulación
+        sql_query = text(""" 
+            SELECT estado_postulacion 
+            FROM postulaciones_evaluadores 
+            WHERE id_evaluador = :id_usuario 
+            AND id_convocatoria = :convocatoria_actual
+        """)
+        result = db.execute(sql_query, {"id_usuario": id_usuario, "convocatoria_actual": convocatoria_actual}).fetchone()
+
+        if not result:
+            return {"estado_postulacion": 'sin postulacion'}
+
+        # Acceder al primer valor de la tupla (estado_postulacion) usando el índice 0
+        return {"estado_postulacion": result[0]}  # Aquí accedemos al valor de la primera columna
+
+    except Exception as e:
+        db.rollback()
+        raise HTTPException(status_code=500, detail=f"Error al consultar la postulación del evaluador: {e}")
+
+# Obtener la información institucional y académica del usuario
+def get_informacion_institucional_academica(db: Session, id_usuario: int):
+    try:
+        # Consulta SQL para verificar si el usuario tiene registros en ambas tablas
+        sql_query = text(""" 
+            SELECT 
+                (SELECT COUNT(*) FROM detalles_institucionales WHERE id_usuario = :id_usuario) AS existe_detalles_institucionales,
+                (SELECT COUNT(*) FROM titulos_academicos WHERE id_usuario = :id_usuario) AS existe_titulos_academicos
+        """)
+
+        result = db.execute(sql_query, {"id_usuario": id_usuario}).fetchone()
+
+        # Verificar si hay registros en ambas tablas
+        existe_detalles_institucionales = result[0]
+        existe_titulos_academicos = result[1]
+
+        if existe_detalles_institucionales > 0 and existe_titulos_academicos > 0:
+            return {"estado_institucional_academico": "con datos"}
+        else:
+            return {"estado_institucional_academico": "sin datos institucionales"}
+
+    except SQLAlchemyError as e:
+        db.rollback()
+        raise HTTPException(status_code=500, detail="Error al consultar la información institucional y académica")

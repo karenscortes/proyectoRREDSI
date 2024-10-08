@@ -40,6 +40,8 @@ import GestionarAsistentes from "../components/Users/administrador/asistencia/Ge
 import InicioAdminView from "./InicioAdminView.vue";
 import ConvocatoriaInfoPageView from "./ConvocatoriaInfoPageView.vue";
 import Milestones from "../components/Users/delegado/Milestones.vue";
+import { obtenerEstadoDatosInstitucionales } from '@/services/evaluadorService'
+
 
 // Styles
 import '../assets/plugins/fontawesome-free-5.0.1/css/fontawesome-all.css';
@@ -92,12 +94,33 @@ export default {
         const authStore = useAuthStore();
         const user = authStore.user;
         const componente = ref("");
+        const estadoDatosInstitucionales = ref(""); 
 
         //Componente que se mostrará al iniciar sesión
         const currentComponent = ref(NotAvailable);
 
-        if (user?.id_rol === 1) { //Evaluador
-            currentComponent.value = PaginaInicioEvaluadorView;
+        const obtenerDatosInstitucionales = async () => {
+            try {
+                // Realiza la llamada a la API
+                const response = await obtenerEstadoDatosInstitucionales(user.id_usuario);
+
+                // Asigna el valor al estado reactivo
+                estadoDatosInstitucionales.value = response.estado_institucional_academico;
+                
+            } catch (error) {
+                console.error("Error obteniendo los datos institucionales:", error);
+            }
+        };
+
+        if (user?.id_rol === 1) { // Evaluador
+            obtenerDatosInstitucionales().then(() => {
+                // Espera a que se obtengan los datos antes de continuar
+                if (estadoDatosInstitucionales.value === 'sin datos institucionales') {
+                    currentComponent.value = EditarPerfil;
+                } else {
+                    currentComponent.value = PaginaInicioEvaluadorView;
+                }
+            });
         }else if (user?.id_rol === 2){ //Delegado
             currentComponent.value = PaginaInicioDelegado;
             componente.value='PaginaInicioDelegado';
@@ -153,6 +176,7 @@ export default {
             currentComponent,
             componente,
             changeComponent,
+            obtenerDatosInstitucionales,
         };
 
     },

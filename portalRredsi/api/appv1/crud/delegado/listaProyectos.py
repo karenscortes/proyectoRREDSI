@@ -13,7 +13,8 @@ def get_all_projects(db: Session, nombre_etapa: str, page: int = 1, page_size: i
                 instituciones.nombre AS institucion,
                 modalidades.nombre AS modalidad,
                 proyectos.titulo,
-                proyectos.estado_calificacion AS estado_calificacion
+                proyectos.estado_calificacion AS estado_calificacion,
+                proyectos.url_propuesta_escrita
             FROM proyectos
             JOIN participantes_proyecto 
                 ON proyectos.id_proyecto = participantes_proyecto.id_proyecto  
@@ -71,7 +72,6 @@ def get_all_projects(db: Session, nombre_etapa: str, page: int = 1, page_size: i
         print(f"Error al buscar proyectos por etapa: {e}")
         raise HTTPException(status_code=500, detail=f"Error al buscar proyectos por etapa {e}")
     
-
 # Consulta para filtrar todos los proyectos por estado(calificado, pendiente) y por etapa
 def get_projects_by_state(db: Session, nombre_etapa: str, estado_calificacion: str, page: int = 1, page_size: int = 10):
     try:
@@ -83,7 +83,8 @@ def get_projects_by_state(db: Session, nombre_etapa: str, estado_calificacion: s
                 instituciones.nombre AS institucion,
                 modalidades.nombre AS modalidad,
                 proyectos.titulo,
-                proyectos.estado_calificacion AS estado_calificacion
+                proyectos.estado_calificacion AS estado_calificacion,
+                proyectos.url_propuesta_escrita
             FROM proyectos
             JOIN participantes_proyecto 
                 ON proyectos.id_proyecto = participantes_proyecto.id_proyecto  
