@@ -95,7 +95,7 @@
 
 <script>
 import { obtenerFechasAsignaciones} from '@/services/delegadoService'
-import { obtenerEstadoPostulacion} from '@/services/evaluadorService'
+import { obtenerEstadoPostulacion, obtenerEstadoDatosInstitucionales } from '@/services/evaluadorService'
 import { ref, onMounted} from "vue";
 import { defineComponent,reactive } from "vue";
 import { useRouter } from "vue-router";
@@ -156,7 +156,17 @@ export default defineComponent({
                 // Accede a la propiedad estado_postulacion de la respuesta
                 const estadoPostulacion = response.estado_postulacion;
 
-                console.log(estadoPostulacion); // Para verificar el valor recibido
+                // Realiza la llamada a la API
+                const response2 = await obtenerEstadoDatosInstitucionales(user.id_usuario);
+
+                // Accede a la propiedad estado_postulacion de la respuesta
+                const estadoDatosInstitucionales = response2.estado_institucional_academico;
+
+                if (estadoDatosInstitucionales == 'sin datos institucionales'){
+                    paginaUso.value = 'disabled';
+                }else{
+                    paginaUso.value = '';
+                }
 
                 // Según el estado de la postulación, definimos si se habilitan o no los apartados
                 switch (estadoPostulacion) {

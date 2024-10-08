@@ -417,7 +417,8 @@ def insert_respuesta_rubrica(db: Session, id_item_rubrica: int, id_usuario: int,
     except SQLAlchemyError as e:
         db.rollback()
         print("Error al insertar respuesta de rúbrica")
-    
+
+# Obtener los datos del proyecto con los datos de la sala    
 def get_proyectos_etapa_presencial_con_horario(db: Session, id_usuario: int, page: int = 1, page_size: int = 10):
     try:
         offset = (page - 1) * page_size
@@ -801,3 +802,28 @@ def get_estado_postulacion_evaluador(db: Session, id_usuario: int):
     except Exception as e:
         db.rollback()
         raise HTTPException(status_code=500, detail=f"Error al consultar la postulación del evaluador: {e}")
+
+# Obtener la información institucional y académica del usuario
+def get_informacion_institucional_academica(db: Session, id_usuario: int):
+    try:
+        # Consulta SQL para verificar si el usuario tiene registros en ambas tablas
+        sql_query = text(""" 
+            SELECT 
+                (SELECT COUNT(*) FROM detalles_institucionales WHERE id_usuario = :id_usuario) AS existe_detalles_institucionales,
+                (SELECT COUNT(*) FROM titulos_academicos WHERE id_usuario = :id_usuario) AS existe_titulos_academicos
+        """)
+
+        result = db.execute(sql_query, {"id_usuario": id_usuario}).fetchone()
+
+        # Verificar si hay registros en ambas tablas
+        existe_detalles_institucionales = result[0]
+        existe_titulos_academicos = result[1]
+
+        if existe_detalles_institucionales > 0 and existe_titulos_academicos > 0:
+            return {"estado_institucional_academico": "con datos"}
+        else:
+            return {"estado_institucional_academico": "sin datos institucionales"}
+
+    except SQLAlchemyError as e:
+        db.rollback()
+        raise HTTPException(status_code=500, detail="Error al consultar la información institucional y académica")

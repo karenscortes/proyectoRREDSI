@@ -157,7 +157,7 @@ export const obtenerHorarios= async (idUsuario, page = 1, pageSize = 5) => {
   }
 };
 
-// Función para obtener la etapa actual con la convocatoria del momento
+// Función para obtener la programacion de las fases con la convocatoria del momento
 export const obtenerProgramacionFases = async (nombreEtapa) => {
   try {
     const response = await api.get('/obtenerProgramacionFases/obtener-programacion-fases/', {
@@ -175,10 +175,28 @@ export const obtenerProgramacionFases = async (nombreEtapa) => {
   }
 };
 
-// Servicio para obtener las rúbricas calificadas de un proyecto
+// Servicio para obtener el estado de la postulacion de un evaluador
 export const obtenerEstadoPostulacion = async (idUsuario) => {
   try {
     const response = await api.get(`/obtenerDatosEvaluador/obtener-estado-postulacion-evaluador`, {
+      params: {
+        id_usuario: idUsuario,
+      }
+    });
+    return response.data; // Devuelve los datos de las rúbricas calificadas
+  } catch (error) {
+    if (error.response) {
+      throw error; // Lanza el error para que lo maneje el componente
+    } else {
+      throw new Error('Error de red o de servidor'); // Manejar errores de red
+    }
+  }
+};
+
+// Servicio para obtener el estado de la postulacion de un evaluador
+export const obtenerEstadoDatosInstitucionales = async (idUsuario) => {
+  try {
+    const response = await api.get(`/obtenerDatosEvaluador/obtener-estado-datos-institucionales`, {
       params: {
         id_usuario: idUsuario,
       }
