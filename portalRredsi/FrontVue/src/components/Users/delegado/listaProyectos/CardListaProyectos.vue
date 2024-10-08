@@ -45,6 +45,10 @@
                 type: Object,
                 required: true
             },
+            id_etapa_actual: {
+                type: String,
+                required: true
+            },
         },
         computed: {
             estadoEvaluacionFormatted() {
@@ -63,7 +67,11 @@
             selectComponent(componentName, proyecto) {
                 this.$emit('component-selected', { componentName, proyecto });
             }
+        },
+        mounted(){
+            this.proyecto.id_etapa = this.id_etapa_actual;
         }
+
     });
 </script>
 

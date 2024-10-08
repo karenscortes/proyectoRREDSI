@@ -100,6 +100,7 @@ import { ref, onMounted} from "vue";
 import { defineComponent,reactive } from "vue";
 import { useRouter } from "vue-router";
 import { useAuthStore } from "@/store";
+import { useToastUtils } from '@/utils/toast';
 
 export default defineComponent({
     emits: ['component-selected'],
@@ -111,6 +112,7 @@ export default defineComponent({
         const proyectosUso = ref('');
         const convocatoriaUso = ref('');
         const paginaUso = ref('');
+        const { showSuccessToast, showErrorToast, showWarningToast } = useToastUtils();
         
         //obteniendo fecha actual
         const currentDate = ref(new Date().toISOString().split('T')[0]);
@@ -198,7 +200,35 @@ export default defineComponent({
                 convocatoriaUso.value = 'disabled';
             }
         };
+        const handleDelegadoMenu = async () => {
+            try {
+                const response2 = await obtenerEstadoDatosInstitucionales(user.id_usuario);
 
+                const estadoDatosInstitucionales = response2.estado_institucional_academico;
+
+                if (estadoDatosInstitucionales == 'sin datos institucionales'){
+                    otras_opciones.value = 'disabled';
+                    asignacion1.value = 'disabled';
+                    asignacion2.value = 'disabled';
+                    showWarningToast("Debes terminar tu registro en perfil");
+
+                }else{
+                    otras_opciones.value = '';
+                    asignacion1.value = '';
+                    asignacion2.value = '';
+                    
+                    // Función para comprobar y bloquear opciones dependiendo de la etapa y fecha actual
+                    getAssignmentDates();
+                }
+            } catch (error) {
+                console.error('Error obteniendo datos institucionales:', error);
+                // Si ocurre un error, definir los valores predeterminados para evitar fallos en la UI
+                otras_opciones.value = 'disabled';
+                asignacion1.value = 'disabled';
+                asignacion2.value = 'disabled';
+            }
+            console.log(otras_opciones.value)
+        };
         if (user?.id_rol === 3) {
             Object.assign(state, {
                 left_tabs: [{nombre:'Inicio', ruta:'InicioAdminView'}, {nombre:'Perfil', ruta:'PerfilAdmin'}, {nombre:'Cuentas', ruta:'DelegadosAdminView'},{nombre:'Rubricas', ruta:'RubricaAdminView'}],
@@ -211,12 +241,17 @@ export default defineComponent({
 
             });
         } else if (user?.id_rol === 2) {
-            //     getAssignmentDates();            
+            // Primero ejecuta la funcion para comprobar que tenga datos institucionales 
+            const imprimirMenu = async ()=>{
+                // Función para comprobar si tiene datos institucionales
+                await handleDelegadoMenu();
+            }
+            imprimirMenu();
             Object.assign(state, {
                 left_tabs: [{nombre:'Inicio', ruta:'PaginaInicioDelegado', uso: ''}, {nombre:'Perfil', ruta:'EditarPerfil', uso: ''}],
                 mid_tabs:[
                     {   nombre:"Evaluadores", 
-                        opciones:[{nombre:'Postulaciones', ruta:'PostulacionesEvaluadores', uso: otras_opciones}, {nombre:'Lista de Evaluadores',ruta:'ListaEvaluadores', uso: ''}]
+                        opciones:[{nombre:'Postulaciones', ruta:'PostulacionesEvaluadores', uso: otras_opciones}, {nombre:'Lista de Evaluadores',ruta:'ListaEvaluadores', uso: otras_opciones}]
                     },
                     {
                         nombre:"Proyectos", 

@@ -1,12 +1,17 @@
 <template>
     <div class="feature">
         <div class="icon">
-            <i class="fa-solid fa-graduation-cap fa-lg text-dark mb-3"></i>
+            <i class="fa-solid fa-graduation-cap fa-1.5x text-dark mb-3"></i>
         </div>
         <h2 class="text-dark text-left font-weight-bold">Evaluadores</h2>
         <p class="text-dark text-left">
-            <span v-for="(evaluador, index) in evaluadores" :key="index">
-                {{ evaluador.nombres }} {{ evaluador.apellidos }}<br>
+            <strong>Calificación Virtual</strong><br>
+            <span v-for="(evaluador, index) in evaluadores.virtual" :key="index">
+                {{ evaluador.nombres }} {{ evaluador.apellidos }} <br> 
+            </span>
+            <strong>Calificación Presencial</strong><br>
+            <span v-for="(evaluador, index) in evaluadores.presencial" :key="index">
+                {{ evaluador.nombres }} {{ evaluador.apellidos }} <br>
             </span>
         </p>
     </div>
@@ -25,10 +30,9 @@ export default {
 </script>
 
 <style scoped>
-h2,
-p {
+h2 {
     font-size: 0.8rem;
-    margin-bottom: 4px;
+    margin-bottom: 3px;
 }
 
 .text-left {
