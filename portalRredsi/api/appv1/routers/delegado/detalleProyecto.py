@@ -6,7 +6,7 @@ from appv1.routers.login import get_current_user
 from appv1.schemas.delegado.detalleProyectos import  ParticipanteProyectoS, SalaConHorario, UrlPresentacionProyecto, UsuarioProyecto, AsistenciaEvento
 from appv1.schemas.usuario import UserResponse
 from db.database import get_db
-from appv1.crud.delegado.detalleProyecto import get_asistentes_evento, get_datos_sala, get_evaluadores_por_etapa, get_obtener_suplentes,  get_participantes_proyecto,  insertar_presentacion_proyecto, insertar_suplente_proyecto
+from appv1.crud.delegado.detalleProyecto import get_asistentes_evento, get_datos_sala, get_evaluadores_por_etapa, get_obtener_suplente_evaluador, get_obtener_suplentes,  get_participantes_proyecto,  insertar_presentacion_proyecto, insertar_suplente_proyecto
 
 router_detalle_proyecto = APIRouter()
 
@@ -47,15 +47,16 @@ async def obtener_asistentes_evento(
 #ruta para insertar suplentes 
 @router_detalle_proyecto.post("/insertar-suplentes/")
 async def insertar_suplente(
-    id_usuario: int,
+    id_suplente: int,
     id_etapa: int,
     id_proyecto: int,
     id_proyectos_convocatoria: int,
     tipo_usuario: str,
+    id_evaluador: int,
     db: Session = Depends(get_db)    
 ):   
     try:
-        insertar_suplente_proyecto(db,  id_usuario, id_etapa, id_proyecto, id_proyectos_convocatoria, tipo_usuario)
+        insertar_suplente_proyecto(db, id_suplente, id_etapa, id_proyecto, id_proyectos_convocatoria, tipo_usuario, id_evaluador)
         return {"mensaje": "Suplente insertado correctamente"}
     except HTTPException as e:
         return {"mensaje": "Error al insertar suplente"}   
@@ -63,12 +64,11 @@ async def insertar_suplente(
 #ruta para obtener suplentes
 @router_detalle_proyecto.get("/obtener-suplentes/", response_model=List[ParticipanteProyectoS])
 async def obtener_suplente(
-    id_usuario: int,
     id_proyecto: int,
     tipo_usuario: str,
     db: Session = Depends(get_db)
 ):
-    infoSuplentes = get_obtener_suplentes(db, id_usuario, id_proyecto, tipo_usuario)
+    infoSuplentes = get_obtener_suplentes(db, id_proyecto, tipo_usuario)
     if not infoSuplentes:
         raise HTTPException(status_code=404, detail="No se encontraron suplentes")
     return infoSuplentes
@@ -86,6 +86,18 @@ async def obtener_datos_proyecto(
         raise HTTPException(status_code=404, detail="No se encontró información de sala para el proyecto")
     return infoSala
 
+#ruta para traer suplente de evaluador
+@router_detalle_proyecto.get("/suplente-evaluador/", response_model=dict)
+async def obtener_suplentes_evalaudor(
+    id_proyecto: int,
+    id_evaluador: int,
+    db: Session = Depends(get_db)
+):
+    suplenteEvaluador = get_obtener_suplente_evaluador(db, id_proyecto, id_evaluador)
+    if not suplenteEvaluador:
+        raise HTTPException(status_code=404, detail="No se encontraron suplentes agregados para evaluador")
+    id_suplente = [dict(suplente) for suplente in suplenteEvaluador]
+    return {"id_suplente":id_suplente}
 
 
 #ruta para insertar url presentación proyecto
@@ -102,3 +114,4 @@ async def insertar_url_presentacion(
         return {"mensaje": "Error al insertar URL de presentación"}
 
 
+   

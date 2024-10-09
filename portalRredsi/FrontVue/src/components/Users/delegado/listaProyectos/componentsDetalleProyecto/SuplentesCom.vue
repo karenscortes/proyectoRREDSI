@@ -8,10 +8,8 @@
             <i type="button" class="fa-regular fa-square-plus fa-lg text-dark" @click="openModal"></i>
         </h2>
 
-        <p class="text-dark text-left">
-            Tipo: {{ nuevoTipo }} <br>
-            Nombre: {{ suplenteSeleccionado ? `${suplenteSeleccionado.nombres} ${suplenteSeleccionado.apellidos}` : ''
-            }}
+        <p class="text-dark text-left" v-for="suplente in suplentes" :key="suplente.nombres">
+            {{ suplente.nombres }} {{ suplente.apellidos }} <strong>{{ suplente.tipo_usuario }}</strong>
         </p>
 
         <div v-if="isModalOpen" class="modal">
@@ -32,13 +30,33 @@
                             <option value="suplentePonente">Suplente Ponente</option>
                         </select>
                     </div>
-
+                    <div class="form-group" v-if="nuevoTipo == 'suplentePonente'">
+                        <label for="suplente">Seleccionar Ponente a reemplazar :</label>
+                        <select v-model="evaluadorSeleccionado" id="evaluador" class="form-control custom-select">
+                            <option value="" disabled selected>Seleccionar Evaluador</option>
+                            <option v-for="(ponente, index) in ponentes" :key="index"
+                                :value="ponente.id_usuario">
+                                {{ ponente.nombres }} {{ ponente.apellidos }}
+                            </option>
+                        </select>
+                    </div>
+                    <div class="form-group " v-else>
+                        <label for="suplente">Seleccionar Evaluador a reemplazar :</label>
+                        <select v-model="evaluadorSeleccionado" id="evaluador" class="form-control custom-select">
+                            <option value="" disabled selected>Seleccionar Evaluador</option>
+                            <option v-for="(evaluador, index) in evaluadores.presencial" :key="index"
+                                :value="evaluador.id_usuario">
+                                {{ evaluador.nombres }} {{ evaluador.apellidos }}
+                            </option>
+                        </select>
+                    </div>
+                    
                     <div class="form-group">
-                        <label for="suplente">Seleccionar Suplente (por nombre):</label>
-                        <select v-model="suplenteSeleccionado" id="suplente" class="form-control custom-select">
+                        <label for="asistente">Seleccionar Suplente (por nombre):</label>
+                        <select v-model="suplenteSeleccionado" id="asistente" class="form-control custom-select">
                             <option value="" disabled selected>Seleccionar Suplente</option>
-                            <option v-for="(suplente, index) in suplentes" :key="index" :value="suplente">
-                                {{ suplente.nombres }} {{ suplente.apellidos }}
+                            <option v-for="(asistente, index) in asistentes" :key="index" :value="asistente.id_usuario">
+                                {{ asistente.nombres }} {{ asistente.apellidos }}
                             </option>
                         </select>
                     </div>
@@ -66,19 +84,19 @@ export default {
             type: Number,
             required: true
         },
-        id_suplente: {
-            type: Number,
-            required: true
-        }
+        evaluadores: Array,
+        ponentes: Array,
     },
     data() {
         return {
             isModalOpen: false,
             suplentes: [],
+            asistentes: [],
             nuevoTipo: '',
             suplenteSeleccionado: null,
+            evaluadorSeleccionado: null,
             idProyectoConvocatoria: null,
-            tipo_usuario: '' 
+            tipo_usuario: ''
         };
     },
     setup() {
@@ -100,8 +118,7 @@ export default {
         },
         async fetchAsistentes() {
             try {
-                this.suplentes = await obtenerAsistentesSuplentes(1); 
-                console.log("Suplentes obtenidos:", this.suplentes);
+                this.asistentes = await obtenerAsistentesSuplentes(1);
             } catch (error) {
                 this.showErrorToast("Error al obtener los asistentes:");
             }
@@ -115,18 +132,18 @@ export default {
                 this.showErrorToast("Error al obtener el proyecto convocatoria:");
             }
         },
-        async fetchSuplentesSeleccionados() {
+        async fetchSuplentes() {
             try {
-                
-                const suplenteData = await obtenerSuplentes(this.id_suplente, this.idProyecto, this.tipo_usuario);
-                if (suplenteData && suplenteData.length > 0) {    
-                    this.suplenteSeleccionado = suplenteData[0];
-                    this.nuevoTipo = suplenteData[0].tipo_usuario;
-                    console.log("Suplente seleccionado:", this.suplenteSeleccionado);
-                } else {
-                    console.warn("No se encontraron suplentes para el id_suplente:", this.id_suplente);
-                    this.showInfoToast("No hay suplentes asignados a este proyecto.");
+                const suplenteData = await obtenerSuplentes(this.idProyecto, this.tipo_usuario);
+                this.suplentes = suplenteData;
+                const suplentesEvaluadores = [];
+                const suplentesPonentes = [];
+                for (let i = 0; i < this.suplentes.length; i++) {
+                    if (this.suplentes[i].tipo_usuario == 'suplenteEvaluador') {
+                        suplentesEvaluadores.push(this.suplentes[i]);
+                    }
                 }
+                this.$emit('suplenteEvaluador', suplentesEvaluadores);
             } catch (error) {
                 console.error("Error al obtener los suplentes seleccionados:", error);
                 // this.showErrorToast("Error al obtener los suplentes seleccionados."); 
@@ -135,21 +152,26 @@ export default {
 
         async addSuplente() {
             try {
-                await insertarSuplente(
-                    this.suplenteSeleccionado.id_usuario,
-                    this.idEtapa,
-                    this.idProyecto,
-                    this.idProyectoConvocatoria,
-                    this.nuevoTipo
-                );
-
-                this.showSuccessToast("Suplente insertado con éxito");
-                this.$emit('suplenteSeleccionado', {
-                    suplente: this.suplenteSeleccionado,
-                    tipo: this.nuevoTipo
-                });
-                this.resetForm();
-                this.closeModal();
+                // if (this.suplenteSeleccionado == null || this.evaluadorSeleccionado == null) {
+                //     alert("Debe seleccionar uno de los participante...");
+                // } else {
+                    await insertarSuplente(
+                        this.suplenteSeleccionado,
+                        this.idEtapa,
+                        this.idProyecto,
+                        this.idProyectoConvocatoria,
+                        this.nuevoTipo,
+                        this.evaluadorSeleccionado
+                    );
+                    this.showSuccessToast("Suplente insertado con éxito");
+                    // this.$emit('suplenteSeleccionado', {
+                    //     suplente: this.suplenteSeleccionado,
+                    //     tipo: this.nuevoTipo
+                    // });
+                    this.resetForm();
+                    this.closeModal();
+                    this.fetchSuplentes();
+                // }
             } catch (error) {
                 this.showErrorToast("Error al agregar suplente:");
             }
@@ -160,8 +182,7 @@ export default {
         }
     },
     async mounted() {
-        console.log("ID Suplente en mounted:", this.id_suplente);
-        await this.fetchSuplentesSeleccionados();
+        await this.fetchSuplentes();
     }
 };
 </script>

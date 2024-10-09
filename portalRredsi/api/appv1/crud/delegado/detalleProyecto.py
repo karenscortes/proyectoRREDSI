@@ -84,29 +84,64 @@ def get_asistentes_evento(db: Session, id_convocatoria: int):
 
 
 #Insertar suplente
-def insertar_suplente_proyecto(db: Session, id_usuario: int, id_etapa: int, id_proyecto: int, id_proyectos_convocatoria: int, tipo_usuario: str):
+def insertar_suplente_proyecto(db: Session, id_suplente: int, id_etapa: int, id_proyecto: int, id_proyectos_convocatoria: int, tipo_usuario: str, id_evaluador: int):
     try:
+        ##Consulta para insertar en participantes proyecto (suplente)
         sql = text("""
             INSERT INTO participantes_proyecto (id_usuario, id_etapa, id_proyecto, id_proyectos_convocatoria, tipo_usuario)
-            VALUES (:id_usuario, :id_etapa, :id_proyecto, :id_proyectos_convocatoria, :tipo_usuario)
+            VALUES (:id_suplente, :id_etapa, :id_proyecto, :id_proyectos_convocatoria, :tipo_usuario)
         """)
         params = {
-            "id_usuario": id_usuario,
+            "id_suplente": id_suplente,
             "id_etapa": id_etapa,
             "id_proyecto": id_proyecto,
             "id_proyectos_convocatoria": id_proyectos_convocatoria,
             "tipo_usuario": tipo_usuario,
         }
         db.execute(sql, params)
+        
+        ##Insertar evaluador reemplazado 
+        if(tipo_usuario == 'suplenteEvaluador'):
+            sqlEvaluador = text("""
+            INSERT INTO evaluador_suplente (id_evaluador, id_suplente, id_proyecto )
+            VALUES (:id_evaluador, :id_suplente, :id_proyecto)
+            """)
+            paramsEvaluador = {
+                "id_evaluador": id_evaluador,
+                "id_suplente": id_suplente,
+                "id_proyecto": id_proyecto,
+            }
+            db.execute(sqlEvaluador, paramsEvaluador)
+            
         db.commit()
+        return True
     except SQLAlchemyError as e:
         db.rollback()
-        raise HTTPException(status_code=500, detail="Error al registrar el suplente")
+        print(f"Error inesperado: {str(e)}")
+        raise HTTPException(status_code=500, detail="Error al registrar evaluador reemplazado")
+    
+# def insertar_evaluador_reemplazado(db: Session, id_evalaudor: int, id_proyecto: int)
+#         ##Insertar evaluador reemplazado 
+#         sqlEvaluador = text("""
+#             INSERT INTO evaluador_suplente (id_evaluador, id_suplente, id_proyecto )
+#             VALUES (:id_evaluador, :id_suplente, :id_proyecto)
+#         """)
+#         paramsEvaluador = {
+#             "id_evaluador": id_evaluador,
+#             "id_suplente": id_suplente,
+#             "id_proyecto": id_proyecto,
+#         }
+#         db.execute(sqlEvaluador, paramsEvaluador)
+#         db.commit()
+#         return True
+# except SQLAlchemyError as e:
+#         db.rollback()
+#         raise HTTPException(status_code=500, detail="Error al registrar evaluador reemplazado")
 
 
 
 # consultar suplentes
-def get_obtener_suplentes(db: Session, id_usuario: int, id_proyecto: int, tipo_usuario: str, ):
+def get_obtener_suplentes(db: Session, id_proyecto: int, tipo_usuario: str, ):
     try:
         sql = text("""
             SELECT usuarios.nombres, usuarios.apellidos, participantes_proyecto.id_usuario,
@@ -117,16 +152,32 @@ def get_obtener_suplentes(db: Session, id_usuario: int, id_proyecto: int, tipo_u
             WHERE (participantes_proyecto.tipo_usuario = 'suplenteEvaluador' 
                 OR participantes_proyecto.tipo_usuario = 'suplentePonente')
             AND participantes_proyecto.id_proyecto = :id_proyecto
-            AND participantes_proyecto.id_usuario = :id_usuario
         """)
         
-        result = db.execute(sql,{"id_usuario":id_usuario, "id_proyecto": id_proyecto, "tipo_usuario": tipo_usuario}).fetchall()
+        result = db.execute(sql,{ "id_proyecto": id_proyecto, "tipo_usuario": tipo_usuario}).fetchall()
         return result
     except SQLAlchemyError as e:
         db.rollback()
         raise HTTPException(status_code=500, detail="Error al consultar suplentes")
 
-                
+def get_obtener_suplente_evaluador(db: Session, id_proyecto: int, id_evaluador: int):
+    try:
+        sql= text("""
+            SELECT id_suplente FROM evaluador_suplente 
+            WHERE id_evaluador = :id_evaluador  
+            AND id_proyecto = :id_proyecto
+        """)
+        params = {
+            "id_proyecto": id_proyecto,
+            "id_evaluador": id_evaluador,
+        }
+        result = db.execute(sql,params).mappings().all()
+        return result
+    except SQLAlchemyError as e:
+        db.rollback()
+        raise HTTPException(status_code=500, detail="Error al consultar suplentes")
+
+
 #Insertar presentacion del proyecto
 def insertar_presentacion_proyecto(db: Session, id_proyecto: int, url_presentacion: str):
     try:

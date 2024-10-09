@@ -107,6 +107,7 @@ import { ref, computed, watch, onMounted } from 'vue';
 import { obtenerDatosParaCalificarProyecto, insertarRespuestaRubrica, obtenerEtapaActual, obtenerRubricasCalificadas } from '../../../../../services/evaluadorService';
 import { useAuthStore } from '@/store';
 import { useToastUtils } from '@/utils/toast';
+import { obtener_id_suplente } from '../../../../../services/delegadoService';
 
 export default {
     name: 'RubricaCom',
@@ -123,10 +124,6 @@ export default {
             type: String,
             required: true
         },
-        id_suplente: {
-            type: Number,
-            required: true
-        }
         
     },
     setup(props) {
@@ -142,10 +139,10 @@ export default {
         const puntajeTotal = ref(0);
         const currentEtapa = ref('');
         const botonCalificar = ref('Activo'); // Nueva variable para habilitar o no el botón de calificar
+        const idSuplente = ref('');
 
 
         const { showSuccessToast, showErrorToast, showWarningToast, showInfoToast } = useToastUtils();
-        console.log('ID Suplente recibido en RubricaCom:', props.id_suplente);
 
         const puedeCalificar = computed(() => {
             // Verificar si el estado es pendiente en alguna de las fases (P_virtual o P_presencial)
@@ -156,20 +153,31 @@ export default {
             return props.proyecto.estado_calificacion === 'C_presencial' || props.proyecto.estado_calificacion === 'C_virtual' || botonCalificar.value === "Inactivo";
         });
 
+        
+
         const obtenerDatos = async () => {
             const authStore = useAuthStore();
             const user = authStore.user;
 
             // Obtener etapa actual
-            try {
-                const response = await obtenerEtapaActual();
-                currentEtapa.value = response.nombre_etapa;
-            } catch (etapaError) {
-                showErrorToast('Error al obtener la etapa actual.');
+            // try {
+            //     const response = await obtenerEtapaActual();
+            //     currentEtapa.value = response.nombre_etapa;
+            // } catch (etapaError) {
+            //     showErrorToast('Error al obtener la etapa actual.');
+            // }
+            if(props.proyecto.id_etapa == '1'){
+                currentEtapa.value = 'Presencial';
+            }else {
+                currentEtapa.value = 'Virtual';
             }
-            // if(id_suplente == null){
-
-            // }else {}
+            try {
+                const response = await obtener_id_suplente(props.proyecto.id_proyecto, props.id_evaluador);
+                idSuplente.value = response.id_suplente[0].id_suplente;
+                console.log("ID SUPLENTEEEEEEEEE", idSuplente.value);
+            } catch (etapaError) {
+                    console.log(etapaError);
+            }
             try {
                 // Intentamos obtener los datos de las rúbricas calificadas.
                 const data = await obtenerRubricasCalificadas(props.proyecto.id_proyecto, props.id_evaluador, props.etapa);
@@ -314,6 +322,7 @@ export default {
             disabledCalificacionObservacion,
             validarCalificacion,
             botonCalificar,
+            idSuplente,
         };
     }
 }

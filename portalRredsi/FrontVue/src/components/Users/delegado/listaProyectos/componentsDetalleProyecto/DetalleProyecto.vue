@@ -40,8 +40,8 @@
                             <!-- Suplentes -->
                             <div class="col-6 col-md-6 mt-3">
                                 <SuplentesCom :idProyecto="proyecto.id_proyecto" :idEtapa="proyecto.id_etapa"
-                                    :tipo="tipo" :id_suplente="id_suplente" :suplente="suplente"
-                                    @suplenteSeleccionado="suplenteSeleccionado" />
+                                    :tipo="tipo" :evaluadores="evaluadores" :ponentes="ponentes"
+                                />
                             </div>
                         </div>
                         <!-- Botones -->
@@ -115,11 +115,11 @@
                 </div>
                 <div id="collapseOne" class="collapse mt-5" aria-labelledby="headingOne"
                     data-bs-parent="#accordionExample">
-                    <RubricaCom v-if="cargarRubricaVirtual" :proyecto="proyecto" :id_suplente="id_suplente"
-                        :id_evaluador="id_evaluador1" :etapa="'virtual'" />
+                    <RubricaCom :proyecto="proyecto" 
+                        :id_evaluador="id_evaluador1" :etapa="'Virtual'" />
                 </div>
             </div>
-            <div class="card p-2">
+            <div v-if="cargarRubricaPresencial" class="card p-2">
                 <div id="headingTwo">
                     <button class="btn btn-block toggle-button collapsed rubrica-btn" type="button"
                         data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false"
@@ -130,11 +130,11 @@
                 </div>
                 <div id="collapseTwo" class="collapse mt-5" aria-labelledby="headingTwo"
                     data-bs-parent="#accordionExample">
-                    <RubricaCom v-if="cargarRubricaPresencial" :proyecto="proyecto" :id_suplente="id_suplente"
-                        :id_evaluador="id_evaluador2" :etapa="'presencial'" />
+                    <RubricaCom v-if="cargarRubricaPresencial" :proyecto="proyecto"
+                        :id_evaluador="id_evaluador2" :etapa="'Presencial'" />
                 </div>
             </div>
-            <div class="card p-2">
+            <div v-if="cargarRubricaPresencial"  class="card p-2">
                 <div id="headingThree">
                     <button class="btn btn-block toggle-button collapsed rubrica-btn" type="button"
                         data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false"
@@ -143,9 +143,9 @@
                         Respuesta rúbrica 3
                     </button>
                 </div>
-                <div id="collapseThree" class="collapse mt-5" aria-labelledby="headingThree"
+                <!-- <div id="collapseThree" class="collapse mt-5" aria-labelledby="headingThree"
                     data-bs-parent="#accordionExample">
-                    <RubricaCom v-if="cargarRubricaPresencial" :proyecto="proyecto" :id_suplente="id_suplente"
+                    <RubricaCom v-if="cargarRubricaPresencial" :proyecto="proyecto" 
                         :id_evaluador="id_evaluador3" :etapa="'presencial'" />
                     <h4 class="text-center text-dark mt-4 mb-4">Respaldo</h4>
                     <div class="custom-file-upload mx-auto">
@@ -155,7 +155,7 @@
                             Selecciona un archivo
                         </label>
                     </div>
-                </div>
+                </div> -->
             </div>
         </div>
     </div>
@@ -175,6 +175,10 @@ export default {
     props: {
         proyecto: {
             type: Object,
+            required: true
+        },
+        id_etapa_actual: {
+            type: String,
             required: true
         },
     },
@@ -208,7 +212,7 @@ export default {
             urlPresentacion: '',
             suplente: {},
             tipo: '',
-            id_suplente: null,
+            
 
         };
     },
@@ -221,7 +225,8 @@ export default {
         async fetchEvaluadores(id_proyecto) {
             try {
                 const id_etapa = this.proyecto.id_etapa;
-                if (id_etapa == 2) {
+                console.log('id_etapa', this.id_etapa_actual );
+                if (id_etapa == '2') {
                     const data = await obtenerEvaluadoresProyecto(id_proyecto, id_etapa);
                     this.evaluadores = data;
                 } else {
@@ -230,8 +235,11 @@ export default {
                     this.id_evaluador1 = this.evaluadores.virtual[0].id_usuario;
                     const dataEvaluadorPresencial = await obtenerEvaluadoresProyecto(id_proyecto, 1);
                     this.evaluadores['presencial'] = dataEvaluadorPresencial;
-                    this.id_evaluador2 = this.evaluadores.presencial[0].id_usuario;
-                    this.id_evaluador3 = this.evaluadores.presencial[1].id_usuario;
+                    if(this.evaluadores.presencial > 0){
+                        this.id_evaluador2 = this.evaluadores.presencial[0].id_usuario;
+                    }else if(this.evaluadores.presencial > 1) {
+                        this.id_evaluador3 = this.evaluadores.presencial[1].id_usuario;
+                    }  
                 }
 
             } catch (error) {
@@ -241,6 +249,7 @@ export default {
 
         // Función para obtener los ponentes del proyecto
         async fetchPonentes(id_proyecto) {
+            
             try {
                 const data = await obtenerPonentesProyecto(id_proyecto);
                 this.ponentes = data;
@@ -261,6 +270,7 @@ export default {
         //Función para obtener presentación
         async fetchUrlPresentacion(id_proyecto) {
             try {
+
                 const response = await obtenerUrlPresentacionProyecto(id_proyecto);
                 this.urlPresentacion = response.data.url_presentacion;
             } catch (error) {
@@ -275,10 +285,12 @@ export default {
                 await this.fetchInfoSala(this.proyecto.id_proyecto);
                 await this.fetchUrlPresentacion(this.proyecto.id_proyecto);
                 if (this.evaluadores.virtual.length > 0 || this.evaluadores.presencial.length > 0) {
-                    if (this.proyecto.id_etapa == 2) {
+                    if (this.proyecto.id_etapa == '2') {
                         this.cargarRubricaVirtual = true;
                         this.cargarRubricaPresencial = false;
                     } else {
+                        console.log("Hola juanpis");
+                        console.log(this.proyecto.id_etapa)
                         this.cargarRubricaPresencial = true;
                         this.cargarRubricaVirtual = true;
                     }
@@ -302,15 +314,11 @@ export default {
                 this.showErrorToast('Error al guardar la presentación. Por favor, intenta nuevamente.');
             }
         },
-        suplenteSeleccionado({ suplente, tipo }) {
-            this.suplente = suplente;
-            this.tipo = tipo;
-            this.id_suplente = suplente.id_usuario;
-        },
-
+        // obtenerSuplentes(arregloSuplentes ) {
+        //     this.suplente = arregloSuplentes;     
+        // },
     },
     mounted() {
-        console.log(this.proyecto);
         this.fetchAllData()
     }
 };
