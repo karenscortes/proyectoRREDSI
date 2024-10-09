@@ -11,7 +11,7 @@
         <p class="text-dark text-left" v-for="suplente in suplentes" :key="suplente.nombres">
             {{ suplente.nombres }} {{ suplente.apellidos }} <strong>{{ suplente.tipo_usuario }}</strong>
         </p>
-
+        
         <div v-if="isModalOpen" class="modal">
             <div class="modal-content">
                 <div class="modal-header">
