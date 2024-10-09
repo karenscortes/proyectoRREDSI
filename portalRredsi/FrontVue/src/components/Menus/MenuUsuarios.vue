@@ -220,7 +220,7 @@ export default defineComponent({
         };
         if (user?.id_rol === 3) {
             Object.assign(state, {
-                left_tabs: [{nombre:'Inicio', ruta:'InicioAdminView'}, {nombre:'Perfil', ruta:'PerfilAdmin'}, {nombre:'Cuentas', ruta:'DelegadosAdminView'},{nombre:'Rubricas', ruta:'RubricaAdminView'}],
+                left_tabs: [{nombre:'Inicio', ruta:'InicioAdminView'}, {nombre:'Perfil', ruta:'EditarPerfil'}, {nombre:'Cuentas', ruta:'DelegadosAdminView'},{nombre:'Rubricas', ruta:'RubricaAdminView'}],
                 mid_tabs:[
                     {   nombre:"Eventos", 
                         opciones:[{nombre:'Salas', ruta:'SalasAdminView'}, {nombre:'Asistencia',ruta:'GestionarAsistentes'}, {nombre:'Convocatoria', ruta:'CrearConvocatoria'}]
@@ -262,7 +262,7 @@ export default defineComponent({
             });
         } else if(user?.id_rol == 6) {
             Object.assign(state, {
-                left_tabs: [{nombre: "Inicio", ruta: "InicioSuperAdminView" }, {nombre: "Editar perfil", ruta: "EditarPerfil" },{nombre: "Gestionar administradores", ruta: "ListaAdministradores" }],
+                left_tabs: [{nombre: "Inicio", ruta: "InicioSuperAdminView" }, {nombre: "Perfil", ruta: "EditarPerfil" },{nombre: "Gestionar administradores", ruta: "ListaAdministradores" }],
                 visibilidad: "d-none",
             });
         }
