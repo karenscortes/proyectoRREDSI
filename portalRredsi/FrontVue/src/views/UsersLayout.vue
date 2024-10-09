@@ -41,7 +41,9 @@ import InicioAdminView from "./InicioAdminView.vue";
 import ConvocatoriaInfoPageView from "./ConvocatoriaInfoPageView.vue";
 import Milestones from "../components/Users/delegado/Milestones.vue";
 import { obtenerEstadoDatosInstitucionales } from '@/services/evaluadorService'
+import { useToastUtils } from '@/utils/toast'; 
 
+const { showWarningToast } = useToastUtils();
 
 // Styles
 import '../assets/plugins/fontawesome-free-5.0.1/css/fontawesome-all.css';
@@ -113,13 +115,12 @@ export default {
         };
 
         if (user?.id_rol === 1) { // Evaluador
+            currentComponent.value = PaginaInicioEvaluadorView;
             obtenerDatosInstitucionales().then(() => {
                 // Espera a que se obtengan los datos antes de continuar
                 if (estadoDatosInstitucionales.value === 'sin datos institucionales') {
-                    currentComponent.value = EditarPerfil;
-                } else {
-                    currentComponent.value = PaginaInicioEvaluadorView;
-                }
+                    showWarningToast('Recuerda terminar tu registro en el apartado de "Perfíl".');
+                } 
             });
         }else if (user?.id_rol === 2){ //Delegado
             currentComponent.value = PaginaInicioDelegado;
