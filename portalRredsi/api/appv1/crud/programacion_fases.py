@@ -22,6 +22,7 @@ def get_phase_dates(db: Session):
                 WHERE 
                     (f.nombre = 'Inscripciones abiertas' AND e.nombre = 'Virtual') OR
                     (f.nombre = 'Publicación de resultados' AND e.nombre = 'Virtual') OR
+                    (f.nombre = 'Evaluaciones' AND e.nombre = 'Virtual') OR
                     (f.nombre = 'Evento' AND e.nombre = 'Presencial') OR
                     (f.nombre = 'Publicación de resultados' AND e.nombre = 'Presencial')
                 GROUP BY 

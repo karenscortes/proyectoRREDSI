@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="container pt-5">
+    <div class="container">
       <!-- Título -->
       <div class="row mb-5 mt-2">
         <div class="col">

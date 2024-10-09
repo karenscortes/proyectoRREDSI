@@ -171,135 +171,147 @@
 </template>
 
 <script>
-    import { insertarPostulacionEvaluador, obtenerProgramacionFases} from '../services/evaluadorService'; 
-    import { useAuthStore } from '@/store';
-    import { useToastUtils } from '@/utils/toast'; 
-    import {onMounted, ref} from 'vue';
+  import { insertarPostulacionEvaluador, obtenerProgramacionFases, obtenerEstadoDatosInstitucionales} from '../services/evaluadorService'; 
+  import { useAuthStore } from '@/store';
+  import { useToastUtils } from '@/utils/toast'; 
+  import {onMounted, ref} from 'vue';
 
-    const { showSuccessToast, showErrorToast, showWarningToast} = useToastUtils();
-
-    export default {
-        data() {
-            return {
-                id_evaluador: null,
-                etapa_virtual: '',
-                etapa_presencial: '',
-                jornada_manana: '',
-                jornada_tarde: '',
-                postulacionExitosa: false 
-            };
-        },
-        watch: {
-            // Observamos cambios en etapa_presencial para actualizar los campos de jornada
-            etapa_presencial(newVal) {
-                if (newVal === '1') {
-                    // Si selecciona asistencia presencial, restablecemos los valores de jornada a vacíos
-                    this.jornada_manana = '';
-                    this.jornada_tarde = '';
-                } else {
-                    // Si selecciona no presencial, asignamos 0 a los campos de jornada
-                    this.jornada_manana = '0';
-                    this.jornada_tarde = '0';
-                }
-            }
-        },
-        methods: {
-            async enviarPostulacion() {
-                // Verificamos que los campos obligatorios estén completos
-                if (this.etapa_virtual === '' || this.etapa_presencial === '') {
-                    showWarningToast('Por favor, complete todos los campos antes de enviar.');
-                    return;
-                }
-
-                // Si se selecciona la etapa presencial, validamos que los campos de jornada estén completos
-                if (this.etapa_presencial === '1' && (this.jornada_manana === '' || this.jornada_tarde === '')) {
-                    showWarningToast('Por favor, complete los campos de disponibilidad para la jornada presencial.');
-                    return;
-                }
-                
-                try {
-                    const authStore = useAuthStore();
-                    const user = authStore.user;
-
-                    const postulacionData = {
-                        id_evaluador: user.id_usuario,  
-                        etapa_virtual: parseInt(this.etapa_virtual), 
-                        etapa_presencial: parseInt(this.etapa_presencial),
-                        jornada_manana: parseInt(this.jornada_manana),
-                        jornada_tarde: parseInt(this.jornada_tarde)
-                    };
-
-                    // Intentar enviar la postulación
-                    const response = await insertarPostulacionEvaluador(postulacionData);
-                    console.log('Postulación exitosa', response.data);
-
-                    this.postulacionExitosa = true;  
-                    showSuccessToast('Postulación enviada exitosamente. Espera una respuesta en los proximos días...');
-                    $('#postulacionEvaluador').modal('hide'); // Cierra el modal
-
-                
-                } catch (error) {
-                    // Si el error es "Ya existe una postulación para este evaluador y convocatoria"
-                    if (error.response && error.response.data && error.response.data.detail === "Ya existe una postulación para este evaluador y convocatoria") {
-                        showErrorToast('Ya te postulaste para esta convocatoria, espera una respuesta en los próximos días...');
-                        $('#postulacionEvaluador').modal('hide'); // Cierra el modal
-                    } else {
-                        // Manejo de otros errores
-                        console.error('Error al insertar postulación:', error.message);
-                        showErrorToast('Error al insertar postulación');
-                        $('#postulacionEvaluador').modal('hide'); // Cierra el modal
-                    }
-                }
-            },
-        },
-        setup(){
-            const convocatoriaEnCurso = ref(true);//poner en false para hacer pruebas
-
-            //obteniendo fecha actual
-            const currentDate = ref(new Date().toISOString().split('T')[0]);
-
-            const verificar_fase_actual = async() => {
-              const response = await obtenerProgramacionFases('virtual');
-              if(response.data && response.data.length > 0){
-                if(currentDate >= response.data[0].fecha_inicio && currentDate <= response.data[0].fecha_fin){
-                  convocatoriaEnCurso.value = ref(true);
-                }
-              }
-            };
-
-            onMounted (() =>{
-              verificar_fase_actual();
-            });
-
-            return{
-              convocatoriaEnCurso,
-              verificar_fase_actual
-            }
-        },
-        mounted() {
-            const authStore = useAuthStore();
-            this.id_evaluador = authStore.user.id_usuario;  
+  const { showSuccessToast, showErrorToast, showWarningToast} = useToastUtils();
+  const estadoDatosInstitucionales = ref(""); 
+  export default {
+    data() {
+      return {
+        id_evaluador: null,
+        etapa_virtual: '',
+        etapa_presencial: '',
+        jornada_manana: '',
+        jornada_tarde: '',
+        postulacionExitosa: false 
+      };
+    },
+    watch: {
+      // Observamos cambios en etapa_presencial para actualizar los campos de jornada
+      etapa_presencial(newVal) {
+        if (newVal === '1') {
+          // Si selecciona asistencia presencial, restablecemos los valores de jornada a vacíos
+          this.jornada_manana = '';
+          this.jornada_tarde = '';
+        } else {
+          // Si selecciona no presencial, asignamos 0 a los campos de jornada
+          this.jornada_manana = '0';
+          this.jornada_tarde = '0';
         }
-    };
+      }
+    },
+    methods: {
+      async enviarPostulacion() {
+        // Verificamos que los campos obligatorios estén completos
+        if (this.etapa_virtual === '' || this.etapa_presencial === '') {
+            showWarningToast('Por favor, complete todos los campos antes de enviar.');
+            return;
+        }
+
+        // Si se selecciona la etapa presencial, validamos que los campos de jornada estén completos
+        if (this.etapa_presencial === '1' && (this.jornada_manana === '' || this.jornada_tarde === '')) {
+            showWarningToast('Por favor, complete los campos de disponibilidad para la jornada presencial.');
+            return;
+        }
+        
+        try {
+          const authStore = useAuthStore();
+          const user = authStore.user;
+
+          const postulacionData = {
+              id_evaluador: user.id_usuario,  
+              etapa_virtual: parseInt(this.etapa_virtual), 
+              etapa_presencial: parseInt(this.etapa_presencial),
+              jornada_manana: parseInt(this.jornada_manana),
+              jornada_tarde: parseInt(this.jornada_tarde)
+          };
+
+          try {
+            // Realiza la llamada a la API
+            const response = await obtenerEstadoDatosInstitucionales(user.id_usuario);
+
+            // Asigna el valor al estado reactivo
+            estadoDatosInstitucionales.value = response.estado_institucional_academico;
+            
+          } catch (error) {
+            console.error("Error obteniendo los datos institucionales:", error);
+          }
+
+          if (estadoDatosInstitucionales.value === 'sin datos institucionales') {
+            showWarningToast('No se ha podido enviar la postulación debido a que no se ha terminado el registro en el apartado de "Perfíl".');
+            $('#postulacionEvaluador').modal('hide'); // Cierra el modal
+          }else{
+            // Intentar enviar la postulación
+            const response = await insertarPostulacionEvaluador(postulacionData);
+            console.log('Postulación exitosa', response.data);
+            this.postulacionExitosa = true;  
+            showSuccessToast('Postulación enviada exitosamente. Espera una respuesta en los proximos días...');
+            $('#postulacionEvaluador').modal('hide'); // Cierra el modal
+          }
+        } catch (error) {
+          // Si el error es "Ya existe una postulación para este evaluador y convocatoria"
+          if (error.response && error.response.data && error.response.data.detail === "Ya existe una postulación para este evaluador y convocatoria") {
+            showErrorToast('Ya te postulaste para esta convocatoria, espera una respuesta en los próximos días...');
+            $('#postulacionEvaluador').modal('hide'); // Cierra el modal
+          } else {
+            // Manejo de otros errores
+            console.error('Error al insertar postulación:', error.message);
+            showErrorToast('Error al insertar postulación');
+            $('#postulacionEvaluador').modal('hide'); // Cierra el modal
+          }
+        }
+      },
+    },
+    setup(){
+      const convocatoriaEnCurso = ref(true);//poner en false para hacer pruebas
+
+      //obteniendo fecha actual
+      const currentDate = ref(new Date().toISOString().split('T')[0]);
+
+      const verificar_fase_actual = async() => {
+        const response = await obtenerProgramacionFases('virtual');
+        if(response.data && response.data.length > 0){
+          if(currentDate >= response.data[0].fecha_inicio && currentDate <= response.data[0].fecha_fin){
+            convocatoriaEnCurso.value = ref(true);
+          }
+        }
+      };
+
+      onMounted (() =>{
+        verificar_fase_actual();
+      });
+
+      return{
+        convocatoriaEnCurso,
+        verificar_fase_actual
+      }
+    },
+    mounted() {
+      const authStore = useAuthStore();
+      this.id_evaluador = authStore.user.id_usuario;  
+    }
+  };
 </script>
 
 
 <style scoped> 
-.btn-close{
-
+  .btn-close{
     width: 8px;
     height: 8px;
-}
+  }
 
 
-.question{
+  .question{
     margin-bottom: 30px;
     box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
     padding: 15px;
     border-radius: 8px;
-}
+  }
     
-.title-border-radius {
+  .title-border-radius {
     border-radius: 10% 30%;
     color: #ffb606;
     border-bottom: 2px solid #ffb606;

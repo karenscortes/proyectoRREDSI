@@ -1,7 +1,14 @@
 <template>
+    <div class="row mb-5 mt-2">
+      <div class="col">
+        <div class="section_title text-center">
+          <h1>Gestionar Convocatorias</h1>
+        </div>
+      </div>
+    </div>
   <div class="container-fluid">
     <div class="container">
-      <div class="row justify-content-center py-5">
+      <div class="row justify-content-center">
         <div class="col-xl-10 col-lg-10 col-md-12">
           <div class="big-screen">
             <div class="row text-center">
