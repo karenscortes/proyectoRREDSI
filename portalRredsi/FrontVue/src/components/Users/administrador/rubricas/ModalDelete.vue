@@ -77,13 +77,13 @@ const actualizar = ()=>{
 const save = async () => {
   const aux_id_item = props.infoModalEliminar.id_item_rubrica;  
   const result = await deleteItems(aux_id_item);
+  closeModal();
+  actualizar(); 
   if(result.data.success == true){
     showSuccessToast("Se eliminó con éxito");
   }else{
     showErrorToast("No se pudó realizar esta acción, intenta de nuevo");
   }
-  closeModal();
-  actualizar(); 
 }
 
 onMounted(() => {
