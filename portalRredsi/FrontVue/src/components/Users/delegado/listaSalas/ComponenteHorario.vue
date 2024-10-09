@@ -41,28 +41,36 @@
                     </div>
                     <div class="modal-body">
                         <form class="mt-4" @submit.prevent="actualizarHorario">
-                            <div class="row mb-4 justify-content-center">
-                                <div class="col-12 text-center mb-1">
+                            <div class="row mb-3 justify-content-center">
+                                <div class="col-12 text-center mb-2">
                                     <label for="proyecto_codigo" class="fw-bold text-dark">Proyecto:</label>
                                 </div>
-                                <div class="col-12 col-md-8 text-center">
+                                <div class="col-12 col-md-10 text-center">
                                     <span class="text-dark">{{ detalle_proyecto.titulo }}</span>
                                 </div>
                             </div>
 
+                            <hr class="my-3">
 
-                            <hr class="my-4">
-
-                            <div class="row mb-4">
-                                <div class="col-md-6">
+                            <div class="row mb-3 justify-content-between text-dark">
+                                <div class="col-md-6 text-center text-md-start mb-2 mb-md-0">
                                     <label for="evaluador_1" class="fw-bold text-dark">Evaluador 1:</label>
-                                    nombre del evaluador 1
+                                    <span v-if="evaluadoresProyectoSeleccionado.length > 0">
+                                        {{ ` ${evaluadoresProyectoSeleccionado[0].nombres}
+                                        ${evaluadoresProyectoSeleccionado[0].apellidos}` }}
+                                    </span>
+                                    <span v-else>Sin evaluador registrado</span>
                                 </div>
-                                <div class="col-md-6">
+                                <div class="col-md-6 text-center text-md-start">
                                     <label for="evaluador_2" class="fw-bold text-dark">Evaluador 2:</label>
-                                    nombre del evaluador 2
+                                    <span v-if="evaluadoresProyectoSeleccionado.length > 1">
+                                        {{ ` ${evaluadoresProyectoSeleccionado[1].nombres}
+                                        ${evaluadoresProyectoSeleccionado[1].apellidos}` }}
+                                    </span>
+                                    <span v-else>Sin evaluador registrado</span>
                                 </div>
                             </div>
+
 
                             <hr class="my-4">
 
@@ -136,9 +144,6 @@
                                 </div>
                             </div>
                         </div>
-
-
-
 
                         <!-- Línea de separación superior para la siguiente fila -->
                         <hr class="border-dark my-4">
@@ -315,6 +320,7 @@ export default {
         async proyectoSeleccionado(p_detalle_sala) {
 
             if (this.editarHorario) {
+                this.evaluadoresProyectoSeleccionado = "";
                 $("#actualizarHorarioModal").modal('show');
                 // Se busca en la copia del detalle de sala el id del proyecto para traer los datos editables 
                 this.detalles_editables_horario = this.copiaDetalleSala.find(detalle => detalle.id_proyecto === p_detalle_sala.id_proyecto);
@@ -322,11 +328,12 @@ export default {
                 this.detalles_editables_horario.hora_fin = this.obtenerHoraMinutos(this.detalles_editables_horario.hora_fin);
                 this.detalles_editables_horario.id_proyecto_convocatoria = p_detalle_sala.id_proyecto_convocatoria;
                 this.detalles_editables_horario.id_sala = p_detalle_sala.id_sala;
-                ;
 
                 this.detalle_proyecto = "";
-                this.obtenerDetalleProyecto(p_detalle_sala.id_proyecto);
-                console.log(p_detalle_sala)
+                await this.obtenerDetalleProyecto(p_detalle_sala.id_proyecto);
+                const evaluadoresProyectoEspecifico = await obtenerEvaluadoresProyecto(p_detalle_sala.id_proyecto,1);
+                this.evaluadoresProyectoSeleccionado = evaluadoresProyectoEspecifico;
+                console.log(this.evaluadoresProyectoSeleccionado)
 
             } else {
                 $("#detalle_proyecto").modal('show');
@@ -347,7 +354,7 @@ export default {
 
                 // Ejecutar todas las consultas en paralelo y manejar los resultados de manera independiente
                 const [responseEvaluadores, responsePonentes, responseUrlPresentacion] = await Promise.allSettled([
-                    obtenerEvaluadoresProyecto(p_detalle_sala.id_proyecto),
+                    obtenerEvaluadoresProyecto(p_detalle_sala.id_proyecto,1),
                     obtenerPonentesProyecto(p_detalle_sala.id_proyecto),
                     obtenerUrlPresentacionProyecto(p_detalle_sala.id_proyecto)
                 ]);
@@ -379,7 +386,7 @@ export default {
         async actualizarHorario() {
             try {
                 if (this.detalles_editables_horario.hora_inicio < this.detalles_editables_horario.hora_fin) {
-                    if ( this.detalles_editables_horario.hora_inicio == this.detalles_editables_horario.hora_fin ) {
+                    if (this.detalles_editables_horario.hora_inicio == this.detalles_editables_horario.hora_fin) {
                         this.showInfoToast("Ya hay un proyecto asignado a esta hora o estas ingresando la misma hora en los dos campos, intenta con otro horario");
                     } else {
                         await actualizarHorarioAsignado(

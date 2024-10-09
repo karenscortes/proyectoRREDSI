@@ -102,33 +102,41 @@
                   </div>
                 </div>
 
-                <!-- Tabla para mostrar las fases existentes -->
+                <!-- Mostrar tabla de fases existentes solo si hay una convocatoria activa -->
                 <div class="table-responsive mt-4">
                   <div v-if="convocatoriaActiva">
                     <h2>Convocatoria Activa: {{ convocatoriaActiva.nombre }}</h2>
+                    <!-- Tabla para mostrar las fases existentes -->
+                    <table class="table table-striped">
+                      <thead class="thead-warning">
+                        <tr>
+                          <th scope="col">Nombre</th>
+                          <th scope="col">Modalidad</th>
+                          <th scope="col">Fecha Inicio</th>
+                          <th scope="col">Fecha Fin</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr v-for="fase in fases" :key="fase.id_programacion_fase">
+                          <td>{{ fase.fase_nombre }}</td>
+                          <td>{{ fase.etapa_nombre }}</td>
+                          <td>{{ fase.fecha_inicio }}</td>
+                          <td>{{ fase.fecha_fin }}</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                    <!-- Paginador solo si hay más de una página -->
+                    <PaginatorBody :totalPages="totalPaginasFases" @page-changed="cambiarPaginaFases" v-if="totalPaginasFases > 1" />
                   </div>
-                  <table class="table table-striped">
-                    <thead class="thead-warning">
-                      <tr>
-                        <th scope="col">Nombre</th>
-                        <th scope="col">Modalidad</th>
-                        <th scope="col">Fecha Inicio</th>
-                        <th scope="col">Fecha Fin</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr v-for="fase in fases" :key="fase.id_programacion_fase">
-                        <td>{{ fase.fase_nombre }}</td>
-                        <td>{{ fase.etapa_nombre }}</td>
-                        <td>{{ fase.fecha_inicio }}</td>
-                        <td>{{ fase.fecha_fin }}</td>
-                      </tr>
-                    </tbody>
-                  </table>
-                  <PaginatorBody :totalPages="totalPaginasFases" @page-changed="cambiarPaginaFases" v-if="totalPaginasFases > 1" />
+
+                  <!-- Mostrar mensaje si no hay convocatoria activa -->
+                  <div v-else>
+                    <h2 class="text-center">No hay convocatorias activas</h2>
+                  </div>
                 </div>
               </div>
             </div>
+
 
             <!-- Modal de Crear Convocatoria -->
             <div v-if="showModal" class="modal fade show d-block" tabindex="-1" role="dialog">
@@ -256,6 +264,12 @@ export default {
       // Verificar que todos los campos estén completos
       if (!nombre || !fechaInicio || !fechaFin || !estado) {
         showWarningToast('Todos los campos son obligatorios');
+        return false;
+      }
+
+      // Verificar que las fechas no estén vacías o sean inválidas
+      if (!fechaInicio.trim() || !fechaFin.trim()) {
+        showWarningToast('Las fechas de inicio y fin son obligatorias');
         return false;
       }
 

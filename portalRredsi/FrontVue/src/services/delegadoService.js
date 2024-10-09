@@ -36,6 +36,42 @@ export const obtenerCantidadProyectosAsignados = async () => {
     }
 };
 
+// Función para obtener cantidad de proyectos inscritos de una convocatoria activa
+export const obtenerCantidadProyectosInscritos = async () => {
+    try {
+        const response = await api.get(`/generales/get_cantidad_proyectos_inscritos/`, {
+            headers: {
+                'Authorization': `Bearer ${localStorage.getItem('access_token')}`
+            }
+        });
+        return response;
+    } catch (error) {
+        if (error.response) {
+            throw error;
+        } else {
+            throw new Error('Error de red o de servidor');
+        }
+    }
+};
+
+// Función para obtener cantidad de proyectos calificados de una convocatoria activa
+export const obtenerCantidadProyectosCalificados = async () => {
+    try {
+        const response = await api.get(`/generales/get_cantidad_proyectos_calificados_por_etapa/`, {
+            headers: {
+                'Authorization': `Bearer ${localStorage.getItem('access_token')}`
+            }
+        });
+        return response;
+    } catch (error) {
+        if (error.response) {
+            throw error;
+        } else {
+            throw new Error('Error de red o de servidor');
+        }
+    }
+};
+
 // Función para obtener cantidad la url de una presentación de un proyecto
 export const obtenerUrlPresentacionProyecto = async (id_proyecto) => {
     try {

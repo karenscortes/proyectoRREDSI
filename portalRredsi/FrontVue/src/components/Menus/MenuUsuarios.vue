@@ -218,7 +218,7 @@ export default defineComponent({
                     asignacion2.value = '';
                     
                     // Función para comprobar y bloquear opciones dependiendo de la etapa y fecha actual
-                    getAssignmentDates();
+                    // getAssignmentDates();
                 }
             } catch (error) {
                 console.error('Error obteniendo datos institucionales:', error);
