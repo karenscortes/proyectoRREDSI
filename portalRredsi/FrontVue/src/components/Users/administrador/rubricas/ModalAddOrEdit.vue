@@ -11,7 +11,9 @@
       <div class="modal-content rounded-st-1 shadow-lg modal-responsive">
         <div class="modal-header p-4 shadow w-100">
           <i class="fas fa-list icon"></i>
-          <h1 class="modal-title fs-5" id="staticBackdropLabel">Item Rúbrica</h1>
+          <h1 class="modal-title fs-5" id="staticBackdropLabel">
+            Item Rúbrica
+          </h1>
           <button
             type="button"
             class="btn-close"
@@ -31,7 +33,8 @@
                   id="titulo"
                   name="titulo"
                   required="required"
-                  class="form_modal form-control" v-model="itemActual.titulo"
+                  class="form_modal form-control"
+                  v-model="itemActual.titulo"
                 />
               </div>
               <div class="col-md-6 mb-4">
@@ -44,11 +47,12 @@
                   id="valor_maximo"
                   name="valor_maximo"
                   required="required"
-                  class="form_modal form-control" v-model="itemActual.valor_max"
+                  class="form_modal form-control"
+                  v-model="itemActual.valor_max"
                 />
               </div>
               <div class="col-md-12 mb-4">
-                <label for="descripcion" class="form-label "
+                <label for="descripcion" class="form-label"
                   >Descripción
                   <span class="text-danger fw-bold">*</span>
                 </label>
@@ -56,14 +60,17 @@
                   id="descripcion"
                   name="descripcion"
                   required="required"
-                  class="form_textArea form-control" v-model="itemActual.componente"
+                  class="form_textArea form-control"
+                  v-model="itemActual.componente"
                 ></textarea>
               </div>
             </div>
           </form>
         </div>
         <div class="modal-footer">
-          <button class="btn" data-bs-dismiss="modal" @click="closeModal()">Cerrar</button>
+          <button class="btn" data-bs-dismiss="modal" @click="closeModal()">
+            Cerrar
+          </button>
           <button class="btn" type="submit" form="formAdd">Guardar</button>
         </div>
       </div>
@@ -72,70 +79,80 @@
 </template>
 
 <script setup>
-import { updateItems} from "@/services/administradorService";
-import { InsertItems} from "@/services/administradorService";
-import {defineEmits, reactive } from 'vue';
-  const props = defineProps({
+import { updateItems } from "@/services/administradorService";
+import { InsertItems } from "@/services/administradorService";
+import { defineEmits, reactive } from "vue";
+import { useToastUtils } from "@/utils/toast";
+
+const { showErrorToast, showWarningToast, showSuccessToast } = useToastUtils();
+
+const props = defineProps({
   infoModalEditar: {
     type: Object,
     default: null,
     validator(value) {
       return (
-        typeof (value.id_item_rubrica === "number" || value.id_item_rubrica === null) &&
-        typeof (value.id_rubrica === 'number' || value.id_rubrica === null) &&
-        typeof (value.titulo === 'string' || value.titulo === null) &&
-        typeof (value.componente === 'number' || value.componente=== null) &&
-        typeof (value.valor_max === 'string' || value.valor_max  === null)
+        typeof (
+          value.id_item_rubrica === "number" || value.id_item_rubrica === null
+        ) &&
+        typeof (value.id_rubrica === "number" || value.id_rubrica === null) &&
+        typeof (value.titulo === "string" || value.titulo === null) &&
+        typeof (value.componente === "number" || value.componente === null) &&
+        typeof (value.valor_max === "string" || value.valor_max === null)
       );
-    }
-  }
+    },
+  },
 });
 
-const emit = defineEmits(['close', 'actualizarRubrica', 'newRubricAdded']);
+const emit = defineEmits(["close", "actualizarRubrica", "newRubricAdded"]);
 
-//Propiedad auxiliar para guardar el id del item 
-const id_item_rubrica = props.infoModalEditar.id_item_rubrica; 
+//Propiedad auxiliar para guardar el id del item
+const id_item_rubrica = props.infoModalEditar.id_item_rubrica;
 
 //Objeto reactivo para almacenar los cambios que se realicen
 const itemActual = reactive({
   id_rubrica: props.infoModalEditar.id_rubrica,
-  titulo : props.infoModalEditar.titulo,
-  componente: props.infoModalEditar.componente, 
-  valor_max: props.infoModalEditar.valor_max
+  titulo: props.infoModalEditar.titulo,
+  componente: props.infoModalEditar.componente,
+  valor_max: props.infoModalEditar.valor_max,
 });
 
 //Método para cerrar el modal
 const closeModal = () => {
-  emit('close');
+  emit("close");
 };
 
 //Método para emitir el evento a la rubrica
-const actualizar = ()=>{
-  emit('actualizarRubrica', {id_item_rubrica, itemActual});
-}
+const actualizar = () => {
+  emit("actualizarRubrica", { id_item_rubrica, itemActual });
+};
 
-const newRubricAdded = (nuevo_item)=> emit('newRubricAdded', nuevo_item);
+const newRubricAdded = (nuevo_item) => emit("newRubricAdded", nuevo_item);
 
 //Método para hacer el guardado, cerrar modal y disparar el método que emitira
-const save = async () =>{
-  if(id_item_rubrica == null){
+const save = async () => {
+  if (id_item_rubrica == null) {
     const { data } = await InsertItems(itemActual);
-    const { data : id_item_rubrica } = data
-    newRubricAdded({id_item_rubrica, ...itemActual }) 
-  }else{
+    const { data: id_item_rubrica } = data;
+    newRubricAdded({ id_item_rubrica, ...itemActual });
+    console.log("soy crear"); 
+    console.log(data);
+  } else {
     const itemActualizado = await updateItems(id_item_rubrica, itemActual);
-    actualizar(); 
+    console.log("soy editar"); 
+    console.log(itemActualizado.data);
+    actualizar();
   }
   closeModal();
-}
+};
 </script>
 
 <style scoped>
-.modalCabecero{
+.modalCabecero {
   display: block;
 }
-textarea{
-  color: black
+textarea {
+  color: black;
 }
 .modal-dialog {
   max-width: 50%;
@@ -165,10 +182,10 @@ textarea{
   outline: none;
   border-radius: 3px;
 }
-label{
-	font-size: 20px;
-	font-weight: bold;
-	color: black;
+label {
+  font-size: 20px;
+  font-weight: bold;
+  color: black;
   width: 100%;
   text-align: start;
 }
@@ -177,11 +194,11 @@ i {
   margin-right: 8px;
   color: rgb(255, 182, 6);
 }
-.btn{
+.btn {
   background-color: rgb(255, 182, 6);
   font-weight: 700;
 }
-.btn:focus{
+.btn:focus {
   border: none;
   box-shadow: none;
   color: #494949;
