@@ -36,7 +36,10 @@
 </template>
 <script setup>
 import {deleteItems} from "@/services/administradorService";
-import { reactive } from "vue";
+import { reactive, onMounted} from "vue";
+import { useToastUtils } from '@/utils/toast'; 
+
+const { showErrorToast, showWarningToast } = useToastUtils();
 const props = defineProps({
   infoModalEliminar: {
     type: Object,
@@ -70,12 +73,18 @@ const actualizar = ()=>{
 }
 
 //Función para eliminar item, cerrar modal y disparar el método que emitira a la rubrica
-const save = () => {
+const save = async () => {
   const aux_id_item = props.infoModalEliminar.id_item_rubrica;  
-  const result = deleteItems(aux_id_item); 
+  const result = await deleteItems(aux_id_item);
+  console.log(result).data;  
   closeModal();
   actualizar(); 
 }
+
+onMounted(() => {
+  showWarningToast('Cuidado, esta acción no se puede deshacer');
+});
+
 </script>
 <style scoped>
 .modalCabecero{
