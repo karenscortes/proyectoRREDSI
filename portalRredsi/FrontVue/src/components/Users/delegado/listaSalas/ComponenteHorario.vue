@@ -331,7 +331,7 @@ export default {
 
                 this.detalle_proyecto = "";
                 await this.obtenerDetalleProyecto(p_detalle_sala.id_proyecto);
-                const evaluadoresProyectoEspecifico = await obtenerEvaluadoresProyecto(p_detalle_sala.id_proyecto);
+                const evaluadoresProyectoEspecifico = await obtenerEvaluadoresProyecto(p_detalle_sala.id_proyecto,1);
                 this.evaluadoresProyectoSeleccionado = evaluadoresProyectoEspecifico;
                 console.log(this.evaluadoresProyectoSeleccionado)
 
@@ -354,7 +354,7 @@ export default {
 
                 // Ejecutar todas las consultas en paralelo y manejar los resultados de manera independiente
                 const [responseEvaluadores, responsePonentes, responseUrlPresentacion] = await Promise.allSettled([
-                    obtenerEvaluadoresProyecto(p_detalle_sala.id_proyecto),
+                    obtenerEvaluadoresProyecto(p_detalle_sala.id_proyecto,1),
                     obtenerPonentesProyecto(p_detalle_sala.id_proyecto),
                     obtenerUrlPresentacionProyecto(p_detalle_sala.id_proyecto)
                 ]);
