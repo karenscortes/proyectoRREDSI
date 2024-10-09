@@ -2,10 +2,12 @@
   <div class="container">
     <div>
       <!--Titulo principal-->
-      <div>
-        <h1 class="titulo_principal d-flex justify-content-start">
-          {{ tituloPrincipal }}
-        </h1>
+      <div class="row mb-5 mt-2">
+        <div class="col">
+          <div class="section_title text-center">
+            <h1>Gestionar rúbricas</h1>
+          </div>
+        </div>
       </div>
       <div
         class="contenedor_principal d-flex justify-content-between flex-lg-row flex-column-reverse"
@@ -296,9 +298,7 @@ onMounted(() => {
   max-height: 750px;
   overflow-y: auto;
 }
-.container{
-  margin-top: 10%;
-}
+
 .boton_añadir {
   border: none;
   width: 150px;
