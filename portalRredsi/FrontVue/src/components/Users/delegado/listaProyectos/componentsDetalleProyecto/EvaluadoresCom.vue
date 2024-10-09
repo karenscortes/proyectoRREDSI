@@ -9,7 +9,7 @@
             <span v-for="(evaluador, index) in evaluadores.virtual" :key="index">
                 {{ evaluador.nombres }} {{ evaluador.apellidos }} <br> 
             </span>
-            <strong>Calificación Presencial</strong><br>
+            <strong v-if="id_etapa == '1'">Calificación Presencial</strong><br>
             <span v-for="(evaluador, index) in evaluadores.presencial" :key="index">
                 {{ evaluador.nombres }} {{ evaluador.apellidos }} <br>
             </span>
@@ -24,6 +24,10 @@ export default {
         evaluadores: {
             type: Array,
             required: true,
+        },
+        id_etapa: {
+            type: String,
+            required:true,
         },
     },
 };

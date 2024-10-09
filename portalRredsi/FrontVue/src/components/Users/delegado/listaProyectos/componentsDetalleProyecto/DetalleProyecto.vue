@@ -30,15 +30,15 @@
                             </div>
                             <!-- Evaluadores -->
                             <div class="col-6 col-md-6">
-                                <EvaluadoresCom :evaluadores="evaluadores" />
+                                <EvaluadoresCom :evaluadores="evaluadores" :id_etapa="proyecto.id_etapa" />
                             </div>
                             <!-- Evento -->
-                            <div class="col-6 col-md-6 mt-3">
+                            <div v-if="cargarRubricaPresencial" class="col-6 col-md-6 mt-3">
                                 <EventoCom :fecha="infoSala.fecha" :horaInicio="infoSala.hora_inicio"
                                     :horaFin="infoSala.hora_fin" :sala="infoSala.numero_sala" />
                             </div>
                             <!-- Suplentes -->
-                            <div class="col-6 col-md-6 mt-3">
+                            <div v-if="cargarRubricaPresencial" class="col-6 col-md-6 mt-3">
                                 <SuplentesCom :idProyecto="proyecto.id_proyecto" :idEtapa="proyecto.id_etapa"
                                     :tipo="tipo" :evaluadores="evaluadores" :ponentes="ponentes"
                                 />
@@ -46,13 +46,13 @@
                         </div>
                         <!-- Botones -->
                         <div class="row">
-                            <div class="col-4">
+                            <div v-if="cargarRubricaPresencial" class="col-4">
                                 <button type="button" class="btn btn-sm btn-warning font-weight-bold w-100 " title="Añadir Presentación"
                                     @click="openModal">
                                     <i class="fa-solid fa-plus"></i>
                                 </button>
                             </div>
-                            <div class="col-4">
+                            <div v-if="cargarRubricaPresencial" class="col-4">
                                 <form :action="urlPresentacion" target="_blank">
                                     <button type="submit" class="btn btn-sm btn-warning font-weight-bold w-100" title="Ver Presentación">
                                         <i class="fa-solid fa-eye"></i>
@@ -169,16 +169,11 @@ import SuplentesCom from './SuplentesCom.vue';
 import RubricaCom from './RubricaCom.vue';
 import { useToastUtils } from '@/utils/toast';
 import { obtenerEvaluadoresProyecto, obtenerPonentesProyecto, obtenerInfoSalaProyecto, insertarUrlPresentacion, obtenerUrlPresentacionProyecto } from '../../../../../services/delegadoService';
-
 export default {
     name: 'DetalleProyecto',
     props: {
         proyecto: {
             type: Object,
-            required: true
-        },
-        id_etapa_actual: {
-            type: String,
             required: true
         },
     },
@@ -194,9 +189,9 @@ export default {
             cargarRubricaVirtual: false,
             cargarRubricaPresencial: false,
             evaluadores: [],
-            id_evaluador1: 0,
-            id_evaluador2: 0,
-            id_evaluador3: 0,
+            id_evaluador1: 123,
+            id_evaluador2: 456,
+            id_evaluador3: 789,
             ponentes: [],
             infoSala: {
                 fecha: '',
@@ -225,10 +220,10 @@ export default {
         async fetchEvaluadores(id_proyecto) {
             try {
                 const id_etapa = this.proyecto.id_etapa;
-                console.log('id_etapa', this.id_etapa_actual );
-                if (id_etapa == '2') {
-                    const data = await obtenerEvaluadoresProyecto(id_proyecto, id_etapa);
-                    this.evaluadores = data;
+                if (id_etapa == 2) {
+                    const dataEvaluadorVirtual = await obtenerEvaluadoresProyecto(id_proyecto, id_etapa);
+                    this.evaluadores['virtual'] = dataEvaluadorVirtual;
+                    this.id_evaluador1 = this.evaluadores.virtual[0].id_usuario;
                 } else {
                     const dataEvaluadorVirtual = await obtenerEvaluadoresProyecto(id_proyecto, 2);
                     this.evaluadores['virtual'] = dataEvaluadorVirtual;
@@ -245,11 +240,11 @@ export default {
             } catch (error) {
                 console.error('Error al obtener evaluadores:', error);
             }
+
         },
 
         // Función para obtener los ponentes del proyecto
         async fetchPonentes(id_proyecto) {
-            
             try {
                 const data = await obtenerPonentesProyecto(id_proyecto);
                 this.ponentes = data;
@@ -281,16 +276,17 @@ export default {
         async fetchAllData() {
             try {
                 await this.fetchEvaluadores(this.proyecto.id_proyecto);
-                await this.fetchPonentes(this.proyecto.id_proyecto);
-                await this.fetchInfoSala(this.proyecto.id_proyecto);
-                await this.fetchUrlPresentacion(this.proyecto.id_proyecto);
+                if(this.proyecto.id_etapa == 1){
+                    await this.fetchPonentes(this.proyecto.id_proyecto);
+                    await this.fetchInfoSala(this.proyecto.id_proyecto);
+                    await this.fetchUrlPresentacion(this.proyecto.id_proyecto);
+                }
+                
                 if (this.evaluadores.virtual.length > 0 || this.evaluadores.presencial.length > 0) {
-                    if (this.proyecto.id_etapa == '2') {
+                    if (this.proyecto.id_etapa == 2) {
                         this.cargarRubricaVirtual = true;
                         this.cargarRubricaPresencial = false;
                     } else {
-                        console.log("Hola juanpis");
-                        console.log(this.proyecto.id_etapa)
                         this.cargarRubricaPresencial = true;
                         this.cargarRubricaVirtual = true;
                     }
@@ -299,6 +295,7 @@ export default {
                 console.error('Error al cargar los datos del proyecto:', error);
                 this.showErrorToast('Error al cargar los datos del proyecto.')
             }
+            
         },
 
         openModal() {
@@ -317,6 +314,7 @@ export default {
         // obtenerSuplentes(arregloSuplentes ) {
         //     this.suplente = arregloSuplentes;     
         // },
+        
     },
     mounted() {
         this.fetchAllData()
