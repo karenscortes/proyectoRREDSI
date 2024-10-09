@@ -80,6 +80,7 @@
 </template>
 <script setup>
 import { onMounted, ref, reactive } from "vue";
+import { useToastUtils } from '@/utils/toast'; 
 import RowTableDelegado from "../components/Users/administrador/gest_delegado/RowTableDelegado.vue";
 import ModalAdd from "../components/Users/administrador/gest_delegado/ModalAdd.vue";
 import ModalDetalle from "../components/Users/administrador/gest_delegado/ModalDetalle.vue";
@@ -87,6 +88,8 @@ import PaginatorBody from "../components/UI/PaginatorBody.vue";
 import { getDelegatesAll } from "@/services/administradorService";
 import { updateStatusDelegate } from "@/services/administradorService";
 import { getDelegateById } from "@/services/administradorService";
+
+const { showErrorToast, showInfoToast } = useToastUtils();
 
 //Propiedades para manejar la apertura del modal
 const isModalOpenEdit = ref(false);

@@ -54,7 +54,6 @@ def create_new_convocatoria(
         "id_convocatoria": convocatoria_created.id_convocatoria
     }
 
-
 @router_admin.get("/convocatoria-en-curso", response_model=ConvocatoriaResponse)
 def get_convocatoria_en_curso(db: Session = Depends(get_db)):
     convocatoria = obtener_convocatoria_en_curso(db)
@@ -62,7 +61,6 @@ def get_convocatoria_en_curso(db: Session = Depends(get_db)):
         raise HTTPException(status_code=404, detail="No hay convocatorias en curso")
     
     return convocatoria
-
 
 @router_admin.post("/crear-programaciones-fases")
 def create_programaciones_fases(
@@ -112,7 +110,6 @@ def create_programaciones_fases(
         "message": "Programaciones de fases creadas exitosamente", 
         "programaciones_creadas": programaciones_creadas
     }
-
 
 # Obtener todas las rubricas
 @router_admin.get("/all-rubrics/", response_model=List[RubricaResponse])
