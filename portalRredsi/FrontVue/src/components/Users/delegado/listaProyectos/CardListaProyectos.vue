@@ -4,7 +4,7 @@
             <li>
                 <a class="card">
                     <div class="text-center pt-5 card__image">
-                        <a @click="selectComponent('DetalleProyecto', proyecto, id_etapa_actual)" class="d-inline-flex" target="_blank">
+                        <a @click="selectComponent('DetalleProyecto', proyecto)" class="d-inline-flex" target="_blank">
                             <button type="button" class="btn btn-warning rounded-circle border border-dark mx-2">
                                 <i class="far fa-file-alt h3"></i>
                             </button>
@@ -49,6 +49,11 @@
                 type: String,
                 required: true
             },
+        }, 
+        data() {
+            return {
+                proyectoClonado: {} 
+            };
         },
         computed: {
             estadoEvaluacionFormatted() {
@@ -64,16 +69,11 @@
         },
         emits: ['component-selected'],
         methods: {
-            
             selectComponent(componentName, proyecto) {
-                this.proyecto.id_etapa = '';
-                this.proyecto.id_etapa = this.id_etapa_actual;
-                this.$emit('component-selected', { componentName, proyecto });
+                // Clonar el proyecto y añadir el id_etapa_actual
+                const proyectoClonado = { ...proyecto, id_etapa: this.id_etapa_actual };
+                this.$emit('component-selected', { componentName, proyecto: proyectoClonado });
             }
-        },
-        mounted(){
-            this.proyecto.id_etapa = this.id_etapa_actual;
-            console.log(this.proyecto.id_etapa);
         }
 
     });
