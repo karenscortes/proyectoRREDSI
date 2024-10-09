@@ -238,7 +238,7 @@
 <script>
 import { defineComponent } from 'vue';
 import { obtenerPonentesProyecto, obtenerDetalleSala, obetnerProyectosSinAsignarEtapaPresencial, obtenerPosiblesEvaluadoresEtapaPresencial, asignarEvaluadoresEtapaPresencial } from '@/services/salasDelegadoService';
-import { obtenerProyectoConvocatoria } from '@/services/DelegadoService';
+import { obtenerProyectoConvocatoria } from '@/services/delegadoService';
 import ComponenteHorario from './ComponenteHorario.vue';
 import { useToastUtils } from '@/utils/toast';
 

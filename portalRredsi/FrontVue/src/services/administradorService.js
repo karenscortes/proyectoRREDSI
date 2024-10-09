@@ -221,6 +221,44 @@ export const getDelegateById = async (id_delegado) => {
   }
 };
 
+// Función para crear delegado
+export const createDelegate = async (user) => {
+  try {
+      const url = `/admin/create-delegates/`;
+      const response = await api.post(url, user,{
+      headers: {
+        'Authorization': `Bearer ${localStorage.getItem('access_token')}` 
+      }
+    });
+    return response;
+  } catch (error) {
+    if (error.response) {
+      throw error;
+    } else {
+      throw new Error('Error de red o de servidor'); 
+    }
+  }
+}
+
+// Obtener todos los tipos de documento
+export const getAllDocumentsType= async (user) => {
+  try {
+      const url = `/admin/all_type_documents/`;
+      const response = await api.get(url,{
+      headers: {
+        'Authorization': `Bearer ${localStorage.getItem('access_token')}` 
+      }
+    });
+    return response;
+  } catch (error) {
+    if (error.response) {
+      throw error;
+    } else {
+      throw new Error('Error de red o de servidor'); 
+    }
+  }
+}
+
 export const updateStatusDelegate = async (id_delegado, estado) => {
   try{
     const url = `/admin/update-delegate-status/${id_delegado}/`;

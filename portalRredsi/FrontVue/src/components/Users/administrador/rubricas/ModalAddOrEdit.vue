@@ -118,8 +118,6 @@ const newRubricAdded = (nuevo_item)=> emit('newRubricAdded', nuevo_item);
 
 //Método para hacer el guardado, cerrar modal y disparar el método que emitira
 const save = async () =>{
-  console.log("soy el id del item rubrica"); 
-  console.log(id_item_rubrica); 
   if(id_item_rubrica == null){
     const { data } = await InsertItems(itemActual);
     const { data : id_item_rubrica } = data
