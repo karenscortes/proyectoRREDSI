@@ -39,7 +39,7 @@ import {deleteItems} from "@/services/administradorService";
 import { reactive, onMounted} from "vue";
 import { useToastUtils } from '@/utils/toast'; 
 
-const { showErrorToast, showWarningToast } = useToastUtils();
+const { showErrorToast, showWarningToast, showSuccessToast} = useToastUtils();
 const props = defineProps({
   infoModalEliminar: {
     type: Object,
@@ -54,6 +54,7 @@ const props = defineProps({
   
 });
 
+//Info para mandarle a la rúbrica y que actualice su vista
 const infoBorrar = reactive({
   'id_rubrica': props.infoModalEliminar.id_rubrica, 
   'id_item_rubrica': props.infoModalEliminar.id_item_rubrica,
@@ -76,7 +77,11 @@ const actualizar = ()=>{
 const save = async () => {
   const aux_id_item = props.infoModalEliminar.id_item_rubrica;  
   const result = await deleteItems(aux_id_item);
-  console.log(result).data;  
+  if(result.data.success == true){
+    showSuccessToast("Se eliminó con éxito");
+  }else{
+    showErrorToast("No se pudó realizar esta acción, intenta de nuevo");
+  }
   closeModal();
   actualizar(); 
 }
