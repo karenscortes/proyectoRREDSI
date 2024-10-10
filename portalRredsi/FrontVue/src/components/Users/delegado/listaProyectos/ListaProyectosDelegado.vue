@@ -68,7 +68,7 @@
 
         <div v-else class="row justify-content-center mt-3">
             <CardListaProyectos v-for="(proyecto, index) in proyectos" :key="index" :proyecto="proyecto"
-                :currentEtapa="currentEtapa" :id_etapa_actual="id_etapa_actual" @component-selected="changeComponent" />
+                :currentEtapa="currentEtapa" :id_etapa_actual="id_etapa_actual" :index="(currentPage - 1) * itemsPerPage + index + 1"  @component-selected="changeComponent" />
         </div>
     </div>
 
@@ -81,7 +81,6 @@ import CalificarProyectoEvaluadorView from '../../../../views/CalificarProyectoE
 import { useAuthStore } from '@/store';
 import CardListaProyectos from './CardListaProyectos.vue';
 import DetalleProyecto from './componentsDetalleProyecto/DetalleProyecto.vue';
-
 
 export default {
     components: {
@@ -162,9 +161,12 @@ export default {
             try {
                 const authStore = useAuthStore();
 
+                // Guardar el valor temporal de la página antes de hacer la solicitud
+                let pageToFetch = this.currentPage;
+
                 // Resetea la página si se selecciona un nuevo estado
                 if (this.selectedState !== estado) {
-                    this.currentPage = 1;
+                    pageToFetch = 1;
                 }
 
                 this.selectedState = estado;
@@ -184,12 +186,14 @@ export default {
                     return;
                 }
 
-                const response = await obtenerProyectosPorEstado(this.currentEtapa, estadoEnvio, this.currentPage, this.itemsPerPage);
+                const response = await obtenerProyectosPorEstado(this.currentEtapa, estadoEnvio, pageToFetch, this.itemsPerPage);
 
                 // Actualizar datos del paginador y los proyectos
                 this.proyectos = response.data.data;
                 this.totalPages = response.data.total_pages;
-
+                
+                // Si todo es correcto, actualizar la página actual
+                this.currentPage = pageToFetch;
             } catch (error) {
                 console.error("Error al obtener proyectos por estado: ", error);
                 alert("Error al obtener proyectos por estado");
@@ -199,21 +203,26 @@ export default {
 
         nextPage() {
             if (this.currentPage < this.totalPages) {
+                const nextPage = this.currentPage + 1; 
                 if (this.selectedState) {
+                    this.currentPage++; 
                     this.fetchProyectosPorEstado(this.selectedState);
+                    
                 } else {
-                    this.fetchProyectos(this.currentPage + 1);
+                    this.fetchProyectos(nextPage);
                 }
             }
         },
         prevPage() {
             if (this.currentPage > 1) {
-                if (this.selectedState) {
-                    this.fetchProyectosPorEstado(this.selectedState);
-                } else {
-                    this.fetchProyectos(this.currentPage - 1);
+                    const prevPage = this.currentPage - 1; 
+                    if (this.selectedState) {
+                        this.currentPage--; 
+                        this.fetchProyectosPorEstado(this.selectedState);
+                    } else {
+                        this.fetchProyectos(prevPage);
+                    }
                 }
-            }
         },
 
         changeComponent({ componentName, proyecto }) {

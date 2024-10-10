@@ -192,9 +192,6 @@ export default {
                 ponentesProyecto.value = data.nombres_ponentes;
                 componentes.value = data.componentes;
 
-                if (props.proyecto.estado_calificacion === 'P_presencial') {
-                    showInfoToast("El estado del proyecto cambiará a calificado en el momento que se ingrese la respuesta del otro evaluador.");
-                }
 
                 botonCalificar.value = "Inactivo";
 
