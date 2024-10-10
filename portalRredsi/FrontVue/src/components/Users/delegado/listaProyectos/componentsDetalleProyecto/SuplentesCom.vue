@@ -12,60 +12,59 @@
             {{ suplente.nombres }} {{ suplente.apellidos }} <strong>{{ suplente.tipo_usuario }}</strong>
         </p>
         
-        <div v-if="isModalOpen" class="modal">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h2 class="modal-title">Agregar Suplente</h2>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
-                        style="font-size: 0.75rem; padding: 0.25rem; width: 1.5rem; height: 1.5rem;">
-                        <span @click="closeModal">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <div class="form-group">
-                        <label for="tipo">Tipo:</label>
-                        <select v-model="nuevoTipo" id="tipo" class="form-control custom-select">
-                            <option value="" disabled selected>Seleccionar Tipo</option>
-                            <option value="suplenteEvaluador">Suplente Evaluador</option>
-                            <option value="suplentePonente">Suplente Ponente</option>
-                        </select>
+        <!-- Modal para agregar suplente -->
+        <transition name="modal-fade">
+            <div v-if="isModalOpen" class="modal" @click.self="closeModal">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h2 class="modal-title">Agregar Suplente</h2>
+                        <button type="button" class="btn-close" @click="closeModal" aria-label="Close">
+                            <span>&times;</span>
+                        </button>
                     </div>
-                    <div class="form-group" v-if="nuevoTipo == 'suplentePonente'">
-                        <label for="suplente">Seleccionar Ponente a reemplazar :</label>
-                        <select v-model="evaluadorSeleccionado" id="evaluador" class="form-control custom-select">
-                            <option value="" disabled selected>Seleccionar Evaluador</option>
-                            <option v-for="(ponente, index) in ponentes" :key="index"
-                                :value="ponente.id_usuario">
-                                {{ ponente.nombres }} {{ ponente.apellidos }}
-                            </option>
-                        </select>
-                    </div>
-                    <div class="form-group " v-else>
-                        <label for="suplente">Seleccionar Evaluador a reemplazar :</label>
-                        <select v-model="evaluadorSeleccionado" id="evaluador" class="form-control custom-select">
-                            <option value="" disabled selected>Seleccionar Evaluador</option>
-                            <option v-for="(evaluador, index) in evaluadores.presencial" :key="index"
-                                :value="evaluador.id_usuario">
-                                {{ evaluador.nombres }} {{ evaluador.apellidos }}
-                            </option>
-                        </select>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="asistente">Seleccionar Suplente (por nombre):</label>
-                        <select v-model="suplenteSeleccionado" id="asistente" class="form-control custom-select">
-                            <option value="" disabled selected>Seleccionar Suplente</option>
-                            <option v-for="(asistente, index) in asistentes" :key="index" :value="asistente.id_usuario">
-                                {{ asistente.nombres }} {{ asistente.apellidos }}
-                            </option>
-                        </select>
-                    </div>
-                    <div class="button-container text-center">
-                        <button class="btn btn-warning font-weight-bold btn-lg" @click="addSuplente">Añadir</button>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label for="tipo">Tipo:</label>
+                            <select v-model="nuevoTipo" id="tipo" class="form-control custom-select">
+                                <option value="" disabled selected>Seleccionar Tipo</option>
+                                <option value="suplenteEvaluador">Suplente Evaluador</option>
+                                <option value="suplentePonente">Suplente Ponente</option>
+                            </select>
+                        </div>
+                        <div class="form-group" v-if="nuevoTipo === 'suplentePonente'">
+                            <label for="suplente">Seleccionar Ponente a reemplazar :</label>
+                            <select v-model="evaluadorSeleccionado" id="evaluador" class="form-control custom-select">
+                                <option value="" disabled selected>Seleccionar Ponente</option>
+                                <option v-for="(ponente, index) in ponentes" :key="index" :value="ponente.id_usuario">
+                                    {{ ponente.nombres }} {{ ponente.apellidos }}
+                                </option>
+                            </select>
+                        </div>
+                        <div class="form-group" v-else>
+                            <label for="suplente">Seleccionar Evaluador a reemplazar :</label>
+                            <select v-model="evaluadorSeleccionado" id="evaluador" class="form-control custom-select">
+                                <option value="" disabled selected>Seleccionar Evaluador</option>
+                                <option v-for="(evaluador, index) in evaluadores.presencial" :key="index" :value="evaluador.id_usuario">
+                                    {{ evaluador.nombres }} {{ evaluador.apellidos }}
+                                </option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="asistente">Seleccionar Suplente (por nombre):</label>
+                            <select v-model="suplenteSeleccionado" id="asistente" class="form-control custom-select">
+                                <option value="" disabled selected>Seleccionar Suplente</option>
+                                <option v-for="(asistente, index) in asistentes" :key="index" :value="asistente.id_usuario">
+                                    {{ asistente.nombres }} {{ asistente.apellidos }}
+                                </option>
+                            </select>
+                        </div>
+                        <div class="button-container text-center">
+                            <button class="btn btn-warning font-weight-bold btn-lg" @click="addSuplente">Añadir</button>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
+        </transition>
     </div>
 </template>
 
@@ -127,7 +126,6 @@ export default {
             try {
                 const response = await obtenerProyectoConvocatoria(this.idProyecto);
                 this.idProyectoConvocatoria = response.data.proyecto_convocatoria.id_proyecto_convocatoria;
-                console.log("ID Proyecto Convocatoria:", this.idProyectoConvocatoria);
             } catch (error) {
                 this.showErrorToast("Error al obtener el proyecto convocatoria:");
             }
@@ -136,42 +134,25 @@ export default {
             try {
                 const suplenteData = await obtenerSuplentes(this.idProyecto, this.tipo_usuario);
                 this.suplentes = suplenteData;
-                const suplentesEvaluadores = [];
-                const suplentesPonentes = [];
-                for (let i = 0; i < this.suplentes.length; i++) {
-                    if (this.suplentes[i].tipo_usuario == 'suplenteEvaluador') {
-                        suplentesEvaluadores.push(this.suplentes[i]);
-                    }
-                }
-                this.$emit('suplenteEvaluador', suplentesEvaluadores);
             } catch (error) {
                 console.error("Error al obtener los suplentes seleccionados:", error);
-                // this.showErrorToast("Error al obtener los suplentes seleccionados."); 
             }
         },
 
         async addSuplente() {
             try {
-                // if (this.suplenteSeleccionado == null || this.evaluadorSeleccionado == null) {
-                //     alert("Debe seleccionar uno de los participante...");
-                // } else {
-                    await insertarSuplente(
-                        this.suplenteSeleccionado,
-                        this.idEtapa,
-                        this.idProyecto,
-                        this.idProyectoConvocatoria,
-                        this.nuevoTipo,
-                        this.evaluadorSeleccionado
-                    );
-                    this.showSuccessToast("Suplente insertado con éxito");
-                    // this.$emit('suplenteSeleccionado', {
-                    //     suplente: this.suplenteSeleccionado,
-                    //     tipo: this.nuevoTipo
-                    // });
-                    this.resetForm();
-                    this.closeModal();
-                    this.fetchSuplentes();
-                // }
+                await insertarSuplente(
+                    this.suplenteSeleccionado,
+                    this.idEtapa,
+                    this.idProyecto,
+                    this.idProyectoConvocatoria,
+                    this.nuevoTipo,
+                    this.evaluadorSeleccionado
+                );
+                this.showSuccessToast("Suplente insertado con éxito");
+                this.resetForm();
+                this.closeModal();
+                this.fetchSuplentes();
             } catch (error) {
                 this.showErrorToast("Error al agregar suplente:");
             }
@@ -187,8 +168,6 @@ export default {
 };
 </script>
 
-
-
 <style scoped>
 h2 {
     font-size: 0.8rem;
@@ -196,8 +175,9 @@ h2 {
 }
 
 .modal {
-    display: block;
-    /* Mostrar el modal */
+    display: flex;
+    justify-content: center;
+    align-items: center;
     position: fixed;
     z-index: 1;
     left: 0;
@@ -209,32 +189,21 @@ h2 {
 
 .modal-content {
     background-color: #fff;
-    margin: 10% auto;
     padding: 20px;
     border: 1px solid #888;
     width: 40%;
     max-width: 500px;
+    transition: transform 0.3s ease-in-out;
+    transform: translateY(0);
 }
 
-.close {
-    color: #aaa;
-    font-size: 28px;
-    font-weight: bold;
-    float: right;
+button.btn-close {
+    background: none;
+    border: none;
+    font-size: 1.5rem;
     cursor: pointer;
-}
-
-.close:hover,
-.close:focus {
-    color: #000;
-    text-decoration: none;
-}
-
-select {
-    display: block;
-    width: 100%;
-    max-height: 200px;
-    overflow-y: auto;
+    margin-left: auto;
+    color: #333;
 }
 
 .button-container {
@@ -247,5 +216,15 @@ button.btn-lg {
     padding: 6px 12px;
     font-size: 1rem;
     width: 25%;
+}
+
+/* Transiciones dinámicas */
+.modal-fade-enter-active, .modal-fade-leave-active {
+    transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.modal-fade-enter, .modal-fade-leave-to /* .modal-fade-leave-active en Vue 2 */ {
+    opacity: 0;
+    transform: translateY(-30px);
 }
 </style>
