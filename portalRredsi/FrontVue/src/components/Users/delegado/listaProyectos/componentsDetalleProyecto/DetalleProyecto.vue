@@ -115,8 +115,11 @@
                 </div>
                 <div id="collapseOne" class="collapse mt-5" aria-labelledby="headingOne"
                     data-bs-parent="#accordionExample">
-                    <RubricaCom :proyecto="proyecto" 
+                    <div v-if="evaluadoresObtenidos == 'True'">   
+                        <RubricaCom :proyecto="proyecto" 
                         :id_evaluador="id_evaluador1" :etapa="'Virtual'" />
+                    </div>
+                    
                 </div>
             </div>
             <div v-if="cargarRubricaPresencial" class="card p-2">
@@ -130,8 +133,10 @@
                 </div>
                 <div id="collapseTwo" class="collapse mt-5" aria-labelledby="headingTwo"
                     data-bs-parent="#accordionExample">
-                    <RubricaCom v-if="cargarRubricaPresencial" :proyecto="proyecto"
-                        :id_evaluador="id_evaluador2" :etapa="'Presencial'" />
+                    <div v-if="evaluadoresObtenidos == 'True'"> 
+                        <RubricaCom v-if="cargarRubricaPresencial" :proyecto="proyecto"
+                            :id_evaluador="id_evaluador2" :etapa="'Presencial'" />
+                    </div>
                 </div>
             </div>
             <div v-if="cargarRubricaPresencial"  class="card p-2">
@@ -143,10 +148,12 @@
                         Respuesta rúbrica 3
                     </button>
                 </div>
-                <!-- <div id="collapseThree" class="collapse mt-5" aria-labelledby="headingThree"
+                <div id="collapseThree" class="collapse mt-5" aria-labelledby="headingThree"
                     data-bs-parent="#accordionExample">
-                    <RubricaCom v-if="cargarRubricaPresencial" :proyecto="proyecto" 
-                        :id_evaluador="id_evaluador3" :etapa="'presencial'" />
+                    <div v-if="evaluadoresObtenidos == 'True'"> 
+                        <RubricaCom v-if="cargarRubricaPresencial" :proyecto="proyecto" 
+                            :id_evaluador="id_evaluador3" :etapa="'Presencial'" />
+                    </div>
                     <h4 class="text-center text-dark mt-4 mb-4">Respaldo</h4>
                     <div class="custom-file-upload mx-auto">
                         <input type="file" id="comprobante_pago" name="comprobante_pago" />
@@ -155,7 +162,7 @@
                             Selecciona un archivo
                         </label>
                     </div>
-                </div> -->
+                </div>
             </div>
         </div>
     </div>
@@ -195,6 +202,7 @@ export default {
         const id_evaluador1 = ref(0);
         const id_evaluador2 = ref(0);
         const id_evaluador3 = ref(0);
+        const evaluadoresObtenidos = ref('False');
         const ponentes = ref([]);
         const infoSala = ref({
             fecha: '',
@@ -219,17 +227,19 @@ export default {
                     const dataEvaluadorVirtual = await obtenerEvaluadoresProyecto(id_proyecto, id_etapa);
                     evaluadores.value.virtual = dataEvaluadorVirtual;
                     id_evaluador1.value = evaluadores.value.virtual[0].id_usuario;
+                    evaluadoresObtenidos.value = 'True';
                 } else {
                     const dataEvaluadorVirtual = await obtenerEvaluadoresProyecto(id_proyecto, 2);
                     evaluadores.value.virtual = dataEvaluadorVirtual;
                     id_evaluador1.value = evaluadores.value.virtual[0].id_usuario;
                     const dataEvaluadorPresencial = await obtenerEvaluadoresProyecto(id_proyecto, 1);
                     evaluadores.value.presencial = dataEvaluadorPresencial;
-                    if (evaluadores.value.presencial.length > 0) {
+                    // if (evaluadores.value.presencial.length > 0) {
                         id_evaluador2.value = evaluadores.value.presencial[0].id_usuario;
-                    } else if (evaluadores.value.presencial.length > 1) {
+                    // } else if (evaluadores.value.presencial.length > 1) {
                         id_evaluador3.value = evaluadores.value.presencial[1].id_usuario;
-                    }
+                    // }
+                    evaluadoresObtenidos.value = 'True';
                 }
             } catch (error) {
                 console.error('Error al obtener evaluadores:', error);
@@ -322,6 +332,7 @@ export default {
             puntajeTotal,
             urlPresentacion,
             suplente,
+            evaluadoresObtenidos,
             tipo,
             fetchAllData,
             guardarPresentacion,
