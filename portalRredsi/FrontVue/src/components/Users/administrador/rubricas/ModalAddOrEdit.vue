@@ -84,7 +84,7 @@ import { InsertItems } from "@/services/administradorService";
 import { defineEmits, reactive } from "vue";
 import { useToastUtils } from "@/utils/toast";
 
-const { showErrorToast, showWarningToast, showSuccessToast } = useToastUtils();
+const {showSuccessToast } = useToastUtils();
 
 const props = defineProps({
   infoModalEditar: {
@@ -92,9 +92,7 @@ const props = defineProps({
     default: null,
     validator(value) {
       return (
-        typeof (
-          value.id_item_rubrica === "number" || value.id_item_rubrica === null
-        ) &&
+        typeof (value.id_item_rubrica === "number" || value.id_item_rubrica === null)&&
         typeof (value.id_rubrica === "number" || value.id_rubrica === null) &&
         typeof (value.titulo === "string" || value.titulo === null) &&
         typeof (value.componente === "number" || value.componente === null) &&
@@ -135,12 +133,17 @@ const save = async () => {
     const { data } = await InsertItems(itemActual);
     const { data: id_item_rubrica } = data;
     newRubricAdded({ id_item_rubrica, ...itemActual });
-    console.log("soy crear"); 
-    console.log(data);
+    
+    if(data.success == true){
+      showSuccessToast("Se registró con éxito");
+    }
+    
   } else {
     const itemActualizado = await updateItems(id_item_rubrica, itemActual);
-    console.log("soy editar"); 
-    console.log(itemActualizado.data);
+
+    if(itemActualizado.data.success){
+      showSuccessToast("Se editó con éxito");
+    }
     actualizar();
   }
   closeModal();
