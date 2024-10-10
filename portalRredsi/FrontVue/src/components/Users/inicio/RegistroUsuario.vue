@@ -141,8 +141,8 @@ export default {
         this.form = this.getInitialForm();
 
       } catch (error) {
-        console.error('Error al crear el usuario:', error.response ? error.response.data : error.message);
-        showErrorToast('Error al crear el usuario'); // Mostramos alerta de error
+        console.error('Error al crear el usuario, el correo ya existe:', error.response ? error.response.data : error.message);
+        showErrorToast('Error al crear el usuario, el correo ya existe'); // Mostramos alerta de error
       }
     },
   },
