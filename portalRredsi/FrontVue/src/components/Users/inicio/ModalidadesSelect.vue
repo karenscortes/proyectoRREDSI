@@ -11,7 +11,7 @@
 
 <script>
 import { ref, onMounted, watch } from 'vue';
-import { getAllModalidades } from '@/services/modalidadesService';  // Ruta del servicio de modalidades
+import { getAllModalidades } from '@/services/modalidades_Service';  // Ruta del servicio de modalidades
 
 export default {
     props: {

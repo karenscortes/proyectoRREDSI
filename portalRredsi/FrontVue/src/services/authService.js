@@ -38,7 +38,7 @@ export const login = async (username, password) => {
       } else if (status === 500) {
         showErrorToast('Error del servidor. Intenta de nuevo más tarde.');
       } else {
-        showErrorToast(`Error desconocido: ${status}. Intenta de nuevo.`);
+        showErrorToast(`Ingresa los datos para iniciar sesión.`);
       }
 
       throw error; // Lanza el error para que lo maneje el store
