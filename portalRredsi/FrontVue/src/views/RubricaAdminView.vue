@@ -2,10 +2,12 @@
   <div class="container">
     <div>
       <!--Titulo principal-->
-      <div>
-        <h1 class="titulo_principal d-flex justify-content-start">
-          {{ tituloPrincipal }}
-        </h1>
+      <div class="row mb-4 mt-2">
+        <div class="col">
+          <div class="section_title text-center">
+            <h1>Gestionar rúbricas</h1>
+          </div>
+        </div>
       </div>
       <div
         class="contenedor_principal d-flex justify-content-between flex-lg-row flex-column-reverse"
@@ -110,9 +112,13 @@ import CardTipo from "../components/Users/administrador/rubricas/CardTipo.vue";
 import ItemTBody from "../components/Users/administrador/rubricas/ItemTBody.vue";
 import FootTable from "../components/Users/administrador/rubricas/FootTable.vue";
 import ItemThead from "../components/Users/administrador/rubricas/ItemThead.vue";
+import { useToastUtils } from "@/utils/toast";
+
+const { showErrorToast} = useToastUtils();
 
 //arreglo con las rubricas 
 const arrayRubricas = reactive([]);
+
 //Propiedades para manejar la apertura de los modales
 const isModalEditOpen = ref(false);
 const isModalDeleteOpen = ref(false); 
@@ -282,8 +288,7 @@ const fetchAllRubrics = async () => {
     itemsPrimerRubrica(); 
     rubricas(); 
   } catch (error) {
-    console.error(error);
-    alert("Error al obtener las rúbricas");
+    showErrorToast("No se pudó realizar esta acción, intenta de nuevo");
   }
 };
 onMounted(() => {
@@ -293,12 +298,10 @@ onMounted(() => {
 
 <style scoped>
 .table {
-  max-height: 750px;
+  max-height: 800px;
   overflow-y: auto;
 }
-.container{
-  margin-top: 10%;
-}
+
 .boton_añadir {
   border: none;
   width: 150px;
@@ -332,7 +335,7 @@ onMounted(() => {
   border: 1px solid black;
 }
 .scroll-div {
-  height: 73vh;
+  height: 78vh;
   overflow-y: auto;
   overflow-x: hidden;
 }

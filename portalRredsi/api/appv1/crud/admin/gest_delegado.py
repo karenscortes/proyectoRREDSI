@@ -3,11 +3,13 @@ from sqlalchemy.orm import Session
 from sqlalchemy.exc import SQLAlchemyError
 from fastapi import HTTPException
 from appv1.models.rol import Rol
+from appv1.models.tipo_documento import Tipo_documento
 from appv1.models.usuario import Estados, Usuario
 from appv1.schemas.usuario import UserCreate
 from core.utils import generate_user_id_int
 from core.security import get_hashed_password
 from sqlalchemy.exc import SQLAlchemyError, IntegrityError
+from datetime import datetime
 
 #Obtener todos los delegados en estado activo
 def get_delegados_activos_paginated(db: Session, page, page_size):
@@ -55,6 +57,10 @@ def update_status_delegate(id_delegate: int, estado: Estados, db: Session):
     
 #Crear delegado
 def create_delegado(user: UserCreate, db: Session):
+    user.id_rol = 2
+    YEAR =  str(datetime.now().year)
+    user.clave = "delegado" + YEAR
+
     try:
         nuevo_usuario = Usuario(
             id_usuario = generate_user_id_int(),
@@ -85,4 +91,27 @@ def create_delegado(user: UserCreate, db: Session):
         print(f"Error al crear el usuario: {e}")
         raise HTTPException(status_code=500, detail="Error. No hay integridad de datos")
 
+#consultar por email
+def get_user_email(db: Session, p_mail: str):
+    try:
+        user = db.query(Usuario).filter(Usuario.correo == p_mail).first()
 
+        if user is not None:
+            raise HTTPException(status_code=404, detail="Ya existe un usuario registrado con este correo electrónico.")
+        
+    except SQLAlchemyError as e:
+        print(f"Error al buscar usuario por email: {e}")
+        raise HTTPException(status_code=500, detail="Error al buscar usuario por email")
+
+#consultar tipos documentos 
+def get_all_document(db: Session):
+    try:
+        documents = db.query(Tipo_documento).all()
+
+        if documents is None :
+            raise HTTPException(status_code=404, detail="Sin tipos de documentos")
+        
+        return documents
+    except SQLAlchemyError as e:
+        print(f"Error al buscar tipos de documentos: {e}")
+        raise HTTPException(status_code=500, detail="Error no hay integridad de datos")

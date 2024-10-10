@@ -14,7 +14,7 @@ class UserBase(BaseModel):
     apellidos: Annotated[str, StringConstraints(max_length=25)]
     celular: Annotated[str, StringConstraints(max_length=12)]
     correo: EmailStr 
-    estado: EstadosEnum
+    estado: Optional[EstadosEnum] = "activo"
     
     class Config:
         orm_mode = True

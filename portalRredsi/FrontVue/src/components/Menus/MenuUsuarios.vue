@@ -158,17 +158,6 @@ export default defineComponent({
                 // Accede a la propiedad estado_postulacion de la respuesta
                 const estadoPostulacion = response.estado_postulacion;
 
-                // Realiza la llamada a la API
-                const response2 = await obtenerEstadoDatosInstitucionales(user.id_usuario);
-
-                // Accede a la propiedad estado_postulacion de la respuesta
-                const estadoDatosInstitucionales = response2.estado_institucional_academico;
-
-                if (estadoDatosInstitucionales == 'sin datos institucionales'){
-                    paginaUso.value = 'disabled';
-                }else{
-                    paginaUso.value = '';
-                }
 
                 // Según el estado de la postulación, definimos si se habilitan o no los apartados
                 switch (estadoPostulacion) {
@@ -218,7 +207,7 @@ export default defineComponent({
                     asignacion2.value = '';
                     
                     // Función para comprobar y bloquear opciones dependiendo de la etapa y fecha actual
-                    getAssignmentDates();
+                    // getAssignmentDates();
                 }
             } catch (error) {
                 console.error('Error obteniendo datos institucionales:', error);
@@ -231,7 +220,7 @@ export default defineComponent({
         };
         if (user?.id_rol === 3) {
             Object.assign(state, {
-                left_tabs: [{nombre:'Inicio', ruta:'InicioAdminView'}, {nombre:'Perfil', ruta:'PerfilAdmin'}, {nombre:'Cuentas', ruta:'DelegadosAdminView'},{nombre:'Rubricas', ruta:'RubricaAdminView'}],
+                left_tabs: [{nombre:'Inicio', ruta:'InicioAdminView'}, {nombre:'Perfil', ruta:'EditarPerfil'}, {nombre:'Cuentas', ruta:'DelegadosAdminView'},{nombre:'Rubricas', ruta:'RubricaAdminView'}],
                 mid_tabs:[
                     {   nombre:"Eventos", 
                         opciones:[{nombre:'Salas', ruta:'SalasAdminView'}, {nombre:'Asistencia',ruta:'GestionarAsistentes'}, {nombre:'Convocatoria', ruta:'CrearConvocatoria'}]
@@ -273,7 +262,7 @@ export default defineComponent({
             });
         } else if(user?.id_rol == 6) {
             Object.assign(state, {
-                left_tabs: [{nombre: "Inicio", ruta: "InicioSuperAdminView" }, {nombre: "Editar perfil", ruta: "EditarPerfil" },{nombre: "Gestionar administradores", ruta: "ListaAdministradores" }],
+                left_tabs: [{nombre: "Inicio", ruta: "InicioSuperAdminView" }, {nombre: "Perfil", ruta: "EditarPerfil" },{nombre: "Gestionar administradores", ruta: "ListaAdministradores" }],
                 visibilidad: "d-none",
             });
         }

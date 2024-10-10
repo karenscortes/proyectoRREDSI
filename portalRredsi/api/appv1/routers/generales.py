@@ -6,7 +6,7 @@ from appv1.schemas.area_conocimiento import AreaConocimientoResponse
 from appv1.schemas.delegado.salas import ProyectoResponse
 from appv1.schemas.usuario import UserResponse
 from db.database import get_db
-from appv1.crud.generales import get_areas_conocimiento, get_cantidad_postulaciones, get_cantidad_proyectos_asignados, get_proyecto_by_id
+from appv1.crud.generales import get_areas_conocimiento, get_cantidad_postulaciones, get_cantidad_proyectos_asignados, get_cantidad_proyectos_calificados, get_cantidad_proyectos_inscritos, get_proyecto_by_id
 from appv1.crud.permissions import get_permissions
 
 router_consultas_generales = APIRouter()
@@ -60,5 +60,32 @@ async def obtener_cantidad_proyectos_asignados(
     if not permisos.p_consultar:
         raise HTTPException(status_code=401, detail="No está autorizado a utilizar este modulo")
     
-    postulaciones = get_cantidad_proyectos_asignados(db)
-    return postulaciones
+    proyectos_asignados = get_cantidad_proyectos_asignados(db)
+    return proyectos_asignados
+
+
+# RUTA PARA OBTENER LA CANTIDAD DE PROYECTOS INSCRITOS EN UNA CONVOCATORIA ACTIVA 
+@router_consultas_generales.get("/get_cantidad_proyectos_inscritos/")
+async def obtener_cantidad_proyectos_inscritos(
+    current_user: UserResponse = Depends(get_current_user),
+    db: Session = Depends(get_db)
+):
+    permisos = get_permissions(db, current_user.id_rol, MODULE_PROYECTOS)
+    if not permisos.p_consultar:
+        raise HTTPException(status_code=401, detail="No está autorizado a utilizar este modulo")
+    
+    proyectos_inscritos = get_cantidad_proyectos_inscritos(db)
+    return proyectos_inscritos
+
+# RUTA PARA OBTENER LA CANTIDAD DE PROYECTOS INSCRITOS EN UNA CONVOCATORIA ACTIVA 
+@router_consultas_generales.get("/get_cantidad_proyectos_calificados_por_etapa/")
+async def obtener_cantidad_proyectos_calificados(
+    current_user: UserResponse = Depends(get_current_user),
+    db: Session = Depends(get_db)
+):
+    permisos = get_permissions(db, current_user.id_rol, MODULE_PROYECTOS)
+    if not permisos.p_consultar:
+        raise HTTPException(status_code=401, detail="No está autorizado a utilizar este modulo")
+    
+    proyectos_calificados = get_cantidad_proyectos_calificados(db)
+    return proyectos_calificados

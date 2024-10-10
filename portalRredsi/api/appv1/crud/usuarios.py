@@ -75,8 +75,6 @@ def get_user_by_email(db: Session, p_mail: str):
         raise HTTPException(status_code=500, detail="Error al buscar usuario por email")
 
 
-
-
 # Consultar un usuario por su documento
 def get_user_by_documento(db: Session, p_documento: str):
     try:

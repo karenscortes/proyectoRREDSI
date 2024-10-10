@@ -13,7 +13,7 @@
                             <div class="milestone_icon"><img src="@/assets/img/milestone_1.svg"
                                     alt="https://www.flaticon.com/authors/zlatko-najdenovski"></div>
                             <div class="milestone_counter" data-end-value="750">{{ postulaciones }}</div>
-                            <div class="milestone_text">Postulaciones</div>
+                            <div class="milestone_text">Postulaciones pendientes</div>
                         </div>
                     </div>
 
@@ -22,7 +22,7 @@
                         <div class="milestone text-center">
                             <div class="milestone_icon"><img src="@/assets/img/milestone_2.svg"
                                     alt="https://www.flaticon.com/authors/zlatko-najdenovski"></div>
-                            <div class="milestone_counter" data-end-value="120">0</div>
+                            <div class="milestone_counter" data-end-value="120">{{ proyectosInscritos }}</div>
                             <div class="milestone_text">Proyectos inscritos</div>
                         </div>
                     </div>
@@ -42,7 +42,7 @@
                         <div class="milestone text-center">
                             <div class="milestone_icon"><img src="@/assets/img/milestone_4.svg"
                                     alt="https://www.flaticon.com/authors/zlatko-najdenovski"></div>
-                            <div class="milestone_counter" data-end-value="3500" data-sign-before="+">0</div>
+                            <div class="milestone_counter" data-end-value="3500" data-sign-before="+">{{ proyectosCalificados }}</div>
                             <div class="milestone_text">Proyectos evaluados</div>
                         </div>
                     </div>
@@ -54,7 +54,7 @@
 <script>
 import { ref, onMounted } from 'vue';
 import { useAuthStore } from '@/store';
-import { obtenerCantidadPostulaciones, obtenerCantidadProyectosAsignados } from '@/services/delegadoService'
+import { obtenerCantidadPostulaciones, obtenerCantidadProyectosAsignados, obtenerCantidadProyectosInscritos, obtenerCantidadProyectosCalificados } from '@/services/delegadoService'
 
 export default {
     setup() {
@@ -63,17 +63,23 @@ export default {
 
         const postulaciones = ref(0);
         const proyectosAsignados = ref(0);
+        const proyectosInscritos = ref(0);
+        const proyectosCalificados = ref(0);
 
         // Función para obtener las postulaciones y proyectos asignados en paralelo
         const obtenerDatos = async () => {
             try {
-                const [postulacionesResp, proyectosResp] = await Promise.all([
+                const [postulacionesResp, proyectosResp,proyectosInscritosResp,proyectosCalificadosResp] = await Promise.all([
                     obtenerCantidadPostulaciones(),
-                    obtenerCantidadProyectosAsignados()
+                    obtenerCantidadProyectosAsignados(),
+                    obtenerCantidadProyectosInscritos(),
+                    obtenerCantidadProyectosCalificados()
                 ]);
 
                 postulaciones.value = postulacionesResp.data;
                 proyectosAsignados.value = proyectosResp.data;
+                proyectosInscritos.value = proyectosInscritosResp.data;
+                proyectosCalificados.value = proyectosCalificadosResp.data;
             } catch (error) {
                 console.error('Error al obtener datos:', error);
             }
@@ -87,7 +93,9 @@ export default {
         return {
             user,
             postulaciones,
-            proyectosAsignados
+            proyectosAsignados,
+            proyectosInscritos,
+            proyectosCalificados
         };
     }
 };

@@ -143,7 +143,7 @@ export const InsertItems = async (new_item) => {
   }
 };
 
-// Función para editar itemsRubrica
+// Función para editar item
 export const updateItems = async (id_item_rubrica, item_nuevo) => {
   try {
       const url = `/admin/update-items/${id_item_rubrica}/`;
@@ -202,10 +202,10 @@ export const getDelegatesAll = async (page = 1, page_size = 10) => {
   }
 };
 
-// Función para buscar por id delegado
-export const getDelegateById = async (id_delegado) => {
+// Función para buscar documento y nombre
+export const getDelegateByNameOrDocument = async (busqueda) => {
   try {
-      const url = `/admin/delegates/${id_delegado}/`;
+      const url = `/admin/delegates/${busqueda}/`;
       const response = await api.get(url,{
       headers: {
         'Authorization': `Bearer ${localStorage.getItem('access_token')}` 
@@ -221,6 +221,45 @@ export const getDelegateById = async (id_delegado) => {
   }
 };
 
+// Función para crear delegado
+export const createDelegate = async (user) => {
+  try {
+      const url = `/admin/create-delegates/`;
+      const response = await api.post(url, user,{
+      headers: {
+        'Authorization': `Bearer ${localStorage.getItem('access_token')}` 
+      }
+    });
+    return response;
+  } catch (error) {
+    if (error.response) {
+      throw error;
+    } else {
+      throw new Error('Error de red o de servidor'); 
+    }
+  }
+}
+
+// Obtener todos los tipos de documento
+export const getAllDocumentsType= async (user) => {
+  try {
+      const url = `/admin/all_type_documents/`;
+      const response = await api.get(url,{
+      headers: {
+        'Authorization': `Bearer ${localStorage.getItem('access_token')}` 
+      }
+    });
+    return response;
+  } catch (error) {
+    if (error.response) {
+      throw error;
+    } else {
+      throw new Error('Error de red o de servidor'); 
+    }
+  }
+}
+
+//Función para actualizar estado delegado
 export const updateStatusDelegate = async (id_delegado, estado) => {
   try{
     const url = `/admin/update-delegate-status/${id_delegado}/`;
