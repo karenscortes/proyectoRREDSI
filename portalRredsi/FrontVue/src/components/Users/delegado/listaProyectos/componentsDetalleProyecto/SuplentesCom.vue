@@ -1,17 +1,29 @@
 <template>
     <div class="feature">
-        <div class="icon">
-            <i class="fa-solid fa-user-group fa-1.5x text-dark mb-3"></i>
+        <div class="icon-custom text-center">
+            <i class="fa-solid fa-user-group fa-3x"></i>
         </div>
-        <h2 class="text-dark text-left font-weight-bold">
+        <h2 class="text-left font-weight-bold text-yellow ">
             Suplentes
-            <i type="button" class="fa-regular fa-square-plus fa-lg text-dark" @click="openModal"></i>
+            <i type="button" class="fa-regular fa-square-plus fa-1x text-yellow" @click="openModal"></i>
         </h2>
 
-        <p class="text-dark text-left" v-for="suplente in suplentes" :key="suplente.nombres">
-            {{ suplente.nombres }} {{ suplente.apellidos }} <strong>{{ suplente.tipo_usuario }}</strong>
-        </p>
-        
+        <!-- Suplentes Ponentes -->
+        <div v-if="suplentesPonentes.length > 0">
+            <spam class="text-left font-weight-bold ">Suplentes Ponentes</spam>
+            <p class="text-dark suplente-details text-left" v-for="suplente in suplentesPonentes" :key="suplente.nombres">
+                {{ suplente.nombres }} {{ suplente.apellidos }} 
+            </p>
+        </div>
+
+        <!-- Suplentes Evaluadores -->
+        <div v-if="suplentesEvaluadores.length > 0">
+            <spam class="text-left font-weight-bold ">Suplentes Evaluadores</spam>
+            <p class="text-dark suplente-details text-left" v-for="suplente in suplentesEvaluadores" :key="suplente.nombres">
+                {{ suplente.nombres }} {{ suplente.apellidos }} 
+            </p>
+        </div>
+
         <!-- Modal para agregar suplente -->
         <transition name="modal-fade">
             <div v-if="isModalOpen" class="modal" @click.self="closeModal">
@@ -50,7 +62,7 @@
                             </select>
                         </div>
                         <div class="form-group">
-                            <label for="asistente">Seleccionar Suplente (por nombre):</label>
+                            <label for="asistente">Seleccionar Suplente:</label>
                             <select v-model="suplenteSeleccionado" id="asistente" class="form-control custom-select">
                                 <option value="" disabled selected>Seleccionar Suplente</option>
                                 <option v-for="(asistente, index) in asistentes" :key="index" :value="asistente.id_usuario">
@@ -90,6 +102,8 @@ export default {
         return {
             isModalOpen: false,
             suplentes: [],
+            suplentesPonentes: [],
+            suplentesEvaluadores: [],
             asistentes: [],
             nuevoTipo: '',
             suplenteSeleccionado: null,
@@ -134,6 +148,11 @@ export default {
             try {
                 const suplenteData = await obtenerSuplentes(this.idProyecto, this.tipo_usuario);
                 this.suplentes = suplenteData;
+
+                // Filtrar suplentes según su tipo
+                this.suplentesPonentes = this.suplentes.filter(suplente => suplente.tipo_usuario === 'suplentePonente');
+                this.suplentesEvaluadores = this.suplentes.filter(suplente => suplente.tipo_usuario === 'suplenteEvaluador');
+
             } catch (error) {
                 console.error("Error al obtener los suplentes seleccionados:", error);
             }
@@ -169,9 +188,31 @@ export default {
 </script>
 
 <style scoped>
+.icon-custom {
+    color: #ffb606;
+    margin-bottom: 0.5rem;
+}
+
+.text-yellow {
+    color: #ffb606;
+}
+
 h2 {
+    font-size: 1.1rem;
+    margin-bottom: 3px;
+}
+
+.suplente-details {
     font-size: 0.8rem;
-    margin-bottom: 2px;
+    color: #000; 
+}
+
+.text-left {
+    text-align: left;
+}
+
+p {
+    margin-bottom: 0.2rem;
 }
 
 .modal {
@@ -218,13 +259,14 @@ button.btn-lg {
     width: 25%;
 }
 
-/* Transiciones dinámicas */
 .modal-fade-enter-active, .modal-fade-leave-active {
     transition: opacity 0.3s ease, transform 0.3s ease;
 }
 
-.modal-fade-enter, .modal-fade-leave-to /* .modal-fade-leave-active en Vue 2 */ {
+.modal-fade-enter, .modal-fade-leave-to  {
     opacity: 0;
     transform: translateY(-30px);
 }
 </style>
+
+

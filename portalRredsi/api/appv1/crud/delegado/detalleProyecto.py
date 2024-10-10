@@ -120,27 +120,6 @@ def insertar_suplente_proyecto(db: Session, id_suplente: int, id_etapa: int, id_
         print(f"Error inesperado: {str(e)}")
         raise HTTPException(status_code=500, detail="Error al registrar evaluador reemplazado")
     
-# def insertar_evaluador_reemplazado(db: Session, id_evalaudor: int, id_proyecto: int)
-#         ##Insertar evaluador reemplazado 
-#         sqlEvaluador = text("""
-#             INSERT INTO evaluador_suplente (id_evaluador, id_suplente, id_proyecto )
-#             VALUES (:id_evaluador, :id_suplente, :id_proyecto)
-#         """)
-#         paramsEvaluador = {
-#             "id_evaluador": id_evaluador,
-#             "id_suplente": id_suplente,
-#             "id_proyecto": id_proyecto,
-#         }
-#         db.execute(sqlEvaluador, paramsEvaluador)
-#         db.commit()
-#         return True
-# except SQLAlchemyError as e:
-#         db.rollback()
-#         raise HTTPException(status_code=500, detail="Error al registrar evaluador reemplazado")
-
-
-
-# consultar suplentes
 def get_obtener_suplentes(db: Session, id_proyecto: int, tipo_usuario: str, ):
     try:
         sql = text("""
