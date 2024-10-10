@@ -162,6 +162,7 @@
 </template>
 
 <script>
+import { ref, onMounted } from 'vue';
 import EvaluadoresCom from './EvaluadoresCom.vue';
 import EventoCom from './EventoCom.vue';
 import PonentesCom from './PonentesCom.vue';
@@ -169,6 +170,7 @@ import SuplentesCom from './SuplentesCom.vue';
 import RubricaCom from './RubricaCom.vue';
 import { useToastUtils } from '@/utils/toast';
 import { obtenerEvaluadoresProyecto, obtenerPonentesProyecto, obtenerInfoSalaProyecto, insertarUrlPresentacion, obtenerUrlPresentacionProyecto } from '../../../../../services/delegadoService';
+
 export default {
     name: 'DetalleProyecto',
     props: {
@@ -184,143 +186,150 @@ export default {
         SuplentesCom,
         RubricaCom,
     },
-    data() {
-        return {
-            cargarRubricaVirtual: false,
-            cargarRubricaPresencial: false,
-            evaluadores: [],
-            id_evaluador1: 123,
-            id_evaluador2: 456,
-            id_evaluador3: 789,
-            ponentes: [],
-            infoSala: {
-                fecha: '',
-                hora_inicio: '',
-                hora_fin: '',
-                numero_sala: ''
-            },
-            rubricas: [],
-            tituloProyecto: '',
-            ponentesProyecto: '',
-            universidadProyecto: '',
-            puntajeTotal: 0,
-            urlPresentacion: '',
-            suplente: {},
-            tipo: '',
-            
-
-        };
-    },
-    setup() {
+    setup(props) {
         const { showSuccessToast, showErrorToast, showInfoToast } = useToastUtils();
-        return { showSuccessToast, showErrorToast, showInfoToast };
-    },
-    methods: {
+
+        const cargarRubricaVirtual = ref(false);
+        const cargarRubricaPresencial = ref(false);
+        const evaluadores = ref({ virtual: [], presencial: [] });
+        const id_evaluador1 = ref(0);
+        const id_evaluador2 = ref(0);
+        const id_evaluador3 = ref(0);
+        const ponentes = ref([]);
+        const infoSala = ref({
+            fecha: '',
+            hora_inicio: '',
+            hora_fin: '',
+            numero_sala: ''
+        });
+        const rubricas = ref([]);
+        const tituloProyecto = ref('');
+        const ponentesProyecto = ref('');
+        const universidadProyecto = ref('');
+        const puntajeTotal = ref(0);
+        const urlPresentacion = ref('');
+        const suplente = ref({});
+        const tipo = ref('');
+
         // Función para obtener los evaluadores del proyecto
-        async fetchEvaluadores(id_proyecto) {
+        const fetchEvaluadores = async (id_proyecto) => {
             try {
-                const id_etapa = this.proyecto.id_etapa;
+                const id_etapa = props.proyecto.id_etapa;
                 if (id_etapa == 2) {
                     const dataEvaluadorVirtual = await obtenerEvaluadoresProyecto(id_proyecto, id_etapa);
-                    this.evaluadores['virtual'] = dataEvaluadorVirtual;
-                    this.id_evaluador1 = this.evaluadores.virtual[0].id_usuario;
+                    evaluadores.value.virtual = dataEvaluadorVirtual;
+                    id_evaluador1.value = evaluadores.value.virtual[0].id_usuario;
                 } else {
                     const dataEvaluadorVirtual = await obtenerEvaluadoresProyecto(id_proyecto, 2);
-                    this.evaluadores['virtual'] = dataEvaluadorVirtual;
-                    this.id_evaluador1 = this.evaluadores.virtual[0].id_usuario;
+                    evaluadores.value.virtual = dataEvaluadorVirtual;
+                    id_evaluador1.value = evaluadores.value.virtual[0].id_usuario;
                     const dataEvaluadorPresencial = await obtenerEvaluadoresProyecto(id_proyecto, 1);
-                    this.evaluadores['presencial'] = dataEvaluadorPresencial;
-                    if(this.evaluadores.presencial > 0){
-                        this.id_evaluador2 = this.evaluadores.presencial[0].id_usuario;
-                    }else if(this.evaluadores.presencial > 1) {
-                        this.id_evaluador3 = this.evaluadores.presencial[1].id_usuario;
-                    }  
+                    evaluadores.value.presencial = dataEvaluadorPresencial;
+                    if (evaluadores.value.presencial.length > 0) {
+                        id_evaluador2.value = evaluadores.value.presencial[0].id_usuario;
+                    } else if (evaluadores.value.presencial.length > 1) {
+                        id_evaluador3.value = evaluadores.value.presencial[1].id_usuario;
+                    }
                 }
-
             } catch (error) {
                 console.error('Error al obtener evaluadores:', error);
             }
-
-        },
+        };
 
         // Función para obtener los ponentes del proyecto
-        async fetchPonentes(id_proyecto) {
+        const fetchPonentes = async (id_proyecto) => {
             try {
                 const data = await obtenerPonentesProyecto(id_proyecto);
-                this.ponentes = data;
+                ponentes.value = data;
             } catch (error) {
                 console.error('Error al obtener ponentes:', error);
             }
-        },
+        };
+
         // Función para obtener informacion de sala para un proyecto
-        async fetchInfoSala(id_proyecto) {
+        const fetchInfoSala = async (id_proyecto) => {
             try {
                 const data = await obtenerInfoSalaProyecto(id_proyecto);
-                // console.log("Datos de sala: ", data);
-                this.infoSala = data;
+                infoSala.value = data;
             } catch (error) {
                 console.error('Error al obtener la información de la sala:', error);
             }
-        },
-        //Función para obtener presentación
-        async fetchUrlPresentacion(id_proyecto) {
-            try {
+        };
 
+        // Función para obtener presentación
+        const fetchUrlPresentacion = async (id_proyecto) => {
+            try {
                 const response = await obtenerUrlPresentacionProyecto(id_proyecto);
-                this.urlPresentacion = response.data.url_presentacion;
+                urlPresentacion.value = response.data.url_presentacion;
             } catch (error) {
                 console.log('Error al obtener la URL de la presentación.');
             }
-        },
+        };
+
         // Función para renderizar la vista
-        async fetchAllData() {
+        const fetchAllData = async () => {
             try {
-                await this.fetchEvaluadores(this.proyecto.id_proyecto);
-                if(this.proyecto.id_etapa == 1){
-                    await this.fetchPonentes(this.proyecto.id_proyecto);
-                    await this.fetchInfoSala(this.proyecto.id_proyecto);
-                    await this.fetchUrlPresentacion(this.proyecto.id_proyecto);
+                await fetchEvaluadores(props.proyecto.id_proyecto);
+                await fetchPonentes(props.proyecto.id_proyecto);
+                if (props.proyecto.id_etapa == 1) {
+                    await fetchInfoSala(props.proyecto.id_proyecto);
+                    await fetchUrlPresentacion(props.proyecto.id_proyecto);
                 }
-                
-                if (this.evaluadores.virtual.length > 0 || this.evaluadores.presencial.length > 0) {
-                    if (this.proyecto.id_etapa == 2) {
-                        this.cargarRubricaVirtual = true;
-                        this.cargarRubricaPresencial = false;
+
+                if (evaluadores.value.virtual.length > 0 || evaluadores.value.presencial.length > 0) {
+                    if (props.proyecto.id_etapa == 2) {
+                        cargarRubricaVirtual.value = true;
+                        cargarRubricaPresencial.value = false;
                     } else {
-                        this.cargarRubricaPresencial = true;
-                        this.cargarRubricaVirtual = true;
+                        cargarRubricaPresencial.value = true;
+                        cargarRubricaVirtual.value = true;
                     }
                 }
             } catch (error) {
                 console.error('Error al cargar los datos del proyecto:', error);
-                this.showErrorToast('Error al cargar los datos del proyecto.')
+                showErrorToast('Error al cargar los datos del proyecto.');
             }
-            
-        },
+        };
 
-        openModal() {
-            $('#presentationModal').modal('show');
-        },
-        async guardarPresentacion() {
+        const guardarPresentacion = async () => {
             try {
-                await insertarUrlPresentacion(this.proyecto.id_proyecto, this.urlPresentacion);
-                this.showInfoToast('Presentación guardada correctamente.');
+                await insertarUrlPresentacion(props.proyecto.id_proyecto, urlPresentacion.value);
+                showInfoToast('Presentación guardada correctamente.');
                 $('#presentationModal').modal('hide');
             } catch (error) {
                 console.error('Error al guardar la URL de la presentación:', error);
-                this.showErrorToast('Error al guardar la presentación. Por favor, intenta nuevamente.');
+                showErrorToast('Error al guardar la presentación. Por favor, intenta nuevamente.');
             }
-        },
-        // obtenerSuplentes(arregloSuplentes ) {
-        //     this.suplente = arregloSuplentes;     
-        // },
-        
+        };
+
+        onMounted(() => {
+            fetchAllData();
+        });
+
+        return {
+            cargarRubricaVirtual,
+            cargarRubricaPresencial,
+            evaluadores,
+            id_evaluador1,
+            id_evaluador2,
+            id_evaluador3,
+            ponentes,
+            infoSala,
+            rubricas,
+            tituloProyecto,
+            ponentesProyecto,
+            universidadProyecto,
+            puntajeTotal,
+            urlPresentacion,
+            suplente,
+            tipo,
+            fetchAllData,
+            guardarPresentacion,
+        };
     },
-    mounted() {
-        this.fetchAllData()
-    }
 };
 </script>
+
 
 
 
