@@ -69,9 +69,11 @@
       <div class="modal fade" id="detalleAdminModal" tabindex="-1" aria-labelledby="detalleModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-lg">
           <div class="modal-content">
-            <div class="modal-header bg-warning">
+            <!-- Ajustar el tamaño del header y el fondo amarillo -->
+            <div class="modal-header bg-warning w-100 "> <!-- Añadir py-3 para padding vertical -->
+              <!-- Título del modal -->
               <h3 class="modal-title" id="detalleModalLabel">Detalles del Administrador: {{ adminSeleccionado.nombres }} {{ adminSeleccionado.apellidos }}</h3>
-              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" style="font-size: 1.2rem;"></button> 
             </div>
             <div class="modal-body text-dark">
               <!-- Información detallada del administrador -->
@@ -107,24 +109,26 @@
                 </div>
               </div>
             </div>
+
+            <!-- Footer del modal -->
             <div class="modal-footer">
               <!-- Botón para guardar cambios -->
-              <button type="button" class="btn btn-primary" @click="guardarRol">Guardar</button>
-              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+              <button type="button" class="btn btn-warning text-white" @click="guardarRol">Guardar</button>
             </div>
           </div>
         </div>
       </div>
 
+
       <!-- Modal historial administrador -->
       <div class="modal fade" id="accionesAdminModal" tabindex="-1" aria-labelledby="detalleModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-lg">
           <div class="modal-content">
-            <div class="modal-header bg-warning">
+            <div class="modal-header bg-warning w-100">
               <h3 class="modal-title" id="detalleModalLabel">
                 Historial del Administrador: {{ adminSeleccionado.nombres }} {{ adminSeleccionado.apellidos }}
               </h3>
-              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" style="font-size: 1.2rem;"></button> 
             </div>
             <div class="modal-body text-dark">
               <!-- Tabla para mostrar el historial de actividades del administrador -->
@@ -158,7 +162,7 @@
                 />
               </div>
               <!-- Botón de cerrar a la derecha -->
-              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+              <button type="button" class="btn btn-warning text-white" data-bs-dismiss="modal">Cerrar</button>
             </div>
           </div>
         </div>

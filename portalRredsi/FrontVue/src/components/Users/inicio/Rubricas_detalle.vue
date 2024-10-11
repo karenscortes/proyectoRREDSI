@@ -1,33 +1,37 @@
 <template>
   <div v-if="rubrica" class="rubrica-detalle-container">
     <h2 class="text-center mb-4">{{ rubrica.titulo_rubrica }}</h2>
-
+  
     <!-- Información del proyecto -->
     <div class="info mb-4">
       <table class="table table-bordered table-striped">
-        <tr>
-          <th>Título del Proyecto:</th>
-          <td>{{ rubrica.titulo_proyecto || 'No disponible' }}</td>
-        </tr>
-        <tr>
-          <th>Ponente(s):</th>
-          <td>{{ rubrica.ponentes || 'No disponible' }}</td>
-        </tr>
-        <tr>
-          <th>Universidad:</th>
-          <td>{{ rubrica.universidad_proyecto || 'No disponible' }}</td>
-        </tr>
-        <tr>
-          <th>Estado del Proyecto:</th>
-          <td>{{ rubrica.estado_proyecto || 'No disponible' }}</td>
-        </tr>
-        <tr>
-          <th>Puntaje:</th>
-          <td>{{ rubrica.puntaje_aprobacion || 'No disponible' }}</td>
-        </tr>
+        <thead>
+          <tr>
+            <th>Título del Proyecto:</th>
+            <td>{{ rubrica.titulo_proyecto || 'No disponible' }}</td>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th>Ponente(s):</th>
+            <td>{{ rubrica.ponentes || 'No disponible' }}</td>
+          </tr>
+          <tr>
+            <th>Universidad:</th>
+            <td>{{ rubrica.universidad_proyecto || 'No disponible' }}</td>
+          </tr>
+          <tr>
+            <th>Estado del Proyecto:</th>
+            <td>{{ rubrica.estado_proyecto || 'No disponible' }}</td>
+          </tr>
+          <tr>
+            <th>Puntaje:</th>
+            <td>{{ rubrica.puntaje_aprobacion || 'No disponible' }}</td>
+          </tr>
+        </tbody>
       </table>
     </div>
-
+  
     <!-- Tabla de componentes de la rúbrica -->
     <table class="table table-bordered mt-3">
       <thead class="custom-table-header">
@@ -47,11 +51,12 @@
         </tr>
       </tbody>
     </table>
-
+  
     <div class="text-center mt-4">
       <button class="btn btn-secondary" @click="volver">Volver</button>
     </div>
   </div>
+  
 </template>
 
 <script>

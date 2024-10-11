@@ -401,7 +401,6 @@ export const actualizarAsistencia = async (id_asistente, id_usuario, asistencia)
     }
 };
 
-
 // Todos los Proyectos 
 export const obtenerListaProyectos = async (nombreEtapa, page = 1, pageSize = 10) => {
     try {
@@ -553,9 +552,9 @@ export const obtenerAsistentesSuplentes = async (id_convocatoria) => {
 };
 
 //Función para insertar suplente
-export const insertarSuplente = async(id_usuario, id_etapa, id_proyecto, id_proyectos_convocatoria, tipo_usuario) => {
+export const insertarSuplente = async(id_suplente, id_etapa, id_proyecto, id_proyectos_convocatoria, tipo_usuario, id_evaluador) => {
     try {
-        const response = await api.post(`detalleProyecto/insertar-suplentes/?id_usuario=${id_usuario}&id_etapa=${id_etapa}&id_proyecto=${id_proyecto}&id_proyectos_convocatoria=${id_proyectos_convocatoria}&tipo_usuario=${tipo_usuario}`, {
+        const response = await api.post(`/detalleProyecto/insertar-suplentes/?id_suplente=${id_suplente}&id_etapa=${id_etapa}&id_proyecto=${id_proyecto}&id_proyectos_convocatoria=${id_proyectos_convocatoria}&tipo_usuario=${tipo_usuario}&id_evaluador=${id_evaluador}`, {
             headers: {
                 'Authorization': `Bearer` 
             },
@@ -570,10 +569,29 @@ export const insertarSuplente = async(id_usuario, id_etapa, id_proyecto, id_proy
     }
 };
 
-//Función para obtener suplentes
-export const obtenerSuplentes = async(id_usuario, id_proyecto, tipo_usuario) => {
+//Funcion para obtener id_suplentes
+export const obtener_id_suplente = async( id_proyecto, id_evaluador) => {
     try {
-        const response = await api.get(`/detalleProyecto/obtener-suplentes/?id_usuario=${id_usuario}&id_proyecto=${id_proyecto}&tipo_usuario=${tipo_usuario}`, {
+        const response = await api.get(`/detalleProyecto/suplente-evaluador/?id_proyecto=${id_proyecto}&id_evaluador=${id_evaluador}`, {
+            headers: {
+                'Authorization': `Bearer` 
+            },
+        });
+        return response.data
+    }catch (error){
+        if (error.response) {
+            throw error;
+        }else {
+            throw new Error('Error del red o de servidor')
+        }
+    }
+};
+
+
+//Función para obtener suplentes
+export const obtenerSuplentes = async( id_proyecto, tipo_usuario) => {
+    try {
+        const response = await api.get(`/detalleProyecto/obtener-suplentes/?id_proyecto=${id_proyecto}&tipo_usuario=${tipo_usuario}`, {
             headers: {
                 'Authorization': `Bearer` 
             },
@@ -604,6 +622,26 @@ export const insertarUrlPresentacion = async (id_proyecto, url_presentacion) => 
         }
     }
 };
+
+// Servicio para obtener las rúbricas calificadas de un proyecto de un suplente
+export const obtenerRubricasCalificadasSuplente = async (idProyecto, idUsuario, nombreEtapa) => {
+    try {
+      const response = await api.get(`/detalleProyecto/obtener-datos-del-proyecto-calificado-suplente/?id_proyecto=${idProyecto}&id_usuario=${idUsuario}&nombre_etapa=${nombreEtapa}`, {
+        params: {
+          id_proyecto: idProyecto,
+          id_usuario: idUsuario,
+          nombre_etapa: nombreEtapa
+        }
+      });
+      return response.data; // Devuelve los datos de las rúbricas calificadas
+    } catch (error) {
+      if (error.response) {
+        throw error; // Lanza el error para que lo maneje el componente
+      } else {
+        throw new Error('Error de red o de servidor'); // Manejar errores de red
+      }
+    }
+  };
 
 
 
