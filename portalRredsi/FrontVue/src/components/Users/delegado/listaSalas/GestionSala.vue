@@ -21,7 +21,7 @@
                 <div class="container">
                     <!-- <button type="button" class="btn" data-bs-toggle="modal"
                         data-bs-target="#asignarHorarioModal">
-                        Asignar horario
+                        Asignar horario +
                     </button> -->
 
                     <!-- Modal de asignar horario -->
@@ -238,7 +238,7 @@
 <script>
 import { defineComponent } from 'vue';
 import { obtenerPonentesProyecto, obtenerDetalleSala, obetnerProyectosSinAsignarEtapaPresencial, obtenerPosiblesEvaluadoresEtapaPresencial, asignarEvaluadoresEtapaPresencial } from '@/services/salasDelegadoService';
-import { obtenerProyectoConvocatoria } from '@/services/DelegadoService';
+import { obtenerProyectoConvocatoria } from '@/services/delegadoService';
 import ComponenteHorario from './ComponenteHorario.vue';
 import { useToastUtils } from '@/utils/toast';
 

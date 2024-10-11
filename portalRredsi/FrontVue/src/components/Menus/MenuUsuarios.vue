@@ -12,7 +12,7 @@
             <nav class="main_nav_container">
                 <div class="main_nav">
                     <ul class="main_nav_list d-flex justify-content-between">
-                        <li class="main_nav_item" v-for="(tab, index) in left_tabs" :key="index"><a href="#" @click="selectComponent(tab.ruta)">{{ tab.nombre }}</a></li>
+                        <li class="main_nav_item" v-for="(tab, index) in left_tabs" :key="index"><a href="#" :class="tab.uso" @click="selectComponent(tab.ruta)">{{ tab.nombre }}</a></li>
                         <li :class="['main_nav_item', visibilidad]" v-for="(tab, index) in mid_tabs" :key="index">
                             <div class="dropdown">
                                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -25,7 +25,7 @@
                         </li>
 
                         
-                        <li class="main_nav_item" v-if="user.id_rol === 1"><a href="#" @click="selectComponent('ConvocatoriaInfoPageView')">Convocatoria</a></li>
+                        <li class="main_nav_item" v-if="user.id_rol === 1"><a href="#" :class="convocatoriaUso" @click="selectComponent('ConvocatoriaInfoPageView')">Convocatoria</a></li>
                         <li class="main_nav_item"><a href="#" @click="logout">Cerrar Sesión</a></li>
                     </ul>
                 </div>
@@ -56,7 +56,7 @@
         <div class="menu_inner menu_mm">
             <div class="menu menu_mm">
                 <ul class="menu_list menu_mm ">
-                    <li class="menu_item menu_mm"  v-for="(tab, index) in left_tabs" :key="index"><a href="#" @click="selectComponent(tab.ruta)">{{ tab.nombre }}</a></li>
+                    <li class="menu_item menu_mm"  v-for="(tab, index) in left_tabs" :key="index"><a href="#" :class="tab.uso" @click="selectComponent(tab.ruta)">{{ tab.nombre }}</a></li>
                     <li :class="['menu_item menu_mm d-block ', visibilidad]" v-for="(tab, index) in mid_tabs" :key="index">
                         <div class="dropdown menu_mm">
                             <a class="nav-link dropdown-toggle menu_mm" href="#" id="navbarDropdown" role="button" type="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -67,7 +67,7 @@
                             </ul>
                         </div>
                     </li>
-                    <li class="menu_item menu_mm" v-if="user.id_rol === 1"><a href="#" @click="selectComponent('ConvocatoriaInfoPageView')">Convocatoria</a></li>
+                    <li class="menu_item menu_mm" v-if="user.id_rol === 1"><a href="#" :class="convocatoriaUso" @click="selectComponent('ConvocatoriaInfoPageView')">Convocatoria</a></li>
                     <li class="menu_item menu_mm"><a href="#"  @click="logout">Cerrar sesión</a></li>
                 </ul>
 
@@ -95,10 +95,12 @@
 
 <script>
 import { obtenerFechasAsignaciones} from '@/services/delegadoService'
+import { obtenerEstadoPostulacion, obtenerEstadoDatosInstitucionales } from '@/services/evaluadorService'
 import { ref, onMounted} from "vue";
 import { defineComponent,reactive } from "vue";
 import { useRouter } from "vue-router";
 import { useAuthStore } from "@/store";
+import { useToastUtils } from '@/utils/toast';
 
 export default defineComponent({
     emits: ['component-selected'],
@@ -107,6 +109,10 @@ export default defineComponent({
         const asignacion1 = ref(''); //poner disabled para hacer pruebas
         const asignacion2 = ref(''); //poner disabled para hacer pruebas
         const otras_opciones = ref('');
+        const proyectosUso = ref('');
+        const convocatoriaUso = ref('');
+        const paginaUso = ref('');
+        const { showSuccessToast, showErrorToast, showWarningToast } = useToastUtils();
         
         //obteniendo fecha actual
         const currentDate = ref(new Date().toISOString().split('T')[0]);
@@ -144,9 +150,77 @@ export default defineComponent({
             }
         };
 
+        const handleEvaluadorMenu = async () => {
+            try {
+                // Realiza la llamada a la API
+                const response = await obtenerEstadoPostulacion(user.id_usuario);
+
+                // Accede a la propiedad estado_postulacion de la respuesta
+                const estadoPostulacion = response.estado_postulacion;
+
+
+                // Según el estado de la postulación, definimos si se habilitan o no los apartados
+                switch (estadoPostulacion) {
+                    case 'aceptada':
+                        proyectosUso.value = '';
+                        convocatoriaUso.value = '';
+                        break;
+                    case 'pendiente':
+                        proyectosUso.value = 'disabled';
+                        convocatoriaUso.value = 'disabled';
+                        break;
+                    case 'rechazada':
+                        proyectosUso.value = 'disabled';
+                        convocatoriaUso.value = 'disabled';
+                        break;
+                    case 'sin postulacion':
+                        proyectosUso.value = 'disabled';
+                        convocatoriaUso.value = 'disabled';
+                        break;
+                    default:
+                        console.error('Estado de postulación desconocido:', estadoPostulacion);
+                        proyectosUso.value = 'disabled';
+                        convocatoriaUso.value = 'disabled';
+                }
+            } catch (error) {
+                console.error('Error obteniendo estado de postulación:', error);
+                // Si ocurre un error, definir los valores predeterminados para evitar fallos en la UI
+                proyectosUso.value = 'disabled';
+                convocatoriaUso.value = 'disabled';
+            }
+        };
+        const handleDelegadoMenu = async () => {
+            try {
+                const response2 = await obtenerEstadoDatosInstitucionales(user.id_usuario);
+
+                const estadoDatosInstitucionales = response2.estado_institucional_academico;
+
+                if (estadoDatosInstitucionales == 'sin datos institucionales'){
+                    otras_opciones.value = 'disabled';
+                    asignacion1.value = 'disabled';
+                    asignacion2.value = 'disabled';
+                    showWarningToast("Debes terminar tu registro en perfil");
+
+                }else{
+                    otras_opciones.value = '';
+                    asignacion1.value = '';
+                    asignacion2.value = '';
+                    
+                    // Función para comprobar y bloquear opciones dependiendo de la etapa y fecha actual
+                    // getAssignmentDates();
+                }
+            } catch (error) {
+                console.error('Error obteniendo datos institucionales:', error);
+                // Si ocurre un error, definir los valores predeterminados para evitar fallos en la UI
+                otras_opciones.value = 'disabled';
+                asignacion1.value = 'disabled';
+                asignacion2.value = 'disabled';
+            }
+            console.log(otras_opciones.value)
+        };
         if (user?.id_rol === 3) {
             Object.assign(state, {
-                left_tabs: [{nombre:'Inicio', ruta:'InicioAdminView'}, {nombre:'Perfil', ruta:'PerfilAdmin'}, {nombre:'Cuentas', ruta:'DelegadosAdminView'},{nombre:'Rubricas', ruta:'RubricaAdminView'}],
+                left_tabs: [{nombre:'Inicio', ruta:'InicioAdminView'}, {nombre:'Perfil', ruta:'EditarPerfil'}, {nombre:'Cuentas', ruta:'DelegadosAdminView'},{nombre:'Rubricas', ruta:'RubricaAdminView'}],
                 mid_tabs:[
                     {   nombre:"Eventos", 
                         opciones:[{nombre:'Salas', ruta:'SalasAdminView'}, {nombre:'Asistencia',ruta:'GestionarAsistentes'}, {nombre:'Convocatoria', ruta:'CrearConvocatoria'}]
@@ -156,12 +230,17 @@ export default defineComponent({
 
             });
         } else if (user?.id_rol === 2) {
-            //     getAssignmentDates();            
+            // Primero ejecuta la funcion para comprobar que tenga datos institucionales 
+            const imprimirMenu = async ()=>{
+                // Función para comprobar si tiene datos institucionales
+                await handleDelegadoMenu();
+            }
+            imprimirMenu();
             Object.assign(state, {
                 left_tabs: [{nombre:'Inicio', ruta:'PaginaInicioDelegado', uso: ''}, {nombre:'Perfil', ruta:'EditarPerfil', uso: ''}],
                 mid_tabs:[
                     {   nombre:"Evaluadores", 
-                        opciones:[{nombre:'Postulaciones', ruta:'PostulacionesEvaluadores', uso: otras_opciones}, {nombre:'Lista de Evaluadores',ruta:'ListaEvaluadores', uso: ''}]
+                        opciones:[{nombre:'Postulaciones', ruta:'PostulacionesEvaluadores', uso: otras_opciones}, {nombre:'Lista de Evaluadores',ruta:'ListaEvaluadores', uso: otras_opciones}]
                     },
                     {
                         nombre:"Proyectos", 
@@ -176,13 +255,14 @@ export default defineComponent({
             });
             
         } else if (user?.id_rol === 1) {
+            handleEvaluadorMenu();
             Object.assign(state, {
-                left_tabs: [{nombre:'Inicio', ruta:'PaginaInicioEvaluadorView'}, {nombre:'Perfil', ruta:'EditarPerfil'}, {nombre:'Proyectos', ruta:'ProyectosAsignadosEvaluadorView'}],
+                left_tabs: [{nombre:'Inicio', ruta:'PaginaInicioEvaluadorView', uso: paginaUso}, {nombre:'Perfil', ruta:'EditarPerfil', uso:''}, {nombre:'Proyectos', ruta:'ProyectosAsignadosEvaluadorView', uso: proyectosUso}],
                 visibilidad:"d-none"
             });
         } else if(user?.id_rol == 6) {
             Object.assign(state, {
-                left_tabs: [{nombre: "Inicio", ruta: "InicioSuperAdminView" }, {nombre: "Editar perfil", ruta: "EditarPerfil" },{nombre: "Gestionar administradores", ruta: "ListaAdministradores" }],
+                left_tabs: [{nombre: "Inicio", ruta: "InicioSuperAdminView" }, {nombre: "Perfil", ruta: "EditarPerfil" },{nombre: "Gestionar administradores", ruta: "ListaAdministradores" }],
                 visibilidad: "d-none",
             });
         }
@@ -201,7 +281,9 @@ export default defineComponent({
             user,
             ...state,
             getAssignmentDates,
+            handleEvaluadorMenu,
             selectComponent,
+            convocatoriaUso,
             logout
         };
     },

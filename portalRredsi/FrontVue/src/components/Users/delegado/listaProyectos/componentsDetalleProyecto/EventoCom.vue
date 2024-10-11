@@ -1,10 +1,10 @@
 <template>
     <div class="feature">
-        <div class="icon">
-            <i class="fa-solid fa-person-booth fa-lg text-dark mb-3"></i>
+        <div class="icon-custom text-center">
+            <i class="fa-solid fa-calendar fa-3x"></i>
         </div>
-        <h2 class="text-dark text-left font-weight-bold">Evento</h2>
-        <p class="text-dark text-left">
+        <h2 class="text-left font-weight-bold text-yellow">Evento</h2>
+        <p class="text-dark text-left event-details">
             Fecha: {{ fecha }}<br>
             Horario: {{ obtenerHoraMinutos(horaInicio) }} - {{ obtenerHoraMinutos(horaFin) }}<br>
             Sala: {{ sala }}
@@ -35,7 +35,6 @@ export default {
     },
     methods: {
         obtenerHoraMinutos(duracion) {
-            // Remover "PT" del inicio de la cadena
             duracion = duracion.replace('PT', '');
 
             let horas = 0;
@@ -44,42 +43,50 @@ export default {
             const partesHoras = duracion.split('H');
 
             if (partesHoras.length > 1) {
-                // Si hay una parte con 'H', extraer las horas
                 horas = parseInt(partesHoras[0]);
-                duracion = partesHoras[1];  // El resto contiene minutos
-            } else {
-                duracion = partesHoras[0];
+                duracion = partesHoras[1];
             }
-
-            // Dividir la parte restante por la letra 'M' para obtener los minutos
             if (duracion.includes('M')) {
                 minutos = parseInt(duracion.split('M')[0]);
             }
-
-            // Formatear minutos para que siempre tenga dos dígitos
             minutos = minutos.toString().padStart(2, '0');
 
-            // Convertir a formato militar y agregar AM/PM
+            // Convertir a formato de 12 horas y agregar AM/PM
             const isPM = horas >= 12;
-            const horasFormato12 = horas % 12 || 12; // Ajustar horas para formato 12
+            const horasFormato12 = horas % 12 || 12; 
             const ampm = isPM ? 'PM' : 'AM';
 
             return `${horasFormato12}:${minutos} ${ampm}`;
         },
-
     },
 };
 </script>
 
-
 <style scoped>
-h2,
-p {
-    font-size: 0.8rem;
-    margin-bottom: 4px;
+.icon-custom {
+    color: #ffb606;
+    margin-bottom: 0.5rem;
+}
+
+.text-yellow {
+    color: #ffb606;
+}
+
+h2 {
+    font-size: 1.1rem;
+    margin-bottom: 5px;
+}
+
+.event-details {
+    font-size: 0.8rem; 
+    color: #000; 
 }
 
 .text-left {
     text-align: left;
+}
+
+p {
+    margin-bottom: 0.5rem;
 }
 </style>

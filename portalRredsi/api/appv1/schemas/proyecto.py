@@ -1,42 +1,44 @@
-import enum
+from pydantic import BaseModel
 from typing import List, Optional
-from pydantic import BaseModel, EmailStr, constr
 
-class EstadoProyectoEnum(str, enum.Enum):
-    pendiente_virtual = "pendiente_virtual"
-    asignado_virtual = "asignado_virtual"
-    asignado = "asignado"
-    pendiente = "pendiente"
 
-class UsuarioBase(BaseModel):
-    id_tipo_documento: int
-    documento: str
-    nombres: str
-    apellidos: str
-    celular: str
-    correo: EmailStr
+# Esquema para los participantes, que puede incluir tanto tutores como ponentes
+class ParticipanteCreate(BaseModel):
+    id_tipo_documento: int  # ID del tipo de documento (foráneo de tipos_documento)
+    documento: str  # Documento de identidad del participante
+    nombres: str  # Nombres del participante
+    apellidos: str  # Apellidos del participante
+    celular: str  # Número de celular del participante
+    correo: str  # Correo electrónico del participante
 
-class TutorCreate(UsuarioBase):
+# Esquema para los ponentes, reutilizando el esquema de participante
+class PonenteCreate(ParticipanteCreate):
+    # Hereda los mismos campos que ParticipanteCreate
     pass
 
-class PonenteCreate(UsuarioBase):
-    pass
-
+# Esquema completo para la creación del proyecto
 class AutorCreate(BaseModel):
     nombre: str
 
-class ProyectoBase(BaseModel):
+class ProyectoCreate(BaseModel):
     id_institucion: int
     id_modalidad: int
     id_area_conocimiento: int
     titulo: str
     programa_academico: str
-    grupo_investigacion: str
-    linea_investigacion: str
-    nombre_semillero: str
+    grupo_investigacion: Optional[str]
+    linea_investigacion: Optional[str]
+    nombre_semillero: Optional[str]
+    url_propuesta_escrita: Optional[str]
+    url_aval: Optional[str]
+    autores: List[AutorCreate]
+# Esquema para la creación de la convocatoria asociada al proyecto
+class ProyectoConvocatoriaCreate(BaseModel):
+    id_proyecto: int  # ID del proyecto (foráneo de proyectos)
+    id_convocatoria: int  # ID de la convocatoria (foráneo de convocatorias)
+class ProyectoResponse(BaseModel):
+    id_proyecto: int
+    status: str
 
-class ProyectoCreate(ProyectoBase):
-    tutor: TutorCreate
-    ponente1: PonenteCreate
-    ponente2: Optional[PonenteCreate] = None
-    autores: List[AutorCreate] = []
+    class Config:
+        from_attributes = True  # Cambiado para Pydantic 2.x

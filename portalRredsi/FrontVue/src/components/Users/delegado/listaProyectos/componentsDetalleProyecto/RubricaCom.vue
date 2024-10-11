@@ -1,5 +1,5 @@
 <template>
-    <form action="#" class="row justify-content-center">
+    <form class="row justify-content-center">
         <div class="col-lg-12 col-md-12 col-sm-12 mb-3 table-responsive">
             <table class="table display text-dark border border-dark">
                 <thead class="text-center">
@@ -35,7 +35,7 @@
                     <tr v-for="(componente, index) in componentes" :key="index">
                         <td class="border border-dark componente texto">
                             <span class="text-dark font-weight-bold">{{ componente.titulo }}:</span> {{
-                            componente.descripcion }}
+                                componente.descripcion }}
                         </td>
                         <td class="text-center-vertical border border-dark">{{ componente.valor_maximo }}</td>
                         <td class="border border-dark text-center">
@@ -93,7 +93,7 @@
                 </tfoot>
             </table>
         </div>
-        <div class="col-8 text-center py-5" v-if="puedeCalificar">
+        <div class="col-8 text-center py-5" v-if="botonCalificar == 'Activo'">
             <button @click.prevent="enviarCalificaciones" class="btn btn-warning font-weight-bold text-dark">
                 Calificar
             </button>
@@ -101,11 +101,13 @@
     </form>
 </template>
 
+
 <script>
 import { ref, computed, watch, onMounted } from 'vue';
 import { obtenerDatosParaCalificarProyecto, insertarRespuestaRubrica, obtenerEtapaActual, obtenerRubricasCalificadas } from '../../../../../services/evaluadorService';
 import { useAuthStore } from '@/store';
 import { useToastUtils } from '@/utils/toast';
+import { obtener_id_suplente } from '../../../../../services/delegadoService';
 
 export default {
     name: 'RubricaCom',
@@ -117,7 +119,12 @@ export default {
         id_evaluador: {
             type: Number,
             required: true
-        }
+        },
+        etapa: {
+            type: String,
+            required: true
+        },
+        
     },
     setup(props) {
         const tituloProyecto = ref('');
@@ -131,9 +138,11 @@ export default {
         const componentes = ref([]);
         const puntajeTotal = ref(0);
         const currentEtapa = ref('');
+        const botonCalificar = ref('Activo'); // Nueva variable para habilitar o no el botón de calificar
+        const idSuplente = ref('');
 
 
-        const { showSuccessToast, showErrorToast, showWarningToast } = useToastUtils();
+        const { showSuccessToast, showErrorToast, showWarningToast, showInfoToast } = useToastUtils();
 
         const puedeCalificar = computed(() => {
             // Verificar si el estado es pendiente en alguna de las fases (P_virtual o P_presencial)
@@ -141,47 +150,69 @@ export default {
         });
 
         const disabledCalificacionObservacion = computed(() => {
-            return props.proyecto.estado_calificacion === 'C_presencial' || props.proyecto.estado_calificacion === 'C_virtual';
+            return props.proyecto.estado_calificacion === 'C_presencial' || props.proyecto.estado_calificacion === 'C_virtual' || botonCalificar.value === "Inactivo";
         });
+
+        
 
         const obtenerDatos = async () => {
             const authStore = useAuthStore();
             const user = authStore.user;
 
+            // Obtener etapa actual
+            // try {
+            //     const response = await obtenerEtapaActual();
+            //     currentEtapa.value = response.nombre_etapa;
+            // } catch (etapaError) {
+            //     showErrorToast('Error al obtener la etapa actual.');
+            // }
+            if(props.proyecto.id_etapa == '1'){
+                currentEtapa.value = 'Presencial';
+            }else {
+                currentEtapa.value = 'Virtual';
+            }
             try {
-                // Verificar si el proyecto está calificado
-                if (props.proyecto.estado_calificacion === 'C_presencial' || props.proyecto.estado_calificacion === 'C_virtual') {
-                    // Obtener datos del proyecto cuando esta calificado
-                    const data = await obtenerRubricasCalificadas(props.proyecto.id_proyecto, props.id_evaluador);
-                    tituloProyecto.value = data.titulo_proyecto;
-                    universidadProyecto.value = data.universidad_proyecto;
-                    nombreEvaluador.value = data.nombre_evaluador;
-                    cedulaEvaluador.value = data.cedula_evaluador;
-                    universidadEvaluador.value = data.universidad_evaluador;
-                    emailEvaluador.value = data.email_evaluador;
-                    celularEvaluador.value = data.celular_evaluador;
-                    ponentesProyecto.value = data.nombres_ponentes;
-                    componentes.value = data.componentes;
-                } else {
-                    //Si no esta calificado, se pondra nulo la observacion y calificacion
-                    const data = await obtenerDatosParaCalificarProyecto(props.proyecto.id_proyecto, props.id_evaluador);
-                    tituloProyecto.value = data.titulo_proyecto;
-                    universidadProyecto.value = data.universidad_proyecto;
-                    nombreEvaluador.value = data.nombre_evaluador;
-                    cedulaEvaluador.value = data.cedula_evaluador;
-                    universidadEvaluador.value = data.universidad_evaluador;
-                    emailEvaluador.value = data.email_evaluador;
-                    celularEvaluador.value = data.celular_evaluador;
-                    ponentesProyecto.value = data.nombres_ponentes;
-                    componentes.value = data.componentes;
-                }
+                const response = await obtener_id_suplente(props.proyecto.id_proyecto, props.id_evaluador);
+                idSuplente.value = response.id_suplente[0].id_suplente;
+                console.log("ID SUPLENTEEEEEEEEE", idSuplente.value);
+            } catch (etapaError) {
+                    console.log(etapaError);
+            }
+            try {
+                // Intentamos obtener los datos de las rúbricas calificadas.
+                const data = await obtenerRubricasCalificadas(props.proyecto.id_proyecto, props.id_evaluador, props.etapa);
+                // Si se obtienen correctamente, significa que ya hay calificaciones registradas.
+                tituloProyecto.value = data.titulo_proyecto;
+                universidadProyecto.value = data.universidad_proyecto;
+                nombreEvaluador.value = data.nombre_evaluador;
+                cedulaEvaluador.value = data.cedula_evaluador;
+                universidadEvaluador.value = data.universidad_evaluador;
+                emailEvaluador.value = data.email_evaluador;
+                celularEvaluador.value = data.celular_evaluador;
+                ponentesProyecto.value = data.nombres_ponentes;
+                componentes.value = data.componentes;
 
-                // Obtener etapa actual
-                const response = await obtenerEtapaActual();
-                currentEtapa.value = response.nombre_etapa;
+
+                botonCalificar.value = "Inactivo";
 
             } catch (error) {
-                showErrorToast('Error al obtener los datos del proyecto o la etapa:');
+                // Si hay un error, significa que no hay calificaciones registradas aún, por lo tanto, obtenemos los datos para calificar.
+                try {
+                    const data = await obtenerDatosParaCalificarProyecto(props.proyecto.id_proyecto, props.id_evaluador, props.etapa);
+
+                    tituloProyecto.value = data.titulo_proyecto;
+                    universidadProyecto.value = data.universidad_proyecto;
+                    nombreEvaluador.value = data.nombre_evaluador;
+                    cedulaEvaluador.value = data.cedula_evaluador;
+                    universidadEvaluador.value = data.universidad_evaluador;
+                    emailEvaluador.value = data.email_evaluador;
+                    celularEvaluador.value = data.celular_evaluador;
+                    ponentesProyecto.value = data.nombres_ponentes;
+                    componentes.value = data.componentes;
+
+                } catch (innerError) {
+                    showErrorToast('Error al obtener los datos para calificar el proyecto.');
+                }
             }
         };
 
@@ -192,7 +223,7 @@ export default {
         };
 
         const validarCalificacion = (componente, index) => {
-            //Si la calificacion que va a insertar es mayor al valor maximo, se pondrá el valor maximo y manda una alerta
+
             if (componente.calificacion > componente.valor_maximo) {
                 showWarningToast(`La calificación para "${componente.titulo}" no puede exceder el valor de ${componente.valor_maximo}.`);
                 componente.calificacion = componente.valor_maximo;
@@ -216,25 +247,24 @@ export default {
         });
 
         const validarCalificacionesYObservaciones = () => {
-            //Verificamos si hay algún campo vacío
+
             for (let componente of componentes.value) {
                 const calificacionValida = componente.calificacion !== null && componente.calificacion !== undefined && componente.calificacion !== '';
                 const observacionValida = componente.observaciones !== null && componente.observaciones !== undefined && componente.observaciones.trim() !== '';
 
                 if (!calificacionValida || !observacionValida) {
                     showWarningToast('Hay campos vacíos en las calificaciones o observaciones.');
-                    return false; // Si algún campo está vacío, retornamos false para indicar que la validación ha fallado
+                    return false;
                 }
             }
-            return true; // Si todos los campos están completos, retornamos true
+            return true;
         };
-
 
         const enviarCalificaciones = async () => {
 
-            // Validar antes campos de enviar la calificacion
+
             if (!validarCalificacionesYObservaciones()) {
-                return;  // Si la validación falla, no se envían las calificaciones
+                return;
             }
 
             try {
@@ -288,6 +318,8 @@ export default {
             enviarCalificaciones,
             disabledCalificacionObservacion,
             validarCalificacion,
+            botonCalificar,
+            idSuplente,
         };
     }
 }

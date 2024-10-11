@@ -5,7 +5,7 @@ from appv1.routers.login import get_current_user
 from appv1.schemas.evaluador.evaluador import CalificarProyectoRespuesta, ListaDeProgramacionFases, PaginatedResponse, PaginatedResponseHorario, PostulacionEvaluadorCreate, RespuestaRubricaCreate
 from appv1.schemas.usuario import UserResponse
 from db.database import get_db
-from appv1.crud.evaluador.proyectos import convertir_timedelta_a_hora, create_postulacion_evaluador, get_current_convocatoria, get_datos_calificar_proyecto_completo, get_datos_proyecto_calificado_completo, get_etapa_actual, get_nombres_fases_y_fechas_programacion, get_proyectos_etapa_presencial_con_horario, get_proyectos_por_etapa, get_proyectos_por_etapa_y_estado, insert_respuesta_rubrica
+from appv1.crud.evaluador.proyectos import convertir_timedelta_a_hora, create_postulacion_evaluador, get_current_convocatoria, get_datos_calificar_proyecto_completo, get_datos_proyecto_calificado_completo, get_etapa_actual, get_informacion_institucional_academica, get_nombres_fases_y_fechas_programacion, get_proyectos_etapa_presencial_con_horario, get_proyectos_por_etapa, get_proyectos_por_etapa_y_estado, insert_respuesta_rubrica, get_estado_postulacion_evaluador
 from appv1.crud.permissions import get_permissions
 
 routerObtenerProyectos = APIRouter()
@@ -14,6 +14,7 @@ routerInsetarCalificacionRubrica = APIRouter()
 routerObtenerHorarioEvaluador = APIRouter()
 routerObtenerEtapaActual = APIRouter()
 routerObtenerProgramacionFases = APIRouter()
+routerObtenerDatosEvaluador = APIRouter()
 
 # ID del modulo
 MODULE_PROYECTOS = 11
@@ -21,6 +22,7 @@ MODULE_POSTULACIONES = 8
 MODULE_RESPUESTAS_RUBRICAS = 14
 MODULE_ETAPAS = 4
 MODULE_PROGRAMACION_FASES = 7
+MODULE_USUARIOS = 3
 
 # Ruta para obtener los proyectos asignados por etapa (Presencial/Virtual) paginados
 @routerObtenerProyectos.get("/obtener-proyectos-por-etapa-paginados/", response_model=PaginatedResponse)
@@ -212,3 +214,31 @@ async def obtener_programacion_fases(
     
     programacion_fases = get_nombres_fases_y_fechas_programacion(db, nombre_etapa)
     return {"data": programacion_fases}
+
+# Ruta para obtener el detalle de la postulacion de un evaluador
+@routerObtenerDatosEvaluador.get("/obtener-estado-postulacion-evaluador/", response_model=dict)
+async def obtener_estado_postulacion_evaluador(
+    id_usuario: int,
+    current_user: UserResponse = Depends(get_current_user),
+    db: Session = Depends(get_db),
+):
+    permisos = get_permissions(db, current_user.id_rol, MODULE_POSTULACIONES)
+    if not permisos.p_consultar:
+        raise HTTPException(status_code=401, detail="No está autorizado a utilizar este módulo")
+    
+    respuesta = get_estado_postulacion_evaluador(db, id_usuario)
+    return respuesta
+
+# Ruta para obtener un si o un no dependiendo si el usuario tiene relacion en datos_institucionales y titulos_academicos
+@routerObtenerDatosEvaluador.get("/obtener-estado-datos-institucionales/", response_model=dict)
+async def obtener_estado_datos_institucionales(
+    id_usuario: int,
+    current_user: UserResponse = Depends(get_current_user),
+    db: Session = Depends(get_db),
+):
+    permisos = get_permissions(db, current_user.id_rol, MODULE_USUARIOS)
+    if not permisos.p_consultar:
+        raise HTTPException(status_code=401, detail="No está autorizado a utilizar este módulo")
+    
+    respuesta = get_informacion_institucional_academica(db, id_usuario)
+    return respuesta

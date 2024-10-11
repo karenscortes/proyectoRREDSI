@@ -10,7 +10,7 @@
 
 <script>
 import { ref, onMounted, watch } from 'vue';
-import { getAllTiposDocumento } from '@/services/tipoDocumentoService';  // Supongo que esta es la ruta del servicio
+import { getAllTiposDocumento } from '@/services/TipoDocumentoService';  // Supongo que esta es la ruta del servicio
 
 export default {
     props: {

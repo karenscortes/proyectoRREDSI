@@ -67,55 +67,6 @@
     </div>
 </div>
 
-<!-- Modal para Restaurar Contraseña -->
-<div class="modal fade" id="ResetPasswordModal" tabindex="-1" aria-labelledby="ResetPasswordModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="ResetPasswordModalLabel">Restaurar Contraseña</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <!-- Formulario de restauración de contraseña -->
-                <form @submit.prevent="sendResetCode">
-                    <div v-if="!showPasswordForm">
-                        <div class="form-group">
-                            <label for="reset-email" class="text-dark">Correo electrónico</label>
-                            <input type="email" class="form-control" id="reset-email" v-model="resetEmail" placeholder="Ingrese su correo" required />
-                        </div>
-                        <button type="submit" class="btn btn-primary btn-block">
-                            Enviar código
-                        </button>
-                    </div>
-
-                    <div v-if="showPasswordForm">
-                        <div class="form-group">
-                            <label for="reset-code" class="text-dark">Código de verificación</label>
-                            <input type="text" class="form-control" id="reset-code" v-model="resetCode" placeholder="Ingrese el código" required />
-                        </div>
-                        <div class="form-group">
-                            <label for="new-password" class="text-dark">Nueva contraseña</label>
-                            <input type="password" class="form-control" id="new-password" v-model="newPassword" placeholder="Nueva contraseña" required />
-                        </div>
-                        <div class="form-group">
-                            <label for="confirm-password" class="text-dark">Confirmar contraseña</label>
-                            <input type="password" class="form-control" id="confirm-password" v-model="confirmPassword" placeholder="Confirmar contraseña" required />
-                        </div>
-                        <button type="submit" class="btn btn-primary btn-block">
-                            Actualizar contraseña
-                        </button>
-                    </div>
-                </form>
-
-                <p v-if="resetErrorMessage" class="text-danger mt-3">
-                    {{ resetErrorMessage }}
-                </p>
-            </div>
-        </div>
-    </div>
-</div>
 
 
 </template>
@@ -183,14 +134,6 @@ export default {
         const password = ref("");
         const errorMessage = ref(null);
 
-        // Variables para el modal de restauración de contraseña
-        const resetEmail = ref("");
-        const resetCode = ref("");
-        const newPassword = ref("");
-        const confirmPassword = ref("");
-        const showPasswordForm = ref(false);
-        const resetErrorMessage = ref(null);
-
         const handleLogin = async () => {
             try {
                 await authStore.login(email.value, password.value);
@@ -206,23 +149,6 @@ export default {
             }
         };
 
-        // Abrir el modal de restauración de contraseña
-        const openResetPasswordModal = () => {
-            $('#LoginModal').modal('dispose'); // Destruye completamente el modal de login
-            $('#ResetPasswordModal').modal('show'); // Muestra el modal de restauración de contraseña
-        };
-
-
-        // Simular el envío del código de restauración
-        const sendResetCode = async () => {
-            if (resetEmail.value) {
-                showPasswordForm.value = true; // Mostrar el formulario de nueva contraseña
-                resetErrorMessage.value = null; // Limpiar mensaje de error
-            } else {
-                resetErrorMessage.value = "Ingrese su correo electrónico.";
-            }
-        };
-
         return {
             user,
             email,
@@ -233,16 +159,6 @@ export default {
             componente,
             changeComponent,
             handleLogin,
-
-            // Restauración de contraseña
-            resetEmail,
-            resetCode,
-            newPassword,
-            confirmPassword,
-            showPasswordForm,
-            resetErrorMessage,
-            openResetPasswordModal,
-            sendResetCode,
         };
     },
     mounted() {
