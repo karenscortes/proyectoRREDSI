@@ -108,7 +108,7 @@ def create_project(
 
     except (IntegrityError, SQLAlchemyError) as e:
         # En caso de error de integridad o SQL, se hará rollback automáticamente
-        raise HTTPException(status_code=500, detail=f"Error en la base de datos: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Error {str(e)}")
     except Exception as e:
         # En caso de cualquier otro error, se hará rollback automáticamente
-        raise HTTPException(status_code=500, detail=f"Error del servidor: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Error {str(e)}")

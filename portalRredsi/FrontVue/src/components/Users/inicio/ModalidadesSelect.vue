@@ -1,6 +1,5 @@
 <template>
     <div class="form-group">
-        <label for="modalidadesSelect">Seleccione una Modalidad</label>
         <select class="form-control" id="modalidadesSelect" v-model="selectedModalidad" @change="updateModalidad">
             <option v-for="modalidad in modalidades" :key="modalidad.id_modalidad" :value="modalidad.id_modalidad">
                 {{ modalidad.nombre }}
@@ -11,7 +10,7 @@
 
 <script>
 import { ref, onMounted, watch } from 'vue';
-import { getAllModalidades } from '@/services/modalidades_Service';  // Ruta del servicio de modalidades
+import { getAllModalidades } from '@/services/modalidades_Service';  // Asegúrate de tener el servicio configurado correctamente
 
 export default {
     props: {
@@ -27,7 +26,7 @@ export default {
         // Obtener modalidades de la API
         const fetchModalidades = async () => {
             try {
-                const response = await getAllModalidades();
+                const response = await getAllModalidades(); // Cambia esto según cómo esté configurada tu API
                 modalidades.value = response.data;
             } catch (error) {
                 console.error('Error al obtener las modalidades:', error);

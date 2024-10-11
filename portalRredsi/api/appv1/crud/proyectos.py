@@ -81,11 +81,11 @@ def create_full_project(db: Session, proyecto: ProyectoCreate, tutor: Participan
         except IntegrityError as e:
             db.rollback()  # Rollback en caso de error de tutor
             if 'correo' in str(e.orig):
-                raise HTTPException(status_code=400, detail="Error. El correo del tutor ya está registrado.")
+                raise HTTPException(status_code=400, detail="El correo del tutor ya está registrado.")
             elif 'documento' in str(e.orig):
-                raise HTTPException(status_code=400, detail="Error. El documento del tutor ya está registrado.")
+                raise HTTPException(status_code=400, detail="El documento del tutor ya está registrado.")
             elif 'celular' in str(e.orig):
-                raise HTTPException(status_code=400, detail="Error. El número de celular del tutor ya está registrado.")
+                raise HTTPException(status_code=400, detail="El número de celular del tutor ya está registrado.")
             else:
                 raise HTTPException(status_code=400, detail=f"Error de integridad del tutor: {str(e)}")
 
@@ -114,11 +114,11 @@ def create_full_project(db: Session, proyecto: ProyectoCreate, tutor: Participan
         except IntegrityError as e:
             db.rollback()  # Rollback en caso de error de ponente1
             if 'correo' in str(e.orig):
-                raise HTTPException(status_code=400, detail="Error. El correo del primer ponente ya está registrado.")
+                raise HTTPException(status_code=400, detail="El correo del primer ponente ya está registrado.")
             elif 'documento' in str(e.orig):
-                raise HTTPException(status_code=400, detail="Error. El documento del primer ponente ya está registrado.")
+                raise HTTPException(status_code=400, detail="El documento del primer ponente ya está registrado.")
             elif 'celular' in str(e.orig):
-                raise HTTPException(status_code=400, detail="Error. El número de celular del primer ponente ya está registrado.")
+                raise HTTPException(status_code=400, detail="El número de celular del primer ponente ya está registrado.")
             else:
                 raise HTTPException(status_code=400, detail=f"Error de integridad del primer ponente: {str(e)}")
 
@@ -148,11 +148,11 @@ def create_full_project(db: Session, proyecto: ProyectoCreate, tutor: Participan
             except IntegrityError as e:
                 db.rollback()  # Rollback en caso de error de ponente2
                 if 'correo' in str(e.orig):
-                    raise HTTPException(status_code=400, detail="Error. El correo del segundo ponente ya está registrado.")
+                    raise HTTPException(status_code=400, detail="El correo del segundo ponente ya está registrado.")
                 elif 'documento' in str(e.orig):
-                    raise HTTPException(status_code=400, detail="Error. El documento del segundo ponente ya está registrado.")
+                    raise HTTPException(status_code=400, detail="El documento del segundo ponente ya está registrado.")
                 elif 'celular' in str(e.orig):
-                    raise HTTPException(status_code=400, detail="Error. El número de celular del segundo ponente ya está registrado.")
+                    raise HTTPException(status_code=400, detail="El número de celular del segundo ponente ya está registrado.")
                 else:
                     raise HTTPException(status_code=400, detail=f"Error de integridad del segundo ponente: {str(e)}")
 
