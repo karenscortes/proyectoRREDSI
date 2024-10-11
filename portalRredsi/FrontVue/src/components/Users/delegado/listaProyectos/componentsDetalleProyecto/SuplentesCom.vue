@@ -3,7 +3,7 @@
         <div class="icon-custom text-center">
             <i class="fa-solid fa-user-group fa-3x"></i>
         </div>
-        <h2 class="text-left font-weight-bold text-yellow ">
+        <h2 class="text-left font-weight-bold text-yellow mb-2">
             Suplentes
             <i type="button" class="fa-regular fa-square-plus fa-1x text-yellow" @click="openModal"></i>
         </h2>
@@ -11,16 +11,18 @@
         <!-- Suplentes Ponentes -->
         <div v-if="suplentesPonentes.length > 0">
             <spam class="text-left font-weight-bold ">Suplentes Ponentes</spam>
-            <p class="text-dark suplente-details text-left" v-for="suplente in suplentesPonentes" :key="suplente.nombres">
-                {{ suplente.nombres }} {{ suplente.apellidos }} 
+            <p class="text-dark suplente-details text-left" v-for="suplente in suplentesPonentes"
+                :key="suplente.nombres">
+                {{ suplente.nombres }} {{ suplente.apellidos }}
             </p>
         </div>
 
         <!-- Suplentes Evaluadores -->
         <div v-if="suplentesEvaluadores.length > 0">
             <spam class="text-left font-weight-bold ">Suplentes Evaluadores</spam>
-            <p class="text-dark suplente-details text-left" v-for="suplente in suplentesEvaluadores" :key="suplente.nombres">
-                {{ suplente.nombres }} {{ suplente.apellidos }} 
+            <p class="text-dark suplente-details text-left" v-for="suplente in suplentesEvaluadores"
+                :key="suplente.nombres">
+                {{ suplente.nombres }} {{ suplente.apellidos }}
             </p>
         </div>
 
@@ -44,7 +46,7 @@
                             </select>
                         </div>
                         <div class="form-group" v-if="nuevoTipo === 'suplentePonente'">
-                            <label for="suplente">Seleccionar Ponente a reemplazar :</label>
+                            <label for="suplente">Seleccionar ponente a reemplazar :</label>
                             <select v-model="evaluadorSeleccionado" id="evaluador" class="form-control custom-select">
                                 <option value="" disabled selected>Seleccionar Ponente</option>
                                 <option v-for="(ponente, index) in ponentes" :key="index" :value="ponente.id_usuario">
@@ -53,10 +55,11 @@
                             </select>
                         </div>
                         <div class="form-group" v-else>
-                            <label for="suplente">Seleccionar Evaluador a reemplazar :</label>
+                            <label for="suplente">Seleccionar evaluador a reemplazar :</label>
                             <select v-model="evaluadorSeleccionado" id="evaluador" class="form-control custom-select">
                                 <option value="" disabled selected>Seleccionar Evaluador</option>
-                                <option v-for="(evaluador, index) in evaluadores.presencial" :key="index" :value="evaluador.id_usuario">
+                                <option v-for="(evaluador, index) in evaluadores.presencial" :key="index"
+                                    :value="evaluador.id_usuario">
                                     {{ evaluador.nombres }} {{ evaluador.apellidos }}
                                 </option>
                             </select>
@@ -65,7 +68,8 @@
                             <label for="asistente">Seleccionar Suplente:</label>
                             <select v-model="suplenteSeleccionado" id="asistente" class="form-control custom-select">
                                 <option value="" disabled selected>Seleccionar Suplente</option>
-                                <option v-for="(asistente, index) in asistentes" :key="index" :value="asistente.id_usuario">
+                                <option v-for="(asistente, index) in asistentes" :key="index"
+                                    :value="asistente.id_usuario">
                                     {{ asistente.nombres }} {{ asistente.apellidos }}
                                 </option>
                             </select>
@@ -159,6 +163,10 @@ export default {
         },
 
         async addSuplente() {
+            if (!this.nuevoTipo || !this.suplenteSeleccionado || !this.evaluadorSeleccionado) {
+                this.showErrorToast("Por favor, complete todos los campos requeridos.");
+                return; 
+            }
             try {
                 await insertarSuplente(
                     this.suplenteSeleccionado,
@@ -204,7 +212,7 @@ h2 {
 
 .suplente-details {
     font-size: 0.8rem;
-    color: #000; 
+    color: #000;
 }
 
 .text-left {
@@ -259,14 +267,14 @@ button.btn-lg {
     width: 25%;
 }
 
-.modal-fade-enter-active, .modal-fade-leave-active {
+.modal-fade-enter-active,
+.modal-fade-leave-active {
     transition: opacity 0.3s ease, transform 0.3s ease;
 }
 
-.modal-fade-enter, .modal-fade-leave-to  {
+.modal-fade-enter,
+.modal-fade-leave-to {
     opacity: 0;
     transform: translateY(-30px);
 }
 </style>
-
-

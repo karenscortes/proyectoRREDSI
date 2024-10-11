@@ -4,11 +4,15 @@ from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 from appv1.routers.login import get_current_user
 from appv1.schemas.delegado.detalleProyectos import  ParticipanteProyectoS, SalaConHorario, UrlPresentacionProyecto, UsuarioProyecto, AsistenciaEvento
+from appv1.schemas.evaluador.evaluador import CalificarProyectoRespuesta
 from appv1.schemas.usuario import UserResponse
 from db.database import get_db
-from appv1.crud.delegado.detalleProyecto import get_asistentes_evento, get_datos_sala, get_evaluadores_por_etapa, get_obtener_suplente_evaluador, get_obtener_suplentes,  get_participantes_proyecto,  insertar_presentacion_proyecto, insertar_suplente_proyecto
+from appv1.crud.delegado.detalleProyecto import get_asistentes_evento, get_datos_proyecto_calificado_completo_suplente, get_datos_sala, get_evaluadores_por_etapa, get_obtener_suplente_evaluador, get_obtener_suplentes,  get_participantes_proyecto,  insertar_presentacion_proyecto, insertar_suplente_proyecto
+from appv1.crud.permissions import get_permissions
 
 router_detalle_proyecto = APIRouter()
+
+MODULE_PROYECTOS = 11
 
 #ruta para traer los evaluadores según etapa
 @router_detalle_proyecto.get("/participantes-etapa/", response_model=List[UsuarioProyecto])
@@ -113,5 +117,18 @@ async def insertar_url_presentacion(
     except HTTPException as e:
         return {"mensaje": "Error al insertar URL de presentación"}
 
-
-   
+# Ruta para obtener el detalle del proyecto calificado
+@router_detalle_proyecto.get("/obtener-datos-del-proyecto-calificado-suplente/", response_model=CalificarProyectoRespuesta)
+async def obtener_datos_del_proyecto_calificado(
+    id_proyecto: int,
+    id_usuario: int,
+    nombre_etapa: str,
+    current_user: UserResponse = Depends(get_current_user),
+    db: Session = Depends(get_db),
+):
+    permisos = get_permissions(db, current_user.id_rol, MODULE_PROYECTOS)
+    if not permisos.p_consultar:
+        raise HTTPException(status_code=401, detail="No está autorizado a utilizar este módulo")
+    
+    proyecto = get_datos_proyecto_calificado_completo_suplente(db, id_proyecto, id_usuario, nombre_etapa)
+    return proyecto
