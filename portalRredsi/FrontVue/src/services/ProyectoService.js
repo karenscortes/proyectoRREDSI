@@ -1,27 +1,24 @@
-import api from './api'; // Importa tu instancia de Axios con la baseURL configurada
+import api from './api';  // Instancia Axios con la URL base configurada
 
-export const registrarProyecto = async (datosProyecto, datosTutor, datosPonente, ponenteOpcional, autores) => {
+export const createProject = async (datosProyecto, datosTutor, datosPonente, ponenteOpcional, autores) => {
   try {
     const formData = new FormData();
 
-    // Agrega todos los datos del proyecto
+    // Proyecto
     formData.append('id_institucion', datosProyecto.institucion_educativa);
     formData.append('id_modalidad', datosProyecto.modalidad);
     formData.append('id_area_conocimiento', datosProyecto.area_conocimiento);
     formData.append('titulo', datosProyecto.titulo);
     formData.append('programa_academico', datosProyecto.programa_academico);
-    formData.append('grupo_investigacion', datosProyecto.grupo_investigacion);
-    formData.append('linea_investigacion', datosProyecto.linea_investigacion);
+    formData.append('grupo_investigacion', datosProyecto.grupo_investigacion || '');
+    formData.append('linea_investigacion', datosProyecto.linea_investigacion || '');
+    formData.append('nombre_semillero', datosProyecto.nombre_semillero || '');
 
-    // Si existen los archivos, los agregamos
-    if (datosProyecto.propuesta_escrita) {
-      formData.append('url_propuesta_escrita', datosProyecto.propuesta_escrita);
-    }
-    if (datosProyecto.aval) {
-      formData.append('url_aval', datosProyecto.aval);
-    }
+    // Archivos
+    formData.append('url_propuesta_escrita', datosProyecto.propuesta_escrita);  // Archivo de propuesta escrita
+    formData.append('url_aval', datosProyecto.aval);  // Archivo de aval
 
-    // Agrega los datos del tutor
+    // Tutor
     formData.append('tutor_id_tipo_documento', datosTutor.tipo_documento);
     formData.append('tutor_documento', datosTutor.numero_documento);
     formData.append('tutor_nombres', datosTutor.nombres);
@@ -29,7 +26,7 @@ export const registrarProyecto = async (datosProyecto, datosTutor, datosPonente,
     formData.append('tutor_celular', datosTutor.celular);
     formData.append('tutor_correo', datosTutor.correo);
 
-    // Agrega los datos del primer ponente
+    // Ponente 1
     formData.append('ponente1_id_tipo_documento', datosPonente.tipo_documento);
     formData.append('ponente1_documento', datosPonente.numero_documento);
     formData.append('ponente1_nombres', datosPonente.nombres);
@@ -37,8 +34,14 @@ export const registrarProyecto = async (datosProyecto, datosTutor, datosPonente,
     formData.append('ponente1_celular', datosPonente.celular);
     formData.append('ponente1_correo', datosPonente.correo);
 
-    // Si existe el segundo ponente, lo agregamos
-    if (ponenteOpcional) {
+    // Ponente 2 (opcional)
+    if (
+      ponenteOpcional.nombres && 
+      ponenteOpcional.apellidos && 
+      ponenteOpcional.numero_documento && 
+      ponenteOpcional.celular && 
+      ponenteOpcional.correo
+    ) {
       formData.append('ponente2_id_tipo_documento', ponenteOpcional.tipo_documento);
       formData.append('ponente2_documento', ponenteOpcional.numero_documento);
       formData.append('ponente2_nombres', ponenteOpcional.nombres);
@@ -47,26 +50,25 @@ export const registrarProyecto = async (datosProyecto, datosTutor, datosPonente,
       formData.append('ponente2_correo', ponenteOpcional.correo);
     }
 
-    // Agrega la lista de autores uno por uno
-    autores.forEach((autor, index) => {
-      formData.append(`autores[${index}]`, autor.nombre);
-    });
+    // Autores
+    const autoresNombres = autores.map(autor => autor.nombre).join(', ');
+    formData.append('autores', autoresNombres);
 
-    // Enviamos la solicitud POST con multipart/form-data
-    const response = await api.post('/projects/create-project', formData, {
+    // Enviar la solicitud a la API
+    const response = await api.post('/projects/projects/create-project', formData, {
       headers: {
         'Content-Type': 'multipart/form-data',
       },
     });
 
-    return response.data;
+    return response;
   } catch (error) {
-    if (error.response) {
-      console.error('Error en la respuesta de la API:', error.response);
-      throw error.response.data;
+    if (error.response && error.response.data && error.response.data.detail) {
+      // Usar el mensaje de error específico proporcionado por la API
+      throw new Error(error.response.data.detail);
     } else {
-      console.error('Error de red o de servidor:', error);
-      throw new Error('Error de red o de servidor');
+      // Error genérico si no hay detalles en la respuesta
+      throw new Error('No se pudo conectar con el servidor. Inténtelo de nuevo.');
     }
   }
 };

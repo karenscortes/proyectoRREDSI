@@ -70,22 +70,21 @@ CREATE TRIGGER actualizar_estado AFTER INSERT ON participantes_proyecto
 FOR EACH ROW
     BEGIN
 
-        DECLARE id_rol INT;
+        DECLARE rol INT;
         DECLARE total_evaluators INT;
 
         --se obtiene el id_rol del usuario ingresado 
-        SET id_rol = (SELECT id_rol FROM usuarios WHERE id_usuario = NEW.id_usuario);
+        SET rol = (SELECT id_rol FROM usuarios WHERE id_usuario = NEW.id_usuario);
 
         --Si la etapa es la presencial y el rol es Evaluador, se cuenta cuantos evaluadores tiene el proyecto vinculado.
         --Si ya tiene 2 evaluadores, el estado calificación del proyecto pasa a pendiente presencial
-        IF(NEW.id_etapa = 1 AND id_rol = 1) THEN
+        IF(NEW.id_etapa = 1 AND rol = 1) THEN
 
-            SET total_evaluators =  (SELECT COUNT(id_usuario) FROM participantes_proyecto 
+            SET total_evaluators = (SELECT COUNT(participantes_proyecto.id_usuario) FROM participantes_proyecto 
                                         JOIN usuarios ON (participantes_proyecto.id_usuario = usuarios.id_usuario )
                                     WHERE id_etapa = 1 AND usuarios.id_rol = 1 AND participantes_proyecto.id_proyecto = NEW.id_proyecto);
             
             IF(total_evaluators = 2) THEN
-
                 UPDATE proyectos SET estado_calificacion = 'P_presencial' WHERE id_proyecto = NEW.id_proyecto;            
             END IF;        
         END IF;

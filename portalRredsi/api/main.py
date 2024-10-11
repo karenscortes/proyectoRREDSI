@@ -1,6 +1,6 @@
 from sys import prefix
 from fastapi import FastAPI
-from appv1.routers import areas_conocimiento, eventos, login, modalidades, ponentes, programacion_fases, proyectos, proyectos_convocatorias, rol, rubricasCalificadas, tutores, usuarios, UsuarioEvaluador,tipo_identificacion
+from appv1.routers import areas_conocimiento, eventos, institucionEducativa, login, modalidades, ponentes, programacion_fases, proyectos, proyectos_convocatorias, rol, rubricasCalificadas, tutores, usuarios, UsuarioEvaluador,tipo_identificacion
 from appv1.routers import  eventos, generales, login, ponentes, proyectos, rol, tutores, usuarios 
 from appv1.routers import  eventos, generales, login, ponentes, proyectos, rol, tutores, usuarios, UsuarioEvaluador
 from appv1.routers.admin import admin
@@ -27,6 +27,7 @@ app.include_router(modalidades.router_modalidades, prefix="/modalidades", tags=[
 app.include_router(areas_conocimiento.router_areasConocimiento, prefix="/areasConocimientos", tags=["Proyectos"])
 app.include_router(proyectos_convocatorias.router_proyectoConvocatoria, prefix="/proyectosConvocatorias", tags=["Proyectos"])
 app.include_router(rubricasCalificadas.routerRubricasCalificadas, prefix="/proyectosConvocatorias", tags=["Proyectos"])
+app.include_router(institucionEducativa.router_instituciones, prefix="/instituciones", tags=["Proyectos"])
 
 # CONSULTAS GENERALES
 app.include_router(generales.router_consultas_generales, prefix="/generales", tags=["Consultas generales"])
