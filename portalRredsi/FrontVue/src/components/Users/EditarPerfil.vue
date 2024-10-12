@@ -56,7 +56,7 @@
                   <label for="inputDocumentType">Tipo de documento:</label>
                   <select id="inputDocumentType" type="select" class="form-control text-dark custom-select" required>
                     <option disabled selected>{{ formData.personal.tipoDocumento || 'Seleccione una opción' }}</option>
-                    <option v-for="opc in documentsTypes" :key="opc.id_tipo_documento" @click.stop="selectType(opc)">{{ opc.nombre }}</option>
+                    <option v-for="opc in filteredDocumentsTypes" :key="opc.id_tipo_documento" @click.stop="selectType(opc)">{{ opc.nombre }}</option>
                   </select>
                 </div>
                 <div class="form-group col-md-5">
@@ -106,18 +106,16 @@
               <div class="form-row justify-content-center mb-5">
                 <div class="form-group col-md-5 me-3">
                     <label for="inputKnowledgeArea">Area de Conocimiento:</label>
-                    <select id="inputKnowledgeArea" type="select" class="form-control text-dark custom-select"
-                        required>
-                        <option value="seleccionar" selected>Seleccione una opción</option>
-                        <option value="IA">Inteligencia Artificial</option>
+                    <select id="inputKnowledgeArea" type="select" class="form-control text-dark custom-select" required>
+                      <option disabled selected>{{ formData.institucional.primer_area || 'Seleccione una opción' }}</option>
+                      <option v-for="opc in filteredFirstAreas" :key="opc.id_area_conocimiento" @click.stop="selectArea(opc)">{{ opc.nombre }}</option>
                     </select>
                 </div>
                 <div class="form-group col-md-5">
                     <label for="inputAnotherArea">Otra Area:</label>
-                    <select id="inputAnotherArea" type="select" class="form-control text-dark custom-select"
-                        required>
-                        <option value="seleccionar" selected>Seleccione una opción</option>
-                        <option value="Agricultura">Agricultura</option>
+                    <select id="inputAnotherArea" type="select" class="form-control text-dark custom-select" required>
+                      <option disabled selected>{{ formData.institucional.segunda_area || 'Seleccione una opción' }}</option>
+                      <option v-for="opc in filteredSecondAreas" :key="opc.id_area_conocimiento" @click.stop="selectArea(opc)">{{ opc.nombre }}</option>
                     </select>
                 </div>                                   
               </div> 
@@ -499,8 +497,8 @@ export default {
           institucion: '',
           grupoInvestigacion: '',
           semillero: '',
-          id_primer_area:'',
-          id_segunda_area:'',
+          primer_area:'',
+          segunda_area:'',
         },
         academico: {
           pregrado: '',
@@ -521,6 +519,17 @@ export default {
         return {
             user,
         };
+  },
+  computed: {
+    filteredDocumentsTypes() {
+      return this.documentsTypes.filter(opc => opc.nombre !== this.formData.personal.tipoDocumento);
+    },
+    filteredFirstAreas() {
+      return this.areasConocimiento.filter(opc => opc.nombre !== this.formData.institucional.primer_area);
+    },
+    filteredSecondAreas() {
+      return this.areasConocimiento.filter(opc => opc.nombre !== this.formData.institucional.segunda_area);
+    }
   },
   methods: {
     //Controlador de las secciones activas
@@ -549,12 +558,47 @@ export default {
     
     //Obtener tipos de documentos
     async getDocumentsTypes(){
+      // todas la opciones
       const response = await getAllTiposDocumento();
       this.documentsTypes = response.data;
+
+      //tipo de doc actual
+      this.documentsTypes.forEach(tipo => {
+        if (tipo.id_tipo_documento === this.user.id_tipo_documento) {
+          this.formData.personal.tipoDocumento = tipo.nombre;
+        }
+      });
+
     },
     //Nuevo tipo de documento
     selectType(type){
-      this.formData.personal.tipoDocumento = type.id_tipo_documento;
+      this.formData.personal.tipoDocumento = type.nombre;
+    },
+
+    //obtener los datos academicos
+    async getAcademicData(){
+      try {
+        const response_datos_academicos = await getInstitutionalDetails();
+
+        this.formData.institucional.institucion = response_datos_academicos.data.id_institucion ;
+        this.formData.institucional.grupoInvestigacion = response_datos_academicos.data.grupo_investigacion;
+        this.formData.institucional.semillero = response_datos_academicos.data.semillero;
+
+        //Obtener todas las  Areas de Conocimiento
+        const responseAreasConocimiento = await getAreasConocimiento();
+        this.areasConocimiento = responseAreasConocimiento.data;
+
+        //Obtener Area de conocimiento especifica
+        this.areasConocimiento.forEach(tipo => {
+          if (tipo.id_area_conocimiento === response_datos_academicos.data.id_primera_area_conocimiento) {
+            this.formData.institucional.primer_area= tipo.nombre;
+          }else if(tipo.id_area_conocimiento === response_datos_academicos.data.id_segunda_area_conocimiento){
+            this.formData.institucional.segunda_area = tipo.nombre;
+          }
+        });
+      } catch (error) {
+      
+      }
     },
 
     //Controlador de archivos academicos
@@ -592,20 +636,6 @@ export default {
       console.log(`Datos enviados de la sección: ${section}`, this.formData[section]);
     },
     async loadAcademicDegrees(){
-      
-      // OBTIENE LOS DATOS ACADEMICOS 
-      try {
-        const response_datos_academicos = await getInstitutionalDetails();
-
-        this.formData.institucional.institucion = response_datos_academicos.data.id_institucion ;
-        this.formData.institucional.grupoInvestigacion = response_datos_academicos.data.grupo_investigacion;
-        this.formData.institucional.semillero = response_datos_academicos.data.semillero;
-        this.formData.institucional.id_primer_area = response_datos_academicos.data.id_primera_area_conocimiento;
-        this.formData.institucional.id_segunda_area = response_datos_academicos.data.id_segunda_area_conocimiento;
-      } catch (error) {
-        console.error(error);
-      }
-
       // OBTIENE LOS TITULOS 
       try {
         const responseTitulos = await getCertificatesById(this.user.id_usuario);
@@ -626,14 +656,6 @@ export default {
       } catch (error) {
         console.error(error);
       }
-
-      // OBTIENE LAS AREAS DE CONOCIMIENTO 
-      try {
-        const responseAreasConocimiento = await getAreasConocimiento();
-        this.areasConocimiento = responseAreasConocimiento.data;
-      } catch (error) {
-        console.error(error);
-      }
     },
     showModal(){
       this.isModalOpen = true;
@@ -644,6 +666,7 @@ export default {
   },
   mounted() {
     this.getDocumentsTypes();
+    this.getAcademicData();
     this.loadUserProfile();
     this.loadAcademicDegrees();
   },
