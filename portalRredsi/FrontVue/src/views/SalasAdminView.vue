@@ -151,11 +151,11 @@ export default {
           });
           totalPages.value = 0;
         }else{
-          showWarningToast("Si deseas buscar un sala debes ingresar un valor de busqueda");
+          showWarningToast("Por favor, ingresa un valor de búsqueda");
           obtenerInfoSalas();
         }
       } catch (error) {
-        showInfoToast("No se ha podido encontrar la sala buscada")
+        showInfoToast("No se ha podido encontrar la sala")
         obtenerInfoSalas();
       }
       busqueda.value = "";

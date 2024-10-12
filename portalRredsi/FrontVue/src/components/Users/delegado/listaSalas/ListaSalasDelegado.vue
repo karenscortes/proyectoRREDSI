@@ -7,7 +7,7 @@
             <div class="row mb-3">
                 <div class="col">
                     <div class="section_title text-center">
-                        <h1>Salas Asignadas</h1>
+                        <h1>Salas Registradas</h1>
                     </div>
                 </div>
             </div>
@@ -139,7 +139,7 @@ export default {
                 });
             } else {
                 await this.listarSalas();
-                this.showInfoToast("Si deseas buscar una sala debes ingresar un valor en el campo de busqueda");
+                this.showInfoToast("Por favor, ingresa un valor de búsqueda");
             }
             } catch (error) {
                 this.showInfoToast("No se ha podido encontrar la sala");
