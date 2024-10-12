@@ -134,7 +134,6 @@ export default {
 
 #modalEditar {
   display: block;
-  /*max-width: 50%;*/
 }
 
 

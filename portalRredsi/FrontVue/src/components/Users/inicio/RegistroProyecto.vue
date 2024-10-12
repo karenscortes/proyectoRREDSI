@@ -233,7 +233,7 @@ import ModalidadesSelect from './ModalidadesSelect.vue';
 import TipoDocumentoSelect from './TipoDocumentoSelect.vue';
 import areasConocimiento_Select from './areasConocimiento_Select.vue';
 import instituciones_Select from './instituciones_Select.vue';
-import { createProject } from '@/services/proyectoService';
+import { createProject } from '@/services/ProyectoService';
 import { ref } from 'vue';
 import { useToastUtils } from '@/utils/toast';
 
