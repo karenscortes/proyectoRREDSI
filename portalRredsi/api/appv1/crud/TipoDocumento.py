@@ -1,7 +1,7 @@
 from fastapi import HTTPException
 from sqlalchemy import text
 from sqlalchemy.orm import Session
-from sqlalchemy.exc import SQLAlchemyError, IntegrityError
+from sqlalchemy.exc import SQLAlchemyError
 def get_all_TipoIdentificacion(db: Session):
     try:
         sql = text("SELECT * FROM tipos_documento ")

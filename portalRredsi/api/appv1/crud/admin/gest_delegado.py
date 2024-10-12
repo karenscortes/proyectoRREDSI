@@ -20,7 +20,7 @@ def get_delegados_activos_paginated(db: Session, page, page_size):
         if users is None:
             raise HTTPException(status_code=404, detail="No hay delegados")
         
-        total_users = db.query(Usuario).filter(Usuario.rol.has(Rol.nombre == "Delegado")).count()
+        total_users = db.query(Usuario).join(Usuario.detalles_institucionales).join(Usuario.titulos_academicos).filter(Usuario.rol.has(Rol.nombre == "Delegado")).count()
 
         # Calcular el número total de páginas
         total_pages = (total_users + page_size - 1) // page_size
