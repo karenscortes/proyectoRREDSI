@@ -15,7 +15,7 @@
                         <li class="main_nav_item" v-for="(tab, index) in left_tabs" :key="index"><a href="#" :class="tab.uso" @click="selectComponent(tab.ruta)">{{ tab.nombre }}</a></li>
                         <li :class="['main_nav_item', visibilidad]" v-for="(tab, index) in mid_tabs" :key="index">
                             <div class="dropdown">
-                                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                <a :class="['nav-link dropdown-toggle', tab.opciones[1].uso]" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                     {{ tab.nombre }}
                                 </a>
                                 <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
@@ -189,6 +189,8 @@ export default defineComponent({
                 convocatoriaUso.value = 'disabled';
             }
         };
+
+        // Comprueba que el delegado logueado tenga el perfil completo para hbailitar las opciones
         const handleDelegadoMenu = async () => {
             try {
                 const response2 = await obtenerEstadoDatosInstitucionales(user.id_usuario);
@@ -202,9 +204,9 @@ export default defineComponent({
                     showWarningToast("Debes terminar tu registro en perfil");
 
                 }else{
-                    otras_opciones.value = '';
-                    asignacion1.value = '';
-                    asignacion2.value = '';
+                    // otras_opciones.value = '';
+                    // asignacion1.value = '';
+                    // asignacion2.value = '';
                     
                     // Función para comprobar y bloquear opciones dependiendo de la etapa y fecha actual
                     // getAssignmentDates();
@@ -282,6 +284,7 @@ export default defineComponent({
             ...state,
             getAssignmentDates,
             handleEvaluadorMenu,
+            handleDelegadoMenu,
             selectComponent,
             convocatoriaUso,
             logout
