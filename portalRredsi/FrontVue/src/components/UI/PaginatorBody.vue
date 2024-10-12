@@ -1,6 +1,6 @@
 <template>
   <div aria-label="Page navigation">
-    <ul class="pagination justify-content-center">
+    <ul class="pagination justify-content-center bg-warnig">
       <li class="page-item" :class="{ disabled: currentPage === 1 }">
         <button
           class="page-link"
@@ -91,7 +91,14 @@ const nextPage = () => {
   
 <style scoped>
 button{
-    border-radius: 20px;
+  border-radius: 20px;
+  color: black;
+
+}
+
+button:hover {
+  background-color: rgb(255, 255, 255); 
+  color:#ffc107; 
 }
 
 .pagination {

@@ -28,6 +28,9 @@ export default {
 .icon-custom {
     color: #ffb606;
     margin-bottom: 0.5rem; 
+    display: flex; 
+    justify-content: center; 
+    align-items: center; 
 }
 
 .text-yellow {
@@ -45,5 +48,4 @@ h2 {
 .text-left {
     text-align: left;
 }
-
 </style>

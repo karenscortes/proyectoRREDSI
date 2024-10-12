@@ -114,7 +114,7 @@ export default {
 }
 
 .milestones_background {
-    background-image: url('../../../assets/img/milestones_background.jpg');
+    
     position: absolute;
     top: 0;
     left: 0;
@@ -152,7 +152,7 @@ export default {
 .milestone_text {
     font-size: 22px;
     font-weight: 500;
-    color: #FFFFFF;
+    color: #212529;
     margin-top: 3px;
 }
 </style>

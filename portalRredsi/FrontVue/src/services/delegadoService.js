@@ -401,7 +401,6 @@ export const actualizarAsistencia = async (id_asistente, id_usuario, asistencia)
     }
 };
 
-
 // Todos los Proyectos 
 export const obtenerListaProyectos = async (nombreEtapa, page = 1, pageSize = 10) => {
     try {
@@ -623,6 +622,26 @@ export const insertarUrlPresentacion = async (id_proyecto, url_presentacion) => 
         }
     }
 };
+
+// Servicio para obtener las rúbricas calificadas de un proyecto de un suplente
+export const obtenerRubricasCalificadasSuplente = async (idProyecto, idUsuario, nombreEtapa) => {
+    try {
+      const response = await api.get(`/detalleProyecto/obtener-datos-del-proyecto-calificado-suplente/?id_proyecto=${idProyecto}&id_usuario=${idUsuario}&nombre_etapa=${nombreEtapa}`, {
+        params: {
+          id_proyecto: idProyecto,
+          id_usuario: idUsuario,
+          nombre_etapa: nombreEtapa
+        }
+      });
+      return response.data; // Devuelve los datos de las rúbricas calificadas
+    } catch (error) {
+      if (error.response) {
+        throw error; // Lanza el error para que lo maneje el componente
+      } else {
+        throw new Error('Error de red o de servidor'); // Manejar errores de red
+      }
+    }
+  };
 
 
 

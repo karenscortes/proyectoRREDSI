@@ -3,7 +3,7 @@
         <div class="icon text-center mb-1">
             <i class="fa-solid fa-graduation-cap fa-3x icon-custom"></i>
         </div>
-        <h2 class="text-center font-weight-bold text-yellow">Evaluadores</h2>
+        <h2 class="text-left font-weight-bold text-yellow">Evaluadores</h2>
 
         <div class="evaluation-section">
             <p class="text-left">
@@ -47,8 +47,11 @@ export default {
 
 <style scoped>
 .icon-custom {
-    color: #ffb606; 
+    color: #ffb606;
     margin-bottom: 0.5rem; 
+    display: flex; 
+    justify-content: center; 
+    align-items: center; 
 }
 
 .text-yellow {

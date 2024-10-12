@@ -2,12 +2,12 @@
   <!--Modal de añadir item-->
   <div
     class="modalCabecero modal fade show"
-    data-bs-backdrop="static"
+    data-bs-backdrop="static" 
     data-bs-keyboard="false"
     tabindex="-1"
     aria-labelledby="staticBackdropLabel"
   >
-    <div class="modal-dialog">
+    <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content rounded-st-1 shadow-lg modal-responsive">
         <div class="modal-header p-4 shadow w-100">
           <i class="fas fa-list icon"></i>
@@ -157,9 +157,6 @@ const save = async () => {
 textarea {
   color: black;
 }
-.modal-dialog {
-  max-width: 50%;
-}
 .modal-header {
   border: 1px solid yellow;
 }
@@ -209,7 +206,7 @@ i {
 }
 @media only screen and (min-width: 500px) and (max-width: 768px) {
   .modal-dialog {
-    min-width: 97%;
+    min-width: 50%;
   }
 }
 </style>

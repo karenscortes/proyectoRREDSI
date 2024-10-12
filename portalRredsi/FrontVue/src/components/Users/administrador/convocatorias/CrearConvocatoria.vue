@@ -373,6 +373,7 @@ export default {
         return; // Salir del método si alguna fase ya está programada
       }
 
+      // Crear el payload filtrando fases con fechas válidas
       const payload = this.programacionFases
         .filter(fase => fase.fechaInicio && fase.fechaFin) // Filtrar fases con fechas válidas
         .map(fase => ({
@@ -380,12 +381,15 @@ export default {
           id_convocatoria: this.convocatoriaActiva.id_convocatoria,  // Incluir id_convocatoria dentro de cada objeto fase
           fecha_inicio: fase.fechaInicio,  // Cambiar fechaInicio a fecha_inicio
           fecha_fin: fase.fechaFin  // Cambiar fechaFin a fecha_fin
-      }));
+        }));
 
+      // Si no hay fases válidas, mostrar advertencia y no enviar el payload
+      if (payload.length === 0) {
+        showWarningToast('Debe programar al menos una fase con fechas de inicio y fin válidas.');
+        return;
+      }
 
       console.log(JSON.stringify(payload, null, 2));  // Mostrar el payload en formato JSON
-
-
       console.log('Payload que se envía:', payload); // Agrega esto
 
       try {
@@ -396,6 +400,7 @@ export default {
         showErrorToast('Error al programar las fases.');
       }
     },
+
 
 
     async obtenerFasesProgramadas(page = 1, pageSize = 100) {

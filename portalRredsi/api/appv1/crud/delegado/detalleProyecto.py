@@ -3,6 +3,9 @@ from fastapi import HTTPException
 from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy import text
 
+from appv1.schemas.evaluador.evaluador import CalificarProyectoRespuesta, Componente
+from appv1.crud.evaluador.proyectos import get_datos_calificados_rubrica, get_nombres_ponentes_proyecto
+
 
 # Consultar los evaluadores de un proyecto
 def get_evaluadores_por_etapa(db: Session, id_proyecto: int, id_etapa: int):
@@ -174,5 +177,70 @@ def insertar_presentacion_proyecto(db: Session, id_proyecto: int, url_presentaci
     except SQLAlchemyError as e:
         db.rollback()  
         raise HTTPException(status_code=500, detail="Error al insertar URL de presentación")
+
+# Obtener los datos para calificar un proyecto
+def get_datos_proyecto_calificado_completo_suplente(db: Session, id_proyecto: int, id_usuario: int, nombre_etapa: str):
+    try:
+        # Obtener los datos básicos del proyecto y del por suplente
+        sql_query = text(""" 
+            SELECT 
+                proyectos.titulo AS titulo_proyecto,
+                inst_proyecto.nombre AS universidad_proyecto,
+                usuarios.nombres AS nombre_evaluador,
+                usuarios.documento AS cedula_evaluador,
+                usuarios.correo AS email_evaluador,
+                usuarios.celular AS celular_evaluador
+            FROM 
+                proyectos
+            JOIN 
+                participantes_proyecto ON proyectos.id_proyecto = participantes_proyecto.id_proyecto
+            JOIN 
+                usuarios ON usuarios.id_usuario = participantes_proyecto.id_usuario
+            JOIN 
+                instituciones AS inst_proyecto ON proyectos.id_institucion = inst_proyecto.id_institucion
+            WHERE 
+                proyectos.id_proyecto = :id_proyecto
+                AND usuarios.id_usuario = :id_usuario
+        """)
+        result = db.execute(sql_query, {"id_proyecto": id_proyecto, "id_usuario": id_usuario}).fetchone()
+
+        if not result:
+            raise HTTPException(status_code=404, detail="Datos no encontrados")
+
+        # Obtener los nombres de los ponentes asociados al proyecto
+        nombres_ponentes = get_nombres_ponentes_proyecto(db, id_proyecto)
+
+        # Obtener los datos de la rúbrica asociados al proyecto, incluyendo el nombre de la etapa
+        rubrica_result = get_datos_calificados_rubrica(db, id_proyecto, id_usuario, nombre_etapa)
+        
+        componentes_rubrica = [
+            Componente(
+                id_item_rubrica=item['id_item_rubrica'],
+                titulo=item['titulo'],
+                descripcion=item['componente'],
+                observaciones=item['observacion'],
+                calificacion=item['calificacion'],
+                valor_maximo=item['valor_max']
+            ) for item in rubrica_result
+        ]
+
+        # Crear la respuesta final incluyendo los datos del proyecto y la rúbrica
+        proyecto_respuesta = CalificarProyectoRespuesta(
+            titulo_proyecto=result.titulo_proyecto,
+            universidad_proyecto=result.universidad_proyecto,
+            nombre_evaluador=result.nombre_evaluador,
+            cedula_evaluador=result.cedula_evaluador,
+            universidad_evaluador= "",
+            email_evaluador=result.email_evaluador,
+            celular_evaluador=result.celular_evaluador,
+            nombres_ponentes=nombres_ponentes,  
+            componentes=componentes_rubrica  
+        )
+
+        return proyecto_respuesta
+
+    except Exception as e:
+        db.rollback()
+        raise HTTPException(status_code=500, detail="Error al consultar los datos del proyecto")
 
 
