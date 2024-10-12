@@ -63,11 +63,12 @@ def get_id_document_type(db:Session, nombre:str):
 def get_paginated_attendees(db: Session, page, page_size):
     try:
         offset = (page - 1) * page_size
-        attendees = db.query(Asistente.url_comprobante_pago,Asistente.id_convocatoria, Usuario.id_usuario, Usuario.documento, Usuario.nombres, Usuario.apellidos, Usuario.celular, Usuario.correo).join(Usuario).filter(Asistente.id_convocatoria.in_(db.query(Convocatoria.id_convocatoria).filter(Convocatoria.estado == EstadoDeConvocatoria.en_curso))).limit(page_size).offset(offset).all()
+        attendees = db.query(Asistente.url_comprobante_pago,Asistente.id_convocatoria, Usuario.id_usuario, Usuario.documento, Usuario.nombres, Usuario.apellidos, Usuario.celular, Usuario.correo).join(Usuario).filter(Asistente.id_convocatoria.in_(db.query(Convocatoria.id_convocatoria).filter(Convocatoria.estado == EstadoDeConvocatoria.en_curso.value))).limit(page_size).offset(offset).all()
+
         if attendees is None:
             raise HTTPException(status_code=404, detail="No hay asistentes")
         
-        total_attendees = db.query(Asistente).count()
+        total_attendees = db.query(Asistente).filter(Asistente.id_convocatoria.in_(db.query(Convocatoria.id_convocatoria).filter(Convocatoria.estado == EstadoDeConvocatoria.en_curso.value))).count()
 
         total_pages = (total_attendees + page_size - 1) // page_size
         return attendees, total_pages
@@ -111,13 +112,13 @@ def get_attendee_by_document(db: Session, documento:str, page, page_size):
     try:
         offset = (page - 1) * page_size
 
-        attendees = db.query(Asistente.url_comprobante_pago, Asistente.id_convocatoria,Usuario.id_usuario, Usuario.documento, Usuario.nombres, Usuario.apellidos, Usuario.celular, Usuario.correo).join(Usuario).filter(Usuario.documento.like(f'{documento}%')), Asistente.id_convocatoria.in_(db.query(Convocatoria.id_convocatoria).filter(Convocatoria.estado == EstadoDeConvocatoria.en_curso)).limit(page_size).offset(offset).all()
+        attendees = db.query(Asistente.url_comprobante_pago, Asistente.id_convocatoria,Usuario.id_usuario, Usuario.documento, Usuario.nombres, Usuario.apellidos, Usuario.celular, Usuario.correo).join(Usuario).filter(Usuario.documento.like(f'{documento}%')).filter(Asistente.id_convocatoria.in_(db.query(Convocatoria.id_convocatoria).filter(Convocatoria.estado == EstadoDeConvocatoria.en_curso.value))).limit(page_size).offset(offset).all()
 
         
         if attendees is None:
             raise HTTPException(status_code=404, detail="No hay asistentes con ese documeto")
         
-        total_coincidences = db.query(Usuario).join(Asistente).filter(Usuario.documento.like(f'{documento}%')).count()
+        total_coincidences = db.query(Usuario).join(Asistente).filter(Usuario.documento.like(f'{documento}%')).filter(Asistente.id_convocatoria.in_(db.query(Convocatoria.id_convocatoria).filter(Convocatoria.estado == EstadoDeConvocatoria.en_curso.value))).count()
 
         total_pages = (total_coincidences + page_size - 1) // page_size
         return attendees, total_pages
