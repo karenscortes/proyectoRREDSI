@@ -54,7 +54,7 @@ def update_status(
         return {"mensaje": "Estado de evaluador modificado con exito" }
 
 
-@router_evaluadores.get("/get-evaluator-by-document/", response_model=EvaluatorsResponse)
+@router_evaluadores.get("/get-evaluator-by-document/", response_model=List[EvaluatorsResponse])
 async def read_evaluator_by_document(
     documento: str, 
     db: Session = Depends(get_db),

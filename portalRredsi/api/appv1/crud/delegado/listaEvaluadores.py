@@ -92,7 +92,7 @@ def get_evaluator_by_document(db: Session, documento: str):
                 INNER JOIN instituciones ON (detalles_institucionales.id_institucion = instituciones.id_institucion)
                 LEFT JOIN areas_conocimiento area1 ON (detalles_institucionales.id_primera_area_conocimiento = area1.id_area_conocimiento)
                 LEFT JOIN areas_conocimiento area2 ON (detalles_institucionales.id_segunda_area_conocimiento = area2.id_area_conocimiento)
-            WHERE usuarios.documento LIKE :documento OR usuarios.nombres LIKE :documento 
+            WHERE (usuarios.documento LIKE :documento OR usuarios.nombres LIKE :documento) 
             AND usuarios.id_rol IN (
                 SELECT id_rol
                 FROM roles
@@ -101,7 +101,7 @@ def get_evaluator_by_document(db: Session, documento: str):
         """
         )
 
-        result = db.execute(sql, {"documento": f"%{documento}%"}).fetchone()
+        result = db.execute(sql, {"documento": f"%{documento}%"}).fetchall()
         return result
     except SQLAlchemyError as e:
         print(f"Error al obtener evaluador por documento: {e}")
