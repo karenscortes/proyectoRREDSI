@@ -4,5 +4,5 @@ from datetime import datetime
 
 class TipoIdentificacionResponse(BaseModel):
     id_tipo_documento: int
-    nombre: Annotated[str, StringConstraints(max_length=10)]
+    nombre: Annotated[str, StringConstraints(max_length=25)]
 
