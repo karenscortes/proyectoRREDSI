@@ -58,11 +58,11 @@
                         <label for="" class="text-dark fw-bold">Otro evaluador diferente a los sugeridos:</label>
                         <div class="d-flex align-items-center position-relative">
 
-                            <input type="text" class="form-control text-dark" placeholder="Identificación del evaluador"
-                                v-model="valor_buscado" @keyup="buscarEvaluador">
-                            <select v-model="evaluadorBuscado" class="form-select text-dark p-1 w-100"
+                            <input type="text" class="form-control text-dark" placeholder="Nombre del evaluador"
+                                v-model="valor_buscado" @keyup="buscarEvaluador" @keyup.delete="buscarEvaluador">
+                            <select v-model="evaluadorBuscado" class="ml-2 form-select text-dark p-1 w-50"
                                 id="evaluadorSelect" required>
-                                <option :value="null" disabled>Seleccionar un evaluador</option>
+                                <option :value="null" disabled selected>Seleccionar</option>
                                 <option v-for="(evaluador, index) in otrosEvaluadores" :key="evaluador.id_usuario"
                                     :value="evaluador.id_usuario">
                                     {{ evaluador.nombres }} {{ evaluador.apellidos }}
@@ -229,7 +229,11 @@ export default {
             try {
                 if (this.valor_buscado.trim() != "") {
                     const evaluador = await obtenerIdEvaluador(this.valor_buscado);
-                    this.otrosEvaluadores = [evaluador.data];
+                    this.otrosEvaluadores = evaluador.data;
+                    this.totalPages = 0;
+                }
+                if(this.valor_buscado.trim() == ""){
+                    this.otrosEvaluadores = '';
                     this.totalPages = 0;
                 }
 
