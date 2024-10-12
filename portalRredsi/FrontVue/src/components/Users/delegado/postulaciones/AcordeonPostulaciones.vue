@@ -165,7 +165,7 @@ export default {
 </script>
 
 
-<style>
+<style scoped>
 .accordion-button:not(.collapsed) {
     background-color: rgb(255, 182, 6);
     color: #000;

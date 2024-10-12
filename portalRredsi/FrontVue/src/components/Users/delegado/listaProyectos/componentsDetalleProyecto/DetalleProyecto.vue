@@ -1,8 +1,8 @@
 <template>
     <div class="container mt-5">
         <div class="row mb-2 mt-2">
-            <div class="col">
-                <div class="section_title text-center">
+            <div class="col text-center">
+                <div class="section_title">
                     <h1>Detalle del Proyecto</h1>
                 </div>
             </div>
@@ -16,62 +16,57 @@
                 Lista de proyectos
             </a>
         </div>
-        <div class="why-choose-section ">
-            <div class="container">
-                <div class="row justify-content-between">
-                    <div class="col-lg-6 order-2 order-lg-1">
-                        <div class="section-title mt-4 text-left">
-                            <h2>Información del proyecto</h2>
-                        </div>
-                        <div class="row my-4 gy-3">
-                            <!-- Ponentes -->
-                            <div class="col-6 col-md-6">
+        <div class="why-choose-section">
+            <div class="row justify-content-center">
+                <div class="section-title mt-4 text-center">
+                    <h2>Información del proyecto</h2>
+                </div>
+                <div class="col-lg-12 mt-4 p-3 bg-light rounded shadow-lg custom-shadow">
+                    <div class="row text-center justify-content-center">
+                        <template v-if="!isLoading">
+                            <div class="col-md-3 d-flex flex-column align-items-center">
+                                <EvaluadoresCom :evaluadores="evaluadores" :id_etapa="proyecto.id_etapa" />
+                            </div>
+                            <div class="col-md-3 d-flex flex-column align-items-center">
                                 <PonentesCom :ponentes="ponentes" />
                             </div>
-                            <!-- Evaluadores -->
-                            <div class="col-6 col-md-6">
-                                <EvaluadoresCom :evaluadores="evaluadores" />
-                            </div>
-                            <!-- Evento -->
-                            <div class="col-6 col-md-6 mt-3">
+                            <div v-if="cargarRubricaPresencial" class="col-md-3 d-flex flex-column align-items-center">
                                 <EventoCom :fecha="infoSala.fecha" :horaInicio="infoSala.hora_inicio"
                                     :horaFin="infoSala.hora_fin" :sala="infoSala.numero_sala" />
                             </div>
-                            <!-- Suplentes -->
-                            <div class="col-6 col-md-6 mt-3">
+                            <div v-if="cargarRubricaPresencial" class="col-md-3 d-flex flex-column align-items-center">
                                 <SuplentesCom :idProyecto="proyecto.id_proyecto" :idEtapa="proyecto.id_etapa"
-                                    :tipo="tipo" :id_suplente="id_suplente" :suplente="suplente"
-                                    @suplenteSeleccionado="suplenteSeleccionado" />
+                                    :tipo="tipo" :evaluadores="evaluadores" :ponentes="ponentes" />
                             </div>
-                        </div>
-                        <!-- Botones -->
-                        <div class="row">
-                            <div class="col-4">
-                                <button type="button" class="btn btn-sm btn-warning font-weight-bold w-100 " title="Añadir Presentación"
-                                    @click="openModal">
-                                    <i class="fa-solid fa-plus"></i>
-                                </button>
+                            <!-- Botones -->
+                            <div class="col-lg-12 mt-4 ">
+                                <div class="row justify-content-center">
+                                    <div v-if="cargarRubricaPresencial" class="col-4">
+                                        <button type="button" class="btn btn-sm btn-warning font-weight-bold w-100"
+                                            @click="openModal">
+                                            Añadir Presentación
+                                        </button>
+                                    </div>
+                                    <div v-if="cargarRubricaPresencial" class="col-4">
+                                        <a :href="urlPresentacion" target="_blank"
+                                            class="btn btn-sm btn-warning font-weight-bold w-100">
+                                            Ver Presentación
+                                        </a>
+                                    </div>
+                                    <div class="col-4">
+                                        <a :href="proyecto.url_propuesta_escrita" target="_blank"
+                                            class="btn btn-sm btn-warning font-weight-bold w-100">
+                                            Ver Proyecto
+                                        </a>
+                                    </div>
+                                </div>
                             </div>
-                            <div class="col-4">
-                                <form :action="urlPresentacion" target="_blank">
-                                    <button type="submit" class="btn btn-sm btn-warning font-weight-bold w-100" title="Ver Presentación">
-                                        <i class="fa-solid fa-eye"></i>
-                                    </button>
-                                </form>
+                        </template>
+                        <template v-else>
+                            <div class="col-md-12">
+                                <p>Cargando datos, por favor espere...</p>
                             </div>
-                            <div class="col-4">
-                                <a :href="proyecto.url_propuesta_escrita" target="_blank"
-                                    class="btn btn-sm btn-warning font-weight-bold w-100" title="Ver Proyecto">
-                                    <i class="fa-solid fa-file-pdf"></i>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- Imagen del detalle -->
-                    <div class="col-lg-6 order-1 order-lg-2">
-                        <div class="img-wrap mt-5 ">
-                            <img src="../../../../../assets/img/course_5.jpg" class="img-fluid shadow-lg detail-image" />
-                        </div>
+                        </template>
                     </div>
                 </div>
             </div>
@@ -109,51 +104,48 @@
                     <button class="btn btn-block toggle-button collapsed rubrica-btn" type="button"
                         data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="false"
                         aria-controls="collapseOne">
-                        <i style="margin-right: 10px;" class="fa-solid fa-check fa-lg"></i>
-                        Respuesta rúbrica 1
+                        <!-- <i style="margin-right: 10px;" class="fa-solid fa-check fa-lg"></i> -->
+                        Respuestas calificación virtual
                     </button>
                 </div>
                 <div id="collapseOne" class="collapse mt-5" aria-labelledby="headingOne"
                     data-bs-parent="#accordionExample">
-                    <RubricaCom v-if="cargarRubricaVirtual" :proyecto="proyecto" :id_suplente="id_suplente"
-                        :id_evaluador="id_evaluador1" :etapa="'virtual'" />
+                    <div v-if="evaluadoresObtenidos == 'True'">
+                        <RubricaCom :proyecto="proyecto" :id_evaluador="id_evaluador1" :etapa="'Virtual'" />
+                    </div>
                 </div>
             </div>
-            <div class="card p-2">
+            <div v-if="cargarRubricaPresencial" class="card p-2">
                 <div id="headingTwo">
                     <button class="btn btn-block toggle-button collapsed rubrica-btn" type="button"
                         data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false"
                         aria-controls="collapseTwo">
-                        <i style="margin-right: 10px;" class="fa-solid fa-check fa-lg"></i>
-                        Respuesta rúbrica 2
+                        <!-- <i style="margin-right: 10px;" class="fa-solid fa-check fa-lg"></i> -->
+                        Respuestas calificación presencial
                     </button>
                 </div>
                 <div id="collapseTwo" class="collapse mt-5" aria-labelledby="headingTwo"
                     data-bs-parent="#accordionExample">
-                    <RubricaCom v-if="cargarRubricaPresencial" :proyecto="proyecto" :id_suplente="id_suplente"
-                        :id_evaluador="id_evaluador2" :etapa="'presencial'" />
+                    <div v-if="evaluadoresObtenidos == 'True'">
+                        <RubricaCom v-if="cargarRubricaPresencial" :proyecto="proyecto" :id_evaluador="id_evaluador2"
+                            :etapa="'Presencial'" />
+                    </div>
                 </div>
             </div>
-            <div class="card p-2">
+            <div v-if="cargarRubricaPresencial" class="card p-2">
                 <div id="headingThree">
                     <button class="btn btn-block toggle-button collapsed rubrica-btn" type="button"
                         data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false"
                         aria-controls="collapseThree">
-                        <i style="margin-right: 10px;" class="fa-solid fa-x fa-lg"></i>
-                        Respuesta rúbrica 3
+                        <!-- <i style="margin-right: 10px;" class="fa-solid fa-x fa-lg"></i> -->
+                        Respuestas calificación presencial
                     </button>
                 </div>
                 <div id="collapseThree" class="collapse mt-5" aria-labelledby="headingThree"
                     data-bs-parent="#accordionExample">
-                    <RubricaCom v-if="cargarRubricaPresencial" :proyecto="proyecto" :id_suplente="id_suplente"
-                        :id_evaluador="id_evaluador3" :etapa="'presencial'" />
-                    <h4 class="text-center text-dark mt-4 mb-4">Respaldo</h4>
-                    <div class="custom-file-upload mx-auto">
-                        <input type="file" id="comprobante_pago" name="comprobante_pago" />
-                        <label for="comprobante_pago" class="upload-label">
-                            <i class="fas fa-cloud-upload-alt"></i>
-                            Selecciona un archivo
-                        </label>
+                    <div v-if="evaluadoresObtenidos == 'True'">
+                        <RubricaCom v-if="cargarRubricaPresencial" :proyecto="proyecto" :id_evaluador="id_evaluador3"
+                            :etapa="'Presencial'" />
                     </div>
                 </div>
             </div>
@@ -162,6 +154,7 @@
 </template>
 
 <script>
+import { ref, onMounted } from 'vue';
 import EvaluadoresCom from './EvaluadoresCom.vue';
 import EventoCom from './EventoCom.vue';
 import PonentesCom from './PonentesCom.vue';
@@ -185,134 +178,161 @@ export default {
         SuplentesCom,
         RubricaCom,
     },
-    data() {
-        return {
-            cargarRubricaVirtual: false,
-            cargarRubricaPresencial: false,
-            evaluadores: [],
-            id_evaluador1: 0,
-            id_evaluador2: 0,
-            id_evaluador3: 0,
-            ponentes: [],
-            infoSala: {
-                fecha: '',
-                hora_inicio: '',
-                hora_fin: '',
-                numero_sala: ''
-            },
-            rubricas: [],
-            tituloProyecto: '',
-            ponentesProyecto: '',
-            universidadProyecto: '',
-            puntajeTotal: 0,
-            urlPresentacion: '',
-            suplente: {},
-            tipo: '',
-            id_suplente: null,
-
-        };
-    },
-    setup() {
+    setup(props) {
         const { showSuccessToast, showErrorToast, showInfoToast } = useToastUtils();
-        return { showSuccessToast, showErrorToast, showInfoToast };
-    },
-    methods: {
+
+        const cargarRubricaVirtual = ref(false);
+        const cargarRubricaPresencial = ref(false);
+        const evaluadores = ref({ virtual: [], presencial: [] });
+        const id_evaluador1 = ref(0);
+        const id_evaluador2 = ref(0);
+        const id_evaluador3 = ref(0);
+        const evaluadoresObtenidos = ref('False');
+        const ponentes = ref([]);
+        const infoSala = ref({
+            fecha: '',
+            hora_inicio: '',
+            hora_fin: '',
+            numero_sala: ''
+        });
+        const rubricas = ref([]);
+        const tituloProyecto = ref('');
+        const ponentesProyecto = ref('');
+        const universidadProyecto = ref('');
+        const puntajeTotal = ref(0);
+        const urlPresentacion = ref('');
+        const suplente = ref({});
+        const tipo = ref('');
+        const isLoading = ref(true);
+
         // Función para obtener los evaluadores del proyecto
-        async fetchEvaluadores(id_proyecto) {
+        const fetchEvaluadores = async (id_proyecto) => {
             try {
-                const id_etapa = this.proyecto.id_etapa;
+                const id_etapa = props.proyecto.id_etapa;
                 if (id_etapa == 2) {
-                    const data = await obtenerEvaluadoresProyecto(id_proyecto, id_etapa);
-                    this.evaluadores = data;
+                    await fetchUrlPresentacion(props.proyecto.id_proyecto);
+                    const dataEvaluadorVirtual = await obtenerEvaluadoresProyecto(id_proyecto, id_etapa);
+                    evaluadores.value.virtual = dataEvaluadorVirtual;
+                    id_evaluador1.value = evaluadores.value.virtual[0].id_usuario;
+                    evaluadoresObtenidos.value = 'True';
                 } else {
                     const dataEvaluadorVirtual = await obtenerEvaluadoresProyecto(id_proyecto, 2);
-                    this.evaluadores['virtual'] = dataEvaluadorVirtual;
-                    this.id_evaluador1 = this.evaluadores.virtual[0].id_usuario;
+                    evaluadores.value.virtual = dataEvaluadorVirtual;
+                    id_evaluador1.value = evaluadores.value.virtual[0].id_usuario;
                     const dataEvaluadorPresencial = await obtenerEvaluadoresProyecto(id_proyecto, 1);
-                    this.evaluadores['presencial'] = dataEvaluadorPresencial;
-                    this.id_evaluador2 = this.evaluadores.presencial[0].id_usuario;
-                    this.id_evaluador3 = this.evaluadores.presencial[1].id_usuario;
+                    evaluadores.value.presencial = dataEvaluadorPresencial;
+                    if (evaluadores.value.presencial.length <= 1) {
+                        id_evaluador2.value = evaluadores.value.presencial[0].id_usuario;
+                    } else if (evaluadores.value.presencial.length > 1) {
+                        id_evaluador2.value = evaluadores.value.presencial[0].id_usuario;
+                        id_evaluador3.value = evaluadores.value.presencial[1].id_usuario;
+                    } else {
+                        alert("NO SE HAN AGREGADO EVALUADORE. CAMBIE ESTO");
+                    }
+                    evaluadoresObtenidos.value = 'True';
                 }
-
             } catch (error) {
                 console.error('Error al obtener evaluadores:', error);
             }
-        },
+        };
 
         // Función para obtener los ponentes del proyecto
-        async fetchPonentes(id_proyecto) {
+        const fetchPonentes = async (id_proyecto) => {
             try {
                 const data = await obtenerPonentesProyecto(id_proyecto);
-                this.ponentes = data;
+                ponentes.value = data;
             } catch (error) {
                 console.error('Error al obtener ponentes:', error);
             }
-        },
+        };
+
         // Función para obtener informacion de sala para un proyecto
-        async fetchInfoSala(id_proyecto) {
+        const fetchInfoSala = async (id_proyecto) => {
             try {
                 const data = await obtenerInfoSalaProyecto(id_proyecto);
-                // console.log("Datos de sala: ", data);
-                this.infoSala = data;
+                infoSala.value = data;
             } catch (error) {
                 console.error('Error al obtener la información de la sala:', error);
             }
-        },
-        //Función para obtener presentación
-        async fetchUrlPresentacion(id_proyecto) {
+        };
+
+        // Función para obtener presentación
+        const fetchUrlPresentacion = async (id_proyecto) => {
             try {
                 const response = await obtenerUrlPresentacionProyecto(id_proyecto);
-                this.urlPresentacion = response.data.url_presentacion;
+                urlPresentacion.value = response.data;
             } catch (error) {
                 console.log('Error al obtener la URL de la presentación.');
             }
-        },
+        };
+
         // Función para renderizar la vista
-        async fetchAllData() {
+        const fetchAllData = async () => {
             try {
-                await this.fetchEvaluadores(this.proyecto.id_proyecto);
-                await this.fetchPonentes(this.proyecto.id_proyecto);
-                await this.fetchInfoSala(this.proyecto.id_proyecto);
-                await this.fetchUrlPresentacion(this.proyecto.id_proyecto);
-                if (this.evaluadores.virtual.length > 0 || this.evaluadores.presencial.length > 0) {
-                    if (this.proyecto.id_etapa == 2) {
-                        this.cargarRubricaVirtual = true;
-                        this.cargarRubricaPresencial = false;
+                await fetchEvaluadores(props.proyecto.id_proyecto);
+                await fetchPonentes(props.proyecto.id_proyecto);
+                if (props.proyecto.id_etapa == 1) {
+                    await fetchInfoSala(props.proyecto.id_proyecto);  
+                    await fetchUrlPresentacion(props.proyecto.id_proyecto);  
+                }
+                if (evaluadores.value.virtual.length > 0 || evaluadores.value.presencial.length > 0) {
+                    if (props.proyecto.id_etapa == 2) {
+                        cargarRubricaVirtual.value = true;
+                        cargarRubricaPresencial.value = false;
                     } else {
-                        this.cargarRubricaPresencial = true;
-                        this.cargarRubricaVirtual = true;
+                        cargarRubricaPresencial.value = true;
+                        cargarRubricaVirtual.value = true;
                     }
                 }
             } catch (error) {
-                console.error('Error al cargar los datos del proyecto:', error);
-                this.showErrorToast('Error al cargar los datos del proyecto.')
-            }
-        },
+                showErrorToast('Error al cargar los datos del proyecto.');
 
-        openModal() {
+            } finally {
+                isLoading.value = false;
+            }
+        }
+        const openModal = () => {
             $('#presentationModal').modal('show');
-        },
-        async guardarPresentacion() {
+        };
+        const guardarPresentacion = async () => {
             try {
-                await insertarUrlPresentacion(this.proyecto.id_proyecto, this.urlPresentacion);
-                this.showInfoToast('Presentación guardada correctamente.');
+                await insertarUrlPresentacion(props.proyecto.id_proyecto, urlPresentacion.value);
+                showInfoToast('Presentación guardada correctamente.');
                 $('#presentationModal').modal('hide');
             } catch (error) {
                 console.error('Error al guardar la URL de la presentación:', error);
-                this.showErrorToast('Error al guardar la presentación. Por favor, intenta nuevamente.');
+                showErrorToast('Error al guardar la presentación. Por favor, intenta nuevamente.');
             }
-        },
-        suplenteSeleccionado({ suplente, tipo }) {
-            this.suplente = suplente;
-            this.tipo = tipo;
-            this.id_suplente = suplente.id_usuario;
-        },
+        };
+        onMounted(() => {
+            console.log('Componente montado');
+            fetchAllData();
+        });
 
+        return {
+            cargarRubricaVirtual,
+            cargarRubricaPresencial,
+            evaluadores,
+            id_evaluador1,
+            id_evaluador2,
+            id_evaluador3,
+            ponentes,
+            infoSala,
+            rubricas,
+            tituloProyecto,
+            ponentesProyecto,
+            universidadProyecto,
+            puntajeTotal,
+            urlPresentacion,
+            suplente,
+            evaluadoresObtenidos,
+            tipo,
+            fetchAllData,
+            guardarPresentacion,
+            openModal,
+            isLoading,
+        };
     },
-    mounted() {
-        console.log(this.proyecto);
-        this.fetchAllData()
-    }
 };
 </script>
 
@@ -345,23 +365,28 @@ export default {
 
 .btn_regresar:hover svg {
     transform: translateX(-4px);
-    
+}
+
+.row.my-4 {
+    border: 1px solid lightgray;
+    padding: 10px;
+}
+
+.custom-shadow {
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+}
+
+.toggle-button {
+    background-color: #f8f9fa;
+}
+
+.card {
+    margin-bottom: 10px;
 }
 
 .button-container {
     gap: 20px;
     margin-bottom: 20px;
-}
-
-.detail-image {
-    max-width: 90%;
-    border-radius: 8px;
-    margin-top: 20px;
-}
-
-.rubrica-btn {
-    padding: 8px 15px;
-    font-size: 0.875rem;
 }
 
 .section_title h1 {
@@ -383,6 +408,20 @@ export default {
     background: #ffb606;
 }
 
+.toggle-button {
+    text-align: left;
+    width: 100%;
+    padding: 10px;
+    border: none;
+    background: none;
+    color: #000;
+    cursor: pointer;
+}
+
+.toggle-button:hover {
+    background-color: #e0e0e0;
+}
+
 .feature {
     display: flex;
     flex-direction: column;
@@ -390,9 +429,13 @@ export default {
     margin-bottom: 15px;
 }
 
+/* No utilizada, puedes eliminarla. */
+
 .icon {
     margin-bottom: 10px;
 }
+
+/* No utilizada, puedes eliminarla. */
 
 .toggle-button {
     text-align: center;
@@ -400,9 +443,13 @@ export default {
     width: 100%;
 }
 
+/* Duplicada, se puede eliminar esta definición ya que está más arriba. */
+
 .card {
     margin-bottom: 10px;
 }
+
+/* Duplicada, se puede eliminar ya que está más arriba. */
 
 .accordion {
     display: block;
@@ -412,6 +459,8 @@ export default {
     border-top: 2px solid rgb(255, 182, 6);
     margin-top: -10px;
 }
+
+/* No utilizada, puedes eliminarla. */
 
 .form-section {
     background-color: #f8f9fa;
@@ -434,10 +483,9 @@ export default {
     margin-bottom: 10px;
 }
 
-
+/* No utilizada, puedes eliminarla. */
 
 @media only screen and (max-width:767px) {
-
     .accordion {
         display: none;
     }
@@ -459,7 +507,6 @@ export default {
     .toggle-button:not(.collapsed) {
         color: rgb(255, 182, 6);
     }
-
 }
 
 @media (max-width: 768px) {
