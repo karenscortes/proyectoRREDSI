@@ -23,7 +23,7 @@
                       id="busqueda"
                       v-model="busqueda"
                       class="form-control"
-                      placeholder="Buscar..."
+                      placeholder="Nombre o documento"
                     />
                   </div>
                   <div class="col-md-2 col-4">
@@ -117,10 +117,12 @@ const configPagination = reactive({});
 //Funcion que se ejecuta cuando se emite un evento desde el td, recibe el nuevo estado, cada que se hace algún cambio.
 const cambiarEstadoCheckboxDelegado = (index) => {
   estadoActualDelegado.value =
-    ArrayDelegados[index].estado == "activo" ? "inactivo" : "activo";
-  ArrayDelegados[index].p_estado = estadoActualDelegado.value;
+  ArrayDelegados[index].estado == "activo" ? "inactivo" : "activo";
+  ArrayDelegados[index].estado = estadoActualDelegado.value;
   const estado = estadoActualDelegado.value;
   const id_delegado = ArrayDelegados[index].id_usuario;
+  console.log("soy estado"); 
+  console.log(estadoActualDelegado);
   actualizarEstado(id_delegado, estado);
 };
 
@@ -143,7 +145,7 @@ const modificarArrayDelegados = () => {
       nombres: delegado.nombres,
       apellidos: delegado.apellidos,
       nombre_institucion:
-        delegado.detalles_institucionales[0].institucion.nombre,
+      delegado.detalles_institucionales[0].institucion.nombre,
       primer_area: delegado.detalles_institucionales[0].primer_area.nombre,
       segunda_area: delegado.detalles_institucionales[0].segunda_area.nombre,
       url_titulo: delegado.titulos_academicos[0].url_titulo,
@@ -201,11 +203,11 @@ const buscar = async () => {
       busqueda.value = ""; 
       return response;
     } catch (error) {
-      console.error("Error al buscar los delegados: ", error);
-      alert("Error al buscar los delegados");
+      showErrorToast("Error al buscar el delegado, por favor intenta nuevamente.");
+      busqueda.value = ""; 
     }
   } 
-  if(busqueda.value == ""){
+  if(busqueda.value === ""){
     fetchAllDelegates();
   }
 };
@@ -219,8 +221,7 @@ const fetchAllDelegates = async () => {
     modificarArrayDelegados();
     return response;
   } catch (error) {
-    console.error("Error al obtener los delegados: ", error);
-    alert("Error al obtener los delegados");
+    showErrorToast("Error al cargar los delegados, por favor intenta nuevamente.");
   }
 };
 onMounted(() => {
