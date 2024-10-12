@@ -1,14 +1,16 @@
 <template>
     <div class="mt-4">
         <!-- Botón de regresar -->
-        <div class="col-5 col-sm-3">
-            <a class="btn_regresar text-dark fw-bold d-flex align-items-center" @click="$emit('volver')">
-                <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px"
-                    fill="#00000" class="me-2">
-                    <path d="m313-440 224 224-57 56-320-320 320-320 57 56-224 224h487v80H313Z" />
-                </svg>
-                Lista de salas
-            </a>
+        <div class="row">
+            <div class="ml-0 col-5 col-sm-3 mb-3">
+                <a class="btn_regresar text-dark fw-bold d-flex align-items-center" @click="$emit('volver')">
+                    <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px"
+                        fill="#00000" class="me-2">
+                        <path d="m313-440 224 224-57 56-320-320 320-320 57 56-224 224h487v80H313Z" />
+                    </svg>
+                    Lista de salas
+                </a>
+            </div>
         </div>
 
         <!-- Sala Information Section -->

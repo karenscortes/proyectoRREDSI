@@ -84,7 +84,7 @@
                         <div class="collapse" :id="`collapseExample${proyecto.id_proyecto}`">
                             <div class="card card-body mt-2">
                                 Este campo es opcional.
-                                Visita la lista de evaluadores si deseas tener más clara tu selección
+                                Visita la lista de evaluadores si deseas tener más clara tu selección.
                             </div>
                         </div>
                     </div>
@@ -238,7 +238,7 @@ export default {
                 }
 
             } catch (error) {
-                this.showWarningToast("El evaluador no se ha encontrado");
+                this.showWarningToast("No se ha podido encontrar el evaluador");
             }
         },
         abrirAcordeon() {

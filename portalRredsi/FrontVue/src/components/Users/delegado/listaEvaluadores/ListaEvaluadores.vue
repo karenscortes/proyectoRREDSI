@@ -45,8 +45,8 @@
                         <tr>
                             <th>Documento</th>
                             <th>Evaluador</th>
-                            <th>Area de conocimiento</th>
-                            <th>Institucion</th>
+                            <th>Área de conocimiento</th>
+                            <th>Institución</th>
                             <th>Estado</th>
                             <th>Detalle</th>
                         </tr>
