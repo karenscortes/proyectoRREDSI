@@ -55,10 +55,14 @@ export const getCurrentUser = async () => {
 // Función para actualizar el perfil del usuario
 export const updateUserProfile = async (userId, userData) => {
   try {
-    const response = await api.put('/users/update/', {
-      user_id: userId,
-      ...userData // Aquí se desglosan los datos del perfil que se quieren actualizar
-    });
+    const response = await api.put('/users/update/', 
+      ...userData,
+      userId, // Aquí se desglosan los datos del perfil que se quieren actualizar
+      {
+        headers: {
+          'Authorization': `Bearer ${localStorage.getItem('access_token')}` // Asegúrate de obtener el token correctamente
+        }
+      });
     return response.data; // Retorna el mensaje de éxito
   } catch (error) {
     if (error.response) {

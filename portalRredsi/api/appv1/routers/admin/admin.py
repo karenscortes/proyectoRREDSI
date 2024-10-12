@@ -1,7 +1,7 @@
 from typing import List
 from fastapi import APIRouter, Depends, File, HTTPException, UploadFile
 from sqlalchemy.orm import Session
-from appv1.crud.admin.gest_asistentes_externos import existing_document, existing_email, generate_code, get_attendee_by_document, get_id_document_type, get_paginated_attendees, insert_attendee, insert_user, insertar_historial_admin, update_external_attendees
+from appv1.crud.admin.gest_asistentes_externos import existing_attendee, existing_document, existing_email, generate_code, get_attendee_by_document, get_id_document_type, get_paginated_attendees, insert_attendee, insert_user, insertar_historial_admin, update_external_attendees
 from appv1.crud.admin.gest_delegado import create_delegado, get_all_document,get_delegados_activos_paginated, get_delegados_by_document, get_user_email, update_status_delegate
 from appv1.crud.admin.gest_rubricas import create_items,get_all_rubricas, update_items, update_status
 from appv1.crud.admin.gest_rubricas import get_all_rubricas
@@ -413,7 +413,7 @@ async def upload_file(file: UploadFile = File(...), db: Session = Depends(get_db
         existing_user_email = existing_email(db,row['correo'])
         existing_user_doc = existing_document(db,row['documento'])
 
-        id_asistente=None
+        usuario_id=None
         convocatoria= obtener_convocatoria_en_curso(db)
 
         #Si no se encontró
@@ -434,21 +434,29 @@ async def upload_file(file: UploadFile = File(...), db: Session = Depends(get_db
                 telefono=row.get('celular', None)
             )
 
-            id_asistente=asistente_externo.id_usuario
+            usuario_id=asistente_externo.id_usuario
         else:
             #de lo contrario, se obtiene el id_usuario
-            id_asistente=existing_user_doc[0]
+            usuario_id=existing_user_doc[0]
 
-        # Insertar comprobante_pago y demás datos en la tabala asistencia 
-        new_attendee = insert_attendee(
-            db, 
-            id_asistente, 
-            row['url_comprobante_pago'],
-            convocatoria.id_convocatoria
-        )
+        attendee = existing_attendee(db, usuario_id)
 
-        insertar_historial_admin(db,'Insertar',MODULE,new_attendee.id_asistente,current_user.id_usuario)
-    return {"message": "File processed and data stored successfully.", "file_location": file_location}
+        # Si el asistente no se ha ingresado en la tabala asistencia en la convocatoria actual
+        if(attendee is None):
+            new_attendee = insert_attendee(
+                db, 
+                usuario_id, 
+                row['url_comprobante_pago'],
+                convocatoria.id_convocatoria
+            )
+            
+            insertar_historial_admin(db,'Insertar',MODULE,new_attendee.id_asistente,current_user.id_usuario)
+            return {"message": "File processed and data stored successfully.", "file_location": file_location}
+        else:
+            return{"mensaje": f"Ya se ingresó el asistente {attendee[0]} en esta convocatoria"}
+            
+
+            
 
 
 # Obtener asistentes paginados

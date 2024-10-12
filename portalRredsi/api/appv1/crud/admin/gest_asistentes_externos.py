@@ -160,3 +160,18 @@ def existing_document(db: Session, p_documento: str):
     except SQLAlchemyError as e:
         print(f"Error al buscar usuario por documento: {e}")
         raise HTTPException(status_code=500, detail="Error al buscar usuario por documento")
+    
+def existing_attendee(db: Session, usuario_id: int):
+    try:
+        sql = text("""SELECT * FROM asistentes WHERE id_usuario = :id 
+                    AND id_convocatoria = (
+                        SELECT id_convocatoria
+                        FROM convocatorias
+                        WHERE estado = 'en curso'
+                    )"""
+                )
+        result = db.execute(sql, {"id": usuario_id}).fetchone()
+        return result
+    except SQLAlchemyError as e:
+        print(f"Error al buscar asistente por id de usuario: {e}")
+        raise HTTPException(status_code=500, detail="Error al buscar usuario por id")
