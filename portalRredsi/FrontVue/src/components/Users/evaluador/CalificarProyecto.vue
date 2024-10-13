@@ -105,7 +105,7 @@
   
 <script>
   import { ref, computed, watch, onMounted } from 'vue';
-  import { obtenerDatosParaCalificarProyecto, insertarRespuestaRubrica, obtenerEtapaActual, obtenerRubricasCalificadas } from '../../../services/evaluadorService';
+  import { obtenerDatosParaCalificarProyecto, insertarRespuestaRubrica, obtenerEtapaActual, obtenerRubricasCalificadas, obtenerProgramacionFases } from '../../../services/evaluadorService';
   import { useAuthStore } from '@/store';
   import { useToastUtils } from '@/utils/toast'; // Importar aquí directamente
 
@@ -132,6 +132,51 @@
 
 
       const { showSuccessToast, showErrorToast, showWarningToast, showInfoToast} = useToastUtils();
+
+      const verificarPeriodoCalificacion = async () => {
+        try {
+          // Obtener la programación de fases según la etapa actual
+          const programacionFases = await obtenerProgramacionFases(currentEtapa.value);
+
+          // Obtener la fecha actual
+          const fechaActual = new Date();
+          // Reseteamos horas, minutos, segundos y milisegundos de la fecha actual
+          fechaActual.setHours(0, 0, 0, 0);
+
+          // Filtrar la fase que corresponde a evaluaciones (según la etapa)
+          let faseEvaluacion;
+          if (currentEtapa.value === 'Virtual') {
+            // Fase de evaluación para la etapa virtual es "Evaluaciones"
+            faseEvaluacion = programacionFases.data.find(fase => fase.nombre_fase === 'Evaluaciones');
+          } else if (currentEtapa.value === 'Presencial') {
+            // Fase de evaluación para la etapa presencial es "Evento"
+            faseEvaluacion = programacionFases.data.find(fase => fase.nombre_fase === 'Evento');
+          }
+
+          // Si no encontramos la fase, devolvemos false
+          if (!faseEvaluacion) {
+            return false;
+          }
+
+          // Convertir las fechas de inicio y fin de la fase a objetos Date
+          const fechaInicioFase = new Date(faseEvaluacion.fecha_inicio);
+          const fechaFinFase = new Date(faseEvaluacion.fecha_fin);
+
+          // Reseteamos horas, minutos, segundos y milisegundos de las fechas de inicio y fin
+          fechaInicioFase.setHours(0, 0, 0, 0);
+          fechaFinFase.setHours(0, 0, 0, 0);
+
+          // Verificar si la fecha actual está dentro del rango
+          if (fechaActual >= fechaInicioFase && fechaActual <= fechaFinFase) {
+            return true; // Está dentro del periodo de calificación
+          } else {
+            return false; // Fuera del periodo de calificación
+          }
+        } catch (error) {
+          console.error('Error al verificar el periodo de calificación:', error);
+          return false; // En caso de error, no permitir calificar
+        }
+      };
 
       const puedeCalificar = computed(() => {
         // Verificar si el estado es pendiente en alguna de las fases (P_virtual o P_presencial)
@@ -189,6 +234,7 @@
             celularEvaluador.value = data.celular_evaluador;
             ponentesProyecto.value = data.nombres_ponentes;
             componentes.value = data.componentes;
+
           
           } catch (innerError) {
             showErrorToast('Error al obtener los datos para calificar el proyecto.');
@@ -246,6 +292,13 @@
         // Validar antes campos de enviar la calificacion
         if (!validarCalificacionesYObservaciones()) {
           return;  // Si la validación falla, no se envían las calificaciones
+        }
+
+        let verificarperiodo = await verificarPeriodoCalificacion();
+        
+        if (verificarperiodo == false){
+          showErrorToast("No puedes calificar el proyecto. Visita el apartado de 'Convocatoria' para más información y saber cuando puedes calificar los proyectos.");
+          return;  // Si la validación falla, no se envían las calificaciones   
         }
 
         try {

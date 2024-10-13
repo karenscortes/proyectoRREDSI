@@ -57,12 +57,12 @@
               <div class="accordion-item shadow mb-3">
                 <h2 class="accordion-header" id="headingOne">
                   <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
-                    What are the main features?
+                    ¿Por qué debo terminar mi registro para enviar una postulación?
                   </button>
                 </h2>
                 <div id="collapseOne" class="accordion-collapse collapse" aria-labelledby="headingOne" data-bs-parent="#accordionExample" style="">
                   <div class="accordion-body">
-                    <strong>This is the first item's accordion body.</strong> It is hidden by default, until the collapse plugin adds the appropriate classes that we use to style each element. These classes control the overall appearance, as well as the showing and hiding via CSS transitions. You can modify any of this with custom CSS or overriding our default variables. It's also worth noting that just about any HTML can go within the <code>.accordion-body</code>, though the transition does limit overflow.
+                    En el proceso que hace <strong>RREDSI</strong> para seleccionar a los evaluadores más aptos para calificar, se tendrá en cuenta toda la información referente a la persona, por esto es necesario que se termine el registro con los datos académicos. <strong>RREDSI</strong> necesita toda esta información para así poder repartir los proyectos inscritos entre los diferentes evaluadores que hayan hecho una postulación.
                   </div>
                 </div>
               </div>
@@ -70,12 +70,12 @@
               <div class="accordion-item shadow mb-3">
                 <h2 class="accordion-header" id="headingTwo">
                   <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-                    do i have to pay again after trial
+                    ¿Como puedo saber en que fechas puedo calificar un proyecto?
                   </button>
                 </h2>
                 <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#accordionExample" style="">
                   <div class="accordion-body">
-                    <strong>This is the second item's accordion body.</strong> It is hidden by default, until the collapse plugin adds the appropriate classes that we use to style each element. These classes control the overall appearance, as well as the showing and hiding via CSS transitions. You can modify any of this with custom CSS or overriding our default variables. It's also worth noting that just about any HTML can go within the <code>.accordion-body</code>, though the transition does limit overflow.
+                    Podrás saber sobre las fechas de evaluación en el apartado en el apartado de <strong>Convocatoria</strong>. Ten en cuenta que en la etapa virtual, las fechas para evaluar se encontrarán en "Evaluaciones". Para la etapa presencial, las fechas para evaluar estarán en "Evento".
                   </div>
                 </div>
               </div>
@@ -83,12 +83,12 @@
               <div class="accordion-item shadow mb-3">
                 <h2 class="accordion-header" id="headingThree">
                   <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
-                How can I get started after trial?
+                  ¿Que sucede si no logro calificar un proyecto en el tiempo límite?
                   </button>
                 </h2>
                 <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#accordionExample" style="">
                   <div class="accordion-body">
-                    <strong>This is the third item's accordion body.</strong> It is hidden by default, until the collapse plugin adds the appropriate classes that we use to style each element. These classes control the overall appearance, as well as the showing and hiding via CSS transitions. You can modify any of this with custom CSS or overriding our default variables. It's also worth noting that just about any HTML can go within the <code>.accordion-body</code>, though the transition does limit overflow.
+                    Si no llegas a calificar un proyecto a tiempo, uno de nuestros delegados de <strong>RREDSI</strong> se encargará a partir de la fecha límite de calificación. Aunque esto no afecta en ningún momento a la calificación del proyecto, será tomado en cuenta para proximas convocatorias.
                   </div>
                 </div>
               </div>
@@ -96,12 +96,12 @@
               <div class="accordion-item shadow mb-3">
                 <h2 class="accordion-header" id="headingFour">
                   <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
-                    Can I be refunded if am not satisfied?
+                    ¿A qué se refiere con primera y segunda etapa?
                   </button>
                 </h2>
                 <div id="collapseFour" class="accordion-collapse collapse" aria-labelledby="headingFour" data-bs-parent="#accordionExample">
                   <div class="accordion-body">
-                    <strong>This is the third item's accordion body.</strong> It is hidden by default, until the collapse plugin adds the appropriate classes that we use to style each element. These classes control the overall appearance, as well as the showing and hiding via CSS transitions. You can modify any of this with custom CSS or overriding our default variables. It's also worth noting that just about any HTML can go within the <code>.accordion-body</code>, though the transition does limit overflow.
+                   La primera etapa quiere decir <strong>Virtual</strong> y la segunda quiere decir <strong>Presencial</strong>. Es de esta manera en la que se divide todo el proceso de la inscripción y calificación de los proyectos dentro de <strong>RREDSI</strong>.
                   </div>
                 </div>
               </div>
@@ -171,12 +171,12 @@
 </template>
 
 <script>
-  import { insertarPostulacionEvaluador, obtenerProgramacionFases, obtenerEstadoDatosInstitucionales} from '../services/evaluadorService'; 
+  import { insertarPostulacionEvaluador, obtenerProgramacionFases, obtenerEstadoDatosInstitucionales, obtenerEstadoPostulacion} from '../services/evaluadorService'; 
   import { useAuthStore } from '@/store';
   import { useToastUtils } from '@/utils/toast'; 
   import {onMounted, ref} from 'vue';
 
-  const { showSuccessToast, showErrorToast, showWarningToast} = useToastUtils();
+  const { showSuccessToast, showErrorToast, showWarningToast, showInfoToast} = useToastUtils();
   const estadoDatosInstitucionales = ref(""); 
   export default {
     data() {
@@ -252,10 +252,38 @@
             $('#postulacionEvaluador').modal('hide'); // Cierra el modal
           }
         } catch (error) {
+          const authStore = useAuthStore();
+          const user = authStore.user;
           // Si el error es "Ya existe una postulación para este evaluador y convocatoria"
           if (error.response && error.response.data && error.response.data.detail === "Ya existe una postulación para este evaluador y convocatoria") {
-            showErrorToast('Ya te postulaste para esta convocatoria, espera una respuesta en los próximos días...');
-            $('#postulacionEvaluador').modal('hide'); // Cierra el modal
+            try {
+              // Realiza la llamada a la API
+              const response = await obtenerEstadoPostulacion(user.id_usuario);
+
+              // Accede a la propiedad estado_postulacion de la respuesta
+              const estadoPostulacion = response.estado_postulacion;
+
+
+              // Según el estado de la postulación, definimos si se habilitan o no los apartados
+              switch (estadoPostulacion) {
+                  case 'aceptada':
+                    showInfoToast('Tu postulación ya ha sido aceptada. Disfruta del sistema');
+                    $('#postulacionEvaluador').modal('hide'); // Cierra el modal
+                    break;
+                  case 'pendiente':
+                    showErrorToast('Ya te postulaste para esta convocatoria, espera una respuesta en los próximos días...');
+                    $('#postulacionEvaluador').modal('hide'); // Cierra el modal
+                      break;
+                  case 'rechazada':
+                    showInfoToast('Tu postulación fue rechazada. Intenta nuevamente en una proxima convocatoria');
+                    $('#postulacionEvaluador').modal('hide'); // Cierra el modal
+                      break;
+                  
+              }
+            } catch (error) {
+              console.error('Error obteniendo estado de postulación:', error);
+            }
+        
           } else {
             // Manejo de otros errores
             console.error('Error al insertar postulación:', error.message);
@@ -266,7 +294,7 @@
       },
     },
     setup(){
-      const convocatoriaEnCurso = ref(true);//poner en false para hacer pruebas
+      const convocatoriaEnCurso = ref(false);//poner en false para hacer pruebas
 
       //obteniendo fecha actual
       const currentDate = ref(new Date().toISOString().split('T')[0]);
