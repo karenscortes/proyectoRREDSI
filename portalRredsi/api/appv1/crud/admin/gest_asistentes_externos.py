@@ -4,7 +4,7 @@ from fastapi import HTTPException
 from sqlalchemy.orm import Session
 from sqlalchemy.sql import text
 from appv1.models.asistente import Asistente
-from appv1.models.convocatoria import Convocatoria
+from appv1.models.convocatoria import Convocatoria, EstadoDeConvocatoria
 from appv1.models.historial_actividades_admin import Historial_admin
 from appv1.models.tipo_documento import Tipo_documento
 from appv1.models.usuario import Usuario
@@ -41,12 +41,12 @@ def generate_code(length: int = 6) -> str:
     return ''.join(random.choices(string.ascii_letters + string.digits, k=length))
 
 
-def insert_attendee(db: Session, usuario_id: int, url_comprobante_pago: str):
-
+def insert_attendee(db: Session, usuario_id: int, url_comprobante_pago: str, convocatoria_id:int):
     nuevo_comprobante = Asistente(
         id_usuario=usuario_id,
         fecha = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
-        url_comprobante_pago=url_comprobante_pago
+        url_comprobante_pago=url_comprobante_pago,
+        id_convocatoria=convocatoria_id
     )
 
     db.add(nuevo_comprobante)
@@ -63,11 +63,12 @@ def get_id_document_type(db:Session, nombre:str):
 def get_paginated_attendees(db: Session, page, page_size):
     try:
         offset = (page - 1) * page_size
-        attendees = db.query(Asistente.url_comprobante_pago, Usuario.id_usuario, Usuario.documento, Usuario.nombres, Usuario.apellidos, Usuario.celular, Usuario.correo).join(Usuario).filter(Asistente.id_convocatoria.in_(db.query(Convocatoria.id_convocatoria).filter(Convocatoria.estado == 'en curso'))).limit(page_size).offset(offset).all()
+        attendees = db.query(Asistente.url_comprobante_pago,Asistente.id_convocatoria, Usuario.id_usuario, Usuario.documento, Usuario.nombres, Usuario.apellidos, Usuario.celular, Usuario.correo).join(Usuario).filter(Asistente.id_convocatoria.in_(db.query(Convocatoria.id_convocatoria).filter(Convocatoria.estado == EstadoDeConvocatoria.en_curso.value))).limit(page_size).offset(offset).all()
+
         if attendees is None:
             raise HTTPException(status_code=404, detail="No hay asistentes")
         
-        total_attendees = db.query(Asistente).count()
+        total_attendees = db.query(Asistente).filter(Asistente.id_convocatoria.in_(db.query(Convocatoria.id_convocatoria).filter(Convocatoria.estado == EstadoDeConvocatoria.en_curso.value))).count()
 
         total_pages = (total_attendees + page_size - 1) // page_size
         return attendees, total_pages
@@ -111,13 +112,13 @@ def get_attendee_by_document(db: Session, documento:str, page, page_size):
     try:
         offset = (page - 1) * page_size
 
-        attendees = db.query(Asistente.url_comprobante_pago, Usuario.id_usuario, Usuario.documento, Usuario.nombres, Usuario.apellidos, Usuario.celular, Usuario.correo).join(Usuario).filter(Usuario.documento.like(f'{documento}%',Asistente.id_convocatoria.in_(db.query(Convocatoria.id_convocatoria).filter(Convocatoria.estado == 'en curso')))).limit(page_size).offset(offset).all()
+        attendees = db.query(Asistente.url_comprobante_pago, Asistente.id_convocatoria,Usuario.id_usuario, Usuario.documento, Usuario.nombres, Usuario.apellidos, Usuario.celular, Usuario.correo).join(Usuario).filter(Usuario.documento.like(f'{documento}%')).filter(Asistente.id_convocatoria.in_(db.query(Convocatoria.id_convocatoria).filter(Convocatoria.estado == EstadoDeConvocatoria.en_curso.value))).limit(page_size).offset(offset).all()
 
         
         if attendees is None:
             raise HTTPException(status_code=404, detail="No hay asistentes con ese documeto")
         
-        total_coincidences = db.query(Usuario).join(Asistente).filter(Usuario.documento.like(f'{documento}%')).count()
+        total_coincidences = db.query(Usuario).join(Asistente).filter(Usuario.documento.like(f'{documento}%')).filter(Asistente.id_convocatoria.in_(db.query(Convocatoria.id_convocatoria).filter(Convocatoria.estado == EstadoDeConvocatoria.en_curso.value))).count()
 
         total_pages = (total_coincidences + page_size - 1) // page_size
         return attendees, total_pages
@@ -141,3 +142,36 @@ def insertar_historial_admin(db: Session, servicio:str, modulo: int,registro:int
     except SQLAlchemyError as e:
         print(f"Error al ejecutar el procedimiento insertar_acciones_admin: {e}")
         raise HTTPException(status_code=500, detail="Error al ejecutar el procedimiento.")
+    
+def existing_email(db: Session, p_mail: str):
+    try:
+        sql = text("SELECT * FROM usuarios WHERE correo = :mail")
+        result = db.execute(sql, {"mail": p_mail}).fetchone();        
+        return result
+    except SQLAlchemyError as e:
+        print(f"Error al buscar usuario por email: {e}")
+        raise HTTPException(status_code=500, detail="Error al buscar usuario por email")
+
+def existing_document(db: Session, p_documento: str):
+    try:
+        sql = text("SELECT * FROM usuarios WHERE documento = :doc")
+        result = db.execute(sql, {"doc": p_documento}).fetchone()
+        return result
+    except SQLAlchemyError as e:
+        print(f"Error al buscar usuario por documento: {e}")
+        raise HTTPException(status_code=500, detail="Error al buscar usuario por documento")
+    
+def existing_attendee(db: Session, usuario_id: int):
+    try:
+        sql = text("""SELECT * FROM asistentes WHERE id_usuario = :id 
+                    AND id_convocatoria = (
+                        SELECT id_convocatoria
+                        FROM convocatorias
+                        WHERE estado = 'en curso'
+                    )"""
+                )
+        result = db.execute(sql, {"id": usuario_id}).fetchone()
+        return result
+    except SQLAlchemyError as e:
+        print(f"Error al buscar asistente por id de usuario: {e}")
+        raise HTTPException(status_code=500, detail="Error al buscar usuario por id")

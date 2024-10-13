@@ -7,7 +7,7 @@
             <div class="row mb-3">
                 <div class="col">
                     <div class="section_title text-center">
-                        <h1>Salas Asignadas</h1>
+                        <h1>Salas Registradas</h1>
                     </div>
                 </div>
             </div>
@@ -27,12 +27,23 @@
                             </svg></button>
                         <p v-else>Sin sala asignada</p>
                     </div>
-                    <div class="col-8 col-sm-8">
+                    <div class="col-10 col-sm-8 mt-1">
                         <div class="row justify-content-end">
-                            <div class="col-8 col-sm-6">
+                            <div class="col-1 mt-2 text-align-end">
+                                <div class="row justify-content-end">
+                                    <a class="col-4 btn_refrescar" @click="listarSalas()">
+                                        <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960"
+                                            width="24px" fill="#FFB606">
+                                            <path
+                                                d="M482-160q-134 0-228-93t-94-227v-7l-64 64-56-56 160-160 160 160-56 56-64-64v7q0 100 70.5 170T482-240q26 0 51-6t49-18l60 60q-38 22-78 33t-82 11Zm278-161L600-481l56-56 64 64v-7q0-100-70.5-170T478-720q-26 0-51 6t-49 18l-60-60q38-22 78-33t82-11q134 0 228 93t94 227v7l64-64 56 56-160 160Z" />
+                                        </svg>
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="col-7 col-sm-6">
                                 <input v-model="valorBusqueda" type="text" id="busqueda"
                                     class="form-control text-dark w-100" style="height: 100%; padding: 0.5rem;"
-                                    placeholder="Ingresa nombre de la sala">
+                                    placeholder="Ingresa nombre de la sala" @keyup.enter="buscarSalaEspecifica">
                             </div>
                             <div class="col-4 col-sm-4">
                                 <button class="btn w-100 font-weight-bold"
@@ -57,7 +68,7 @@
 <script>
 import CardSalas from "./CardSalas.vue";
 import { obtenerSalas } from '@/services/delegadoService';
-import { obtenerDatosSalaAsignada, buscarSala} from '@/services/salasDelegadoService';
+import { obtenerDatosSalaAsignada, buscarSala } from '@/services/salasDelegadoService';
 import { useAuthStore } from '@/store';
 import GestionSala from "./GestionSala.vue";
 import DetalleSala from "./DetalleSala.vue";
@@ -86,8 +97,8 @@ export default {
             SalaSeleccionada: {},
             totalPages: 0,
             fechasEvento: {
-                fecha_inicio:"",
-                fecha_fin:"",
+                fecha_inicio: "",
+                fecha_fin: "",
             },
             showErrorToast,
             showInfoToast,
@@ -113,7 +124,7 @@ export default {
 
                 // Obtengo las fechas del evento y se las agrego al detalle de las salas
                 await this.obtenerFechasEvento();
-                this.salas.forEach(sala =>{
+                this.salas.forEach(sala => {
                     sala.fechasEvento = "";
                     sala.fechasEvento = this.fechasEvento;
                 });
@@ -124,23 +135,23 @@ export default {
         async buscarSalaEspecifica() {
             try {
                 if (this.valorBusqueda.trim() != "") {
-                // Buscar salas espeficicas 
-                const responseBuscarSala = await buscarSala(this.valorBusqueda);
-                this.salas = responseBuscarSala.data.salas;
-                
-                this.valorBusqueda = "";
-                this.totalPages = 0;
-                
-                // Obtengo las fechas del evento y se las agrego al detalle de las salas
-                await this.obtenerFechasEvento();
-                this.salas.forEach(sala =>{
-                    sala.fechasEvento = "";
-                    sala.fechasEvento = this.fechasEvento;
-                });
-            } else {
-                await this.listarSalas();
-                this.showInfoToast("Si deseas buscar una sala debes ingresar un valor en el campo de busqueda");
-            }
+                    // Buscar salas espeficicas 
+                    const responseBuscarSala = await buscarSala(this.valorBusqueda);
+                    this.salas = responseBuscarSala.data.salas;
+
+                    this.valorBusqueda = "";
+                    this.totalPages = 0;
+
+                    // Obtengo las fechas del evento y se las agrego al detalle de las salas
+                    await this.obtenerFechasEvento();
+                    this.salas.forEach(sala => {
+                        sala.fechasEvento = "";
+                        sala.fechasEvento = this.fechasEvento;
+                    });
+                } else {
+                    await this.listarSalas();
+                    this.showInfoToast("Por favor, ingresa un valor de búsqueda");
+                }
             } catch (error) {
                 this.showInfoToast("No se ha podido encontrar la sala");
                 await this.listarSalas();
@@ -170,7 +181,7 @@ export default {
             try {
                 const response = await obtenerProgramacionFases("presencial");
                 for (let i = 0; i < response.data.length; i++) {
-                    if(response.data[i].nombre_fase == "Evento"){
+                    if (response.data[i].nombre_fase == "Evento") {
                         this.fechasEvento.fecha_inicio = response.data[i].fecha_inicio;
                         this.fechasEvento.fecha_fin = response.data[i].fecha_fin;
                         this.miSala.fechasEvento = this.fechasEvento;
@@ -229,5 +240,9 @@ export default {
 .pagination .page-item .page-link:hover {
     background-color: rgb(255, 182, 6);
     color: #ffffff;
+}
+
+.btn_refrescar:hover {
+    cursor: pointer;
 }
 </style>

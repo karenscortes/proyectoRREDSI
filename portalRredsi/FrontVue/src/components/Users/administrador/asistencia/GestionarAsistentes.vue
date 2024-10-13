@@ -198,6 +198,7 @@ export default {
 
         const closeAddModal = () => {
             isAddModalOpen.value = false;
+            fetchAttendees();
         };
 
         const showEditModal = (infoAsistente) => {
@@ -213,6 +214,7 @@ export default {
 
         const closeEditModal = () => {
             isEditModalOpen.value = false;
+            fetchAttendees();
         };
 
         onMounted(() => {

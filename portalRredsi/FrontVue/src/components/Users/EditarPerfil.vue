@@ -40,7 +40,7 @@
               <h2>Datos Personales</h2>
             </div>
             <div class="title-line"></div>
-            <form @submit.prevent="handleSubmit('personal')" class="row my-5 font-weight-bold text-dark">
+            <form @submit.prevent="submitPersonalData()" class="row my-5 font-weight-bold text-dark">
               <div class="form-row justify-content-center mb-3">
                 <div class="form-group col-md-5 me-3">
                   <label for="inputName">Nombres:</label>
@@ -54,14 +54,13 @@
               <div class="form-row justify-content-center mb-3">
                 <div class="form-group col-md-5 me-3">
                   <label for="inputDocumentType">Tipo de documento:</label>
-                  <select id="inputDocumentType" type="select" class="form-control text-dark custom-select" required>
-                    <option disabled selected>{{ formData.personal.tipoDocumento || 'Seleccione una opción' }}</option>
-                    <option v-for="opc in documentsTypes" :key="opc.id_tipo_documento" @click.stop="selectType(opc)">{{ opc.nombre }}</option>
+                  <select id="inputDocumentType" v-model="tipoDocumento" type="select" class="form-control text-dark custom-select" required>
+                    <option v-for="opc in documentsTypes" :key="opc.id_tipo_documento" :value="opc.nombre">{{ opc.nombre }}</option>
                   </select>
                 </div>
                 <div class="form-group col-md-5">
                   <label for="inputDocumentNumber">N° de Documento:</label>
-                  <input type="text" v-model="formData.personal.numeroDocumento" class="form-control" id="inputDocumentNumber" />
+                  <input type="text" v-model="formData.personal.documento" class="form-control" id="inputDocumentNumber" />
                 </div>
               </div>
               <div class="form-row justify-content-center mb-5">
@@ -86,7 +85,7 @@
               <h2>Datos Institucionales</h2>
             </div>
             <div class="title-line"></div>
-            <form @submit.prevent="handleSubmit('institucional')" class="row my-5 font-weight-bold text-dark">
+            <form @submit.prevent="submitAcademicData()" class="row my-5 font-weight-bold text-dark">
               <div class="form-row justify-content-center mb-3">
                 <div class="form-group col-md-5 me-3">
                   <label for="inputPlaceName">Institución educativa:</label>
@@ -106,18 +105,14 @@
               <div class="form-row justify-content-center mb-5">
                 <div class="form-group col-md-5 me-3">
                     <label for="inputKnowledgeArea">Area de Conocimiento:</label>
-                    <select id="inputKnowledgeArea" type="select" class="form-control text-dark custom-select"
-                        required>
-                        <option value="seleccionar" selected>Seleccione una opción</option>
-                        <option value="IA">Inteligencia Artificial</option>
+                    <select id="inputKnowledgeArea" v-model="formData.institucional.primer_area" type="select" class="form-control text-dark custom-select" required>
+                      <option v-for="opc in areasConocimiento" :key="opc.id_area_conocimiento" :value="opc.nombre">{{ opc.nombre }}</option>
                     </select>
                 </div>
                 <div class="form-group col-md-5">
                     <label for="inputAnotherArea">Otra Area:</label>
-                    <select id="inputAnotherArea" type="select" class="form-control text-dark custom-select"
-                        required>
-                        <option value="seleccionar" selected>Seleccione una opción</option>
-                        <option value="Agricultura">Agricultura</option>
+                    <select id="inputAnotherArea"  v-model="formData.institucional.segunda_area" type="select" class="form-control text-dark custom-select" required>
+                      <option v-for="opc in areasConocimiento" :key="opc.id_area_conocimiento" :value="opc.nombre">{{ opc.nombre }}</option>
                     </select>
                 </div>                                   
               </div> 
@@ -134,7 +129,7 @@
               <h2>Datos Académicos</h2>
             </div>
             <div class="title-line"></div>
-            <form @submit.prevent="handleSubmit('academico')" class="row my-5 font-weight-bold text-dark">
+            <form @submit.prevent="submitCertificates()" class="row my-5 font-weight-bold text-dark">
               <div class="form-row justify-content-center mb-3">
                 <div class="form-group col-md-5 ms-md-4 ms-xs-5">
                   <label for="inputUndergraduateDegree">Título Pregrado:</label>
@@ -278,18 +273,14 @@
                       <div class="form-row">
                           <div class="form-group col-md-6">
                               <label for="inputDocumentType">Tipo de documento:</label>
-                              <select id="inputDocumentType" type="select" class="form-control text-dark custom-select"
-                                  required>
-                                  <option value="Seleccionar" selected>Seleccione una opción</option>
-                                  <option value="cedula">Cédula</option>
-                                  <option value="pasaporte">Pasaporte</option>
-                                  <option value="cedula_extranjeria">Cédula de extranjeria</option>
+                              <select id="inputDocumentType" v-model="tipoDocumento" type="select" class="form-control text-dark custom-select" required>
+                                <option v-for="opc in documentsTypes" :key="opc.id_tipo_documento" :value="opc.nombre">{{ opc.nombre }}</option>
                               </select>
                           </div>
                         
                           <div class="form-group col-md-6">
                               <label for="inputCity">N° de Documento:</label>
-                              <input type="text" class="form-control" id="inputCity" v-model="formData.personal.numeroDocumento">
+                              <input type="text" class="form-control" id="inputCity" v-model="formData.personal.documento">
                           </div>
                       </div>
                       <div class="form-group mb-5">
@@ -336,21 +327,17 @@
                       <div class="form-group row justify-content-center">
                         <label for="inputKnowledgeArea" class="col-md-10 mx-4">Area de Conocimiento:</label>
                         <div class="col-md-10">
-                            <select id="inputKnowledgeArea" type="select" class="form-control text-dark custom-select"
-                                required>
-                                <option value="cedula">Seleccione una opción</option>
-                                <option value="cedula">Inteligencia Artificial</option>
-                            </select>
+                          <select id="inputKnowledgeArea" v-model="formData.institucional.primer_area" type="select" class="form-control text-dark custom-select" required>
+                            <option v-for="opc in areasConocimiento" :key="opc.id_area_conocimiento" :value="opc.nombre">{{ opc.nombre }}</option>
+                          </select>
                         </div> 
                     </div>
                     <div class="form-group row justify-content-center">
                         <label for="inputAnotherArea" class="col-md-10 mx-4">Otra Area:</label>
                         <div class="col-md-10">
-                            <select id="inputAnotherArea" type="select" class="form-control text-dark custom-select"
-                                required>
-                                <option value="cedula" selected>Seleccione una opción</option>
-                                <option value="cedula">IAgricultura</option>
-                            </select>
+                          <select id="inputAnotherArea"  v-model="formData.institucional.segunda_area" type="select" class="form-control text-dark custom-select" required>
+                            <option v-for="opc in areasConocimiento" :key="opc.id_area_conocimiento" :value="opc.nombre">{{ opc.nombre }}</option>
+                          </select>
                         </div>
                     </div>
                     <div class="text-center">
@@ -463,12 +450,13 @@
 </template>
 
 <script>
-import { getCurrentUser,getInstitutionalDetails } from '../../services/UsuarioService';
+import { getCurrentUser,getInstitutionalDetails,updateUserProfile } from '../../services/UsuarioService';
 import { getAllTiposDocumento } from '../../services/TipoDocumentoService';
 import { useAuthStore } from '@/store';
 import { getCertificatesById } from '@/services/postulacionService';
 import { getAreasConocimiento } from '@/services/administradorService';
 import ChangePasswordModal from './ChangePasswordModal.vue';
+import { useToastUtils } from '@/utils/toast';
 
 export default {
   components: {
@@ -489,18 +477,18 @@ export default {
       isModalOpen:false,
       formData: {
         personal: {
+          id_tipo_documento: this.user.id_tipo_documento,
+          documento: this.user.documento,
           nombres: this.user.nombres,
           apellidos: this.user.apellidos,
-          tipoDocumento: '',
-          numeroDocumento: this.user.documento,
           correo: this.user.correo,
         },
         institucional: {
           institucion: '',
           grupoInvestigacion: '',
           semillero: '',
-          id_primer_area:'',
-          id_segunda_area:'',
+          primer_area:'',
+          segunda_area:'',
         },
         academico: {
           pregrado: '',
@@ -509,6 +497,7 @@ export default {
           doctorado: '',
         },
       },
+      tipoDocumento:'',
       areasConocimiento: [],
       documentsTypes:[],
     };
@@ -523,6 +512,7 @@ export default {
         };
   },
   methods: {
+    ... useToastUtils(),
     //Controlador de las secciones activas
     setActiveSection(section) {
       this.activeSection = section;
@@ -547,71 +537,55 @@ export default {
       }
     },
     
-    //Obtener tipos de documentos
+    //Se obtienen los tipos de documentos
     async getDocumentsTypes(){
+
+      //todas la opciones
       const response = await getAllTiposDocumento();
       this.documentsTypes = response.data;
-    },
-    //Nuevo tipo de documento
-    selectType(type){
-      this.formData.personal.tipoDocumento = type.id_tipo_documento;
+
+      //tipo de doc actual
+      this.documentsTypes.forEach(tipo => {
+        if (tipo.id_tipo_documento === this.user.id_tipo_documento) {
+          this.tipoDocumento = tipo.nombre;
+        }
+      });
+
     },
 
-    //Controlador de archivos academicos
-    handleFileChange(tipo, event) {
-      const file = event.target.files[0];
-      if (file && tipo == 'pregrado') {
-          if(this.formData.academico.pregrado !== ''){
-            
-          }
-      }
-    },
-    async loadUserProfile() {
-      try {
-        const userData = await getCurrentUser();
-        // Asignar los datos recibidos al formData
-        this.formData.personal.nombres = userData.nombres || '';
-        this.formData.personal.apellidos = userData.apellidos || '';
-        this.formData.personal.tipoDocumento = userData.tipoDocumento || '';
-        this.formData.personal.numeroDocumento = userData.numeroDocumento || '';
-        this.formData.personal.correo = userData.correo || '';
-
-        this.formData.institucional.institucion = userData.institucion || '';
-        this.formData.institucional.grupoInvestigacion = userData.grupoInvestigacion || '';
-        this.formData.institucional.semillero = userData.semillero || '';
-
-        this.formData.academico.pregrado = userData.pregrado || '';
-        this.formData.academico.especializacion = userData.especializacion || '';
-        this.formData.academico.maestria = userData.maestria || '';
-      } catch (error) {
-  
-      }
-    },
-    handleSubmit(section) {
-      
-      console.log(`Datos enviados de la sección: ${section}`, this.formData[section]);
-    },
-    async loadAcademicDegrees(){
-      
-      // OBTIENE LOS DATOS ACADEMICOS 
+    //Se obtienen los datos academicos
+    async getAcademicData(){
       try {
         const response_datos_academicos = await getInstitutionalDetails();
 
         this.formData.institucional.institucion = response_datos_academicos.data.id_institucion ;
         this.formData.institucional.grupoInvestigacion = response_datos_academicos.data.grupo_investigacion;
         this.formData.institucional.semillero = response_datos_academicos.data.semillero;
-        this.formData.institucional.id_primer_area = response_datos_academicos.data.id_primera_area_conocimiento;
-        this.formData.institucional.id_segunda_area = response_datos_academicos.data.id_segunda_area_conocimiento;
-      } catch (error) {
-        console.error(error);
-      }
 
-      // OBTIENE LOS TITULOS 
+        //Se obtienen todas las  Areas de Conocimiento
+        const responseAreasConocimiento = await getAreasConocimiento();
+        this.areasConocimiento = responseAreasConocimiento.data;
+
+        //Se obtiene Area de conocimiento especifica
+        this.areasConocimiento.forEach(tipo => {
+          if (tipo.id_area_conocimiento === response_datos_academicos.data.id_primera_area_conocimiento) {
+            this.formData.institucional.primer_area= tipo.nombre;
+          }else if(tipo.id_area_conocimiento === response_datos_academicos.data.id_segunda_area_conocimiento){
+            this.formData.institucional.segunda_area = tipo.nombre;
+          }
+        });
+      } catch (error) {
+      
+      }
+    },
+
+    // Se obtienen los titulos 
+    async getCertificates(){
+      
       try {
         const responseTitulos = await getCertificatesById(this.user.id_usuario);
         const titulos = responseTitulos.data;
 
-        // Buscar los titulos disponibles y agregarlo al formData.academico.pregrado
         for (let i = 0; i < titulos.length; i++) {
           if (titulos[i].nivel == "pregrado") {
             this.formData.academico.pregrado = titulos[i];
@@ -626,15 +600,38 @@ export default {
       } catch (error) {
         console.error(error);
       }
-
-      // OBTIENE LAS AREAS DE CONOCIMIENTO 
-      try {
-        const responseAreasConocimiento = await getAreasConocimiento();
-        this.areasConocimiento = responseAreasConocimiento.data;
-      } catch (error) {
-        console.error(error);
+    },
+    
+    //Controlador de archivos academicos
+    handleFileChange(tipo, event) {
+      const file = event.target.files[0];
+      if (file && tipo == 'pregrado') {
+          if(this.formData.academico.pregrado !== ''){
+            
+          }
       }
     },
+
+    async submitPersonalData(){
+
+      this.documentsTypes.forEach(tipo => {
+        if (tipo.nombre === this.formData.personal.id_tipo_documento) {
+          this.formData.personal.id_tipo_documento = tipo.id_tipo_documento;
+        }
+      });
+      console.log("id_usuario:");
+      console.log(this.user.id_usuario);
+      try{
+        await updateUserProfile(this.user.id_usuario,this.formData.personal);
+        this.showSuccessToast('Actualización exitosa');
+        
+      }catch{
+        this.showErrorToast('Error al actualizar datos personales');
+      }
+      
+    },
+
+    //Controlador de Modal
     showModal(){
       this.isModalOpen = true;
     },
@@ -644,8 +641,8 @@ export default {
   },
   mounted() {
     this.getDocumentsTypes();
-    this.loadUserProfile();
-    this.loadAcademicDegrees();
+    this.getAcademicData();
+    this.getCertificates();
   },
 };
 </script>

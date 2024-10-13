@@ -82,6 +82,11 @@ export default {
                 const response = await getApplicationsByPage(this.currentPage);
                 this.evaluators = response.data.applications; 
                 this.totalPages = response.data.total_pages;
+
+                if (this.currentPage > this.totalPages) {
+                    this.currentPage--; 
+                    this.fetchEvaluators(); 
+                }
             } catch (error) {
                 this.showErrorToast('Error al cargar postulaciones');
             }
