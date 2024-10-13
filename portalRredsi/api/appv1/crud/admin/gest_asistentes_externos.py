@@ -175,3 +175,21 @@ def existing_attendee(db: Session, usuario_id: int):
     except SQLAlchemyError as e:
         print(f"Error al buscar asistente por id de usuario: {e}")
         raise HTTPException(status_code=500, detail="Error al buscar usuario por id")
+    
+def existing_user(db: Session, usuario_id: int):
+    try:
+        sql = text("SELECT * FROM usuarios WHERE id_usuario = :id")
+        result = db.execute(sql, {"id": usuario_id}).fetchone()
+        return result
+    except SQLAlchemyError as e:
+        print(f"Error al buscar usuario por id: {e}")
+        raise HTTPException(status_code=500, detail="Error al buscar usuario por id")
+    
+def existing_record(db: Session, usuario_id: int):
+    try:
+        sql = text("SELECT * FROM detalles_institucionales WHERE id_usuario = :id")
+        result = db.execute(sql, {"id": usuario_id}).fetchone()
+        return result
+    except SQLAlchemyError as e:
+        print(f"Error al buscar usuario por id: {e}")
+        raise HTTPException(status_code=500, detail="Error al buscar usuario por id")

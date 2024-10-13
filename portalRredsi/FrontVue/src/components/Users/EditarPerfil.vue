@@ -54,13 +54,14 @@
               <div class="form-row justify-content-center mb-3">
                 <div class="form-group col-md-5 me-3">
                   <label for="inputDocumentType">Tipo de documento:</label>
-                  <select id="inputDocumentType" v-model="tipoDocumento" type="select" class="form-control text-dark custom-select" required>
+                  <select :disabled="tipoDocumento != ''" id="inputDocumentType" v-model="tipoDocumento" type="select" class="form-control text-dark custom-select" required>
+                    <option disabled selected v-if="tipoDocumento=='Seleccione una opción'">{{tipoDocumento}}</option>
                     <option v-for="opc in documentsTypes" :key="opc.id_tipo_documento" :value="opc.nombre">{{ opc.nombre }}</option>
                   </select>
                 </div>
                 <div class="form-group col-md-5">
                   <label for="inputDocumentNumber">N° de Documento:</label>
-                  <input type="text" v-model="formData.personal.documento" class="form-control" id="inputDocumentNumber" />
+                  <input :disabled="formData.personal.documento != null" type="text" v-model="formData.personal.documento" class="form-control" id="inputDocumentNumber" />
                 </div>
               </div>
               <div class="form-row justify-content-center mb-5">
@@ -85,15 +86,18 @@
               <h2>Datos Institucionales</h2>
             </div>
             <div class="title-line"></div>
-            <form @submit.prevent="submitAcademicData()" class="row my-5 font-weight-bold text-dark">
+            <form @submit.prevent="submitInstitutionalData()" class="row my-5 font-weight-bold text-dark">
               <div class="form-row justify-content-center mb-3">
                 <div class="form-group col-md-5 me-3">
                   <label for="inputPlaceName">Institución educativa:</label>
-                  <input type="text" v-model="formData.institucional.institucion" class="form-control" id="inputPlaceName" />
+                  <select id="inputPlceName" v-model="selectedInstitution" type="select" class="form-control text-dark custom-select" required>
+                    <option disabled selected v-if="selectedInstitution=='Seleccione una opción'">{{selectedInstitution}}</option>
+                    <option v-for="opc in instituciones" :key="opc.id_tipo_documento" :value="opc.nombre">{{ opc.nombre }}</option>
+                  </select>
                 </div>
                 <div class="form-group col-md-5 mb-3">
                   <label for="inputResearchGroup">Grupo de Investigación:</label>
-                  <input type="text" v-model="formData.institucional.grupoInvestigacion" class="form-control" id="inputResearchGroup" />
+                  <input type="text" v-model="formData.institucional.grupo_investigacion" class="form-control" id="inputResearchGroup" required />
                 </div>
               </div>
               <div class="form-row justify-content-center mb-5">
@@ -105,13 +109,15 @@
               <div class="form-row justify-content-center mb-5">
                 <div class="form-group col-md-5 me-3">
                     <label for="inputKnowledgeArea">Area de Conocimiento:</label>
-                    <select id="inputKnowledgeArea" v-model="formData.institucional.primer_area" type="select" class="form-control text-dark custom-select" required>
+                    <select id="inputKnowledgeArea" v-model="primeraArea" type="select" class="form-control text-dark custom-select" required>
+                      <option disabled selected v-if="primeraArea=='Seleccione una opción'">{{primeraArea}}</option>
                       <option v-for="opc in areasConocimiento" :key="opc.id_area_conocimiento" :value="opc.nombre">{{ opc.nombre }}</option>
                     </select>
                 </div>
                 <div class="form-group col-md-5">
                     <label for="inputAnotherArea">Otra Area:</label>
-                    <select id="inputAnotherArea"  v-model="formData.institucional.segunda_area" type="select" class="form-control text-dark custom-select" required>
+                    <select id="inputAnotherArea"  v-model="segundaArea" type="select" class="form-control text-dark custom-select" required>
+                      <option disabled selected v-if="segundaArea=='Seleccione una opción'">{{segundaArea}}</option>
                       <option v-for="opc in areasConocimiento" :key="opc.id_area_conocimiento" :value="opc.nombre">{{ opc.nombre }}</option>
                     </select>
                 </div>                                   
@@ -259,7 +265,7 @@
               
               <div class="card-body my-3 font-weight-bold text-dark">
                   <div class="title-line mb-4"></div> 
-                  <form action="#">
+                  <form @submit.prevent="submitPersonalData()">
                       <div class="form-row">
                           <div class="form-group col-md-6">
                             <label for="inputName">Nombres:</label>
@@ -273,14 +279,15 @@
                       <div class="form-row">
                           <div class="form-group col-md-6">
                               <label for="inputDocumentType">Tipo de documento:</label>
-                              <select id="inputDocumentType" v-model="tipoDocumento" type="select" class="form-control text-dark custom-select" required>
+                              <select :disabled="tipoDocumento != ''"  id="inputDocumentType" v-model="tipoDocumento" type="select" class="form-control text-dark custom-select" required>
+                                <option disabled selected v-if="tipoDocumento=='Seleccione una opción'">{{tipoDocumento}}</option>
                                 <option v-for="opc in documentsTypes" :key="opc.id_tipo_documento" :value="opc.nombre">{{ opc.nombre }}</option>
                               </select>
                           </div>
                         
                           <div class="form-group col-md-6">
                               <label for="inputCity">N° de Documento:</label>
-                              <input type="text" class="form-control" id="inputCity" v-model="formData.personal.documento">
+                              <input :disabled="formData.personal.documento != null" type="text" class="form-control" id="inputCity" v-model="formData.personal.documento">
                           </div>
                       </div>
                       <div class="form-group mb-5">
@@ -309,15 +316,18 @@
             <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionExample">
               <div class="card-body my-3 font-weight-bold text-dark">
                   <div class="title-line mb-4"></div> 
-                  <form action="#">
+                  <form @submit.prevent="submitInstitutionalData()" >
                       <div class="form-row">
                           <div class="form-group col-md-6">
                             <label for="inputPlaceName">Institución educativa:</label>
-                            <input type="text" class="form-control" id="inputPlaceName" v-model="formData.institucional.institucion">
+                            <select id="inputPlceName" v-model="selectedInstitution" type="select" class="form-control text-dark custom-select" required>
+                              <option disabled selected v-if="selectedInstitution=='Seleccione una opción'">{{selectedInstitution}}</option>
+                              <option v-for="opc in instituciones" :key="opc.id_tipo_documento" :value="opc.nombre">{{ opc.nombre }}</option>
+                            </select>
                           </div>
                           <div class="form-group col-md-6">
                             <label for="inputResearchGroup">Grupo de Investigación:</label>
-                            <input type="text" class="form-control" id="inputSearchGroup" v-model="formData.institucional.grupoInvestigacion">
+                            <input type="text" class="form-control" id="inputSearchGroup" v-model="formData.institucional.grupo_investigacion" required>
                           </div>
                       </div>
                       <div class="form-group">
@@ -327,7 +337,8 @@
                       <div class="form-group row justify-content-center">
                         <label for="inputKnowledgeArea" class="col-md-10 mx-4">Area de Conocimiento:</label>
                         <div class="col-md-10">
-                          <select id="inputKnowledgeArea" v-model="formData.institucional.primer_area" type="select" class="form-control text-dark custom-select" required>
+                          <select id="inputKnowledgeArea" v-model="formData.institucional.id_primer_area_conocimiento" type="select" class="form-control text-dark custom-select" required>
+                            <option disabled selected v-if="primeraArea=='Seleccione una opción'">{{primeraArea}}</option>
                             <option v-for="opc in areasConocimiento" :key="opc.id_area_conocimiento" :value="opc.nombre">{{ opc.nombre }}</option>
                           </select>
                         </div> 
@@ -336,6 +347,7 @@
                         <label for="inputAnotherArea" class="col-md-10 mx-4">Otra Area:</label>
                         <div class="col-md-10">
                           <select id="inputAnotherArea"  v-model="formData.institucional.segunda_area" type="select" class="form-control text-dark custom-select" required>
+                            <option disabled selected v-if="segundaArea=='Seleccione una opción'">{{segundaArea}}</option>
                             <option v-for="opc in areasConocimiento" :key="opc.id_area_conocimiento" :value="opc.nombre">{{ opc.nombre }}</option>
                           </select>
                         </div>
@@ -446,17 +458,19 @@
   </div>
 
   <!-- Modal -->
-  <ChangePasswordModal v-if="isModalOpen" @close="closeModal()" />
+  <ChangePasswordModal v-if="isModalOpen" @close="closeModal()" :email="formData.personal.correo" />
 </template>
 
 <script>
-import { getCurrentUser,getInstitutionalDetails,updateUserProfile } from '../../services/UsuarioService';
+import { createInstitutionalData, getInstitutionalDetails,updateInstitutionalData,updateUserProfile } from '../../services/UsuarioService';
 import { getAllTiposDocumento } from '../../services/TipoDocumentoService';
 import { useAuthStore } from '@/store';
 import { getCertificatesById } from '@/services/postulacionService';
 import { getAreasConocimiento } from '@/services/administradorService';
+import {getAllInstituciones} from '@/services/institucionesService';
 import ChangePasswordModal from './ChangePasswordModal.vue';
 import { useToastUtils } from '@/utils/toast';
+import {ref} from 'vue';
 
 export default {
   components: {
@@ -464,6 +478,7 @@ export default {
   },
   data() {
     return {
+      editInstitutionalData:false,
       next:'datos_institucionales',
       previous:'',
       activeSection: 'datos_personales',
@@ -477,18 +492,19 @@ export default {
       isModalOpen:false,
       formData: {
         personal: {
-          id_tipo_documento: this.user.id_tipo_documento,
-          documento: this.user.documento,
-          nombres: this.user.nombres,
-          apellidos: this.user.apellidos,
-          correo: this.user.correo,
+          id_tipo_documento: '',
+          documento: '',
+          nombres: '',
+          apellidos: '',
+          correo: '',
         },
         institucional: {
-          institucion: '',
-          grupoInvestigacion: '',
+          id_usuario:'',
+          id_institucion: '',
           semillero: '',
-          primer_area:'',
-          segunda_area:'',
+          grupo_investigacion: '',
+          id_primera_area_conocimiento:'',
+          id_segunda_area_conocimiento:'',
         },
         academico: {
           pregrado: '',
@@ -497,15 +513,19 @@ export default {
           doctorado: '',
         },
       },
-      tipoDocumento:'',
+      tipoDocumento:'Seleccione una opción',
+      selectedInstitution:'Seleccione una opción',
+      primeraArea:'Seleccione una opción',
+      segundaArea:'Seleccione una opción',
       areasConocimiento: [],
       documentsTypes:[],
+      instituciones:[],
     };
   },
   setup() {
         const authStore = useAuthStore();
 
-        const user = authStore.user;
+        const user = ref(authStore.user);
 
         return {
             user,
@@ -554,29 +574,45 @@ export default {
     },
 
     //Se obtienen los datos academicos
-    async getAcademicData(){
-      try {
-        const response_datos_academicos = await getInstitutionalDetails();
-
-        this.formData.institucional.institucion = response_datos_academicos.data.id_institucion ;
-        this.formData.institucional.grupoInvestigacion = response_datos_academicos.data.grupo_investigacion;
-        this.formData.institucional.semillero = response_datos_academicos.data.semillero;
+    async getInstitutionalData(){
 
         //Se obtienen todas las  Areas de Conocimiento
         const responseAreasConocimiento = await getAreasConocimiento();
         this.areasConocimiento = responseAreasConocimiento.data;
 
-        //Se obtiene Area de conocimiento especifica
-        this.areasConocimiento.forEach(tipo => {
-          if (tipo.id_area_conocimiento === response_datos_academicos.data.id_primera_area_conocimiento) {
-            this.formData.institucional.primer_area= tipo.nombre;
-          }else if(tipo.id_area_conocimiento === response_datos_academicos.data.id_segunda_area_conocimiento){
-            this.formData.institucional.segunda_area = tipo.nombre;
-          }
-        });
-      } catch (error) {
-      
-      }
+
+        //Se obtienen todas las instituciones
+        const responseInstituciones = await getAllInstituciones();
+          this.instituciones = responseInstituciones.data;
+        
+        const response_datos_academicos = await getInstitutionalDetails();
+        if(response_datos_academicos != null){
+          this.editInstitutionalData=true;
+
+          this.formData.institucional.id_usuario = response_datos_academicos.data.id_usuario;
+          this.formData.institucional.id_institucion = response_datos_academicos.data.id_institucion ;
+          this.formData.institucional.grupo_investigacion = response_datos_academicos.data.grupo_investigacion;
+          this.formData.institucional.semillero = response_datos_academicos.data.semillero;
+          this.formData.institucional.id_primera_area_conocimiento = response_datos_academicos.data.id_primera_area_conocimiento;
+          this.formData.institucional.id_segunda_area_conocimiento = response_datos_academicos.data.id_segunda_area_conocimiento;
+
+          //Se obtiene Area de conocimiento especifica
+          this.areasConocimiento.forEach(tipo => {
+            if (tipo.id_area_conocimiento === response_datos_academicos.data.id_primera_area_conocimiento) {
+              this.primeraArea= tipo.nombre;
+            }else if(tipo.id_area_conocimiento === response_datos_academicos.data.id_segunda_area_conocimiento){
+              this.segundaArea = tipo.nombre;
+            }
+
+            
+            //Se obtiene el nombre de la institución actual
+            this.instituciones.forEach(cur_opc => {
+              if (cur_opc.id_institucion === response_datos_academicos.data.id_institucion) {
+                this.selectedInstitution = cur_opc.nombre
+              }
+            });
+          });
+        }
     },
 
     // Se obtienen los titulos 
@@ -619,16 +655,81 @@ export default {
           this.formData.personal.id_tipo_documento = tipo.id_tipo_documento;
         }
       });
-      console.log("id_usuario:");
-      console.log(this.user.id_usuario);
+
       try{
-        await updateUserProfile(this.user.id_usuario,this.formData.personal);
+        const updated_data = await updateUserProfile(this.user.id_usuario, this.formData.personal);
         this.showSuccessToast('Actualización exitosa');
-        
-      }catch{
+
+          // Obtenemos la información del usuario en localStorage
+          const userInStorage = JSON.parse(localStorage.getItem('user')); 
+          console.log("DATOS:");
+
+          console.log(userInStorage.apellidos)
+          console.log(updated_data.apellidos)
+          // Actualizamos los datos del usuario
+          userInStorage.id_tipo_documento = updated_data.id_tipo_documento;
+          userInStorage.documento = updated_data.documento;
+          userInStorage.nombres = updated_data.nombres;
+          userInStorage.apellidos=updated_data.apellidos;
+          userInStorage.correo = updated_data.correo;
+          localStorage.setItem('user', JSON.stringify(userInStorage)); 
+  
+          this.user.value = { ...userInStorage };
+
+          this.formData = {
+            ...this.formData,
+            personal: {
+              id_tipo_documento: updated_data.id_tipo_documento,
+              documento: updated_data.documento,
+              nombres: updated_data.nombres,
+              apellidos: updated_data.apellidos,
+              correo: updated_data.correo,
+            },
+          };
+      }catch {
         this.showErrorToast('Error al actualizar datos personales');
       }
       
+    },
+
+    async submitInstitutionalData(){
+      this.formData.institucional.id_usuario = this.user.id_usuario;
+
+      this.instituciones.forEach(cur_opc => {
+          if (cur_opc.nombre === this.selectedInstitution) {
+            this.formData.institucional.id_institucion = cur_opc.id_institucion
+          }
+      });
+
+      this.areasConocimiento.forEach(tipo => {
+          if (tipo.nombre === this.primeraArea) {
+            this.formData.institucional.id_primera_area_conocimiento = tipo.id_area_conocimiento;
+          }else if(tipo.nombre === this.segundaArea){
+            this.formData.institucional.id_segunda_area_conocimiento = tipo.id_area_conocimiento;
+          }
+        });
+
+      if(this.editInstitutionalData){
+        try{
+          const updated_data = await updateInstitutionalData(this.user.id_usuario,this.formData.institucional);
+          this.showSuccessToast('Actualización exitosa');
+          this.getInstitutionalData();
+        }catch{
+          this.showErrorToast('Error al actualizar datos institucionales');
+        }
+        
+      }else{
+        try{
+          console.log("objecto:");
+          console.log(this.formData.institucional);
+          await createInstitutionalData(this.formData.institucional);
+          this.showSuccessToast('Los datos institucionales se registraron exitosamente');
+          this.getInstitutionalData();
+        }catch{
+          this.showErrorToast('Error al actualizar datos institucionales');
+        }
+      }
+
     },
 
     //Controlador de Modal
@@ -641,8 +742,17 @@ export default {
   },
   mounted() {
     this.getDocumentsTypes();
-    this.getAcademicData();
+    this.getInstitutionalData();
     this.getCertificates();
+    
+    // const user = JSON.parse(localStorage.getItem('user')); 
+    this.formData.personal = {
+      id_tipo_documento: this.user.id_tipo_documento || '',
+      documento: this.user.documento || '',
+      nombres: this.user.nombres || '',
+      apellidos: this.user.apellidos || '',
+      correo: this.user.correo || '',
+    };
   },
 };
 </script>
