@@ -105,7 +105,7 @@
 
 <script>
 import { ref, computed, watch, onMounted } from 'vue';
-import { obtenerDatosParaCalificarProyecto, insertarRespuestaRubrica,  obtenerRubricasCalificadas } from '../../../../../services/evaluadorService';
+import { obtenerDatosParaCalificarProyecto, insertarRespuestaRubrica, obtenerRubricasCalificadas } from '../../../../../services/evaluadorService';
 import { obtener_id_suplente, obtenerRubricasCalificadasSuplente } from '../../../../../services/delegadoService';
 import { useAuthStore } from '@/store';
 import { useToastUtils } from '@/utils/toast';
@@ -207,7 +207,7 @@ export default {
                     componentes.value = data.componentes;
                     botonCalificar.value = "Inactivo";
                     calificadaSuplente.value = true;
-                    
+
                 }
                 catch (error) {
                     try {
@@ -278,17 +278,23 @@ export default {
         };
 
         const enviarCalificaciones = async () => {
+            // Validar si el suplente ha sido asignado
+            if (!idSuplente.value || idSuplente.value === '') {
+                showWarningToast('Debe agregar un suplente antes de calificar.');
+                return; // Salir de la función si no hay suplente
+            }
+
+            // Validar que las calificaciones y observaciones sean correctas
             if (!validarCalificacionesYObservaciones()) {
                 return;
             }
 
             try {
                 // Iterar sobre los componentes y enviar la calificación de cada uno
-                // if(idSuplente.value && idSuplente.value.trim() !== ''){
-                    for (let componente of componentes.value) {
+                for (let componente of componentes.value) {
                     const respuestaData = {
                         id_item_rubrica: componente.id_item_rubrica,
-                        id_usuario: idSuplente.value,
+                        id_usuario: idSuplente.value, // id del suplente
                         id_proyecto: props.proyecto.id_proyecto,
                         observacion: componente.observaciones,
                         calificacion: componente.calificacion,
@@ -296,13 +302,13 @@ export default {
                         etapa_actual: currentEtapa.value,  // Etapa actual
                     };
                     await insertarRespuestaRubrica(respuestaData);
-                    showSuccessToast('Calificación enviada exitosamente.');
-                    }
-                // }else {
-                //     console.log('Debes asignar un suplente al evaluador faltante para calificar (ALERTA INFORMATIVA)');
-                // }
+                }
+                showSuccessToast('Calificación enviada exitosamente.');
+                botonCalificar.value = "Inactivo";
+                props.proyecto.estado_calificacion = "C_" + props.etapa;
+
             } catch (error) {
-                console.log('Error al calificar la rubrica.(ALERTA INFORMATIVA)');
+                showErrorToast('Error al calificar la rúbrica.');
             }
         };
 

@@ -36,7 +36,7 @@
                             </div>
                             <div v-if="cargarRubricaPresencial" class="col-md-3 d-flex flex-column align-items-center">
                                 <SuplentesCom :idProyecto="proyecto.id_proyecto" :idEtapa="proyecto.id_etapa"
-                                    :tipo="tipo" :evaluadores="evaluadores" :ponentes="ponentes" />
+                                    :tipo="tipo" :evaluadores="evaluadores" :ponentes="ponentes" :isCalificado="proyecto.isCalificado" @suplente-agregado="handleSuplenteAgregado"/>
                             </div>
                             <!-- Botones -->
                             <div class="col-lg-12 mt-4 ">
@@ -205,6 +205,8 @@ export default {
         const tipo = ref('');
         const isLoading = ref(true);
 
+        console.log('Estado del proyecto:', props.proyecto.estado);
+
         // Función para obtener los evaluadores del proyecto
         const fetchEvaluadores = async (id_proyecto) => {
             try {
@@ -227,7 +229,7 @@ export default {
                         id_evaluador2.value = evaluadores.value.presencial[0].id_usuario;
                         id_evaluador3.value = evaluadores.value.presencial[1].id_usuario;
                     } else {
-                        alert("NO SE HAN AGREGADO EVALUADORE. CAMBIE ESTO");
+                        showErrorToast("NO se han encontrado evaluadores.");
                     }
                     evaluadoresObtenidos.value = 'True';
                 }
@@ -286,11 +288,11 @@ export default {
                 }
             } catch (error) {
                 showErrorToast('Error al cargar los datos del proyecto.');
-
             } finally {
                 isLoading.value = false;
             }
-        }
+        };
+
         const openModal = () => {
             $('#presentationModal').modal('show');
         };
@@ -304,6 +306,13 @@ export default {
                 showErrorToast('Error al guardar la presentación. Por favor, intenta nuevamente.');
             }
         };
+
+        // Función llamada cuando se agrega un suplente
+        const handleSuplenteAgregado = () => {
+            console.log("Un suplente ha sido agregado, actualizando el componente...");
+            fetchAllData(); // Recargar los datos del proyecto
+        };
+
         onMounted(() => {
             console.log('Componente montado');
             fetchAllData();
@@ -331,12 +340,11 @@ export default {
             guardarPresentacion,
             openModal,
             isLoading,
+            handleSuplenteAgregado, // Exportar la función para manejar suplentes agregados
         };
     },
 };
 </script>
-
-
 
 
 <style scoped>
