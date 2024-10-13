@@ -82,7 +82,7 @@
 
             <div class="text-center mt-3">
               <a
-                href="https://colaboracion.dnp.gov.co/CDTI/Oficina%20Informatica/Sistemas%20de%20informaci%C3%B3n/Gu%C3%ADas%20Formatos%20Plantillas/Gu%C3%ADa%20para%20la%20Elaboraci%C3%B3n%20del%20Manual%20del%20Usuario%20del%20Sistema.pdf"
+                :href="infoModal.value.url_titulo"
                 class="btn btn-warning"
                 target="_blank"
                 >Ver Títulos</a
