@@ -1,7 +1,7 @@
 from typing import List
 from fastapi import APIRouter, Depends, File, HTTPException, UploadFile
 from sqlalchemy.orm import Session
-from appv1.crud.admin.gest_asistentes_externos import generate_code, get_attendee_by_document, get_id_document_type, get_paginated_attendees, insert_attendee, insert_user, insertar_historial_admin, update_external_attendees
+from appv1.crud.admin.gest_asistentes_externos import existing_attendee, existing_document, existing_email, generate_code, get_attendee_by_document, get_id_document_type, get_paginated_attendees, insert_attendee, insert_user, insertar_historial_admin, update_external_attendees
 from appv1.crud.admin.gest_delegado import create_delegado, get_all_document,get_delegados_activos_paginated, get_delegados_by_document, get_user_email, update_status_delegate
 from appv1.crud.admin.gest_rubricas import create_items,get_all_rubricas, update_items, update_status
 from appv1.crud.admin.gest_rubricas import get_all_rubricas
@@ -19,7 +19,7 @@ from appv1.schemas.usuario import UserCreate, UserResponse
 from core.utils import save_file
 from db.database import get_db
 from appv1.crud.permissions import get_permissions
-from appv1.crud.usuarios import get_user_by_documento, get_user_by_email
+from appv1.crud.usuarios import get_user_by_documento
 import pandas as pd
 
 router_admin = APIRouter()
@@ -410,17 +410,18 @@ async def upload_file(file: UploadFile = File(...), db: Session = Depends(get_db
     for index, row in df.iterrows():
         
         #Se comprueba que el asistente no se encuentre en la tabla usuarios
-        existing_user_email = get_user_by_email(db,row['correo'])
-        existing_user_doc = get_user_by_documento(db,row['documento'])
+        existing_user_email = existing_email(db,row['correo'])
+        existing_user_doc = existing_document(db,row['documento'])
 
-        id_asistente=None
+        usuario_id=None
+        convocatoria= obtener_convocatoria_en_curso(db)
 
         #Si no se encontró
         if existing_user_email is None and existing_user_doc is None:
             
             password = generate_code()
             id_tipo_doc = get_id_document_type(db,row['tipo_documento'])
-
+            
             # se obtiene los datos de los campos indicados y se Insertan en la tabla 'usuarios'
             asistente_externo = insert_user(
                 db=db,
@@ -433,20 +434,29 @@ async def upload_file(file: UploadFile = File(...), db: Session = Depends(get_db
                 telefono=row.get('celular', None)
             )
 
-            id_asistente=asistente_externo.id_usuario
+            usuario_id=asistente_externo.id_usuario
         else:
             #de lo contrario, se obtiene el id_usuario
-            id_asistente=existing_user_doc[0]
+            usuario_id=existing_user_doc[0]
 
-        # Insertar comprobante_pago y demás datos en la tabala asistencia 
-        new_attendee = insert_attendee(
-            db, 
-            id_asistente, 
-            row['url_comprobante_pago']
-        )
+        attendee = existing_attendee(db, usuario_id)
 
-        insertar_historial_admin(db,'Insertar',MODULE,new_attendee.id_asistente,current_user.id_usuario)
-    return {"message": "File processed and data stored successfully.", "file_location": file_location}
+        # Si el asistente no se ha ingresado en la tabala asistencia en la convocatoria actual
+        if(attendee is None):
+            new_attendee = insert_attendee(
+                db, 
+                usuario_id, 
+                row['url_comprobante_pago'],
+                convocatoria.id_convocatoria
+            )
+            
+            insertar_historial_admin(db,'Insertar',MODULE,new_attendee.id_asistente,current_user.id_usuario)
+            return {"message": "File processed and data stored successfully.", "file_location": file_location}
+        else:
+            return{"mensaje": f"Ya se ingresó el asistente {attendee[0]} en esta convocatoria"}
+            
+
+            
 
 
 # Obtener asistentes paginados

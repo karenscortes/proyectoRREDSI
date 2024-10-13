@@ -120,9 +120,6 @@ export default {
       }
 
       try {
-        // Verifica los datos antes de enviarlos
-        console.log('Datos enviados:', this.form);
-
         // Llamada al servicio de crear usuario
         const response = await createUser(
           this.form.id_tipo_documento, // Asegúrate de enviar el ID del tipo de documento
@@ -141,8 +138,11 @@ export default {
         this.form = this.getInitialForm();
 
       } catch (error) {
-        console.error('Error al crear el usuario, el correo ya existe:', error.response ? error.response.data : error.message);
-        showErrorToast('Error al crear el usuario, el correo ya existe'); // Mostramos alerta de error
+        console.error('Error al crear el usuario:', error.response ? error.response.data : error.message);
+        
+        // Mostrar el error dinámicamente desde la API
+        const errorMessage = error.detail || 'Error desconocido al crear el usuario'; // Usamos el mensaje que viene de la API
+        showErrorToast(errorMessage); // Mostramos alerta de error con el mensaje adecuado
       }
     },
   },

@@ -23,7 +23,7 @@ def get_all_applications(db: Session, page: int = 1, page_size: int = 10):
                 LEFT JOIN areas_conocimiento area1 ON (detalles_institucionales.id_primera_area_conocimiento = area1.id_area_conocimiento)
                 LEFT JOIN areas_conocimiento area2 ON (detalles_institucionales.id_segunda_area_conocimiento= area2.id_area_conocimiento)
             WHERE postulaciones_evaluadores.estado_postulacion = 'pendiente'
-            AND postulaciones_evaluadores.id_convocatoria IN (
+            AND postulaciones_evaluadores.id_convocatoria = (
                 SELECT id_convocatoria 
                 FROM convocatorias 
                 WHERE estado = 'en curso'
@@ -72,7 +72,7 @@ def get_application_by_id(db: Session, id_evaluador:int):
                 LEFT JOIN areas_conocimiento area2 ON (detalles_institucionales.id_segunda_area_conocimiento= area2.id_area_conocimiento)
             WHERE postulaciones_evaluadores.id_evaluador = :id_evaluador
             AND postulaciones_evaluadores.estado_postulacion = 'pendiente'
-            AND postulaciones_evaluadores.id_convocatoria IN (
+            AND postulaciones_evaluadores.id_convocatoria = (
                 SELECT id_convocatoria 
                 FROM convocatorias 
                 WHERE estado = 'en curso'
@@ -95,7 +95,7 @@ def update_application_status(db: Session, id_evaluador:int, estado: str):
         sql = text(
         """
             UPDATE postulaciones_evaluadores SET estado_postulacion = :estado 
-            WHERE id_evaluador = :id_evaluador AND id_convocatoria IN (
+            WHERE id_evaluador = :id_evaluador AND id_convocatoria = (
                 SELECT id_convocatoria 
                 FROM convocatorias 
                 WHERE estado = 'en curso'

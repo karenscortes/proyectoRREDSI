@@ -9,6 +9,7 @@ class AttendeesBase(BaseModel):
     celular: str
     correo: EmailStr 
     url_comprobante_pago:str
+    id_convocatoria:int
 
 class PaginatedAttendees(BaseModel):
     attendees: List[AttendeesBase]

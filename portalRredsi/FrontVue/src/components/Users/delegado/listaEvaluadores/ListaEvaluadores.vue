@@ -9,14 +9,29 @@
                 </div>
             </div>
             <!-- buscador -->
-            <div class="row mb-4 justify-content-end">
-                <div class="col-10 col-sm-6 justify-content-end">
-                    <div class="row justify-content-end">
-                        <div class="col-8">
-                            <input v-model="documento_evaluador" type="text" id="busqueda" @keyup.enter="buscarEvaluador" class="form-control text-dark" placeholder="Ingrese documento o nombre del evaluador">
-                        </div>
-                        <div class="col-4">
-                            <button class="btn btn-buscar w-100 font-weight-bold" @click="buscarEvaluador">Buscar</button>
+            <div class="row">
+                <div class="col-1 mt-2">
+                    <a class="btn_refrescar" @click="fecthEvaluadores()"> 
+                        <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px"
+                            fill="#FFB606">
+                            <path
+                                d="M482-160q-134 0-228-93t-94-227v-7l-64 64-56-56 160-160 160 160-56 56-64-64v7q0 100 70.5 170T482-240q26 0 51-6t49-18l60 60q-38 22-78 33t-82 11Zm278-161L600-481l56-56 64 64v-7q0-100-70.5-170T478-720q-26 0-51 6t-49 18l-60-60q38-22 78-33t82-11q134 0 228 93t94 227v7l64-64 56 56-160 160Z" />
+                        </svg>
+                    </a>
+                </div>
+
+                <div class="row col-11 mb-4 justify-content-end">
+                    <div class="col-10 col-sm-6 justify-content-end">
+                        <div class="row justify-content-end">
+                            <div class="col-8">
+                                <input v-model="documento_evaluador" type="text" id="busqueda"
+                                    @keyup.enter="buscarEvaluador" class="form-control text-dark"
+                                    placeholder="Ingrese documento o nombre del evaluador">
+                            </div>
+                            <div class="col-4">
+                                <button class="btn btn-buscar w-100 font-weight-bold"
+                                    @click="buscarEvaluador">Buscar</button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -30,22 +45,23 @@
                         <tr>
                             <th>Documento</th>
                             <th>Evaluador</th>
-                            <th>Area de conocimiento</th>
-                            <th>Institucion</th>
+                            <th>Área de conocimiento</th>
+                            <th>Institución</th>
                             <th>Estado</th>
                             <th>Detalle</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr v-for="(evaluador, index) in evaluadores" :key="index">
+                        <tr v-for="(evaluador, index) in evaluadores" :key="evaluador">
                             <td>{{ evaluador.documento }}</td>
-                            <td>{{ evaluador.nombres }} {{ evaluador.apellidos  }}</td>
+                            <td>{{ evaluador.nombres }} {{ evaluador.apellidos }}</td>
                             <td>{{ evaluador.area_conocimiento }}</td>
                             <td>{{ evaluador.nombre_institucion }}</td>
                             <td class="pl-4">
                                 <div class="custom-control custom-switch d-flex">
                                     <input type="checkbox" class="custom-control-input" :id="index"
-                                        :checked="evaluador.estado == 'activo' ? true : false" @click="actualizarEvaluador(evaluador.id_usuario,evaluador.estado)">
+                                        :checked="evaluador.estado == 'activo' ? true : false"
+                                        @click="actualizarEvaluador(evaluador.id_usuario, evaluador.estado)">
                                     <label class="custom-control-label" :for="index"></label>
                                 </div>
                             </td>
@@ -124,16 +140,24 @@
                                 aria-label="Close"></button>
                         </div>
                         <div class="col-12">
-                            <h1 class="modal-title fs-5 text-dark" id="exampleModalLabel">Programas Académicos<svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#00000"><path d="M480-120 200-272v-240L40-600l440-240 440 240v320h-80v-276l-80 44v240L480-120Zm0-332 274-148-274-148-274 148 274 148Zm0 241 200-108v-151L480-360 280-470v151l200 108Zm0-241Zm0 90Zm0 0Z"/></svg></h1>
+                            <h1 class="modal-title fs-5 text-dark" id="exampleModalLabel">Programas Académicos<svg
+                                    xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960"
+                                    width="24px" fill="#00000">
+                                    <path
+                                        d="M480-120 200-272v-240L40-600l440-240 440 240v320h-80v-276l-80 44v240L480-120Zm0-332 274-148-274-148-274 148 274 148Zm0 241 200-108v-151L480-360 280-470v151l200 108Zm0-241Zm0 90Zm0 0Z" />
+                                </svg></h1>
                         </div>
                     </div>
                     <div class="modal-body">
                         <div class="list-group">
-                            <a v-for="(certificate,index) in certificates"  :key="index" :href="certificate.url_titulo" class="list-group-item list-group-item-action" target="_blank">{{certificate.nivel}}</a>
+                            <a v-for="(certificate, index) in certificates" :key="index" :href="certificate.url_titulo"
+                                class="list-group-item list-group-item-action" target="_blank">{{ certificate.nivel
+                                }}</a>
                         </div>
                     </div>
                     <div class="row justify-content-center mb-2">
-                        <button type="button" class="btn btn-dark fw-bold col-4 text-center" data-bs-dismiss="modal">Cerrar</button>
+                        <button type="button" class="btn btn-dark fw-bold col-4 text-center"
+                            data-bs-dismiss="modal">Cerrar</button>
                     </div>
                 </div>
             </div>
@@ -156,8 +180,8 @@ export default {
             evaluadores: [],
             totalPages: 0,
             current_page: 1,
-            documento_evaluador:"",
-            certificates : []
+            documento_evaluador: "",
+            certificates: []
         }
     },
     setup() {
@@ -194,10 +218,10 @@ export default {
             showWarningToast
         }
     },
-    components:{
+    components: {
         PaginatorBody
     },
-    methods:{
+    methods: {
         async fecthEvaluadores(pagina_actual) {
             try {
                 const respuesta = await obtenerListaEvaluadores(pagina_actual);
@@ -208,18 +232,18 @@ export default {
                 this.showInfoToast("Aún no hay Evaluadores registrados");
             }
         },
-        async actualizarEvaluador(id_evaluador,estado) {
+        async actualizarEvaluador(id_evaluador, estado) {
             try {
                 let nuevoEstado = "inactivo";
 
-                if(estado === "activo"){
+                if (estado === "activo") {
                     nuevoEstado = "inactivo";
-                }else{
+                } else {
                     nuevoEstado = "activo";
                 }
 
                 await actualizarEstadoEvaluador(id_evaluador, nuevoEstado);
-                
+
                 // Configuración de la alerta 
                 this.showSuccessToast("El estado del evaluador se ha cambiado con exito");
 
@@ -229,37 +253,36 @@ export default {
                 showErrorToast("El estado del evaluador no se ha podido cambiar");
             }
         },
-        async buscarEvaluador(){
+        async buscarEvaluador() {
             try {
-                if(this.documento_evaluador.trim() != ""){
+                if (this.documento_evaluador.trim() != "") {
                     const evaluador = await obtenerIdEvaluador(this.documento_evaluador);
-                    this.obtenerEvaluadorActual(evaluador.data);
-                    this.evaluadores = [evaluador.data];
+                    this.evaluadores = evaluador.data;
                     this.totalPages = 0;
-                    $('#delegateInformation').modal('show');
                 }
-                if(this.documento_evaluador.trim() == ""){
+                if (this.documento_evaluador.trim() == "") {
                     this.fecthEvaluadores();
                 }
-                
+
             } catch (error) {
                 this.showWarningToast("El evaluador no se ha encontrado");
                 this.fecthEvaluadores();
             }
+            this.documento_evaluador = "";
+
         },
-        cambiarPagina(pagina){
+        cambiarPagina(pagina) {
             this.current_page = pagina;
             this.fecthEvaluadores(pagina);
         },
-        async modalTitulos(){
+        async modalTitulos() {
             try {
                 // cierra el primer modal 
                 $('#evaluatorInformation').modal('hide');
 
                 const response = await getCertificatesById(this.evaluadorActual.id_usuario);
-                console.log(response.data);
                 this.certificates = response.data;
-                if (this.certificates.length == 0){
+                if (this.certificates.length == 0) {
                     this.showInfoToast("No se registraron títulos académicos");
                     return;
                 }
@@ -315,5 +338,9 @@ th,
 .btn-close {
     width: 8px;
     height: 8px;
+}
+
+.btn_refrescar:hover{
+    cursor: pointer;
 }
 </style>

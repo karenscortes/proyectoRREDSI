@@ -46,7 +46,8 @@ def get_rubricas_calificadas(db: Session, id_proyecto: int) -> ProyectoRubricasR
                 ir.componente AS item_componente,
                 ir.valor_max,
                 rr.calificacion,
-                rr.observacion
+                rr.observacion,
+                rr.id_usuario  -- Incluye el id del evaluador pero no se muestra en la respuesta
             FROM respuestas_rubricas rr
             JOIN items_rubrica ir ON rr.id_item_rubrica = ir.id_item_rubrica
             JOIN rubricas r ON ir.id_rubrica = r.id_rubrica
@@ -59,12 +60,12 @@ def get_rubricas_calificadas(db: Session, id_proyecto: int) -> ProyectoRubricasR
         if not rubricas_result:
             raise HTTPException(status_code=404, detail="No se encontraron rúbricas calificadas para el proyecto")
 
-        # Diccionario para agrupar las rúbricas por ID de rúbrica y ID de evaluador
+        # Diccionario para agrupar las rúbricas por ID de rúbrica, evaluador, estado y puntaje
         rubricas_dict = {}
 
         # Iterar sobre cada fila y agrupar por rúbrica y evaluador
         for row in rubricas_result:
-            rubrica_key = (row.id_rubrica, row.estado_proyecto, row.puntaje_aprobacion)  # Clave única por rúbrica, estado y puntaje
+            rubrica_key = (row.id_rubrica, row.estado_proyecto, row.puntaje_aprobacion, row.id_usuario)  # Clave única por rúbrica, estado, puntaje y evaluador
             if rubrica_key not in rubricas_dict:
                 # Si la rúbrica aún no está en el diccionario, agregarla
                 rubricas_dict[rubrica_key] = {

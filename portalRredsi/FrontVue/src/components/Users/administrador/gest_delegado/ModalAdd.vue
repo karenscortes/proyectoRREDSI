@@ -143,6 +143,9 @@ import { reactive, ref } from "vue";
 import { onMounted } from "vue";
 import { getAllDocumentsType } from "../../../../services/administradorService";
 import { createDelegate } from "../../../../services/administradorService";
+import { useToastUtils } from '@/utils/toast'; 
+
+const { showErrorToast, showSuccessToast} = useToastUtils();
 
 //array para almacenar variedas de tipos de documento
 const arrayDocuments = reactive([]);  
@@ -167,15 +170,20 @@ const fetchAllDocumentsTypes = async () => {
     arrayDocuments.splice(0, arrayDocuments.length, ...documents_types.data);
     return documents_types
   } catch (error) {
-    console.error(error);
-    alert("Error al obtener los tipos de documento");
+    showErrorToast("Ocurrió un error al obtener los tipos de documento. Por favor, vuelve a intentarlo.");
   }
 };
 
 //función para crear delegado
 const save = async () => {
-  const userCreate = await createDelegate(user);
-  closeModal(); 
+  if(user.id_tipo_documento !== null){
+    closeModal(); 
+    const userCreate = await createDelegate(user);
+    showSuccessToast("Se registró con éxito.");
+  }else{
+    showErrorToast("Por favor, ingrese un tipo de documento.");
+  }
+  
 };
 
 onMounted(() => {

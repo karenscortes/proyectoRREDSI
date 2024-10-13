@@ -288,7 +288,7 @@ const fetchAllRubrics = async () => {
     itemsPrimerRubrica(); 
     rubricas(); 
   } catch (error) {
-    showErrorToast("No se pudó realizar esta acción, intenta de nuevo");
+    showErrorToast("Error al cargar las rúbricas, por favor intenta nuevamente.");
   }
 };
 onMounted(() => {
