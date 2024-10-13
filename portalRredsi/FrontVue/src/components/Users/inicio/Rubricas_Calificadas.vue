@@ -1,5 +1,5 @@
 <template>
-  <div class="rubrica-container">
+  <div class="rubrica-container ">
     <!-- Verifica si hay una rúbrica seleccionada -->
     <div v-if="rubricaSeleccionada">
       <!-- Pasamos los datos al componente de detalle -->
@@ -175,9 +175,6 @@ export default {
 .buscar-rubricas {
   background-color: #ffffff;
   padding: 20px;
-  border-radius: 10px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-  border: 1px solid #ccc; /* Borde del background */
 }
 
 h2,
