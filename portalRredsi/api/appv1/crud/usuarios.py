@@ -1,10 +1,13 @@
 # Crear un usuario
+from typing import List
 from fastapi import Depends, HTTPException
 from fastapi.security import OAuth2PasswordBearer
-from sqlalchemy import text
+from sqlalchemy import null, text
 from sqlalchemy.orm import Session
 from appv1.models.detalle_institucional import Detalle_institucional
+from appv1.models.titulo_academico import Titulo_academico
 from appv1.models.usuario import Usuario
+from appv1.schemas.delegado.postulaciones import CertificatesCreate
 from appv1.schemas.detalle_institucional import DetalleInstitucional, DetalleInstitucionalUpdate
 from appv1.schemas.usuario import UserCreate, UserResponse, UserUpdate
 from core.security import get_hashed_password, verify_token
@@ -254,4 +257,57 @@ def create_institutional_data(db: Session, data: DetalleInstitucional):
         raise HTTPException(status_code=500, detail="Error. No hay Integridad de datos")
     
     
+#crear registros de titulos academicos
 
+def create_certificate_records(db: Session, user_id: int, nombre:str, level:str):
+    try:
+        record = db.query(Titulo_academico).filter(Titulo_academico.id_usuario == user_id).filter(Titulo_academico.nivel == level).first()
+        if record:
+            if(record.nombre_titulo != nombre):
+                record.nombre_titulo= nombre
+        else:
+            sql_query = text(
+
+                "INSERT INTO titulos_academicos(nivel, nombre_titulo, url_titulo, id_usuario) "
+                "VALUES (:nivel, :titulo, :ruta, :id )"
+            )
+            params = {
+                "nivel": level,
+                "titulo": nombre,
+                "ruta": null,
+                "id":user_id
+            }
+            db.execute(sql_query, params)
+        
+        db.commit()
+        return True  # Retorna True si la inserción fue exitosa
+    
+    except IntegrityError as e:
+        db.rollback()  # Revertir la transacción en caso de error de integridad (llave foránea)
+        print(f"Error al procesar registro de titulos académicos: {e}")
+        raise HTTPException(status_code=400, detail="Error de integridad al procesar registro de titulos académicos.")
+    except SQLAlchemyError as e:
+        db.rollback()
+        print(f"Error al insertar archivo: {e}")
+        raise HTTPException(status_code=500, detail="Error al procesar registro de titulos académicos.")
+
+#Actualizar registros para subir archivos de los titulos  
+def insert_file_to_db(db: Session, user_id: int, file_url:str, level:str):
+    try:
+
+        record = db.query(Titulo_academico).filter(Titulo_academico.id_usuario == user_id).filter(Titulo_academico.nivel == level).first()
+        
+        if record is None:
+            raise HTTPException(status_code=404, detail="No se encontró el registro")
+        
+        record.url_titulo = file_url
+        db.commit()
+        return True
+    except IntegrityError as e:
+        db.rollback()  # Revertir la transacción en caso de error de integridad (llave foránea)
+        print(f"Error al insertar archivo: {e}")
+        raise HTTPException(status_code=400, detail="Error de integridad al insertar archivo.")
+    except SQLAlchemyError as e:
+        db.rollback()
+        print(f"Error al insertar archivo: {e}")
+        raise HTTPException(status_code=500, detail="Error al insertar archivo.")

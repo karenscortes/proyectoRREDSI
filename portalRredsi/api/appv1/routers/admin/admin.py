@@ -406,6 +406,8 @@ async def upload_file(file: UploadFile = File(...), db: Session = Depends(get_db
     file_location = save_file(file)
 
     df = pd.read_excel(file_location)
+    processed_count=0
+    already_registered_count=0
 
     for index, row in df.iterrows():
         
@@ -442,7 +444,7 @@ async def upload_file(file: UploadFile = File(...), db: Session = Depends(get_db
         attendee = existing_attendee(db, usuario_id)
 
         # Si el asistente no se ha ingresado en la tabala asistencia en la convocatoria actual
-        if(attendee is None):
+        if attendee is None:
             new_attendee = insert_attendee(
                 db, 
                 usuario_id, 
@@ -451,9 +453,16 @@ async def upload_file(file: UploadFile = File(...), db: Session = Depends(get_db
             )
             
             insertar_historial_admin(db,'Insertar',MODULE,new_attendee.id_asistente,current_user.id_usuario)
-            return {"message": "File processed and data stored successfully.", "file_location": file_location}
+            processed_count += 1  
         else:
-            return{"mensaje": f"Ya se ingresó el asistente {attendee[0]} en esta convocatoria"}
+            already_registered_count += 1  
+
+    return {
+        "message": "File processed successfully.",
+        "processed_count": processed_count,
+        "already_registered_count": already_registered_count,
+        "file_location": file_location
+    }
             
 
             

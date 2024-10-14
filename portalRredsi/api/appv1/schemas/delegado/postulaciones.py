@@ -1,5 +1,5 @@
 from pydantic import BaseModel
-from typing import List
+from typing import List, Optional
 
 class applicationsResponse(BaseModel):
     id_convocatoria:int
@@ -29,3 +29,9 @@ class certificatesResponse(BaseModel):
     nombre_titulo:str
     url_titulo:str
     id_usuario:int
+
+class CertificatesCreate(BaseModel):
+    pregrado: Optional[str] = None
+    especializacion: Optional[str] = None
+    maestria: Optional[str] = None
+    doctorado: Optional[str] = None

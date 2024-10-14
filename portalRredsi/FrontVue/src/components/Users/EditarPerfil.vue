@@ -6,8 +6,8 @@
           <h1>Perfil de Usuario</h1>
         </div>
         <div class="big-screen">
-          <div class="row text-center">
-            <div class="col-4">
+          <div class="row text-center justify-content-center">
+            <div class="col-lg-4 col-sm-3">
               <button @click="setActiveSection('datos_personales')" class="btn btn-outline-dark w-100 form-btn" :class="{'btn-active': isPressed, 'btn-inactive': !isPressed}">
                 <strong class="font-weight-bold">
                   <i class="fas fa-user-secret"></i>
@@ -15,7 +15,7 @@
                 Datos Personales
               </button>
             </div>
-            <div class="col-4">
+            <div class="col-lg-4 col-sm-3">
               <button @click="setActiveSection('datos_institucionales')" class="btn btn-outline-dark w-100 form-btn" :class="{'btn-active': isActive, 'btn-inactive': !isActive}">
                 <strong class="font-weight-bold">
                   <i class="fas fa-university"></i>
@@ -23,7 +23,7 @@
                 Datos Institucionales
               </button>
             </div>
-            <div class="col-4">
+            <div class="col-lg-4 col-sm-3">
               <button @click="setActiveSection('datos_academicos')" class="btn btn-outline-dark w-100 form-btn" :class="{'btn-active': isSelected, 'btn-inactive': !isSelected}">
                 <strong class="font-weight-bold">
                   <i class="fas fa-graduation-cap"></i>
@@ -142,7 +142,7 @@
                   <!-- para editar o insertar -->
                   <div class="row me-3" v-if="formData.academico.pregrado == '' || editPregrado">
                     <div class="col-10">
-                      <input type="text" class="form-control w-100" id="inputMasterDegree" v-model="formData.academico.pregrado.nombre_titulo" />
+                      <input type="text" class="form-control w-100" id="inputUndergraduateDegree" v-model="titulo1" />
                     </div>
                     <div class="col-1">
                       <label class="items-center pt-1 ps-0text-black">
@@ -168,7 +168,7 @@
                   <!-- para editar o insertar -->
                   <div class="row me-3" v-if="formData.academico.especializacion == '' || editEpecializacion">
                     <div class="col-10">
-                      <input type="text" class="form-control w-100" id="inputMasterDegree" v-model="formData.academico.especializacion.nombre_titulo" />
+                      <input type="text" class="form-control w-100" id="inputPostgraduateDiploma" v-model="titulo2" />
                     </div>
                     <div class="col-1">
                       <label class="items-center pt-1 ps-0 text-black">
@@ -196,7 +196,7 @@
                   <!-- para editar o insertar -->
                   <div class="row me-3" v-if="formData.academico.maestria == '' || editMaestria">
                     <div class="col-10">
-                      <input type="text" class="form-control w-100" id="inputMasterDegree" v-model="formData.academico.maestria.nombre_titulo" />
+                      <input type="text" class="form-control w-100" id="inputMasterDegree" v-model="titulo3"/>
                     </div>
                     <div class="col-1">
                       <label class="items-center pt-1 ps-0 text-black">
@@ -218,11 +218,11 @@
                   </div>                        
                 </div>
                 <div class="form-group col-md-5 mb-5 ms-md-3 ms-xs-5">
-                  <label for="inputMasterDegree">Título de doctorado:</label>
+                  <label for="inputPhD">Título de doctorado:</label>
                   <!-- para editar o insertar -->
                   <div class="row me-3" v-if="formData.academico.doctorado == '' || editDoctorado">
                     <div class="col-10">
-                      <input type="text" class="form-control w-100" id="inputMasterDegree" v-model="formData.academico.doctorado.nombre_titulo" />
+                      <input type="text" class="form-control w-100" id="inputPhD" v-model="titulo4"/>
                     </div>
                     <div class="col-1">
                       <label class="items-center pt-1 ps-0 text-black">
@@ -371,12 +371,12 @@
             <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordionExample">
               <div class="card-body my-3 font-weight-bold text-dark">
                   <div class="title-line mb-4"></div> 
-                  <form action="#">           
+                  <form @submit.prevent="submitCertificates()">           
                     <div class="form-group row justify-content-center">              
                       <label for="inputUndergraduateDegree" class="col-4">Titulo Pregrado:</label>
                       <!-- Editar o Insertar-->
                       <div class="d-inline-flex col-6" v-if="formData.academico.pregrado == '' || editPregrado" >
-                          <input type="text" class="form-control" id="inputUndergraduateDegree" v-model="formData.academico.pregrado.nombre_titulo"  >
+                          <input type="text" class="form-control w-100" id="inputUndergraduateDegree" v-model="titulo1"/>
                           <label class="items-center p-1 text-black ml-2">
                               <i class="fa-solid fa-square-plus fs-4 certificates_icons"></i>
                               <input type='file' class="d-none d-print-block" />
@@ -394,7 +394,8 @@
                         <label for="inputPostgraduateDiploma" class="col-4">Titulo de Especialización:</label>
                         <!-- Editar o Insertar-->
                       <div class="d-inline-flex col-6" v-if="formData.academico.especializacion == '' || editEpecializacion" >
-                        <input type="text" class="form-control" id="inputUndergraduateDegree" v-model="formData.academico.especializacion.nombre_titulo"  >
+                        <input type="text" class="form-control w-100" id="inputPostgraduateDiploma" v-model="titulo2" />
+                        
                         <label class="items-center p-1 text-black ml-2">
                             <i class="fa-solid fa-square-plus fs-4 certificates_icons"></i>
                             <input type='file' class="d-none d-print-block" />
@@ -412,7 +413,7 @@
                       <label for="inputMasterDegree" class="col-4">Titulo de Maestría:</label>
                         <!-- Editar o Insertar-->
                       <div class="d-inline-flex col-6" v-if="formData.academico.maestria == '' || editMaestria" >
-                        <input type="text" class="form-control" id="inputUndergraduateDegree" v-model="formData.academico.maestria.nombre_titulo"  >
+                        <input type="text" class="form-control w-100" id="inputMasterDegree" v-model="titulo3"/>
                         <label class="items-center p-1 text-black ml-2">
                             <i class="fa-solid fa-square-plus fs-4 certificates_icons"></i>
                             <input type='file' class="d-none d-print-block" />
@@ -431,7 +432,8 @@
                       <label for="inputPhD" class="col-4">Titulo de Doctorado:</label>
                         <!-- Editar o Insertar-->
                       <div class="d-inline-flex col-6" v-if="formData.academico.doctorado == '' || editDoctorado" >
-                        <input type="text" class="form-control" id="inputUndergraduateDegree" v-model="formData.academico.doctorado.nombre_titulo"  >
+                        <input  type="text" class="form-control w-100" id="inputPhD" v-model="titulo4" />
+                       
                         <label class="items-center p-1 text-black ml-2">
                             <i class="fa-solid fa-square-plus fs-4 certificates_icons"></i>
                             <input type='file' class="d-none d-print-block" />
@@ -462,7 +464,7 @@
 </template>
 
 <script>
-import { createInstitutionalData, getInstitutionalDetails,updateInstitutionalData,updateUserProfile } from '../../services/UsuarioService';
+import { createInstitutionalData, getInstitutionalDetails,updateInstitutionalData,updateUserProfile,createUpdateRecords,insertCertificatesFiles} from '../../services/UsuarioService';
 import { getAllTiposDocumento } from '../../services/TipoDocumentoService';
 import { useAuthStore } from '@/store';
 import { getCertificatesById } from '@/services/postulacionService';
@@ -517,9 +519,18 @@ export default {
       selectedInstitution:'Seleccione una opción',
       primeraArea:'Seleccione una opción',
       segundaArea:'Seleccione una opción',
+      titulo1:'',
+      titulo2:'',
+      titulo3:'',
+      titulo4:'',
+      pregradoFile: null,
+      especializacionFile: null,
+      maestriaFile: null,
+      doctoradoFile: null,
       areasConocimiento: [],
       documentsTypes:[],
       instituciones:[],
+      nombres_titulos:{}
     };
   },
   setup() {
@@ -625,12 +636,16 @@ export default {
         for (let i = 0; i < titulos.length; i++) {
           if (titulos[i].nivel == "pregrado") {
             this.formData.academico.pregrado = titulos[i];
+            this.titulo1 = titulos[i].nombre_titulo;
           }else if (titulos[i].nivel == "especializacion") {
             this.formData.academico.especializacion = titulos[i];
+            this.titulo2 = titulos[i].nombre_titulo;
           }else if (titulos[i].nivel == "doctorado") {
             this.formData.academico.doctorado = titulos[i];
+            this.titulo4 = titulos[i].nombre_titulo;
           }else if (titulos[i].nivel == "maestria") {
             this.formData.academico.maestria = titulos[i];
+            this.titulo3 = titulos[i].nombre_titulo;
           }
         }
       } catch (error) {
@@ -640,11 +655,15 @@ export default {
     
     //Controlador de archivos academicos
     handleFileChange(tipo, event) {
-      const file = event.target.files[0];
-      if (file && tipo == 'pregrado') {
-          if(this.formData.academico.pregrado !== ''){
-            
-          }
+      
+      if (tipo == 'pregrado') {
+        this.pregradoFile = event.target.files[0];
+      } else if (tipo == 'especializacion') {
+        this.especializacionFile = event.target.files[0];
+      } else if (tipo == 'maestria') {
+        this.maestriaFile = event.target.files[0];
+      }else if(tipo == 'doctorado'){
+        this.doctoradoFile= event.target.files[0];
       }
     },
 
@@ -732,7 +751,27 @@ export default {
 
     },
 
-    //Controlador de Modal
+    async submitCertificates(){
+
+      this.nombres_titulos['pregrado'] = this.titulo1;
+      this.nombres_titulos['especializacion'] = this.titulo2;
+      this.nombres_titulos['maestria'] = this.titulo3;
+      this.nombres_titulos['doctorado'] = this.titulo4;
+      
+      try{
+        await createUpdateRecords(this.user.id_usuario,this.nombres_titulos);
+
+        if(this.pregradoFile !== null || this.especializacionFile !== null || this.maestriaFile !== null || this.doctoradoFile !== null){
+          await insertCertificatesFiles(this.user.id_usuario,this.pregradoFile,this.especializacionFile,this.maestriaFile,this.doctoradoFile);
+        }
+
+        this.showSuccessToast('Los datos académicos fueron procesados con éxito');
+        this.getCertificates();
+      }catch{
+        this.showErrorToast('Error al procesar datos académicos');
+      }
+    },
+    //Controladores de Modal
     showModal(){
       this.isModalOpen = true;
     },
@@ -745,13 +784,13 @@ export default {
     this.getInstitutionalData();
     this.getCertificates();
     
-    // const user = JSON.parse(localStorage.getItem('user')); 
+    const user = JSON.parse(localStorage.getItem('user')); 
     this.formData.personal = {
-      id_tipo_documento: this.user.id_tipo_documento || '',
-      documento: this.user.documento || '',
-      nombres: this.user.nombres || '',
-      apellidos: this.user.apellidos || '',
-      correo: this.user.correo || '',
+      id_tipo_documento: user.id_tipo_documento || '',
+      documento: user.documento || '',
+      nombres: user.nombres || '',
+      apellidos: user.apellidos || '',
+      correo: user.correo || '',
     };
   },
 };

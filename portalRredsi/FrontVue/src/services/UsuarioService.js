@@ -161,3 +161,63 @@ export const createInstitutionalData = async (Data) => {
     }
   }
 };
+
+
+// Función para insertar archivos de los titulos academicos
+export const insertCertificatesFiles = async (userId,pregradoFile,especializacionFile,maestriaFile,doctoradoFile) => {
+  try {
+    console.log("entróoo")
+    const formData = new FormData();
+
+    if(pregradoFile){
+      formData.append('pregradoFile', pregradoFile);
+    }
+    
+    if(especializacionFile){
+      formData.append('especializacionFile', especializacionFile);
+    }
+    
+    if(maestriaFile){
+      formData.append('maestriaFile', maestriaFile);
+    }
+    
+    if(doctoradoFile){
+      formData.append('doctoradoFile', doctoradoFile);
+    }
+    
+    
+    const url = `/users/upload-certificates/${encodeURIComponent(userId)}/`;
+    const response = await api.put(url,formData,{
+      headers: {
+        'Content-Type': 'multipart/form-data'
+      }
+    });
+    return response; // Retorna la respuesta de la API
+  } catch (error) {
+    if (error.response) {
+      throw error.response.data; // Devuelve el error que envía la API
+    } else {
+      throw new Error('Error de red o de servidor');
+    }
+  }
+};
+
+// Función para crear registros de titulos academicos
+export const createUpdateRecords = async (userId,data) => {
+  try {    
+    const url = `/users/create-certificates-records/${encodeURIComponent(userId)}/`;
+    const response = await api.post(url,data,{
+      headers: {
+        'Content-Type': 'application/json',
+        'accept': 'application/json'   
+      }
+    });
+    return response; // Retorna la respuesta de la API
+  } catch (error) {
+    if (error.response) {
+      throw error.response.data; // Devuelve el error que envía la API
+    } else {
+      throw new Error('Error de red o de servidor');
+    }
+  }
+};

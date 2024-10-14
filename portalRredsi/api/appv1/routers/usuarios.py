@@ -1,12 +1,14 @@
 from typing import List, Optional
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, File, HTTPException, UploadFile
 from sqlalchemy.orm import Session
 from appv1.crud.admin.gest_asistentes_externos import existing_email, existing_record, existing_user
-from appv1.crud.usuarios import create_institutional_data, create_user_sql, get_institutional_details,  get_user_by_email, get_user_by_id, update_institutional_data, update_password, update_user
+from appv1.crud.usuarios import create_certificate_records, create_institutional_data, create_user_sql, get_institutional_details,  get_user_by_email, get_user_by_id, insert_file_to_db, update_institutional_data, update_password, update_user
 from appv1.routers.login import get_current_user
+from appv1.schemas.delegado.postulaciones import CertificatesCreate
 from appv1.schemas.detalle_institucional import DetalleInstitucional, DetalleInstitucionalUpdate
 from appv1.schemas.usuario import ResponseLoggin, UserCreate, UserResponse, UserUpdate, resetPassword
 from core.security import get_hashed_password, verify_password
+from core.utils import save_file
 from db.database import get_db
 from appv1.crud.permissions import get_permissions
 
@@ -148,3 +150,70 @@ async def insert_institutional_data(
     else:
         raise HTTPException(status_code=500, detail="Error al ingresar datos institucionales")
         
+
+#Crear registros de titulos
+
+@router_user.post("/create-certificates-records/{user_id}/")
+async def create_records(
+    user_id:int,
+    datos: CertificatesCreate,
+    db: Session = Depends(get_db)
+): 
+    try:    
+        print("llegóoooo")
+        print(datos)
+        print(datos.especializacion)
+        print("-----------------------")
+        if(datos.pregrado  and datos.pregrado != ""):
+            create_certificate_records(db, user_id,datos.pregrado,'pregrado')
+        
+        if(datos.especializacion and datos.especializacion != ""):
+            print("entróoooo")
+            create_certificate_records(db, user_id,datos.especializacion,'especializacion')
+        
+        if(datos.maestria and datos.maestria != ""):
+            create_certificate_records(db, user_id,datos.maestria,'maestria')
+        
+        if(datos.doctorado and datos.doctorado != ""):
+            create_certificate_records(db, user_id,datos.doctorado,'doctorado')
+
+    except HTTPException as e:
+        raise HTTPException(status_code=e.status_code, detail=e.detail)
+
+    return {"mensaje": "registros procesados con éxito"}
+
+#subir certificados actualizando registros
+@router_user.put("/upload-certificates/{user_id}/")
+async def upload_certificates(
+    user_id:int,
+    pregradoFile: Optional[UploadFile] = File(None),
+    especializacionFile: Optional[UploadFile] = File(None),
+    maestriaFile: Optional[UploadFile] = File(None),
+    doctoradoFile: Optional[UploadFile] = File(None),
+    db: Session = Depends(get_db)
+): 
+    try:
+
+        print("--------")
+        print(especializacionFile)
+
+        file_location = ''
+
+        if(pregradoFile):
+            file_location = save_file(pregradoFile)
+            insert_file_to_db(db, user_id,file_location,'pregrado')
+        if(especializacionFile):
+            file_location = save_file(especializacionFile)
+            insert_file_to_db(db, user_id,file_location,'especializacion')
+        if(maestriaFile):
+            file_location = save_file(maestriaFile)
+            insert_file_to_db(db, user_id,file_location,'maestria')
+        if(doctoradoFile):
+            file_location = save_file(doctoradoFile)
+            insert_file_to_db(db, user_id,file_location,'doctorado')
+
+    except HTTPException as e:
+        raise HTTPException(status_code=e.status_code, detail=e.detail)
+
+    return {"mensaje": "archivo almacenado con éxito"}
+
