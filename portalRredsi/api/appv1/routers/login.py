@@ -100,11 +100,11 @@ def send_email(to_email: str, subject: str, body: str):
     url = "https://api.mailersend.com/v1/email"
     headers = {
         "Content-Type": "application/json",
-        "Authorization": "Bearer mlsn.1c6857b7db7c6cb3155af4607e0ccae43c62007dddd3bc2fec2d90c86fd126f8"
+        "Authorization": "Bearer mlsn.872d78a595604ddf358379e69c978c0da0201c5647ec5e4d1139f0254aade654"
     }
     data = {
         "from": {
-            "email": "MS_OsYbwy@trial-x2p0347wwnklzdrn.mlsender.net"
+            "email": "MS_G5AYSc@trial-3z0vklo23oe47qrx.mlsender.net"
         },
         "to": [
             {

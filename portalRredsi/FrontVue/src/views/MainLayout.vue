@@ -1,11 +1,11 @@
 <template>
     <div class="super_container">
         <!-- Header -->
-        <MenuPrincipal @component-selected="changeComponent"/>
+        <MenuPrincipal @component-selected="changeComponent" />
     </div>
 
-    <!-- Mostrar la imagen de fondo en las otras opciones del menú  -->
-    <div v-if="componente == 'Registrar Proyecto' || componente == 'Evaluadores' || componente == 'Consultar Proyecto' || componente == 'Consultar Proyecto'" class="hero_slide">
+    <!-- Mostrar la imagen de fondo en las otras opciones del menú -->
+    <div v-if="componente == 'Registrar Proyecto' || componente == 'Evaluadores' || componente == 'Consultar Proyecto'" class="hero_slide">
         <div class="back_img"></div>
         <div class="hero_slide_container d-flex flex-column align-items-center justify-content-center">
             <div class="hero_slide_content text-center">
@@ -24,50 +24,70 @@
     <FooterPrincipal />
 
     <!-- Modal de Login -->
-<div class="modal fade" id="LoginModal" tabindex="-1" aria-labelledby="LoginModalLabel" aria-hidden="true" >
+<div class="modal fade" id="LoginModal" tabindex="-1" aria-labelledby="LoginModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="LoginModalLabel">Login</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <!-- Hacer la palabra Login o ¿Recordar contraseña? más grande y del color del botón -->
+                <h5 class="modal-title title-styling" id="LoginModalLabel">{{ showResetPasswordForm ? '¿Recordar contraseña?' : 'Login' }}</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" @click="resetModalState">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
                 <!-- Formulario de login -->
-                <form>
-                    <div class="form-group">
-                        <label for="email" class="text-dark">Correo electrónico</label>
-                        <input type="email" class="form-control" id="email" v-model="email"
-                            placeholder="Ingrese su correo" />
-                    </div>
-                    <div class="form-group mt-3">
-                        <label for="password" class="text-dark">Contraseña</label>
-                        <input type="password" class="form-control" id="password" v-model="password"
-                            placeholder="Contraseña" />
-                    </div>
-                </form>
+                <div v-if="!showResetPasswordForm">
+                    <form>
+                        <div class="form-group">
+                            <label for="email" class="text-dark font-weight-bold">Correo electrónico</label>
+                            <input type="email" class="form-control" id="email" v-model="email" placeholder="Ingrese su correo" />
+                        </div>
+                        <div class="form-group mt-3">
+                            <label for="password" class="text-dark font-weight-bold">Contraseña</label>
+                            <input type="password" class="form-control" id="password" v-model="password" placeholder="Contraseña" />
+                        </div>
+                    </form>
 
-                <!-- Enlace de "Se te olvidó la contraseña" -->
-                <div class="text-center mt-3">
-                    <a href="#" class="small forgot-password-link" @click="openResetPasswordModal">¿Se te olvidó la contraseña?</a>
+                    <!-- Enlace de "Se te olvidó la contraseña" más grande y en negrilla -->
+                    <div class="text-center mt-3">
+                        <a href="#" class="forgot-password-link" @click="openResetPasswordModal">¿Se te olvidó la contraseña?</a>
+                    </div>
+
                 </div>
 
-                <p v-if="errorMessage" class="text-danger mt-3">
-                    {{ errorMessage }}
-                </p>
+                <!-- Formulario de restauración de contraseña -->
+                <div v-if="showResetPasswordForm">
+                    <div v-if="!showPasswordForm">
+                        <p class="mb-4 font-weight-bold">Ingrese su correo electronico vinculado a su cuenta</p>
+                        <form @submit.prevent="sendResetCode" class="user">
+                            <div class="form-group">
+                                <input type="email" class="form-control" v-model="email" placeholder="Ingrese su correo electrónico" required />
+                            </div>
+                            <button type="submit" class="btn btn-primary btn-block">Enviar código</button>
+                        </form>
+                    </div>
+                    <div v-if="showPasswordForm">
+                        <form @submit.prevent="resetPassword" class="user">
+                            <div class="form-group">
+                                <input type="password" class="form-control" v-model="newPassword" placeholder="Nueva contraseña" required />
+                            </div>
+                            <div class="form-group">
+                                <input type="password" class="form-control" v-model="confirmPassword" placeholder="Confirmar contraseña" required />
+                            </div>
+                            <div class="form-group">
+                                <input type="text" class="form-control" v-model="code" placeholder="Ingrese el código enviado a su correo" required />
+                            </div>
+                            <button type="submit" class="btn btn-dark btn-block">Actualizar contraseña</button>
+                        </form>
+                    </div>
+                </div>
             </div>
-            <div class="modal-footer">
-                <button type="button" data-dismiss="modal" aria-label="Close"
-                    class="btn btn-primary custom-login-button" @click="handleLogin">
-                    Iniciar Sesión
-                </button>
+            <div class="modal-footer" v-if="!showResetPasswordForm">
+                <button type="button" data-dismiss="modal" aria-label="Close" class="btn btn-dark custom-login-button" @click="handleLogin">Iniciar Sesión</button>
             </div>
         </div>
     </div>
 </div>
-
-
 
 </template>
 
@@ -84,6 +104,8 @@ import Rubricas_Calificadas from "../components/Users/inicio/Rubricas_Calificada
 import Carrusel from "../components/Users/inicio/Carrusel.vue";
 import InicioPrincipal from "../components/Users/inicio/InicioPrincipal.vue";
 import NotAvailable from "./NotAvailable.vue";
+import { requestResetCode, changePassword } from "@/services/authService";
+import { useToastUtils } from "@/utils/toast"; // Importar librería de toast
 
 // Styles
 import "../assets/Styles/main_styles.css";
@@ -132,7 +154,16 @@ export default {
         const user = ref(null);
         const email = ref("");
         const password = ref("");
+        const newPassword = ref("");
+        const confirmPassword = ref("");
+        const code = ref("");
         const errorMessage = ref(null);
+        const error = ref(null);
+        const showResetPasswordForm = ref(false);
+        const showPasswordForm = ref(false);
+
+        // Importar funciones de toast
+        const { showSuccessToast, showErrorToast } = useToastUtils();
 
         const handleLogin = async () => {
             try {
@@ -141,11 +172,60 @@ export default {
                 if (!authStore.authError) {
                     const user = authStore.user;
                     console.log(user);
-
+                    showSuccessToast("¡Inicio de sesión exitoso!");
                     route.push('/pagina-usuario');
                 }
             } catch (error) {
                 errorMessage.value = "Error durante el login: " + error.message;
+                showErrorToast(errorMessage.value); // Mostrar alerta de error
+            }
+        };
+
+        const openResetPasswordModal = () => {
+            showResetPasswordForm.value = true;
+        };
+
+        const resetModalState = () => {
+            // Resetea las variables al estado inicial del modal
+            showResetPasswordForm.value = false;
+            showPasswordForm.value = false;
+            email.value = "";
+            password.value = "";
+            newPassword.value = "";
+            confirmPassword.value = "";
+            code.value = "";
+            errorMessage.value = null;
+            error.value = null;
+        };
+
+        const sendResetCode = async () => {
+            error.value = null; // Limpiar error previo
+            try {
+                await requestResetCode(email.value);
+                showPasswordForm.value = true; // Mostrar los inputs adicionales
+                showSuccessToast("Código de recuperación enviado a su correo."); // Mostrar alerta de éxito
+            } catch (err) {
+                error.value = err.response?.data?.detail || "Error enviando el código. Intente de nuevo.";
+                showErrorToast(error.value); // Mostrar alerta de error
+            }
+        };
+
+        const resetPassword = async () => {
+            error.value = null; // Limpiar error previo
+
+            if (newPassword.value !== confirmPassword.value) {
+                error.value = "Las contraseñas no coinciden.";
+                showErrorToast(error.value); // Mostrar alerta de error
+                return;
+            }
+
+            try {
+                await changePassword(email.value, newPassword.value, code.value);
+                showSuccessToast("¡Contraseña actualizada con éxito!");
+                resetModalState(); // Volver al formulario de login
+            } catch (err) {
+                error.value = err.response?.data?.detail || "Error actualizando la contraseña. Verifique el código.";
+                showErrorToast(error.value); // Mostrar alerta de error
             }
         };
 
@@ -153,12 +233,22 @@ export default {
             user,
             email,
             password,
+            newPassword,
+            confirmPassword,
+            code,
             errorMessage,
+            error,
+            showResetPasswordForm,
+            showPasswordForm,
             route,
             currentComponent,
             componente,
             changeComponent,
             handleLogin,
+            openResetPasswordModal,
+            resetModalState,
+            sendResetCode,
+            resetPassword,
         };
     },
     mounted() {
@@ -169,6 +259,7 @@ export default {
     }
 };
 </script>
+
 
 
 <style scoped>
@@ -239,4 +330,28 @@ export default {
 	margin-left: -12px;
 	margin-right: -12px;
 }
+.title-styling {
+    font-size: 1rem; /* Tamaño más grande */
+    color: #FFC107; /* Color del botón */
+    font-weight: bold; /* Negrita */
+}
+
+
+.forgot-password-link:hover {
+    text-decoration: underline; /* Subrayar en hover si lo deseas */
+}
+
+.font-weight-bold {
+    font-weight: bold; /* Negrita en el texto */
+}
+
+
+.btn-dark:focus,
+.btn-dark:active,
+.btn-dark:hover {
+    border-color: #23272b;     /* Mantener el borde negro */
+    box-shadow: none;          /* Evitar el efecto de sombra en el botón al hacer clic */
+}
+
+
 </style>
