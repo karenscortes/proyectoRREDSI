@@ -3,14 +3,14 @@
         <div class="icon-custom text-center">
             <i class="fa-solid fa-user-group fa-3x"></i>
         </div>
-        <h2 class="text-left font-weight-bold text-yellow mb-2">
+        <h2 class="text-left font-weight-bold text-yellow">
             Suplentes
             <i type="button" class="fa-regular fa-square-plus fa-1x text-yellow" @click="openModal"></i>
         </h2>
 
         <!-- Suplentes Ponentes -->
         <div v-if="suplentesPonentes.length > 0">
-            <spam class="text-left font-weight-bold ">Suplentes Ponentes</spam>
+            <span class="text-left font-weight-bold">Suplentes Ponentes</span>
             <p class="text-dark suplente-details text-left" v-for="suplente in suplentesPonentes"
                 :key="suplente.nombres">
                 {{ suplente.nombres }} {{ suplente.apellidos }}
@@ -19,7 +19,7 @@
 
         <!-- Suplentes Evaluadores -->
         <div v-if="suplentesEvaluadores.length > 0">
-            <spam class="text-left font-weight-bold ">Suplentes Evaluadores</spam>
+            <span class="text-left font-weight-bold">Suplentes Evaluadores</span>
             <p class="text-dark suplente-details text-left" v-for="suplente in suplentesEvaluadores"
                 :key="suplente.nombres">
                 {{ suplente.nombres }} {{ suplente.apellidos }}
@@ -28,7 +28,7 @@
 
         <!-- Modal para agregar suplente -->
         <transition name="modal-fade">
-            <div v-if="isModalOpen" class="modal" @click.self="closeModal">
+            <div v-if="state.isModalOpen" class="modal" @click.self="closeModal">
                 <div class="modal-content">
                     <div class="modal-header">
                         <h2 class="modal-title">Agregar Suplente</h2>
@@ -39,15 +39,16 @@
                     <div class="modal-body">
                         <div class="form-group">
                             <label for="tipo">Tipo:</label>
-                            <select v-model="nuevoTipo" id="tipo" class="form-control custom-select">
+                            <select v-model="state.nuevoTipo" id="tipo" class="form-control custom-select">
                                 <option value="" disabled selected>Seleccionar Tipo</option>
                                 <option value="suplenteEvaluador">Suplente Evaluador</option>
                                 <option value="suplentePonente">Suplente Ponente</option>
                             </select>
                         </div>
-                        <div class="form-group" v-if="nuevoTipo === 'suplentePonente'">
-                            <label for="suplente">Seleccionar ponente a reemplazar :</label>
-                            <select v-model="evaluadorSeleccionado" id="evaluador" class="form-control custom-select">
+                        <div class="form-group" v-if="state.nuevoTipo === 'suplentePonente'">
+                            <label for="ponente">Seleccionar Ponente a reemplazar:</label>
+                            <select v-model="state.evaluadorSeleccionado" id="ponente"
+                                class="form-control custom-select">
                                 <option value="" disabled selected>Seleccionar Ponente</option>
                                 <option v-for="(ponente, index) in ponentes" :key="index" :value="ponente.id_usuario">
                                     {{ ponente.nombres }} {{ ponente.apellidos }}
@@ -55,8 +56,9 @@
                             </select>
                         </div>
                         <div class="form-group" v-else>
-                            <label for="suplente">Seleccionar evaluador a reemplazar :</label>
-                            <select v-model="evaluadorSeleccionado" id="evaluador" class="form-control custom-select">
+                            <label for="evaluador">Seleccionar Evaluador a reemplazar:</label>
+                            <select v-model="state.evaluadorSeleccionado" id="evaluador"
+                                class="form-control custom-select">
                                 <option value="" disabled selected>Seleccionar Evaluador</option>
                                 <option v-for="(evaluador, index) in evaluadores.presencial" :key="index"
                                     :value="evaluador.id_usuario">
@@ -65,17 +67,19 @@
                             </select>
                         </div>
                         <div class="form-group">
-                            <label for="asistente">Seleccionar Suplente:</label>
-                            <select v-model="suplenteSeleccionado" id="asistente" class="form-control custom-select">
+                            <label for="suplente">Seleccionar Suplente:</label>
+                            <select v-model="state.suplenteSeleccionado" id="suplente"
+                                class="form-control custom-select">
                                 <option value="" disabled selected>Seleccionar Suplente</option>
-                                <option v-for="(asistente, index) in asistentes" :key="index"
+                                <option v-for="(asistente, index) in state.asistentes" :key="index"
                                     :value="asistente.id_usuario">
                                     {{ asistente.nombres }} {{ asistente.apellidos }}
                                 </option>
                             </select>
                         </div>
                         <div class="button-container text-center">
-                            <button class="btn btn-warning font-weight-bold btn-lg" @click="addSuplente">Añadir</button>
+                            <button class="btn btn-warning font-weight-bold btn-lg" @click="addSuplente"
+                                >Añadir</button>
                         </div>
                     </div>
                 </div>
@@ -85,6 +89,7 @@
 </template>
 
 <script>
+import { reactive, onMounted, computed } from 'vue';
 import { useToastUtils } from '@/utils/toast';
 import { obtenerAsistentesSuplentes, insertarSuplente, obtenerProyectoConvocatoria, obtenerSuplentes } from '../../../../../services/delegadoService';
 
@@ -99,11 +104,15 @@ export default {
             type: Number,
             required: true
         },
+        proyecto: {
+            type: Object,
+            required: true
+        },
         evaluadores: Array,
         ponentes: Array,
     },
-    data() {
-        return {
+    setup(props, { emit }) {
+        const state = reactive({
             isModalOpen: false,
             suplentes: [],
             suplentesPonentes: [],
@@ -113,87 +122,104 @@ export default {
             suplenteSeleccionado: null,
             evaluadorSeleccionado: null,
             idProyectoConvocatoria: null,
-            tipo_usuario: ''
-        };
-    },
-    setup() {
+        });
+
         const { showSuccessToast, showErrorToast } = useToastUtils();
-        return { showSuccessToast, showErrorToast };
-    },
-    methods: {
-        async openModal() {
-            this.isModalOpen = true;
-            try {
-                await this.fetchAsistentes();
-                await this.fetchProyectoConvocatoria();
-            } catch (error) {
-                this.isModalOpen = false;
-            }
-        },
-        closeModal() {
-            this.isModalOpen = false;
-        },
-        async fetchAsistentes() {
-            try {
-                this.asistentes = await obtenerAsistentesSuplentes(1);
-            } catch (error) {
-                this.showErrorToast("Error al obtener los asistentes:");
-            }
-        },
-        async fetchProyectoConvocatoria() {
-            try {
-                const response = await obtenerProyectoConvocatoria(this.idProyecto);
-                this.idProyectoConvocatoria = response.data.proyecto_convocatoria.id_proyecto_convocatoria;
-            } catch (error) {
-                this.showErrorToast("Error al obtener el proyecto convocatoria:");
-            }
-        },
-        async fetchSuplentes() {
-            try {
-                const suplenteData = await obtenerSuplentes(this.idProyecto, this.tipo_usuario);
-                this.suplentes = suplenteData;
 
-                // Filtrar suplentes según su tipo
-                this.suplentesPonentes = this.suplentes.filter(suplente => suplente.tipo_usuario === 'suplentePonente');
-                this.suplentesEvaluadores = this.suplentes.filter(suplente => suplente.tipo_usuario === 'suplenteEvaluador');
+        const suplentesPonentes = computed(() => {
+            return state.suplentes.filter(suplente => suplente.tipo_usuario === 'suplentePonente');
+        });
 
+        const suplentesEvaluadores = computed(() => {
+            return state.suplentes.filter(suplente => suplente.tipo_usuario === 'suplenteEvaluador');
+        });
+
+        const openModal = async () => {
+            state.isModalOpen = true;
+            try {
+                await fetchAsistentes();
+                await fetchProyectoConvocatoria();
+            } catch (error) {
+                state.isModalOpen = false;
+            }
+        };
+
+        const closeModal = () => {
+            state.isModalOpen = false;
+        };
+
+        const fetchAsistentes = async () => {
+            try {
+                state.asistentes = await obtenerAsistentesSuplentes(1);
+            } catch (error) {
+                showErrorToast("Error al obtener los asistentes:");
+            }
+        };
+
+        const fetchProyectoConvocatoria = async () => {
+            try {
+                const response = await obtenerProyectoConvocatoria(props.idProyecto);
+                state.idProyectoConvocatoria = response.data.proyecto_convocatoria.id_proyecto_convocatoria;
+            } catch (error) {
+                showErrorToast("Error al obtener el proyecto convocatoria:");
+            }
+        };
+
+        const fetchSuplentes = async () => {
+            try {
+                const suplenteData = await obtenerSuplentes(props.idProyecto, state.tipo_usuario);
+                state.suplentes = suplenteData;
             } catch (error) {
                 console.error("Error al obtener los suplentes seleccionados:", error);
             }
-        },
+        };
 
-        async addSuplente() {
-            if (!this.nuevoTipo || !this.suplenteSeleccionado || !this.evaluadorSeleccionado) {
-                this.showErrorToast("Por favor, complete todos los campos requeridos.");
-                return; 
-            }
+        const addSuplente = async () => {
             try {
                 await insertarSuplente(
-                    this.suplenteSeleccionado,
-                    this.idEtapa,
-                    this.idProyecto,
-                    this.idProyectoConvocatoria,
-                    this.nuevoTipo,
-                    this.evaluadorSeleccionado
+                    state.suplenteSeleccionado,
+                    props.idEtapa,
+                    props.idProyecto,
+                    state.idProyectoConvocatoria,
+                    state.nuevoTipo,
+                    state.evaluadorSeleccionado
                 );
-                this.showSuccessToast("Suplente insertado con éxito");
-                this.resetForm();
-                this.closeModal();
-                this.fetchSuplentes();
+                showSuccessToast("Suplente insertado con éxito");
+                await fetchSuplentes();
+                // emit('actualizar-detalle');
+                closeModal();
+                resetForm();
             } catch (error) {
-                this.showErrorToast("Error al agregar suplente:");
+                showErrorToast("Error al agregar suplente:");
             }
-        },
-        resetForm() {
-            this.nuevoTipo = '';
-            this.suplenteSeleccionado = null;
-        }
-    },
-    async mounted() {
-        await this.fetchSuplentes();
+        };
+
+        const resetForm = () => {
+            state.nuevoTipo = '';
+            state.suplenteSeleccionado = null;
+            state.evaluadorSeleccionado = null;
+        };
+
+        onMounted(async () => {
+            await fetchSuplentes();
+        });
+
+        return {
+            state,
+            suplentesPonentes,
+            suplentesEvaluadores,
+            openModal,
+            closeModal,
+            fetchAsistentes,
+            fetchProyectoConvocatoria,
+            fetchSuplentes,
+            addSuplente,
+            resetForm,
+        };
     }
 };
 </script>
+
 
 <style scoped>
 .icon-custom {

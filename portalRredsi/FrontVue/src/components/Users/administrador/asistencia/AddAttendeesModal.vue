@@ -49,7 +49,8 @@ export default {
             try {
                 if (file.value) {
                     await uploadFileData(file.value); // Llama al servicio para subir los datos del excel
-                    showSuccessToast('Archivo subido exitosamente.');
+                    
+                    showSuccessToast('Carga completada: se registraron únicamente los asistentes no inscritos para esta convocatoria');
                 }
             } catch (error) {
                 showErrorToast('Error al subir el archivo.');

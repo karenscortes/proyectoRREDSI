@@ -48,7 +48,7 @@
                                         </button>
                                     </div>
                                     <div v-if="cargarRubricaPresencial" class="col-4">
-                                        <a :href="urlPresentacion" target="_blank"
+                                        <a :href="urlPresentacionGuardada" target="_blank"
                                             class="btn btn-sm btn-warning font-weight-bold w-100">
                                             Ver Presentación
                                         </a>
@@ -104,7 +104,6 @@
                     <button class="btn btn-block toggle-button collapsed rubrica-btn" type="button"
                         data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="false"
                         aria-controls="collapseOne">
-                        <!-- <i style="margin-right: 10px;" class="fa-solid fa-check fa-lg"></i> -->
                         Respuestas calificación virtual
                     </button>
                 </div>
@@ -120,8 +119,7 @@
                     <button class="btn btn-block toggle-button collapsed rubrica-btn" type="button"
                         data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false"
                         aria-controls="collapseTwo">
-                        <!-- <i style="margin-right: 10px;" class="fa-solid fa-check fa-lg"></i> -->
-                        Respuestas calificación presencial
+                        Respuestas calificación presencial (1)
                     </button>
                 </div>
                 <div id="collapseTwo" class="collapse mt-5" aria-labelledby="headingTwo"
@@ -137,8 +135,7 @@
                     <button class="btn btn-block toggle-button collapsed rubrica-btn" type="button"
                         data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false"
                         aria-controls="collapseThree">
-                        <!-- <i style="margin-right: 10px;" class="fa-solid fa-x fa-lg"></i> -->
-                        Respuestas calificación presencial
+                        Respuestas calificación presencial (2)
                     </button>
                 </div>
                 <div id="collapseThree" class="collapse mt-5" aria-labelledby="headingThree"
@@ -200,10 +197,13 @@ export default {
         const ponentesProyecto = ref('');
         const universidadProyecto = ref('');
         const puntajeTotal = ref(0);
+        const urlPresentacionGuardada = ref('');
         const urlPresentacion = ref('');
         const suplente = ref({});
         const tipo = ref('');
         const isLoading = ref(true);
+
+        console.log('Estado del proyecto:', props.proyecto.estado_calificacion);
 
         // Función para obtener los evaluadores del proyecto
         const fetchEvaluadores = async (id_proyecto) => {
@@ -227,7 +227,7 @@ export default {
                         id_evaluador2.value = evaluadores.value.presencial[0].id_usuario;
                         id_evaluador3.value = evaluadores.value.presencial[1].id_usuario;
                     } else {
-                        alert("NO SE HAN AGREGADO EVALUADORE. CAMBIE ESTO");
+                        showErrorToast("Error al obtener evaluadores.");
                     }
                     evaluadoresObtenidos.value = 'True';
                 }
@@ -256,11 +256,23 @@ export default {
             }
         };
 
+        // Función para guardar la presentación
+        const guardarPresentacion = async () => {
+            try {
+                await insertarUrlPresentacion(props.proyecto.id_proyecto, urlPresentacion.value);
+                showInfoToast('Presentación guardada correctamente.');
+                urlPresentacionGuardada.value = urlPresentacion.value;
+                $('#presentationModal').modal('hide');
+            } catch (error) {
+                showErrorToast('Error al guardar la presentación. Por favor, intenta nuevamente.');
+            }
+        };
+
         // Función para obtener presentación
         const fetchUrlPresentacion = async (id_proyecto) => {
             try {
                 const response = await obtenerUrlPresentacionProyecto(id_proyecto);
-                urlPresentacion.value = response.data;
+                urlPresentacionGuardada.value = response.data;
             } catch (error) {
                 console.log('Error al obtener la URL de la presentación.');
             }
@@ -272,8 +284,8 @@ export default {
                 await fetchEvaluadores(props.proyecto.id_proyecto);
                 await fetchPonentes(props.proyecto.id_proyecto);
                 if (props.proyecto.id_etapa == 1) {
-                    await fetchInfoSala(props.proyecto.id_proyecto);  
-                    await fetchUrlPresentacion(props.proyecto.id_proyecto);  
+                    await fetchInfoSala(props.proyecto.id_proyecto);
+                    await fetchUrlPresentacion(props.proyecto.id_proyecto);
                 }
                 if (evaluadores.value.virtual.length > 0 || evaluadores.value.presencial.length > 0) {
                     if (props.proyecto.id_etapa == 2) {
@@ -285,27 +297,19 @@ export default {
                     }
                 }
             } catch (error) {
-                showErrorToast('Error al cargar los datos del proyecto.');
-
+                showErrorToast('Error al cargar la información del proyecto.');
             } finally {
                 isLoading.value = false;
             }
-        }
+        };
+
         const openModal = () => {
+            urlPresentacion.value = '';
             $('#presentationModal').modal('show');
         };
-        const guardarPresentacion = async () => {
-            try {
-                await insertarUrlPresentacion(props.proyecto.id_proyecto, urlPresentacion.value);
-                showInfoToast('Presentación guardada correctamente.');
-                $('#presentationModal').modal('hide');
-            } catch (error) {
-                console.error('Error al guardar la URL de la presentación:', error);
-                showErrorToast('Error al guardar la presentación. Por favor, intenta nuevamente.');
-            }
-        };
+
+
         onMounted(() => {
-            console.log('Componente montado');
             fetchAllData();
         });
 
@@ -324,6 +328,7 @@ export default {
             universidadProyecto,
             puntajeTotal,
             urlPresentacion,
+            urlPresentacionGuardada,
             suplente,
             evaluadoresObtenidos,
             tipo,
@@ -333,10 +338,9 @@ export default {
             isLoading,
         };
     },
+
 };
 </script>
-
-
 
 
 <style scoped>

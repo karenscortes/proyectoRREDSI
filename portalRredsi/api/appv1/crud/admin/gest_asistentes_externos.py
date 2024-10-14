@@ -1,4 +1,5 @@
 import datetime
+from sqlalchemy import desc
 from sqlalchemy.exc import SQLAlchemyError
 from fastapi import HTTPException
 from sqlalchemy.orm import Session
@@ -63,7 +64,7 @@ def get_id_document_type(db:Session, nombre:str):
 def get_paginated_attendees(db: Session, page, page_size):
     try:
         offset = (page - 1) * page_size
-        attendees = db.query(Asistente.url_comprobante_pago,Asistente.id_convocatoria, Usuario.id_usuario, Usuario.documento, Usuario.nombres, Usuario.apellidos, Usuario.celular, Usuario.correo).join(Usuario).filter(Asistente.id_convocatoria.in_(db.query(Convocatoria.id_convocatoria).filter(Convocatoria.estado == EstadoDeConvocatoria.en_curso.value))).limit(page_size).offset(offset).all()
+        attendees = db.query(Asistente.url_comprobante_pago,Asistente.id_convocatoria, Usuario.id_usuario, Usuario.documento, Usuario.nombres, Usuario.apellidos, Usuario.celular, Usuario.correo).join(Usuario).filter(Asistente.id_convocatoria.in_(db.query(Convocatoria.id_convocatoria).filter(Convocatoria.estado == EstadoDeConvocatoria.en_curso.value))).order_by(desc(Asistente.id_asistente)).limit(page_size).offset(offset).all()
 
         if attendees is None:
             raise HTTPException(status_code=404, detail="No hay asistentes")
@@ -174,4 +175,22 @@ def existing_attendee(db: Session, usuario_id: int):
         return result
     except SQLAlchemyError as e:
         print(f"Error al buscar asistente por id de usuario: {e}")
+        raise HTTPException(status_code=500, detail="Error al buscar usuario por id")
+    
+def existing_user(db: Session, usuario_id: int):
+    try:
+        sql = text("SELECT * FROM usuarios WHERE id_usuario = :id")
+        result = db.execute(sql, {"id": usuario_id}).fetchone()
+        return result
+    except SQLAlchemyError as e:
+        print(f"Error al buscar usuario por id: {e}")
+        raise HTTPException(status_code=500, detail="Error al buscar usuario por id")
+    
+def existing_record(db: Session, usuario_id: int):
+    try:
+        sql = text("SELECT * FROM detalles_institucionales WHERE id_usuario = :id")
+        result = db.execute(sql, {"id": usuario_id}).fetchone()
+        return result
+    except SQLAlchemyError as e:
+        print(f"Error al buscar usuario por id: {e}")
         raise HTTPException(status_code=500, detail="Error al buscar usuario por id")
