@@ -260,7 +260,7 @@ export default {
 
                 // Filtra los proyectos que ya están en la sala para que no salgan duplicados
                 this.detalleSala = this.detalleSala.filter((item, index, self) => {
-                    // Usamos 'findIndex' para ver si el mismo 'id_sala' y 'id_proyecto_convocatoria' ya apareció antes
+                    // Se usa 'findIndex' para ver si el mismo 'id_sala' y 'id_proyecto_convocatoria' ya apareció antes
                     return self.findIndex(
                         elem => elem.id_sala === item.id_sala && elem.id_proyecto_convocatoria === item.id_proyecto_convocatoria
                     ) === index;
@@ -333,7 +333,6 @@ export default {
                 await this.obtenerDetalleProyecto(p_detalle_sala.id_proyecto);
                 const evaluadoresProyectoEspecifico = await obtenerEvaluadoresProyecto(p_detalle_sala.id_proyecto,1);
                 this.evaluadoresProyectoSeleccionado = evaluadoresProyectoEspecifico;
-                console.log(this.evaluadoresProyectoSeleccionado)
 
             } else {
                 $("#detalle_proyecto").modal('show');
