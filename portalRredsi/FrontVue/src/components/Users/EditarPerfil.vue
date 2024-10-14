@@ -745,13 +745,13 @@ export default {
     this.getInstitutionalData();
     this.getCertificates();
     
-    // const user = JSON.parse(localStorage.getItem('user')); 
+    const user = JSON.parse(localStorage.getItem('user')); 
     this.formData.personal = {
-      id_tipo_documento: this.user.id_tipo_documento || '',
-      documento: this.user.documento || '',
-      nombres: this.user.nombres || '',
-      apellidos: this.user.apellidos || '',
-      correo: this.user.correo || '',
+      id_tipo_documento: user.id_tipo_documento || '',
+      documento: user.documento || '',
+      nombres: user.nombres || '',
+      apellidos: user.apellidos || '',
+      correo: user.correo || '',
     };
   },
 };
