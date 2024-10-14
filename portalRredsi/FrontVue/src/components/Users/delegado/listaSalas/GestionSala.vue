@@ -289,7 +289,6 @@ export default defineComponent({
                 // Consulta los posibles evaluadores del proyecto seleccionado
                 const response = await obtenerPosiblesEvaluadoresEtapaPresencial(p_id_area_conocimiento, p_id_institucion);
                 this.posiblesEvaluadores = response.data.evaluadores;
-                console.log(this.posiblesEvaluadores)
             } catch (error) {
                 console.error(error)
             }
