@@ -105,7 +105,7 @@
 
 <script>
 import { ref, computed, watch, onMounted } from 'vue';
-import { obtenerDatosParaCalificarProyecto, insertarRespuestaRubrica,  obtenerRubricasCalificadas } from '../../../../../services/evaluadorService';
+import { obtenerDatosParaCalificarProyecto, insertarRespuestaRubrica, obtenerRubricasCalificadas } from '../../../../../services/evaluadorService';
 import { obtener_id_suplente, obtenerRubricasCalificadasSuplente } from '../../../../../services/delegadoService';
 import { useAuthStore } from '@/store';
 import { useToastUtils } from '@/utils/toast';
@@ -140,11 +140,11 @@ export default {
         const componentes = ref([]);
         const puntajeTotal = ref(0);
         const currentEtapa = ref('');
-        const botonCalificar = ref('Activo'); // Nueva variable para habilitar o no el botón de calificar
-        const idSuplente = ref('');
+        const botonCalificar = ref('Activo'); 
+        const idSuplente = ref(0);
         const calificadaSuplente = ref(false);
 
-
+        
         const { showSuccessToast, showErrorToast, showWarningToast, showInfoToast } = useToastUtils();
 
         const puedeCalificar = computed(() => {
@@ -166,15 +166,8 @@ export default {
             } else {
                 currentEtapa.value = 'Virtual';
             }
-
             //Obtiene el id del suplenteEvaluador en caso de tenerlo asignado
-            try {
-                const response = await obtener_id_suplente(props.proyecto.id_proyecto, props.id_evaluador);
-                idSuplente.value = response.id_suplente[0].id_suplente;
-            } catch (etapaError) {
-                console.log(etapaError);
-            }
-
+            obtenerIdSuplente();
             try {
                 // Intentamos obtener los datos de las rúbricas calificadas.
                 const data = await obtenerRubricasCalificadas(props.proyecto.id_proyecto, props.id_evaluador, props.etapa);
@@ -207,7 +200,7 @@ export default {
                     componentes.value = data.componentes;
                     botonCalificar.value = "Inactivo";
                     calificadaSuplente.value = true;
-                    
+
                 }
                 catch (error) {
                     try {
@@ -277,18 +270,35 @@ export default {
             return true;
         };
 
+        const obtenerIdSuplente = async () => {
+            try {
+                const response = await obtener_id_suplente(props.proyecto.id_proyecto, props.id_evaluador);
+                console.log("Response obtenida:", response);
+                idSuplente.value = response.id_suplente[0].id_suplente;
+                console.log("TRY OBTENER ID SUPLENTE", idSuplente.value);
+            } catch (etapaError) {
+                console.log(etapaError);
+            }
+        };
+
         const enviarCalificaciones = async () => {
+            await obtenerIdSuplente();
+            if (idSuplente.value == 0) {
+                showWarningToast('Debe agregar un suplente antes de calificar.');
+                return; // Salir de la función si no hay suplente
+            }
+
+            // Validar que las calificaciones y observaciones sean correctas
             if (!validarCalificacionesYObservaciones()) {
                 return;
             }
 
             try {
                 // Iterar sobre los componentes y enviar la calificación de cada uno
-                // if(idSuplente.value && idSuplente.value.trim() !== ''){
-                    for (let componente of componentes.value) {
+                for (let componente of componentes.value) {
                     const respuestaData = {
                         id_item_rubrica: componente.id_item_rubrica,
-                        id_usuario: idSuplente.value,
+                        id_usuario: idSuplente.value, // id del suplente
                         id_proyecto: props.proyecto.id_proyecto,
                         observacion: componente.observaciones,
                         calificacion: componente.calificacion,
@@ -296,13 +306,13 @@ export default {
                         etapa_actual: currentEtapa.value,  // Etapa actual
                     };
                     await insertarRespuestaRubrica(respuestaData);
-                    showSuccessToast('Calificación enviada exitosamente.');
-                    }
-                // }else {
-                //     console.log('Debes asignar un suplente al evaluador faltante para calificar (ALERTA INFORMATIVA)');
-                // }
+                }
+                showSuccessToast('Calificación enviada exitosamente.');
+                botonCalificar.value = "Inactivo";
+                props.proyecto.estado_calificacion = "C_" + props.etapa;
+
             } catch (error) {
-                console.log('Error al calificar la rubrica.(ALERTA INFORMATIVA)');
+                showErrorToast('Error al calificar la rúbrica.');
             }
         };
 
@@ -310,6 +320,7 @@ export default {
 
         onMounted(() => {
             obtenerDatos();
+
         });
 
         return {
@@ -333,6 +344,7 @@ export default {
             calificadaSuplente,
             botonCalificar,
             idSuplente,
+            obtenerIdSuplente,
         };
     }
 }

@@ -35,8 +35,9 @@
                                     :horaFin="infoSala.hora_fin" :sala="infoSala.numero_sala" />
                             </div>
                             <div v-if="cargarRubricaPresencial" class="col-md-3 d-flex flex-column align-items-center">
-                                <SuplentesCom :idProyecto="proyecto.id_proyecto" :idEtapa="proyecto.id_etapa"
-                                    :tipo="tipo" :evaluadores="evaluadores" :ponentes="ponentes" />
+                                <SuplentesCom @actualizar-detalle="fetchAllData()" :idProyecto="proyecto.id_proyecto"
+                                    :idEtapa="proyecto.id_etapa" :tipo="tipo" :evaluadores="evaluadores":ponentes="ponentes" 
+                                />
                             </div>
                             <!-- Botones -->
                             <div class="col-lg-12 mt-4 ">
@@ -111,7 +112,7 @@
                 <div id="collapseOne" class="collapse mt-5" aria-labelledby="headingOne"
                     data-bs-parent="#accordionExample">
                     <div v-if="evaluadoresObtenidos == 'True'">
-                        <RubricaCom :proyecto="proyecto" :id_evaluador="id_evaluador1" :etapa="'Virtual'" />
+                        <RubricaCom :proyecto="proyecto" :id_evaluador="id_evaluador1" :etapa="'Virtual'"  />
                     </div>
                 </div>
             </div>
@@ -120,15 +121,14 @@
                     <button class="btn btn-block toggle-button collapsed rubrica-btn" type="button"
                         data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false"
                         aria-controls="collapseTwo">
-                        <!-- <i style="margin-right: 10px;" class="fa-solid fa-check fa-lg"></i> -->
-                        Respuestas calificación presencial
+                        Respuestas calificación presencial (1)
                     </button>
                 </div>
                 <div id="collapseTwo" class="collapse mt-5" aria-labelledby="headingTwo"
                     data-bs-parent="#accordionExample">
                     <div v-if="evaluadoresObtenidos == 'True'">
                         <RubricaCom v-if="cargarRubricaPresencial" :proyecto="proyecto" :id_evaluador="id_evaluador2"
-                            :etapa="'Presencial'" />
+                            :etapa="'Presencial'"/>
                     </div>
                 </div>
             </div>
@@ -137,15 +137,14 @@
                     <button class="btn btn-block toggle-button collapsed rubrica-btn" type="button"
                         data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false"
                         aria-controls="collapseThree">
-                        <!-- <i style="margin-right: 10px;" class="fa-solid fa-x fa-lg"></i> -->
-                        Respuestas calificación presencial
+                        Respuestas calificación presencial (2)
                     </button>
                 </div>
                 <div id="collapseThree" class="collapse mt-5" aria-labelledby="headingThree"
                     data-bs-parent="#accordionExample">
                     <div v-if="evaluadoresObtenidos == 'True'">
                         <RubricaCom v-if="cargarRubricaPresencial" :proyecto="proyecto" :id_evaluador="id_evaluador3"
-                            :etapa="'Presencial'" />
+                            :etapa="'Presencial'"/>
                     </div>
                 </div>
             </div>
@@ -205,6 +204,8 @@ export default {
         const tipo = ref('');
         const isLoading = ref(true);
 
+        console.log('Estado del proyecto:', props.proyecto.estado_calificacion);
+
         // Función para obtener los evaluadores del proyecto
         const fetchEvaluadores = async (id_proyecto) => {
             try {
@@ -227,7 +228,7 @@ export default {
                         id_evaluador2.value = evaluadores.value.presencial[0].id_usuario;
                         id_evaluador3.value = evaluadores.value.presencial[1].id_usuario;
                     } else {
-                        alert("NO SE HAN AGREGADO EVALUADORE. CAMBIE ESTO");
+                        showErrorToast("Error al obtener evaluadores.");
                     }
                     evaluadoresObtenidos.value = 'True';
                 }
@@ -272,8 +273,8 @@ export default {
                 await fetchEvaluadores(props.proyecto.id_proyecto);
                 await fetchPonentes(props.proyecto.id_proyecto);
                 if (props.proyecto.id_etapa == 1) {
-                    await fetchInfoSala(props.proyecto.id_proyecto);  
-                    await fetchUrlPresentacion(props.proyecto.id_proyecto);  
+                    await fetchInfoSala(props.proyecto.id_proyecto);
+                    await fetchUrlPresentacion(props.proyecto.id_proyecto);
                 }
                 if (evaluadores.value.virtual.length > 0 || evaluadores.value.presencial.length > 0) {
                     if (props.proyecto.id_etapa == 2) {
@@ -285,12 +286,12 @@ export default {
                     }
                 }
             } catch (error) {
-                showErrorToast('Error al cargar los datos del proyecto.');
-
+                showErrorToast('Error al cargar la información del proyecto.');
             } finally {
                 isLoading.value = false;
             }
-        }
+        };
+
         const openModal = () => {
             $('#presentationModal').modal('show');
         };
@@ -300,12 +301,11 @@ export default {
                 showInfoToast('Presentación guardada correctamente.');
                 $('#presentationModal').modal('hide');
             } catch (error) {
-                console.error('Error al guardar la URL de la presentación:', error);
                 showErrorToast('Error al guardar la presentación. Por favor, intenta nuevamente.');
             }
         };
+
         onMounted(() => {
-            console.log('Componente montado');
             fetchAllData();
         });
 
@@ -333,10 +333,9 @@ export default {
             isLoading,
         };
     },
+    
 };
 </script>
-
-
 
 
 <style scoped>

@@ -75,7 +75,7 @@
         methods: {
             selectComponent(componentName, proyecto) {
                 // Clonar el proyecto y añadir el id_etapa_actual
-                const proyectoClonado = { ...proyecto, id_etapa: this.id_etapa_actual };
+                const proyectoClonado = { ...proyecto, id_etapa: this.id_etapa_actual, estado_calificacion: this.proyecto.estado_calificacion  };
                 this.$emit('component-selected', { componentName, proyecto: proyectoClonado });
             }
         }
