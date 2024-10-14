@@ -61,8 +61,7 @@
                                 class="form-control custom-select">
                                 <option value="" disabled selected>Seleccionar Evaluador</option>
                                 <option v-for="(evaluador, index) in evaluadores.presencial" :key="index"
-                                    :value="evaluador.id_usuario"
-                                    :disabled="esEvaluadorDesactivado(evaluador.id_usuario)">
+                                    :value="evaluador.id_usuario">
                                     {{ evaluador.nombres }} {{ evaluador.apellidos }}
                                 </option>
                             </select>
@@ -80,7 +79,7 @@
                         </div>
                         <div class="button-container text-center">
                             <button class="btn btn-warning font-weight-bold btn-lg" @click="addSuplente"
-                                :disabled="isCalificado">Añadir</button>
+                                >Añadir</button>
                         </div>
                     </div>
                 </div>
@@ -109,10 +108,6 @@ export default {
             type: Object,
             required: true
         },
-        isCalificado: {
-            type: Boolean,
-            required: true
-        },
         evaluadores: Array,
         ponentes: Array,
     },
@@ -127,7 +122,6 @@ export default {
             suplenteSeleccionado: null,
             evaluadorSeleccionado: null,
             idProyectoConvocatoria: null,
-            evaluadoresDesactivados: []
         });
 
         const { showSuccessToast, showErrorToast } = useToastUtils();
@@ -139,10 +133,6 @@ export default {
         const suplentesEvaluadores = computed(() => {
             return state.suplentes.filter(suplente => suplente.tipo_usuario === 'suplenteEvaluador');
         });
-
-        const esEvaluadorDesactivado = (idUsuario) => {
-            return state.evaluadoresDesactivados.includes(idUsuario);
-        };
 
         const openModal = async () => {
             state.isModalOpen = true;
@@ -178,23 +168,13 @@ export default {
         const fetchSuplentes = async () => {
             try {
                 const suplenteData = await obtenerSuplentes(props.idProyecto, state.tipo_usuario);
-                state.evaluadoresDesactivados = [];
                 state.suplentes = suplenteData;
-                state.suplentesEvaluadores.forEach(suplente => {
-                    if (!state.evaluadoresDesactivados.includes(suplente.id_usuario)) {
-                        state.evaluadoresDesactivados.push(suplente.id_usuario);
-                    }
-                });
             } catch (error) {
                 console.error("Error al obtener los suplentes seleccionados:", error);
             }
         };
 
         const addSuplente = async () => {
-            if (state.suplenteSeleccionado === state.evaluadorSeleccionado) {
-                showErrorToast("Debe seleccionar un suplente diferente al evaluador.");
-                return;
-            }
             try {
                 await insertarSuplente(
                     state.suplenteSeleccionado,
@@ -205,11 +185,10 @@ export default {
                     state.evaluadorSeleccionado
                 );
                 showSuccessToast("Suplente insertado con éxito");
-                state.evaluadoresDesactivados.push(state.evaluadorSeleccionado);
-                await fetchSuplentes(); 
-
-                resetForm();
+                await fetchSuplentes();
+                emit('actualizar-detalle');
                 closeModal();
+                resetForm();
             } catch (error) {
                 showErrorToast("Error al agregar suplente:");
             }
@@ -236,12 +215,10 @@ export default {
             fetchSuplentes,
             addSuplente,
             resetForm,
-            esEvaluadorDesactivado
         };
     }
 };
 </script>
-
 
 
 <style scoped>

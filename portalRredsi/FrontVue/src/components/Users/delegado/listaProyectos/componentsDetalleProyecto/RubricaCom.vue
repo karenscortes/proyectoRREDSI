@@ -140,11 +140,11 @@ export default {
         const componentes = ref([]);
         const puntajeTotal = ref(0);
         const currentEtapa = ref('');
-        const botonCalificar = ref('Activo'); // Nueva variable para habilitar o no el botón de calificar
-        const idSuplente = ref('');
+        const botonCalificar = ref('Activo'); 
+        const idSuplente = ref(0);
         const calificadaSuplente = ref(false);
 
-
+        
         const { showSuccessToast, showErrorToast, showWarningToast, showInfoToast } = useToastUtils();
 
         const puedeCalificar = computed(() => {
@@ -166,15 +166,8 @@ export default {
             } else {
                 currentEtapa.value = 'Virtual';
             }
-
             //Obtiene el id del suplenteEvaluador en caso de tenerlo asignado
-            try {
-                const response = await obtener_id_suplente(props.proyecto.id_proyecto, props.id_evaluador);
-                idSuplente.value = response.id_suplente[0].id_suplente;
-            } catch (etapaError) {
-                console.log(etapaError);
-            }
-
+            obtenerIdSuplente();
             try {
                 // Intentamos obtener los datos de las rúbricas calificadas.
                 const data = await obtenerRubricasCalificadas(props.proyecto.id_proyecto, props.id_evaluador, props.etapa);
@@ -277,9 +270,20 @@ export default {
             return true;
         };
 
+        const obtenerIdSuplente = async () => {
+            try {
+                const response = await obtener_id_suplente(props.proyecto.id_proyecto, props.id_evaluador);
+                console.log("Response obtenida:", response);
+                idSuplente.value = response.id_suplente[0].id_suplente;
+                console.log("TRY OBTENER ID SUPLENTE", idSuplente.value);
+            } catch (etapaError) {
+                console.log(etapaError);
+            }
+        };
+
         const enviarCalificaciones = async () => {
-            // Validar si el suplente ha sido asignado
-            if (!idSuplente.value || idSuplente.value === '') {
+            await obtenerIdSuplente();
+            if (idSuplente.value == 0) {
                 showWarningToast('Debe agregar un suplente antes de calificar.');
                 return; // Salir de la función si no hay suplente
             }
@@ -316,6 +320,7 @@ export default {
 
         onMounted(() => {
             obtenerDatos();
+
         });
 
         return {
@@ -339,6 +344,7 @@ export default {
             calificadaSuplente,
             botonCalificar,
             idSuplente,
+            obtenerIdSuplente,
         };
     }
 }

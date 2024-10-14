@@ -214,6 +214,8 @@ export default {
 
         const handleVolver = () => {
             state.showCalificarProyecto = false;
+            fetchProyectos();
+            
         };
 
         return {
