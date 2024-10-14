@@ -135,13 +135,13 @@ def get_institutional_details(db: Session, id_usuario: int):
         raise HTTPException(status_code=500, detail="Error al obtener información del usuario")
 
 
-def update_password(db: Session, email: str, new_password: str):
+def update_password(db: Session, correo: str, new_password: str):
     try:
         # Hash el nuevo password
         hashed_password = get_hashed_password(new_password)
         # Actualizar el nuevo password en base de datos
-        sql_query = text("UPDATE users SET passhash = :passhash WHERE mail = :mail")
-        params = { "passhash": hashed_password, "mail": email }
+        sql_query = text("UPDATE usuarios SET clave = :clave WHERE correo = :correo")
+        params = { "clave": hashed_password, "correo": correo }
         # Ejecutar la consulta de actualización
         db.execute(sql_query, params)
         # Confirmar los cambios

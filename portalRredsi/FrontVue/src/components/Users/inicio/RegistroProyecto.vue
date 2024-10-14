@@ -250,6 +250,9 @@ export default {
     const showModal = ref(false);
     const proyectoCodigo = ref('');
 
+    // Propiedad 'key' para forzar actualización de los selectores
+    const selectKey = ref(0);
+
     const datosProyecto = ref({
       institucion_educativa: null,  // ID de Institución
       programa_academico: '',
@@ -344,6 +347,10 @@ export default {
 
         proyectoCodigo.value = response.data.id_proyecto;
         showSuccessToast(`Proyecto registrado exitosamente, el Código de identificación es: ${proyectoCodigo.value}.`);
+
+        // Limpiar los campos del formulario después de un registro exitoso
+        limpiarFormulario();
+
       } catch (error) {
         if (error.message) {
           showErrorToast(error.message);
@@ -351,6 +358,59 @@ export default {
           showErrorToast('Error inesperado al registrar el proyecto.');
         }
       }
+    };
+
+    const limpiarFormulario = () => {
+      datosProyecto.value = {
+        institucion_educativa: null,
+        programa_academico: '',
+        grupo_investigacion: '',
+        linea_investigacion: '',
+        nombre_semillero: '',
+        modalidad: null,
+        titulo: '',
+        propuesta_escrita: null,  // Limpiar el archivo de propuesta
+        area_conocimiento: null,
+        aval: null,  // Limpiar el archivo de aval
+      };
+
+      datosTutor.value = {
+        tipo_documento: null,
+        numero_documento: '',
+        nombres: '',
+        apellidos: '',
+        celular: '',
+        correo: '',
+      };
+
+      datosPonente.value = {
+        tipo_documento: null,
+        numero_documento: '',
+        nombres: '',
+        apellidos: '',
+        celular: '',
+        correo: '',
+      };
+
+      ponenteOpcional.value = {
+        tipo_documento: null,
+        numero_documento: '',
+        nombres: '',
+        apellidos: '',
+        celular: '',
+        correo: '',
+      };
+
+      mostrarPonenteOpcional.value = false;
+      nuevoAutor.value.nombre = '';
+      autores.value = [];
+
+      // Limpiar los archivos cargados
+      document.getElementById('propuesta_escrita').value = null;
+      document.getElementById('aval').value = null;
+
+      // Forzar actualización de los selectores
+      selectKey.value += 1;
     };
 
     const setInstitucionEducativa = (id) => datosProyecto.value.institucion_educativa = id;
@@ -375,6 +435,7 @@ export default {
       eliminarAutor,
       registrarProyecto,
       proyectoCodigo,
+      selectKey, // Forzar re-renderizado
       setInstitucionEducativa,
       setModalidad,
       setAreaConocimiento,
@@ -385,6 +446,9 @@ export default {
   },
 };
 </script>
+
+
+
 
 <style scoped>
   .form-section {
