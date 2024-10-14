@@ -10,17 +10,17 @@
                     
                 </div>
                 <div class="modal-body mt-3">
-                    <form>
+                    <form @submit.prevent="changePassword()">
                         <div class="form-group row justify-content-center">
                           <label for="colFormLabelSm" class="col-5 col-form-label col-form-label-sm text-center fw-bold">Contraseña Actual: </label>
                           <div class="col-5 pr-5">
-                            <input type="password" class="form-control form-control-sm" id="colFormLabelSm">
+                            <input v-model="CurrentPass" type="password" class="form-control form-control-sm" id="colFormLabelSm">
                           </div>
                         </div>
                         <div class="form-group row justify-content-center">
                             <label for="colFormLabelSm" class="col-5 col-form-label col-form-label-sm text-center fw-bold">Nueva Contraseña: </label>
                             <div class="col-5 pr-5">
-                              <input type="password" class="form-control form-control-sm " id="colFormLabelSm">
+                              <input v-model="NewPass" type="password" class="form-control form-control-sm " id="colFormLabelSm">
                               <small id="passwordHelpBlock" class="form-text text-muted w-100">
                                 8-20 characters long
                               </small>
@@ -29,7 +29,7 @@
                         <div class="form-group row  mb-5 justify-content-center">
                             <label for="colFormLabelSm" class="col-5 col-form-label col-form-label-sm text-center fw-bold">Confirmar Contraseña: </label>
                             <div class="col-5 pr-5">
-                              <input type="password" class="form-control form-control-sm " id="colFormLabelSm">
+                              <input v-model="Confirmation" type="password" class="form-control form-control-sm " id="colFormLabelSm">
                             </div>
                         </div>
                         <div class="text-center">
@@ -42,17 +42,48 @@
     </div>
 </template>
 <script>
+import {ref} from 'vue';
+import { useToastUtils } from '@/utils/toast';
+import { resetPassword } from '../../services/UsuarioService';
+
 export default {
+    props:{
+        email:{
+            type: String,
+            required: true
+        }
+    },
     emits: ["close"],
-    setup(_, { emit }) {
+    setup(props, { emit }) {
+        const { showErrorToast,showInfoToast,showSuccessToast} = useToastUtils();
+        const CurrentPass = ref('');
+        const NewPass = ref('');
+        const Confirmation = ref('');
+
                 
         const closeModal = () => {
             emit("close");
         };
 
+        const changePassword = async()=>{
+            if(NewPass.value!=Confirmation.value){
+                showInfoToast('Las Contraseñas no coinciden');
+            }else{
+                try{
+                    await resetPassword(CurrentPass.value,NewPass.value,props.email);
+                    showSuccessToast('Contraseña restablecida con éxito')
+                }catch{
+                    showErrorToast('Error en restablecer contraseña')
+                }
+            }
+        }
 
         return {
-            closeModal
+            closeModal,
+            CurrentPass,
+            NewPass,
+            Confirmation,
+            changePassword
         }
     },
 }

@@ -198,6 +198,7 @@ export default {
 
         const closeAddModal = () => {
             isAddModalOpen.value = false;
+            currentPage.value=1;
             fetchAttendees();
         };
 

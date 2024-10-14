@@ -59,3 +59,8 @@ class ChangePassword(BaseModel):
     email: str
     new_password: str
     code: str
+
+class resetPassword(BaseModel):
+    email: str
+    current_password: str
+    new_password:str

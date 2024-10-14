@@ -7,10 +7,10 @@ from appv1.schemas.institucion import InstitucionBase
 class DetalleInstitucionalBase(BaseModel):
     id_usuario: int 
     institucion: InstitucionBase
-    semillero: Annotated[str, StringConstraints(max_length=35)]
+    semillero: Optional[Annotated[str, StringConstraints(max_length=35)]]=None
     grupo_investigacion: Annotated[str, StringConstraints(max_length=35)]
-    primer_area: Optional[AreaConocimientoResponse] = None
-    segunda_area: Optional[AreaConocimientoResponse] = None
+    primer_area: AreaConocimientoResponse
+    segunda_area: AreaConocimientoResponse
 
     class Config:
         orm_mode = True 
@@ -19,9 +19,20 @@ class DetalleInstitucionalBase(BaseModel):
 class DetalleInstitucionalResponse(DetalleInstitucionalBase):
     id_detalle_institucional: int
     
-class DetalleInstitucionalEditable(BaseModel):
+class DetalleInstitucional(BaseModel):
+    id_detalle_institucional:Optional[int] = None
+    id_usuario:int
     id_institucion: int
-    semillero: Annotated[str, StringConstraints(max_length=35)]
+    semillero:  Optional[Annotated[str, StringConstraints(max_length=35)]]=None
     grupo_investigacion: Annotated[str, StringConstraints(max_length=35)]
     id_primera_area_conocimiento: int
     id_segunda_area_conocimiento: int
+
+class DetalleInstitucionalUpdate(BaseModel):
+    id_usuario:Optional[int] = None
+    id_institucion: Optional[int] = None
+    grupo_investigacion: Optional[Annotated[str, StringConstraints(max_length=35)]] = None
+    semillero:  Optional[Annotated[str, StringConstraints(max_length=35)]]=None
+    id_primera_area_conocimiento:Optional[int] = None
+    id_segunda_area_conocimiento:Optional[int] = None
+

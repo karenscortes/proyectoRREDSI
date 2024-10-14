@@ -55,23 +55,21 @@ export const getCurrentUser = async () => {
 // Función para actualizar el perfil del usuario
 export const updateUserProfile = async (userId, userData) => {
   try {
-    const response = await api.put('/users/update/', 
-      ...userData,
-      userId, // Aquí se desglosan los datos del perfil que se quieren actualizar
-      {
-        headers: {
-          'Authorization': `Bearer ${localStorage.getItem('access_token')}` // Asegúrate de obtener el token correctamente
-        }
-      });
-    return response.data; // Retorna el mensaje de éxito
+    const url = `/users/update/${encodeURIComponent(userId)}/`;
+    const response = await api.put(url,userData,
+    {
+      headers: {
+        'Authorization': `Bearer ${localStorage.getItem('access_token')}` 
+      }
+    });
+      return response.data; 
   } catch (error) {
     if (error.response) {
-      // Manejar el error que proviene del servidor
       throw error.response.data;
     } else {
-      // Manejar errores de red u otros errores no relacionados con la API
       throw new Error('Error de red o de servidor');
     }
+    
   }
 };
 
@@ -85,12 +83,141 @@ export const getInstitutionalDetails = async () => {
         'Authorization': `Bearer ${localStorage.getItem('access_token')}` 
       }
     });
+    if (response.data === null)
+      return null;
     return response;
   } catch (error) {
     if (error.response) {
       throw error;
     } else {
       throw new Error('Error de red o de servidor'); 
+    }
+  }
+};
+
+// Función para actualizar el perfil del usuario
+export const resetPassword = async (curPass, Newpass, email) => {
+  try {
+
+    const formData = new FormData();
+    formData.append('email', email);
+    formData.append('current_password', curPass);
+    formData.append('new_password', Newpass);
+
+    const response = await api.put('/users/update-password/',formData,     
+    {
+      headers: {
+        'Content-Type': 'application/json',
+        'accept': 'application/json'
+      }
+    });
+      return response; 
+  } catch (error) {
+    if (error.response) {
+      throw error.response.data;
+    } else {
+      throw new Error('Error de red o de servidor');
+    }   
+  }
+};
+
+// Función para actualizar los datos institucionales
+export const updateInstitutionalData = async (userId,Data) => {
+  try {
+    const url = `/users/update-institutional-data/${encodeURIComponent(userId)}/`;
+    const response = await api.put(url,Data,
+    {
+      headers: {
+        'Authorization': `Bearer ${localStorage.getItem('access_token')}`,
+      }
+    });
+    
+    return response.data; 
+  } catch (error) {
+    if (error.response) {
+      throw error.response.data;
+    } else {
+      throw new Error('Error de red o de servidor');
+    }
+    
+  }
+};
+
+// Función para crear un registro de datos institucionales
+export const createInstitutionalData = async (Data) => {
+  try {
+    const response = await api.post('/users/create-institutional-data/', Data, {
+      headers: {
+        'Content-Type': 'application/json',
+        'accept': 'application/json'  
+      }
+    });
+    return response; // Retorna la respuesta de la API
+  } catch (error) {
+    if (error.response) {
+      throw error.response.data; // Devuelve el error que envía la API
+    } else {
+      throw new Error('Error de red o de servidor');
+    }
+  }
+};
+
+
+// Función para insertar archivos de los titulos academicos
+export const insertCertificatesFiles = async (userId,pregradoFile,especializacionFile,maestriaFile,doctoradoFile) => {
+  try {
+    console.log("entróoo")
+    const formData = new FormData();
+
+    if(pregradoFile){
+      formData.append('pregradoFile', pregradoFile);
+    }
+    
+    if(especializacionFile){
+      formData.append('especializacionFile', especializacionFile);
+    }
+    
+    if(maestriaFile){
+      formData.append('maestriaFile', maestriaFile);
+    }
+    
+    if(doctoradoFile){
+      formData.append('doctoradoFile', doctoradoFile);
+    }
+    
+    
+    const url = `/users/upload-certificates/${encodeURIComponent(userId)}/`;
+    const response = await api.put(url,formData,{
+      headers: {
+        'Content-Type': 'multipart/form-data'
+      }
+    });
+    return response; // Retorna la respuesta de la API
+  } catch (error) {
+    if (error.response) {
+      throw error.response.data; // Devuelve el error que envía la API
+    } else {
+      throw new Error('Error de red o de servidor');
+    }
+  }
+};
+
+// Función para crear registros de titulos academicos
+export const createUpdateRecords = async (userId,data) => {
+  try {    
+    const url = `/users/create-certificates-records/${encodeURIComponent(userId)}/`;
+    const response = await api.post(url,data,{
+      headers: {
+        'Content-Type': 'application/json',
+        'accept': 'application/json'   
+      }
+    });
+    return response; // Retorna la respuesta de la API
+  } catch (error) {
+    if (error.response) {
+      throw error.response.data; // Devuelve el error que envía la API
+    } else {
+      throw new Error('Error de red o de servidor');
     }
   }
 };
