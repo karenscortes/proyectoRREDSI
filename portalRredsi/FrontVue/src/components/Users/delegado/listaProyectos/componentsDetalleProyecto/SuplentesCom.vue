@@ -186,7 +186,7 @@ export default {
                 );
                 showSuccessToast("Suplente insertado con éxito");
                 await fetchSuplentes();
-                emit('actualizar-detalle');
+                // emit('actualizar-detalle');
                 closeModal();
                 resetForm();
             } catch (error) {

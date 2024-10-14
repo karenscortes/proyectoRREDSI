@@ -273,9 +273,7 @@ export default {
         const obtenerIdSuplente = async () => {
             try {
                 const response = await obtener_id_suplente(props.proyecto.id_proyecto, props.id_evaluador);
-                console.log("Response obtenida:", response);
                 idSuplente.value = response.id_suplente[0].id_suplente;
-                console.log("TRY OBTENER ID SUPLENTE", idSuplente.value);
             } catch (etapaError) {
                 console.log(etapaError);
             }
@@ -285,10 +283,8 @@ export default {
             await obtenerIdSuplente();
             if (idSuplente.value == 0) {
                 showWarningToast('Debe agregar un suplente antes de calificar.');
-                return; // Salir de la función si no hay suplente
+                return; 
             }
-
-            // Validar que las calificaciones y observaciones sean correctas
             if (!validarCalificacionesYObservaciones()) {
                 return;
             }

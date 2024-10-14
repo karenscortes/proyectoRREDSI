@@ -35,9 +35,8 @@
                                     :horaFin="infoSala.hora_fin" :sala="infoSala.numero_sala" />
                             </div>
                             <div v-if="cargarRubricaPresencial" class="col-md-3 d-flex flex-column align-items-center">
-                                <SuplentesCom @actualizar-detalle="fetchAllData()" :idProyecto="proyecto.id_proyecto"
-                                    :idEtapa="proyecto.id_etapa" :tipo="tipo" :evaluadores="evaluadores":ponentes="ponentes" 
-                                />
+                                <SuplentesCom :idProyecto="proyecto.id_proyecto" :idEtapa="proyecto.id_etapa"
+                                    :tipo="tipo" :evaluadores="evaluadores" :ponentes="ponentes" />
                             </div>
                             <!-- Botones -->
                             <div class="col-lg-12 mt-4 ">
@@ -49,7 +48,7 @@
                                         </button>
                                     </div>
                                     <div v-if="cargarRubricaPresencial" class="col-4">
-                                        <a :href="urlPresentacion" target="_blank"
+                                        <a :href="urlPresentacionGuardada" target="_blank"
                                             class="btn btn-sm btn-warning font-weight-bold w-100">
                                             Ver Presentación
                                         </a>
@@ -105,14 +104,13 @@
                     <button class="btn btn-block toggle-button collapsed rubrica-btn" type="button"
                         data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="false"
                         aria-controls="collapseOne">
-                        <!-- <i style="margin-right: 10px;" class="fa-solid fa-check fa-lg"></i> -->
                         Respuestas calificación virtual
                     </button>
                 </div>
                 <div id="collapseOne" class="collapse mt-5" aria-labelledby="headingOne"
                     data-bs-parent="#accordionExample">
                     <div v-if="evaluadoresObtenidos == 'True'">
-                        <RubricaCom :proyecto="proyecto" :id_evaluador="id_evaluador1" :etapa="'Virtual'"  />
+                        <RubricaCom :proyecto="proyecto" :id_evaluador="id_evaluador1" :etapa="'Virtual'" />
                     </div>
                 </div>
             </div>
@@ -128,7 +126,7 @@
                     data-bs-parent="#accordionExample">
                     <div v-if="evaluadoresObtenidos == 'True'">
                         <RubricaCom v-if="cargarRubricaPresencial" :proyecto="proyecto" :id_evaluador="id_evaluador2"
-                            :etapa="'Presencial'"/>
+                            :etapa="'Presencial'" />
                     </div>
                 </div>
             </div>
@@ -144,7 +142,7 @@
                     data-bs-parent="#accordionExample">
                     <div v-if="evaluadoresObtenidos == 'True'">
                         <RubricaCom v-if="cargarRubricaPresencial" :proyecto="proyecto" :id_evaluador="id_evaluador3"
-                            :etapa="'Presencial'"/>
+                            :etapa="'Presencial'" />
                     </div>
                 </div>
             </div>
@@ -199,6 +197,7 @@ export default {
         const ponentesProyecto = ref('');
         const universidadProyecto = ref('');
         const puntajeTotal = ref(0);
+        const urlPresentacionGuardada = ref('');
         const urlPresentacion = ref('');
         const suplente = ref({});
         const tipo = ref('');
@@ -257,11 +256,23 @@ export default {
             }
         };
 
+        // Función para guardar la presentación
+        const guardarPresentacion = async () => {
+            try {
+                await insertarUrlPresentacion(props.proyecto.id_proyecto, urlPresentacion.value);
+                showInfoToast('Presentación guardada correctamente.');
+                urlPresentacionGuardada.value = urlPresentacion.value;
+                $('#presentationModal').modal('hide');
+            } catch (error) {
+                showErrorToast('Error al guardar la presentación. Por favor, intenta nuevamente.');
+            }
+        };
+
         // Función para obtener presentación
         const fetchUrlPresentacion = async (id_proyecto) => {
             try {
                 const response = await obtenerUrlPresentacionProyecto(id_proyecto);
-                urlPresentacion.value = response.data;
+                urlPresentacionGuardada.value = response.data;
             } catch (error) {
                 console.log('Error al obtener la URL de la presentación.');
             }
@@ -293,17 +304,10 @@ export default {
         };
 
         const openModal = () => {
+            urlPresentacion.value = '';
             $('#presentationModal').modal('show');
         };
-        const guardarPresentacion = async () => {
-            try {
-                await insertarUrlPresentacion(props.proyecto.id_proyecto, urlPresentacion.value);
-                showInfoToast('Presentación guardada correctamente.');
-                $('#presentationModal').modal('hide');
-            } catch (error) {
-                showErrorToast('Error al guardar la presentación. Por favor, intenta nuevamente.');
-            }
-        };
+
 
         onMounted(() => {
             fetchAllData();
@@ -324,6 +328,7 @@ export default {
             universidadProyecto,
             puntajeTotal,
             urlPresentacion,
+            urlPresentacionGuardada,
             suplente,
             evaluadoresObtenidos,
             tipo,
@@ -333,7 +338,7 @@ export default {
             isLoading,
         };
     },
-    
+
 };
 </script>
 
