@@ -1,5 +1,5 @@
 <template>
-  <div class="container p-4 mt-5 shadow-sm rounded bg-light">
+  <div class="container p-4 mt-5">
     <h2 class="text-center text-warning font-weight-bold">Formulario de Registro</h2>
     <form @submit.prevent="handleSubmit">
       <!-- Filas del formulario -->
@@ -152,9 +152,8 @@ export default {
 <style scoped>
 .container {
   max-width: 600px;
-  background-color: #f8f9fa; /* Fondo claro */
-  border: 1px solid #ddd; /* Borde del contenedor */
-  border-radius: 10px;
+  background-color: #ffffff; /* Fondo claro */
+
 }
 
 h2 {
