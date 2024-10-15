@@ -44,11 +44,11 @@
               <div class="form-row justify-content-center mb-3">
                 <div class="form-group col-md-5 me-3">
                   <label for="inputName">Nombres:</label>
-                  <input type="text" v-model="formData.personal.nombres" class="form-control" id="inputName" />
+                  <input type="text" v-model="formData.personal.nombres" class="form-control" id="inputName" required/>
                 </div>
                 <div class="form-group col-md-5 mb-3">
                   <label for="inputLastname">Apellidos:</label>
-                  <input type="text" v-model="formData.personal.apellidos" class="form-control" id="inputLastname" />
+                  <input type="text" v-model="formData.personal.apellidos" class="form-control" id="inputLastname" required />
                 </div>
               </div>
               <div class="form-row justify-content-center mb-3">
@@ -67,7 +67,7 @@
               <div class="form-row justify-content-center mb-5">
                 <div class="form-group col-md-10" style="padding:0;margin:0">
                   <label for="inputEmail">Correo:</label>
-                  <input type="email" v-model="formData.personal.correo" class="form-control p-1" id="inputEmail" placeholder="usuario@gmail.com" />
+                  <input type="email" v-model="formData.personal.correo" class="form-control p-1" id="inputEmail" placeholder="usuario@gmail.com" required/>
                 </div>
               </div>
               <div class="text-center mb-5">
@@ -632,6 +632,11 @@ export default {
       try {
         const responseTitulos = await getCertificatesById(this.user.id_usuario);
         const titulos = responseTitulos.data;
+
+        this.editPregrado=false;
+        this.editEpecializacion=false;
+        this.editMaestria=false;
+        this.editDoctorado=false;
 
         for (let i = 0; i < titulos.length; i++) {
           if (titulos[i].nivel == "pregrado") {

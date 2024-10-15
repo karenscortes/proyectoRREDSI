@@ -21,9 +21,6 @@
                             <label for="colFormLabelSm" class="col-5 col-form-label col-form-label-sm text-center fw-bold">Nueva Contraseña: </label>
                             <div class="col-5 pr-5">
                               <input v-model="NewPass" type="password" class="form-control form-control-sm " id="colFormLabelSm">
-                              <small id="passwordHelpBlock" class="form-text text-muted w-100">
-                                8-20 characters long
-                              </small>
                             </div>
                         </div>
                         <div class="form-group row  mb-5 justify-content-center">
@@ -68,6 +65,8 @@ export default {
         const changePassword = async()=>{
             if(NewPass.value!=Confirmation.value){
                 showInfoToast('Las Contraseñas no coinciden');
+            }else if(NewPass.value == CurrentPass.value){
+                showInfoToast('La Contraseña nueva es igual a la actual');
             }else{
                 try{
                     await resetPassword(CurrentPass.value,NewPass.value,props.email);
