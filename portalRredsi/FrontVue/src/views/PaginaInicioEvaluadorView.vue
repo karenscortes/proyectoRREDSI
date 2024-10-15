@@ -294,7 +294,7 @@
       },
     },
     setup(){
-      const convocatoriaEnCurso = ref(false);//poner en false para hacer pruebas
+      const convocatoriaEnCurso = ref(true);//poner en false para hacer pruebas
 
       //obteniendo fecha actual
       const currentDate = ref(new Date().toISOString().split('T')[0]);
