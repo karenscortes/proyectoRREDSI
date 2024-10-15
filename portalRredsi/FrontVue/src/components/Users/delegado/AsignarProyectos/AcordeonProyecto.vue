@@ -40,7 +40,7 @@
                     <div class="col-md-6 col-12">
                         <label for="" class="Text-dark fw-bold">Seleccionar evaluador:</label>
                         <select class="form-select text-dark" v-model="evaluadorSeleccionado">
-                            <option selected disabled>Seleccionar evaluador</option>
+                            <option :value="null" disabled selected>Seleccionar evaluador</option>
                             <option v-if="evaluadoresEspecificos"
                                 v-for="(posibleEvaluador, index) in posiblesEvaluadores" :key="index"
                                 :value="posibleEvaluador.id">
