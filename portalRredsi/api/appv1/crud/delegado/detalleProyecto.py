@@ -160,23 +160,37 @@ def get_obtener_suplente_evaluador(db: Session, id_proyecto: int, id_evaluador: 
         raise HTTPException(status_code=500, detail="Error al consultar suplentes")
 
 
-#Insertar presentacion del proyecto
-def insertar_presentacion_proyecto(db: Session, id_proyecto: int, url_presentacion: str):
+# Actualizar o insertar presentacion del proyecto
+def insertar_o_actualizar_presentacion(db: Session, id_proyecto: int, url_presentacion: str):
     try:
-        sql = text("""
-            INSERT INTO presentaciones_proyectos (id_proyecto, url_presentacion)
-            VALUES (:id_proy, :url)
+        # Verificar si ya existe una presentación para el proyecto
+        sql_select = text("""
+            SELECT id_presentacion
+            FROM presentaciones_proyectos
+            WHERE id_proyecto = :id_proy
         """)
-        params = {
-            "id_proy": id_proyecto,
-            "url": url_presentacion
-        }
+        result = db.execute(sql_select, {"id_proy": id_proyecto}).fetchone()
         
-        db.execute(sql, params)
-        db.commit() 
+        # Si existe, se actualiza; si no, se inserta una nueva presentación
+        if result:
+            sql_update = text("""
+                UPDATE presentaciones_proyectos
+                SET url_presentacion = :url
+                WHERE id_proyecto = :id_proy
+            """)
+            db.execute(sql_update, {"id_proy": id_proyecto, "url": url_presentacion})
+        else:
+            sql_insert = text("""
+                INSERT INTO presentaciones_proyectos (id_proyecto, url_presentacion)
+                VALUES (:id_proy, :url)
+            """)
+            db.execute(sql_insert, {"id_proy": id_proyecto, "url": url_presentacion})
+
+        db.commit()
     except SQLAlchemyError as e:
-        db.rollback()  
-        raise HTTPException(status_code=500, detail="Error al insertar URL de presentación")
+        db.rollback()
+        raise HTTPException(status_code=500, detail="Error al insertar o actualizar la URL de presentación")
+
 
 # Obtener los datos para calificar un proyecto
 def get_datos_proyecto_calificado_completo_suplente(db: Session, id_proyecto: int, id_usuario: int, nombre_etapa: str):

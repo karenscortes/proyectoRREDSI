@@ -4,7 +4,7 @@
             <li>
                 <a class="card">
                     <div class="text-center pt-5 card__image">
-                        <a :href="proyecto.url_propuesta_escrita" class="d-inline-flex" target="_blank">
+                        <a :href="'http://localhost:8000/'+proyecto.url_propuesta_escrita" class="d-inline-flex" target="_blank">
                             <button type="button" class="btn btn-warning rounded-circle border border-dark mx-2">
                                 <i class="far fa-file-alt h3"></i>
                             </button>
