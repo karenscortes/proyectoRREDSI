@@ -158,7 +158,7 @@ import PonentesCom from './PonentesCom.vue';
 import SuplentesCom from './SuplentesCom.vue';
 import RubricaCom from './RubricaCom.vue';
 import { useToastUtils } from '@/utils/toast';
-import { obtenerEvaluadoresProyecto, obtenerPonentesProyecto, obtenerInfoSalaProyecto, insertarUrlPresentacion, obtenerUrlPresentacionProyecto } from '../../../../../services/delegadoService';
+import { obtenerEvaluadoresProyecto, obtenerPonentesProyecto, obtenerInfoSalaProyecto, insertarOActualizarUrlPresentacion, obtenerUrlPresentacionProyecto } from '../../../../../services/delegadoService';
 
 export default {
     name: 'DetalleProyecto',
@@ -259,8 +259,8 @@ export default {
         // Función para guardar la presentación
         const guardarPresentacion = async () => {
             try {
-                await insertarUrlPresentacion(props.proyecto.id_proyecto, urlPresentacion.value);
-                showInfoToast('Presentación guardada correctamente.');
+                await insertarOActualizarUrlPresentacion(props.proyecto.id_proyecto, urlPresentacion.value);
+                showSuccessToast('Presentación guardada/actualizada correctamente.');
                 urlPresentacionGuardada.value = urlPresentacion.value;
                 $('#presentationModal').modal('hide');
             } catch (error) {
@@ -307,7 +307,6 @@ export default {
             urlPresentacion.value = '';
             $('#presentationModal').modal('show');
         };
-
 
         onMounted(() => {
             fetchAllData();
@@ -433,38 +432,16 @@ export default {
     margin-bottom: 15px;
 }
 
-/* No utilizada, puedes eliminarla. */
-
-.icon {
-    margin-bottom: 10px;
-}
-
-/* No utilizada, puedes eliminarla. */
-
 .toggle-button {
     text-align: center;
     padding: 5px 20px;
     width: 100%;
 }
 
-/* Duplicada, se puede eliminar esta definición ya que está más arriba. */
-
-.card {
-    margin-bottom: 10px;
-}
-
-/* Duplicada, se puede eliminar ya que está más arriba. */
-
-.accordion {
-    display: block;
-}
-
 .title-line {
     border-top: 2px solid rgb(255, 182, 6);
     margin-top: -10px;
 }
-
-/* No utilizada, puedes eliminarla. */
 
 .form-section {
     background-color: #f8f9fa;
@@ -487,7 +464,6 @@ export default {
     margin-bottom: 10px;
 }
 
-/* No utilizada, puedes eliminarla. */
 
 @media only screen and (max-width:767px) {
     .accordion {

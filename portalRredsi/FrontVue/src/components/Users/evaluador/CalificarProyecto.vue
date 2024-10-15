@@ -294,12 +294,12 @@
           return;  // Si la validación falla, no se envían las calificaciones
         }
 
-        let verificarperiodo = await verificarPeriodoCalificacion();
+        // let verificarperiodo = await verificarPeriodoCalificacion();
         
-        if (verificarperiodo == false){
-          showErrorToast("No puedes calificar el proyecto. Visita el apartado de 'Convocatoria' para más información y saber cuando puedes calificar los proyectos.");
-          return;  // Si la validación falla, no se envían las calificaciones   
-        }
+        // if (verificarperiodo == false){
+        //   showErrorToast("No puedes calificar el proyecto. Visita el apartado de 'Convocatoria' para más información y saber cuando puedes calificar los proyectos.");
+        //   return;  // Si la validación falla, no se envían las calificaciones   
+        // }
 
         try {
           const authStore = useAuthStore();

@@ -78,8 +78,7 @@
                             </select>
                         </div>
                         <div class="button-container text-center">
-                            <button class="btn btn-warning font-weight-bold btn-lg" @click="addSuplente"
-                                >Añadir</button>
+                            <button class="btn btn-warning font-weight-bold btn-lg" @click="addSuplente">Añadir</button>
                         </div>
                     </div>
                 </div>
@@ -175,6 +174,10 @@ export default {
         };
 
         const addSuplente = async () => {
+            if (!state.suplenteSeleccionado || !props.idEtapa || !props.idProyecto || !state.idProyectoConvocatoria || !state.nuevoTipo || !state.evaluadorSeleccionado) {
+                showErrorToast("Por favor, completa todos los campos antes de agregar un suplente.");
+                return; 
+            }
             try {
                 await insertarSuplente(
                     state.suplenteSeleccionado,

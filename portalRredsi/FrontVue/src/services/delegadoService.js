@@ -405,18 +405,21 @@ export const actualizarAsistencia = async (id_asistente, id_usuario, asistencia)
 export const obtenerListaProyectos = async (nombreEtapa, page = 1, pageSize = 10) => {
     try {
         const response = await api.get(`listaProyectos/obtener-proyectos-por-etapa-paginados/?nombre_etapa=${nombreEtapa}&page=${page}&page_size=${pageSize}`, {
+            headers: {
+                'Authorization': `Bearer ${localStorage.getItem('access_token')}`
+                },
             params: {
                 nombre_etapa: nombreEtapa,
                 page: page,
                 page_size: pageSize
-            }
+            },
         });
         return response.data;
     } catch (error) {
         if (error.response) {
-            throw error; // Lanza el error para que lo maneje el store
+            throw error; 
         } else {
-            throw new Error('Error de red o de servidor'); // Manejar errores de red
+            throw new Error('Error de red o de servidor'); 
         }
     }
 };
@@ -426,7 +429,7 @@ export const obtenerProyectosPorEstado = async (nombreEtapa, estado_calificacion
     try {
         const response = await api.get(`/listaProyectos/obtener-proyectos-por-estado/?nombre_etapa=${nombreEtapa}&estado_calificacion=${estado_calificacion}&page=${page}&page_size=${pageSize}`, {
             headers: {
-            'Authorization': `Bearer` // Incluye el token de autenticación
+            'Authorization': `Bearer ${localStorage.getItem('access_token')}`
             },
         params: {
             nombre_etapa: nombreEtapa,
@@ -440,7 +443,7 @@ export const obtenerProyectosPorEstado = async (nombreEtapa, estado_calificacion
         if (error.response) {
             throw error; 
         } else {
-            throw new Error('Error de red o de servidor'); // Manejar errores de red
+            throw new Error('Error de red o de servidor'); 
         }
     }
 };
@@ -448,14 +451,14 @@ export const obtenerProyectosPorEstado = async (nombreEtapa, estado_calificacion
 //Función para obtener las fechas de las fases en las que se hacen las Asignaciones
 export const obtenerFechasAsignaciones = async () => {
     try {
-      const response = await api.get(`/proyectosSinAsignar/get-assignment-dates/`);
-      return response;
+        const response = await api.get(`/proyectosSinAsignar/get-assignment-dates/`);
+        return response;
     } catch (error) {
-      if (error.response) {
-        throw error.response; 
-      } else {
+        if (error.response) {
+            throw error.response; 
+        } else {
         throw new Error('Error de red o de servidor'); 
-      }
+        }
     }
 };
 
@@ -483,7 +486,7 @@ export const obtenerPonentesProyecto = async (id_proyecto) => {
     try {
         const response = await api.get(`/detalleProyecto/ponentes-proyecto/?id_proyecto=${id_proyecto}`, {
             headers: {
-                'Authorization': `Bearer` 
+                'Authorization': `Bearer ${localStorage.getItem('access_token')}`
             },
             
         });
@@ -502,7 +505,7 @@ export const obtenerInfoSalaProyecto = async (id_proyecto) => {
     try {
         const response = await api.get(`detalleProyecto/datos-sala-proyecto/?id_proyecto=${id_proyecto}` , {
             headers: {
-                'Authorization': `Bearer` 
+                'Authorization': `Bearer ${localStorage.getItem('access_token')}` 
             },
         });
         return response.data
@@ -520,7 +523,7 @@ export const obtenerRubricaCalificada = async (id_proyecto, id_usuario) => {
     try {
         const response = await api.get(`/obtenerProyectosEvaluador/obtener-datos-del-proyecto-calificado/?id_proyecto=${id_proyecto}&id_usuario=${id_usuario}` , {
             headers: {
-                'Authorization': `Bearer` 
+                'Authorization': `Bearer ${localStorage.getItem('access_token')}`
             },
         });
         return response.data
@@ -538,7 +541,7 @@ export const obtenerAsistentesSuplentes = async (id_convocatoria) => {
     try {
         const response = await api.get(`/detalleProyecto/asistentes-evento/?id_convocatoria=${id_convocatoria}`, {
             headers: {
-                'Authorization': `Bearer` 
+                'Authorization': `Bearer ${localStorage.getItem('access_token')}` 
             },
         });
         return response.data       
@@ -556,7 +559,7 @@ export const insertarSuplente = async(id_suplente, id_etapa, id_proyecto, id_pro
     try {
         const response = await api.post(`/detalleProyecto/insertar-suplentes/?id_suplente=${id_suplente}&id_etapa=${id_etapa}&id_proyecto=${id_proyecto}&id_proyectos_convocatoria=${id_proyectos_convocatoria}&tipo_usuario=${tipo_usuario}&id_evaluador=${id_evaluador}`, {
             headers: {
-                'Authorization': `Bearer` 
+                'Authorization': `Bearer ${localStorage.getItem('access_token')}` 
             },
         });
         return response.data;
@@ -574,7 +577,7 @@ export const obtener_id_suplente = async( id_proyecto, id_evaluador) => {
     try {
         const response = await api.get(`/detalleProyecto/suplente-evaluador/?id_proyecto=${id_proyecto}&id_evaluador=${id_evaluador}`, {
             headers: {
-                'Authorization': `Bearer` 
+                'Authorization': `Bearer ${localStorage.getItem('access_token')}` 
             },
         });
         return response.data
@@ -593,7 +596,7 @@ export const obtenerSuplentes = async( id_proyecto, tipo_usuario) => {
     try {
         const response = await api.get(`/detalleProyecto/obtener-suplentes/?id_proyecto=${id_proyecto}&tipo_usuario=${tipo_usuario}`, {
             headers: {
-                'Authorization': `Bearer` 
+                'Authorization': `Bearer ${localStorage.getItem('access_token')}` 
             },
         });
         return response.data
@@ -606,15 +609,16 @@ export const obtenerSuplentes = async( id_proyecto, tipo_usuario) => {
     }
 };
 
-//Función insertar url presentación
-export const insertarUrlPresentacion = async (id_proyecto, url_presentacion) => {
+// Servicio para insertar o actualizar URL de presentación
+export const insertarOActualizarUrlPresentacion = async (id_proyecto, url_presentacion) => {
     try {
-        const response = await api.post(`detalleProyecto/insertar-url-presentacion/?id_proyecto=${id_proyecto}&url_presentacion=${url_presentacion} `, {
+        const response = await api.post(`detalleProyecto/insertar-actualizar-url-presentacion/?id_proyecto=${id_proyecto}&url_presentacion=${url_presentacion}`, {
             headers: {
-                'Authorization': `Bearer` 
+                'Authorization': `Bearer ${localStorage.getItem('access_token')}` 
             },
         });
-    }catch (error) {
+        return response;
+    } catch (error) {
         if (error.response) {
             throw error;
         } else {
@@ -622,6 +626,7 @@ export const insertarUrlPresentacion = async (id_proyecto, url_presentacion) => 
         }
     }
 };
+
 
 // Servicio para obtener las rúbricas calificadas de un proyecto de un suplente
 export const obtenerRubricasCalificadasSuplente = async (idProyecto, idUsuario, nombreEtapa) => {
@@ -633,12 +638,12 @@ export const obtenerRubricasCalificadasSuplente = async (idProyecto, idUsuario, 
           nombre_etapa: nombreEtapa
         }
       });
-      return response.data; // Devuelve los datos de las rúbricas calificadas
+      return response.data; 
     } catch (error) {
       if (error.response) {
-        throw error; // Lanza el error para que lo maneje el componente
+        throw error; 
       } else {
-        throw new Error('Error de red o de servidor'); // Manejar errores de red
+        throw new Error('Error de red o de servidor'); 
       }
     }
   };

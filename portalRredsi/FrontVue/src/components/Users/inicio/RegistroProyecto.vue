@@ -244,30 +244,27 @@ export default {
     TipoDocumentoSelect,
     instituciones_Select,
   },
-  setup() {
+  setup(_, { router }) {
     const { showSuccessToast, showErrorToast } = useToastUtils();
 
-    const showModal = ref(false);
-    const proyectoCodigo = ref('');
-
-    // Propiedad 'key' para forzar actualización de los selectores
-    const selectKey = ref(0);
+    const proyectoCodigo = ref(''); // Código del proyecto generado
+    const selectKey = ref(0); // Usado para forzar actualización de selectores y inputs
 
     const datosProyecto = ref({
-      institucion_educativa: null,  // ID de Institución
+      institucion_educativa: null,
       programa_academico: '',
       grupo_investigacion: '',
       linea_investigacion: '',
-      nombre_semillero: '', // Campo añadido
-      modalidad: null,  // ID de Modalidad
+      nombre_semillero: '',
+      modalidad: null,
       titulo: '',
       propuesta_escrita: null,
-      area_conocimiento: null,  // ID de Área de Conocimiento
+      area_conocimiento: null,
       aval: null,
     });
 
     const datosTutor = ref({
-      tipo_documento: null,  // ID de Tipo de Documento
+      tipo_documento: null,
       numero_documento: '',
       nombres: '',
       apellidos: '',
@@ -276,7 +273,7 @@ export default {
     });
 
     const datosPonente = ref({
-      tipo_documento: null,  // ID de Tipo de Documento
+      tipo_documento: null,
       numero_documento: '',
       nombres: '',
       apellidos: '',
@@ -285,7 +282,7 @@ export default {
     });
 
     const ponenteOpcional = ref({
-      tipo_documento: null,  // ID de Tipo de Documento
+      tipo_documento: null,
       numero_documento: '',
       nombres: '',
       apellidos: '',
@@ -294,9 +291,7 @@ export default {
     });
 
     const mostrarPonenteOpcional = ref(false);
-    const nuevoAutor = ref({
-      nombre: '',
-    });
+    const nuevoAutor = ref({ nombre: '' });
     const autores = ref([]);
 
     const handleFileChange = (event, key) => {
@@ -348,8 +343,8 @@ export default {
         proyectoCodigo.value = response.data.id_proyecto;
         showSuccessToast(`Proyecto registrado exitosamente, el Código de identificación es: ${proyectoCodigo.value}.`);
 
-        // Limpiar los campos del formulario después de un registro exitoso
-        limpiarFormulario();
+        // Redirigir a la página principal
+        router.push('views/MainLayout.vue');
 
       } catch (error) {
         if (error.message) {
@@ -435,7 +430,8 @@ export default {
       eliminarAutor,
       registrarProyecto,
       proyectoCodigo,
-      selectKey, // Forzar re-renderizado
+      limpiarFormulario,
+      selectKey, // Usado para forzar re-renderizado
       setInstitucionEducativa,
       setModalidad,
       setAreaConocimiento,

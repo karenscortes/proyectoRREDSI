@@ -144,7 +144,6 @@ export default {
         const idSuplente = ref(0);
         const calificadaSuplente = ref(false);
 
-        
         const { showSuccessToast, showErrorToast, showWarningToast, showInfoToast } = useToastUtils();
 
         const puedeCalificar = computed(() => {
@@ -215,14 +214,11 @@ export default {
                         celularEvaluador.value = data.celular_evaluador;
                         ponentesProyecto.value = data.nombres_ponentes;
                         componentes.value = data.componentes;
-
                     } catch (innerError) {
                         showErrorToast('Error al obtener los datos para calificar el proyecto.');
                     }
                     console.log("Fallo al obtener rúbrica calificada con id del suplente.");
                 }
-
-
             }
         };
 
@@ -306,14 +302,12 @@ export default {
                 showSuccessToast('Calificación enviada exitosamente.');
                 botonCalificar.value = "Inactivo";
                 props.proyecto.estado_calificacion = "C_" + props.etapa;
-
             } catch (error) {
                 showErrorToast('Error al calificar la rúbrica.');
             }
         };
 
         watch(() => componentes.value, actualizarPuntajeTotal, { deep: true });
-
         onMounted(() => {
             obtenerDatos();
 

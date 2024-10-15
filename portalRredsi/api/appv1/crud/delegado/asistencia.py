@@ -169,11 +169,10 @@ def get_asistente_por_cedula(db: Session, documento: str):
             JOIN detalles_institucionales ON usuarios.id_usuario = detalles_institucionales.id_usuario
             JOIN instituciones ON detalles_institucionales.id_institucion = instituciones.id_institucion
             WHERE convocatorias.estado = 'en curso'
-            AND usuarios.documento LIKE :documento
-            
+            AND usuarios.documento = :documento;
         """)
-        params = {"documento": f"%{documento}%"}
-        result = db.execute(sql, params).mappings().all()
+        params = {"documento": documento}
+        result = db.execute(sql, params).mappings().first()
         if not result:
             return None
         return dict(result)
