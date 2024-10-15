@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <div class="row justify-content-center py-5">
+    <div class="row justify-content-center">
       <div class="col-xl-10 col-lg-10 col-md-12">
         <div class="section_title text-center mb-5">
           <h1>Perfil de Usuario</h1>
