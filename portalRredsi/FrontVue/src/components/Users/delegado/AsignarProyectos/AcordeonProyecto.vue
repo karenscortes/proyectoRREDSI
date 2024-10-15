@@ -148,7 +148,7 @@ export default {
                 const response = await obtenerPosiblesEvaluadores(id_area_conocimiento.data.id_area_conocimiento, id_institucion.data.id_institucion);
 
                 this.posiblesEvaluadores = response.data.posibles_evaluadores;
-
+                console.log(this.posiblesEvaluadores)
                 if (this.posiblesEvaluadores == undefined) {
                     const lista_completa_evaluadores = await obtenerListaEvaluadores();
                     this.posiblesEvaluadores = lista_completa_evaluadores.data.evaluators;
@@ -190,14 +190,14 @@ export default {
                 return;
             
             } else if (this.evaluadorSeleccionado == "otro" && this.evaluadorBuscado != null) {
-                try {
-                    const response = await obtenerIdEvaluador(this.evaluadorBuscado);
-                    id_evaluador = response.data.id_usuario;
+                // try {
+                //     const response = await obtenerIdEvaluador(this.evaluadorBuscado);
+                    id_evaluador = this.evaluadorBuscado;
 
-                } catch (error) {
-                    this.showWarningToast("Evaluador no encontrado, intenta de nuevo");
-                    return;
-                }
+                // } catch (error) {
+                //     this.showWarningToast("Evaluador no encontrado, intenta de nuevo");
+                //     return;
+                // }
             } else if (this.evaluadorSeleccionado != null && this.evaluadorBuscado == null) {
                 id_evaluador = this.evaluadorSeleccionado;
             }
@@ -209,6 +209,7 @@ export default {
                     "id_etapa": 2,
                     "id_proyecto_convocatoria": id_proyecto_convocatoria
                 }
+                console.log(datosAsignacion)
                 await asignarProyectoEtapaVirtual(datosAsignacion);
 
                 // Actualiza el estado del proyecto a asignado para que salga de la vista
