@@ -84,7 +84,7 @@ export default {
         PaginatorBody
     },
     data() {
-        const { showSuccessToast, showErrorToast, showWarningToast, showInfoToast } = useToastUtils();
+        const { showErrorToast, showWarningToast, showInfoToast } = useToastUtils();
         return {
             salas: [], // Almacena todas las salas originales
             salasFiltradas: [], // Almacena las salas filtradas
