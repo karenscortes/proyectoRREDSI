@@ -73,7 +73,7 @@
 
       <!-- Botón de Envío -->
       <div class="text-center my-3 mb-5">
-        <button type="submit" class="btn btn-warning text-dark font-weight-bold px-4">Registrar</button>
+        <button type="submit" class="btn font-weight-bold px-4">Registrar</button>
       </div>
     </form>
   </div>
@@ -165,13 +165,13 @@ label {
   color: #000; /* Color negro para las etiquetas */
 }
 
-.btn-warning {
+.btn {
   background-color: #ffb606; /* Color del botón */
-  border-color: #ffb606;
 }
 
-.btn-warning:hover {
-  background-color: #e0a800; /* Hover del botón */
+.btn:hover {
+  background-color: #000000; /* Hover del botón */
+  color: #ffffff;
 }
 
 .shadow-sm {
