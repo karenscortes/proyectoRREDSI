@@ -51,8 +51,8 @@ export default {
 
 /* mas grande y colorido */
 .spinner {
-    width: 4rem;
-    height: 4rem;
+    width: 3rem;
+    height: 3rem;
     color: rgb(255,183,6);
 }
 </style>
