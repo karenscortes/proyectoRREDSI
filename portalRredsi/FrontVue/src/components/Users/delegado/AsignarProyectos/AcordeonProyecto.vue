@@ -61,7 +61,7 @@
                             <input type="text" class="form-control text-dark" placeholder="Nombre del evaluador"
                                 v-model="valor_buscado" @keyup="buscarEvaluador" @keyup.delete="buscarEvaluador">
                             <select v-model="evaluadorBuscado" class="ml-2 form-select text-dark p-1 w-50"
-                                id="evaluadorSelect" required>
+                                id="evaluadorSelect" required :disabled="buscoEvaluadorOpcionales">
                                 <option :value="null" disabled selected>Seleccionar</option>
                                 <option v-for="(evaluador, index) in otrosEvaluadores" :key="evaluador.id_usuario"
                                     :value="evaluador.id_usuario">
@@ -117,7 +117,8 @@ export default {
             valor_buscado: ref(""),
             desplegarAcordeon: false,
             otrosEvaluadores: [],
-            autores: []
+            autores: [],
+            buscoEvaluadorOpcionales: true
         }
     },
     setup() {
@@ -234,10 +235,12 @@ export default {
                     const evaluador = await obtenerIdEvaluador(this.valor_buscado);
                     this.otrosEvaluadores = evaluador.data;
                     this.totalPages = 0;
+                    this.buscoEvaluadorOpcionales = false;
                 }
                 if(this.valor_buscado.trim() == ""){
                     this.otrosEvaluadores = '';
                     this.totalPages = 0;
+                    this.buscoEvaluadorOpcionales = true;
                 }
 
             } catch (error) {
