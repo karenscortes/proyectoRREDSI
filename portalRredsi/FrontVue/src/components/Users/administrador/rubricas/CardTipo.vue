@@ -1,10 +1,9 @@
 <template>
   <div class="card" @click="oprimir()">
     <img
-      v-if="infoImage.image"
-      :src="`/src/assets/img/${infoImage.image}`"
+      src=/src/assets/img/rubrica.png
       class="img-fluid w-50 pb-2 pt-3"
-      :alt="infoImage.altImage"
+      alt="Imagen rubrica"
     />
 
     <div class="card-body">
@@ -31,16 +30,6 @@ const props = defineProps({
         typeof value.nombreModalidad === "string" &&
         typeof value.nombreEtapa === "string" && 
         typeof value.id_rubrica === 'number'
-      );
-    }
-  }
-  ,infoImage:{
-    type: Object,
-    required: true,
-    validator(value) {
-      return (
-        typeof value.image === "string" &&
-        typeof value.altImage === "string"
       );
     }
   }

@@ -78,7 +78,7 @@
               v-for="(card, index) in infoCards"
               :key="index"
             >
-              <CardTipo :infoCard="card" :infoImage="infoImageCards" @cardSeleccionada="onCardSeleccionada($event)"> </CardTipo>
+              <CardTipo :infoCard="card"  @cardSeleccionada="onCardSeleccionada($event)"> </CardTipo>
             </div>
           </div>
         </div>
@@ -160,11 +160,6 @@ const infoModalEditarOrAdd = reactive({
 //info para los items rubrica
 const infoItems = reactive([]);
 
-//info image card 
-const infoImageCards = reactive({
-  image: "rubrica.png",
-  altImage: "Esto es un ejemplo",
-});
 
 //info para la card
 const infoCards = reactive([]);
