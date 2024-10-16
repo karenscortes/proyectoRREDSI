@@ -98,7 +98,7 @@
                     </div>
                     <div class="modal-body">
                         <div class="list-group">
-                            <a v-for="(certificate,index) in certificates"  :key="index" :href="'http://localhost:8000/'+certificate.url_titulo" class="list-group-item list-group-item-action" target="_blank">{{certificate.nivel}}</a>
+                            <a v-for="(certificate,index) in certificates"  :key="index" :href="'https://proyectorredsi-whpk.onrender.com/'+certificate.url_titulo" class="list-group-item list-group-item-action" target="_blank">{{certificate.nivel}}</a>
                         </div>
                     </div>
                     <div class="row justify-content-center mb-2">
