@@ -1,10 +1,10 @@
 <template>
   <div class="container">
     <!-- Sección Datos del Proyecto -->
-    <div style="border: 1px">
+    <div>
       
       <form class="mt-4" @submit.prevent="registrarProyecto">
-        <div class="form-section mt-5" style="border: 1px solid #ddd; padding: 20px; border-radius: 10px;">
+        <div class="form-section mt-5" >
           <h2 class="text-center section-title">Datos del Proyecto</h2>
           <div class="row mb-3">
             <!-- Selector de Institución Educativa -->
@@ -75,7 +75,7 @@
         
 
         <!-- Datos del Tutor -->
-        <div class="form-section mt-5" style="border: 1px solid #ddd; padding: 20px; border-radius: 10px;">
+        <div class="form-section mt-5" >
           <h2 class="text-center section-title">Datos del Tutor</h2>
           <div class="row mb-3">
             <div class="col-md-6">
@@ -113,8 +113,8 @@
         </div>
 
         <!-- Datos del Ponente 1 -->
-        <div class="form-section mt-5" style="border: 1px solid #ddd; padding: 20px; border-radius: 10px;">
-          <h2 class="text-center section-title">Datos del Ponente 1</h2>
+        <div class="form-section mt-5">
+          <h2 class="text-center section-title">Primer ponente</h2>
           <div class="row mb-3">
             <div class="col-md-6">
               <label for="tipo_documento_ponente1" class="form-label text-black">Tipo de Documento:</label>
@@ -149,8 +149,8 @@
             </div>
           </div>
            <!-- Ponente Opcional -->
-        <div v-if="mostrarPonenteOpcional" class="form-section mt-5" style="border: 1px solid #ddd; padding: 20px; border-radius: 10px;">
-          <h4 class="text-center section-title">Datos del Ponente Opcional</h4>
+        <div v-if="mostrarPonenteOpcional" class="form-section mt-5">
+          <h4 class="text-center section-title">Segundo Ponente</h4>
           <div class="row mb-3">
             <div class="col-md-6">
               <label for="tipo_documento_opcional" class="form-label text-black">Tipo de Documento:</label>
@@ -186,41 +186,41 @@
 
           <!-- Botón para eliminar Ponente Opcional -->
           <div class="text-center mt-3">
-            <button type="button" @click="eliminarPonenteOpcional" class="btn btn-outline-dark btn-sm">Eliminar Ponente Opcional</button>
+            <button type="button" @click="eliminarPonenteOpcional" class="btn  btn-sm">Eliminar Ponente</button>
           </div>
         </div>
 
         <!-- Botón para agregar o eliminar Ponente Opcional -->
         <div v-if="!mostrarPonenteOpcional" class="text-center mt-3">
-          <button type="button" @click="agregarPonenteOpcional" class="btn btn-outline-dark btn-sm">Agregar Ponente Opcional</button>
+          <button type="button" @click="agregarPonenteOpcional" class="btn  btn-sm">Agregar Ponente</button>
         </div>
         </div>
 
        
 
         <!-- Sección Datos de los Autores -->
-        <div class="form-section mt-5" style="border: 1px solid #ddd; padding: 20px; border-radius: 10px;">
+        <div class="form-section mt-5">
           <h2 class="text-center section-title">Nombres de los Autores</h2>
           <div class="row mb-3">
             <div class="col-md-10">
               <input v-model="nuevoAutor.nombre" type="text" class="form-control text-black " placeholder="Nombre del Autor" />
             </div>
             <div class="col-md-2 text-center">
-              <button type="button" class="btn btn-outline-dark btn-sm" @click="agregarAutor">Agregar</button>
+              <button type="button" class="btn  btn-sm" @click="agregarAutor">Agregar</button>
             </div>
           </div>
 
           <ul class="list-group mb-3">
             <li v-for="(autor, index) in autores" :key="index" class="list-group-item d-flex justify-content-between align-items-center">
               {{ autor.nombre }}
-              <button type="button" class="btn btn-outline-dark btn-sm" @click="eliminarAutor(index)">Eliminar</button>
+              <button type="button" class="btn btn-sm" @click="eliminarAutor(index)">Eliminar</button>
             </li>
           </ul>
         </div>
 
         <!-- Botón para registrar el proyecto -->
         <div class="text-center">
-          <button type="submit" class="btn btn-outline-dark">Guardar Proyecto</button>
+          <button type="submit" class="btn ">Guardar Proyecto</button>
         </div>
 
       </form>
@@ -448,10 +448,7 @@ export default {
 
 <style scoped>
   .form-section {
-    background-color: #f9f9f9;
     padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     margin-bottom: 50px;
   }
 
@@ -462,24 +459,24 @@ export default {
   }
 
   .section-subtitle {
-    color: rgb(255, 182, 6);
+    color: rgb(0, 0, 0);
     font-weight: bold;
   }
 
-  .btn-outline-dark {
-    border: solid black;
-    color: rgb(0, 0, 0);
-    transition: all 0.3s;
+  .btn {
+    color: rgb(255, 182, 6);
+    color: #000000;
+    font-size: medium;
   }
 
-  .btn-outline-dark:hover {
-    background-color: rgb(84, 84, 84);
+  .btn:hover:hover {
+    background-color: rgb(0, 0, 0);
     color: white;
   }
 
   .list-group-item {
-    background-color: #fff;
-    border: 1px solid black;
+    background-color: #ffffff;
+
   }
 
 </style>
