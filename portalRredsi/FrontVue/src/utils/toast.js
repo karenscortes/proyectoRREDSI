@@ -7,7 +7,7 @@ export function useToastUtils() {
     showSuccessToast(message) {
       toast.success(message, {
         position: "top-right",
-        timeout: 3000,
+        timeout: 2000,
         closeOnClick: true,
         pauseOnFocusLoss: true,
         pauseOnHover: true,
@@ -24,7 +24,7 @@ export function useToastUtils() {
     showErrorToast(message) {
       toast.error(message, {
         position: "top-right",
-        timeout: 3000,
+        timeout: 2000,
         closeOnClick: true,
         pauseOnFocusLoss: true,
         pauseOnHover: true,
@@ -41,7 +41,7 @@ export function useToastUtils() {
     showDefaultToast(message) {
         toast(message, {
           position: "top-right",
-          timeout: 3000,
+          timeout: 2000,
           closeOnClick: true,
           pauseOnFocusLoss: true,
           pauseOnHover: true,
@@ -58,7 +58,7 @@ export function useToastUtils() {
     showInfoToast(message) {
         toast.info(message, {
           position: "top-right",
-          timeout: 3000,
+          timeout: 2000,
           closeOnClick: true,
           pauseOnFocusLoss: true,
           pauseOnHover: true,
@@ -75,7 +75,7 @@ export function useToastUtils() {
     showWarningToast(message) {
         toast.warning(message, {
           position: "top-right",
-          timeout: 3000,
+          timeout: 2000,
           closeOnClick: true,
           pauseOnFocusLoss: true,
           pauseOnHover: true,
