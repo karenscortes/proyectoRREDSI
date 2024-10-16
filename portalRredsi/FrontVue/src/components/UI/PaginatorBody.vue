@@ -23,11 +23,10 @@
           {{ page }}
         </button>
       </li>
-      <li class="page-item m-1">
+      <li class="page-item m-1" :class="{ disabled: currentPage === totalPages }">
         <button
           class="page-link"
           @click="nextPage"
-          :disabled="currentPage === totalPages"
         >
           Siguiente
         </button>

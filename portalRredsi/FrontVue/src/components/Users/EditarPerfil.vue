@@ -154,7 +154,7 @@
                   <!-- para visualizar -->
                   <div class="row me-3" v-else >
                     <div class="col-10">
-                      <a :href="'http://localhost:8000/'+formData.academico.pregrado.url_titulo" target="_blank">{{ formData.academico.pregrado.nombre_titulo }}</a>
+                      <a :href="'https://proyectorredsi-whpk.onrender.com/'+formData.academico.pregrado.url_titulo" target="_blank">{{ formData.academico.pregrado.nombre_titulo }}</a>
                     </div>
                     <div class="col-1">
                       <button class="btn items-center pt-1 ps-0 text-black" style="background:#f8f9fa;" @click="editPregrado = true">
@@ -180,7 +180,7 @@
                   <!-- para visualizar -->
                   <div class="row me-3" v-else >
                     <div class="col-10">
-                      <a :href="'http://localhost:8000/'+formData.academico.especializacion.url_titulo" target="_blank">{{ formData.academico.especializacion.nombre_titulo }}</a>
+                      <a :href="'https://proyectorredsi-whpk.onrender.com/'+formData.academico.especializacion.url_titulo" target="_blank">{{ formData.academico.especializacion.nombre_titulo }}</a>
                     </div>
                     <div class="col-1">
                       <button class="btn items-center pt-1 ps-0 text-black" style="background:#f8f9fa;" @click="editEpecializacion = true">
@@ -208,7 +208,7 @@
                   <!-- para visualizar -->
                   <div class="row me-3" v-else >
                     <div class="col-10">
-                      <a :href="'http://localhost:8000/'+formData.academico.maestria.url_titulo" target="_blank">{{ formData.academico.maestria.nombre_titulo }}</a>
+                      <a :href="'https://proyectorredsi-whpk.onrender.com/'+formData.academico.maestria.url_titulo" target="_blank">{{ formData.academico.maestria.nombre_titulo }}</a>
                     </div>
                     <div class="col-1">
                       <button class="btn items-center pt-1 ps-0 text-black" style="background:#f8f9fa;" @click="editMaestria = true">
@@ -234,7 +234,7 @@
                   <!-- para visualizar -->
                   <div class="row me-3" v-else >
                     <div class="col-10">
-                      <a :href="'http://localhost:8000/'+formData.academico.maestria.url_titulo" target="_blank">{{ formData.academico.doctorado.nombre_titulo }}</a>
+                      <a :href="'https://proyectorredsi-whpk.onrender.com/'+formData.academico.maestria.url_titulo" target="_blank">{{ formData.academico.doctorado.nombre_titulo }}</a>
                     </div>
                     <div class="col-1">
                       <button class="btn items-center pt-1 ps-0 text-black" style="background:#f8f9fa;" @click="editDoctorado = true">
@@ -384,7 +384,7 @@
                       </div>
                       <!-- Visualizar-->
                       <div class="d-inline-flex col-6" v-else>
-                        <a :href="'http://localhost:8000/'+formData.academico.pregrado.url_titulo" target="_blank">{{ formData.academico.pregrado.nombre_titulo }}</a>
+                        <a :href="'https://proyectorredsi-whpk.onrender.com/'+formData.academico.pregrado.url_titulo" target="_blank">{{ formData.academico.pregrado.nombre_titulo }}</a>
                         <label class="items-center pt-1 ps-3 text-black ml-4" @click="editPregrado = true">
                           <i class="fas fa-edit fa-2x fs-5 certificates_icons"></i>
                         </label>
@@ -403,7 +403,7 @@
                       </div>
                       <!-- Visualizar-->
                       <div class="d-inline-flex col-6" v-else>
-                        <a :href="'http://localhost:8000/'+formData.academico.especializacion.url_titulo" target="_blank">{{ formData.academico.especializacion.nombre_titulo }}</a>
+                        <a :href="'https://proyectorredsi-whpk.onrender.com/'+formData.academico.especializacion.url_titulo" target="_blank">{{ formData.academico.especializacion.nombre_titulo }}</a>
                         <label class="items-center pt-1 ps-3 text-black ml-4" @click="editEpecializacion = true">
                           <i class="fas fa-edit fa-2x fs-5 certificates_icons"></i>
                         </label>
@@ -441,7 +441,7 @@
                       </div>
                       <!-- Visualizar-->
                       <div class="d-inline-flex col-6" v-else>
-                        <a :href="'http://localhost:8000/'+formData.academico.doctorado.url_titulo" target="_blank">{{ formData.academico.doctorado.nombre_titulo }}</a>
+                        <a :href="'https://proyectorredsi-whpk.onrender.com/'+formData.academico.doctorado.url_titulo" target="_blank">{{ formData.academico.doctorado.nombre_titulo }}</a>
                         <label class="items-center pt-1 ps-3 text-black ml-4" @click="editDoctorado = true">
                           <i class="fas fa-edit fa-2x fs-5 certificates_icons"></i>
                         </label>
