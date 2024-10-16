@@ -220,6 +220,8 @@ export default {
             } catch (error) {
                 this.showErrorToast("Error al asignar proyecto");
             }
+            this.evaluadorSeleccionado = null;
+            this.evaluadorBuscado == null;
         },
         async ProyectoSelecionado() {
             await this.obtenerIdProyectoConvocatoria();
