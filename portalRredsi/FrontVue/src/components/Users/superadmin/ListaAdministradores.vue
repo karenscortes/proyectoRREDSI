@@ -10,8 +10,11 @@
         </div>
       </div>
 
+      <!-- Spinner global -->
+      <SpinnerGlobal v-if="loading" />
+
       <!-- Tabla de admins -->
-      <div class="table-responsive">
+      <div class="table-responsive" v-if="!loading">
         <table id="basic-datatables" class="display table table-striped table-hover text-dark">
           <thead>
             <tr>
@@ -179,6 +182,7 @@
 import { getAdminsByPage, updateUserRole, getActivityHistoryByAdmin, toggleUserStatus } from '../../../services/superadminService';
 import { useToastUtils } from '@/utils/toast';
 const { showSuccessToast, showErrorToast, showWarningToast} = useToastUtils();
+import SpinnerGlobal from '../../UI/SpinnerGlobal.vue';
 import PaginatorBody from '../../UI/PaginatorBody.vue';
 
 export default {
@@ -192,7 +196,7 @@ export default {
       historialAdmin: [],  // Historial de actividades del admin seleccionado
       paginaHistorialActual: 1,  // Página actual del historial
       totalPaginasHistorial: 0,  // Total de páginas del historial
-
+      loading: false
     };
   },
   computed: {
@@ -203,7 +207,8 @@ export default {
   },
 
   components: {
-    PaginatorBody
+    PaginatorBody,
+    SpinnerGlobal
   },
   methods: {
     // Obtener los administradores de la API
@@ -214,7 +219,7 @@ export default {
         this.totalPaginas = response.total_pages;  // Total de páginas para la paginación
       } catch (error) {
         showWarningToast('Error al obtener administradores');
-      }
+      } 
     },
     // Mostrar el detalle del administrador en el modal
     mostrarDetalle(admin) {
@@ -223,6 +228,7 @@ export default {
     },
     // Guardar el nuevo rol del administrador
     async guardarRol() {
+      this.loading = true; // Mostrar spinner antes de la petición
       try {
         // Llamar al servicio para actualizar el rol
         const actualizado = await updateUserRole(this.adminSeleccionado.id_usuario, this.nuevoRolSeleccionado);
@@ -234,11 +240,14 @@ export default {
         }
       } catch (error) {
         showErrorToast(error.detail || 'Error al actualizar el rol');
+      } finally {
+        this.loading = false; // Ocultar spinner cuando termine la petición
       }
     },
 
     // Cambiar el estado del usuario
     async cambiarEstadoUsuario(admin) {
+      this.loading = true; // Mostrar spinner antes de la petición
       try {
         // Guardar el estado actual del usuario
         const estadoActual = admin.estado;  // true si está activo, false si está inactivo
@@ -263,6 +272,8 @@ export default {
         }
       } catch (error) {
         showWarningToast(error.detail || 'Error al cambiar el estado del usuario');
+      } finally {
+        this.loading = false; // Ocultar spinner cuando termine la petición
       }
     },
 

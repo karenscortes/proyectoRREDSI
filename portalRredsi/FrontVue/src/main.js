@@ -5,6 +5,7 @@ import Toast from 'vue-toastification';
 import 'vue-toastification/dist/index.css';
 import router from './router';
 import { createPinia } from 'pinia';
+import SpinnerGlobal from './components/UI/SpinnerGlobal.vue'
 
 const app = createApp(App);
 
