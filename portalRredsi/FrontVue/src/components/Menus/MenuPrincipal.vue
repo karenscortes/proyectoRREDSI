@@ -35,7 +35,7 @@
         </nav>
       </div>
       <a href="#" class="header_side d-flex flex-row justify-content-center align-items-center">
-        <h3 class="main_nav_item text-dark"><a href="#footer_principal">Contáctanos</a></h3>
+        <h3 class="main_nav_item text-dark"><a @click="selectComponent('ContactInfoPage')">Contáctanos</a></h3>
       </a>
 
       <!-- Hamburger -->
