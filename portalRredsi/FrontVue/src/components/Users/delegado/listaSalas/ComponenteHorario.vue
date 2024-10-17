@@ -158,7 +158,7 @@
                             <div class="col-md-6 border-start">
                                 <h4 class="fs-6 text-dark">URL Propuesta Escrita</h4>
                                 <p class="fs-6">
-                                    <a :href="detalle_proyecto.url_propuesta_escrita" target="_blank"
+                                    <a :href="'https://proyectorredsi-whpk.onrender.com/'+detalle_proyecto.url_propuesta_escrita" target="_blank"
                                         class="text-primary">Ver Propuesta</a>
                                 </p>
                             </div>

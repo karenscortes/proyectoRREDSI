@@ -121,6 +121,7 @@
         </div>
 
     </div>
+    <SpinnerGlobal />
 </template>
 
 <script>
@@ -128,6 +129,8 @@ import { defineComponent } from 'vue';
 import { obtenerPonentesProyecto, obtenerDetalleSala, obetnerProyectosSinAsignarEtapaPresencial, obtenerPosiblesEvaluadoresEtapaPresencial, asignarEvaluadoresEtapaPresencial } from '@/services/salasDelegadoService';
 import { obtenerProyectoConvocatoria } from '@/services/delegadoService';
 import ComponenteHorario from './ComponenteHorario.vue';
+import SpinnerGlobal from "@/components/UI/SpinnerGlobal.vue";
+
 import { useToastUtils } from '@/utils/toast';
 
 export default defineComponent({
@@ -136,7 +139,8 @@ export default defineComponent({
         index: Number
     },
     components: {
-        ComponenteHorario
+        ComponenteHorario,
+        SpinnerGlobal
     },
     data() {
         const { showSuccessToast, showErrorToast, showWarningToast, showInfoToast } = useToastUtils();
