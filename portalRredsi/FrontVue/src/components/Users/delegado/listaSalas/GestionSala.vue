@@ -81,7 +81,7 @@
                         <div class="row mb-4">
                             <div class="col-md-4">
                                 <label for="fecha" class="form-label text-black">Fecha:</label>
-                                <input id="fecha" type="date" v-model="horario.fecha"
+                                <input id="fecha" type="date" v-model="sala.fechasEvento.fecha_inicio"
                                     :min="sala.fechasEvento.fecha_inicio" :max="sala.fechasEvento.fecha_fin"
                                     class="form-control text-dark">
                             </div>
@@ -186,6 +186,7 @@ export default defineComponent({
                     if (conflictos_horario.length > 0 || this.horario.hora_inicio == this.horario.hora_fin) {
                         this.showInfoToast("Ya hay un proyecto asignado a esta hora o estas ingresando la misma hora en los dos campos, intenta con otro horario");
                     } else {
+                        this.horario.fecha = this.sala.fechasEvento.fecha_inicio;
                         await asignarEvaluadoresEtapaPresencial(this.id_evaluador1, this.id_evaluador2, this.proyectoSeleccionado.id_proyecto, this.id_proyecto_convocatoria, this.sala.id_sala, this.horario.fecha, this.horario.hora_inicio, this.horario.hora_fin);
 
                         this.showSuccessToast("La asignación del horario ha sido exitosa");
@@ -323,7 +324,6 @@ export default defineComponent({
     mounted() {
         this.obtenerDatosMiSala();
         this.fetchProyectosSinAsignar();
-        this.horario.fecha = this.sala.fechasEvento.fecha_inicio;
     }
 });
 </script>
