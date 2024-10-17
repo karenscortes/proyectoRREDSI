@@ -77,6 +77,7 @@
       :infoModal="infoModalDetail"
     ></ModalDetalle>
   </div>
+  <SpinnerGlobal />
 </template>
 <script setup>
 import { onMounted, ref, reactive } from "vue";
@@ -88,8 +89,9 @@ import PaginatorBody from "../components/UI/PaginatorBody.vue";
 import { getDelegatesAll } from "@/services/administradorService";
 import { updateStatusDelegate } from "@/services/administradorService";
 import { getDelegateByNameOrDocument} from "@/services/administradorService";
+import SpinnerGlobal from "@/components/UI/SpinnerGlobal.vue";
 
-const { showErrorToast, showInfoToast } = useToastUtils();
+const { showErrorToast} = useToastUtils();
 
 //Propiedades para manejar la apertura del modal
 const isModalOpenEdit = ref(false);
