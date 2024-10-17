@@ -221,3 +221,20 @@ export const createUpdateRecords = async (userId,data) => {
     }
   }
 };
+
+export const ObtenerUsuarioDocumento = async (documento) => {
+  try {
+    const response = await api.get(`/userId/user`, {
+      params: {
+        documento: documento
+      }
+    });
+    return response.data; // Retorna los datos del usuario
+  } catch (error) {
+    if (error.response) {
+      throw error.response; // Devuelve el error original de la API
+    } else {
+      throw new Error('Error de red o de servidor');
+    }
+  }
+};

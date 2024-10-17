@@ -50,7 +50,7 @@
 
                     <!-- Enlace de "Se te olvidó la contraseña" más grande y en negrilla -->
                     <div class="text-center mt-3">
-                        <a href="#" class="forgot-password-link" @click="openResetPasswordModal">¿Se te olvidó la contraseña?</a>
+                        <a href="#" class="forgot-password-link" @click="openResetPasswordModal">¿Has olvidado tú contraseña?</a>
                     </div>
 
                 </div>
