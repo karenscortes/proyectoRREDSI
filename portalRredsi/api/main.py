@@ -1,7 +1,7 @@
 from sys import prefix
 from fastapi import FastAPI
 from fastapi.staticfiles import StaticFiles
-from appv1.routers import areas_conocimiento, eventos, institucionEducativa, login, modalidades, ponentes, programacion_fases, proyectos, proyectos_convocatorias, rol, rubricasCalificadas, tutores, usuarios, UsuarioEvaluador,tipo_identificacion
+from appv1.routers import areas_conocimiento, eventos, institucionEducativa, login, modalidades, ponentes, programacion_fases, proyectos, proyectos_convocatorias, rol, rubricasCalificadas, tutores, usuarioId, usuarios, UsuarioEvaluador,tipo_identificacion
 from appv1.routers import  eventos, generales, login, ponentes, proyectos, rol, tutores, usuarios 
 from appv1.routers import  eventos, generales, login, ponentes, proyectos, rol, tutores, usuarios, UsuarioEvaluador
 from appv1.routers.admin import admin
@@ -19,6 +19,9 @@ app.mount("/static", StaticFiles(directory="static"), name="static")
 app.include_router(usuarios.router_user, prefix="/users", tags=["Usuarios"])
 app.include_router(UsuarioEvaluador.router_evaluador, prefix="/evaluadores", tags=["Usuarios"])
 app.include_router(tipo_identificacion.router_identificacion, prefix="/tipo_identificacion", tags=["Usuarios"])
+app.include_router(usuarioId.router_userId, prefix="/userId", tags=["Usuarios"])
+
+
 
 #PROYECTOS
 app.include_router(proyectos.router_project, prefix="/projects", tags=["Proyectos"])

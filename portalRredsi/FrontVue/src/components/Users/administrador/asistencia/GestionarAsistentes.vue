@@ -28,7 +28,7 @@
                             />
                             </div>
                             <div class="col-md-2 col-4">
-                            <button class="btn btn-dark w-100 font-weight-bold"  @click="searchAttendee()">
+                            <button class="btn btn-dark w-100 font-weight-bold btn-buscar"  @click="searchAttendee()">
                                 Buscar
                             </button>
                             </div>
@@ -71,7 +71,7 @@
     <AddAttendeesModal @close="closeAddModal()" v-if="isAddModalOpen"></AddAttendeesModal>
     <EditAttendeeModal v-if="isEditModalOpen" @closeEditModal="closeEditModal()" :infoModal="EditModalInfo"></EditAttendeeModal>
     
-
+    <SpinnerGlobal v-if="totalPages == 0" />
 </template>
 <script>
 import { getAttendeesByPage, getAttendeeByDocument } from '@/services/asistenciaService';
@@ -81,7 +81,7 @@ import AddAttendeesModal from './AddAttendeesModal.vue';
 import EditAttendeeModal from './EditAttendeeModal.vue';
 import AttendeesTableRow from './AttendeesTableRow.vue';
 import PaginatorBody from '../../../UI/PaginatorBody.vue';
-
+import SpinnerGlobal from "@/components/UI/SpinnerGlobal.vue";
 
 
 export default {
@@ -89,7 +89,8 @@ export default {
         AttendeesTableRow,
         AddAttendeesModal,
         EditAttendeeModal,
-        PaginatorBody
+        PaginatorBody,
+        SpinnerGlobal
     },
     setup() {
         const { showErrorToast,showInfoToast} = useToastUtils();
@@ -283,6 +284,11 @@ label{
     font-size: 2rem;
     color: #ffb606;
     margin-right: 10px;
+}
+
+.btn-buscar{
+    border: 0;
+    color: #000;
 }
 
 </style>

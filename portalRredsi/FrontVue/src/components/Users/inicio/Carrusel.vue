@@ -79,7 +79,7 @@
                             <img src="../../../assets/img/professor.svg" class="svg" alt="">
                             <div class="hero_box_content">
                                 <h2 class="hero_box_title">Pertenecer</h2>
-                                <a href="https://rredsi.com.co/como-pertenecer-a-rredsi/" class="hero_box_link">ver
+                                <a href="https://www.youtube.com/watch?v=mZcP6q_i3EI" target="_blank" class="hero_box_link">ver
                                     más</a>
                             </div>
                         </div>
