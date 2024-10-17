@@ -5,7 +5,11 @@
         <div class="section_title text-center mb-5">
           <h1>Perfil de Usuario</h1>
         </div>
-        <div class="big-screen">
+
+        <!-- Spinner global -->
+        <SpinnerGlobal v-if="loading" />
+
+        <div class="big-screen" v-if="!loading">
           <div class="row text-center justify-content-center">
             <div class="col-lg-4 col-sm-3">
               <button @click="setActiveSection('datos_personales')" class="btn btn-outline-dark w-100 form-btn" :class="{'btn-active': isPressed, 'btn-inactive': !isPressed}">
@@ -473,6 +477,8 @@ import {getAllInstituciones} from '@/services/institucionesService';
 import ChangePasswordModal from './ChangePasswordModal.vue';
 import { useToastUtils } from '@/utils/toast';
 import {ref} from 'vue';
+import SpinnerGlobal from '../UI/SpinnerGlobal.vue';
+
 
 export default {
   components: {
@@ -492,6 +498,7 @@ export default {
       isActive:false,
       isSelected:false,
       isModalOpen:false,
+      loading: false,
       formData: {
         personal: {
           id_tipo_documento: '',
