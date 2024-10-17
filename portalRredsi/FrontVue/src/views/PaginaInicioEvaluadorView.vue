@@ -205,6 +205,7 @@
     },
     methods: {
       async enviarPostulacion() {
+        
         // Verificamos que los campos obligatorios estén completos
         if (this.etapa_virtual === '' || this.etapa_presencial === '') {
             showWarningToast('Por favor, complete todos los campos antes de enviar.');

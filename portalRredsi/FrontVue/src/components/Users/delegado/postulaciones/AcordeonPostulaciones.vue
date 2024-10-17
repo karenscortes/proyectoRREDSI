@@ -75,7 +75,7 @@
                 <div class="row mt-4 justify-content-center">
                     <div class="col-md-4 col-12">
                         <a @click="openModal(evaluator)"
-                            class="btn btn-outline-primary w-100 mb-3">Visualizar
+                            class="btn w-100 mb-3 btn-visualizar">Visualizar
                             Títulos</a>
                     </div>
                 </div>
@@ -86,7 +86,7 @@
         <!-- Modal -->
         <div class="modal fade" :id="`modal_titulos_${evaluator.id_evaluador}`" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered">
-                <div class="modal-content">
+                <div class="modal-content border border-dark border-5 rounded-5">
                     <div class="row text-center justify-content-end mt-2">
                         <div class="col-2">
                             <button type="button" class="btn-close justify-contet-end" data-bs-dismiss="modal"
@@ -98,7 +98,7 @@
                     </div>
                     <div class="modal-body">
                         <div class="list-group">
-                            <a v-for="(certificate,index) in certificates"  :key="index" :href="certificate.url_titulo" class="list-group-item list-group-item-action" target="_blank">{{certificate.nivel}}</a>
+                            <a v-for="(certificate,index) in certificates"  :key="index" :href="'https://proyectorredsi-whpk.onrender.com/'+certificate.url_titulo" class="list-group-item list-group-item-action" target="_blank">{{certificate.nivel}}</a>
                         </div>
                     </div>
                     <div class="row justify-content-center mb-2">
@@ -150,8 +150,8 @@ export default {
                 this.certificates = [];
                 const response = await getCertificatesById(evaluator.id_evaluador);
                 if(response.data.length > 0){
+                    $(`#modal_titulos_${evaluator.id_evaluador}`).modal('show'); 
                     this.certificates = response.data; 
-                    $(`#modal_titulos_${evaluator.id_evaluador}`).modal('show'); // Abre el modal
                 }else{
                     this.showInfoToast('El postulado no cuenta con titulación.');   
                 }
@@ -185,5 +185,10 @@ export default {
 
 .icono2:hover{
     fill:#12d336 ;
+}
+
+.btn-visualizar{
+    border: 0;
+    color: #000;
 }
 </style>

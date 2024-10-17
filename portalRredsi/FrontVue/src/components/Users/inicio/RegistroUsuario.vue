@@ -1,5 +1,5 @@
 <template>
-  <div class="container p-4 mt-5 shadow-sm rounded bg-light">
+  <div class="container p-4 mt-5">
     <h2 class="text-center text-warning font-weight-bold">Formulario de Registro</h2>
     <form @submit.prevent="handleSubmit">
       <!-- Filas del formulario -->
@@ -73,7 +73,7 @@
 
       <!-- Botón de Envío -->
       <div class="text-center my-3 mb-5">
-        <button type="submit" class="btn btn-warning text-dark font-weight-bold px-4">Registrar</button>
+        <button type="submit" class="btn font-weight-bold px-4">Registrar</button>
       </div>
     </form>
   </div>
@@ -152,9 +152,8 @@ export default {
 <style scoped>
 .container {
   max-width: 600px;
-  background-color: #f8f9fa; /* Fondo claro */
-  border: 1px solid #ddd; /* Borde del contenedor */
-  border-radius: 10px;
+  background-color: #ffffff; /* Fondo claro */
+
 }
 
 h2 {
@@ -166,13 +165,13 @@ label {
   color: #000; /* Color negro para las etiquetas */
 }
 
-.btn-warning {
+.btn {
   background-color: #ffb606; /* Color del botón */
-  border-color: #ffb606;
 }
 
-.btn-warning:hover {
-  background-color: #e0a800; /* Hover del botón */
+.btn:hover {
+  background-color: #000000; /* Hover del botón */
+  color: #ffffff;
 }
 
 .shadow-sm {

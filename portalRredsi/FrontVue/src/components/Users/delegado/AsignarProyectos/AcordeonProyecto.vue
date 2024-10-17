@@ -61,7 +61,7 @@
                             <input type="text" class="form-control text-dark" placeholder="Nombre del evaluador"
                                 v-model="valor_buscado" @keyup="buscarEvaluador" @keyup.delete="buscarEvaluador">
                             <select v-model="evaluadorBuscado" class="ml-2 form-select text-dark p-1 w-50"
-                                id="evaluadorSelect" required>
+                                id="evaluadorSelect" required :disabled="buscoEvaluadorOpcionales">
                                 <option :value="null" disabled selected>Seleccionar</option>
                                 <option v-for="(evaluador, index) in otrosEvaluadores" :key="evaluador.id_usuario"
                                     :value="evaluador.id_usuario">
@@ -117,7 +117,8 @@ export default {
             valor_buscado: ref(""),
             desplegarAcordeon: false,
             otrosEvaluadores: [],
-            autores: []
+            autores: [],
+            buscoEvaluadorOpcionales: true
         }
     },
     setup() {
@@ -148,7 +149,7 @@ export default {
                 const response = await obtenerPosiblesEvaluadores(id_area_conocimiento.data.id_area_conocimiento, id_institucion.data.id_institucion);
 
                 this.posiblesEvaluadores = response.data.posibles_evaluadores;
-
+                console.log(this.posiblesEvaluadores)
                 if (this.posiblesEvaluadores == undefined) {
                     const lista_completa_evaluadores = await obtenerListaEvaluadores();
                     this.posiblesEvaluadores = lista_completa_evaluadores.data.evaluators;
@@ -190,14 +191,14 @@ export default {
                 return;
             
             } else if (this.evaluadorSeleccionado == "otro" && this.evaluadorBuscado != null) {
-                try {
-                    const response = await obtenerIdEvaluador(this.evaluadorBuscado);
-                    id_evaluador = response.data.id_usuario;
+                // try {
+                //     const response = await obtenerIdEvaluador(this.evaluadorBuscado);
+                    id_evaluador = this.evaluadorBuscado;
 
-                } catch (error) {
-                    this.showWarningToast("Evaluador no encontrado, intenta de nuevo");
-                    return;
-                }
+                // } catch (error) {
+                //     this.showWarningToast("Evaluador no encontrado, intenta de nuevo");
+                //     return;
+                // }
             } else if (this.evaluadorSeleccionado != null && this.evaluadorBuscado == null) {
                 id_evaluador = this.evaluadorSeleccionado;
             }
@@ -209,6 +210,7 @@ export default {
                     "id_etapa": 2,
                     "id_proyecto_convocatoria": id_proyecto_convocatoria
                 }
+                console.log(datosAsignacion)
                 await asignarProyectoEtapaVirtual(datosAsignacion);
 
                 // Actualiza el estado del proyecto a asignado para que salga de la vista
@@ -219,6 +221,8 @@ export default {
             } catch (error) {
                 this.showErrorToast("Error al asignar proyecto");
             }
+            this.evaluadorSeleccionado = null;
+            this.evaluadorBuscado == null;
         },
         async ProyectoSelecionado() {
             await this.obtenerIdProyectoConvocatoria();
@@ -231,10 +235,12 @@ export default {
                     const evaluador = await obtenerIdEvaluador(this.valor_buscado);
                     this.otrosEvaluadores = evaluador.data;
                     this.totalPages = 0;
+                    this.buscoEvaluadorOpcionales = false;
                 }
                 if(this.valor_buscado.trim() == ""){
                     this.otrosEvaluadores = '';
                     this.totalPages = 0;
+                    this.buscoEvaluadorOpcionales = true;
                 }
 
             } catch (error) {

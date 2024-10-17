@@ -113,10 +113,14 @@ def get_proyectos_sin_asignar_etapa_presencial(db: Session):
                             JOIN proyectos_convocatoria ON (proyectos.id_proyecto = proyectos_convocatoria.id_proyecto) 
                             JOIN participantes_proyecto ON (participantes_proyecto.id_proyectos_convocatoria = proyectos_convocatoria.id_proyecto_convocatoria)  
                             JOIN convocatorias ON (proyectos_convocatoria.id_convocatoria = convocatorias.id_convocatoria)  
+                            JOIN respuestas_rubricas ON (respuestas_rubricas.id_proyecto_convocatoria = proyectos_convocatoria.id_proyecto_convocatoria)
+                            JOIN respuestas_rubricas ON (respuestas_rubricas.id_proyecto_convocatoria = proyectos_convocatoria.id_proyecto_convocatoria)
+                            JOIN rubricas_resultados ON (respuestas_rubricas.id_rubrica_resultado = respuestas_rubricas.id_respuestas_rubricas)
                             LEFT JOIN detalle_sala ON proyectos_convocatoria.id_proyecto_convocatoria = detalle_sala.id_proyecto_convocatoria     
                     WHERE proyectos.estado_asignacion= 'pendiente' 
                     AND convocatorias.estado = 'en curso' 
-                    AND participantes_proyecto.id_etapa = 1
+                    AND rubricas_resultados.estado_proyecto = 'aprobado'
+                    AND participantes_proyecto.id_etapa = 2
                     AND detalle_sala.id_proyecto_convocatoria IS NULL
             """
             )

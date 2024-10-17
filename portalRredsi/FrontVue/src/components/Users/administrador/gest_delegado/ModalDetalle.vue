@@ -82,7 +82,7 @@
 
             <div class="text-center mt-3">
               <a
-                :href="infoModal.value.url_titulo"
+                :href="'https://proyectorredsi-whpk.onrender.com/'+infoModal.value.url_titulo"
                 class="btn btn-warning"
                 target="_blank"
                 >Ver Títulos</a

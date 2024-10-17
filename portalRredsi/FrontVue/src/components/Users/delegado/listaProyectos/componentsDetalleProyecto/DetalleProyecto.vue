@@ -203,7 +203,7 @@ export default {
         const tipo = ref('');
         const isLoading = ref(true);
 
-        console.log('Estado del proyecto:', props.proyecto.estado_calificacion);
+        // console.log('Estado del proyecto:', props.proyecto.estado_calificacion);
 
         // Función para obtener los evaluadores del proyecto
         const fetchEvaluadores = async (id_proyecto) => {
@@ -278,15 +278,24 @@ export default {
             }
         };
 
-        // Función para renderizar la vista
+        // Función para cargar todos los datos del proyecto
         const fetchAllData = async () => {
             try {
-                await fetchEvaluadores(props.proyecto.id_proyecto);
-                await fetchPonentes(props.proyecto.id_proyecto);
+                // Cargar evaluadores y ponentes en paralelo
+                const evaluadoresPromise = fetchEvaluadores(props.proyecto.id_proyecto);
+                const ponentesPromise = fetchPonentes(props.proyecto.id_proyecto);
+
+                // Si está en etapa 1, cargar info de sala y URL de presentación
+                let salaPromise, presentacionPromise;
                 if (props.proyecto.id_etapa == 1) {
-                    await fetchInfoSala(props.proyecto.id_proyecto);
-                    await fetchUrlPresentacion(props.proyecto.id_proyecto);
+                    salaPromise = fetchInfoSala(props.proyecto.id_proyecto);
+                    presentacionPromise = fetchUrlPresentacion(props.proyecto.id_proyecto);
                 }
+
+                // Ejecutar todas las promesas de carga de datos en paralelo
+                await Promise.all([evaluadoresPromise, ponentesPromise, salaPromise, presentacionPromise]);
+
+                // Configurar la rúbrica según los evaluadores
                 if (evaluadores.value.virtual.length > 0 || evaluadores.value.presencial.length > 0) {
                     if (props.proyecto.id_etapa == 2) {
                         cargarRubricaVirtual.value = true;

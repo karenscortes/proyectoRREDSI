@@ -165,8 +165,7 @@ export default {
             } else {
                 currentEtapa.value = 'Virtual';
             }
-            //Obtiene el id del suplenteEvaluador en caso de tenerlo asignado
-            obtenerIdSuplente();
+            
             try {
                 // Intentamos obtener los datos de las rúbricas calificadas.
                 const data = await obtenerRubricasCalificadas(props.proyecto.id_proyecto, props.id_evaluador, props.etapa);
@@ -183,6 +182,9 @@ export default {
                 botonCalificar.value = "Inactivo";
 
             } catch (error) {
+                //Obtiene el id del suplenteEvaluador en caso de tenerlo asignado
+                await obtenerIdSuplente();
+
                 //Obtener rúbrica calificada por el suplente
                 try {
                     // Intentamos obtener los datos de las rúbricas calificadas.
@@ -310,7 +312,6 @@ export default {
         watch(() => componentes.value, actualizarPuntajeTotal, { deep: true });
         onMounted(() => {
             obtenerDatos();
-
         });
 
         return {

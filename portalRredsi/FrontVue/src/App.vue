@@ -1,9 +1,9 @@
 <template>
-  <SpinnerGlobal />
+  <!-- <SpinnerGlobal /> -->
   <router-view/>
 </template>
 
-<script>
+<!-- <script>
 import SpinnerGlobal from "./components/UI/SpinnerGlobal.vue";
 
 export default {
@@ -11,4 +11,4 @@ export default {
     SpinnerGlobal, // Incluir el spinner global
   },
 };
-</script>
+</script> -->

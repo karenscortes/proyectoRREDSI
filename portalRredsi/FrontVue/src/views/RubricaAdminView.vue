@@ -78,7 +78,7 @@
               v-for="(card, index) in infoCards"
               :key="index"
             >
-              <CardTipo :infoCard="card" :infoImage="infoImageCards" @cardSeleccionada="onCardSeleccionada($event)"> </CardTipo>
+              <CardTipo :infoCard="card"  @cardSeleccionada="onCardSeleccionada($event)"> </CardTipo>
             </div>
           </div>
         </div>
@@ -99,6 +99,7 @@
     @actualizarRubrica="actualizarItemDelete($event)">
     </ModalDelete>
   </div>
+  <SpinnerGlobal />
 </template>
 
 <script setup>
@@ -113,6 +114,7 @@ import ItemTBody from "../components/Users/administrador/rubricas/ItemTBody.vue"
 import FootTable from "../components/Users/administrador/rubricas/FootTable.vue";
 import ItemThead from "../components/Users/administrador/rubricas/ItemThead.vue";
 import { useToastUtils } from "@/utils/toast";
+import SpinnerGlobal from "@/components/UI/SpinnerGlobal.vue";
 
 const { showErrorToast} = useToastUtils();
 
@@ -160,11 +162,6 @@ const infoModalEditarOrAdd = reactive({
 //info para los items rubrica
 const infoItems = reactive([]);
 
-//info image card 
-const infoImageCards = reactive({
-  image: "rubrica.png",
-  altImage: "Esto es un ejemplo",
-});
 
 //info para la card
 const infoCards = reactive([]);

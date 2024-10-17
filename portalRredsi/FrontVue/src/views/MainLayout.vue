@@ -263,6 +263,10 @@ export default {
 
 
 <style scoped>
+.custom-login-button{
+    border: 0;
+    color: #000;
+}
 .modal-footer {
     justify-content: center;
 }

@@ -1,6 +1,6 @@
 <template>
   <div aria-label="Page navigation">
-    <ul class="pagination justify-content-center bg-warnig">
+    <ul class="pagination justify-content-center">
       <li class="page-item" :class="{ disabled: currentPage === 1 }">
         <button
           class="page-link"
@@ -18,16 +18,15 @@
         <button
           class="page-link rounded-circle"
           @click="changePage(page)"
-          :class="{ 'bg-warning text-dark': currentPage == page }"
+          :class="{ 'selected': currentPage == page }"
         >
           {{ page }}
         </button>
       </li>
-      <li class="page-item m-1">
+      <li class="page-item m-1" :class="{ disabled: currentPage === totalPages }">
         <button
           class="page-link"
           @click="nextPage"
-          :disabled="currentPage === totalPages"
         >
           Siguiente
         </button>
@@ -96,9 +95,14 @@ button{
 
 }
 
+.selected{
+  background-color: #ffb606;
+  color: black;
+}
+
 button:hover {
   background-color: rgb(255, 255, 255); 
-  color:#ffc107; 
+  color:#ffb606; 
 }
 
 .pagination {

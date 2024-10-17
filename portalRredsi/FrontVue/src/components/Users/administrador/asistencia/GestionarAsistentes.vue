@@ -28,7 +28,7 @@
                             />
                             </div>
                             <div class="col-md-2 col-4">
-                            <button class="btn btn-dark w-100 font-weight-bold"  @click="searchAttendee()">
+                            <button class="btn btn-dark w-100 font-weight-bold btn-buscar"  @click="searchAttendee()">
                                 Buscar
                             </button>
                             </div>
@@ -64,31 +64,14 @@
             </table>
         </div>
         <!-- Paginador -->
-        <div v-if="totalPages > 1" class="mt-5">
-            <div aria-label="Page navigation example mb-5">
-                <ul class="pagination justify-content-center">
-                    <li class="page-item m-1">
-                        <button @click="prevPage" :disabled="currentPage == 1" class="page-link"
-                            style="border-radius: 20px; color: black;">Anterior</button>
-                    </li>
-                    <li v-for="i in totalPages"  :key="i" class="page-item rounded m-1">
-                        <button @click="selectedPage(i)" class="page-link rounded-circle" style="color: black;">{{ i
-                            }}</button>
-                    </li>
-                    <li class="page-item m-1">
-                        <button @click="nextPage" :disabled="currentPage == totalPages" class="page-link"
-                            style="border-radius: 20px; color: black;">Siguiente</button>
-                    </li>
-                </ul>
-            </div>
-        </div>
+        <PaginatorBody :totalPages="totalPages" @page-changed="cambiarPagina" v-if="totalPages > 1" />
     </div>
       
     <!-- Modales -->
     <AddAttendeesModal @close="closeAddModal()" v-if="isAddModalOpen"></AddAttendeesModal>
     <EditAttendeeModal v-if="isEditModalOpen" @closeEditModal="closeEditModal()" :infoModal="EditModalInfo"></EditAttendeeModal>
     
-
+    <SpinnerGlobal v-if="totalPages == 0" />
 </template>
 <script>
 import { getAttendeesByPage, getAttendeeByDocument } from '@/services/asistenciaService';
@@ -97,14 +80,17 @@ import { useToastUtils } from '@/utils/toast';
 import AddAttendeesModal from './AddAttendeesModal.vue';
 import EditAttendeeModal from './EditAttendeeModal.vue';
 import AttendeesTableRow from './AttendeesTableRow.vue';
-
+import PaginatorBody from '../../../UI/PaginatorBody.vue';
+import SpinnerGlobal from "@/components/UI/SpinnerGlobal.vue";
 
 
 export default {
     components: {
         AttendeesTableRow,
         AddAttendeesModal,
-        EditAttendeeModal
+        EditAttendeeModal,
+        PaginatorBody,
+        SpinnerGlobal
     },
     setup() {
         const { showErrorToast,showInfoToast} = useToastUtils();
@@ -170,24 +156,10 @@ export default {
         }
 
 
-        //Todo lo del páginador
-        const nextPage = () => {
-            if (currentPage.value < totalPages.value) {
-                currentPage.value++; 
-                fetchAttendees(); 
-            }
-        };
-
-        const prevPage = () => {
-            if (currentPage.value > 1) {
-                currentPage.value--;
-                fetchAttendees(); 
-            }
-        };
-
-        const selectedPage = (pagina) => {
+        //Páginador
+        const cambiarPagina = (pagina) => {
             currentPage.value = pagina;
-            fetchAttendees();
+            fetchAttendees(); 
         }
 
         // Todo lo de los Modales
@@ -225,9 +197,6 @@ export default {
         return {
             currentPage,
             totalPages,
-            nextPage,
-            prevPage,
-            selectedPage,
             busqueda,
             attendees,
             isAddModalOpen,
@@ -240,8 +209,8 @@ export default {
             showAddModal,
             closeAddModal,
             showEditModal,
-            closeEditModal
-
+            closeEditModal,
+            cambiarPagina
         }
     },
 }
@@ -315,6 +284,11 @@ label{
     font-size: 2rem;
     color: #ffb606;
     margin-right: 10px;
+}
+
+.btn-buscar{
+    border: 0;
+    color: #000;
 }
 
 </style>

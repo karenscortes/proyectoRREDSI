@@ -32,26 +32,12 @@
         <div class="accordion accordion-flush" id="accordionFlushExample">
             <AcordeonPostulaciones v-for="(evaluator,index) in evaluators" :key="index" :evaluator="evaluator"  @notify="handleNotification"/>
         </div>
-
+        
         <!-- Paginador -->
-        <div v-if="totalPages > 1" class="mt-5">
-            <div aria-label="Page navigation example mb-5">
-                <ul class="pagination justify-content-center">
-                    <li class="page-item m-1">
-                        <button @click="prevPage" :disabled="currentPage == 1" class="page-link"
-                            style="border-radius: 20px; color: black;">Anterior</button>
-                    </li>
-                    <li v-for="i in totalPages"  :key="i" class="page-item rounded m-1">
-                        <button @click="selectedPage(i)" class="page-link rounded-circle" style="color: black;">{{ i
-                            }}</button>
-                    </li>
-                    <li class="page-item m-1">
-                        <button @click="nextPage" :disabled="currentPage == totalPages" class="page-link"
-                            style="border-radius: 20px; color: black;">Siguiente</button>
-                    </li>
-                </ul>
-            </div>
-        </div>
+        <PaginatorBody :totalPages="totalPages" @page-changed="cambiarPagina" v-if="totalPages > 1" />
+            
+        <SpinnerGlobal v-if="totalPages == 0" />
+
     </div>
 
 </template>
@@ -60,9 +46,14 @@
 import { getApplicationsByPage} from '@/services/postulacionService';
 import AcordeonPostulaciones from './AcordeonPostulaciones.vue';
 import { useToastUtils } from '@/utils/toast';
+import PaginatorBody from '../../../UI/PaginatorBody.vue';
+import SpinnerGlobal from "@/components/UI/SpinnerGlobal.vue";
+
 export default {
     components: {
         AcordeonPostulaciones,
+        PaginatorBody,
+        SpinnerGlobal
     },
     data() {
         return {
@@ -79,6 +70,7 @@ export default {
         },
         async fetchEvaluators() {
             try {
+            
                 const response = await getApplicationsByPage(this.currentPage);
                 this.evaluators = response.data.applications; 
                 this.totalPages = response.data.total_pages;
@@ -92,23 +84,9 @@ export default {
             }
         },
 
-        nextPage() {
-            if (this.currentPage < this.totalPages) {
-                this.currentPage++; 
-                this.fetchEvaluators(); 
-            }
-        },
-
-        prevPage() {
-            if (this.currentPage > 1) {
-                this.currentPage--;
-                this.fetchEvaluators(); 
-            }
-        },
-
-        selectedPage(pagina) {
+        cambiarPagina(pagina) {
             this.currentPage = pagina;
-            this.fetchEvaluators();
+            this.fetchEvaluators(); 
         },
     }, 
     mounted() {

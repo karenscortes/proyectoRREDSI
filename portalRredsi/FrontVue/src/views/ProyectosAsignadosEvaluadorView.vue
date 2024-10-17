@@ -151,7 +151,7 @@
             </div>
         </div>
     </div>
-
+    <SpinnerGlobal v-if="respuesta == false" />
 </template>
 
 <script>
@@ -161,14 +161,15 @@
     import PaginatorBody from '@/components/UI/PaginatorBody.vue';
     import { useAuthStore } from '@/store';     
     import { useToastUtils } from '@/utils/toast'; 
-
+    import SpinnerGlobal from "../components/UI/SpinnerGlobal.vue";
     const { showErrorToast } = useToastUtils();
-
+    const respuesta = true;
     export default {
         
         components: {
             ProyectosAsignados,
             CalificarProyectoEvaluadorView ,
+            SpinnerGlobal, // Incluir el spinner global
             PaginatorBody
         },
         data() {
@@ -185,6 +186,7 @@
                 listaHorario: [],
                 totalPagesHorario: 1,
                 currentPageHorario: 1,
+                respuesta: true,
 
             };
         },
@@ -195,11 +197,11 @@
 
             mensajeSinProyectos() {
                 if (!this.selectedState) {
-                    return "No tienes proyectos asignados por el momento...";
+                    return "Cargando proyectos...";
                 } else if (this.selectedState === 'Calificado') {
-                    return "No tienes proyectos calificados...";
+                    return "Cargando proyectos...";
                 } else if (this.selectedState === 'Pendiente') {
-                    return "No tienes proyectos pendientes...";
+                    return "Cargando proyectos...";
                 }
                 return "No hay proyectos disponibles.";
             },
@@ -243,6 +245,7 @@
             },
 
             async fetchProyectos(page = 1) {
+                this.respuesta = false;
                 try {
                     this.selectedState = ''; 
     
@@ -259,9 +262,11 @@
                 } catch (error) {
                     showErrorToast("Error al obtener proyectos");
                 }
+                this.respuesta = true;
             },
 
             async fetchProyectosPorEstado(estado) {
+                this.respuesta = false;
                 try {
                     const authStore = useAuthStore();
                     const user = authStore.user;
@@ -297,9 +302,11 @@
                 } catch (error) {
                     showErrorToast("Error al obtener proyectos por estado");
                 }
+                this.respuesta = true;
             },
 
             async nextPage() {
+                this.respuesta = false;
                 if (this.currentPage < this.totalPages) {
                     const nextPage = this.currentPage + 1; 
                     if (this.selectedState) {
@@ -310,9 +317,11 @@
                         await this.fetchProyectos(nextPage);
                     }
                 }
+                this.respuesta = true;
             },
 
             async prevPage() {
+                this.respuesta = false;
                 if (this.currentPage > 1) {
                     const prevPage = this.currentPage - 1; 
                     if (this.selectedState) {
@@ -322,6 +331,7 @@
                         await this.fetchProyectos(prevPage);
                     }
                 }
+                this.respuesta = true;
             },
 
             changeComponent({ componentName, proyecto }) {
