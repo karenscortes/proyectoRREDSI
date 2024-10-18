@@ -1,81 +1,97 @@
 <template>
   <div class="container">
     <div class="row mb-5 mt-2">
-      <!--Titulo Principal-->
+      <!-- Titulo Principal -->
       <div class="col">
         <div class="section_title text-center">
           <h1>Gestionar Cuentas Delegados</h1>
         </div>
       </div>
     </div>
-    <div class="row justify-content-center">
-      <!-- tabla -->
-      <div class="table-responsive row d-flex justify-content-center">
-        <table class="display table table-striped table-hover text-dark">
-          <thead class="text-center">
-            <tr class="cabecero">
-              <th class="thTable" colspan="3">
-                <!-- Buscador -->
-                <div class="row justify-content-start">
-                  <div class="col-md-5 col-6">
-                    <input
-                      type="text"
-                      id="busqueda"
-                      v-model="busqueda"
-                      class="form-control"
-                      placeholder="Nombre o documento"
-                    />
-                  </div>
-                  <div class="col-md-2 col-4">
-                    <button
-                      class="btn btn-dark w-100 font-weight-bold"
-                      @click="buscar()"
-                    >
-                      Buscar
-                    </button>
-                  </div>
-                </div>
-              </th>
-              <th class="thTable">
-                <a
-                  class="btn-sm font-weight-bold text-dark"
-                  @click="showModalAdd()"
-                  type="button"
-                  ><i class="fas fa-plus extra-bold-icon"></i>
-                </a>
-              </th>
-            </tr>
-            <tr>
-              <th>Usuario</th>
-              <th>Institucion</th>
-              <th>Estado</th>
-              <th>Perfil</th>
-            </tr>
-          </thead>
-          <tbody class="text-center">
-            <RowTableDelegado
-              v-for="(delegado, index) in ArrayDelegados"
-              :key="index"
-              :index="index"
-              :infoDelegado="delegado"
-              @open="showModalDetail($event)"
-              @check="cambiarEstadoCheckboxDelegado($event)"
-            >
-            </RowTableDelegado>
-          </tbody>
-        </table>
-      </div>
+
+    <!-- Spinner global mientras se cargan los delegados -->
+    <div v-if="loading" class="text-center my-5">
+      <SpinnerGlobal />
     </div>
-    <PaginatorBody
-      :totalPages="total_pages"
-      @page-changed="handlePaginate($event)"
-    ></PaginatorBody>
-    <ModalAdd @close="closeModalAdd()" v-if="isModalOpenAdd"></ModalAdd>
-    <ModalDetalle
-      v-if="isModalOpenEdit"
-      @closeModalDetail="closeModalDetail()"
-      :infoModal="infoModalDetail"
-    ></ModalDetalle>
+
+    <!-- Mostrar el contenido solo cuando no esté cargando -->
+    <div v-else>
+      <div class="row justify-content-center">
+        <!-- tabla -->
+        <div class="table-responsive row d-flex justify-content-center">
+          <table class="display table table-striped table-hover text-dark">
+            <thead class="text-center">
+              <tr class="cabecero">
+                <th class="thTable" colspan="3">
+                  <!-- Buscador -->
+                  <div class="row justify-content-start">
+                    <div class="col-md-5 col-6">
+                      <input
+                        type="text"
+                        id="busqueda"
+                        v-model="busqueda"
+                        class="form-control"
+                        placeholder="Nombre o documento"
+                      />
+                    </div>
+                    <div class="col-md-2 col-4">
+                      <button
+                        class="btn btn-dark w-100 font-weight-bold"
+                        @click="buscar()"
+                      >
+                        Buscar
+                      </button>
+                    </div>
+                  </div>
+                </th>
+                <th class="thTable">
+                  <a
+                    class="btn-sm font-weight-bold text-dark"
+                    @click="showModalAdd()"
+                    type="button"
+                  >
+                    <i class="fas fa-plus extra-bold-icon"></i>
+                  </a>
+                </th>
+              </tr>
+              <tr>
+                <th>Usuario</th>
+                <th>Institucion</th>
+                <th>Estado</th>
+                <th>Perfil</th>
+              </tr>
+            </thead>
+            <tbody class="text-center">
+              <!-- Componente hijo: RowTableDelegado -->
+              <RowTableDelegado
+                v-for="(delegado, index) in ArrayDelegados"
+                :key="index"
+                :index="index"
+                :infoDelegado="delegado"
+                @open="showModalDetail($event)"
+                @check="cambiarEstadoCheckboxDelegado($event)"
+              />
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Paginador -->
+      <PaginatorBody
+        :totalPages="total_pages"
+        @page-changed="handlePaginate($event)"
+      />
+      
+      <!-- Modal de agregar delegado -->
+      <ModalAdd @close="closeModalAdd()" v-if="isModalOpenAdd"></ModalAdd>
+      
+      <!-- Modal de detalle de delegado -->
+      <ModalDetalle
+        v-if="isModalOpenEdit"
+        @closeModalDetail="closeModalDetail()"
+        :infoModal="infoModalDetail"
+      ></ModalDetalle>
+    </div>
   </div>
   <SpinnerGlobal />
 </template>
@@ -83,6 +99,7 @@
 import { onMounted, ref, reactive } from "vue";
 import { useToastUtils } from '@/utils/toast'; 
 import RowTableDelegado from "../components/Users/administrador/gest_delegado/RowTableDelegado.vue";
+import SpinnerGlobal from "@/components/UI/SpinnerGlobal.vue"; 
 import ModalAdd from "../components/Users/administrador/gest_delegado/ModalAdd.vue";
 import ModalDetalle from "../components/Users/administrador/gest_delegado/ModalDetalle.vue";
 import PaginatorBody from "../components/UI/PaginatorBody.vue";
@@ -100,6 +117,9 @@ const isModalOpenAdd = ref(false);
 //Propiedad para definir la pagina actual, para el servicio y el total de paginas para enviar al paginador
 const page = ref(1);
 const total_pages = ref(0);
+
+// Propiedad para controlar la carga de la lista de delegados
+const loading = ref(true); // Iniciar como 'true' porque estamos cargando los datos
 
 //Propiedad para guardar la busqueda
 const busqueda = ref("");
@@ -123,8 +143,6 @@ const cambiarEstadoCheckboxDelegado = (index) => {
   ArrayDelegados[index].estado = estadoActualDelegado.value;
   const estado = estadoActualDelegado.value;
   const id_delegado = ArrayDelegados[index].id_usuario;
-  console.log("soy estado"); 
-  console.log(estadoActualDelegado);
   actualizarEstado(id_delegado, estado);
 };
 
@@ -193,37 +211,39 @@ const actualizarEstado = async (id_delegado, estado) => {
   }
 };
 
-//Funcion para buscar delegados
+// Función para buscar delegados
 const buscar = async () => {
-  if (busqueda.value !== "") {
-    try {
+  loading.value = true; // Mostrar spinner mientras busca
+  try {
+    if (busqueda.value !== "") {
       const response = await getDelegateByNameOrDocument(busqueda.value);
       configPagination.value.users = [response.data];
       configPagination.value.total_pages = 1;
       configPagination.value.total_users = 1;
       modificarArrayDelegados();
-      busqueda.value = ""; 
-      return response;
-    } catch (error) {
-      showErrorToast("Error al buscar el delegado, por favor intenta nuevamente.");
-      busqueda.value = ""; 
+      busqueda.value = "";
+    } else {
+      await fetchAllDelegates();
     }
-  } 
-  if(busqueda.value === ""){
-    fetchAllDelegates();
+  } catch (error) {
+    showErrorToast("Error al buscar el delegado.");
+  } finally {
+    loading.value = false; // Esconder spinner
   }
 };
 
-//Función para utilizar el servicio, hacer la petición y actualizar las respectivas propiedades.
+// Función para cargar los delegados
 const fetchAllDelegates = async () => {
+  loading.value = true; // Mostrar el spinner
   try {
     const response = await getDelegatesAll(page.value);
     total_pages.value = response.data.total_pages;
     configPagination.value = response.data;
     modificarArrayDelegados();
-    return response;
   } catch (error) {
-    showErrorToast("Error al cargar los delegados, por favor intenta nuevamente.");
+    showErrorToast("Error al cargar los delegados.");
+  } finally {
+    loading.value = false; // Ocultar el spinner una vez se carguen los datos
   }
 };
 onMounted(() => {

@@ -7,46 +7,43 @@
         <div class="form-section mt-5" >
           <h2 class="text-center section-title">Datos del Proyecto</h2>
           <div class="row mb-3">
-            <!-- Selector de Institución Educativa -->
             <div class="col-md-6">
               <label for="institucion_educativa" class="form-label text-black">Institución Educativa:</label>
-              <instituciones_Select 
-                v-model="datosProyecto.institucion_educativa" 
-                @institucion-selected="setInstitucionEducativa" 
-                required />
+              <instituciones_Select v-model="datosProyecto.institucion_educativa"
+                @institucion-selected="setInstitucionEducativa" required />
             </div>
             <div class="col-md-6">
               <label for="programa_academico" class="form-label text-black">Programa Académico:</label>
-              <input v-model="datosProyecto.programa_academico" type="text" class="form-control" id="programa_academico" required />
-            </div>
-          </div>
-  
-          <div class="row mb-3">
-            <div class="col-md-6">
-              <label for="grupo_investigacion" class="form-label text-black">Grupo de Investigación:</label>
-              <input v-model="datosProyecto.grupo_investigacion" type="text" class="form-control" id="grupo_investigacion" required />
-            </div>
-            <div class="col-md-6">
-              <label for="linea_investigacion" class="form-label text-black">Línea de Investigación:</label>
-              <input v-model="datosProyecto.linea_investigacion" type="text" class="form-control" id="linea_investigacion" required />
-            </div>
-          </div>
-  
-          <!-- Campo de Nombre del Semillero -->
-          <div class="row mb-3">
-            <div class="col-md-6">
-              <label for="nombre_semillero" class="form-label text-black">Nombre del Semillero:</label>
-              <input v-model="datosProyecto.nombre_semillero" type="text" class="form-control" id="nombre_semillero" required />
-            </div>
-            <div class="col-md-6">
-              <label for="modalidad" class="form-label text-black">Modalidad:</label>
-              <ModalidadesSelect 
-                v-model="datosProyecto.modalidad" 
-                @modalidad-selected="setModalidad" 
+              <input v-model="datosProyecto.programa_academico" type="text" class="form-control" id="programa_academico"
                 required />
             </div>
           </div>
-  
+
+          <div class="row mb-3">
+            <div class="col-md-6">
+              <label for="grupo_investigacion" class="form-label text-black">Grupo de Investigación:</label>
+              <input v-model="datosProyecto.grupo_investigacion" type="text" class="form-control"
+                id="grupo_investigacion" required />
+            </div>
+            <div class="col-md-6">
+              <label for="linea_investigacion" class="form-label text-black">Línea de Investigación:</label>
+              <input v-model="datosProyecto.linea_investigacion" type="text" class="form-control"
+                id="linea_investigacion" required />
+            </div>
+          </div>
+
+          <div class="row mb-3">
+            <div class="col-md-6">
+              <label for="nombre_semillero" class="form-label text-black">Nombre del Semillero:</label>
+              <input v-model="datosProyecto.nombre_semillero" type="text" class="form-control" id="nombre_semillero"
+                required />
+            </div>
+            <div class="col-md-6">
+              <label for="modalidad" class="form-label text-black">Modalidad:</label>
+              <ModalidadesSelect v-model="datosProyecto.modalidad" @modalidad-selected="setModalidad" required />
+            </div>
+          </div>
+
           <div class="row mb-3">
             <div class="col-md-6">
               <label for="titulo_proyecto" class="form-label text-black">Título del Proyecto:</label>
@@ -54,17 +51,16 @@
             </div>
             <div class="col-md-6">
               <label for="area_conocimiento" class="form-label text-black">Área de Conocimiento:</label>
-              <areasConocimiento_Select 
-                v-model="datosProyecto.area_conocimiento" 
-                @area-conocimiento-selected="setAreaConocimiento" 
-                required />
+              <areasConocimiento_Select v-model="datosProyecto.area_conocimiento"
+                @area-conocimiento-selected="setAreaConocimiento" required />
             </div>
           </div>
-  
+
           <div class="row mb-3">
             <div class="col-md-6">
               <label for="propuesta_escrita" class="form-label text-black">Propuesta Escrita:</label>
-              <input type="file" @change="handleFileChange($event, 'propuesta_escrita')" class="form-control" id="propuesta_escrita" required />
+              <input type="file" @change="handleFileChange($event, 'propuesta_escrita')" class="form-control"
+                id="propuesta_escrita" required />
             </div>
             <div class="col-md-6">
               <label for="aval" class="form-label text-black">Aval:</label>
@@ -72,7 +68,6 @@
             </div>
           </div>
         </div>
-        
 
         <!-- Datos del Tutor -->
         <div class="form-section mt-5" >
@@ -80,34 +75,37 @@
           <div class="row mb-3">
             <div class="col-md-6">
               <label for="tipo_documento_tutor" class="form-label text-black">Tipo de Documento:</label>
-              <TipoDocumentoSelect 
-                v-model="datosTutor.tipo_documento" 
-                @tipo-documento-selected="setTipoDocumentoTutor" 
-                required />
+              <TipoDocumentoSelect v-model="datosTutor.tipo_documento" @tipo-documento-selected="setTipoDocumentoTutor"
+                :disabled="datosTutor.bloqueado" required />
             </div>
             <div class="col-md-6">
               <label for="numero_documento_tutor" class="form-label text-black">Número de Documento:</label>
-              <input v-model="datosTutor.numero_documento" type="text" class="form-control" id="numero_documento_tutor" required />
+              <input v-model="datosTutor.numero_documento" @blur="buscarTutorPorDocumento" type="text"
+                class="form-control" id="numero_documento_tutor" :disabled="datosTutor.bloqueado" required />
             </div>
           </div>
           <div class="row mb-3">
             <div class="col-md-6">
               <label for="nombres_tutor" class="form-label text-black">Nombres:</label>
-              <input v-model="datosTutor.nombres" type="text" class="form-control" id="nombres_tutor" required />
+              <input v-model="datosTutor.nombres" type="text" class="form-control" id="nombres_tutor"
+                :disabled="datosTutor.bloqueado" required />
             </div>
             <div class="col-md-6">
               <label for="apellidos_tutor" class="form-label text-black">Apellidos:</label>
-              <input v-model="datosTutor.apellidos" type="text" class="form-control" id="apellidos_tutor" required />
+              <input v-model="datosTutor.apellidos" type="text" class="form-control" id="apellidos_tutor"
+                :disabled="datosTutor.bloqueado" required />
             </div>
           </div>
           <div class="row mb-3">
             <div class="col-md-6">
               <label for="celular_tutor" class="form-label text-black">Celular:</label>
-              <input v-model="datosTutor.celular" type="text" class="form-control" id="celular_tutor" required />
+              <input v-model="datosTutor.celular" type="text" class="form-control" id="celular_tutor"
+                :disabled="datosTutor.bloqueado" required />
             </div>
             <div class="col-md-6">
               <label for="correo_tutor" class="form-label text-black">Correo Electrónico:</label>
-              <input v-model="datosTutor.correo" type="email" class="form-control" id="correo_tutor" required />
+              <input v-model="datosTutor.correo" type="email" class="form-control" id="correo_tutor"
+                :disabled="datosTutor.bloqueado" required />
             </div>
           </div>
         </div>
@@ -118,39 +116,42 @@
           <div class="row mb-3">
             <div class="col-md-6">
               <label for="tipo_documento_ponente1" class="form-label text-black">Tipo de Documento:</label>
-              <TipoDocumentoSelect 
-                v-model="datosPonente.tipo_documento" 
-                @tipo-documento-selected="setTipoDocumentoPonente" 
-                required />
+              <TipoDocumentoSelect v-model="datosPonente.tipo_documento"
+                @tipo-documento-selected="setTipoDocumentoPonente" :disabled="datosPonente.bloqueado" required />
             </div>
             <div class="col-md-6">
               <label for="numero_documento_ponente1" class="form-label text-black">Número de Documento:</label>
-              <input v-model="datosPonente.numero_documento" type="text" class="form-control" id="numero_documento_ponente1" required />
+              <input v-model="datosPonente.numero_documento" @blur="buscarPonentePorDocumento" type="text"
+                class="form-control" id="numero_documento_ponente1" :disabled="datosPonente.bloqueado" required />
             </div>
           </div>
           <div class="row mb-3">
             <div class="col-md-6">
               <label for="nombres_ponente1" class="form-label text-black">Nombres:</label>
-              <input v-model="datosPonente.nombres" type="text" class="form-control" id="nombres_ponente1" required />
+              <input v-model="datosPonente.nombres" type="text" class="form-control" id="nombres_ponente1"
+                :disabled="datosPonente.bloqueado" required />
             </div>
             <div class="col-md-6">
               <label for="apellidos_ponente1" class="form-label text-black">Apellidos:</label>
-              <input v-model="datosPonente.apellidos" type="text" class="form-control" id="apellidos_ponente1" required />
+              <input v-model="datosPonente.apellidos" type="text" class="form-control" id="apellidos_ponente1"
+                :disabled="datosPonente.bloqueado" required />
             </div>
           </div>
           <div class="row mb-3">
             <div class="col-md-6">
               <label for="celular_ponente1" class="form-label text-black">Celular:</label>
-              <input v-model="datosPonente.celular" type="text" class="form-control" id="celular_ponente1" required />
+              <input v-model="datosPonente.celular" type="text" class="form-control" id="celular_ponente1"
+                :disabled="datosPonente.bloqueado" required />
             </div>
             <div class="col-md-6">
               <label for="correo_ponente1" class="form-label text-black">Correo Electrónico:</label>
-              <input v-model="datosPonente.correo" type="email" class="form-control" id="correo_ponente1" required />
+              <input v-model="datosPonente.correo" type="email" class="form-control" id="correo_ponente1"
+                :disabled="datosPonente.bloqueado" required />
             </div>
           </div>
            <!-- Ponente Opcional -->
         <div v-if="mostrarPonenteOpcional" class="form-section mt-5">
-          <h4 class="text-center section-title">Segundo Ponente</h4>
+          <h4 class="text-center section-title">Datos del Ponente Opcional</h4>
           <div class="row mb-3">
             <div class="col-md-6">
               <label for="tipo_documento_opcional" class="form-label text-black">Tipo de Documento:</label>
@@ -178,32 +179,35 @@
               <label for="celular_opcional" class="form-label text-black">Celular:</label>
               <input v-model="ponenteOpcional.celular" type="text" class="form-control" id="celular_opcional" />
             </div>
-            <div class="col-md-6">
-              <label for="correo_opcional" class="form-label text-black">Correo Electrónico:</label>
-              <input v-model="ponenteOpcional.correo" type="email" class="form-control" id="correo_opcional" />
+
+            <!-- Botón para eliminar Ponente Opcional -->
+            <div class="text-center mt-3">
+              <button type="button" @click="eliminarPonenteOpcional" class="btn btn-outline-dark btn-sm">Eliminar
+                Ponente Opcional</button>
             </div>
           </div>
 
           <!-- Botón para eliminar Ponente Opcional -->
           <div class="text-center mt-3">
-            <button type="button" @click="eliminarPonenteOpcional" class="btn  btn-sm">Eliminar Ponente</button>
+            <button type="button" @click="eliminarPonenteOpcional" class="btn  btn-sm">Eliminar Ponente Opcional</button>
           </div>
         </div>
 
         <!-- Botón para agregar o eliminar Ponente Opcional -->
         <div v-if="!mostrarPonenteOpcional" class="text-center mt-3">
-          <button type="button" @click="agregarPonenteOpcional" class="btn  btn-sm">Agregar Ponente</button>
+          <button type="button" @click="agregarPonenteOpcional" class="btn  btn-sm">Agregar Ponente Opcional</button>
         </div>
         </div>
 
-       
+
 
         <!-- Sección Datos de los Autores -->
         <div class="form-section mt-5">
           <h2 class="text-center section-title">Nombres de los Autores</h2>
           <div class="row mb-3">
             <div class="col-md-10">
-              <input v-model="nuevoAutor.nombre" type="text" class="form-control text-black " placeholder="Nombre del Autor" />
+              <input v-model="nuevoAutor.nombre" type="text" class="form-control text-black"
+                placeholder="Nombre del Autor" />
             </div>
             <div class="col-md-2 text-center">
               <button type="button" class="btn  btn-sm" @click="agregarAutor">Agregar</button>
@@ -211,7 +215,8 @@
           </div>
 
           <ul class="list-group mb-3">
-            <li v-for="(autor, index) in autores" :key="index" class="list-group-item d-flex justify-content-between align-items-center">
+            <li v-for="(autor, index) in autores" :key="index"
+              class="list-group-item d-flex justify-content-between align-items-center">
               {{ autor.nombre }}
               <button type="button" class="btn btn-sm" @click="eliminarAutor(index)">Eliminar</button>
             </li>
@@ -222,7 +227,6 @@
         <div class="text-center">
           <button type="submit" class="btn ">Guardar Proyecto</button>
         </div>
-
       </form>
     </div>
   </div>
@@ -234,6 +238,7 @@ import TipoDocumentoSelect from './TipoDocumentoSelect.vue';
 import areasConocimiento_Select from './areasConocimiento_Select.vue';
 import instituciones_Select from './instituciones_Select.vue';
 import { createProject } from '@/services/ProyectoService';
+import { ObtenerUsuarioDocumento } from '@/services/UsuarioService';
 import { ref } from 'vue';
 import { useToastUtils } from '@/utils/toast';
 
@@ -248,7 +253,7 @@ export default {
     const { showSuccessToast, showErrorToast } = useToastUtils();
 
     const proyectoCodigo = ref(''); // Código del proyecto generado
-    const selectKey = ref(0); // Usado para forzar actualización de selectores y inputs
+    const selectKey = ref(0); // Usado para forzar actualización de selectores e inputs
 
     const datosProyecto = ref({
       institucion_educativa: null,
@@ -270,6 +275,7 @@ export default {
       apellidos: '',
       celular: '',
       correo: '',
+      bloqueado: false, // Nuevo campo para controlar el bloqueo
     });
 
     const datosPonente = ref({
@@ -279,15 +285,17 @@ export default {
       apellidos: '',
       celular: '',
       correo: '',
+      bloqueado: false, // Nuevo campo para controlar el bloqueo
     });
 
-    const ponenteOpcional = ref({
+    const datosPonente2 = ref({
       tipo_documento: null,
       numero_documento: '',
       nombres: '',
       apellidos: '',
       celular: '',
       correo: '',
+      bloqueado: false, // Nuevo campo para controlar el bloqueo
     });
 
     const mostrarPonenteOpcional = ref(false);
@@ -305,13 +313,14 @@ export default {
 
     const eliminarPonenteOpcional = () => {
       mostrarPonenteOpcional.value = false;
-      ponenteOpcional.value = {
+      datosPonente2.value = {
         tipo_documento: null,
         numero_documento: '',
         nombres: '',
         apellidos: '',
         celular: '',
         correo: '',
+        bloqueado: false,
       };
     };
 
@@ -319,7 +328,6 @@ export default {
       if (nuevoAutor.value.nombre.trim()) {
         autores.value.push({ ...nuevoAutor.value });
         nuevoAutor.value.nombre = '';
-        showSuccessToast('Autor agregado correctamente');
       } else {
         showErrorToast('El nombre del autor no puede estar vacío');
       }
@@ -327,7 +335,6 @@ export default {
 
     const eliminarAutor = (index) => {
       autores.value.splice(index, 1);
-      showSuccessToast('Autor eliminado correctamente');
     };
 
     const registrarProyecto = async () => {
@@ -336,15 +343,18 @@ export default {
           datosProyecto.value,
           datosTutor.value,
           datosPonente.value,
-          ponenteOpcional.value,
+          datosPonente2.value,
           autores.value
         );
 
         proyectoCodigo.value = response.data.id_proyecto;
-        showSuccessToast(`Proyecto registrado exitosamente, el Código de identificación es: ${proyectoCodigo.value}.`);
+        showSuccessToast(`Proyecto registrado exitosamente, el Código de identificación es: ${proyectoCodigo.value} y fue enviado al correo del tutor.`);
 
-        // Redirigir a la página principal
-        router.push('views/MainLayout.vue');
+        limpiarFormulario();
+
+        setTimeout(() => {
+          window.location.reload();
+        }, 15000); // 25 segundos para refrescar la página
 
       } catch (error) {
         if (error.message) {
@@ -352,6 +362,51 @@ export default {
         } else {
           showErrorToast('Error inesperado al registrar el proyecto.');
         }
+      }
+    };
+
+    const buscarTutorPorDocumento = async () => {
+      try {
+        const tutor = await ObtenerUsuarioDocumento(datosTutor.value.numero_documento);
+        if (tutor) {
+          datosTutor.value.nombres = tutor.nombres;
+          datosTutor.value.apellidos = tutor.apellidos;
+          datosTutor.value.celular = tutor.celular;
+          datosTutor.value.correo = tutor.correo;
+          datosTutor.value.bloqueado = true; // Bloquear los campos si ya existe
+        }
+      } catch (error) {
+        datosTutor.value.bloqueado = false;
+      }
+    };
+
+    const buscarPonentePorDocumento = async () => {
+      try {
+        const ponente = await ObtenerUsuarioDocumento(datosPonente.value.numero_documento);
+        if (ponente) {
+          datosPonente.value.nombres = ponente.nombres;
+          datosPonente.value.apellidos = ponente.apellidos;
+          datosPonente.value.celular = ponente.celular;
+          datosPonente.value.correo = ponente.correo;
+          datosPonente.value.bloqueado = true; // Bloquear los campos si ya existe
+        }
+      } catch (error) {
+        datosPonente.value.bloqueado = false;
+      }
+    };
+
+    const buscarPonente2PorDocumento = async () => {
+      try {
+        const ponente2 = await ObtenerUsuarioDocumento(datosPonente2.value.numero_documento);
+        if (ponente2) {
+          datosPonente2.value.nombres = ponente2.nombres;
+          datosPonente2.value.apellidos = ponente2.apellidos;
+          datosPonente2.value.celular = ponente2.celular;
+          datosPonente2.value.correo = ponente2.correo;
+          datosPonente2.value.bloqueado = true; // Bloquear los campos si ya existe
+        }
+      } catch (error) {
+        datosPonente2.value.bloqueado = false;
       }
     };
 
@@ -364,9 +419,9 @@ export default {
         nombre_semillero: '',
         modalidad: null,
         titulo: '',
-        propuesta_escrita: null,  // Limpiar el archivo de propuesta
+        propuesta_escrita: null, // Limpiar el archivo de propuesta
         area_conocimiento: null,
-        aval: null,  // Limpiar el archivo de aval
+        aval: null, // Limpiar el archivo de aval
       };
 
       datosTutor.value = {
@@ -376,6 +431,7 @@ export default {
         apellidos: '',
         celular: '',
         correo: '',
+        bloqueado: false, // Resetear el bloqueo
       };
 
       datosPonente.value = {
@@ -385,26 +441,26 @@ export default {
         apellidos: '',
         celular: '',
         correo: '',
+        bloqueado: false, // Resetear el bloqueo
       };
 
-      ponenteOpcional.value = {
+      datosPonente2.value = {
         tipo_documento: null,
         numero_documento: '',
         nombres: '',
         apellidos: '',
         celular: '',
         correo: '',
+        bloqueado: false, // Resetear el bloqueo
       };
 
       mostrarPonenteOpcional.value = false;
       nuevoAutor.value.nombre = '';
       autores.value = [];
 
-      // Limpiar los archivos cargados
       document.getElementById('propuesta_escrita').value = null;
       document.getElementById('aval').value = null;
 
-      // Forzar actualización de los selectores
       selectKey.value += 1;
     };
 
@@ -413,13 +469,13 @@ export default {
     const setAreaConocimiento = (id) => datosProyecto.value.area_conocimiento = id;
     const setTipoDocumentoTutor = (id) => datosTutor.value.tipo_documento = id;
     const setTipoDocumentoPonente = (id) => datosPonente.value.tipo_documento = id;
-    const setTipoDocumentoPonenteOpcional = (id) => ponenteOpcional.value.tipo_documento = id;
+    const setTipoDocumentoPonente2 = (id) => datosPonente2.value.tipo_documento = id;
 
     return {
       datosProyecto,
       datosTutor,
       datosPonente,
-      ponenteOpcional,
+      datosPonente2,
       mostrarPonenteOpcional,
       nuevoAutor,
       autores,
@@ -431,13 +487,16 @@ export default {
       registrarProyecto,
       proyectoCodigo,
       limpiarFormulario,
-      selectKey, // Usado para forzar re-renderizado
+      selectKey,
       setInstitucionEducativa,
       setModalidad,
       setAreaConocimiento,
       setTipoDocumentoTutor,
       setTipoDocumentoPonente,
-      setTipoDocumentoPonenteOpcional,
+      setTipoDocumentoPonente2,
+      buscarTutorPorDocumento,
+      buscarPonentePorDocumento,
+      buscarPonente2PorDocumento,
     };
   },
 };
@@ -449,17 +508,18 @@ export default {
 <style scoped>
   .form-section {
     padding: 20px;
+
     margin-bottom: 50px;
   }
 
-  .section-title {
-    color: rgb(255, 182, 6);
-    font-weight: bold;
-    padding: 10px;
-  }
+.section-title {
+  color: rgb(255, 182, 6);
+  font-weight: bold;
+  padding: 10px;
+}
 
   .section-subtitle {
-    color: rgb(0, 0, 0);
+    color: rgb(0,0,0);
     font-weight: bold;
   }
 
@@ -475,7 +535,7 @@ export default {
   }
 
   .list-group-item {
-    background-color: #ffffff;
+    background-color: #fff;
 
   }
 

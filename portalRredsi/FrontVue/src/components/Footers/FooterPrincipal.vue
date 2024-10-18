@@ -1,6 +1,6 @@
 <template>
     <!-- Footer -->
-    <footer class="footer mt-3">
+    <footer class="footer mt-3" id="footer_principal">
         <div class="container">
             <!-- Footer Content -->
 
