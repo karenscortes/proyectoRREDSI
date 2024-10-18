@@ -2,14 +2,34 @@ from typing import Optional
 from sqlalchemy.orm import Session
 from sqlalchemy import text
 from fastapi import HTTPException
-from sqlalchemy.exc import IntegrityError, SQLAlchemyError
+from sqlalchemy.exc import SQLAlchemyError
 
+from appv1.routers.login import send_email
 from appv1.schemas.proyecto import ParticipanteCreate, ProyectoCreate
 from core.utils import generate_Contraseña, generate_project_id, generate_user_id_int
 
 def create_full_project(db: Session, proyecto: ProyectoCreate, tutor: ParticipanteCreate, ponente1: ParticipanteCreate, ponente2: Optional[ParticipanteCreate] = None):
     try:
-        # **Paso 1: Inserción del proyecto**
+        # **Paso 1: Validar que la convocatoria está activa y en la fase 'Inscripciones abiertas'**
+        convocatoria_sql = text(
+            "SELECT pf.id_convocatoria, pf.id_fase "
+            "FROM programacion_fases pf "
+            "JOIN fases f ON pf.id_fase = f.id_fase "
+            "JOIN convocatorias c ON pf.id_convocatoria = c.id_convocatoria "
+            "WHERE c.estado = 'en curso' "
+            "AND f.nombre = 'Inscripciones abiertas' "
+            "AND CURDATE() BETWEEN pf.fecha_inicio AND pf.fecha_fin "
+            "LIMIT 1"
+        )
+        convocatoria = db.execute(convocatoria_sql).fetchone()
+
+        if not convocatoria:
+            raise HTTPException(status_code=400, detail="Las inscripciones no están abiertas por favor revisar el cronograma")
+        
+        convocatoria_id = convocatoria[0]
+        fase_id = convocatoria[1]
+
+        # **Paso 2: Inserción del proyecto**
         project_id = generate_project_id()
 
         project_sql = text(
@@ -37,17 +57,6 @@ def create_full_project(db: Session, proyecto: ProyectoCreate, tutor: Participan
 
         db.execute(project_sql, project_params)
 
-        # **Paso 2: Obtener la convocatoria en curso**
-        convocatoria_sql = text(
-            "SELECT id_convocatoria FROM convocatorias WHERE estado = 'en curso' LIMIT 1"
-        )
-        convocatoria = db.execute(convocatoria_sql).fetchone()
-
-        if not convocatoria:
-            raise HTTPException(status_code=404, detail="No hay convocatoria en curso")
-        
-        convocatoria_id = convocatoria[0]
-
         # **Paso 3: Insertar en proyectos_convocatoria**
         proyecto_convocatoria_sql = text(
             "INSERT INTO proyectos_convocatoria (id_proyecto, id_convocatoria) VALUES (:id_proyecto, :id_convocatoria)"
@@ -56,10 +65,20 @@ def create_full_project(db: Session, proyecto: ProyectoCreate, tutor: Participan
 
         proyecto_convocatoria_id = db.execute(text("SELECT LAST_INSERT_ID()")).fetchone()[0]
 
-        # **Paso 4: Inserción del tutor**
-        try:
-            tutor_id = generate_user_id_int()
+        # **Paso 4: Verificación y/o inserción del tutor**
+        tutor_sql = text(
+            "SELECT id_usuario FROM usuarios WHERE correo = :correo OR documento = :documento OR celular = :celular LIMIT 1"
+        )
+        tutor_existente = db.execute(tutor_sql, {
+            "correo": tutor.correo,
+            "documento": tutor.documento,
+            "celular": tutor.celular
+        }).fetchone()
 
+        if tutor_existente:
+            tutor_id = tutor_existente[0]
+        else:
+            tutor_id = generate_user_id_int()
             tutor_sql = text(
                 "INSERT INTO usuarios (id_usuario, id_rol, id_tipo_documento, documento, nombres, apellidos, celular, correo, clave, estado) "
                 "VALUES (:id_usuario, :id_rol, :id_tipo_documento, :documento, :nombres, :apellidos, :celular, :correo, :passhash, 'inactivo')"
@@ -78,21 +97,21 @@ def create_full_project(db: Session, proyecto: ProyectoCreate, tutor: Participan
             }
 
             db.execute(tutor_sql, tutor_params)
-        except IntegrityError as e:
-            db.rollback()  # Rollback en caso de error de tutor
-            if 'correo' in str(e.orig):
-                raise HTTPException(status_code=400, detail="El correo del tutor ya está registrado.")
-            elif 'documento' in str(e.orig):
-                raise HTTPException(status_code=400, detail="El documento del tutor ya está registrado.")
-            elif 'celular' in str(e.orig):
-                raise HTTPException(status_code=400, detail="El número de celular del tutor ya está registrado.")
-            else:
-                raise HTTPException(status_code=400, detail=f"Error de integridad del tutor: {str(e)}")
 
-        # **Paso 5: Inserción del primer ponente**
-        try:
+        # **Paso 5: Verificación y/o inserción del primer ponente**
+        ponente1_sql = text(
+            "SELECT id_usuario FROM usuarios WHERE correo = :correo OR documento = :documento OR celular = :celular LIMIT 1"
+        )
+        ponente1_existente = db.execute(ponente1_sql, {
+            "correo": ponente1.correo,
+            "documento": ponente1.documento,
+            "celular": ponente1.celular
+        }).fetchone()
+
+        if ponente1_existente:
+            ponente1_id = ponente1_existente[0]
+        else:
             ponente1_id = generate_user_id_int()
-
             ponente1_sql = text(
                 "INSERT INTO usuarios (id_usuario, id_rol, id_tipo_documento, documento, nombres, apellidos, celular, correo, clave, estado) "
                 "VALUES (:id_usuario, :id_rol, :id_tipo_documento, :documento, :nombres, :apellidos, :celular, :correo, :passhash, 'inactivo')"
@@ -111,22 +130,22 @@ def create_full_project(db: Session, proyecto: ProyectoCreate, tutor: Participan
             }
 
             db.execute(ponente1_sql, ponente1_params)
-        except IntegrityError as e:
-            db.rollback()  # Rollback en caso de error de ponente1
-            if 'correo' in str(e.orig):
-                raise HTTPException(status_code=400, detail="El correo del primer ponente ya está registrado.")
-            elif 'documento' in str(e.orig):
-                raise HTTPException(status_code=400, detail="El documento del primer ponente ya está registrado.")
-            elif 'celular' in str(e.orig):
-                raise HTTPException(status_code=400, detail="El número de celular del primer ponente ya está registrado.")
-            else:
-                raise HTTPException(status_code=400, detail=f"Error de integridad del primer ponente: {str(e)}")
 
-        # **Paso 6: Inserción del segundo ponente (si existe)**
+        # **Paso 6: Verificación y/o inserción del segundo ponente (si existe)**
         if ponente2:
-            try:
-                ponente2_id = generate_user_id_int()
+            ponente2_sql = text(
+                "SELECT id_usuario FROM usuarios WHERE correo = :correo OR documento = :documento OR celular = :celular LIMIT 1"
+            )
+            ponente2_existente = db.execute(ponente2_sql, {
+                "correo": ponente2.correo,
+                "documento": ponente2.documento,
+                "celular": ponente2.celular
+            }).fetchone()
 
+            if ponente2_existente:
+                ponente2_id = ponente2_existente[0]
+            else:
+                ponente2_id = generate_user_id_int()
                 ponente2_sql = text(
                     "INSERT INTO usuarios (id_usuario, id_rol, id_tipo_documento, documento, nombres, apellidos, celular, correo, clave, estado) "
                     "VALUES (:id_usuario, :id_rol, :id_tipo_documento, :documento, :nombres, :apellidos, :celular, :correo, :passhash, 'inactivo')"
@@ -145,16 +164,6 @@ def create_full_project(db: Session, proyecto: ProyectoCreate, tutor: Participan
                 }
 
                 db.execute(ponente2_sql, ponente2_params)
-            except IntegrityError as e:
-                db.rollback()  # Rollback en caso de error de ponente2
-                if 'correo' in str(e.orig):
-                    raise HTTPException(status_code=400, detail="El correo del segundo ponente ya está registrado.")
-                elif 'documento' in str(e.orig):
-                    raise HTTPException(status_code=400, detail="El documento del segundo ponente ya está registrado.")
-                elif 'celular' in str(e.orig):
-                    raise HTTPException(status_code=400, detail="El número de celular del segundo ponente ya está registrado.")
-                else:
-                    raise HTTPException(status_code=400, detail=f"Error de integridad del segundo ponente: {str(e)}")
 
         # **Paso 7: Insertar participantes_proyecto**
         etapa_virtual_sql = text(
@@ -172,7 +181,7 @@ def create_full_project(db: Session, proyecto: ProyectoCreate, tutor: Participan
         # Insertar primer ponente en participantes_proyecto
         insert_participante_proyecto(db, ponente1_id, etapa_virtual_id, project_id, proyecto_convocatoria_id, "ponente")
 
-        # Insertar segundo ponente en participantes_proyecto (si existe)
+                # Insertar segundo ponente en participantes_proyecto (si existe)
         if ponente2:
             insert_participante_proyecto(db, ponente2_id, etapa_virtual_id, project_id, proyecto_convocatoria_id, "ponente")
 
@@ -181,10 +190,21 @@ def create_full_project(db: Session, proyecto: ProyectoCreate, tutor: Participan
             try:
                 # Cada autor se inserta como un registro separado
                 autor_sql = text("INSERT INTO autores (nombre, id_proyecto) VALUES (:nombre, :id_proyecto)")
-                db.execute(autor_sql, {"nombre": autor.nombre, "id_proyecto": project_id})  # Se inserta cada autor con su nombre y el id del proyecto
-            except IntegrityError as e:
+                db.execute(autor_sql, {"nombre": autor.nombre, "id_proyecto": project_id})
+            except SQLAlchemyError as e:
                 db.rollback()  # En caso de error, hacer rollback
                 raise HTTPException(status_code=400, detail=f"Error al insertar el autor {autor.nombre}: {str(e)}")
+        
+        # **Paso 9: Enviar correo al tutor con el código del proyecto**
+        try:
+            send_email(
+                to_email=tutor.correo,  # Usar el correo del tutor directamente
+                subject="Código de tu proyecto registrado",
+                body=f"El proyecto '{proyecto.titulo}' ha sido registrado exitosamente con el código {project_id}."
+            )
+        except Exception as e:
+            print(f"Error al enviar email al tutor: {str(e)}")
+            raise HTTPException(status_code=500, detail="El proyecto fue registrado, pero hubo un error al enviar el correo al tutor.")
 
         # Retornar solo el ID del proyecto
         return {"project_id": project_id}
@@ -206,3 +226,4 @@ def insert_participante_proyecto(db: Session, user_id: int, etapa_id: int, proje
         "id_proyectos_convocatoria": proyecto_convocatoria_id,
         "tipo_usuario": tipo_usuario
     })
+

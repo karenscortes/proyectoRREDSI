@@ -75,7 +75,7 @@
                 <div class="row mt-4 justify-content-center">
                     <div class="col-md-4 col-12">
                         <a @click="openModal(evaluator)"
-                            class="btn w-100 mb-3">Visualizar
+                            class="btn w-100 mb-3 btn-visualizar">Visualizar
                             Títulos</a>
                     </div>
                 </div>
@@ -150,8 +150,8 @@ export default {
                 this.certificates = [];
                 const response = await getCertificatesById(evaluator.id_evaluador);
                 if(response.data.length > 0){
+                    $(`#modal_titulos_${evaluator.id_evaluador}`).modal('show'); 
                     this.certificates = response.data; 
-                    $(`#modal_titulos_${evaluator.id_evaluador}`).modal('show'); // Abre el modal
                 }else{
                     this.showInfoToast('El postulado no cuenta con titulación.');   
                 }

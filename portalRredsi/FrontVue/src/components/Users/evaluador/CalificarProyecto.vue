@@ -101,6 +101,7 @@
       </button>
     </div>
   </form>
+  <SpinnerGlobal v-if="respuesta == false" />
 </template>
   
 <script>
@@ -108,8 +109,12 @@
   import { obtenerDatosParaCalificarProyecto, insertarRespuestaRubrica, obtenerEtapaActual, obtenerRubricasCalificadas, obtenerProgramacionFases } from '../../../services/evaluadorService';
   import { useAuthStore } from '@/store';
   import { useToastUtils } from '@/utils/toast'; // Importar aquí directamente
-
+  import SpinnerGlobal from "../../UI/SpinnerGlobal.vue";
+  const respuesta = ref(true); // Inicializa la respuesta como ref
   export default {
+    components: {
+      SpinnerGlobal, // Incluir el spinner global
+    },
     props: {
       proyecto: {
         type: Object,
@@ -129,7 +134,7 @@
       const puntajeTotal = ref(0);
       const currentEtapa = ref('');
       const botonCalificar = ref('Activo'); // Nueva variable para habilitar o no el botón de calificar
-
+      
 
       const { showSuccessToast, showErrorToast, showWarningToast, showInfoToast} = useToastUtils();
 
@@ -188,6 +193,7 @@
       });
 
       const obtenerDatos = async () => {
+        respuesta.value = false;
         const authStore = useAuthStore();
         const user = authStore.user;
 
@@ -240,6 +246,7 @@
             showErrorToast('Error al obtener los datos para calificar el proyecto.');
           }
         }
+        respuesta.value = true;
       };
 
       const actualizarPuntajeTotal = () => {
@@ -317,7 +324,7 @@
               etapa_actual: currentEtapa.value,  // Etapa actual
             };
 
-            await insertarRespuestaRubrica(respuestaData);
+            insertarRespuestaRubrica(respuestaData);
           }
 
           showSuccessToast('Calificación enviada exitosamente'); 
@@ -354,6 +361,7 @@
         disabledCalificacionObservacion,
         validarCalificacion,
         botonCalificar,
+        respuesta,
       };
     },
     emits: ['volver'], 

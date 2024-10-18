@@ -35,6 +35,8 @@
         
         <!-- Paginador -->
         <PaginatorBody :totalPages="totalPages" @page-changed="cambiarPagina" v-if="totalPages > 1" />
+            
+        <SpinnerGlobal v-if="totalPages == 0" />
 
     </div>
 
@@ -45,11 +47,13 @@ import { getApplicationsByPage} from '@/services/postulacionService';
 import AcordeonPostulaciones from './AcordeonPostulaciones.vue';
 import { useToastUtils } from '@/utils/toast';
 import PaginatorBody from '../../../UI/PaginatorBody.vue';
+import SpinnerGlobal from "@/components/UI/SpinnerGlobal.vue";
 
 export default {
     components: {
         AcordeonPostulaciones,
-        PaginatorBody
+        PaginatorBody,
+        SpinnerGlobal
     },
     data() {
         return {
@@ -66,6 +70,7 @@ export default {
         },
         async fetchEvaluators() {
             try {
+            
                 const response = await getApplicationsByPage(this.currentPage);
                 this.evaluators = response.data.applications; 
                 this.totalPages = response.data.total_pages;

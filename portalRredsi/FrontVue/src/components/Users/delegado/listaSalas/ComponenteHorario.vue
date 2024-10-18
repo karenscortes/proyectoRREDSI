@@ -386,7 +386,7 @@ export default {
             try {
                 if (this.detalles_editables_horario.hora_inicio < this.detalles_editables_horario.hora_fin) {
                     if (this.detalles_editables_horario.hora_inicio == this.detalles_editables_horario.hora_fin) {
-                        this.showInfoToast("Ya hay un proyecto asignado a esta hora o estas ingresando la misma hora en los dos campos, intenta con otro horario");
+                        this.showInfoToast("Está ingresando la misma hora en los dos campos, intenta con otro horario");
                     } else {
                         await actualizarHorarioAsignado(
                             this.detalles_editables_horario.id_sala,
