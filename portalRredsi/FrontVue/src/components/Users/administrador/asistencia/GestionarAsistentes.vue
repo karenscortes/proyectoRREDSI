@@ -68,7 +68,7 @@
     </div>
       
     <!-- Modales -->
-    <AddAttendeesModal @close="closeAddModal()" v-if="isAddModalOpen"></AddAttendeesModal>
+    <AddAttendeesModal @close="closeAddModal()" @load="fetchAttendees()" v-if="isAddModalOpen" ></AddAttendeesModal>
     <EditAttendeeModal v-if="isEditModalOpen" @closeEditModal="closeEditModal()" :infoModal="EditModalInfo"></EditAttendeeModal>
     
     <SpinnerGlobal v-if="totalPages == 0" />
