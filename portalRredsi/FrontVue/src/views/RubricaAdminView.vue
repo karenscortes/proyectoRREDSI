@@ -113,6 +113,7 @@ import ItemTBody from "../components/Users/administrador/rubricas/ItemTBody.vue"
 import FootTable from "../components/Users/administrador/rubricas/FootTable.vue";
 import ItemThead from "../components/Users/administrador/rubricas/ItemThead.vue";
 import { useToastUtils } from "@/utils/toast";
+import SpinnerGlobal from "../components/UI/SpinnerGlobal.vue";
 
 const { showErrorToast} = useToastUtils();
 

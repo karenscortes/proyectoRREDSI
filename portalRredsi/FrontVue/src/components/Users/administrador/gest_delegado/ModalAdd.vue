@@ -18,7 +18,11 @@
           </h3>
         </div>
         <div class="modal-body">
-          <form action="" id="formAdd" @submit.prevent="save()">
+          <!-- Spinner para indicar que la acción está en proceso -->
+          <SpinnerGlobal v-if="loading" />
+
+          <!-- Formulario para crear un delegado -->
+          <form v-else action="" id="formAdd" @submit.prevent="save()">
             <div class="row">
               <!-- Select para Tipo de Documento -->
               <div class="col-md-6 mb-4">
@@ -138,11 +142,13 @@
     </div>
   </div>
 </template>
+
 <script setup>
 import { reactive, ref } from "vue";
 import { onMounted } from "vue";
 import { getAllDocumentsType } from "../../../../services/administradorService";
 import { createDelegate } from "../../../../services/administradorService";
+import SpinnerGlobal from "../../../UI/SpinnerGlobal.vue";
 import { useToastUtils } from '@/utils/toast'; 
 
 const { showErrorToast, showSuccessToast} = useToastUtils();
@@ -163,27 +169,39 @@ const user = reactive({
   clave: "",
 });
 
-//Función para 
+// Controlar el estado de carga
+const loading = ref(false);
+
+//Función para obtener todos los tipos de documento
 const fetchAllDocumentsTypes = async () => {
+  loading.value = true;
   try {
     const documents_types = await getAllDocumentsType();
     arrayDocuments.splice(0, arrayDocuments.length, ...documents_types.data);
-    return documents_types
+    return documents_types;
   } catch (error) {
     showErrorToast("Ocurrió un error al obtener los tipos de documento. Por favor, vuelve a intentarlo.");
+  } finally {
+    loading.value = false;
   }
 };
 
 //función para crear delegado
 const save = async () => {
-  if(user.id_tipo_documento !== null){
-    closeModal(); 
-    const userCreate = await createDelegate(user);
-    showSuccessToast("Se registró con éxito.");
-  }else{
+  if (user.id_tipo_documento !== null) {
+    loading.value = true; // Activar el spinner
+    try {
+      await createDelegate(user);
+      showSuccessToast("Se registró con éxito.");
+      closeModal(); // Mover después del éxito
+    } catch (error) {
+      showErrorToast("Ocurrió un error al registrar el delegado.");
+    } finally {
+      loading.value = false; // Desactivar el spinner
+    }
+  } else {
     showErrorToast("Por favor, ingrese un tipo de documento.");
   }
-  
 };
 
 onMounted(() => {
@@ -197,6 +215,7 @@ const closeModal = () => {
 };
 
 </script>
+
 <style>
 .modalCabecero {
   display: block;
