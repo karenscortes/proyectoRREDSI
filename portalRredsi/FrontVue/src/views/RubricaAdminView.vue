@@ -78,7 +78,7 @@
               v-for="(card, index) in infoCards"
               :key="index"
             >
-              <CardTipo :infoCard="card"  @cardSeleccionada="onCardSeleccionada($event)"> </CardTipo>
+              <CardTipo :class="{ 'bg-warning' : card.id_rubrica === rubrica_seleccionada }" :infoCard="card"  @cardSeleccionada="onCardSeleccionada($event)"> </CardTipo>
             </div>
           </div>
         </div>
@@ -162,6 +162,7 @@ const infoModalEditarOrAdd = reactive({
 //info para los items rubrica
 const infoItems = reactive([]);
 
+const rubrica_seleccionada = ref(null);
 
 //info para la card
 const infoCards = reactive([]);
@@ -176,6 +177,7 @@ const recorrerItemsRubrica = (arrayItems) => {
 
 //Método para actualizar rubrica con la card(rubrica) seleccionada
 const onCardSeleccionada = (id_rubrica) =>{
+  rubrica_seleccionada.value = id_rubrica;
   const itemsRubricaActual = buscarItemsRubricaSeleccionada(id_rubrica);
   infoModalEditarOrAdd.id_rubrica = id_rubrica;
   recorrerItemsRubrica(itemsRubricaActual);
@@ -250,6 +252,7 @@ const actualizarItemEdit = ({id_item_rubrica, itemActual})=>{
 //Método para recorrer items de la primer rubrica(la de por defecto)
 const itemsPrimerRubrica  =  async () => {
   const primerRubrica = arrayRubricas[0];
+  rubrica_seleccionada.value = primerRubrica.id_rubrica;
   const itemsRubrica = primerRubrica.items_rubrica;
   infoModalEditarOrAdd.id_rubrica = primerRubrica.id_rubrica;
   itemsRubrica.forEach(function (item, i) {

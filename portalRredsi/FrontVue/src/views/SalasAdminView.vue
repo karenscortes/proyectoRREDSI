@@ -23,8 +23,11 @@
       </div>
     </div>
 
+    <!-- Spinner global -->
+    <SpinnerGlobal v-if="loading" />
+
     <!-- Tabla -->
-    <div class="table-responsive tablaloca">
+    <div class="table-responsive tablaloca" v-if="!loading">
       <table id="basic-datatables" class="display table table-striped table-hover text-dark">
         <thead>
           <tr>
@@ -59,11 +62,15 @@ import { getAreasConocimiento } from '@/services/administradorService';
 import { getDelegatesAll } from '@/services/administradorService';
 import { buscarSala } from '@/services/salasDelegadoService';
 import { useToastUtils } from '@/utils/toast';
+import SpinnerGlobal from '../components/UI/SpinnerGlobal.vue';
 
 export default {
   setup() {
     //Variable para gestionar la apertura del modal
     const isModalOpen = ref(false);
+
+    // Variable para controlar el estado de carga (spinner)
+    const loading = ref(false);
 
     //Propiedad para guardar la busqueda
     const busqueda = ref("");
@@ -74,31 +81,38 @@ export default {
     const paginaActual = ref(1);
     const { showSuccessToast, showErrorToast, showWarningToast, showInfoToast } = useToastUtils();
 
-    // Funcion para obtener las salas
+    // Función para obtener las salas
     const obtenerInfoSalas = async (p_pagina_Actual) => {
-      // Limpia la lista de salas
-      infoSalas.length = 0;
+      loading.value = true; // Mostrar spinner
 
-      // Obtiene las salas de la página actual
-      const salasObtenidas = await obtenerSalas(p_pagina_Actual);
+      try {
+        // Limpia la lista de salas
+        infoSalas.length = 0;
 
-      // Obtiene el total de paginas
-      totalPages.value = salasObtenidas.data.total_pages;
+        // Obtiene las salas de la página actual
+        const salasObtenidas = await obtenerSalas(p_pagina_Actual);
 
-      // Agrega las nuevas salas obtenidas a infoSalas
-      salasObtenidas.data.salas.forEach((sala) => {
-        infoSalas.push({
-          p_idDelegado: sala.id_usuario,
-          p_delegado: `${sala.nombres_delegado} ${sala.apellidos_delegado}`,
-          p_idSala: sala.id_sala,
-          p_numSala: sala.numero_sala,
-          p_nombre_sala: sala.nombre_sala,
-          p_idAreaConocimiento: sala.id_area_conocimiento,
-          p_areaConocimiento: sala.nombre_area_conocimiento,
-          p_posiblesAreasConocimiento: posiblesAreasConocimiento
+        // Obtiene el total de paginas
+        totalPages.value = salasObtenidas.data.total_pages;
+
+        // Agrega las nuevas salas obtenidas a infoSalas
+        salasObtenidas.data.salas.forEach((sala) => {
+          infoSalas.push({
+            p_idDelegado: sala.id_usuario,
+            p_delegado: `${sala.nombres_delegado} ${sala.apellidos_delegado}`,
+            p_idSala: sala.id_sala,
+            p_numSala: sala.numero_sala,
+            p_nombre_sala: sala.nombre_sala,
+            p_idAreaConocimiento: sala.id_area_conocimiento,
+            p_areaConocimiento: sala.nombre_area_conocimiento,
+            p_posiblesAreasConocimiento: posiblesAreasConocimiento
+          });
         });
-      });
-      // return infoSalas;
+      } catch (error) {
+        console.error("Error al obtener las salas:", error);
+      } finally {
+        loading.value = false; // Ocultar spinner
+      }
     }
 
     const obtenerInfoParaEditar = async () => {
@@ -133,6 +147,7 @@ export default {
     };
 
     const buscarSalaEspecifica = async () => {
+      loading.value = true; // Mostrar spinner antes de la petición
       try {
         if (busqueda.value.trim() != "") {
           infoSalas.length = 0;
@@ -150,17 +165,18 @@ export default {
             });
           });
           totalPages.value = 0;
-        }else{
+        } else {
           showWarningToast("Por favor, ingresa un valor de búsqueda");
           obtenerInfoSalas();
         }
       } catch (error) {
-        showInfoToast("No se ha podido encontrar la sala")
+        showInfoToast("No se ha podido encontrar la sala");
         obtenerInfoSalas();
+      } finally {
+        loading.value = false; // Ocultar spinner cuando termine la petición
       }
       busqueda.value = "";
     }
-
 
     //Objeto que se enviara al modal
     const infoModal = reactive({
@@ -193,8 +209,8 @@ export default {
       infoModal.p_idDelegado = infoSala.p_idDelegado;
       infoModal.p_idSala = infoSala.p_idSala;
       infoModal.p_numSala = infoSala.p_numSala,
-        infoModal.p_nombre_sala = infoSala.p_nombre_sala,
-        infoModal.p_idAreaConocimiento = infoSala.p_idAreaConocimiento;
+      infoModal.p_nombre_sala = infoSala.p_nombre_sala,
+      infoModal.p_idAreaConocimiento = infoSala.p_idAreaConocimiento;
       showModal();
     }
 
@@ -203,19 +219,39 @@ export default {
       paginaActual.value = pagina;
       obtenerInfoSalas(pagina);
     }
+    
     onMounted(async () => {
+      loading.value = true; // Mostrar spinner en la carga inicial
       await obtenerInfoParaEditar();
       await obtenerInfoSalas();
+      loading.value = false; // Ocultar spinner después de cargar todo
     });
-    return { infoSalas, infoModal, busqueda, isModalOpen, closeModal, showModal, onModal, obtenerInfoSalas, totalPages, cambiarPagina, paginaActual, buscarSalaEspecifica };
+
+    return {
+      infoSalas,
+      infoModal,
+      busqueda,
+      isModalOpen,
+      closeModal,
+      showModal,
+      onModal,
+      obtenerInfoSalas,
+      totalPages,
+      cambiarPagina,
+      paginaActual,
+      buscarSalaEspecifica,
+      loading, // Añadir loading al return
+    };
   },
   components: {
     RowTableSala,
     ModalAddOrEdit,
-    PaginatorBody
+    PaginatorBody,
+    SpinnerGlobal, // Añadir el componente SpinnerGlobal
   },
 };
 </script>
+
 <style scoped>
 thead {
   background: rgb(255, 182, 6);
