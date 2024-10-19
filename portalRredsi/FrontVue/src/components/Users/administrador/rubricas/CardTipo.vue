@@ -5,7 +5,6 @@
       class="img-fluid w-50 pb-2 pt-3"
       alt="Imagen rubrica"
     />
-
     <div class="card-body">
       <!--info rubrica-->
       <div class="mb-2">
