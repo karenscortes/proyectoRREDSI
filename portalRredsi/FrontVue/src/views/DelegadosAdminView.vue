@@ -106,7 +106,6 @@ import PaginatorBody from "../components/UI/PaginatorBody.vue";
 import { getDelegatesAll } from "@/services/administradorService";
 import { updateStatusDelegate } from "@/services/administradorService";
 import { getDelegateByNameOrDocument} from "@/services/administradorService";
-import SpinnerGlobal from "@/components/UI/SpinnerGlobal.vue";
 
 const { showErrorToast} = useToastUtils();
 

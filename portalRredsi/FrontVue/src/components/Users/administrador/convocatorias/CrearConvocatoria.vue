@@ -30,8 +30,11 @@
               </div>
             </div>
 
+            <!-- Spinner global -->
+            <SpinnerGlobal v-if="loading" />
+
             <!-- Sección Convocatorias -->
-            <div class="form-section mt-5 w-100" id="convocatorias">
+            <div class="form-section mt-5 w-100" v-if="!loading" id="convocatorias">
               <div class="d-flex align-items-start justify-content-center mb-3">
                 <i class="fa fa-window-maximize title-icon"></i>
                 <h2>Convocatorias</h2>
@@ -200,6 +203,7 @@
 import { createConvocatoria, getConvocatoriasByPage, getProgramacionFasesByPage, programarFases, getConvocatoriaEnCurso } from '../../../../services/administradorService';
 import { useToastUtils } from '@/utils/toast';
 import PaginatorBody from '../../../UI/PaginatorBody.vue';
+import SpinnerGlobal from '../../../UI/SpinnerGlobal.vue';
 
 const { showSuccessToast, showErrorToast, showWarningToast } = useToastUtils();
 
@@ -209,6 +213,7 @@ export default {
       showModal: false,  // Control del estado del modal
       totalPaginasConvocatoria: 0,
       PaginarActualConvocatoria: 1,
+      loading: false,
 
       totalPaginasFases: 0,
       PaginarActualFases: 1,
@@ -239,7 +244,8 @@ export default {
   },
 
   components: {
-    PaginatorBody
+    PaginatorBody,
+    SpinnerGlobal
   },
 
   methods: {
@@ -295,7 +301,7 @@ export default {
     // Crear nueva convocatoria
     async createConvocatoria() {
       if (!this.validarCamposConvocatoria()) return; // Validar antes de crear
-
+      this.loading = true; // Mostrar spinner antes de la petición
       try {
         await createConvocatoria(
           this.newConvocatoria.nombre,
@@ -308,17 +314,22 @@ export default {
         this.hideModal(); // Ocultar modal al terminar
       } catch (error) {
         showErrorToast(error?.detail || 'Ocurrió un error al crear la convocatoria');
+      } finally {
+        this.loading = false; // Ocultar spinner cuando termine la petición
       }
     },
 
     // Obtener las convocatorias de la API
     async fetchConvocatorias(pagina_actual) {
+      this.loading = true; // Mostrar spinner antes de la petición
       try {
         const respuesta = await getConvocatoriasByPage(pagina_actual);
         this.convocatorias = respuesta.convocatorias;  // Asignar las convocatorias
         this.totalPaginasConvocatoria = respuesta.total_pages;  // Total de páginas para la paginación
       } catch (error) {
         showWarningToast('Error al obtener convocatorias');
+      } finally {
+        this.loading = false; // Ocultar spinner cuando termine la petición
       }
     },
 
@@ -392,12 +403,15 @@ export default {
       console.log(JSON.stringify(payload, null, 2));  // Mostrar el payload en formato JSON
       console.log('Payload que se envía:', payload); // Agrega esto
 
+      this.loading = true; // Mostrar spinner antes de la petición
       try {
         await programarFases(payload);
         showSuccessToast('Programación de fases creada exitosamente.');
         this.fetchFases(this.PaginarActualFases); // Refrescar lista de fases
       } catch (error) {
         showErrorToast('Error al programar las fases.');
+      } finally {
+        this.loading = false; // Ocultar spinner cuando termine la petición
       }
     },
 
