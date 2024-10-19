@@ -2,9 +2,9 @@
   <div class="container">
     <!-- Sección Datos del Proyecto -->
     <div>
-      
+
       <form class="mt-4" @submit.prevent="registrarProyecto">
-        <div class="form-section mt-5" >
+        <div class="form-section mt-5">
           <h2 class="text-center section-title">Datos del Proyecto</h2>
           <div class="row mb-3">
             <div class="col-md-6">
@@ -70,7 +70,7 @@
         </div>
 
         <!-- Datos del Tutor -->
-        <div class="form-section mt-5" >
+        <div class="form-section mt-5">
           <h2 class="text-center section-title">Datos del Tutor</h2>
           <div class="row mb-3">
             <div class="col-md-6">
@@ -149,35 +149,40 @@
                 :disabled="datosPonente.bloqueado" required />
             </div>
           </div>
-           <!-- Ponente Opcional -->
-        <div v-if="mostrarPonenteOpcional" class="form-section mt-5">
-          <h4 class="text-center section-title">Datos del Ponente Opcional</h4>
-          <div class="row mb-3">
-            <div class="col-md-6">
-              <label for="tipo_documento_opcional" class="form-label text-black">Tipo de Documento:</label>
-              <TipoDocumentoSelect 
-                v-model="ponenteOpcional.tipo_documento" 
-                @tipo-documento-selected="setTipoDocumentoPonenteOpcional" />
+          <!-- Ponente Opcional -->
+          <div v-if="mostrarPonenteOpcional" class="form-section mt-5">
+            <h4 class="text-center section-title">Datos del Ponente Opcional</h4>
+            <div class="row mb-3">
+              <div class="col-md-6">
+                <label for="tipo_documento_opcional" class="form-label text-black">Tipo de Documento:</label>
+                <TipoDocumentoSelect v-model="datosPonente2.tipo_documento"
+                  @tipo-documento-selected="setTipoDocumentoPonente2" />
+              </div>
+              <div class="col-md-6">
+                <label for="numero_documento_opcional" class="form-label text-black">Número de Documento:</label>
+                <input v-model="datosPonente2.numero_documento" @blur="buscarPonente2PorDocumento" type="text"
+                  class="form-control" id="numero_documento_opcional" />
+              </div>
             </div>
-            <div class="col-md-6">
-              <label for="numero_documento_opcional" class="form-label text-black">Número de Documento:</label>
-              <input v-model="ponenteOpcional.numero_documento" type="text" class="form-control" id="numero_documento_opcional" />
+            <div class="row mb-3">
+              <div class="col-md-6">
+                <label for="nombres_opcional" class="form-label text-black">Nombres:</label>
+                <input v-model="datosPonente2.nombres" type="text" class="form-control" id="nombres_opcional" />
+              </div>
+              <div class="col-md-6">
+                <label for="apellidos_opcional" class="form-label text-black">Apellidos:</label>
+                <input v-model="datosPonente2.apellidos" type="text" class="form-control" id="apellidos_opcional" />
+              </div>
             </div>
-          </div>
-          <div class="row mb-3">
-            <div class="col-md-6">
-              <label for="nombres_opcional" class="form-label text-black">Nombres:</label>
-              <input v-model="ponenteOpcional.nombres" type="text" class="form-control" id="nombres_opcional" />
-            </div>
-            <div class="col-md-6">
-              <label for="apellidos_opcional" class="form-label text-black">Apellidos:</label>
-              <input v-model="ponenteOpcional.apellidos" type="text" class="form-control" id="apellidos_opcional" />
-            </div>
-          </div>
-          <div class="row mb-3">
-            <div class="col-md-6">
-              <label for="celular_opcional" class="form-label text-black">Celular:</label>
-              <input v-model="ponenteOpcional.celular" type="text" class="form-control" id="celular_opcional" />
+            <div class="row mb-3">
+              <div class="col-md-6">
+                <label for="celular_opcional" class="form-label text-black">Celular:</label>
+                <input v-model="datosPonente2.celular" type="text" class="form-control" id="celular_opcional" />
+              </div>
+              <div class="col-md-6">
+                <label for="correo_opcional" class="form-label text-black">Correo Electrónico:</label>
+                <input v-model="datosPonente2.correo" type="email" class="form-control" id="correo_opcional" />
+              </div>
             </div>
 
             <!-- Botón para eliminar Ponente Opcional -->
@@ -187,16 +192,11 @@
             </div>
           </div>
 
-          <!-- Botón para eliminar Ponente Opcional -->
-          <div class="text-center mt-3">
-            <button type="button" @click="eliminarPonenteOpcional" class="btn  btn-sm">Eliminar Ponente Opcional</button>
+          <!-- Botón para agregar Ponente Opcional -->
+          <div v-if="!mostrarPonenteOpcional" class="text-center mt-3">
+            <button type="button" @click="agregarPonenteOpcional" class="btn btn-sm">Agregar Ponente Opcional</button>
           </div>
-        </div>
 
-        <!-- Botón para agregar o eliminar Ponente Opcional -->
-        <div v-if="!mostrarPonenteOpcional" class="text-center mt-3">
-          <button type="button" @click="agregarPonenteOpcional" class="btn  btn-sm">Agregar Ponente Opcional</button>
-        </div>
         </div>
 
 
@@ -348,13 +348,13 @@ export default {
         );
 
         proyectoCodigo.value = response.data.id_proyecto;
-        showSuccessToast(`Proyecto registrado exitosamente, el Código de identificación es: ${proyectoCodigo.value} y fue enviado al correo del tutor.`);
+        showSuccessToast(`Proyecto registrado exitosamente, el código de identificación es: ${proyectoCodigo.value} y fue enviado al correo electronico del tutor.`);
 
         limpiarFormulario();
 
         setTimeout(() => {
           window.location.reload();
-        }, 15000); // 25 segundos para refrescar la página
+        }, 10000); // 10 segundos para refrescar la página
 
       } catch (error) {
         if (error.message) {
@@ -506,11 +506,11 @@ export default {
 
 
 <style scoped>
-  .form-section {
-    padding: 20px;
+.form-section {
+  padding: 20px;
 
-    margin-bottom: 50px;
-  }
+  margin-bottom: 50px;
+}
 
 .section-title {
   color: rgb(255, 182, 6);
@@ -518,25 +518,24 @@ export default {
   padding: 10px;
 }
 
-  .section-subtitle {
-    color: rgb(0,0,0);
-    font-weight: bold;
-  }
+.section-subtitle {
+  color: rgb(0, 0, 0);
+  font-weight: bold;
+}
 
-  .btn {
-    color: rgb(255, 182, 6);
-    color: #000000;
-    font-size: medium;
-  }
+.btn {
+  color: rgb(255, 182, 6);
+  color: #000000;
+  font-size: medium;
+}
 
-  .btn:hover:hover {
-    background-color: rgb(0, 0, 0);
-    color: white;
-  }
+.btn:hover:hover {
+  background-color: rgb(0, 0, 0);
+  color: white;
+}
 
-  .list-group-item {
-    background-color: #fff;
+.list-group-item {
+  background-color: #fff;
 
-  }
-
+}
 </style>
