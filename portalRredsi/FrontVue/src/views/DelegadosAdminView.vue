@@ -107,7 +107,6 @@ import { getDelegatesAll } from "@/services/administradorService";
 import { updateStatusDelegate } from "@/services/administradorService";
 import { getDelegateByNameOrDocument} from "@/services/administradorService";
 
-
 const { showErrorToast} = useToastUtils();
 
 //Propiedades para manejar la apertura del modal

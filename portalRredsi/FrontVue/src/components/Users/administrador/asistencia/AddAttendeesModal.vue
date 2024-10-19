@@ -36,7 +36,7 @@ import { ref } from "vue";
 import { uploadFileData } from "@/services/asistenciaService";
 import { useToastUtils } from '@/utils/toast';
 export default {
-    emits: ["close"],
+    emits: ["close","load"],
     setup(_, { emit }) {
         const { showErrorToast,showSuccessToast} = useToastUtils();
         const file = ref(null);
@@ -49,8 +49,9 @@ export default {
             try {
                 if (file.value) {
                     await uploadFileData(file.value); // Llama al servicio para subir los datos del excel
+                    emit("load");
+                    showSuccessToast('Registro Exitoso.');
                     
-                    showSuccessToast('Carga completada: se registraron únicamente los asistentes no inscritos para esta convocatoria');
                 }
             } catch (error) {
                 showErrorToast('Error al subir el archivo.');
