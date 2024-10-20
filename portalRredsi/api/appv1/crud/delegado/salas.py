@@ -117,7 +117,8 @@ def get_proyectos_sin_asignar_etapa_presencial(db: Session):
                             JOIN respuestas_rubricas ON (respuestas_rubricas.id_proyecto_convocatoria = proyectos_convocatoria.id_proyecto_convocatoria)
                             JOIN rubricas_resultados ON (respuestas_rubricas.id_rubrica_resultado = respuestas_rubricas.id_respuestas_rubricas)
                             LEFT JOIN detalle_sala ON proyectos_convocatoria.id_proyecto_convocatoria = detalle_sala.id_proyecto_convocatoria     
-                    WHERE proyectos.estado_asignacion= 'pendiente' 
+                    WHERE proyectos.estado_asignacion= 'pendiente'
+                    AND proyectos.estado_calificacion = 'C_virtual'  
                     AND convocatorias.estado = 'en curso' 
                     AND rubricas_resultados.estado_proyecto = 'aprobado'
                     AND participantes_proyecto.id_etapa = 2
@@ -129,8 +130,8 @@ def get_proyectos_sin_asignar_etapa_presencial(db: Session):
 
             return result
         except SQLAlchemyError as e:
-                print(f"Error al obtener proyectos no asignados: {e}")
-                raise HTTPException(status_code=500, detail="Error al obtener todos los proyectos no asignados")
+                print(f"Error al obtener proyectos sin asignar: {e}")
+                raise HTTPException(status_code=500, detail="Error al obtener todos los proyectos sin asignar")
 
 # Consultar los ponentes de un proyecto
 def get_ponentes_proyecto(db: Session, id_proyecto: int):
@@ -145,36 +146,6 @@ def get_ponentes_proyecto(db: Session, id_proyecto: int):
         return result
     except SQLAlchemyError as e:
         raise HTTPException(status_code=500, detail="La sala no se ha encontrado")
-
-# PROYECTOS SIN ASIGNAR EN LA ETAPA PRESENCIAL
-def get_proyectos_sin_asignar_etapa_presencial(db: Session):
-        try:
-
-            sql = text(
-            """
-                    SELECT  DISTINCT proyectos.id_proyecto,
-                                    proyectos.titulo,
-                                    proyectos.id_institucion,
-                                    areas_conocimiento.id_area_conocimiento
-                    FROM proyectos
-                            JOIN areas_conocimiento ON (proyectos.id_area_conocimiento = areas_conocimiento.id_area_conocimiento)
-                            JOIN proyectos_convocatoria ON (proyectos.id_proyecto = proyectos_convocatoria.id_proyecto) 
-                            JOIN participantes_proyecto ON (participantes_proyecto.id_proyectos_convocatoria = proyectos_convocatoria.id_proyecto_convocatoria)  
-                            JOIN convocatorias ON (proyectos_convocatoria.id_convocatoria = convocatorias.id_convocatoria)  
-                            LEFT JOIN detalle_sala ON proyectos_convocatoria.id_proyecto_convocatoria = detalle_sala.id_proyecto_convocatoria     
-                    WHERE proyectos.estado_asignacion= 'pendiente' 
-                    AND convocatorias.estado = 'en curso' 
-                    AND participantes_proyecto.id_etapa = 1
-                    AND detalle_sala.id_proyecto_convocatoria IS NULL
-            """
-            )
-            
-            result = db.execute(sql).mappings().all()
-
-            return result
-        except SQLAlchemyError as e:
-                print(f"Error al obtener proyectos no asignados: {e}")
-                raise HTTPException(status_code=500, detail="Error al obtener todos los proyectos no asignados")
 
 # Consultar la url de presentacion de un proyecto especifico
 def get_url_presentacion_proyecto(db: Session, id_proyecto: int):
