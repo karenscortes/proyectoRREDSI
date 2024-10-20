@@ -102,7 +102,7 @@
                         </div>
                     </div>
                     <div class="row justify-content-center mb-2">
-                        <button type="button" class="btn btn-dark fw-bold col-4 text-center" data-bs-dismiss="modal">Cerrar</button>
+                        <button type="button" class="btn btn-dark btn-visualizar fw-bold col-4 text-center" data-bs-dismiss="modal">Cerrar</button>
                     </div>
                 </div>
             </div>
