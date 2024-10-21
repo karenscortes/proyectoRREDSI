@@ -187,7 +187,7 @@
 
             <!-- Botón para eliminar Ponente Opcional -->
             <div class="text-center mt-3">
-              <button type="button" @click="eliminarPonenteOpcional" class="btn btn-outline-dark btn-sm">Eliminar
+              <button type="button" @click="eliminarPonenteOpcional" class="btn btn-sm">Eliminar
                 Ponente Opcional</button>
             </div>
           </div>

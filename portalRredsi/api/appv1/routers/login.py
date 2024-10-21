@@ -146,7 +146,7 @@ async def request_reset_code(email: str, db: Session = Depends(get_db)):
         raise HTTPException(status_code=404, detail="Email no registrado")
 
     code = generate_code()
-    verification_codes[email] = {'code': code, 'expires_at': time.time() + 3000}
+    verification_codes[email] = {'code': code, 'expires_at': time.time() + 5000}
 
     try:
         send_email(
