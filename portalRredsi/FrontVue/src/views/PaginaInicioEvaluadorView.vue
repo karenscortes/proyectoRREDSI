@@ -61,7 +61,7 @@
                 </h2>
                 <div id="collapseOne" class="accordion-collapse collapse" aria-labelledby="headingOne" data-bs-parent="#accordionExample" style="">
                   <div class="accordion-body">
-                    En el proceso que hace <strong>RREDSI</strong> para seleccionar a los evaluadores más aptos para calificar, se tendrá en cuenta toda la información referente a la persona, por esto es necesario que se termine el registro con los datos académicos. <strong>RREDSI</strong> necesita toda esta información para así poder repartir los proyectos inscritos entre los diferentes evaluadores que hayan hecho una postulación.
+                    En el proceso que realiza <strong>RREDSI</strong> para seleccionar a los evaluadores más aptos para calificar, se tendrá en cuenta toda la información referente a cada persona. Por ello, es necesario completar el registro con los datos académicos. <strong>RREDSI</strong> requiere esta información para poder asignar los proyectos inscritos entre los evaluadores que hayan presentado su postulación.
                   </div>
                 </div>
               </div>
@@ -69,12 +69,12 @@
               <div class="accordion-item shadow mb-3">
                 <h2 class="accordion-header" id="headingTwo">
                   <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-                    ¿Como puedo saber en que fechas puedo calificar un proyecto?
+                    ¿Cómo puedo saber en que fechas puedo calificar un proyecto?
                   </button>
                 </h2>
                 <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#accordionExample" style="">
                   <div class="accordion-body">
-                    Podrás saber sobre las fechas de evaluación en el apartado en el apartado de <strong>Convocatoria</strong>. Ten en cuenta que en la etapa virtual, las fechas para evaluar se encontrarán en "Evaluaciones". Para la etapa presencial, las fechas para evaluar estarán en "Evento".
+                    Podrás consultar las fechas de evaluación en el apartado de <strong>Convocatoria</strong>. Ten en cuenta que, en la etapa virtual, las fechas para evaluar estarán en "Evaluaciones", mientras que en la etapa presencial se encontrarán en "Evento". 
                   </div>
                 </div>
               </div>
@@ -82,7 +82,7 @@
               <div class="accordion-item shadow mb-3">
                 <h2 class="accordion-header" id="headingThree">
                   <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
-                  ¿Que sucede si no logro calificar un proyecto en el tiempo límite?
+                  ¿Qué sucede si no logro calificar un proyecto en el tiempo límite?
                   </button>
                 </h2>
                 <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#accordionExample" style="">
@@ -100,7 +100,7 @@
                 </h2>
                 <div id="collapseFour" class="accordion-collapse collapse" aria-labelledby="headingFour" data-bs-parent="#accordionExample">
                   <div class="accordion-body">
-                   La primera etapa quiere decir <strong>Virtual</strong> y la segunda quiere decir <strong>Presencial</strong>. Es de esta manera en la que se divide todo el proceso de la inscripción y calificación de los proyectos dentro de <strong>RREDSI</strong>.
+                    La primera etapa corresponde a la fase virtual y la segunda a la fase presencial. Así es como se divide todo el proceso de inscripción y calificación de los proyectos en RREDSI.
                   </div>
                 </div>
               </div>

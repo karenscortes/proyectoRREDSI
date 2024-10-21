@@ -11,7 +11,7 @@
                     <div class="hero_slide_background"></div>
                     <div class="hero_slide_container d-flex flex-column align-items-center justify-content-center">
                         <div class="hero_slide_content text-center">
-                            <h1 data-animation-in="fadeInUp" data-animation-out="animate-out fadeOut">Inscripciones
+                            <h1 data-animation-in="fadeInUp" data-animation-out="animate-out fadeOut">¡Inscripciones
                                 <span>abiertas</span> 2024!
                             </h1>
                         </div>
@@ -23,7 +23,7 @@
                     <div class="hero_slide_background"></div>
                     <div class="hero_slide_container d-flex flex-column align-items-center justify-content-center">
                         <div class="hero_slide_content text-center">
-                            <h1 data-animation-in="fadeInUp" data-animation-out="animate-out fadeOut">Evaluadores
+                            <h1 data-animation-in="fadeInUp" data-animation-out="animate-out fadeOut">¡Evaluadores
                                 <span>certificados</span> !
                             </h1>
                         </div>
@@ -35,7 +35,7 @@
                     <div class="hero_slide_background"></div>
                     <div class="hero_slide_container d-flex flex-column align-items-center justify-content-center">
                         <div class="hero_slide_content text-center">
-                            <h1 data-animation-in="fadeInUp" data-animation-out="animate-out fadeOut">Proyectos
+                            <h1 data-animation-in="fadeInUp" data-animation-out="animate-out fadeOut">¡Proyectos
                                 <span>investigativos</span> !
                             </h1>
                         </div>
