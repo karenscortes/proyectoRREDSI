@@ -53,7 +53,7 @@
     </table>
   
     <div class="text-center mt-4">
-      <button class="btn btn-secondary" @click="volver">Volver</button>
+      <button class="btn" @click="volver">Volver</button>
     </div>
   </div>
   
@@ -93,9 +93,15 @@ h2 {
   color: #333333;
 }
 
-.btn-secondary {
-  background-color: #ffc107; /* Color del botón "Volver" */
-  border-color: #000000;
+.btn {
+  color: rgb(255, 182, 6);
   color: #000000;
+  font-size: medium;
 }
+
+.btn:hover:hover {
+  background-color: rgb(0, 0, 0);
+  color: white;
+}
+
 </style>

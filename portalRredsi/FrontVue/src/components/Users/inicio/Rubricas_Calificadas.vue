@@ -31,7 +31,7 @@
           />
         </div>
         <div class="col-md-3 align-self-end">
-          <button class="btn btn-dark w-100" @click="buscarRubricas">
+          <button class="btn" @click="buscarRubricas">
             Buscar
           </button>
         </div>
@@ -60,7 +60,7 @@
               <br />
             </div>
             <button
-              class="btn btn-outline-secondary"
+              class="btn"
               @click="verDetalleRubrica(rubrica)"
             >
               Visualizar
@@ -186,13 +186,15 @@ strong {
   color: #000000;
 }
 
-.btn-outline-secondary {
-  border-color: #fafdff;
+.btn {
+  color: rgb(255, 182, 6);
   color: #000000;
+  font-size: medium;
 }
 
-.btn-outline-secondary:hover {
-  background-color: #000000;
-  color: #ffffff;
+.btn:hover:hover {
+  background-color: rgb(0, 0, 0);
+  color: white;
 }
+
 </style>

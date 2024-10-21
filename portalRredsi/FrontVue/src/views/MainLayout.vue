@@ -63,7 +63,7 @@
                             <div class="form-group">
                                 <input type="email" class="form-control" v-model="email" placeholder="Ingrese su correo electrónico" required />
                             </div>
-                            <button type="submit" class="btn btn-primary btn-block">Enviar código</button>
+                            <button type="submit" class="btn btn-block">Enviar código</button>
                         </form>
                     </div>
                     <div v-if="showPasswordForm">
@@ -77,13 +77,13 @@
                             <div class="form-group">
                                 <input type="text" class="form-control" v-model="code" placeholder="Ingrese el código enviado a su correo" required />
                             </div>
-                            <button type="submit" class="btn btn-dark btn-block">Actualizar contraseña</button>
+                            <button type="submit" class="btn btn-block">Actualizar contraseña</button>
                         </form>
                     </div>
                 </div>
             </div>
             <div class="modal-footer" v-if="!showResetPasswordForm">
-                <button type="button" data-dismiss="modal" aria-label="Close" class="btn btn-dark custom-login-button" @click="handleLogin">Iniciar Sesión</button>
+                <button type="button" data-dismiss="modal" aria-label="Close" class="btn custom-login-button" @click="handleLogin">Iniciar Sesión</button>
             </div>
         </div>
     </div>
@@ -350,12 +350,16 @@ export default {
 }
 
 
-.btn-dark:focus,
-.btn-dark:active,
-.btn-dark:hover {
-    border-color: #23272b;     /* Mantener el borde negro */
-    box-shadow: none;          /* Evitar el efecto de sombra en el botón al hacer clic */
-}
-
+.btn {
+    color: rgb(255, 182, 6);
+    color: #000000;
+    font-size: medium;
+  }
+  
+  .btn:hover:hover {
+    background-color: rgb(0, 0, 0);
+    color: white;
+  }
+  
 
 </style>
