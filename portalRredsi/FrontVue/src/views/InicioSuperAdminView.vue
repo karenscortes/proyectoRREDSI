@@ -8,7 +8,7 @@
       <div class="col-lg-5 wow1 fadeIn" data-wow-delay="0.1s">
           <div class="video border">
               <button type="button" class="btn btn-play">
-                <a href="https://www.youtube.com/embed/DWRcNpR6Kdc" target="_blank"><span></span></a>
+                <a href="https://www.youtube.com/watch?v=NKdA3_q3F-A" target="_blank"><span></span></a>
               </button>
           </div>
       </div>

@@ -64,7 +64,7 @@ FOR EACH ROW
 //
 DELIMITER ;
 
--- ACTUALIZAR ROL DE USUARIO DE EXTERNO A SUSTITUTO EVALUADOR O ESTADO_CALIFICACIÓN A P_presencial
+-- ACTUALIZAR ESTADO_CALIFICACIÓN A P_presencial
 DELIMITER //
 CREATE TRIGGER actualizar_estado AFTER INSERT ON participantes_proyecto
 FOR EACH ROW
@@ -92,20 +92,3 @@ FOR EACH ROW
 //
 DELIMITER ;
 
---2. PROCEDIMIENTO ALMACENADO
-
--- PARA INSERTAR REGISTROS EN HISTORIAL ADMIN
-DELIMITER //
-    CREATE PROCEDURE insertar_acciones_admin(
-        servicio VARCHAR(10),
-        modulo INT,
-        registro INT,
-        administrador INT
-    )
-
-    INSERT INTO historial_actividades_admin (accion, id_modulo, id_registro, id_usuario, fecha)
-    VALUES (
-        servicio, modulo, registro, administrador, NOW()   
-    );
-//
-DELIMITER ;
