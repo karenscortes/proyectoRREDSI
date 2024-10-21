@@ -39,7 +39,6 @@
                     <h6 class="text-dark"><i class="fas fa-check-circle me-2 icon"></i>Configuraciones Predeterminadas</h6>
                 </div>
             </div>
-            <a href="" class="btn px-5 py-3">Más información</a>
         </div>
       </div>
       
